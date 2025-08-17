@@ -4,7 +4,7 @@ import { randomUUID } from "crypto";
 export interface IStorage {
   // Songs
   getSong(id: string): Promise<Song | undefined>;
-  getAllSongs(): Promise<Song[]>;
+  getAllSongs(): Promise<SongWithTracks[]>;
   createSong(song: InsertSong): Promise<Song>;
   updateSong(id: string, song: Partial<InsertSong>): Promise<Song | undefined>;
   deleteSong(id: string): Promise<boolean>;
@@ -41,8 +41,20 @@ export class MemStorage implements IStorage {
     return this.songs.get(id);
   }
 
-  async getAllSongs(): Promise<Song[]> {
-    return Array.from(this.songs.values()).sort((a, b) => a.title.localeCompare(b.title));
+  async getAllSongs(): Promise<SongWithTracks[]> {
+    const songs = Array.from(this.songs.values()).sort((a, b) => a.title.localeCompare(b.title));
+    const songsWithTracks = await Promise.all(
+      songs.map(async (song) => {
+        const tracks = await this.getTracksBySongId(song.id);
+        const midiEvents = await this.getMidiEventsBySongId(song.id);
+        return {
+          ...song,
+          tracks: tracks.sort((a, b) => a.trackNumber - b.trackNumber),
+          midiEvents: midiEvents.sort((a, b) => a.timestamp - b.timestamp)
+        };
+      })
+    );
+    return songsWithTracks;
   }
 
   async createSong(insertSong: InsertSong): Promise<Song> {
@@ -108,10 +120,11 @@ export class MemStorage implements IStorage {
     const id = randomUUID();
     const track: Track = { 
       ...insertTrack,
-      volume: insertTrack.volume || 100,
-      isMuted: insertTrack.isMuted || false,
-      isSolo: insertTrack.isSolo || false,
-      localFileName: insertTrack.localFileName || null,
+      volume: insertTrack.volume ?? 100,
+      balance: insertTrack.balance ?? 0,
+      isMuted: insertTrack.isMuted ?? false,
+      isSolo: insertTrack.isSolo ?? false,
+      localFileName: insertTrack.localFileName ?? null,
       id 
     };
     this.tracks.set(id, track);

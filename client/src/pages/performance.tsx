@@ -11,13 +11,24 @@ import { useAudioEngine } from "@/hooks/use-audio-engine";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Settings, Music, Menu } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Settings, Music, Menu, Plus } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
 import type { SongWithTracks } from "@shared/schema";
 
 export default function Performance() {
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [latency, setLatency] = useState(2.1);
   const [isTrackManagerOpen, setIsTrackManagerOpen] = useState(false);
+  const [isAddSongOpen, setIsAddSongOpen] = useState(false);
+  const [songTitle, setSongTitle] = useState("");
+  const [songArtist, setSongArtist] = useState("");
+  const [songDuration, setSongDuration] = useState(180);
+
+  const { toast } = useToast();
 
   const { data: selectedSong } = useQuery<SongWithTracks>({
     queryKey: ['/api/songs', selectedSongId],
@@ -66,6 +77,51 @@ export default function Performance() {
   const { data: allSongs = [] } = useQuery<SongWithTracks[]>({
     queryKey: ['/api/songs']
   });
+
+  // Mutation for adding new songs
+  const addSongMutation = useMutation({
+    mutationFn: (songData: { title: string; artist: string; duration: number }) =>
+      apiRequest('/api/songs', {
+        method: 'POST',
+        body: JSON.stringify(songData)
+      }),
+    onSuccess: (newSong) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+      setSelectedSongId(newSong.id);
+      setIsAddSongOpen(false);
+      setSongTitle("");
+      setSongArtist("");
+      setSongDuration(180);
+      toast({
+        title: "Song created",
+        description: `"${newSong.title}" has been added to your library.`
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to create song. Please try again.",
+        variant: "destructive"
+      });
+    }
+  });
+
+  const handleAddSong = () => {
+    if (!songTitle.trim() || !songArtist.trim()) {
+      toast({
+        title: "Validation Error",
+        description: "Please enter both song title and artist.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    addSongMutation.mutate({
+      title: songTitle.trim(),
+      artist: songArtist.trim(),
+      duration: songDuration
+    });
+  };
 
   return (
     <div className="bg-background text-white min-h-screen font-inter flex flex-col">
@@ -137,8 +193,83 @@ export default function Performance() {
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar - Song List (30%) */}
         <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col">
-          <div className="p-4 border-b border-gray-700">
+          <div className="p-4 border-b border-gray-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Songs</h2>
+            <Dialog open={isAddSongOpen} onOpenChange={setIsAddSongOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0 hover:bg-gray-700"
+                  data-testid="button-add-song"
+                >
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-md">
+                <DialogHeader>
+                  <DialogTitle>Add New Song</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-4 mt-4">
+                  <div>
+                    <Label htmlFor="songTitle">Song Title *</Label>
+                    <Input
+                      id="songTitle"
+                      value={songTitle}
+                      onChange={(e) => setSongTitle(e.target.value)}
+                      placeholder="Enter song title..."
+                      data-testid="input-song-title"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="songArtist">Artist *</Label>
+                    <Input
+                      id="songArtist"
+                      value={songArtist}
+                      onChange={(e) => setSongArtist(e.target.value)}
+                      placeholder="Enter artist name..."
+                      data-testid="input-song-artist"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="songDuration">Duration (seconds)</Label>
+                    <Input
+                      id="songDuration"
+                      type="number"
+                      value={songDuration}
+                      onChange={(e) => setSongDuration(parseInt(e.target.value) || 180)}
+                      placeholder="180"
+                      data-testid="input-song-duration"
+                    />
+                    <div className="text-xs text-gray-400 mt-1">
+                      Estimated duration - will be updated when tracks are added
+                    </div>
+                  </div>
+                  <div className="flex justify-end space-x-2 pt-4">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        setIsAddSongOpen(false);
+                        setSongTitle("");
+                        setSongArtist("");
+                        setSongDuration(180);
+                      }}
+                      disabled={addSongMutation.isPending}
+                      data-testid="button-cancel-song"
+                    >
+                      Cancel
+                    </Button>
+                    <Button 
+                      onClick={handleAddSong}
+                      disabled={addSongMutation.isPending || !songTitle.trim() || !songArtist.trim()}
+                      data-testid="button-create-song"
+                    >
+                      {addSongMutation.isPending ? "Creating..." : "Create Song"}
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
           <div className="flex-1 overflow-y-auto">
             {allSongs.map((song) => (

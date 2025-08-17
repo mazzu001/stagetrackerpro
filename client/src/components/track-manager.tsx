@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -42,13 +42,69 @@ export default function TrackManager({
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
+  const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
 
   const { toast } = useToast();
+  const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
 
   const { data: tracks = [] } = useQuery<Track[]>({
     queryKey: ['/api/songs', song?.id, 'tracks'],
     enabled: !!song?.id
   });
+
+  // Debounced volume update function
+  const debouncedVolumeUpdate = useCallback((trackId: string, volume: number) => {
+    // Clear existing timeout
+    if (debounceTimeouts.current[`${trackId}-volume`]) {
+      clearTimeout(debounceTimeouts.current[`${trackId}-volume`]);
+    }
+    
+    // Immediately update audio engine for responsive feedback
+    onTrackVolumeChange?.(trackId, volume);
+    
+    // Update local state immediately for UI responsiveness
+    setLocalTrackValues(prev => ({
+      ...prev,
+      [trackId]: { ...prev[trackId], volume }
+    }));
+    
+    // Debounce database update
+    debounceTimeouts.current[`${trackId}-volume`] = setTimeout(async () => {
+      try {
+        await apiRequest('PATCH', `/api/tracks/${trackId}`, { volume });
+        console.log(`Updated track ${trackId} volume to ${volume}`);
+      } catch (error) {
+        console.error('Failed to update track volume:', error);
+      }
+    }, 300);
+  }, [onTrackVolumeChange]);
+
+  // Debounced balance update function
+  const debouncedBalanceUpdate = useCallback((trackId: string, balance: number) => {
+    // Clear existing timeout
+    if (debounceTimeouts.current[`${trackId}-balance`]) {
+      clearTimeout(debounceTimeouts.current[`${trackId}-balance`]);
+    }
+    
+    // Immediately update audio engine for responsive feedback
+    onTrackBalanceChange?.(trackId, balance);
+    
+    // Update local state immediately for UI responsiveness
+    setLocalTrackValues(prev => ({
+      ...prev,
+      [trackId]: { ...prev[trackId], balance }
+    }));
+    
+    // Debounce database update
+    debounceTimeouts.current[`${trackId}-balance`] = setTimeout(async () => {
+      try {
+        await apiRequest('PATCH', `/api/tracks/${trackId}`, { balance });
+        console.log(`Updated track ${trackId} balance to ${balance}`);
+      } catch (error) {
+        console.error('Failed to update track balance:', error);
+      }
+    }, 300);
+  }, [onTrackBalanceChange]);
 
   const addTrackMutation = useMutation({
     mutationFn: async (trackData: any) => {
@@ -564,15 +620,15 @@ export default function TrackManager({
                         Volume
                       </Label>
                       <span className={`text-sm ${track.isMuted ? 'text-error' : 'text-gray-400'}`}>
-                        {track.isMuted ? 'MUTED' : `${track.volume || 100}%`}
+                        {track.isMuted ? 'MUTED' : `${(localTrackValues[track.id]?.volume ?? track.volume) || 100}%`}
                       </span>
                     </div>
                     <Slider
-                      value={[track.volume || 100]}
+                      value={[localTrackValues[track.id]?.volume ?? (track.volume || 100)]}
                       max={100}
                       step={1}
                       disabled={track.isMuted}
-                      onValueChange={([value]) => onTrackVolumeChange?.(track.id, value)}
+                      onValueChange={([value]) => debouncedVolumeUpdate(track.id, value)}
                       className={`w-full ${track.isMuted ? 'opacity-50' : ''}`}
                       data-testid={`slider-volume-${track.trackNumber}`}
                     />
@@ -583,18 +639,19 @@ export default function TrackManager({
                     <div className="flex items-center justify-between">
                       <Label className="text-sm">Balance</Label>
                       <span className="text-sm text-gray-400">
-                        {(track as any).balance === 0 ? 'Center' : 
-                         (track as any).balance > 0 ? `R${(track as any).balance}` : 
-                         `L${Math.abs((track as any).balance)}`}
+                        {(() => {
+                          const balance = localTrackValues[track.id]?.balance ?? ((track as any).balance || 0);
+                          return balance === 0 ? 'Center' : balance > 0 ? `R${balance}` : `L${Math.abs(balance)}`;
+                        })()}
                       </span>
                     </div>
                     <Slider
-                      value={[(track as any).balance || 0]}
+                      value={[localTrackValues[track.id]?.balance ?? ((track as any).balance || 0)]}
                       min={-50}
                       max={50}
                       step={1}
                       disabled={track.isMuted}
-                      onValueChange={([value]) => onTrackBalanceChange?.(track.id, value)}
+                      onValueChange={([value]) => debouncedBalanceUpdate(track.id, value)}
                       className={`w-full ${track.isMuted ? 'opacity-50' : ''}`}
                       data-testid={`slider-balance-${track.trackNumber}`}
                     />

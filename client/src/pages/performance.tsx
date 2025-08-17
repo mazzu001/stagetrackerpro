@@ -153,7 +153,7 @@ export default function Performance() {
                   <Menu className="w-4 h-4" />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+              <DialogContent className="max-w-[90vw] max-h-[85vh] overflow-y-auto w-full">
                 <DialogHeader>
                   <DialogTitle>Track Management</DialogTitle>
                 </DialogHeader>
@@ -285,11 +285,15 @@ export default function Performance() {
                 onClick={() => setSelectedSongId(song.id)}
                 data-testid={`song-item-${song.id}`}
               >
-                <div className="font-medium">{song.title}</div>
+                <div className="flex items-center justify-between">
+                  <div className="font-medium">{song.title}</div>
+                  <div className="text-xs bg-gray-700 px-2 py-1 rounded">
+                    {song.tracks ? song.tracks.length : 0} tracks
+                  </div>
+                </div>
                 <div className="text-sm text-gray-400">{song.artist}</div>
                 <div className="text-xs text-gray-500 mt-1">
                   {song.duration ? `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}` : 'No duration'}
-                  {song.tracks && ` • ${song.tracks.length} tracks`}
                 </div>
               </div>
             ))}

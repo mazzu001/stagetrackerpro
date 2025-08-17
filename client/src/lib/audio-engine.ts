@@ -56,7 +56,8 @@ export class AudioEngine {
         // Create analyzer for audio level monitoring
         const analyzer = this.audioContext!.createAnalyser();
         analyzer.fftSize = 256;
-        trackController.connect(analyzer);
+        analyzer.smoothingTimeConstant = 0.8;
+        trackController.connectAnalyzer(analyzer);
         this.analyzerNodes.set(track.id, analyzer);
         
         console.log(`Successfully loaded track: ${track.name}`);
@@ -363,5 +364,10 @@ class TrackController {
 
   connect(destination: AudioNode): void {
     this.muteNode.connect(destination);
+  }
+
+  connectAnalyzer(analyzerNode: AnalyserNode): void {
+    // Connect the mute node (final output) to the analyzer for level monitoring
+    this.muteNode.connect(analyzerNode);
   }
 }

@@ -114,12 +114,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/songs/:songId/tracks", upload.single('audioFile'), async (req: any, res) => {
+  app.post("/api/songs/:songId/tracks", async (req, res) => {
     try {
-      if (!req.file) {
-        return res.status(400).json({ message: "Audio file is required" });
-      }
-
       // Check if song exists and track limit
       const song = await storage.getSong(req.params.songId);
       if (!song) {
@@ -133,22 +129,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const trackData = {
         songId: req.params.songId,
-        name: req.body.name || req.file.originalname,
+        name: req.body.name,
         trackNumber: parseInt(req.body.trackNumber) || (existingTracks.length + 1),
-        audioUrl: `/uploads/${req.file.filename}`,
+        audioUrl: req.body.audioUrl, // This is now a local file path
         volume: parseInt(req.body.volume) || 100,
-        isMuted: req.body.isMuted === 'true',
-        isSolo: req.body.isSolo === 'true'
+        isMuted: req.body.isMuted === true,
+        isSolo: req.body.isSolo === true
       };
 
       const validatedData = insertTrackSchema.parse(trackData);
       const track = await storage.createTrack(validatedData);
 
-      // Update song duration based on longest track (mock implementation for now)
-      // In a real app, you'd analyze the actual audio file duration
-      const mockDuration = 180 + Math.floor(Math.random() * 120); // 3-5 minutes
-      const maxDuration = Math.max(song.duration, mockDuration);
-      await storage.updateSong(req.params.songId, { duration: maxDuration });
+      // Update song duration based on provided duration or keep existing
+      const trackDuration = parseInt(req.body.duration) || 0;
+      if (trackDuration > 0) {
+        const maxDuration = Math.max(song.duration, trackDuration);
+        await storage.updateSong(req.params.songId, { duration: maxDuration });
+      }
 
       res.status(201).json(track);
     } catch (error) {

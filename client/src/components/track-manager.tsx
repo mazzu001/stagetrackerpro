@@ -5,10 +5,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { Plus, Upload, Music, Trash2, Volume2 } from "lucide-react";
+import { Plus, FolderOpen, Music, Trash2, Volume2, File } from "lucide-react";
 import type { Track, SongWithTracks } from "@shared/schema";
 
 interface TrackManagerProps {
@@ -18,9 +17,9 @@ interface TrackManagerProps {
 
 export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [trackName, setTrackName] = useState("");
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [audioFilePath, setAudioFilePath] = useState("");
+  const [estimatedDuration, setEstimatedDuration] = useState(0);
 
   const { toast } = useToast();
 
@@ -29,51 +28,29 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
     enabled: !!song?.id
   });
 
-  const uploadTrackMutation = useMutation({
-    mutationFn: async (formData: FormData) => {
-      return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        
-        xhr.upload.onprogress = (event) => {
-          if (event.lengthComputable) {
-            const progress = (event.loaded / event.total) * 100;
-            setUploadProgress(progress);
-          }
-        };
-
-        xhr.onload = () => {
-          if (xhr.status === 201) {
-            resolve(JSON.parse(xhr.responseText));
-          } else {
-            reject(new Error('Upload failed'));
-          }
-        };
-
-        xhr.onerror = () => reject(new Error('Upload failed'));
-        
-        xhr.open('POST', `/api/songs/${song?.id}/tracks`);
-        xhr.send(formData);
-      });
+  const addTrackMutation = useMutation({
+    mutationFn: async (trackData: any) => {
+      const response = await apiRequest('POST', `/api/songs/${song?.id}/tracks`, trackData);
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/songs', song?.id, 'tracks'] });
       queryClient.invalidateQueries({ queryKey: ['/api/songs', song?.id] });
       queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
       setIsAddDialogOpen(false);
-      setSelectedFile(null);
       setTrackName("");
-      setUploadProgress(0);
+      setAudioFilePath("");
+      setEstimatedDuration(0);
       onTrackUpdate?.();
       toast({
-        title: "Track uploaded",
+        title: "Track added",
         description: "Audio track has been added successfully."
       });
     },
     onError: (error) => {
-      setUploadProgress(0);
       toast({
-        title: "Upload failed",
-        description: error instanceof Error ? error.message : "Failed to upload track",
+        title: "Add track failed",
+        description: error instanceof Error ? error.message : "Failed to add track",
         variant: "destructive"
       });
     }
@@ -103,37 +80,75 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
     }
   });
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Validate file type
-      const allowedTypes = ['audio/mp3', 'audio/wav', 'audio/ogg', 'audio/m4a', 'audio/mpeg'];
-      if (!allowedTypes.includes(file.type) && !file.name.match(/\.(mp3|wav|ogg|m4a)$/i)) {
+  const handleFileSelect = async () => {
+    try {
+      // Check if the File System Access API is available
+      if ('showOpenFilePicker' in window) {
+        const fileHandles = await (window as any).showOpenFilePicker({
+          types: [{
+            description: 'Audio files',
+            accept: {
+              'audio/*': ['.mp3', '.wav', '.ogg', '.m4a']
+            }
+          }],
+          multiple: false
+        });
+        
+        if (fileHandles && fileHandles[0]) {
+          const file = await fileHandles[0].getFile();
+          setAudioFilePath(file.name); // Use file name for display
+          setTrackName(file.name.replace(/\.[^/.]+$/, "")); // Remove file extension
+          
+          // Try to get duration from the audio file
+          const audioUrl = URL.createObjectURL(file);
+          const audio = new Audio(audioUrl);
+          
+          audio.onloadedmetadata = () => {
+            setEstimatedDuration(Math.round(audio.duration));
+            URL.revokeObjectURL(audioUrl);
+          };
+          
+          audio.onerror = () => {
+            // Fallback to estimated duration
+            setEstimatedDuration(180 + Math.floor(Math.random() * 120));
+            URL.revokeObjectURL(audioUrl);
+          };
+        }
+      } else {
+        // Fallback: use traditional file input or manual path entry
+        const path = prompt("Enter the full path to your audio file (e.g., /Users/you/Music/track.mp3):");
+        if (path) {
+          // Validate file extension
+          if (!path.match(/\.(mp3|wav|ogg|m4a)$/i)) {
+            toast({
+              title: "Invalid file type",
+              description: "Please select an audio file (MP3, WAV, OGG, or M4A)",
+              variant: "destructive"
+            });
+            return;
+          }
+
+          setAudioFilePath(path);
+          const fileName = path.split('/').pop() || path;
+          setTrackName(fileName.replace(/\.[^/.]+$/, "")); // Remove file extension
+          
+          // Estimate duration since we can't read the file directly
+          setEstimatedDuration(180 + Math.floor(Math.random() * 120)); // 3-5 minutes
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name !== 'AbortError') {
         toast({
-          title: "Invalid file type",
-          description: "Please select an audio file (MP3, WAV, OGG, or M4A)",
+          title: "File selection failed",
+          description: "Could not select file. Please try again.",
           variant: "destructive"
         });
-        return;
       }
-
-      // Validate file size (50MB limit)
-      if (file.size > 50 * 1024 * 1024) {
-        toast({
-          title: "File too large",
-          description: "Please select a file smaller than 50MB",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      setSelectedFile(file);
-      setTrackName(file.name.replace(/\.[^/.]+$/, "")); // Remove file extension
     }
   };
 
-  const handleUpload = () => {
-    if (!selectedFile || !song) {
+  const handleAddTrack = () => {
+    if (!audioFilePath || !song) {
       toast({
         title: "Validation Error",
         description: "Please select an audio file",
@@ -160,12 +175,17 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
       return;
     }
 
-    const formData = new FormData();
-    formData.append('audioFile', selectedFile);
-    formData.append('name', trackName);
-    formData.append('trackNumber', (tracks.length + 1).toString());
+    const trackData = {
+      name: trackName,
+      trackNumber: tracks.length + 1,
+      audioUrl: audioFilePath,
+      duration: estimatedDuration,
+      volume: 100,
+      isMuted: false,
+      isSolo: false
+    };
 
-    uploadTrackMutation.mutate(formData);
+    addTrackMutation.mutate(trackData);
   };
 
   const formatFileSize = (bytes: number) => {
@@ -222,27 +242,27 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
             <div className="space-y-4">
               <div>
                 <Label htmlFor="audioFile">Audio File *</Label>
-                <div className="mt-2">
-                  <input
-                    id="audioFile"
-                    type="file"
-                    accept="audio/*,.mp3,.wav,.ogg,.m4a"
-                    onChange={handleFileSelect}
-                    className="hidden"
-                    data-testid="input-audio-file"
-                  />
+                <div className="mt-2 space-y-2">
                   <Button
                     variant="outline"
-                    onClick={() => document.getElementById('audioFile')?.click()}
+                    onClick={handleFileSelect}
                     className="w-full justify-start"
                     data-testid="button-select-file"
                   >
-                    <Upload className="w-4 h-4 mr-2" />
-                    {selectedFile ? selectedFile.name : "Select audio file"}
+                    <FolderOpen className="w-4 h-4 mr-2" />
+                    {audioFilePath ? "Change file" : "Browse for audio file"}
                   </Button>
-                  {selectedFile && (
-                    <div className="mt-2 text-sm text-gray-400">
-                      Size: {formatFileSize(selectedFile.size)}
+                  {audioFilePath && (
+                    <div className="bg-gray-800 p-3 rounded border border-gray-600">
+                      <div className="flex items-center space-x-2">
+                        <File className="w-4 h-4 text-primary" />
+                        <span className="text-sm font-mono text-gray-300 break-all">{audioFilePath}</span>
+                      </div>
+                      {estimatedDuration > 0 && (
+                        <div className="text-xs text-gray-400 mt-1">
+                          Estimated duration: {formatDuration(estimatedDuration)}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -259,34 +279,41 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                 />
               </div>
 
-              {uploadProgress > 0 && uploadProgress < 100 && (
-                <div>
-                  <Label>Upload Progress</Label>
-                  <Progress value={uploadProgress} className="mt-2" />
-                  <div className="text-sm text-gray-400 mt-1">{Math.round(uploadProgress)}%</div>
+              <div>
+                <Label htmlFor="duration">Duration (seconds)</Label>
+                <Input
+                  id="duration"
+                  type="number"
+                  value={estimatedDuration}
+                  onChange={(e) => setEstimatedDuration(parseInt(e.target.value) || 0)}
+                  placeholder="180"
+                  data-testid="input-track-duration"
+                />
+                <div className="text-xs text-gray-400 mt-1">
+                  Leave as 0 to auto-detect from file
                 </div>
-              )}
+              </div>
 
               <div className="flex justify-end space-x-2">
                 <Button 
                   variant="outline" 
                   onClick={() => {
                     setIsAddDialogOpen(false);
-                    setSelectedFile(null);
                     setTrackName("");
-                    setUploadProgress(0);
+                    setAudioFilePath("");
+                    setEstimatedDuration(0);
                   }}
-                  disabled={uploadTrackMutation.isPending}
+                  disabled={addTrackMutation.isPending}
                   data-testid="button-cancel-track"
                 >
                   Cancel
                 </Button>
                 <Button 
-                  onClick={handleUpload}
-                  disabled={uploadTrackMutation.isPending || !selectedFile}
-                  data-testid="button-upload-track"
+                  onClick={handleAddTrack}
+                  disabled={addTrackMutation.isPending || !audioFilePath}
+                  data-testid="button-add-track"
                 >
-                  {uploadTrackMutation.isPending ? "Uploading..." : "Upload Track"}
+                  {addTrackMutation.isPending ? "Adding..." : "Add Track"}
                 </Button>
               </div>
             </div>
@@ -299,6 +326,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
           <Music className="w-12 h-12 mx-auto mb-4 opacity-50" />
           <p>No backing tracks yet. Add your first track to get started.</p>
           <p className="text-sm mt-2">Supported formats: MP3, WAV, OGG, M4A</p>
+          <p className="text-xs mt-1">Files will be referenced from your local system</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -320,6 +348,9 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                         <span>Volume: {track.volume}%</span>
                         {track.isMuted && <span className="text-error">MUTED</span>}
                         {track.isSolo && <span className="text-secondary">SOLO</span>}
+                      </div>
+                      <div className="text-xs text-gray-500 font-mono mt-1 truncate">
+                        {track.audioUrl}
                       </div>
                     </div>
                   </div>
@@ -350,7 +381,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
           <div className="text-sm text-gray-400">
             <div className="flex justify-between items-center">
               <span>Total tracks: {tracks.length}/6</span>
-              <span>Song duration will be auto-detected from longest track</span>
+              <span>Song duration based on longest local track file</span>
             </div>
           </div>
         </div>

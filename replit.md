@@ -32,12 +32,12 @@ Preferred communication style: Simple, everyday language.
 
 ## Core Features
 - **Multi-track Audio Engine**: Real-time audio mixing with individual track controls (up to 6 tracks per song)
-- **Track Management**: Upload and manage backing tracks with automatic song duration detection
+- **Track Management**: Reference and manage local backing tracks with automatic song duration detection
 - **MIDI Integration**: Timed MIDI event sequencing embedded in lyrics
 - **Transport Controls**: Play, pause, stop, and seek functionality with keyboard shortcuts
 - **Live Monitoring**: Real-time audio level meters and system status indicators
 - **Lyrics Display**: Synchronized lyrics with auto-scrolling and MIDI command highlighting
-- **File Upload**: Support for MP3, WAV, OGG, and M4A audio formats with progress tracking
+- **Local File Reference**: Support for MP3, WAV, OGG, and M4A audio formats from local file system
 
 ## Audio Processing Pipeline
 - **Track Loading**: Dynamic audio buffer management for multiple simultaneous tracks

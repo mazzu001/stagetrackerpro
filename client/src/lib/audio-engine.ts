@@ -243,7 +243,7 @@ class TrackController {
     this.isMuted = track.isMuted || false;
     this.isSolo = track.isSolo || false;
     
-    // Connect nodes: source -> gain -> panner -> mute -> master
+    // Connect nodes: gain -> panner -> mute -> master
     this.gainNode.connect(this.pannerNode);
     this.pannerNode.connect(this.muteNode);
     this.muteNode.connect(this.masterGain);
@@ -293,7 +293,7 @@ class TrackController {
       this.sourceNode.disconnect();
     }
 
-    // Create new source node
+    // Create new source node and connect to audio chain
     this.sourceNode = this.audioContext.createBufferSource();
     this.sourceNode.buffer = this.audioBuffer;
     this.sourceNode.connect(this.gainNode);

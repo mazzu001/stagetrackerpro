@@ -556,11 +556,53 @@ export default function TrackManager({
                     </div>
                   </div>
 
-                  {/* Track Status */}
-                  <div className="text-sm text-gray-400 flex items-center space-x-4">
-                    <span>Volume: {track.volume || 100}%</span>
-                    {track.isMuted && <span className="text-error">MUTED</span>}
-                    {track.isSolo && <span className="text-secondary">SOLO</span>}
+                  {/* Volume Control */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-sm flex items-center">
+                        <Volume2 className="w-3 h-3 mr-1" />
+                        Volume
+                      </Label>
+                      <span className={`text-sm ${track.isMuted ? 'text-error' : 'text-gray-400'}`}>
+                        {track.isMuted ? 'MUTED' : `${track.volume || 100}%`}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[track.volume || 100]}
+                      max={100}
+                      step={1}
+                      disabled={track.isMuted}
+                      onValueChange={([value]) => onTrackVolumeChange?.(track.id, value)}
+                      className={`w-full ${track.isMuted ? 'opacity-50' : ''}`}
+                      data-testid={`slider-volume-${track.trackNumber}`}
+                    />
+                  </div>
+
+                  {/* Balance Control */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-sm">Balance</Label>
+                      <span className="text-sm text-gray-400">
+                        {(track as any).balance === 0 ? 'Center' : 
+                         (track as any).balance > 0 ? `R${(track as any).balance}` : 
+                         `L${Math.abs((track as any).balance)}`}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[(track as any).balance || 0]}
+                      min={-50}
+                      max={50}
+                      step={1}
+                      disabled={track.isMuted}
+                      onValueChange={([value]) => onTrackBalanceChange?.(track.id, value)}
+                      className={`w-full ${track.isMuted ? 'opacity-50' : ''}`}
+                      data-testid={`slider-balance-${track.trackNumber}`}
+                    />
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>L</span>
+                      <span>Center</span>
+                      <span>R</span>
+                    </div>
                   </div>
                 </div>
               </CardContent>

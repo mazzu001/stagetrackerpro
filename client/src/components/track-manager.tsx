@@ -19,8 +19,9 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
   const [audioFilePath, setAudioFilePath] = useState("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [estimatedDuration, setEstimatedDuration] = useState(0);
+  const [isImporting, setIsImporting] = useState(false);
 
   const { toast } = useToast();
 
@@ -41,7 +42,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
       setIsAddDialogOpen(false);
       setTrackName("");
       setAudioFilePath("");
-      setSelectedFile(null);
+      setSelectedFiles([]);
       setEstimatedDuration(0);
       onTrackUpdate?.();
       toast({
@@ -87,37 +88,68 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'audio/*,.mp3,.wav,.ogg,.m4a';
+    input.multiple = true; // Allow multiple file selection
     
     input.onchange = (event) => {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (file) {
+      const files = Array.from((event.target as HTMLInputElement).files || []);
+      
+      if (files.length === 0) return;
+
+      // Check track limit
+      if (tracks.length + files.length > 6) {
+        toast({
+          title: "Too many tracks",
+          description: `Can only add ${6 - tracks.length} more tracks. Maximum is 6 tracks per song.`,
+          variant: "destructive"
+        });
+        return;
+      }
+
+      const validFiles: File[] = [];
+      const allowedTypes = ['audio/mp3', 'audio/wav', 'audio/ogg', 'audio/m4a', 'audio/mpeg', 'audio/x-m4a'];
+      
+      for (const file of files) {
         // Validate file type
-        const allowedTypes = ['audio/mp3', 'audio/wav', 'audio/ogg', 'audio/m4a', 'audio/mpeg', 'audio/x-m4a'];
         const isValidType = allowedTypes.includes(file.type) || file.name.match(/\.(mp3|wav|ogg|m4a)$/i);
         
         if (!isValidType) {
           toast({
             title: "Invalid file type",
-            description: "Please select an audio file (MP3, WAV, OGG, or M4A)",
+            description: `${file.name} is not a supported audio format`,
             variant: "destructive"
           });
-          return;
+          continue;
         }
 
         // Validate file size (50MB limit)
         if (file.size > 50 * 1024 * 1024) {
           toast({
             title: "File too large",
-            description: "Please select a file smaller than 50MB",
+            description: `${file.name} is larger than 50MB`,
             variant: "destructive"
           });
-          return;
+          continue;
         }
 
-        // Store the actual file object and display name
-        setSelectedFile(file);
-        setAudioFilePath(file.name); // Use file name for display
-        setTrackName(file.name.replace(/\.[^/.]+$/, "")); // Remove file extension
+        validFiles.push(file);
+      }
+
+      if (validFiles.length === 0) {
+        toast({
+          title: "No valid files",
+          description: "Please select valid audio files (MP3, WAV, OGG, or M4A)",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      setSelectedFiles(validFiles);
+      
+      if (validFiles.length === 1) {
+        // Single file - populate the form for manual editing
+        const file = validFiles[0];
+        setAudioFilePath(file.name);
+        setTrackName(file.name.replace(/\.[^/.]+$/, ""));
         
         // Try to get duration from the audio file
         const audioUrl = URL.createObjectURL(file);
@@ -129,32 +161,31 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
         };
         
         audio.onerror = () => {
-          // Fallback to estimated duration
           setEstimatedDuration(180 + Math.floor(Math.random() * 120));
           URL.revokeObjectURL(audioUrl);
-          toast({
-            title: "Duration detection failed",
-            description: "Using estimated duration. You can adjust it manually.",
-            variant: "default"
-          });
         };
+      } else {
+        // Multiple files - show summary
+        setAudioFilePath(`${validFiles.length} files selected`);
+        setTrackName("");
+        setEstimatedDuration(0);
       }
     };
     
     input.click();
   };
 
-  const handleAddTrack = () => {
-    if (!selectedFile || !song) {
+  const handleAddTracks = async () => {
+    if (selectedFiles.length === 0 || !song) {
       toast({
         title: "Validation Error",
-        description: "Please select an audio file",
+        description: "Please select audio files",
         variant: "destructive"
       });
       return;
     }
 
-    if (!trackName.trim()) {
+    if (selectedFiles.length === 1 && !trackName.trim()) {
       toast({
         title: "Validation Error",
         description: "Please enter a track name",
@@ -163,7 +194,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
       return;
     }
 
-    if (tracks.length >= 6) {
+    if (tracks.length + selectedFiles.length > 6) {
       toast({
         title: "Maximum tracks reached",
         description: "You can only have up to 6 backing tracks per song",
@@ -172,21 +203,69 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
       return;
     }
 
-    // Create object URL for the file that can be used by the audio engine
-    const objectUrl = URL.createObjectURL(selectedFile);
-    
-    const trackData = {
-      name: trackName,
-      trackNumber: tracks.length + 1,
-      audioUrl: objectUrl, // Use object URL instead of file path
-      localFileName: selectedFile.name, // Store original filename for display
-      duration: estimatedDuration,
-      volume: 100,
-      isMuted: false,
-      isSolo: false
-    };
+    setIsImporting(true);
 
-    addTrackMutation.mutate(trackData);
+    try {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const file = selectedFiles[i];
+        const objectUrl = URL.createObjectURL(file);
+        
+        // For single file, use the provided name; for multiple files, use filename
+        const name = selectedFiles.length === 1 ? trackName : file.name.replace(/\.[^/.]+$/, "");
+        
+        // Get duration from file
+        let duration = estimatedDuration;
+        if (selectedFiles.length > 1 || duration === 0) {
+          try {
+            const audioUrl = URL.createObjectURL(file);
+            const audio = new Audio(audioUrl);
+            duration = await new Promise<number>((resolve) => {
+              audio.onloadedmetadata = () => {
+                resolve(Math.round(audio.duration));
+                URL.revokeObjectURL(audioUrl);
+              };
+              audio.onerror = () => {
+                resolve(180 + Math.floor(Math.random() * 120));
+                URL.revokeObjectURL(audioUrl);
+              };
+            });
+          } catch {
+            duration = 180 + Math.floor(Math.random() * 120);
+          }
+        }
+        
+        const trackData = {
+          name,
+          trackNumber: tracks.length + i + 1,
+          audioUrl: objectUrl,
+          localFileName: file.name,
+          duration,
+          volume: 100,
+          isMuted: false,
+          isSolo: false
+        };
+
+        await new Promise((resolve, reject) => {
+          addTrackMutation.mutate(trackData, {
+            onSuccess: resolve,
+            onError: reject
+          });
+        });
+      }
+
+      toast({
+        title: "Tracks imported",
+        description: `Successfully imported ${selectedFiles.length} track${selectedFiles.length > 1 ? 's' : ''}`,
+      });
+    } catch (error) {
+      toast({
+        title: "Import failed",
+        description: "Some tracks failed to import",
+        variant: "destructive"
+      });
+    } finally {
+      setIsImporting(false);
+    }
   };
 
   const formatFileSize = (bytes: number) => {
@@ -251,7 +330,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                     data-testid="button-select-file"
                   >
                     <FolderOpen className="w-4 h-4 mr-2" />
-                    {audioFilePath ? "Change file" : "Select audio file"}
+                    {audioFilePath ? "Change files" : "Select audio files"}
                   </Button>
                   {audioFilePath && (
                     <div className="bg-gray-800 p-3 rounded border border-gray-600">
@@ -259,44 +338,68 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                         <File className="w-4 h-4 text-primary" />
                         <span className="text-sm font-mono text-gray-300 break-all">{audioFilePath}</span>
                       </div>
-                      {estimatedDuration > 0 && (
+                      {selectedFiles.length > 1 && (
+                        <div className="mt-2 space-y-1">
+                          {selectedFiles.map((file, index) => (
+                            <div key={index} className="text-xs text-gray-400">
+                              {index + 1}. {file.name}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {estimatedDuration > 0 && selectedFiles.length === 1 && (
                         <div className="text-xs text-gray-400 mt-1">
                           Duration: {formatDuration(estimatedDuration)}
                         </div>
                       )}
                       <div className="text-xs text-gray-500 mt-1">
-                        File will be referenced locally on your system
+                        {selectedFiles.length === 1 ? "File will be referenced locally" : "All files will be imported as separate tracks"}
                       </div>
                     </div>
                   )}
                 </div>
               </div>
               
-              <div>
-                <Label htmlFor="trackName">Track Name *</Label>
-                <Input
-                  id="trackName"
-                  value={trackName}
-                  onChange={(e) => setTrackName(e.target.value)}
-                  placeholder="e.g., Bass, Drums, Guitar..."
-                  data-testid="input-track-name"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="duration">Duration (seconds)</Label>
-                <Input
-                  id="duration"
-                  type="number"
-                  value={estimatedDuration}
-                  onChange={(e) => setEstimatedDuration(parseInt(e.target.value) || 0)}
-                  placeholder="180"
-                  data-testid="input-track-duration"
-                />
-                <div className="text-xs text-gray-400 mt-1">
-                  Leave as 0 to auto-detect from file
+              {selectedFiles.length === 1 && (
+                <div>
+                  <Label htmlFor="trackName">Track Name *</Label>
+                  <Input
+                    id="trackName"
+                    value={trackName}
+                    onChange={(e) => setTrackName(e.target.value)}
+                    placeholder="e.g., Bass, Drums, Guitar..."
+                    data-testid="input-track-name"
+                  />
                 </div>
-              </div>
+              )}
+
+              {selectedFiles.length > 1 && (
+                <div className="bg-blue-900/20 border border-blue-700 rounded p-3">
+                  <div className="text-sm text-blue-200">
+                    <strong>Batch Import Mode</strong>
+                  </div>
+                  <div className="text-xs text-blue-300 mt-1">
+                    Each file will be imported as a separate track using its filename
+                  </div>
+                </div>
+              )}
+
+              {selectedFiles.length === 1 && (
+                <div>
+                  <Label htmlFor="duration">Duration (seconds)</Label>
+                  <Input
+                    id="duration"
+                    type="number"
+                    value={estimatedDuration}
+                    onChange={(e) => setEstimatedDuration(parseInt(e.target.value) || 0)}
+                    placeholder="180"
+                    data-testid="input-track-duration"
+                  />
+                  <div className="text-xs text-gray-400 mt-1">
+                    Leave as 0 to auto-detect from file
+                  </div>
+                </div>
+              )}
 
               <div className="flex justify-end space-x-2">
                 <Button 
@@ -305,20 +408,20 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                     setIsAddDialogOpen(false);
                     setTrackName("");
                     setAudioFilePath("");
-                    setSelectedFile(null);
+                    setSelectedFiles([]);
                     setEstimatedDuration(0);
                   }}
-                  disabled={addTrackMutation.isPending}
+                  disabled={addTrackMutation.isPending || isImporting}
                   data-testid="button-cancel-track"
                 >
                   Cancel
                 </Button>
                 <Button 
-                  onClick={handleAddTrack}
-                  disabled={addTrackMutation.isPending || !selectedFile}
+                  onClick={handleAddTracks}
+                  disabled={addTrackMutation.isPending || isImporting || selectedFiles.length === 0}
                   data-testid="button-add-track"
                 >
-                  {addTrackMutation.isPending ? "Adding..." : "Add Track"}
+                  {isImporting ? "Importing..." : selectedFiles.length > 1 ? `Import ${selectedFiles.length} Tracks` : "Add Track"}
                 </Button>
               </div>
             </div>

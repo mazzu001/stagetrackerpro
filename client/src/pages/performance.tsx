@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
-import TransportControls from "@/components/transport-controls";
+import CompactTransportControls from "@/components/compact-transport-controls";
 import AudioMixer from "@/components/audio-mixer";
 import LyricsDisplay from "@/components/lyrics-display";
 import SongSelector from "@/components/song-selector";
@@ -131,20 +131,7 @@ export default function Performance() {
         </div>
       </header>
 
-      {/* Transport Controls */}
-      <div className="bg-surface border-b border-gray-700 p-4 flex-shrink-0">
-        <TransportControls
-          isPlaying={isPlaying}
-          currentTime={currentTime}
-          duration={duration}
-          progress={progress}
-          isMidiConnected={isMidiConnected}
-          onPlay={play}
-          onPause={pause}
-          onStop={stop}
-          onSeek={seek}
-        />
-      </div>
+
 
       {/* Main Content Area */}
       <div className="flex flex-1 overflow-hidden">
@@ -179,6 +166,21 @@ export default function Performance() {
               </div>
             )}
           </div>
+          
+          {/* Compact Transport Controls */}
+          <div className="p-4 border-t border-gray-700">
+            <CompactTransportControls
+              isPlaying={isPlaying}
+              currentTime={currentTime}
+              duration={duration}
+              progress={progress}
+              isMidiConnected={isMidiConnected}
+              onPlay={play}
+              onPause={pause}
+              onStop={stop}
+              onSeek={seek}
+            />
+          </div>
         </div>
 
         {/* Right Content Area - Lyrics (70%) */}
@@ -192,7 +194,6 @@ export default function Performance() {
             <LyricsDisplay
               song={selectedSong}
               currentTime={currentTime}
-              isPlaying={isPlaying}
             />
           </div>
         </div>
@@ -204,7 +205,6 @@ export default function Performance() {
           isAudioEngineOnline={isAudioEngineOnline}
           isMidiConnected={isMidiConnected}
           cpuUsage={cpuUsage}
-          latency={latency}
         />
       </div>
     </div>

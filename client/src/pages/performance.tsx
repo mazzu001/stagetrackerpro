@@ -166,6 +166,13 @@ export default function Performance() {
                           queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
                         }
                       }}
+                      onTrackVolumeChange={updateTrackVolume}
+                      onTrackMuteToggle={updateTrackMute}
+                      onTrackSoloToggle={updateTrackSolo}
+                      onTrackBalanceChange={(trackId: string, balance: number) => {
+                        // Balance control for future implementation
+                        console.log(`Track ${trackId} balance changed to ${balance}`);
+                      }}
                     />
                   </div>
                   <div className="max-w-full">

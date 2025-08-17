@@ -7,15 +7,27 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { Plus, FolderOpen, Music, Trash2, Volume2, File } from "lucide-react";
+import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
 import type { Track, SongWithTracks } from "@shared/schema";
 
 interface TrackManagerProps {
   song?: SongWithTracks;
   onTrackUpdate?: () => void;
+  onTrackVolumeChange?: (trackId: string, volume: number) => void;
+  onTrackMuteToggle?: (trackId: string) => void;
+  onTrackSoloToggle?: (trackId: string) => void;
+  onTrackBalanceChange?: (trackId: string, balance: number) => void;
 }
 
-export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps) {
+export default function TrackManager({ 
+  song, 
+  onTrackUpdate, 
+  onTrackVolumeChange, 
+  onTrackMuteToggle, 
+  onTrackSoloToggle, 
+  onTrackBalanceChange 
+}: TrackManagerProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
   const [audioFilePath, setAudioFilePath] = useState("");
@@ -445,39 +457,113 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
               data-testid={`track-item-${track.trackNumber}`}
             >
               <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="bg-primary/20 text-primary px-2 py-1 rounded text-sm font-medium">
-                      {track.trackNumber}
-                    </div>
-                    <div>
-                      <h4 className="font-medium">{track.name}</h4>
-                      <div className="text-sm text-gray-400 flex items-center space-x-4">
-                        <span>Volume: {track.volume}%</span>
-                        {track.isMuted && <span className="text-error">MUTED</span>}
-                        {track.isSolo && <span className="text-secondary">SOLO</span>}
+                <div className="space-y-4">
+                  {/* Track Header */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="bg-primary/20 text-primary px-2 py-1 rounded text-sm font-medium">
+                        {track.trackNumber}
                       </div>
-                      {(track as any).localFileName && (
-                        <div className="text-xs text-gray-500 font-mono mt-1 truncate">
-                          {(track as any).localFileName}
-                        </div>
-                      )}
+                      <div>
+                        <h4 className="font-medium">{track.name}</h4>
+                        {(track as any).localFileName && (
+                          <div className="text-xs text-gray-500 font-mono mt-1 truncate">
+                            {(track as any).localFileName}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <Button
+                        variant={track.isSolo ? "default" : "secondary"}
+                        size="sm"
+                        className={`w-8 h-8 rounded-full p-0 ${
+                          track.isSolo 
+                            ? 'bg-secondary hover:bg-green-700' 
+                            : 'bg-gray-600 hover:bg-secondary'
+                        }`}
+                        title="Solo"
+                        onClick={() => onTrackSoloToggle?.(track.id)}
+                        data-testid={`button-solo-${track.trackNumber}`}
+                      >
+                        <Headphones className="w-3 h-3" />
+                      </Button>
+                      <Button
+                        variant={track.isMuted ? "destructive" : "secondary"}
+                        size="sm"
+                        className={`w-8 h-8 rounded-full p-0 ${
+                          track.isMuted 
+                            ? 'bg-error hover:bg-red-700' 
+                            : 'bg-gray-600 hover:bg-error'
+                        }`}
+                        title="Mute"
+                        onClick={() => onTrackMuteToggle?.(track.id)}
+                        data-testid={`button-mute-${track.trackNumber}`}
+                      >
+                        {track.isMuted ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3" />}
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => deleteTrackMutation.mutate(track.id)}
+                        disabled={deleteTrackMutation.isPending}
+                        className="bg-error hover:bg-red-700 p-2"
+                        title="Delete track"
+                        data-testid={`button-delete-track-${track.trackNumber}`}
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </Button>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <Volume2 className="w-4 h-4 text-gray-400" />
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => deleteTrackMutation.mutate(track.id)}
-                      disabled={deleteTrackMutation.isPending}
-                      className="bg-error hover:bg-red-700 p-2"
-                      title="Delete track"
-                      data-testid={`button-delete-track-${track.trackNumber}`}
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
+
+                  {/* Volume Mixer */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-sm flex items-center">
+                        <Volume2 className="w-3 h-3 mr-1" />
+                        Volume
+                      </Label>
+                      <span className={`text-sm ${track.isMuted ? 'text-error' : 'text-gray-400'}`}>
+                        {track.isMuted ? 'MUTED' : `${track.volume || 100}%`}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[track.volume || 100]}
+                      max={100}
+                      step={1}
+                      disabled={track.isMuted}
+                      onValueChange={([value]) => onTrackVolumeChange?.(track.id, value)}
+                      className={`w-full ${track.isMuted ? 'opacity-50' : ''}`}
+                      data-testid={`slider-volume-${track.trackNumber}`}
+                    />
+                  </div>
+
+                  {/* Balance Mixer */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-sm">Balance</Label>
+                      <span className="text-sm text-gray-400">
+                        {(track as any).balance === 0 ? 'Center' : 
+                         (track as any).balance > 0 ? `R${(track as any).balance}` : 
+                         `L${Math.abs((track as any).balance)}`}
+                      </span>
+                    </div>
+                    <Slider
+                      value={[(track as any).balance || 0]}
+                      min={-50}
+                      max={50}
+                      step={1}
+                      disabled={track.isMuted}
+                      onValueChange={([value]) => onTrackBalanceChange?.(track.id, value)}
+                      className={`w-full ${track.isMuted ? 'opacity-50' : ''}`}
+                      data-testid={`slider-balance-${track.trackNumber}`}
+                    />
+                    <div className="flex justify-between text-xs text-gray-500">
+                      <span>L</span>
+                      <span>Center</span>
+                      <span>R</span>
+                    </div>
                   </div>
                 </div>
               </CardContent>

@@ -457,9 +457,11 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                         {track.isMuted && <span className="text-error">MUTED</span>}
                         {track.isSolo && <span className="text-secondary">SOLO</span>}
                       </div>
-                      <div className="text-xs text-gray-500 font-mono mt-1 truncate">
-                        {(track as any).localFileName || track.audioUrl}
-                      </div>
+                      {(track as any).localFileName && (
+                        <div className="text-xs text-gray-500 font-mono mt-1 truncate">
+                          {(track as any).localFileName}
+                        </div>
+                      )}
                     </div>
                   </div>
                   

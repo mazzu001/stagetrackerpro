@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones } from "lucide-react";
+import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import type { Track, SongWithTracks } from "@shared/schema";
 
@@ -18,6 +18,10 @@ interface TrackManagerProps {
   onTrackMuteToggle?: (trackId: string) => void;
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
+  audioLevels?: Record<string, number>;
+  isPlaying?: boolean;
+  onPlay?: () => void;
+  onPause?: () => void;
 }
 
 export default function TrackManager({ 
@@ -26,7 +30,11 @@ export default function TrackManager({
   onTrackVolumeChange, 
   onTrackMuteToggle, 
   onTrackSoloToggle, 
-  onTrackBalanceChange 
+  onTrackBalanceChange,
+  audioLevels = {},
+  isPlaying = false,
+  onPlay,
+  onPause
 }: TrackManagerProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
@@ -311,11 +319,25 @@ export default function TrackManager({
   return (
     <div className="bg-surface rounded-xl p-4 border border-gray-700">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold flex items-center">
-          <Music className="mr-2 text-primary w-5 h-5" />
-          Track Manager
-          <span className="ml-2 text-sm text-gray-400">({tracks.length}/6)</span>
-        </h2>
+        <div className="flex items-center space-x-3">
+          <h2 className="text-lg font-semibold flex items-center">
+            <Music className="mr-2 text-primary w-5 h-5" />
+            Track Manager
+            <span className="ml-2 text-sm text-gray-400">({tracks.length}/6)</span>
+          </h2>
+          <div className="flex items-center space-x-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={isPlaying ? onPause : onPlay}
+              className="h-8 w-8 p-0 hover:bg-gray-700"
+              disabled={!onPlay || !onPause}
+              data-testid="button-track-manager-play-pause"
+            >
+              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+            </Button>
+          </div>
+        </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>
             <Button 
@@ -464,8 +486,25 @@ export default function TrackManager({
                       <div className="bg-primary/20 text-primary px-2 py-1 rounded text-sm font-medium">
                         {track.trackNumber}
                       </div>
-                      <div>
-                        <h4 className="font-medium">{track.name}</h4>
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3">
+                          <h4 className="font-medium">{track.name}</h4>
+                          {/* Volume Meter */}
+                          <div className="flex items-center space-x-2">
+                            <div className="w-16 h-2 bg-gray-700 rounded-full overflow-hidden">
+                              <div 
+                                className={`h-full transition-all duration-100 ${
+                                  (audioLevels[track.id] || 0) < 70 ? 'bg-green-500' :
+                                  (audioLevels[track.id] || 0) < 85 ? 'bg-yellow-500' : 'bg-red-500'
+                                }`}
+                                style={{ width: `${track.isMuted ? 0 : (audioLevels[track.id] || 0)}%` }}
+                              />
+                            </div>
+                            <span className="text-xs text-gray-400 w-8">
+                              {track.isMuted ? 'M' : `${Math.round(audioLevels[track.id] || 0)}`}
+                            </span>
+                          </div>
+                        </div>
                         {(track as any).localFileName && (
                           <div className="text-xs text-gray-500 font-mono mt-1 truncate">
                             {(track as any).localFileName}
@@ -517,53 +556,11 @@ export default function TrackManager({
                     </div>
                   </div>
 
-                  {/* Volume Mixer */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-sm flex items-center">
-                        <Volume2 className="w-3 h-3 mr-1" />
-                        Volume
-                      </Label>
-                      <span className={`text-sm ${track.isMuted ? 'text-error' : 'text-gray-400'}`}>
-                        {track.isMuted ? 'MUTED' : `${track.volume || 100}%`}
-                      </span>
-                    </div>
-                    <Slider
-                      value={[track.volume || 100]}
-                      max={100}
-                      step={1}
-                      disabled={track.isMuted}
-                      onValueChange={([value]) => onTrackVolumeChange?.(track.id, value)}
-                      className={`w-full ${track.isMuted ? 'opacity-50' : ''}`}
-                      data-testid={`slider-volume-${track.trackNumber}`}
-                    />
-                  </div>
-
-                  {/* Balance Mixer */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-sm">Balance</Label>
-                      <span className="text-sm text-gray-400">
-                        {(track as any).balance === 0 ? 'Center' : 
-                         (track as any).balance > 0 ? `R${(track as any).balance}` : 
-                         `L${Math.abs((track as any).balance)}`}
-                      </span>
-                    </div>
-                    <Slider
-                      value={[(track as any).balance || 0]}
-                      min={-50}
-                      max={50}
-                      step={1}
-                      disabled={track.isMuted}
-                      onValueChange={([value]) => onTrackBalanceChange?.(track.id, value)}
-                      className={`w-full ${track.isMuted ? 'opacity-50' : ''}`}
-                      data-testid={`slider-balance-${track.trackNumber}`}
-                    />
-                    <div className="flex justify-between text-xs text-gray-500">
-                      <span>L</span>
-                      <span>Center</span>
-                      <span>R</span>
-                    </div>
+                  {/* Track Status */}
+                  <div className="text-sm text-gray-400 flex items-center space-x-4">
+                    <span>Volume: {track.volume || 100}%</span>
+                    {track.isMuted && <span className="text-error">MUTED</span>}
+                    {track.isSolo && <span className="text-secondary">SOLO</span>}
                   </div>
                 </div>
               </CardContent>

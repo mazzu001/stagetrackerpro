@@ -173,19 +173,13 @@ export default function Performance() {
                         // Balance control for future implementation
                         console.log(`Track ${trackId} balance changed to ${balance}`);
                       }}
-                    />
-                  </div>
-                  <div className="max-w-full">
-                    <AudioMixer
-                      song={selectedSong}
                       audioLevels={audioLevels}
-                      masterVolume={masterVolume}
-                      onTrackVolumeChange={updateTrackVolume}
-                      onTrackMuteToggle={updateTrackMute}
-                      onTrackSoloToggle={updateTrackSolo}
-                      onMasterVolumeChange={updateMasterVolume}
+                      isPlaying={isPlaying}
+                      onPlay={play}
+                      onPause={pause}
                     />
                   </div>
+
                 </div>
               </DialogContent>
             </Dialog>

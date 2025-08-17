@@ -297,9 +297,9 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
   }
 
   return (
-    <div className="bg-surface rounded-xl p-6 border border-gray-700">
+    <div className="bg-surface rounded-xl p-4 border border-gray-700">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold flex items-center">
+        <h2 className="text-lg font-semibold flex items-center">
           <Music className="mr-2 text-primary w-5 h-5" />
           Track Manager
           <span className="ml-2 text-sm text-gray-400">({tracks.length}/6)</span>

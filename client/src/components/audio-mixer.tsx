@@ -49,13 +49,13 @@ export default function AudioMixer({
   }
 
   return (
-    <div className="bg-surface rounded-xl p-6 border border-gray-700">
-      <h2 className="text-xl font-semibold mb-4 flex items-center">
+    <div className="bg-surface rounded-xl p-4 border border-gray-700">
+      <h2 className="text-lg font-semibold mb-4 flex items-center">
         <Sliders className="mr-2 text-accent w-5 h-5" />
         Audio Mixer
       </h2>
       
-      <div className="space-y-4">
+      <div className="space-y-3">
         {song.tracks.map((track, index) => {
           const level = audioLevels[track.id] || 0;
           const dbLevel = track.isMuted ? 0 : level;
@@ -63,7 +63,7 @@ export default function AudioMixer({
           return (
             <div 
               key={track.id} 
-              className="track-card bg-gray-800 p-4 rounded-lg border border-gray-600 hover:shadow-lg transition-all duration-200"
+              className="track-card bg-gray-800 p-3 rounded-lg border border-gray-600 hover:shadow-lg transition-all duration-200"
               data-testid={`track-${track.trackNumber}`}
             >
               <div className="flex items-center justify-between mb-3">

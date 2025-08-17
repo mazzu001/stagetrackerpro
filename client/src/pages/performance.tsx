@@ -153,20 +153,22 @@ export default function Performance() {
                   <Menu className="w-4 h-4" />
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-[90vw] max-h-[85vh] overflow-y-auto w-full">
+              <DialogContent className="max-w-[85vw] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>Track Management</DialogTitle>
                 </DialogHeader>
-                <div className="mt-4">
-                  <TrackManager
-                    song={selectedSong}
-                    onTrackUpdate={() => {
-                      if (selectedSongId) {
-                        queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
-                      }
-                    }}
-                  />
-                  <div className="mt-6">
+                <div className="mt-4 space-y-6">
+                  <div className="max-w-full">
+                    <TrackManager
+                      song={selectedSong}
+                      onTrackUpdate={() => {
+                        if (selectedSongId) {
+                          queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
+                        }
+                      }}
+                    />
+                  </div>
+                  <div className="max-w-full">
                     <AudioMixer
                       song={selectedSong}
                       audioLevels={audioLevels}

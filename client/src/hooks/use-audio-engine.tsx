@@ -58,7 +58,9 @@ export function useAudioEngine(song?: SongWithTracks) {
         const levels = audioEngineRef.current.getAudioLevels();
         setAudioLevels(levels);
         
-        if (isPlaying) {
+        // Use audio engine's state to determine if we should update time
+        const engineIsPlaying = audioEngineRef.current.getIsPlaying();
+        if (engineIsPlaying) {
           const time = audioEngineRef.current.getCurrentTime();
           setCurrentTime(time);
           
@@ -70,6 +72,11 @@ export function useAudioEngine(song?: SongWithTracks) {
             setIsPlaying(false);
             setCurrentTime(duration);
           }
+        }
+        
+        // Sync React state with audio engine state
+        if (isPlaying !== engineIsPlaying) {
+          setIsPlaying(engineIsPlaying);
         }
       }
       
@@ -87,6 +94,12 @@ export function useAudioEngine(song?: SongWithTracks) {
 
   const play = useCallback(async () => {
     if (audioEngineRef.current && song) {
+      // Check if already playing to prevent multiple calls
+      if (audioEngineRef.current.getIsPlaying()) {
+        console.log('Already playing, ignoring duplicate play request');
+        return;
+      }
+      
       // Wait for all tracks to be ready if song was just loaded
       let loadedCount = audioEngineRef.current.getLoadedTrackCount();
       let attempts = 0;

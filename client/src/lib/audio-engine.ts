@@ -202,6 +202,10 @@ export class AudioEngine {
     return this.tracks.size;
   }
 
+  getIsPlaying(): boolean {
+    return this.isPlaying;
+  }
+
   getAudioLevels(): Record<string, number> {
     const levels: Record<string, number> = {};
     

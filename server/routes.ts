@@ -120,10 +120,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Audio file is required" });
       }
 
+      // Check if song exists and track limit
+      const song = await storage.getSong(req.params.songId);
+      if (!song) {
+        return res.status(404).json({ message: "Song not found" });
+      }
+
+      const existingTracks = await storage.getTracksBySongId(req.params.songId);
+      if (existingTracks.length >= 6) {
+        return res.status(400).json({ message: "Maximum 6 tracks allowed per song" });
+      }
+
       const trackData = {
         songId: req.params.songId,
         name: req.body.name || req.file.originalname,
-        trackNumber: parseInt(req.body.trackNumber) || 1,
+        trackNumber: parseInt(req.body.trackNumber) || (existingTracks.length + 1),
         audioUrl: `/uploads/${req.file.filename}`,
         volume: parseInt(req.body.volume) || 100,
         isMuted: req.body.isMuted === 'true',
@@ -132,6 +143,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const validatedData = insertTrackSchema.parse(trackData);
       const track = await storage.createTrack(validatedData);
+
+      // Update song duration based on longest track (mock implementation for now)
+      // In a real app, you'd analyze the actual audio file duration
+      const mockDuration = 180 + Math.floor(Math.random() * 120); // 3-5 minutes
+      const maxDuration = Math.max(song.duration, mockDuration);
+      await storage.updateSong(req.params.songId, { duration: maxDuration });
+
       res.status(201).json(track);
     } catch (error) {
       if (error instanceof Error) {

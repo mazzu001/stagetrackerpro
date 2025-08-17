@@ -1,6 +1,6 @@
 # Overview
 
-This is a live music performance application built with React, Express, and PostgreSQL. The system provides real-time audio mixing, MIDI event sequencing, and synchronized lyrics display for live performances. It features a comprehensive audio engine with multi-track playback, visual level monitoring, and transport controls for professional stage use.
+This is a live music performance application built with React, Express, and PostgreSQL. The system provides real-time audio mixing, MIDI event sequencing, and synchronized lyrics display for live performances. It features a comprehensive audio engine with multi-track playback (up to 6 tracks per song), visual level monitoring, transport controls, and automatic song duration detection from uploaded audio files for professional stage use.
 
 # User Preferences
 
@@ -31,11 +31,13 @@ Preferred communication style: Simple, everyday language.
 - **Schema Management**: Drizzle migrations for database versioning
 
 ## Core Features
-- **Multi-track Audio Engine**: Real-time audio mixing with individual track controls
+- **Multi-track Audio Engine**: Real-time audio mixing with individual track controls (up to 6 tracks per song)
+- **Track Management**: Upload and manage backing tracks with automatic song duration detection
 - **MIDI Integration**: Timed MIDI event sequencing embedded in lyrics
 - **Transport Controls**: Play, pause, stop, and seek functionality with keyboard shortcuts
 - **Live Monitoring**: Real-time audio level meters and system status indicators
 - **Lyrics Display**: Synchronized lyrics with auto-scrolling and MIDI command highlighting
+- **File Upload**: Support for MP3, WAV, OGG, and M4A audio formats with progress tracking
 
 ## Audio Processing Pipeline
 - **Track Loading**: Dynamic audio buffer management for multiple simultaneous tracks

@@ -23,7 +23,9 @@ export const tracks = pgTable("tracks", {
   volume: integer("volume").default(100), // 0-100
   isMuted: boolean("is_muted").default(false),
   isSolo: boolean("is_solo").default(false),
-});
+}, (table) => ({
+  uniqueTrackNumber: sql`UNIQUE (${table.songId}, ${table.trackNumber})`
+}));
 
 export const midiEvents = pgTable("midi_events", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),

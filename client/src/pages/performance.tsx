@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { queryClient } from "@/lib/queryClient";
 import TransportControls from "@/components/transport-controls";
 import AudioMixer from "@/components/audio-mixer";
 import LyricsDisplay from "@/components/lyrics-display";
 import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
+import TrackManager from "@/components/track-manager";
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Settings, Music } from "lucide-react";
@@ -101,6 +103,16 @@ export default function Performance() {
           onPause={pause}
           onStop={stop}
           onSeek={seek}
+        />
+
+        {/* Track Manager */}
+        <TrackManager
+          song={selectedSong}
+          onTrackUpdate={() => {
+            if (selectedSongId) {
+              queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
+            }
+          }}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

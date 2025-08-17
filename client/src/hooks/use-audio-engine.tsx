@@ -112,23 +112,68 @@ export function useAudioEngine(song?: SongWithTracks) {
     }
   }, []);
 
-  const updateTrackVolume = useCallback((trackId: string, volume: number) => {
+  const updateTrackVolume = useCallback(async (trackId: string, volume: number) => {
     if (audioEngineRef.current) {
       audioEngineRef.current.setTrackVolume(trackId, volume);
     }
-  }, []);
+    
+    // Update volume in database
+    if (song) {
+      try {
+        await fetch(`/api/tracks/${trackId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ volume })
+        });
+      } catch (error) {
+        console.error('Failed to update track volume in database:', error);
+      }
+    }
+  }, [song]);
 
-  const updateTrackMute = useCallback((trackId: string) => {
+  const updateTrackMute = useCallback(async (trackId: string) => {
     if (audioEngineRef.current) {
       audioEngineRef.current.toggleTrackMute(trackId);
     }
-  }, []);
+    
+    // Update mute state in database
+    if (song) {
+      const track = song.tracks.find(t => t.id === trackId);
+      if (track) {
+        try {
+          await fetch(`/api/tracks/${trackId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ isMuted: !track.isMuted })
+          });
+        } catch (error) {
+          console.error('Failed to update track mute state in database:', error);
+        }
+      }
+    }
+  }, [song]);
 
-  const updateTrackSolo = useCallback((trackId: string) => {
+  const updateTrackSolo = useCallback(async (trackId: string) => {
     if (audioEngineRef.current) {
       audioEngineRef.current.toggleTrackSolo(trackId);
     }
-  }, []);
+    
+    // Update solo state in database
+    if (song) {
+      const track = song.tracks.find(t => t.id === trackId);
+      if (track) {
+        try {
+          await fetch(`/api/tracks/${trackId}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ isSolo: !track.isSolo })
+          });
+        } catch (error) {
+          console.error('Failed to update track solo state in database:', error);
+        }
+      }
+    }
+  }, [song]);
 
   const updateMasterVolume = useCallback((volume: number) => {
     if (audioEngineRef.current) {

@@ -133,6 +133,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         trackNumber: parseInt(req.body.trackNumber) || (existingTracks.length + 1),
         audioUrl: req.body.audioUrl, // This is now a local file path
         volume: parseInt(req.body.volume) || 100,
+        balance: parseInt(req.body.balance) || 0,
         isMuted: req.body.isMuted === true,
         isSolo: req.body.isSolo === true
       };
@@ -161,6 +162,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const partialData = insertTrackSchema.partial().parse(req.body);
       const track = await storage.updateTrack(req.params.id, partialData);
+      if (!track) {
+        return res.status(404).json({ message: "Track not found" });
+      }
+      res.json(track);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: "Failed to update track" });
+      }
+    }
+  });
+
+  // Add specific route for updating tracks within songs
+  app.patch("/api/songs/:songId/tracks/:trackId", async (req, res) => {
+    try {
+      const partialData = insertTrackSchema.partial().parse(req.body);
+      const track = await storage.updateTrack(req.params.trackId, partialData);
       if (!track) {
         return res.status(404).json({ message: "Track not found" });
       }

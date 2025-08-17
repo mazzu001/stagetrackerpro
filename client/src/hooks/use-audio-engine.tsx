@@ -131,6 +131,25 @@ export function useAudioEngine(song?: SongWithTracks) {
     }
   }, [song]);
 
+  const updateTrackBalance = useCallback(async (trackId: string, balance: number) => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.setTrackBalance(trackId, balance);
+    }
+    
+    // Update balance in database
+    if (song) {
+      try {
+        await fetch(`/api/tracks/${trackId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ balance })
+        });
+      } catch (error) {
+        console.error('Failed to update track balance in database:', error);
+      }
+    }
+  }, [song]);
+
   const updateTrackMute = useCallback(async (trackId: string) => {
     if (audioEngineRef.current) {
       audioEngineRef.current.toggleTrackMute(trackId);
@@ -196,6 +215,7 @@ export function useAudioEngine(song?: SongWithTracks) {
     stop,
     seek,
     updateTrackVolume,
+    updateTrackBalance,
     updateTrackMute,
     updateTrackSolo,
     updateMasterVolume

@@ -153,6 +153,13 @@ export class AudioEngine {
     }
   }
 
+  setTrackBalance(trackId: string, balance: number): void {
+    const track = this.tracks.get(trackId);
+    if (track) {
+      track.setBalance(balance);
+    }
+  }
+
   toggleTrackMute(trackId: string): void {
     const track = this.tracks.get(trackId);
     if (track) {
@@ -214,6 +221,7 @@ class TrackController {
   private sourceNode: AudioBufferSourceNode | null = null;
   private gainNode: GainNode;
   private muteNode: GainNode;
+  private pannerNode: StereoPannerNode;
   public isSolo: boolean = false;
   private isMuted: boolean = false;
 
@@ -222,18 +230,21 @@ class TrackController {
     this.masterGain = masterGain;
     this.track = track;
     
-    // Create gain nodes for volume and mute control
+    // Create audio nodes for volume, mute, and balance control
     this.gainNode = audioContext.createGain();
     this.muteNode = audioContext.createGain();
+    this.pannerNode = audioContext.createStereoPanner();
     
     // Set initial values
     this.gainNode.gain.value = (track.volume || 100) / 100;
     this.muteNode.gain.value = track.isMuted ? 0 : 1;
+    this.pannerNode.pan.value = ((track as any).balance || 0) / 50; // Convert -50/+50 to -1/+1
     this.isMuted = track.isMuted || false;
     this.isSolo = track.isSolo || false;
     
-    // Connect nodes
-    this.gainNode.connect(this.muteNode);
+    // Connect nodes: source -> gain -> panner -> mute -> master
+    this.gainNode.connect(this.pannerNode);
+    this.pannerNode.connect(this.muteNode);
     this.muteNode.connect(this.masterGain);
   }
 
@@ -312,6 +323,16 @@ class TrackController {
       this.gainNode.gain.setTargetAtTime(volume / 100, this.audioContext.currentTime, 0.01);
     } else {
       this.gainNode.gain.value = volume / 100;
+    }
+  }
+
+  setBalance(balance: number): void {
+    // Convert balance from -50/+50 range to -1/+1 for StereoPannerNode
+    const panValue = Math.max(-1, Math.min(1, balance / 50));
+    if (this.pannerNode.pan.setTargetAtTime) {
+      this.pannerNode.pan.setTargetAtTime(panValue, this.audioContext.currentTime, 0.01);
+    } else {
+      this.pannerNode.pan.value = panValue;
     }
   }
 

@@ -48,6 +48,7 @@ export default function Performance() {
     stop,
     seek,
     updateTrackVolume,
+    updateTrackBalance,
     updateTrackMute,
     updateTrackSolo,
     updateMasterVolume,
@@ -169,25 +170,7 @@ export default function Performance() {
                       onTrackVolumeChange={updateTrackVolume}
                       onTrackMuteToggle={updateTrackMute}
                       onTrackSoloToggle={updateTrackSolo}
-                      onTrackBalanceChange={async (trackId: string, balance: number) => {
-                        console.log(`Track ${trackId} balance changed to ${balance}`);
-                        // Update track balance in database
-                        try {
-                          await apiRequest('PATCH', `/api/songs/${selectedSongId}/tracks/${trackId}`, {
-                            balance: balance
-                          });
-                          // Refresh track data
-                          queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId, 'tracks'] });
-                          queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
-                        } catch (error) {
-                          console.error('Failed to update track balance:', error);
-                          toast({
-                            title: "Error",
-                            description: "Failed to update track balance",
-                            variant: "destructive",
-                          });
-                        }
-                      }}
+                      onTrackBalanceChange={updateTrackBalance}
                       audioLevels={audioLevels}
                       isPlaying={isPlaying}
                       onPlay={play}

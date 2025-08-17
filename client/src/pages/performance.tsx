@@ -144,16 +144,6 @@ export default function Performance() {
               <span className="text-secondary">{latency.toFixed(1)}ms</span>
             </div>
             <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="bg-surface hover:bg-gray-700 border-gray-600"
-                  data-testid="button-track-manager"
-                >
-                  <Menu className="w-4 h-4" />
-                </Button>
-              </DialogTrigger>
               <DialogContent className="max-w-[85vw] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>Track Management</DialogTitle>
@@ -288,9 +278,17 @@ export default function Performance() {
               >
                 <div className="flex items-center justify-between">
                   <div className="font-medium">{song.title}</div>
-                  <div className="text-xs bg-gray-700 px-2 py-1 rounded">
+                  <button
+                    className="text-xs bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedSongId(song.id);
+                      setIsTrackManagerOpen(true);
+                    }}
+                    data-testid={`button-tracks-${song.id}`}
+                  >
                     {song.tracks ? song.tracks.length : 0} tracks
-                  </div>
+                  </button>
                 </div>
                 <div className="text-sm text-gray-400">{song.artist}</div>
                 <div className="text-xs text-gray-500 mt-1">

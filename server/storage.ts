@@ -111,6 +111,7 @@ export class MemStorage implements IStorage {
       volume: insertTrack.volume || 100,
       isMuted: insertTrack.isMuted || false,
       isSolo: insertTrack.isSolo || false,
+      localFileName: insertTrack.localFileName || null,
       id 
     };
     this.tracks.set(id, track);

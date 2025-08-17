@@ -19,6 +19,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
   const [audioFilePath, setAudioFilePath] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [estimatedDuration, setEstimatedDuration] = useState(0);
 
   const { toast } = useToast();
@@ -40,6 +41,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
       setIsAddDialogOpen(false);
       setTrackName("");
       setAudioFilePath("");
+      setSelectedFile(null);
       setEstimatedDuration(0);
       onTrackUpdate?.();
       toast({
@@ -112,7 +114,8 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
           return;
         }
 
-        // For local file reference, we'll store the file name and path
+        // Store the actual file object and display name
+        setSelectedFile(file);
         setAudioFilePath(file.name); // Use file name for display
         setTrackName(file.name.replace(/\.[^/.]+$/, "")); // Remove file extension
         
@@ -142,7 +145,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
   };
 
   const handleAddTrack = () => {
-    if (!audioFilePath || !song) {
+    if (!selectedFile || !song) {
       toast({
         title: "Validation Error",
         description: "Please select an audio file",
@@ -169,10 +172,14 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
       return;
     }
 
+    // Create object URL for the file that can be used by the audio engine
+    const objectUrl = URL.createObjectURL(selectedFile);
+    
     const trackData = {
       name: trackName,
       trackNumber: tracks.length + 1,
-      audioUrl: audioFilePath,
+      audioUrl: objectUrl, // Use object URL instead of file path
+      localFileName: selectedFile.name, // Store original filename for display
       duration: estimatedDuration,
       volume: 100,
       isMuted: false,
@@ -298,6 +305,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                     setIsAddDialogOpen(false);
                     setTrackName("");
                     setAudioFilePath("");
+                    setSelectedFile(null);
                     setEstimatedDuration(0);
                   }}
                   disabled={addTrackMutation.isPending}
@@ -307,7 +315,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                 </Button>
                 <Button 
                   onClick={handleAddTrack}
-                  disabled={addTrackMutation.isPending || !audioFilePath}
+                  disabled={addTrackMutation.isPending || !selectedFile}
                   data-testid="button-add-track"
                 >
                   {addTrackMutation.isPending ? "Adding..." : "Add Track"}
@@ -347,7 +355,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                         {track.isSolo && <span className="text-secondary">SOLO</span>}
                       </div>
                       <div className="text-xs text-gray-500 font-mono mt-1 truncate">
-                        {track.audioUrl}
+                        {(track as any).localFileName || track.audioUrl}
                       </div>
                     </div>
                   </div>

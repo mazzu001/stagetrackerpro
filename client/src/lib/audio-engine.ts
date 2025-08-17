@@ -207,15 +207,23 @@ class TrackController {
 
   async load(): Promise<void> {
     try {
-      // In a real implementation, this would load from the actual audio file
-      // For now, we'll create a mock audio buffer or handle the case gracefully
       console.log(`Loading track: ${this.track.name} from ${this.track.audioUrl}`);
       
-      // Create a silent buffer as fallback for development
-      this.audioBuffer = this.audioContext.createBuffer(2, this.audioContext.sampleRate * 300, this.audioContext.sampleRate);
+      // Check if audioUrl is a blob URL (object URL created from File)
+      if (this.track.audioUrl.startsWith('blob:')) {
+        // Fetch and decode the actual audio file
+        const response = await fetch(this.track.audioUrl);
+        const arrayBuffer = await response.arrayBuffer();
+        this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      } else {
+        // For legacy tracks or if no blob URL, create a silent buffer
+        console.warn(`Track ${this.track.name} has no valid audio source, creating silent buffer`);
+        this.audioBuffer = this.audioContext.createBuffer(2, this.audioContext.sampleRate * 300, this.audioContext.sampleRate);
+      }
     } catch (error) {
       console.error(`Failed to load audio for track ${this.track.name}:`, error);
-      throw error;
+      // Create silent buffer as fallback
+      this.audioBuffer = this.audioContext.createBuffer(2, this.audioContext.sampleRate * 10, this.audioContext.sampleRate);
     }
   }
 

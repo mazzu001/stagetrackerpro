@@ -20,6 +20,7 @@ export const tracks = pgTable("tracks", {
   name: text("name").notNull(),
   trackNumber: integer("track_number").notNull(),
   audioUrl: text("audio_url").notNull(),
+  localFileName: text("local_file_name"), // Store original filename for display
   volume: integer("volume").default(100), // 0-100
   isMuted: boolean("is_muted").default(false),
   isSolo: boolean("is_solo").default(false),

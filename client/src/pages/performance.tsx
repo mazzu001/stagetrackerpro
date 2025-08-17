@@ -155,6 +155,7 @@ export default function Performance() {
                       onTrackUpdate={() => {
                         if (selectedSongId) {
                           queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
+                          queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
                         }
                       }}
                       onTrackVolumeChange={updateTrackVolume}

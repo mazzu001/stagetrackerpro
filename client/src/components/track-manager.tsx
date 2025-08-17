@@ -627,7 +627,7 @@ export default function TrackManager({
                       value={[localTrackValues[track.id]?.volume ?? (track.volume || 100)]}
                       max={100}
                       step={1}
-                      disabled={track.isMuted}
+                      disabled={!!track.isMuted}
                       onValueChange={([value]) => debouncedVolumeUpdate(track.id, value)}
                       className={`w-full ${track.isMuted ? 'opacity-50' : ''}`}
                       data-testid={`slider-volume-${track.trackNumber}`}
@@ -650,7 +650,7 @@ export default function TrackManager({
                       min={-50}
                       max={50}
                       step={1}
-                      disabled={track.isMuted}
+                      disabled={!!track.isMuted}
                       onValueChange={([value]) => debouncedBalanceUpdate(track.id, value)}
                       className={`w-full ${track.isMuted ? 'opacity-50' : ''}`}
                       data-testid={`slider-balance-${track.trackNumber}`}

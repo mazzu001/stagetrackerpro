@@ -39,26 +39,37 @@ export class AudioEngine {
     
     this.currentSong = song;
 
+    console.log(`Loading song "${song.title}" with ${song.tracks.length} tracks`);
+
     // Load each track
-    for (const track of song.tracks) {
+    const loadPromises = song.tracks.map(async (track) => {
       try {
+        console.log(`Starting load for track: ${track.name} (${track.id})`);
         const trackController = new TrackController(
-          this.audioContext,
-          this.masterGainNode,
+          this.audioContext!,
+          this.masterGainNode!,
           track
         );
         await trackController.load();
         this.tracks.set(track.id, trackController);
 
         // Create analyzer for audio level monitoring
-        const analyzer = this.audioContext.createAnalyser();
+        const analyzer = this.audioContext!.createAnalyser();
         analyzer.fftSize = 256;
         trackController.connect(analyzer);
         this.analyzerNodes.set(track.id, analyzer);
+        
+        console.log(`Successfully loaded track: ${track.name}`);
       } catch (error) {
         console.error(`Failed to load track ${track.name}:`, error);
+        // Don't add failed tracks to the collection
       }
-    }
+    });
+
+    // Wait for all tracks to load
+    await Promise.allSettled(loadPromises);
+    
+    console.log(`Loaded ${this.tracks.size} out of ${song.tracks.length} tracks successfully`);
   }
 
   play(): void {
@@ -72,8 +83,21 @@ export class AudioEngine {
     this.isPlaying = true;
     this.startTime = this.audioContext.currentTime - this.pausedTime;
 
+    console.log(`Starting playback: ${this.tracks.size} tracks loaded, starting at ${this.pausedTime}s`);
+
     // Start all tracks simultaneously
-    this.tracks.forEach(track => track.play(this.pausedTime));
+    let playingTracks = 0;
+    this.tracks.forEach((track, trackId) => {
+      try {
+        track.play(this.pausedTime);
+        playingTracks++;
+        console.log(`Started track: ${trackId}`);
+      } catch (error) {
+        console.error(`Failed to start track ${trackId}:`, error);
+      }
+    });
+    
+    console.log(`Successfully started ${playingTracks} out of ${this.tracks.size} tracks`);
   }
 
   pause(): void {
@@ -217,21 +241,34 @@ class TrackController {
     try {
       console.log(`Loading track: ${this.track.name} from ${this.track.audioUrl}`);
       
-      // Check if audioUrl is a blob URL (object URL created from File)
+      // Check if audioUrl exists and is a blob URL
+      if (!this.track.audioUrl) {
+        throw new Error(`Track ${this.track.name} has no audio URL`);
+      }
+      
       if (this.track.audioUrl.startsWith('blob:')) {
         // Fetch and decode the actual audio file
         const response = await fetch(this.track.audioUrl);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch audio: ${response.status} ${response.statusText}`);
+        }
+        
         const arrayBuffer = await response.arrayBuffer();
+        
+        if (arrayBuffer.byteLength === 0) {
+          throw new Error(`Empty audio file for track ${this.track.name}`);
+        }
+        
+        console.log(`Decoding audio data for ${this.track.name}, size: ${arrayBuffer.byteLength} bytes`);
         this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+        console.log(`Successfully decoded ${this.track.name}: ${this.audioBuffer.duration.toFixed(2)}s, ${this.audioBuffer.numberOfChannels} channels`);
       } else {
-        // For legacy tracks or if no blob URL, create a silent buffer
-        console.warn(`Track ${this.track.name} has no valid audio source, creating silent buffer`);
-        this.audioBuffer = this.audioContext.createBuffer(2, this.audioContext.sampleRate * 300, this.audioContext.sampleRate);
+        throw new Error(`Track ${this.track.name} has invalid audio URL: ${this.track.audioUrl}`);
       }
     } catch (error) {
       console.error(`Failed to load audio for track ${this.track.name}:`, error);
-      // Create silent buffer as fallback
-      this.audioBuffer = this.audioContext.createBuffer(2, this.audioContext.sampleRate * 10, this.audioContext.sampleRate);
+      throw error; // Re-throw to prevent adding failed tracks
     }
   }
 

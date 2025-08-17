@@ -80,11 +80,15 @@ export default function Performance() {
 
   // Mutation for adding new songs
   const addSongMutation = useMutation({
-    mutationFn: (songData: { title: string; artist: string; duration: number }) =>
-      apiRequest('/api/songs', {
+    mutationFn: async (songData: { title: string; artist: string; duration: number }) => {
+      const response = await fetch('/api/songs', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(songData)
-      }),
+      });
+      if (!response.ok) throw new Error('Failed to create song');
+      return response.json();
+    },
     onSuccess: (newSong) => {
       queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
       setSelectedSongId(newSong.id);

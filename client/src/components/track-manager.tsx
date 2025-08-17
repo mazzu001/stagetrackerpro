@@ -80,71 +80,65 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
     }
   });
 
-  const handleFileSelect = async () => {
-    try {
-      // Check if the File System Access API is available
-      if ('showOpenFilePicker' in window) {
-        const fileHandles = await (window as any).showOpenFilePicker({
-          types: [{
-            description: 'Audio files',
-            accept: {
-              'audio/*': ['.mp3', '.wav', '.ogg', '.m4a']
-            }
-          }],
-          multiple: false
-        });
+  const handleFileSelect = () => {
+    // Use traditional file input for reliable file selection
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'audio/*,.mp3,.wav,.ogg,.m4a';
+    
+    input.onchange = (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        // Validate file type
+        const allowedTypes = ['audio/mp3', 'audio/wav', 'audio/ogg', 'audio/m4a', 'audio/mpeg', 'audio/x-m4a'];
+        const isValidType = allowedTypes.includes(file.type) || file.name.match(/\.(mp3|wav|ogg|m4a)$/i);
         
-        if (fileHandles && fileHandles[0]) {
-          const file = await fileHandles[0].getFile();
-          setAudioFilePath(file.name); // Use file name for display
-          setTrackName(file.name.replace(/\.[^/.]+$/, "")); // Remove file extension
-          
-          // Try to get duration from the audio file
-          const audioUrl = URL.createObjectURL(file);
-          const audio = new Audio(audioUrl);
-          
-          audio.onloadedmetadata = () => {
-            setEstimatedDuration(Math.round(audio.duration));
-            URL.revokeObjectURL(audioUrl);
-          };
-          
-          audio.onerror = () => {
-            // Fallback to estimated duration
-            setEstimatedDuration(180 + Math.floor(Math.random() * 120));
-            URL.revokeObjectURL(audioUrl);
-          };
+        if (!isValidType) {
+          toast({
+            title: "Invalid file type",
+            description: "Please select an audio file (MP3, WAV, OGG, or M4A)",
+            variant: "destructive"
+          });
+          return;
         }
-      } else {
-        // Fallback: use traditional file input or manual path entry
-        const path = prompt("Enter the full path to your audio file (e.g., /Users/you/Music/track.mp3):");
-        if (path) {
-          // Validate file extension
-          if (!path.match(/\.(mp3|wav|ogg|m4a)$/i)) {
-            toast({
-              title: "Invalid file type",
-              description: "Please select an audio file (MP3, WAV, OGG, or M4A)",
-              variant: "destructive"
-            });
-            return;
-          }
 
-          setAudioFilePath(path);
-          const fileName = path.split('/').pop() || path;
-          setTrackName(fileName.replace(/\.[^/.]+$/, "")); // Remove file extension
-          
-          // Estimate duration since we can't read the file directly
-          setEstimatedDuration(180 + Math.floor(Math.random() * 120)); // 3-5 minutes
+        // Validate file size (50MB limit)
+        if (file.size > 50 * 1024 * 1024) {
+          toast({
+            title: "File too large",
+            description: "Please select a file smaller than 50MB",
+            variant: "destructive"
+          });
+          return;
         }
+
+        // For local file reference, we'll store the file name and path
+        setAudioFilePath(file.name); // Use file name for display
+        setTrackName(file.name.replace(/\.[^/.]+$/, "")); // Remove file extension
+        
+        // Try to get duration from the audio file
+        const audioUrl = URL.createObjectURL(file);
+        const audio = new Audio(audioUrl);
+        
+        audio.onloadedmetadata = () => {
+          setEstimatedDuration(Math.round(audio.duration));
+          URL.revokeObjectURL(audioUrl);
+        };
+        
+        audio.onerror = () => {
+          // Fallback to estimated duration
+          setEstimatedDuration(180 + Math.floor(Math.random() * 120));
+          URL.revokeObjectURL(audioUrl);
+          toast({
+            title: "Duration detection failed",
+            description: "Using estimated duration. You can adjust it manually.",
+            variant: "default"
+          });
+        };
       }
-    } catch (error) {
-      if (error instanceof Error && error.name !== 'AbortError') {
-        toast({
-          title: "File selection failed",
-          description: "Could not select file. Please try again.",
-          variant: "destructive"
-        });
-      }
-    }
+    };
+    
+    input.click();
   };
 
   const handleAddTrack = () => {
@@ -250,7 +244,7 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                     data-testid="button-select-file"
                   >
                     <FolderOpen className="w-4 h-4 mr-2" />
-                    {audioFilePath ? "Change file" : "Browse for audio file"}
+                    {audioFilePath ? "Change file" : "Select audio file"}
                   </Button>
                   {audioFilePath && (
                     <div className="bg-gray-800 p-3 rounded border border-gray-600">
@@ -260,9 +254,12 @@ export default function TrackManager({ song, onTrackUpdate }: TrackManagerProps)
                       </div>
                       {estimatedDuration > 0 && (
                         <div className="text-xs text-gray-400 mt-1">
-                          Estimated duration: {formatDuration(estimatedDuration)}
+                          Duration: {formatDuration(estimatedDuration)}
                         </div>
                       )}
+                      <div className="text-xs text-gray-500 mt-1">
+                        File will be referenced locally on your system
+                      </div>
                     </div>
                   )}
                 </div>

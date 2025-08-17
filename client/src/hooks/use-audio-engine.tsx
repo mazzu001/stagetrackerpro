@@ -85,15 +85,23 @@ export function useAudioEngine(song?: SongWithTracks) {
 
   const play = useCallback(async () => {
     if (audioEngineRef.current && song) {
-      // Wait a bit for all tracks to be ready if song was just loaded
-      const loadedCount = audioEngineRef.current.getLoadedTrackCount();
-      if (loadedCount < song.tracks.length) {
+      // Wait for all tracks to be ready if song was just loaded
+      let loadedCount = audioEngineRef.current.getLoadedTrackCount();
+      let attempts = 0;
+      const maxAttempts = 20; // Max 10 seconds (20 * 500ms)
+      
+      while (loadedCount < song.tracks.length && attempts < maxAttempts) {
         console.log(`Waiting for all tracks to load (${loadedCount}/${song.tracks.length})...`);
-        // Give tracks a moment to finish loading
         await new Promise(resolve => setTimeout(resolve, 500));
+        loadedCount = audioEngineRef.current.getLoadedTrackCount();
+        attempts++;
       }
       
-      audioEngineRef.current.play();
+      if (loadedCount < song.tracks.length) {
+        console.warn(`Timeout waiting for tracks to load. Playing with ${loadedCount}/${song.tracks.length} tracks.`);
+      }
+      
+      await audioEngineRef.current.play();
       setIsPlaying(true);
     }
   }, [song]);
@@ -113,9 +121,9 @@ export function useAudioEngine(song?: SongWithTracks) {
     }
   }, []);
 
-  const seek = useCallback((time: number) => {
+  const seek = useCallback(async (time: number) => {
     if (audioEngineRef.current) {
-      audioEngineRef.current.seek(time);
+      await audioEngineRef.current.seek(time);
       setCurrentTime(time);
     }
   }, []);

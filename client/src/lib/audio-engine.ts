@@ -73,7 +73,7 @@ export class AudioEngine {
     console.log(`Loaded ${this.tracks.size} out of ${song.tracks.length} tracks successfully`);
   }
 
-  play(): void {
+  async play(): Promise<void> {
     if (!this.audioContext || !this.currentSong) return;
 
     // Don't start playback if no tracks are loaded
@@ -82,9 +82,11 @@ export class AudioEngine {
       return;
     }
 
-    // Resume audio context if suspended
+    // Resume audio context if suspended and wait for it
     if (this.audioContext.state === 'suspended') {
-      this.audioContext.resume();
+      console.log('Audio context suspended, resuming...');
+      await this.audioContext.resume();
+      console.log('Audio context resumed, state:', this.audioContext.state);
     }
 
     this.isPlaying = true;
@@ -126,7 +128,7 @@ export class AudioEngine {
     this.tracks.forEach(track => track.stop());
   }
 
-  seek(time: number): void {
+  async seek(time: number): Promise<void> {
     if (!this.audioContext) return;
 
     const wasPlaying = this.isPlaying;
@@ -134,7 +136,7 @@ export class AudioEngine {
     this.pausedTime = time;
     
     if (wasPlaying) {
-      this.play();
+      await this.play();
     }
   }
 

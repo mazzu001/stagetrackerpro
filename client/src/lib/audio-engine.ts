@@ -64,10 +64,16 @@ export class AudioEngine {
   play(): void {
     if (!this.audioContext || !this.currentSong) return;
 
+    // Resume audio context if suspended
+    if (this.audioContext.state === 'suspended') {
+      this.audioContext.resume();
+    }
+
     this.isPlaying = true;
     this.startTime = this.audioContext.currentTime - this.pausedTime;
 
-    this.tracks.forEach(track => track.play(this.startTime));
+    // Start all tracks simultaneously
+    this.tracks.forEach(track => track.play(this.pausedTime));
   }
 
   pause(): void {
@@ -92,9 +98,11 @@ export class AudioEngine {
   seek(time: number): void {
     if (!this.audioContext) return;
 
+    const wasPlaying = this.isPlaying;
+    this.stop();
     this.pausedTime = time;
-    if (this.isPlaying) {
-      this.stop();
+    
+    if (wasPlaying) {
       this.play();
     }
   }
@@ -227,12 +235,13 @@ class TrackController {
     }
   }
 
-  play(startTime: number): void {
+  play(offset: number = 0): void {
     if (!this.audioBuffer) return;
 
     // Stop any existing source
     if (this.sourceNode) {
       this.sourceNode.stop();
+      this.sourceNode.disconnect();
     }
 
     // Create new source node
@@ -240,13 +249,18 @@ class TrackController {
     this.sourceNode.buffer = this.audioBuffer;
     this.sourceNode.connect(this.gainNode);
     
-    // Start playback
-    this.sourceNode.start(0);
+    // Start playback from the current position
+    try {
+      this.sourceNode.start(0, offset);
+    } catch (error) {
+      console.warn(`Failed to start track ${this.track.name}:`, error);
+    }
   }
 
   pause(): void {
     if (this.sourceNode) {
       this.sourceNode.stop();
+      this.sourceNode.disconnect();
       this.sourceNode = null;
     }
   }
@@ -256,12 +270,22 @@ class TrackController {
   }
 
   setVolume(volume: number): void {
-    this.gainNode.gain.value = volume / 100;
+    // Smooth volume changes to avoid audio clicks
+    if (this.gainNode.gain.setTargetAtTime) {
+      this.gainNode.gain.setTargetAtTime(volume / 100, this.audioContext.currentTime, 0.01);
+    } else {
+      this.gainNode.gain.value = volume / 100;
+    }
   }
 
   toggleMute(): void {
     this.isMuted = !this.isMuted;
-    this.muteNode.gain.value = this.isMuted ? 0 : 1;
+    // Smooth mute/unmute to avoid audio clicks
+    if (this.muteNode.gain.setTargetAtTime) {
+      this.muteNode.gain.setTargetAtTime(this.isMuted ? 0 : 1, this.audioContext.currentTime, 0.01);
+    } else {
+      this.muteNode.gain.value = this.isMuted ? 0 : 1;
+    }
   }
 
   toggleSolo(): void {
@@ -269,10 +293,13 @@ class TrackController {
   }
 
   updateSoloState(anyTrackSolo: boolean): void {
-    if (anyTrackSolo && !this.isSolo) {
-      this.muteNode.gain.value = 0;
-    } else if (!anyTrackSolo || this.isSolo) {
-      this.muteNode.gain.value = this.isMuted ? 0 : 1;
+    const targetGain = (anyTrackSolo && !this.isSolo) ? 0 : (this.isMuted ? 0 : 1);
+    
+    // Smooth solo state changes
+    if (this.muteNode.gain.setTargetAtTime) {
+      this.muteNode.gain.setTargetAtTime(targetGain, this.audioContext.currentTime, 0.01);
+    } else {
+      this.muteNode.gain.value = targetGain;
     }
   }
 

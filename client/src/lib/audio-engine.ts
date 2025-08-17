@@ -76,6 +76,12 @@ export class AudioEngine {
   play(): void {
     if (!this.audioContext || !this.currentSong) return;
 
+    // Don't start playback if no tracks are loaded
+    if (this.tracks.size === 0) {
+      console.warn('No tracks loaded, cannot start playback');
+      return;
+    }
+
     // Resume audio context if suspended
     if (this.audioContext.state === 'suspended') {
       this.audioContext.resume();
@@ -182,21 +188,32 @@ export class AudioEngine {
     }
   }
 
+  getLoadedTrackCount(): number {
+    return this.tracks.size;
+  }
+
   getAudioLevels(): Record<string, number> {
     const levels: Record<string, number> = {};
     
     this.analyzerNodes.forEach((analyzer, trackId) => {
+      const track = this.tracks.get(trackId);
+      if (!track || !this.isPlaying) {
+        levels[trackId] = 0;
+        return;
+      }
+
       const bufferLength = analyzer.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
-      analyzer.getByteFrequencyData(dataArray);
+      analyzer.getByteTimeDomainData(dataArray); // Use time domain for better level detection
       
-      // Calculate RMS level
+      // Calculate RMS level from time domain data
       let sum = 0;
       for (let i = 0; i < bufferLength; i++) {
-        sum += dataArray[i] * dataArray[i];
+        const normalized = (dataArray[i] - 128) / 128; // Convert to -1 to 1 range
+        sum += normalized * normalized;
       }
       const rms = Math.sqrt(sum / bufferLength);
-      levels[trackId] = Math.min(100, (rms / 255) * 100 * 1.5); // Scale and limit
+      levels[trackId] = Math.min(100, rms * 100 * 3); // Scale and limit for better visibility
     });
     
     return levels;
@@ -367,7 +384,7 @@ class TrackController {
   }
 
   connectAnalyzer(analyzerNode: AnalyserNode): void {
-    // Connect the mute node (final output) to the analyzer for level monitoring
-    this.muteNode.connect(analyzerNode);
+    // Connect after the panner but before mute for accurate level monitoring
+    this.pannerNode.connect(analyzerNode);
   }
 }

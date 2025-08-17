@@ -83,8 +83,16 @@ export function useAudioEngine(song?: SongWithTracks) {
     };
   }, [updateAudioData]);
 
-  const play = useCallback(() => {
+  const play = useCallback(async () => {
     if (audioEngineRef.current && song) {
+      // Wait a bit for all tracks to be ready if song was just loaded
+      const loadedCount = audioEngineRef.current.getLoadedTrackCount();
+      if (loadedCount < song.tracks.length) {
+        console.log(`Waiting for all tracks to load (${loadedCount}/${song.tracks.length})...`);
+        // Give tracks a moment to finish loading
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
       audioEngineRef.current.play();
       setIsPlaying(true);
     }

@@ -50,38 +50,40 @@ export function useAudioEngine(song?: SongWithTracks) {
     }
   }, [song]);
 
-  // Update audio levels and current time
-  const updateAudioData = useCallback(() => {
-    if (audioEngineRef.current && song) {
-      const levels = audioEngineRef.current.getAudioLevels();
-      setAudioLevels(levels);
-      
-      if (isPlaying) {
-        const time = audioEngineRef.current.getCurrentTime();
-        setCurrentTime(time);
-        
-        // Simulate CPU usage fluctuation
-        setCpuUsage(20 + Math.random() * 10);
-        
-        // Auto-stop at end
-        if (time >= duration) {
-          setIsPlaying(false);
-          setCurrentTime(duration);
-        }
-      }
-    }
-    
-    animationFrameRef.current = requestAnimationFrame(updateAudioData);
-  }, [isPlaying, duration, song]);
+  // Animation loop for real-time updates
 
   useEffect(() => {
-    animationFrameRef.current = requestAnimationFrame(updateAudioData);
+    const animate = () => {
+      if (audioEngineRef.current && song) {
+        const levels = audioEngineRef.current.getAudioLevels();
+        setAudioLevels(levels);
+        
+        if (isPlaying) {
+          const time = audioEngineRef.current.getCurrentTime();
+          setCurrentTime(time);
+          
+          // Simulate CPU usage fluctuation
+          setCpuUsage(20 + Math.random() * 10);
+          
+          // Auto-stop at end
+          if (time >= duration) {
+            setIsPlaying(false);
+            setCurrentTime(duration);
+          }
+        }
+      }
+      
+      animationFrameRef.current = requestAnimationFrame(animate);
+    };
+
+    animationFrameRef.current = requestAnimationFrame(animate);
+    
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [updateAudioData]);
+  }, [isPlaying, duration, song]);
 
   const play = useCallback(async () => {
     if (audioEngineRef.current && song) {

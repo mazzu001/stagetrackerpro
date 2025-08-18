@@ -41,6 +41,7 @@ Data persistence: Automatic saving to localStorage with blob URL management for 
 - **Lyrics Display**: Synchronized lyrics with auto-scrolling and MIDI command highlighting
 - **Local File Reference**: Support for MP3, WAV, OGG, and M4A audio formats using blob URLs (completely offline)
 - **Auto-Save System**: Automatic persistence to localStorage every 30 seconds and on data changes
+- **Lyrics Import**: Search and import lyrics from web sources using free Lyrics.ovh API
 
 ## Audio Processing Pipeline
 - **Track Loading**: Dynamic audio buffer management for multiple simultaneous tracks

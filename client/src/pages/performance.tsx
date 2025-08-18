@@ -30,6 +30,7 @@ export default function Performance() {
   const [songArtist, setSongArtist] = useState("");
   const [isEditLyricsOpen, setIsEditLyricsOpen] = useState(false);
   const [lyricsText, setLyricsText] = useState("");
+  const [isImportingLyrics, setIsImportingLyrics] = useState(false);
 
 
   const { toast } = useToast();
@@ -200,6 +201,43 @@ export default function Performance() {
           textarea.selectionEnd = nextNewlineIndex + 1;
         }
       }, 0);
+    }
+  };
+
+  const handleImportLyrics = async () => {
+    if (!selectedSong) return;
+    
+    setIsImportingLyrics(true);
+    try {
+      // Call search API to get lyrics
+      const response = await apiRequest('POST', '/api/lyrics/search', {
+        title: selectedSong.title,
+        artist: selectedSong.artist
+      });
+      
+      const result = await response.json();
+      
+      if (result.success && result.lyrics) {
+        setLyricsText(result.lyrics);
+        toast({
+          title: "Lyrics imported!",
+          description: `Found lyrics for "${selectedSong.title}" by ${selectedSong.artist}`
+        });
+      } else {
+        toast({
+          title: "No lyrics found",
+          description: result.message || "Unable to find lyrics for this song. You can enter them manually.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Import failed",
+        description: "Failed to search for lyrics. Please check your internet connection.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsImportingLyrics(false);
     }
   };
 
@@ -473,6 +511,16 @@ export default function Performance() {
                 >
                   <Clock className="w-4 h-4 mr-1" />
                   Insert Time Stamp
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleImportLyrics}
+                  disabled={isImportingLyrics || !selectedSong}
+                  data-testid="button-import-lyrics"
+                >
+                  <Music className="w-4 h-4 mr-1" />
+                  {isImportingLyrics ? 'Searching...' : 'Import Lyrics'}
                 </Button>
               </div>
               <div className="text-sm text-gray-400">

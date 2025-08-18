@@ -257,6 +257,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Lyrics search route
+  app.post("/api/lyrics/search", async (req, res) => {
+    try {
+      const { title, artist } = req.body;
+      
+      if (!title || !artist) {
+        return res.status(400).json({ 
+          success: false, 
+          error: "Both title and artist are required" 
+        });
+      }
+
+      // Clean up artist and title for better API results
+      const cleanArtist = encodeURIComponent(artist.trim());
+      const cleanTitle = encodeURIComponent(title.trim());
+      
+      // Use Lyrics.ovh API (free, no API key required)
+      const lyricsUrl = `https://api.lyrics.ovh/v1/${cleanArtist}/${cleanTitle}`;
+      
+      console.log(`Searching lyrics for "${title}" by ${artist}...`);
+      
+      const response = await fetch(lyricsUrl);
+      const data = await response.json();
+      
+      if (response.ok && data.lyrics) {
+        console.log(`Found lyrics for "${title}" by ${artist}`);
+        res.json({
+          success: true,
+          lyrics: data.lyrics.trim(),
+          source: "Lyrics.ovh"
+        });
+      } else {
+        console.log(`No lyrics found for "${title}" by ${artist}`);
+        res.json({
+          success: false,
+          error: "Lyrics not found",
+          message: `Could not find lyrics for "${title}" by ${artist}. Try checking the spelling or enter them manually.`
+        });
+      }
+      
+    } catch (error) {
+      console.error("Lyrics search error:", error);
+      res.status(500).json({ 
+        success: false, 
+        error: "Failed to search for lyrics",
+        message: "Network error occurred while searching for lyrics. Please check your internet connection."
+      });
+    }
+  });
+
   // Set up auto-save callback
   storage.setAutoSaveCallback(() => {
     console.log("Auto-save triggered");

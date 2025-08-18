@@ -42,10 +42,10 @@ export class StoragePersistence {
         this.fileDataMap.set(trackId, base64);
         console.log(`Successfully stored file data for track: ${trackId} (${Math.round(fileData.byteLength / 1024)}KB)`);
       } catch (error) {
-        console.warn('Failed to store file data for track:', trackId, error);
+        console.error('Failed to store file data for track:', trackId, error);
       }
     } else {
-      console.warn('No valid file data provided for track:', trackId);
+      console.error('No valid file data provided for track:', trackId, 'Type:', typeof fileData, 'Data:', fileData);
     }
   }
 

@@ -9,30 +9,42 @@ export interface ParsedLyricsLine {
 export function parseLyricsWithMidi(lyrics: string): ParsedLyricsLine[] {
   const lines = lyrics.split('\n');
   const parsed: ParsedLyricsLine[] = [];
+  let lineNumber = 0;
 
   for (const line of lines) {
     const trimmedLine = line.trim();
     if (!trimmedLine) continue;
 
+    lineNumber++;
+
     // Match timestamp pattern [mm:ss] or [hh:mm:ss]
     const timestampMatch = trimmedLine.match(/^\[(\d{1,2}):(\d{2})(?::(\d{2}))?\]/);
-    if (!timestampMatch) continue;
+    
+    if (timestampMatch) {
+      // Line has timestamp
+      const minutes = parseInt(timestampMatch[1]);
+      const seconds = parseInt(timestampMatch[2]);
+      const hours = timestampMatch[3] ? parseInt(timestampMatch[3]) : 0;
+      const timestamp = hours * 3600 + minutes * 60 + seconds;
 
-    const minutes = parseInt(timestampMatch[1]);
-    const seconds = parseInt(timestampMatch[2]);
-    const hours = timestampMatch[3] ? parseInt(timestampMatch[3]) : 0;
-    const timestamp = hours * 3600 + minutes * 60 + seconds;
+      const content = trimmedLine.substring(timestampMatch[0].length).trim();
 
-    const content = trimmedLine.substring(timestampMatch[0].length).trim();
+      // Check if this is a MIDI command
+      const isMidiCommand = content.includes('MIDI') || content.includes('<!--') || content.includes('Program Change') || content.includes('Control Change');
 
-    // Check if this is a MIDI command
-    const isMidiCommand = content.includes('MIDI') || content.includes('<!--') || content.includes('Program Change') || content.includes('Control Change');
-
-    parsed.push({
-      timestamp,
-      content: content || '',
-      type: isMidiCommand ? 'midi' : 'lyrics'
-    });
+      parsed.push({
+        timestamp,
+        content: content || '',
+        type: isMidiCommand ? 'midi' : 'lyrics'
+      });
+    } else {
+      // Line without timestamp - treat as plain lyrics with sequential timing
+      parsed.push({
+        timestamp: lineNumber * 5, // 5 seconds per line as default
+        content: trimmedLine,
+        type: 'lyrics'
+      });
+    }
   }
 
   return parsed.sort((a, b) => a.timestamp - b.timestamp);

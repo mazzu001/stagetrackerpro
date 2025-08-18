@@ -13,6 +13,7 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
+  
   const currentLineIndex = parsedLyrics.findIndex((line, index) => {
     const nextLine = parsedLyrics[index + 1];
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);

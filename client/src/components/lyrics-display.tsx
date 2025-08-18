@@ -69,7 +69,7 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
         }
       }
     }
-  }, [currentTime, song, parsedLyrics.length, currentLineIndex, scrollStartTime]);
+  }, [currentTime, song, parsedLyrics.length, currentLineIndex]);
 
   if (!song) {
     return (

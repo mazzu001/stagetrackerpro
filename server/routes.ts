@@ -241,12 +241,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete("/api/songs/:id", async (req, res) => {
     try {
+      console.log('DELETE request received for song ID:', req.params.id);
       const success = await storage.deleteSong(req.params.id);
       if (!success) {
+        console.log('Song deletion failed - not found:', req.params.id);
         return res.status(404).json({ message: "Song not found" });
       }
+      console.log('Song deletion successful:', req.params.id);
       res.status(204).send();
     } catch (error) {
+      console.error('Error in DELETE /api/songs/:id:', error);
       res.status(500).json({ message: "Failed to delete song" });
     }
   });

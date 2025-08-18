@@ -8,6 +8,7 @@ import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
 import TrackManager from "@/components/track-manager";
 import StereoVUMeter from "@/components/stereo-vu-meter";
+import { WaveformVisualizer } from "@/components/waveform-visualizer";
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";

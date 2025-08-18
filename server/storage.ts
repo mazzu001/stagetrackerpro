@@ -29,11 +29,45 @@ export class MemStorage implements IStorage {
   private songs: Map<string, Song>;
   private tracks: Map<string, Track>;
   private midiEvents: Map<string, MidiEvent>;
+  private autoSaveCallback?: () => void;
 
   constructor() {
     this.songs = new Map();
     this.tracks = new Map();
     this.midiEvents = new Map();
+  }
+
+  setAutoSaveCallback(callback: () => void) {
+    this.autoSaveCallback = callback;
+  }
+
+  private triggerAutoSave() {
+    if (this.autoSaveCallback) {
+      // Debounce auto-save to avoid too frequent saves
+      setTimeout(() => {
+        this.autoSaveCallback?.();
+      }, 500);
+    }
+  }
+
+  // Method to get all data for persistence
+  getAllData() {
+    return {
+      songs: Array.from(this.songs.values()),
+      tracks: Array.from(this.tracks.values()),
+      midiEvents: Array.from(this.midiEvents.values())
+    };
+  }
+
+  // Method to load data from persistence
+  loadData(songs: Song[], tracks: Track[], midiEvents: MidiEvent[]) {
+    this.songs.clear();
+    this.tracks.clear();
+    this.midiEvents.clear();
+
+    songs.forEach(song => this.songs.set(song.id, song));
+    tracks.forEach(track => this.tracks.set(track.id, track));
+    midiEvents.forEach(event => this.midiEvents.set(event.id, event));
   }
 
   // Songs
@@ -68,6 +102,7 @@ export class MemStorage implements IStorage {
       createdAt: new Date().toISOString()
     };
     this.songs.set(id, song);
+    this.triggerAutoSave();
     return song;
   }
 
@@ -77,6 +112,7 @@ export class MemStorage implements IStorage {
     
     const updated = { ...existing, ...updateData };
     this.songs.set(id, updated);
+    this.triggerAutoSave();
     return updated;
   }
 
@@ -88,7 +124,9 @@ export class MemStorage implements IStorage {
     tracks.forEach(track => this.tracks.delete(track.id));
     midiEvents.forEach(event => this.midiEvents.delete(event.id));
     
-    return this.songs.delete(id);
+    const result = this.songs.delete(id);
+    this.triggerAutoSave();
+    return result;
   }
 
   async getSongWithTracks(id: string): Promise<SongWithTracks | undefined> {
@@ -128,6 +166,7 @@ export class MemStorage implements IStorage {
       id 
     };
     this.tracks.set(id, track);
+    this.triggerAutoSave();
     return track;
   }
 
@@ -137,11 +176,14 @@ export class MemStorage implements IStorage {
     
     const updated = { ...existing, ...updateData };
     this.tracks.set(id, updated);
+    this.triggerAutoSave();
     return updated;
   }
 
   async deleteTrack(id: string): Promise<boolean> {
-    return this.tracks.delete(id);
+    const result = this.tracks.delete(id);
+    this.triggerAutoSave();
+    return result;
   }
 
   // MIDI Events
@@ -166,6 +208,7 @@ export class MemStorage implements IStorage {
       id 
     };
     this.midiEvents.set(id, midiEvent);
+    this.triggerAutoSave();
     return midiEvent;
   }
 
@@ -175,11 +218,14 @@ export class MemStorage implements IStorage {
     
     const updated = { ...existing, ...updateData };
     this.midiEvents.set(id, updated);
+    this.triggerAutoSave();
     return updated;
   }
 
   async deleteMidiEvent(id: string): Promise<boolean> {
-    return this.midiEvents.delete(id);
+    const result = this.midiEvents.delete(id);
+    this.triggerAutoSave();
+    return result;
   }
 }
 

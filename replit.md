@@ -6,6 +6,7 @@ This is a live music performance application built with React, Express, and in-m
 
 Preferred communication style: Simple, everyday language.
 Architecture preference: Completely offline operation - no file uploads or internet dependency required.
+Data persistence: Automatic saving to localStorage with blob URL management for audio files.
 
 # System Architecture
 
@@ -39,6 +40,7 @@ Architecture preference: Completely offline operation - no file uploads or inter
 - **Live Monitoring**: Real-time audio level meters and system status indicators
 - **Lyrics Display**: Synchronized lyrics with auto-scrolling and MIDI command highlighting
 - **Local File Reference**: Support for MP3, WAV, OGG, and M4A audio formats using blob URLs (completely offline)
+- **Auto-Save System**: Automatic persistence to localStorage every 30 seconds and on data changes
 
 ## Audio Processing Pipeline
 - **Track Loading**: Dynamic audio buffer management for multiple simultaneous tracks

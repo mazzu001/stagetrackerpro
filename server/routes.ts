@@ -233,6 +233,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Persistence routes for auto-saving
+  app.post("/api/persistence/save", (req, res) => {
+    try {
+      const data = storage.getAllData();
+      res.json({ 
+        success: true, 
+        data,
+        timestamp: new Date().toISOString() 
+      });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to get data" });
+    }
+  });
+
+  app.post("/api/persistence/load", (req, res) => {
+    try {
+      const { songs, tracks, midiEvents } = req.body;
+      storage.loadData(songs || [], tracks || [], midiEvents || []);
+      res.json({ success: true, message: "Data loaded successfully" });
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Failed to load data" });
+    }
+  });
+
+  // Set up auto-save callback
+  storage.setAutoSaveCallback(() => {
+    console.log("Auto-save triggered");
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

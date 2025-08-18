@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
+import { persistence } from "@/lib/storage-persistence";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import VUMeter from "@/components/vu-meter";
@@ -325,7 +326,11 @@ export default function TrackManager({
 
         await new Promise((resolve, reject) => {
           addTrackMutation.mutate(trackData, {
-            onSuccess: resolve,
+            onSuccess: (createdTrack) => {
+              // Store blob URL for persistence
+              persistence.storeBlobUrl(createdTrack.id, objectUrl);
+              resolve(createdTrack);
+            },
             onError: reject
           });
         });

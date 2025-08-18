@@ -178,24 +178,39 @@ export default function Performance() {
   const deleteSongMutation = useMutation({
     mutationFn: async () => {
       if (!selectedSongId) throw new Error('No song selected');
+      console.log('Deleting song:', selectedSongId);
       const response = await apiRequest('DELETE', `/api/songs/${selectedSongId}`);
-      if (!response.ok) throw new Error('Failed to delete song');
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Failed to delete song: ${error}`);
+      }
+      console.log('Song deletion request successful');
       // DELETE returns 204 No Content, so no JSON to parse
       return;
     },
     onSuccess: () => {
+      console.log('Song deleted successfully, invalidating queries');
+      // Invalidate all relevant queries to refresh the UI
       queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+      queryClient.removeQueries({ queryKey: ['/api/songs', selectedSongId] });
+      
+      // Clear selected song and close dialog
       setSelectedSongId(null);
       setIsDeleteSongOpen(false);
+      
+      // Stop any playing audio
+      audioEngine.stop();
+      
       toast({
         title: "Song deleted",
-        description: "Song removed from app. Your local audio files are safe."
+        description: "Song and all audio files removed completely."
       });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Song deletion failed:', error);
       toast({
         title: "Error",
-        description: "Failed to delete song. Please try again.",
+        description: `Failed to delete song: ${error.message}`,
         variant: "destructive"
       });
     }

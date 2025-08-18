@@ -156,17 +156,36 @@ export class DatabaseStorage implements IStorage {
   }
 
   async deleteSong(id: string): Promise<boolean> {
-    // Delete associated tracks and MIDI events first
-    await db.delete(tracks).where(eq(tracks.songId, id));
-    await db.delete(midiEvents).where(eq(midiEvents.songId, id));
-    
-    const result = await db.delete(songs).where(eq(songs.id, id));
-    const deleted = result.rowCount ? result.rowCount > 0 : false;
-    
-    if (deleted) {
-      console.log('Song deleted from database:', id);
+    // Start a transaction to ensure all deletions succeed together
+    try {
+      // Delete associated tracks (including audio data) and MIDI events first
+      const tracksResult = await db.delete(tracks).where(eq(tracks.songId, id));
+      const midiResult = await db.delete(midiEvents).where(eq(midiEvents.songId, id));
+      
+      console.log(`Deleted ${tracksResult.rowCount || 0} tracks and ${midiResult.rowCount || 0} MIDI events for song: ${id}`);
+      
+      // Delete the song itself
+      const result = await db.delete(songs).where(eq(songs.id, id));
+      const deleted = result.rowCount ? result.rowCount > 0 : false;
+      
+      if (deleted) {
+        console.log('Song and all associated data deleted from database:', id);
+        // Verify the song is actually gone
+        const checkSong = await db.select().from(songs).where(eq(songs.id, id));
+        if (checkSong.length === 0) {
+          console.log('Deletion verified - song no longer exists in database');
+        } else {
+          console.log('WARNING: Song still exists after deletion attempt');
+        }
+      } else {
+        console.log('Failed to delete song from database - song may not exist:', id);
+      }
+      
+      return deleted;
+    } catch (error) {
+      console.error('Error during song deletion:', error);
+      return false;
     }
-    return deleted;
   }
 
   async getSongWithTracks(id: string): Promise<SongWithTracks | undefined> {

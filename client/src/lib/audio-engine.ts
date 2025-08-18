@@ -1,5 +1,5 @@
 import type { SongWithTracks, Track } from "@shared/schema";
-import { persistence } from "./storage-persistence";
+import { audioStorage } from "./audio-file-storage";
 
 export class AudioEngine {
   private audioContext: AudioContext | null = null;
@@ -347,57 +347,36 @@ class TrackController {
 
   async load(): Promise<void> {
     try {
-      console.log(`Loading track: ${this.track.name} from ${this.track.audioUrl}`);
-      
-      // Check if audioUrl exists and is a blob URL
-      if (!this.track.audioUrl) {
-        throw new Error(`Track ${this.track.name} has no audio URL`);
-      }
-      
-      if (!this.track.audioUrl.startsWith('blob:')) {
-        throw new Error(`Track ${this.track.name} must use blob URL for offline operation`);
-      }
-      
-      // Handle blob URLs (client-side files)
-      let audioUrl = this.track.audioUrl;
-      
-      // Check if we can restore the blob URL from stored file data first
-      const restoredUrl = persistence.getBlobUrl(this.track.id);
-      if (restoredUrl && restoredUrl !== this.track.audioUrl) {
-        console.log(`Using restored blob URL for ${this.track.name}`);
-        audioUrl = restoredUrl;
-      } else if (!restoredUrl) {
-        // No file data available, can't load this track
+      // Check if we have audio data stored
+      if (!audioStorage.hasAudioFile(this.track.id)) {
         console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
         throw new Error(`Audio file not available for ${this.track.name}. Please re-add the audio file.`);
       }
       
-      // Only fetch if we have a valid blob URL that's different from the original (i.e., restored)
-      if (restoredUrl && restoredUrl !== this.track.audioUrl) {
-        try {
-          const response = await fetch(audioUrl);
-          if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-          }
-          
-          const arrayBuffer = await response.arrayBuffer();
-          
-          if (arrayBuffer.byteLength === 0) {
-            throw new Error(`Empty audio file for track ${this.track.name}`);
-          }
-          
-          console.log(`Decoding audio data for ${this.track.name}, size: ${arrayBuffer.byteLength} bytes`);
-          this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-          console.log(`Successfully decoded ${this.track.name}: ${this.audioBuffer.duration.toFixed(2)}s, ${this.audioBuffer.numberOfChannels} channels`);
-        } catch (error) {
-          console.warn(`Failed to fetch audio for track ${this.track.name}. Please re-add the audio file.`);
-          throw new Error(`Audio file not available for ${this.track.name}. Please re-add the audio file.`);
-        }
-      } else {
-        // Original blob URL is expired and no restoration possible
+      // Get audio URL from storage system
+      const audioUrl = audioStorage.getAudioUrl(this.track.id);
+      if (!audioUrl) {
         console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
         throw new Error(`Audio file not available for ${this.track.name}. Please re-add the audio file.`);
       }
+      
+      console.log(`Loading track: ${this.track.name} from stored audio data`);
+      
+      // Fetch and decode the audio
+      const response = await fetch(audioUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      const arrayBuffer = await response.arrayBuffer();
+      
+      if (arrayBuffer.byteLength === 0) {
+        throw new Error(`Empty audio file for track ${this.track.name}`);
+      }
+      
+      console.log(`Decoding audio data for ${this.track.name}, size: ${arrayBuffer.byteLength} bytes`);
+      this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      console.log(`Successfully decoded ${this.track.name}: ${this.audioBuffer.duration.toFixed(2)}s, ${this.audioBuffer.numberOfChannels} channels`);
     } catch (error) {
       console.error(`Failed to load audio for track ${this.track.name}:`, error);
       throw error; // Re-throw to prevent adding failed tracks

@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { persistence } from "@/lib/storage-persistence";
+import { audioStorage } from "@/lib/audio-file-storage";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import VUMeter from "@/components/vu-meter";
@@ -313,11 +313,11 @@ export default function TrackManager({
           }
         }
         
-        // Create track with blob URL for local playback
+        // Create track with placeholder URL (will be replaced with actual audio data)
         const trackData = {
           name,
           trackNumber: tracks.length + i + 1,
-          audioUrl: objectUrl, // Use blob URL for local loading
+          audioUrl: `stored:${name}`, // Placeholder - will be replaced with actual blob URL
           localFileName: file.name,
           duration,
           volume: 100,
@@ -325,17 +325,20 @@ export default function TrackManager({
           isSolo: false
         };
 
-        // Store the file data for persistence
-        const arrayBuffer = await file.arrayBuffer();
-        console.log(`Preparing to store file data for: ${name}, size: ${arrayBuffer.byteLength} bytes`);
+        console.log(`Preparing to store audio file for: ${name}, size: ${file.size} bytes`);
         
         await new Promise((resolve, reject) => {
           addTrackMutation.mutate(trackData, {
-            onSuccess: (createdTrack) => {
-              // Store blob URL and file data for persistence
-              console.log(`Track created successfully: ${createdTrack.id}, calling storeBlobUrl...`);
-              persistence.storeBlobUrl(createdTrack.id, objectUrl, arrayBuffer);
-              resolve(createdTrack);
+            onSuccess: async (createdTrack) => {
+              try {
+                // Store the actual audio file data
+                console.log(`Track created successfully: ${createdTrack.id}, storing audio file...`);
+                await audioStorage.storeAudioFile(createdTrack.id, file);
+                resolve(createdTrack);
+              } catch (error) {
+                console.error('Failed to store audio file:', error);
+                reject(error);
+              }
             },
             onError: reject
           });

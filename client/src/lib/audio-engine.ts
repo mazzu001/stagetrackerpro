@@ -340,26 +340,37 @@ class TrackController {
         throw new Error(`Track ${this.track.name} has no audio URL`);
       }
       
+      let arrayBuffer: ArrayBuffer;
+      
       if (this.track.audioUrl.startsWith('blob:')) {
-        // Fetch and decode the actual audio file
+        // Handle blob URLs (temporary client-side)
         const response = await fetch(this.track.audioUrl);
         
         if (!response.ok) {
-          throw new Error(`Failed to fetch audio: ${response.status} ${response.statusText}`);
+          throw new Error(`Failed to fetch blob audio: ${response.status} ${response.statusText}`);
         }
         
-        const arrayBuffer = await response.arrayBuffer();
+        arrayBuffer = await response.arrayBuffer();
+      } else if (this.track.audioUrl.startsWith('/uploads/') || this.track.audioUrl.startsWith('http')) {
+        // Handle server-side file URLs
+        const response = await fetch(this.track.audioUrl);
         
-        if (arrayBuffer.byteLength === 0) {
-          throw new Error(`Empty audio file for track ${this.track.name}`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch server audio: ${response.status} ${response.statusText}`);
         }
         
-        console.log(`Decoding audio data for ${this.track.name}, size: ${arrayBuffer.byteLength} bytes`);
-        this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-        console.log(`Successfully decoded ${this.track.name}: ${this.audioBuffer.duration.toFixed(2)}s, ${this.audioBuffer.numberOfChannels} channels`);
+        arrayBuffer = await response.arrayBuffer();
       } else {
-        throw new Error(`Track ${this.track.name} has invalid audio URL: ${this.track.audioUrl}`);
+        throw new Error(`Track ${this.track.name} has invalid audio URL format: ${this.track.audioUrl}`);
       }
+      
+      if (arrayBuffer.byteLength === 0) {
+        throw new Error(`Empty audio file for track ${this.track.name}`);
+      }
+      
+      console.log(`Decoding audio data for ${this.track.name}, size: ${arrayBuffer.byteLength} bytes`);
+      this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      console.log(`Successfully decoded ${this.track.name}: ${this.audioBuffer.duration.toFixed(2)}s, ${this.audioBuffer.numberOfChannels} channels`);
     } catch (error) {
       console.error(`Failed to load audio for track ${this.track.name}:`, error);
       throw error; // Re-throw to prevent adding failed tracks

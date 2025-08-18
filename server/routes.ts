@@ -114,7 +114,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/songs/:songId/tracks", async (req, res) => {
+  app.post("/api/songs/:songId/tracks", upload.single('audioFile'), async (req, res) => {
     try {
       // Check if song exists and track limit
       const song = await storage.getSong(req.params.songId);
@@ -127,11 +127,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Maximum 6 tracks allowed per song" });
       }
 
+      // Handle uploaded file
+      let audioUrl = req.body.audioUrl;
+      if (req.file) {
+        // If file was uploaded, use the server path
+        audioUrl = `/uploads/${req.file.filename}`;
+      }
+
       const trackData = {
         songId: req.params.songId,
         name: req.body.name,
         trackNumber: parseInt(req.body.trackNumber) || (existingTracks.length + 1),
-        audioUrl: req.body.audioUrl, // This is now a local file path
+        audioUrl: audioUrl,
         volume: parseInt(req.body.volume) || 100,
         balance: parseInt(req.body.balance) || 0,
         isMuted: req.body.isMuted === true,

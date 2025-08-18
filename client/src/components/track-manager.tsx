@@ -311,23 +311,25 @@ export default function TrackManager({
           }
         }
         
-        const trackData = {
-          name,
-          trackNumber: tracks.length + i + 1,
-          audioUrl: objectUrl,
-          localFileName: file.name,
-          duration,
-          volume: 100,
-          isMuted: false,
-          isSolo: false
-        };
+        // Create FormData to upload the actual file
+        const formData = new FormData();
+        formData.append('audioFile', file);
+        formData.append('name', name);
+        formData.append('trackNumber', (tracks.length + i + 1).toString());
+        formData.append('duration', duration.toString());
+        formData.append('volume', '100');
+        formData.append('isMuted', 'false');
+        formData.append('isSolo', 'false');
 
         await new Promise((resolve, reject) => {
-          addTrackMutation.mutate(trackData, {
+          addTrackMutation.mutate(formData, {
             onSuccess: resolve,
             onError: reject
           });
         });
+        
+        // Clean up the object URL
+        URL.revokeObjectURL(objectUrl);
       }
 
       toast({
@@ -549,7 +551,7 @@ export default function TrackManager({
                           {/* VU Meter */}
                           <VUMeter 
                             level={audioLevels[track.id] || 0}
-                            isMuted={track.isMuted}
+                            isMuted={track.isMuted || false}
                             className="flex-shrink-0"
                           />
                         </div>

@@ -14,7 +14,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Settings, Music, Menu, Plus } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Settings, Music, Menu, Plus, Edit } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -27,6 +28,8 @@ export default function Performance() {
   const [isAddSongOpen, setIsAddSongOpen] = useState(false);
   const [songTitle, setSongTitle] = useState("");
   const [songArtist, setSongArtist] = useState("");
+  const [isEditLyricsOpen, setIsEditLyricsOpen] = useState(false);
+  const [lyricsText, setLyricsText] = useState("");
 
 
   const { toast } = useToast();
@@ -113,6 +116,36 @@ export default function Performance() {
     }
   });
 
+  // Mutation for updating lyrics
+  const updateLyricsMutation = useMutation({
+    mutationFn: async (lyrics: string) => {
+      if (!selectedSongId) throw new Error('No song selected');
+      const response = await fetch(`/api/songs/${selectedSongId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lyrics })
+      });
+      if (!response.ok) throw new Error('Failed to update lyrics');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
+      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+      setIsEditLyricsOpen(false);
+      toast({
+        title: "Lyrics updated",
+        description: "Song lyrics have been saved successfully."
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update lyrics. Please try again.",
+        variant: "destructive"
+      });
+    }
+  });
+
   const handleAddSong = () => {
     if (!songTitle.trim() || !songArtist.trim()) {
       toast({
@@ -128,6 +161,17 @@ export default function Performance() {
       artist: songArtist.trim(),
       duration: 180 // Default duration, will be updated when tracks are added
     });
+  };
+
+  const handleEditLyrics = () => {
+    if (selectedSong) {
+      setLyricsText(selectedSong.lyrics || "");
+      setIsEditLyricsOpen(true);
+    }
+  };
+
+  const handleSaveLyrics = () => {
+    updateLyricsMutation.mutate(lyricsText);
   };
 
   return (
@@ -337,10 +381,24 @@ export default function Performance() {
 
         {/* Right Content Area - Lyrics (70%) */}
         <div className="flex-1 flex flex-col">
-          <div className="p-4 border-b border-gray-700 bg-surface">
-            <h2 className="text-lg font-semibold">
-              {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
-            </h2>
+          <div className="p-4 border-b border-gray-700 bg-surface flex items-center justify-between">
+            <div>
+              <h2 className="text-lg font-semibold">Lyrics</h2>
+              {selectedSong && (
+                <p className="text-sm text-gray-400">{selectedSong.title} - {selectedSong.artist}</p>
+              )}
+            </div>
+            {selectedSong && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleEditLyrics}
+                data-testid="button-edit-lyrics"
+              >
+                <Edit className="w-4 h-4 mr-1" />
+                Edit Lyrics
+              </Button>
+            )}
           </div>
           <div className="flex-1 overflow-y-auto p-4">
             <LyricsDisplay
@@ -359,6 +417,53 @@ export default function Performance() {
           cpuUsage={cpuUsage}
         />
       </div>
+
+      {/* Edit Lyrics Dialog */}
+      <Dialog open={isEditLyricsOpen} onOpenChange={setIsEditLyricsOpen}>
+        <DialogContent className="sm:max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>
+              Edit Lyrics - {selectedSong?.title} by {selectedSong?.artist}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 mt-4">
+            <div>
+              <Label htmlFor="lyrics">Lyrics</Label>
+              <Textarea
+                id="lyrics"
+                value={lyricsText}
+                onChange={(e) => setLyricsText(e.target.value)}
+                placeholder="Enter song lyrics with timestamps and MIDI commands..."
+                className="min-h-[400px] font-mono text-sm"
+                data-testid="textarea-lyrics"
+              />
+              <p className="text-xs text-gray-500 mt-2">
+                Tip: Use [00:15] for timestamps and [[CC:1:64]] for MIDI commands
+              </p>
+            </div>
+            <div className="flex justify-end space-x-2 pt-4">
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setIsEditLyricsOpen(false);
+                  setLyricsText("");
+                }}
+                disabled={updateLyricsMutation.isPending}
+                data-testid="button-cancel-lyrics"
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleSaveLyrics}
+                disabled={updateLyricsMutation.isPending}
+                data-testid="button-save-lyrics"
+              >
+                {updateLyricsMutation.isPending ? "Saving..." : "Save Lyrics"}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

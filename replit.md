@@ -4,19 +4,20 @@ This is a live music performance application built with React, Express, and in-m
 
 ## Recent Updates (August 18, 2025)
 
-✓ **Fixed critical blob URL persistence issue** - Audio files now persist across app restarts
-✓ **Enhanced storage system** - Stores actual file data in base64 format for blob URL recreation  
-✓ **Smart fallback recovery** - Automatically recreates blob URLs when they expire
-✓ **User-friendly warnings** - Displays helpful messages for tracks that need to be re-added
+✓ **File path-based storage system** - Stores local file paths instead of blob data for true offline operation
+✓ **Automatic file discovery** - App displays expected files on startup and loads them when selected
+✓ **Smart file registration** - Files become immediately available when added through file picker
+✓ **Persistent track references** - Track metadata saved with file path references for session persistence
+✓ **Memory-efficient caching** - Files cached by path for instant access without data duplication
 ✓ **Lyrics import feature** - Added web search functionality to import song lyrics automatically
 ✓ **Delete song feature** - Added safe song deletion with confirmation dialog that protects local files
-✓ **Improved error handling** - Fixed fetch errors and enhanced blob URL restoration system
+✓ **Improved error handling** - Clear messaging when files need to be re-selected
 
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
-Architecture preference: Completely offline operation - no file uploads or internet dependency required.
-Data persistence: Automatic saving to localStorage with blob URL management for audio files.
+Architecture preference: Completely offline operation using local file paths - no file uploads or internet dependency required.
+Data persistence: Automatic saving to localStorage with file path references and smart file registration for audio files.
 
 # System Architecture
 
@@ -30,7 +31,7 @@ Data persistence: Automatic saving to localStorage with blob URL management for 
 ## Backend Architecture
 - **Runtime**: Node.js with Express.js REST API server
 - **Database**: PostgreSQL with Drizzle ORM for type-safe database operations
-- **File Storage**: Client-side blob URLs for local audio files - no server storage needed
+- **File Storage**: Local file path references with automatic registration - no server storage needed
 - **Session Management**: PostgreSQL-backed sessions using connect-pg-simple
 - **Development**: Hot module replacement with Vite middleware integration
 
@@ -39,7 +40,7 @@ Data persistence: Automatic saving to localStorage with blob URL management for 
   - `songs`: Core song metadata including title, artist, duration, BPM, key, and lyrics
   - `tracks`: Individual audio tracks per song with volume, mute, and solo controls (using blob URLs)
   - `midiEvents`: Time-stamped MIDI events for automation and effects
-- **File Storage**: Client-side blob URLs for local audio files (MP3, WAV, OGG, M4A) - no server storage
+- **File Storage**: Local file path storage with smart caching (MP3, WAV, OGG, M4A) - completely offline
 - **Schema Management**: TypeScript types for data validation
 
 ## Core Features

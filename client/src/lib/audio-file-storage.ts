@@ -3,9 +3,10 @@ import type { Track } from "@shared/schema";
 interface StoredAudioFile {
   id: string;
   name: string;
+  filePath: string; // Local file path
   mimeType: string;
   size: number;
-  data: string; // Base64 encoded audio data for persistence
+  lastModified: number;
 }
 
 const AUDIO_STORAGE_KEY = "music-app-audio-files";
@@ -15,6 +16,7 @@ export class AudioFileStorage {
   private audioFiles: Map<string, StoredAudioFile> = new Map();
   private fileObjects: Map<string, File> = new Map(); // Keep original File objects in memory
   private blobUrls: Map<string, string> = new Map(); // Cache blob URLs to avoid recreating
+  private fileCache: Map<string, File> = new Map(); // Cache files by path for faster access
 
   static getInstance(): AudioFileStorage {
     if (!AudioFileStorage.instance) {
@@ -24,39 +26,42 @@ export class AudioFileStorage {
     return AudioFileStorage.instance;
   }
 
-  // Store complete audio file data for persistence
+  // Store file path reference for local file system access
   async storeAudioFile(trackId: string, file: File): Promise<void> {
     try {
-      console.log(`Storing complete audio file: ${file.name}, size: ${file.size} bytes`);
+      console.log(`Storing file path reference: ${file.name}, size: ${file.size} bytes`);
       
-      // Convert file to base64 for localStorage persistence
-      const arrayBuffer = await file.arrayBuffer();
-      const bytes = new Uint8Array(arrayBuffer);
-      const base64Data = btoa(String.fromCharCode.apply(null, Array.from(bytes)));
+      // Extract file path from File object (if available) or use name as fallback
+      const filePath = (file as any).path || file.name;
       
       const storedFile: StoredAudioFile = {
         id: trackId,
         name: file.name,
+        filePath: filePath,
         mimeType: file.type,
         size: file.size,
-        data: base64Data
+        lastModified: file.lastModified || Date.now()
       };
 
       // Keep the actual file object in memory for immediate access
       this.fileObjects.set(trackId, file);
       this.audioFiles.set(trackId, storedFile);
       
-      // Save to localStorage with complete data
+      // Cache file by path for faster future access
+      this.fileCache.set(filePath, file);
+      
+      // Save lightweight metadata to localStorage
       this.saveToStorage();
       
-      console.log(`Successfully stored complete audio file for track: ${trackId} (${Math.round(file.size / 1024)}KB)`);
+      console.log(`Successfully stored file path reference for track: ${trackId} (${Math.round(file.size / 1024)}KB)`);
+      console.log(`File path: ${filePath}`);
     } catch (error) {
-      console.error('Failed to store audio file:', error);
+      console.error('Failed to store audio file reference:', error);
       throw error;
     }
   }
 
-  // Get audio file as blob URL, restore from storage if needed
+  // Get audio file as blob URL, try to find local file if needed
   getAudioUrl(trackId: string): string | null {
     // Return cached blob URL if available
     if (this.blobUrls.has(trackId)) {
@@ -66,15 +71,19 @@ export class AudioFileStorage {
     // Try to get from in-memory file objects first
     let fileObject = this.fileObjects.get(trackId);
     
-    // If not in memory, try to restore from stored data
+    // If not in memory, try to find the file by path
     if (!fileObject) {
       const storedFile = this.audioFiles.get(trackId);
-      if (storedFile && storedFile.data) {
-        console.log(`Restoring audio file from storage: ${storedFile.name}`);
-        const restoredFile = this.restoreFileFromStorage(storedFile);
-        if (restoredFile) {
-          this.fileObjects.set(trackId, restoredFile);
-          fileObject = restoredFile;
+      if (storedFile) {
+        console.log(`Trying to locate file: ${storedFile.name} at path: ${storedFile.filePath}`);
+        
+        // Check if we have it cached by path
+        fileObject = this.fileCache.get(storedFile.filePath);
+        if (fileObject) {
+          console.log(`Found cached file for: ${storedFile.name}`);
+          this.fileObjects.set(trackId, fileObject);
+        } else {
+          console.warn(`File not found in cache: ${storedFile.name} (${storedFile.filePath}). Please re-add the audio file.`);
         }
       }
     }
@@ -82,7 +91,7 @@ export class AudioFileStorage {
     if (!fileObject) {
       const storedFile = this.audioFiles.get(trackId);
       if (storedFile) {
-        console.warn(`Could not restore audio file for track ${storedFile.name}. File may need to be re-added.`);
+        console.warn(`Could not locate audio file: ${storedFile.name} at ${storedFile.filePath}. Please re-add the audio file.`);
       } else {
         console.warn(`No audio file found for track: ${trackId}`);
       }
@@ -127,7 +136,19 @@ export class AudioFileStorage {
 
   // Get audio file data for direct loading
   async getAudioFileData(trackId: string): Promise<ArrayBuffer | null> {
-    const fileObject = this.fileObjects.get(trackId);
+    let fileObject = this.fileObjects.get(trackId);
+    
+    // Try to find file by path if not in memory
+    if (!fileObject) {
+      const storedFile = this.audioFiles.get(trackId);
+      if (storedFile) {
+        fileObject = this.fileCache.get(storedFile.filePath);
+        if (fileObject) {
+          this.fileObjects.set(trackId, fileObject);
+        }
+      }
+    }
+    
     if (!fileObject) {
       return null;
     }
@@ -140,78 +161,62 @@ export class AudioFileStorage {
     }
   }
 
-  // Load complete audio files from localStorage
+  // Load audio file path references from localStorage
   private loadFromStorage(): void {
     try {
       const stored = localStorage.getItem(AUDIO_STORAGE_KEY);
       if (stored) {
         const data = JSON.parse(stored);
         this.audioFiles = new Map(data);
-        console.log(`Loaded ${this.audioFiles.size} complete audio files from localStorage`);
+        console.log(`Loaded ${this.audioFiles.size} audio file path references from localStorage`);
         
-        // Automatically restore all files to memory for immediate access
-        this.restoreAllFilesToMemory();
+        // Display which files we're looking for
+        this.displayExpectedFiles();
       } else {
-        console.log('No stored audio files found');
+        console.log('No stored audio file references found');
       }
     } catch (error) {
-      console.error('Failed to load audio files from storage:', error);
+      console.error('Failed to load audio file references from storage:', error);
       this.audioFiles = new Map();
     }
   }
 
-  // Restore a single file from base64 storage data
-  private restoreFileFromStorage(storedFile: StoredAudioFile): File | null {
-    try {
-      // Convert base64 back to binary
-      const binaryString = atob(storedFile.data);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+  // Display the files that the app expects to find
+  private displayExpectedFiles(): void {
+    if (this.audioFiles.size > 0) {
+      console.log('Expected audio files for tracks:');
+      const entries = Array.from(this.audioFiles.entries());
+      for (const [trackId, storedFile] of entries) {
+        console.log(`  - ${storedFile.name} (${storedFile.filePath})`);
       }
-      
-      // Create new File object
-      const file = new File([bytes], storedFile.name, {
-        type: storedFile.mimeType
-      });
-      
-      return file;
-    } catch (error) {
-      console.error(`Failed to restore file ${storedFile.name}:`, error);
-      return null;
+      console.log('These files will be loaded when you select them through the file picker.');
     }
   }
 
-  // Restore all stored files to memory on app startup
-  private restoreAllFilesToMemory(): void {
-    let restoredCount = 0;
+  // Add a method to manually register found files
+  registerFoundFile(filePath: string, file: File): void {
+    this.fileCache.set(filePath, file);
+    console.log(`Registered file: ${file.name} at path: ${filePath}`);
+    
+    // Find any tracks that reference this file and make them available
     const entries = Array.from(this.audioFiles.entries());
     for (const [trackId, storedFile] of entries) {
-      if (storedFile.data && !this.fileObjects.has(trackId)) {
-        const file = this.restoreFileFromStorage(storedFile);
-        if (file) {
-          this.fileObjects.set(trackId, file);
-          restoredCount++;
-        }
+      if (storedFile.filePath === filePath || storedFile.name === file.name) {
+        this.fileObjects.set(trackId, file);
+        console.log(`Connected file ${file.name} to track: ${trackId}`);
       }
-    }
-    if (restoredCount > 0) {
-      console.log(`Restored ${restoredCount} audio files to memory for immediate access`);
     }
   }
 
-  // Save complete audio files to localStorage
+  // Save audio file path references to localStorage
   private saveToStorage(): void {
     try {
       const data = Array.from(this.audioFiles.entries());
       const jsonData = JSON.stringify(data);
       localStorage.setItem(AUDIO_STORAGE_KEY, jsonData);
-      console.log(`Saved ${data.length} complete audio files to localStorage (${Math.round(jsonData.length / 1024 / 1024)}MB)`);
+      console.log(`Saved ${data.length} audio file path references to localStorage (${Math.round(jsonData.length / 1024)}KB)`);
     } catch (error) {
-      console.error('Failed to save audio files:', error);
-      if (error instanceof Error && error.name === 'QuotaExceededError') {
-        console.error('localStorage quota exceeded. Consider clearing some audio files.');
-      }
+      console.error('Failed to save audio file references:', error);
     }
   }
 
@@ -226,8 +231,9 @@ export class AudioFileStorage {
     this.audioFiles.clear();
     this.fileObjects.clear();
     this.blobUrls.clear();
+    this.fileCache.clear();
     localStorage.removeItem(AUDIO_STORAGE_KEY);
-    console.log('Cleared all audio files');
+    console.log('Cleared all audio file references and cache');
   }
 }
 

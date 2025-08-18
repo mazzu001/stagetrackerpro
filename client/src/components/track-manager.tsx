@@ -384,9 +384,14 @@ export default function TrackManager({
           addTrackMutation.mutate(trackData, {
             onSuccess: async (createdTrack) => {
               try {
-                // Store the actual audio file data
+                // Store the audio file path reference and register the file immediately
                 console.log(`Track created successfully: ${createdTrack.id}, storing audio file...`);
                 await audioStorage.storeAudioFile(createdTrack.id, file);
+                
+                // Also register the file for immediate access by filename/path
+                const filePath = (file as any).path || file.name;
+                audioStorage.registerFoundFile(filePath, file);
+                
                 resolve(createdTrack);
               } catch (error) {
                 console.error('Failed to store audio file:', error);

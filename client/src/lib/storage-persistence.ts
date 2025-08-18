@@ -25,6 +25,7 @@ export class StoragePersistence {
 
   // Store blob URL and optionally file data for a track
   storeBlobUrl(trackId: string, blobUrl: string, fileData?: ArrayBuffer): void {
+    console.log(`storeBlobUrl called for track: ${trackId}, blobUrl: ${blobUrl}, fileData type: ${typeof fileData}, size: ${fileData?.byteLength || 'N/A'}`);
     this.blobUrlMap.set(trackId, blobUrl);
     
     // Store file data for persistence across sessions

@@ -54,11 +54,14 @@ export default function TrackManager({
     queryKey: ['/api/songs', song?.id, 'tracks'],
     enabled: !!song?.id,
     staleTime: 0, // Force fresh data
-    gcTime: 0 // Don't cache results
+    gcTime: 0, // Don't cache results
+    refetchOnMount: true,
+    refetchOnWindowFocus: true
   });
 
   // Debug: Log tracks data when it changes
-  console.log(`Track Manager: Found ${tracks.length} tracks for song ${song?.title}:`, tracks.map(t => t.name));
+  console.log(`Track Manager: Found ${tracks.length} tracks for song ${song?.title} (ID: ${song?.id}):`, tracks.map(t => t.name));
+  console.log('Query enabled:', !!song?.id, 'Song object:', song);
 
   // Debounced volume update function
   const debouncedVolumeUpdate = useCallback((trackId: string, volume: number) => {
@@ -442,10 +445,18 @@ export default function TrackManager({
         }
       }
 
-      // Refresh data after all uploads
+      // Refresh data after all uploads - force complete cache invalidation
+      queryClient.removeQueries({ queryKey: ['/api/songs', song.id, 'tracks'] });
+      queryClient.removeQueries({ queryKey: ['/api/songs', song.id] });
+      queryClient.removeQueries({ queryKey: ['/api/songs'] });
+      
+      // Force immediate refetch
       await refetchTracks();
-      queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id, 'tracks'] });
+      
+      // Invalidate all related queries
+      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
       queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id] });
+      queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id, 'tracks'] });
 
       // Show appropriate toast based on results
       if (results.successful > 0 && results.failed === 0) {
@@ -545,6 +556,21 @@ export default function TrackManager({
                 Clear All
               </Button>
             )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                console.log('Manual refresh clicked for song:', song.id);
+                refetchTracks();
+                queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id, 'tracks'] });
+              }}
+              className="h-8 px-2 text-blue-400 hover:bg-blue-900/20 hover:text-blue-300"
+              title="Refresh track list"
+              data-testid="button-refresh-tracks"
+            >
+              <FolderOpen className="w-4 h-4 mr-1" />
+              Refresh
+            </Button>
             <Button
               variant="ghost"
               size="sm"

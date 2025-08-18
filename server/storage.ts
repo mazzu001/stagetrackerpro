@@ -113,6 +113,7 @@ export class MemStorage implements IStorage {
         updatedAt: new Date(),
       };
       this.users.set(userData.id!, updated);
+      this.triggerAutoSave();
       return updated;
     } else {
       // Create new user
@@ -130,13 +131,18 @@ export class MemStorage implements IStorage {
         updatedAt: new Date(),
       };
       this.users.set(newUser.id, newUser);
+      this.triggerAutoSave();
+      console.log('Created new user:', newUser.id, newUser.email);
       return newUser;
     }
   }
 
   async updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined> {
     const user = this.users.get(id);
-    if (!user) return undefined;
+    if (!user) {
+      console.error('User not found for Stripe update:', id);
+      return undefined;
+    }
 
     const updated: User = {
       ...user,
@@ -146,6 +152,8 @@ export class MemStorage implements IStorage {
       updatedAt: new Date(),
     };
     this.users.set(id, updated);
+    this.triggerAutoSave();
+    console.log('Updated user Stripe info:', id, stripeCustomerId);
     return updated;
   }
 

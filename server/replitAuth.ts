@@ -57,13 +57,16 @@ function updateUserSession(
 async function upsertUser(
   claims: any,
 ) {
-  await storage.upsertUser({
+  console.log('Upserting user with claims:', claims["sub"], claims["email"]);
+  const user = await storage.upsertUser({
     id: claims["sub"],
     email: claims["email"],
     firstName: claims["first_name"],
     lastName: claims["last_name"],
     profileImageUrl: claims["profile_image_url"],
   });
+  console.log('User upserted successfully:', user.id, user.email);
+  return user;
 }
 
 export async function setupAuth(app: Express) {
@@ -165,6 +168,8 @@ export const requireSubscription: RequestHandler = async (req, res, next) => {
 
   const user = await storage.getUser(userSession.claims.sub);
   if (!user) {
+    console.error('User not found in requireSubscription middleware:', userSession.claims.sub);
+    console.log('Available users:', Array.from((storage as any).users.keys()));
     return res.status(401).json({ message: "User not found" });
   }
 

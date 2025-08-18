@@ -84,9 +84,11 @@ export class AudioEngine {
 
     // Don't restart if already playing
     if (this.isPlaying) {
-      console.log('Already playing, ignoring play request');
+      console.log('AudioEngine: Already playing, ignoring play request');
       return;
     }
+    
+    console.log('AudioEngine: play() called - current state:', this.isPlaying);
 
     // Resume audio context if suspended and wait for it
     if (this.audioContext.state === 'suspended') {
@@ -151,8 +153,12 @@ export class AudioEngine {
     
     if (this.isPlaying) {
       const currentTime = this.audioContext.currentTime - this.startTime;
-      // Ensure we don't go negative or beyond expected bounds
-      return Math.max(0, currentTime);
+      const result = Math.max(0, currentTime);
+      // Debug every 60 frames (roughly 1 second at 60fps)
+      if (Math.random() < 0.016) { // ~1/60 chance
+        console.log('getCurrentTime: isPlaying=', this.isPlaying, 'contextTime=', this.audioContext.currentTime, 'startTime=', this.startTime, 'result=', result);
+      }
+      return result;
     }
     return this.pausedTime;
   }

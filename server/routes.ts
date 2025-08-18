@@ -99,7 +99,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         },
         product_data: {
           name: 'Stage Performance App - Pro',
-          description: 'Full access to all performance features and unlimited songs',
         },
       });
 

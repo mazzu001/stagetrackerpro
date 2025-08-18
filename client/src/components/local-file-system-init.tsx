@@ -71,8 +71,10 @@ export function LocalFileSystemInit({ onInitialized }: LocalFileSystemInitProps)
         errorMessage = 'Directory selection was cancelled. Click the button again to choose your project folder.';
       } else if (error.message.includes('picker')) {
         errorMessage = 'Could not open the folder selection dialog. Please ensure you\'re using a supported browser and try again.';
-      } else if (error.message.includes('Permission denied')) {
-        errorMessage = 'Permission denied. Please grant permission to access the folder when prompted by your browser.';
+      } else if (error.message.includes('Permission denied') || error.message.includes('NotAllowedError')) {
+        errorMessage = 'Permission denied. Please grant permission to access folders when prompted by your browser. You may need to check browser settings or enable file system access flags.';
+      } else if (error.message.includes('SecurityError')) {
+        errorMessage = 'Security error: Your browser is blocking file system access. Please ensure you\'re on HTTPS and check browser security settings.';
       } else {
         errorMessage = error.message || 'Failed to set up local file storage.';
       }
@@ -142,9 +144,12 @@ export function LocalFileSystemInit({ onInitialized }: LocalFileSystemInitProps)
 
             <div className="bg-yellow-950/20 border border-yellow-500 rounded-lg p-4">
               <h3 className="text-yellow-300 font-medium mb-2">Browser Requirements:</h3>
-              <p className="text-yellow-200 text-sm">
+              <p className="text-yellow-200 text-sm mb-2">
                 This feature requires Chrome, Edge, or another Chromium-based browser. 
                 Safari and Firefox don't support local file system access yet.
+              </p>
+              <p className="text-yellow-200 text-sm">
+                <strong>Edge users:</strong> If the folder picker doesn't open, try enabling "Experimental Web Platform features" in edge://flags/
               </p>
             </div>
 
@@ -166,9 +171,12 @@ export function LocalFileSystemInit({ onInitialized }: LocalFileSystemInitProps)
                 {isInitializing ? "Setting up..." : "Choose Project Folder"}
               </Button>
               
-              <p className="text-xs text-gray-500 text-center">
-                Your browser will ask permission to access a folder on your computer
-              </p>
+              <div className="text-xs text-gray-500 text-center space-y-1">
+                <p>Your browser will ask permission to access a folder on your computer</p>
+                <p className="text-yellow-400">
+                  Edge users: If nothing happens, try enabling "Experimental Web Platform features" in edge://flags/
+                </p>
+              </div>
             </div>
           </div>
         </CardContent>

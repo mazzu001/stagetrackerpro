@@ -87,16 +87,34 @@ export class LocalFileSystem {
       console.log('Requesting project directory selection...');
       
       try {
+        console.log('Calling showDirectoryPicker...');
         this.projectDir = await (window as any).showDirectoryPicker({
           mode: 'readwrite',
           startIn: 'documents'
         });
+        console.log('Directory picker successful, got handle:', !!this.projectDir);
       } catch (pickerError: any) {
+        console.error('Directory picker error details:', {
+          name: pickerError.name,
+          message: pickerError.message,
+          code: pickerError.code,
+          stack: pickerError.stack
+        });
+        
         if (pickerError.name === 'AbortError') {
           console.log('User cancelled directory selection');
           return false;
         }
-        throw new Error(`Failed to open directory picker: ${pickerError.message}`);
+        
+        if (pickerError.name === 'NotAllowedError') {
+          throw new Error(`Permission denied. Your browser or system settings may be blocking file access. Please check browser permissions and try again.`);
+        }
+        
+        if (pickerError.name === 'SecurityError') {
+          throw new Error(`Security error: File system access blocked. Please ensure the page is loaded over HTTPS and try again.`);
+        }
+        
+        throw new Error(`Failed to open directory picker: ${pickerError.name} - ${pickerError.message}`);
       }
 
       if (!this.projectDir) {

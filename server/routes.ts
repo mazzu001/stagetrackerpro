@@ -114,12 +114,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         expand: ['latest_invoice.payment_intent'],
       });
 
+      console.log('Created subscription:', subscription.id);
+      console.log('Latest invoice:', subscription.latest_invoice);
+      console.log('Payment intent:', (subscription.latest_invoice as any)?.payment_intent);
+
       await storage.updateUserStripeInfo(userId, customer.id, subscription.id);
   
       const invoice = subscription.latest_invoice as any;
+      const clientSecret = invoice?.payment_intent?.client_secret;
+      
+      console.log('Sending response with clientSecret:', clientSecret ? 'Present' : 'Missing');
+      
       res.json({
         subscriptionId: subscription.id,
-        clientSecret: invoice?.payment_intent?.client_secret,
+        clientSecret: clientSecret,
+        status: subscription.status,
+        invoice_status: invoice?.status,
       });
     } catch (error: any) {
       console.error('Subscription creation error:', error);

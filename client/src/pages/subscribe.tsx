@@ -92,12 +92,23 @@ export default function Subscribe() {
     apiRequest("POST", "/api/create-subscription")
       .then((res) => res.json())
       .then((data) => {
+        console.log('Subscription response:', data);
         if (data.clientSecret) {
           setClientSecret(data.clientSecret);
-        } else {
+        } else if (data.subscriptionId && !data.clientSecret) {
+          // Subscription exists but no payment needed (already active)
           toast({
-            title: "Error",
-            description: "Failed to initialize payment. Please try again.",
+            title: "Already Subscribed",
+            description: "You already have an active subscription!",
+          });
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 2000);
+        } else {
+          console.error('No client secret in response:', data);
+          toast({
+            title: "Payment Setup Issue",
+            description: "Unable to initialize payment. Please contact support if this continues.",
             variant: "destructive",
           });
         }
@@ -105,8 +116,8 @@ export default function Subscribe() {
       .catch((error) => {
         console.error('Subscription creation error:', error);
         toast({
-          title: "Error",
-          description: "Failed to create subscription. Please try again.",
+          title: "Subscription Error",
+          description: error.message || "Failed to create subscription. Please try again.",
           variant: "destructive",
         });
       })

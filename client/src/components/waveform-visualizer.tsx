@@ -198,23 +198,26 @@ export function WaveformVisualizer({
       return;
     }
 
-    // Check if we have cached waveform data
+    // Always check for cached waveform first when song changes
     const cachedData = getCachedWaveform(song.id);
     if (cachedData) {
-      console.log(`Loading cached waveform for "${song.title}"`);
+      console.log(`Loading cached waveform for "${song.title}" (${cachedData.length} data points)`);
       setWaveformData(cachedData);
       setIsGenerating(false);
       return;
     }
 
-    // Generate new waveform if no cache found
+    // Only generate new waveform if no cache found AND has tracks
     if (song.tracks.length > 0) {
-      console.log(`No cached waveform found for "${song.title}", generating new one...`);
+      console.log(`No cached waveform found for "${song.title}", generating from ${song.tracks.length} tracks...`);
       generateWaveformFromAudio(song);
     } else {
+      // No tracks and no cache - show empty waveform
+      console.log(`No tracks or cached waveform for "${song.title}"`);
       setWaveformData([]);
+      setIsGenerating(false);
     }
-  }, [song?.id, song?.tracks?.length]); // Also trigger when track count changes
+  }, [song?.id]); // Only trigger on song change, not track count changes
 
   const draw = () => {
     const canvas = canvasRef.current;

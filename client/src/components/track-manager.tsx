@@ -129,7 +129,7 @@ export default function TrackManager({
       if (song?.id) {
         const waveformCacheKey = `waveform_${song.id}`;
         localStorage.removeItem(waveformCacheKey);
-        console.log(`Cleared waveform cache for "${song.title}" - will regenerate with new tracks`);
+        console.log(`Cleared waveform cache for "${song.title}" - will regenerate on next view`);
       }
       
       toast({
@@ -161,7 +161,7 @@ export default function TrackManager({
       if (song?.id) {
         const waveformCacheKey = `waveform_${song.id}`;
         localStorage.removeItem(waveformCacheKey);
-        console.log(`Cleared waveform cache for "${song.title}" - will regenerate with remaining tracks`);
+        console.log(`Cleared waveform cache for "${song.title}" - will regenerate on next view`);
       }
       
       toast({

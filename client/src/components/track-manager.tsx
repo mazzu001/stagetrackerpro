@@ -342,97 +342,151 @@ export default function TrackManager({
 
     setIsImporting(true);
 
+    const results = {
+      successful: 0,
+      failed: 0,
+      errors: [] as string[]
+    };
+
     try {
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
-        const objectUrl = URL.createObjectURL(file);
         
-        // For single file, use the provided name; for multiple files, use filename
-        const name = selectedFiles.length === 1 ? trackName : file.name.replace(/\.[^/.]+$/, "");
-        
-        // Get duration from file
-        let duration = estimatedDuration;
-        if (selectedFiles.length > 1 || duration === 0) {
-          try {
-            const audioUrl = URL.createObjectURL(file);
-            const audio = new Audio(audioUrl);
-            duration = await new Promise<number>((resolve) => {
-              audio.onloadedmetadata = () => {
-                resolve(Math.round(audio.duration));
-                URL.revokeObjectURL(audioUrl);
-              };
-              audio.onerror = () => {
-                resolve(180 + Math.floor(Math.random() * 120));
-                URL.revokeObjectURL(audioUrl);
-              };
-            });
-          } catch {
-            duration = 180 + Math.floor(Math.random() * 120);
+        try {
+          // For single file, use the provided name; for multiple files, use filename
+          const name = selectedFiles.length === 1 ? trackName : file.name.replace(/\.[^/.]+$/, "");
+          
+          console.log(`Processing file ${i + 1}/${selectedFiles.length}: ${name}`);
+          
+          // Get duration from file
+          let duration = estimatedDuration;
+          if (selectedFiles.length > 1 || duration === 0) {
+            try {
+              const audioUrl = URL.createObjectURL(file);
+              const audio = new Audio(audioUrl);
+              duration = await new Promise<number>((resolve) => {
+                audio.onloadedmetadata = () => {
+                  resolve(Math.round(audio.duration));
+                  URL.revokeObjectURL(audioUrl);
+                };
+                audio.onerror = () => {
+                  resolve(180 + Math.floor(Math.random() * 120));
+                  URL.revokeObjectURL(audioUrl);
+                };
+                // Add timeout to prevent hanging
+                setTimeout(() => {
+                  resolve(180 + Math.floor(Math.random() * 120));
+                  URL.revokeObjectURL(audioUrl);
+                }, 5000);
+              });
+            } catch {
+              duration = 180 + Math.floor(Math.random() * 120);
+            }
           }
-        }
-        
-        // Create track with placeholder URL (will be replaced with actual audio data)
-        const trackData = {
-          name,
-          trackNumber: tracks.length + i + 1,
-          audioUrl: `stored:${name}`, // Placeholder - will be replaced with actual blob URL
-          localFileName: file.name,
-          duration,
-          volume: 100,
-          isMuted: false,
-          isSolo: false
-        };
+          
+          // Create track with placeholder URL (will be replaced with actual audio data)
+          const trackData = {
+            name,
+            trackNumber: tracks.length + i + 1,
+            audioUrl: `stored:${name}`, // Placeholder - will be replaced with actual blob URL
+            localFileName: file.name,
+            duration,
+            volume: 100,
+            isMuted: false,
+            isSolo: false
+          };
 
-        console.log(`Preparing to store audio file for: ${name}, size: ${file.size} bytes`);
-        
-        await new Promise((resolve, reject) => {
-          addTrackMutation.mutate(trackData, {
-            onSuccess: async (createdTrack) => {
-              try {
-                // Store the audio file path reference and register the file immediately
-                console.log(`Track created successfully: ${createdTrack.id}, storing audio file...`);
-                
-                // Upload to database using the new upload endpoint
-                const formData = new FormData();
-                formData.append('audio', file);
-                
-                const response = await fetch(`/api/tracks/${createdTrack.id}/audio`, {
-                  method: 'POST',
-                  body: formData
-                });
-                
-                if (!response.ok) {
-                  throw new Error(`Upload failed: ${response.statusText}`);
-                }
-                
-                // Force refresh the track list immediately
-                await refetchTracks();
-                queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id, 'tracks'] });
-                queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id] });
-                
-                resolve(createdTrack);
-              } catch (error) {
-                console.error('Failed to store audio file:', error);
+          console.log(`Creating track for: ${name}, size: ${file.size} bytes`);
+          
+          // Create track and upload file
+          const createdTrack = await new Promise<any>((resolve, reject) => {
+            addTrackMutation.mutate(trackData, {
+              onSuccess: (track) => {
+                console.log(`Track created successfully: ${track.id}`);
+                resolve(track);
+              },
+              onError: (error) => {
+                console.error(`Failed to create track for ${name}:`, error);
                 reject(error);
               }
-            },
-            onError: reject
+            });
           });
+
+          // Upload audio file to database
+          console.log(`Uploading audio file for track: ${createdTrack.id}`);
+          const formData = new FormData();
+          formData.append('audio', file);
+          
+          const response = await fetch(`/api/tracks/${createdTrack.id}/audio`, {
+            method: 'POST',
+            body: formData
+          });
+          
+          if (!response.ok) {
+            const errorData = await response.json().catch(() => ({ message: response.statusText }));
+            throw new Error(`Upload failed: ${errorData.message}`);
+          }
+          
+          console.log(`Successfully uploaded audio for track: ${name}`);
+          results.successful++;
+          
+          // Small delay to prevent overwhelming the server
+          await new Promise(resolve => setTimeout(resolve, 200));
+          
+        } catch (error) {
+          console.error(`Failed to process file ${file.name}:`, error);
+          results.failed++;
+          results.errors.push(`${file.name}: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+      }
+
+      // Refresh data after all uploads
+      await refetchTracks();
+      queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id, 'tracks'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id] });
+
+      // Show appropriate toast based on results
+      if (results.successful > 0 && results.failed === 0) {
+        toast({
+          title: "Tracks imported",
+          description: `Successfully imported ${results.successful} track${results.successful > 1 ? 's' : ''}`,
+        });
+      } else if (results.successful > 0 && results.failed > 0) {
+        toast({
+          title: "Partial import",
+          description: `Successfully imported ${results.successful} track${results.successful > 1 ? 's' : ''}, ${results.failed} failed`,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Import failed",
+          description: "All track imports failed",
+          variant: "destructive"
         });
       }
 
-      toast({
-        title: "Tracks imported",
-        description: `Successfully imported ${selectedFiles.length} track${selectedFiles.length > 1 ? 's' : ''}`,
-      });
+      // Show detailed errors if any
+      if (results.errors.length > 0) {
+        console.error('Import errors:', results.errors);
+      }
+
     } catch (error) {
+      console.error('Overall import error:', error);
       toast({
         title: "Import failed",
-        description: "Some tracks failed to import",
+        description: "Failed to import tracks",
         variant: "destructive"
       });
     } finally {
       setIsImporting(false);
+      
+      // Reset form if successful
+      if (results.successful > 0) {
+        setSelectedFiles([]);
+        setAudioFilePath("");
+        setTrackName("");
+        setEstimatedDuration(0);
+      }
     }
   };
 

@@ -198,8 +198,10 @@ export default function Performance() {
       setSelectedSongId(null);
       setIsDeleteSongOpen(false);
       
-      // Stop any playing audio
-      audioEngine.stop();
+      // Stop any playing audio if something is playing
+      if (isPlaying) {
+        onPause?.();
+      }
       
       toast({
         title: "Song deleted",

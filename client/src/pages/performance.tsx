@@ -154,7 +154,8 @@ export default function Performance() {
       if (!selectedSongId) throw new Error('No song selected');
       const response = await apiRequest('DELETE', `/api/songs/${selectedSongId}`);
       if (!response.ok) throw new Error('Failed to delete song');
-      return response.json();
+      // DELETE returns 204 No Content, so no JSON to parse
+      return;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/songs'] });

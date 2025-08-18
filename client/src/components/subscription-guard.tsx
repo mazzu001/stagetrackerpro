@@ -141,19 +141,6 @@ export function SubscriptionGuard({ songCount, onUpgrade }: SubscriptionGuardPro
             Subscribe Now
           </Button>
         )}
-        
-        {/* Additional button when at 2-song limit */}
-        {!hasActiveSubscription && songCount >= MAX_FREE_SONGS && (
-          <Button
-            size="sm"
-            onClick={() => setShowUpgradeDialog(true)}
-            className="text-xs bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 ml-2"
-            data-testid="button-upgrade-limit-reached"
-          >
-            <Crown className="w-3 h-3 mr-1" />
-            Upgrade
-          </Button>
-        )}
       </div>
 
       <UpgradeDialog />

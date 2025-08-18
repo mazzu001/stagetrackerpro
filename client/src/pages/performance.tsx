@@ -205,7 +205,7 @@ export default function Performance() {
       
       // Stop any playing audio if something is playing
       if (isPlaying) {
-        onPause?.();
+        pause();
       }
       
       toast({
@@ -235,7 +235,7 @@ export default function Performance() {
 
     // Check subscription limits - prevent adding more than 2 songs for free users
     const MAX_FREE_SONGS = 2;
-    if (allSongs.length >= MAX_FREE_SONGS && user?.subscriptionStatus !== 'active') {
+    if (allSongs.length >= MAX_FREE_SONGS && (user as any)?.subscriptionStatus !== 'active') {
       toast({
         title: "Upgrade Required",
         description: `Free trial limited to ${MAX_FREE_SONGS} songs. Upgrade to add unlimited songs.`,
@@ -422,7 +422,7 @@ export default function Performance() {
                 <DropdownMenuItem disabled className="flex items-center">
                   <User className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
-                    <span className="text-sm">{user?.email || 'Test User'}</span>
+                    <span className="text-sm">{(user as any)?.email || 'Test User'}</span>
                     <span className="text-xs text-gray-500">Pro Subscription</span>
                   </div>
                 </DropdownMenuItem>

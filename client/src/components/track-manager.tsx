@@ -163,14 +163,12 @@ export default function TrackManager({
   });
 
   const handleClearBrokenTracks = async () => {
-    const brokenTracks = tracks.filter(track => !audioStorage.hasAudioFile(track.id));
-    
-    if (brokenTracks.length === 0) return;
+    if (tracks.length === 0) return;
 
     try {
-      // Delete all broken tracks in parallel
+      // Delete all tracks in parallel
       await Promise.all(
-        brokenTracks.map(track => 
+        tracks.map(track => 
           apiRequest('DELETE', `/api/tracks/${track.id}`)
         )
       );
@@ -182,13 +180,13 @@ export default function TrackManager({
       onTrackUpdate?.();
       
       toast({
-        title: "Cleared broken tracks",
-        description: `Removed ${brokenTracks.length} tracks without audio files.`
+        title: "Cleared all tracks",
+        description: `Removed ${tracks.length} tracks. Ready to add fresh tracks.`
       });
     } catch (error) {
       toast({
         title: "Clear failed",
-        description: "Failed to clear broken tracks",
+        description: "Failed to clear tracks",
         variant: "destructive"
       });
     }
@@ -432,19 +430,31 @@ export default function TrackManager({
             <span className="ml-2 text-sm text-gray-400">({tracks.length}/6)</span>
           </h2>
           <div className="flex items-center space-x-2">
-            {tracks.length > 0 && tracks.some(track => !audioStorage.hasAudioFile(track.id)) && (
+            {tracks.length > 0 && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => handleClearBrokenTracks()}
                 className="h-8 px-2 text-red-400 hover:bg-red-900/20 hover:text-red-300"
-                title="Clear tracks without audio files"
-                data-testid="button-clear-broken-tracks"
+                title="Clear all tracks and start fresh"
+                data-testid="button-clear-all-tracks"
               >
                 <Trash2 className="w-4 h-4 mr-1" />
-                Clear Broken
+                Clear All
               </Button>
             )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleFileSelect}
+              className="h-8 px-2 text-green-400 hover:bg-green-900/20 hover:text-green-300"
+              disabled={tracks.length >= 6}
+              title="Add multiple audio tracks"
+              data-testid="button-add-tracks"
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Add Tracks
+            </Button>
             <Button
               variant="ghost"
               size="sm"

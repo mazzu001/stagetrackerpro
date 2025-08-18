@@ -464,15 +464,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Clean up artist and title for better API results
-      const cleanArtist = encodeURIComponent(artist.trim());
-      const cleanTitle = encodeURIComponent(title.trim());
-      
       console.log(`Searching lyrics for "${title}" by ${artist}...`);
 
-      // Use web search to find lyrics from Google
+      // Use Google Custom Search to find lyrics (format: "Song Artist Lyrics")
       try {
-        const searchQuery = `${title} ${artist} lyrics site:genius.com OR site:azlyrics.com OR site:metrolyrics.com`;
+        const searchQuery = `${title} ${artist} Lyrics`;
         const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${process.env.GOOGLE_API_KEY}&cx=${process.env.GOOGLE_SEARCH_ENGINE_ID}&q=${encodeURIComponent(searchQuery)}`;
         
         if (!process.env.GOOGLE_API_KEY || !process.env.GOOGLE_SEARCH_ENGINE_ID) {
@@ -484,108 +480,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const data = await response.json();
 
         if (data.items && data.items.length > 0) {
-          // Get the first result URL
+          // Get the first search result (best match)
           const firstResult = data.items[0];
           const lyricsUrl = firstResult.link;
           
           console.log(`Found lyrics page: ${lyricsUrl}`);
           
-          // Try to fetch and extract lyrics from the page
-          const lyricsResponse = await fetch(lyricsUrl, {
-            headers: {
-              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-            }
-          });
-          
-          if (lyricsResponse.ok) {
-            const html = await lyricsResponse.text();
-            
-            // Basic lyrics extraction (this would need more sophisticated parsing in production)
-            let extractedLyrics = '';
-            
-            if (lyricsUrl.includes('genius.com')) {
-              // Extract from Genius format - try multiple patterns
-              let lyricsMatch = html.match(/<div[^>]*data-lyrics-container[^>]*>(.*?)<\/div>/g);
-              
-              if (!lyricsMatch) {
-                // Try alternative Genius patterns  
-                const regex = new RegExp('<div[^>]*class="[^"]*lyrics[^"]*"[^>]*>(.*?)<\/div>', 'gi');
-                lyricsMatch = html.match(regex);
-              }
-              
-              if (!lyricsMatch) {
-                // Try finding content between specific Genius markers
-                lyricsMatch = html.match(/Lyrics<\/span>(.*?)(?:<div class="lyric_sharing|<\/section>)/);
-              }
-              
-              if (lyricsMatch) {
-                extractedLyrics = lyricsMatch[0]
-                  .replace(/<[^>]*>/g, '\n')
-                  .replace(/&[a-zA-Z]+;/g, ' ')  // Replace HTML entities
-                  .replace(/\[.*?\]/g, '\n')     // Remove [Verse], [Chorus] markers
-                  .replace(/\n+/g, '\n')
-                  .trim();
-              }
-              
-            } else if (lyricsUrl.includes('azlyrics.com')) {
-              // Extract from AZLyrics format
-              const lyricsMatch = html.match(/<!-- Usage of azlyrics\.com content.*?-->(.*?)<!-- MxM banner -->/s);
-              if (lyricsMatch) {
-                extractedLyrics = lyricsMatch[1]
-                  .replace(/<[^>]*>/g, '\n')
-                  .replace(/&[a-zA-Z]+;/g, ' ')
-                  .replace(/\n+/g, '\n')
-                  .trim();
-              }
-              
-            } else {
-              // Generic lyrics extraction for other sites
-              // Look for common lyrics patterns
-              const patterns = [
-                new RegExp('<div[^>]*class="[^"]*lyric[^"]*"[^>]*>(.*?)<\/div>', 'gi'),
-                new RegExp('<p[^>]*class="[^"]*lyric[^"]*"[^>]*>(.*?)<\/p>', 'gi'),
-                /<pre[^>]*>(.*?)<\/pre>/gi
-              ];
-              
-              for (const pattern of patterns) {
-                const matches = html.match(pattern);
-                if (matches && matches.length > 0) {
-                  extractedLyrics = matches.join('\n')
-                    .replace(/<[^>]*>/g, '\n')
-                    .replace(/&[a-zA-Z]+;/g, ' ')
-                    .replace(/\n+/g, '\n')
-                    .trim();
-                  break;
-                }
-              }
-            }
-            
-            // Clean up and validate extracted lyrics
-            if (extractedLyrics) {
-              extractedLyrics = extractedLyrics
-                .replace(/^\s*\n+/, '')  // Remove leading newlines
-                .replace(/\n+\s*$/, '')  // Remove trailing newlines
-                .replace(/\n{3,}/g, '\n\n'); // Limit consecutive newlines
-            }
-            
-            if (extractedLyrics && extractedLyrics.length > 50 && extractedLyrics.split('\n').length > 3) {
-              console.log(`Successfully extracted lyrics for "${title}" by ${artist}`);
-              return res.json({
-                success: true,
-                lyrics: extractedLyrics,
-                source: "Web Search",
-                sourceUrl: lyricsUrl,
-                verification: `Lyrics found from ${firstResult.displayLink}. Please verify accuracy.`
-              });
-            }
-          }
-          
-          // If extraction failed, provide the search result for manual access
-          console.log(`Lyrics page found but extraction failed, providing link for manual access`);
+          // Open browser directly for manual copy-paste
           return res.json({
             success: false,
             error: "Manual verification needed",
-            message: `Found lyrics page but need manual verification. Opening browser for copy-paste.`,
+            message: `Found "${title}" by ${artist} lyrics. Opening browser for manual copy-paste.`,
             searchResult: {
               url: lyricsUrl,
               title: firstResult.title,
@@ -604,13 +509,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       return res.json({
         success: false,
-        error: "Manual entry recommended",
-        message: `Please search and copy lyrics manually for "${title}" by ${artist}. Click OK to open your browser with a lyrics search.`,
+        error: "Manual entry recommended", 
+        message: `Please search and copy lyrics manually for "${title}" by ${artist}. Opening browser search.`,
         guidance: {
-          suggestion: `Search for "${title} ${artist} lyrics" will be opened in your browser`,
+          suggestion: `Search for "${title} ${artist} Lyrics" will be opened in your browser`,
           tip: "Copy lyrics from your preferred site and paste them into the text area"
         },
-        searchQuery: `${title} ${artist} lyrics`,
+        searchQuery: `${title} ${artist} Lyrics`,
         openBrowser: true
       });
 

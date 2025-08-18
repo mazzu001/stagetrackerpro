@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AlignLeft, Type } from "lucide-react";
 import { parseLyricsWithMidi } from "@/lib/midi-parser";
@@ -11,6 +11,8 @@ interface LyricsDisplayProps {
 
 export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps) {
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
+  const [lastScrollTime, setLastScrollTime] = useState(0);
+  const [lastScrolledLine, setLastScrolledLine] = useState(-1);
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
   
@@ -35,37 +37,59 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
         const firstTimestamp = Math.min(...parsedLyrics.map(line => line.timestamp));
         
         if (currentTime >= firstTimestamp && currentLineIndex >= 0) {
-          // Use timestamp-based scrolling: scroll to current line
-          const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
-          if (currentLineElement) {
-            const containerHeight = container.clientHeight;
-            const lineOffsetTop = currentLineElement.offsetTop;
-            const lineHeight = currentLineElement.offsetHeight;
-            
-            // Center the current line in the container
-            const targetScrollTop = lineOffsetTop - (containerHeight / 2) + (lineHeight / 2);
-            
-            container.scrollTo({
-              top: Math.max(0, targetScrollTop),
-              behavior: 'smooth'
-            });
+          // Only scroll when line changes and throttle scrolling to prevent jitter
+          const now = Date.now();
+          const timeSinceLastScroll = now - lastScrollTime;
+          
+          if (currentLineIndex !== lastScrolledLine && timeSinceLastScroll > 500) {
+            // Use timestamp-based scrolling: scroll to current line with better positioning
+            const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
+            if (currentLineElement) {
+              const containerHeight = container.clientHeight;
+              const lineOffsetTop = currentLineElement.offsetTop;
+              const lineHeight = currentLineElement.offsetHeight;
+              
+              // Position current line in upper third of container for better readability
+              // This keeps upcoming lines visible while maintaining focus on current line
+              const targetScrollTop = lineOffsetTop - (containerHeight / 3);
+              
+              // Use slower, more readable scrolling
+              container.scrollTo({
+                top: Math.max(0, targetScrollTop),
+                behavior: 'smooth'
+              });
+              
+              setLastScrollTime(now);
+              setLastScrolledLine(currentLineIndex);
+            }
           }
         }
       } else {
-        // For lyrics without timestamps, only start scrolling after the first 5-second mark
+        // For lyrics without timestamps, use slower progress-based scrolling with throttling
         if (currentTime >= 5) {
-          const songDuration = song.duration || 180; // Default to 3 minutes if no duration
-          const progress = Math.min(currentTime / songDuration, 1); // Cap at 100%
+          const now = Date.now();
+          const timeSinceLastScroll = now - lastScrollTime;
           
-          // Calculate smooth scroll position based on progress
-          const maxScrollTop = container.scrollHeight - container.clientHeight;
-          const targetScrollTop = progress * maxScrollTop;
-          
-          // Use smooth scrolling
-          container.scrollTo({
-            top: targetScrollTop,
-            behavior: 'smooth'
-          });
+          // Only update scroll every 2 seconds for smoother experience
+          if (timeSinceLastScroll > 2000) {
+            const songDuration = song.duration || 180; // Default to 3 minutes if no duration
+            // Slower progress calculation - only use 80% of the song duration for scrolling
+            // This leaves time at the end to read final lyrics
+            const adjustedDuration = songDuration * 0.8;
+            const progress = Math.min(currentTime / adjustedDuration, 1); // Cap at 100%
+            
+            // Calculate smooth scroll position based on adjusted progress
+            const maxScrollTop = container.scrollHeight - container.clientHeight;
+            const targetScrollTop = progress * maxScrollTop;
+            
+            // Use smooth scrolling with reduced frequency
+            container.scrollTo({
+              top: targetScrollTop,
+              behavior: 'smooth'
+            });
+            
+            setLastScrollTime(now);
+          }
         }
       }
     }

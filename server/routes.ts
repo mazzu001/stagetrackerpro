@@ -8,6 +8,7 @@ import Stripe from "stripe";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { promises as fsPromises } from "fs";
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
@@ -546,6 +547,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Set up auto-save callback
   storage.setAutoSaveCallback(() => {
     console.log("Auto-save triggered");
+  });
+
+  // File Registry API for persistent file tracking
+  const REGISTRY_FILE_PATH = path.join(process.cwd(), "data", "file-registry.json");
+
+  // Ensure data directory exists
+  const dataDir = path.dirname(REGISTRY_FILE_PATH);
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+
+  app.get("/api/file-registry", async (req, res) => {
+    try {
+      if (fs.existsSync(REGISTRY_FILE_PATH)) {
+        const registryData = await fsPromises.readFile(REGISTRY_FILE_PATH, 'utf8');
+        const registry = JSON.parse(registryData);
+        res.json(registry);
+      } else {
+        // Return empty registry
+        const emptyRegistry = {
+          version: '1.0.0',
+          lastUpdated: Date.now(),
+          files: []
+        };
+        res.json(emptyRegistry);
+      }
+    } catch (error) {
+      console.error('Error reading file registry:', error);
+      res.status(500).json({ message: "Failed to read file registry" });
+    }
+  });
+
+  app.post("/api/file-registry", async (req, res) => {
+    try {
+      const registryData = JSON.stringify(req.body, null, 2);
+      await fsPromises.writeFile(REGISTRY_FILE_PATH, registryData, 'utf8');
+      console.log('File registry saved successfully');
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error saving file registry:', error);
+      res.status(500).json({ message: "Failed to save file registry" });
+    }
   });
 
   const httpServer = createServer(app);

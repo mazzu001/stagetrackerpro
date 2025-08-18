@@ -1,4 +1,5 @@
 import type { Track } from "@shared/schema";
+import { FilePersistence } from "./file-persistence";
 
 interface StoredAudioFile {
   id: string;
@@ -17,6 +18,7 @@ export class AudioFileStorage {
   private fileObjects: Map<string, File> = new Map(); // Keep original File objects in memory
   private blobUrls: Map<string, string> = new Map(); // Cache blob URLs to avoid recreating
   private fileCache: Map<string, File> = new Map(); // Cache files by path for faster access
+  private filePersistence: FilePersistence;
 
   static getInstance(): AudioFileStorage {
     if (!AudioFileStorage.instance) {
@@ -26,8 +28,12 @@ export class AudioFileStorage {
     return AudioFileStorage.instance;
   }
 
+  constructor() {
+    this.filePersistence = FilePersistence.getInstance();
+  }
+
   // Store file path reference for local file system access
-  async storeAudioFile(trackId: string, file: File): Promise<void> {
+  async storeAudioFile(trackId: string, file: File, track?: Track): Promise<void> {
     try {
       console.log(`Storing file path reference: ${file.name}, size: ${file.size} bytes`);
       
@@ -52,6 +58,11 @@ export class AudioFileStorage {
       
       // Save lightweight metadata to localStorage
       this.saveToStorage();
+
+      // Also register with the new persistent file system
+      if (track) {
+        await this.filePersistence.registerFile(track, file);
+      }
       
       console.log(`Successfully stored file path reference for track: ${trackId} (${Math.round(file.size / 1024)}KB)`);
       console.log(`File path: ${filePath}`);

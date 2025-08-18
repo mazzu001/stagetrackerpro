@@ -353,6 +353,10 @@ class TrackController {
       if (restoredUrl) {
         console.log(`Using restored blob URL for ${this.track.name}`);
         audioUrl = restoredUrl;
+      } else {
+        // No file data available, can't load this track
+        console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
+        throw new Error(`Audio file not available for ${this.track.name}. Please re-add the audio file.`);
       }
       
       // Try to fetch the audio data
@@ -363,8 +367,7 @@ class TrackController {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
       } catch (error) {
-        // If both original and restored URLs fail, the file data is missing
-        console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
+        console.warn(`Failed to fetch audio for track ${this.track.name}. Please re-add the audio file.`);
         throw new Error(`Audio file not available for ${this.track.name}. Please re-add the audio file.`);
       }
       

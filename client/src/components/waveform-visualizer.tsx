@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
 import type { SongWithTracks } from '@shared/schema';
+import { audioStorage } from '@/lib/audio-file-storage';
 
 interface WaveformVisualizerProps {
   song: SongWithTracks | null;
@@ -18,46 +19,100 @@ export function WaveformVisualizer({
 }: WaveformVisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
+  const [waveformData, setWaveformData] = useState<number[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  // Generate a static waveform pattern based on song data
-  const waveformData = useMemo(() => {
-    if (!song || song.tracks.length === 0) return [];
-
-    const duration = song.duration || 240; // Default 4 minutes
-    const sampleCount = 800; // Number of waveform samples
-    const data: number[] = [];
-
-    // Create a realistic waveform pattern
-    for (let i = 0; i < sampleCount; i++) {
-      const position = i / sampleCount;
-      const time = position * duration;
-      
-      // Create a base waveform with varying intensity
-      let amplitude = 0.3 + Math.sin(position * Math.PI * 8) * 0.2; // Base pattern
-      amplitude += Math.sin(position * Math.PI * 32) * 0.15; // Higher frequency detail
-      amplitude += Math.sin(position * Math.PI * 64) * 0.1; // Even higher frequency
-      
-      // Add some randomness for realism
-      amplitude += (Math.random() - 0.5) * 0.1;
-      
-      // Create sections with different intensities (verse, chorus, bridge)
-      const sectionPhase = (position * 4) % 1;
-      if (sectionPhase < 0.25 || sectionPhase > 0.75) {
-        amplitude *= 0.7; // Quieter sections (verses)
-      } else {
-        amplitude *= 1.2; // Louder sections (chorus)
-      }
-      
-      // Fade in/out at beginning and end
-      if (position < 0.05) amplitude *= position * 20;
-      if (position > 0.95) amplitude *= (1 - position) * 20;
-      
-      // Clamp amplitude
-      amplitude = Math.max(0, Math.min(1, amplitude));
-      data.push(amplitude);
+  // Generate real waveform from combined audio tracks
+  const generateWaveformFromAudio = async (song: SongWithTracks) => {
+    if (!song || song.tracks.length === 0) {
+      setWaveformData([]);
+      return;
     }
 
-    return data;
+    setIsGenerating(true);
+    try {
+      const audioContext = new AudioContext();
+      const sampleCount = 600; // Number of waveform samples
+      const combinedData: number[] = new Array(sampleCount).fill(0);
+      let maxDuration = 0;
+      let tracksProcessed = 0;
+
+      console.log(`Generating real waveform from ${song.tracks.length} tracks`);
+
+      // Process each track that has audio data
+      for (const track of song.tracks) {
+        const audioData = await audioStorage.getAudioFileData(track.id);
+        if (!audioData) {
+          console.log(`Skipping track ${track.name} - no audio data available`);
+          continue;
+        }
+
+        try {
+          const audioBuffer = await audioContext.decodeAudioData(audioData.slice(0));
+          const channelData = audioBuffer.getChannelData(0); // Use first channel
+          maxDuration = Math.max(maxDuration, audioBuffer.duration);
+          
+          // Sample the audio data to create waveform
+          const samplesPerPoint = Math.floor(channelData.length / sampleCount);
+          
+          for (let i = 0; i < sampleCount; i++) {
+            let sum = 0;
+            let count = 0;
+            
+            // Average the audio samples for this waveform point
+            for (let j = 0; j < samplesPerPoint; j++) {
+              const sampleIndex = i * samplesPerPoint + j;
+              if (sampleIndex < channelData.length) {
+                sum += Math.abs(channelData[sampleIndex]);
+                count++;
+              }
+            }
+            
+            if (count > 0) {
+              const amplitude = sum / count;
+              combinedData[i] += amplitude; // Add to combined waveform
+            }
+          }
+          
+          tracksProcessed++;
+          console.log(`Processed track: ${track.name} (${audioBuffer.duration.toFixed(1)}s)`);
+        } catch (error) {
+          console.error(`Failed to process track ${track.name}:`, error);
+        }
+      }
+
+      // Normalize the combined waveform
+      if (tracksProcessed > 0) {
+        const maxAmplitude = Math.max(...combinedData);
+        if (maxAmplitude > 0) {
+          for (let i = 0; i < combinedData.length; i++) {
+            combinedData[i] = combinedData[i] / maxAmplitude;
+          }
+        }
+        
+        console.log(`Generated real waveform from ${tracksProcessed} tracks, duration: ${maxDuration.toFixed(1)}s`);
+        setWaveformData(combinedData);
+      } else {
+        console.log('No tracks processed, using fallback waveform');
+        setWaveformData([]);
+      }
+
+      await audioContext.close();
+    } catch (error) {
+      console.error('Failed to generate waveform from audio:', error);
+      setWaveformData([]);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  // Regenerate waveform when song changes
+  useEffect(() => {
+    if (song && song.tracks.length > 0) {
+      generateWaveformFromAudio(song);
+    } else {
+      setWaveformData([]);
+    }
   }, [song]);
 
   const draw = () => {
@@ -72,6 +127,24 @@ export function WaveformVisualizer({
     
     // Clear canvas
     ctx.clearRect(0, 0, width, height);
+
+    // Show loading state
+    if (isGenerating) {
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.7)';
+      ctx.font = '12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Generating waveform from audio...', width / 2, height / 2);
+      return;
+    }
+
+    // Show message if no waveform data
+    if (waveformData.length === 0) {
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.5)';
+      ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Add tracks to see waveform', width / 2, height / 2);
+      return;
+    }
 
     // Draw background
     ctx.fillStyle = 'rgba(15, 23, 42, 0.8)'; // slate-900 with opacity

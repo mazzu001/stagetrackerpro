@@ -289,7 +289,7 @@ export default function Performance() {
           <div className="flex-1 flex items-center ml-[10px] mr-4">
             <div className="flex-1 max-w-[600px]">
               <WaveformVisualizer
-                song={selectedSong}
+                song={selectedSong || null}
                 currentTime={currentTime}
                 isPlaying={isPlaying}
                 audioLevels={audioLevels}

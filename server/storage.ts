@@ -119,19 +119,40 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAllSongs(): Promise<SongWithTracks[]> {
-    const allSongs = await db.select().from(songs);
+    // Use a more efficient query by fetching everything in parallel
+    const [allSongs, allTracks, allMidiEvents] = await Promise.all([
+      db.select().from(songs),
+      db.select().from(tracks),
+      db.select().from(midiEvents)
+    ]);
     
-    const songsWithTracks: SongWithTracks[] = [];
-    for (const song of allSongs) {
-      const songTracks = await db.select().from(tracks).where(eq(tracks.songId, song.id));
-      const songMidiEvents = await db.select().from(midiEvents).where(eq(midiEvents.songId, song.id));
-      
-      songsWithTracks.push({
-        ...song,
-        tracks: songTracks,
-        midiEvents: songMidiEvents,
+    // Group tracks and MIDI events by song ID
+    const tracksBySong = new Map<string, typeof allTracks>();
+    const midiEventsBySong = new Map<string, typeof allMidiEvents>();
+    
+    allTracks.forEach(track => {
+      if (!tracksBySong.has(track.songId)) {
+        tracksBySong.set(track.songId, []);
+      }
+      tracksBySong.get(track.songId)!.push({
+        ...track,
+        hasAudioData: !!track.audioData
       });
-    }
+    });
+    
+    allMidiEvents.forEach(event => {
+      if (!midiEventsBySong.has(event.songId)) {
+        midiEventsBySong.set(event.songId, []);
+      }
+      midiEventsBySong.get(event.songId)!.push(event);
+    });
+    
+    // Combine all data
+    const songsWithTracks: SongWithTracks[] = allSongs.map(song => ({
+      ...song,
+      tracks: tracksBySong.get(song.id) || [],
+      midiEvents: midiEventsBySong.get(song.id) || [],
+    }));
     
     return songsWithTracks;
   }

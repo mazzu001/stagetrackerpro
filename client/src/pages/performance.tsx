@@ -189,9 +189,15 @@ export default function Performance() {
       return;
     },
     onSuccess: () => {
-      console.log('Song deleted successfully, invalidating queries');
-      // Invalidate all relevant queries to refresh the UI
-      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+      console.log('Song deleted successfully, updating cache');
+      
+      // Instead of invalidating, directly update the cache to remove the deleted song
+      queryClient.setQueryData(['/api/songs'], (oldData: any) => {
+        if (!oldData) return oldData;
+        return oldData.filter((song: any) => song.id !== selectedSongId);
+      });
+      
+      // Remove the specific song query from cache
       queryClient.removeQueries({ queryKey: ['/api/songs', selectedSongId] });
       
       // Clear selected song and close dialog

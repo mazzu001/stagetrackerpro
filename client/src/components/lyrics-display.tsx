@@ -30,36 +30,43 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
         return line.timestamp !== (index + 1) * 5;
       });
       
-      if (hasRealTimestamps && currentLineIndex >= 0) {
-        // Use timestamp-based scrolling: scroll to current line
-        const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
-        if (currentLineElement) {
-          const containerHeight = container.clientHeight;
-          const lineOffsetTop = currentLineElement.offsetTop;
-          const lineHeight = currentLineElement.offsetHeight;
+      if (hasRealTimestamps) {
+        // Only start scrolling when we reach the first timestamp
+        const firstTimestamp = Math.min(...parsedLyrics.map(line => line.timestamp));
+        
+        if (currentTime >= firstTimestamp && currentLineIndex >= 0) {
+          // Use timestamp-based scrolling: scroll to current line
+          const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
+          if (currentLineElement) {
+            const containerHeight = container.clientHeight;
+            const lineOffsetTop = currentLineElement.offsetTop;
+            const lineHeight = currentLineElement.offsetHeight;
+            
+            // Center the current line in the container
+            const targetScrollTop = lineOffsetTop - (containerHeight / 2) + (lineHeight / 2);
+            
+            container.scrollTo({
+              top: Math.max(0, targetScrollTop),
+              behavior: 'smooth'
+            });
+          }
+        }
+      } else {
+        // For lyrics without timestamps, only start scrolling after the first 5-second mark
+        if (currentTime >= 5) {
+          const songDuration = song.duration || 180; // Default to 3 minutes if no duration
+          const progress = Math.min(currentTime / songDuration, 1); // Cap at 100%
           
-          // Center the current line in the container
-          const targetScrollTop = lineOffsetTop - (containerHeight / 2) + (lineHeight / 2);
+          // Calculate smooth scroll position based on progress
+          const maxScrollTop = container.scrollHeight - container.clientHeight;
+          const targetScrollTop = progress * maxScrollTop;
           
+          // Use smooth scrolling
           container.scrollTo({
-            top: Math.max(0, targetScrollTop),
+            top: targetScrollTop,
             behavior: 'smooth'
           });
         }
-      } else {
-        // Fall back to progress-based scrolling for lyrics without timestamps
-        const songDuration = song.duration || 180; // Default to 3 minutes if no duration
-        const progress = Math.min(currentTime / songDuration, 1); // Cap at 100%
-        
-        // Calculate smooth scroll position based on progress
-        const maxScrollTop = container.scrollHeight - container.clientHeight;
-        const targetScrollTop = progress * maxScrollTop;
-        
-        // Use smooth scrolling
-        container.scrollTo({
-          top: targetScrollTop,
-          behavior: 'smooth'
-        });
       }
     }
   }, [currentTime, song, parsedLyrics.length, currentLineIndex]);

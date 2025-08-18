@@ -89,7 +89,7 @@ export default function StereoVUMeter({
   }, [animatedRightLevel, rightPeak]);
 
   const createChannelMeter = (level: number, peak: number, channelName: string) => {
-    const segments = 12; // Smaller for compact display
+    const segments = 8; // Fewer segments for horizontal compact display
     const activeSegments = Math.floor((level / 100) * segments);
     const peakSegment = Math.floor((peak / 100) * segments);
 
@@ -100,49 +100,46 @@ export default function StereoVUMeter({
       
       if (index === peakSegment - 1 && peakSegment > activeSegments) {
         // Peak indicator
-        if (percentage < 70) return 'bg-green-400';
-        if (percentage < 85) return 'bg-yellow-400';
+        if (percentage < 60) return 'bg-green-400';
+        if (percentage < 80) return 'bg-yellow-400';
         return 'bg-red-400';
       }
       
       if (index < activeSegments) {
         // Active segments
-        if (percentage < 70) return 'bg-green-500';
-        if (percentage < 85) return 'bg-yellow-500';
+        if (percentage < 60) return 'bg-green-500';
+        if (percentage < 80) return 'bg-yellow-500';
         return 'bg-red-500';
       }
       
       // Inactive segments
-      if (percentage < 70) return 'bg-green-900/20';
-      if (percentage < 85) return 'bg-yellow-900/20';
+      if (percentage < 60) return 'bg-green-900/20';
+      if (percentage < 80) return 'bg-yellow-900/20';
       return 'bg-red-900/20';
     };
 
     return (
-      <div className="flex flex-col items-center space-y-1">
-        <div className="text-xs text-gray-400 font-mono w-4 text-center">
+      <div className="flex flex-col items-center space-y-0.5">
+        <div className="text-xs text-gray-400 font-mono text-center leading-none">
           {channelName}
         </div>
-        <div className="flex flex-col space-y-0.5">
+        <div className="flex space-x-0.5">
           {Array.from({ length: segments }, (_, index) => (
             <div
               key={index}
-              className={`w-3 h-1 rounded-sm ${getSegmentColor(segments - 1 - index)}`}
+              className={`w-1 h-2 rounded-sm ${getSegmentColor(index)}`}
               style={{
-                opacity: (segments - 1 - index) < activeSegments || (segments - 1 - index) === peakSegment - 1 ? 1 : 0.3
+                opacity: index < activeSegments || index === peakSegment - 1 ? 1 : 0.3
               }}
             />
           ))}
-        </div>
-        <div className="text-xs text-gray-400 font-mono w-4 text-center">
-          {isPlaying ? Math.round(level) : '-'}
         </div>
       </div>
     );
   };
 
   return (
-    <div className={`flex items-center space-x-2 ${className}`}>
+    <div className={`flex items-center space-x-1.5 ${className}`}>
       {createChannelMeter(animatedLeftLevel, leftPeak, 'L')}
       {createChannelMeter(animatedRightLevel, rightPeak, 'R')}
     </div>

@@ -268,31 +268,31 @@ export default function Performance() {
               >
                 <div className="flex items-center justify-between">
                   <div className="font-medium">{song.title}</div>
-                  <div className="flex items-center space-x-3">
-                    {selectedSongId === song.id && isPlaying && (
-                      <StereoVUMeter
-                        leftLevel={masterStereoLevels.left}
-                        rightLevel={masterStereoLevels.right}
-                        isPlaying={isPlaying}
-                        className="ml-2"
-                      />
-                    )}
-                    <button
-                      className="text-xs bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded transition-colors"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedSongId(song.id);
-                        setIsTrackManagerOpen(true);
-                      }}
-                      data-testid={`button-tracks-${song.id}`}
-                    >
-                      {song.tracks ? song.tracks.length : 0} tracks
-                    </button>
-                  </div>
+                  <button
+                    className="text-xs bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedSongId(song.id);
+                      setIsTrackManagerOpen(true);
+                    }}
+                    data-testid={`button-tracks-${song.id}`}
+                  >
+                    {song.tracks ? song.tracks.length : 0} tracks
+                  </button>
                 </div>
                 <div className="text-sm text-gray-400">{song.artist}</div>
-                <div className="text-xs text-gray-500 mt-1">
-                  {song.duration ? `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}` : 'No duration'}
+                <div className="flex items-center justify-between">
+                  <div className="text-xs text-gray-500">
+                    {song.duration ? `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}` : 'No duration'}
+                  </div>
+                  {selectedSongId === song.id && isPlaying && (
+                    <StereoVUMeter
+                      leftLevel={masterStereoLevels.left}
+                      rightLevel={masterStereoLevels.right}
+                      isPlaying={isPlaying}
+                      className="flex-shrink-0"
+                    />
+                  )}
                 </div>
               </div>
             ))}

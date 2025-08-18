@@ -12,7 +12,7 @@ import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Pl
 import { Slider } from "@/components/ui/slider";
 import VUMeter from "@/components/vu-meter";
 import { TrackRecovery } from "@/components/track-recovery";
-import { FileReconnectionDialog } from "@/components/file-reconnection-dialog";
+
 import type { Track, SongWithTracks } from "@shared/schema";
 
 interface TrackManagerProps {
@@ -535,15 +535,7 @@ export default function TrackManager({
           </h2>
         </div>
         <div className="flex items-center space-x-2">
-          <FileReconnectionDialog 
-            onReconnection={() => {
-              console.log('Files reconnected, refreshing track data...');
-              refetchTracks();
-              queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id, 'tracks'] });
-              onTrackUpdate?.();
-            }}
-          />
-            {tracks.length > 0 && (
+          {tracks.length > 0 && (
               <Button
                 variant="ghost"
                 size="sm"

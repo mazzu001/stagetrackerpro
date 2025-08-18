@@ -1,5 +1,5 @@
 import type { SongWithTracks, Track } from "@shared/schema";
-import { audioStorage } from "./audio-file-storage";
+import { DatabaseAudioStorage } from "./database-audio-storage";
 
 export class AudioEngine {
   private audioContext: AudioContext | null = null;
@@ -334,20 +334,17 @@ class TrackController {
 
   async load(): Promise<void> {
     try {
-      // Check if we have audio data stored
-      if (!audioStorage.hasAudioFile(this.track.id)) {
-        console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
-        throw new Error(`Audio file not available for ${this.track.name}. Please re-add the audio file.`);
-      }
+      // Use new database audio storage system
+      const databaseStorage = DatabaseAudioStorage.getInstance();
       
-      // Get audio URL from storage system
-      const audioUrl = audioStorage.getAudioUrl(this.track.id);
+      // Get audio URL from database
+      const audioUrl = await databaseStorage.getAudioUrl(this.track.id);
       if (!audioUrl) {
         console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
         throw new Error(`Audio file not available for ${this.track.name}. Please re-add the audio file.`);
       }
       
-      console.log(`Loading track: ${this.track.name} from stored audio data`);
+      console.log(`Loading track: ${this.track.name} from database blob storage`);
       
       // Fetch and decode the audio
       const response = await fetch(audioUrl);

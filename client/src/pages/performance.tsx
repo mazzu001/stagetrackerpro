@@ -9,7 +9,7 @@ import StatusBar from "@/components/status-bar";
 import TrackManager from "@/components/track-manager";
 import StereoVUMeter from "@/components/stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
-import { FileReconnectionDialog } from "@/components/file-reconnection-dialog";
+import { TrackFileUploader } from "@/components/track-file-uploader";
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -22,7 +22,7 @@ import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, F
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { AudioFileStorage } from "@/lib/audio-file-storage";
+import { DatabaseAudioStorage } from "@/lib/database-audio-storage";
 import { useAuth } from "@/hooks/useAuth";
 import type { SongWithTracks } from "@shared/schema";
 
@@ -37,7 +37,7 @@ export default function Performance() {
   const [lyricsText, setLyricsText] = useState("");
   const [isImportingLyrics, setIsImportingLyrics] = useState(false);
   const [isDeleteSongOpen, setIsDeleteSongOpen] = useState(false);
-  const [isFileReconnectionOpen, setIsFileReconnectionOpen] = useState(false);
+  const [isFileUploaderOpen, setIsFileUploaderOpen] = useState(false);
   const [hasMissingFiles, setHasMissingFiles] = useState(false);
 
 
@@ -79,36 +79,20 @@ export default function Performance() {
     isPlaying
   });
 
-  // Register tracks from database with audio storage system when song changes
+  // Check for tracks that need audio files when song changes
   useEffect(() => {
     if (selectedSong) {
-      const audioStorage = AudioFileStorage.getInstance();
+      // Check if any tracks need audio files (don't have blob:stored or data)
+      const tracksNeedingFiles = selectedSong.tracks.filter(track => 
+        track.audioUrl !== 'blob:stored' && !track.audioData
+      );
       
-      // Store track references in audio storage for file reconnection
-      selectedSong.tracks.forEach(track => {
-        // Extract filename from audioUrl (remove "stored:" prefix)
-        const fileName = track.audioUrl.replace('stored:', '');
-        
-        // Create a stored file entry if not already exists
-        if (!audioStorage.hasAudioFile(track.id)) {
-          audioStorage.storeTrackReference(track.id, {
-            name: fileName,
-            filePath: fileName,
-            mimeType: 'audio/mpeg', // Default to MP3
-            size: 0,
-            lastModified: Date.now()
-          });
-        }
-      });
+      setHasMissingFiles(tracksNeedingFiles.length > 0);
       
-      // Check for missing audio files
-      const missingFiles = selectedSong.tracks.filter(track => !audioStorage.getAudioUrl(track.id));
-      setHasMissingFiles(missingFiles.length > 0);
-      
-      // Auto-open reconnection dialog if there are missing files
-      if (missingFiles.length > 0) {
-        console.log(`Missing audio files for ${missingFiles.length} tracks in song: ${selectedSong.title}`);
-        setIsFileReconnectionOpen(true);
+      // Auto-open upload dialog if there are tracks needing files
+      if (tracksNeedingFiles.length > 0) {
+        console.log(`${tracksNeedingFiles.length} tracks need audio files in song: ${selectedSong.title}`);
+        setIsFileUploaderOpen(true);
       }
     }
   }, [selectedSong]);
@@ -419,12 +403,12 @@ export default function Performance() {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsFileReconnectionOpen(true)}
+                onClick={() => setIsFileUploaderOpen(true)}
                 className="border-orange-200 text-orange-700 hover:bg-orange-50 dark:border-orange-800 dark:text-orange-300 dark:hover:bg-orange-900"
-                data-testid="button-reconnect-files"
+                data-testid="button-upload-files"
               >
                 <FileAudio className="w-4 h-4 mr-1" />
-                Reconnect
+                Upload Files
               </Button>
             )}
             <div className="flex items-center space-x-2">
@@ -744,11 +728,12 @@ export default function Performance() {
         </DialogContent>
       </Dialog>
 
-      {/* File Reconnection Dialog */}
-      <FileReconnectionDialog
-        open={isFileReconnectionOpen}
-        onOpenChange={setIsFileReconnectionOpen}
-        onFilesReconnected={() => {
+      {/* Track File Uploader Dialog */}
+      <TrackFileUploader
+        open={isFileUploaderOpen}
+        onOpenChange={setIsFileUploaderOpen}
+        tracks={selectedSong?.tracks || []}
+        onUploadComplete={() => {
           if (selectedSongId) {
             queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
             queryClient.invalidateQueries({ queryKey: ['/api/songs'] });

@@ -199,6 +199,43 @@ export class DatabaseStorage implements IStorage {
     return newTrack;
   }
 
+  // Store audio file data directly in database as base64
+  async storeAudioFile(trackId: string, audioData: string, mimeType: string, fileSize: number): Promise<void> {
+    await db
+      .update(tracks)
+      .set({ 
+        audioData,
+        mimeType,
+        fileSize,
+        audioUrl: 'blob:stored' // Indicate this is a database blob
+      })
+      .where(eq(tracks.id, trackId));
+    
+    console.log('Audio file stored in database for track:', trackId, `(${Math.round(fileSize / 1024)}KB)`);
+  }
+
+  // Get audio file data from database
+  async getAudioFileData(trackId: string): Promise<{ data: string; mimeType: string; size: number } | null> {
+    const [track] = await db
+      .select({ 
+        audioData: tracks.audioData, 
+        mimeType: tracks.mimeType, 
+        fileSize: tracks.fileSize 
+      })
+      .from(tracks)
+      .where(eq(tracks.id, trackId));
+
+    if (track?.audioData) {
+      return {
+        data: track.audioData,
+        mimeType: track.mimeType || 'audio/mpeg',
+        size: track.fileSize || 0
+      };
+    }
+
+    return null;
+  }
+
   async updateTrack(id: string, track: Partial<InsertTrack>): Promise<Track | undefined> {
     const [updatedTrack] = await db
       .update(tracks)

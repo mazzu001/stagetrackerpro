@@ -345,6 +345,60 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Upload audio file and store in database as base64
+  app.post("/api/tracks/:id/audio", upload.single('audio'), async (req, res) => {
+    try {
+      const trackId = req.params.id;
+      const file = req.file;
+
+      if (!file) {
+        return res.status(400).json({ message: "No audio file provided" });
+      }
+
+      // Convert file buffer to base64
+      const audioData = file.buffer.toString('base64');
+      
+      // Store in database
+      await storage.storeAudioFile(trackId, audioData, file.mimetype, file.size);
+
+      res.json({ 
+        message: "Audio file stored successfully",
+        trackId,
+        size: file.size,
+        mimeType: file.mimetype
+      });
+    } catch (error) {
+      console.error('Error storing audio file:', error);
+      res.status(500).json({ message: "Failed to store audio file" });
+    }
+  });
+
+  // Get audio file from database
+  app.get("/api/tracks/:id/audio", async (req, res) => {
+    try {
+      const trackId = req.params.id;
+      const audioFile = await storage.getAudioFileData(trackId);
+
+      if (!audioFile) {
+        return res.status(404).json({ message: "Audio file not found" });
+      }
+
+      // Convert base64 back to buffer
+      const buffer = Buffer.from(audioFile.data, 'base64');
+      
+      res.set({
+        'Content-Type': audioFile.mimeType,
+        'Content-Length': audioFile.size.toString(),
+        'Cache-Control': 'public, max-age=31536000', // Cache for 1 year
+      });
+
+      res.send(buffer);
+    } catch (error) {
+      console.error('Error retrieving audio file:', error);
+      res.status(500).json({ message: "Failed to retrieve audio file" });
+    }
+  });
+
   app.delete("/api/tracks/:id", async (req, res) => {
     try {
       const success = await storage.deleteTrack(req.params.id);

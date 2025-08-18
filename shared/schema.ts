@@ -21,8 +21,11 @@ export const tracks = pgTable("tracks", {
   songId: varchar("song_id").references(() => songs.id).notNull(),
   name: text("name").notNull(),
   trackNumber: integer("track_number").notNull(),
-  audioUrl: text("audio_url").notNull(),
+  audioUrl: text("audio_url").notNull(), // Will be blob URL or "blob:stored" for database blobs
   localFileName: text("local_file_name"), // Store original filename for display
+  audioData: text("audio_data"), // Base64 encoded audio blob data
+  mimeType: text("mime_type").default('audio/mpeg'), // MIME type of audio file
+  fileSize: integer("file_size").default(0), // File size in bytes
   volume: integer("volume").default(100), // 0-100
   balance: integer("balance").default(0), // -50 to +50 (L to R)
   isMuted: boolean("is_muted").default(false),

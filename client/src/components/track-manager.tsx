@@ -311,25 +311,31 @@ export default function TrackManager({
           }
         }
         
-        // Create FormData to upload the actual file
-        const formData = new FormData();
-        formData.append('audioFile', file);
-        formData.append('name', name);
-        formData.append('trackNumber', (tracks.length + i + 1).toString());
-        formData.append('duration', duration.toString());
-        formData.append('volume', '100');
-        formData.append('isMuted', 'false');
-        formData.append('isSolo', 'false');
+        // Create track with blob URL for immediate playback
+        const trackData = {
+          name,
+          trackNumber: tracks.length + i + 1,
+          audioUrl: objectUrl, // Use blob URL for immediate loading
+          localFileName: file.name,
+          duration,
+          volume: 100,
+          isMuted: false,
+          isSolo: false,
+          _originalFile: file // Store original file for background upload
+        };
 
         await new Promise((resolve, reject) => {
-          addTrackMutation.mutate(formData, {
-            onSuccess: resolve,
+          addTrackMutation.mutate(trackData, {
+            onSuccess: (createdTrack) => {
+              // Start background upload after track is created
+              if (file) {
+                uploadFileInBackground(createdTrack.id, file);
+              }
+              resolve(createdTrack);
+            },
             onError: reject
           });
         });
-        
-        // Clean up the object URL
-        URL.revokeObjectURL(objectUrl);
       }
 
       toast({
@@ -344,6 +350,22 @@ export default function TrackManager({
       });
     } finally {
       setIsImporting(false);
+    }
+  };
+
+  // Background file upload function
+  const uploadFileInBackground = async (trackId: string, file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append('audioFile', file);
+      
+      await apiRequest('POST', `/api/songs/${song?.id}/tracks/${trackId}/upload`, formData);
+      console.log(`Background upload completed for track ${trackId}`);
+      
+      // Invalidate cache to refresh track with server URL
+      queryClient.invalidateQueries({ queryKey: ['/api/songs', song?.id, 'tracks'] });
+    } catch (error) {
+      console.warn(`Background upload failed for track ${trackId}:`, error);
     }
   };
 

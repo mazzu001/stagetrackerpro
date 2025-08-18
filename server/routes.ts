@@ -114,7 +114,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/songs/:songId/tracks", upload.single('audioFile'), async (req, res) => {
+  app.post("/api/songs/:songId/tracks", async (req, res) => {
     try {
       // Check if song exists and track limit
       const song = await storage.getSong(req.params.songId);
@@ -127,18 +127,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Maximum 6 tracks allowed per song" });
       }
 
-      // Handle uploaded file
-      let audioUrl = req.body.audioUrl;
-      if (req.file) {
-        // If file was uploaded, use the server path
-        audioUrl = `/uploads/${req.file.filename}`;
-      }
-
       const trackData = {
         songId: req.params.songId,
         name: req.body.name,
         trackNumber: parseInt(req.body.trackNumber) || (existingTracks.length + 1),
-        audioUrl: audioUrl,
+        audioUrl: req.body.audioUrl, // This will be the blob URL initially
         volume: parseInt(req.body.volume) || 100,
         balance: parseInt(req.body.balance) || 0,
         isMuted: req.body.isMuted === true,
@@ -161,6 +154,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.status(400).json({ message: error.message });
       } else {
         res.status(500).json({ message: "Failed to create track" });
+      }
+    }
+  });
+
+  // Separate endpoint for file upload
+  app.post("/api/songs/:songId/tracks/:trackId/upload", upload.single('audioFile'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      const track = await storage.getTrack(req.params.trackId);
+      if (!track) {
+        return res.status(404).json({ message: "Track not found" });
+      }
+
+      // Update track with server file path
+      const audioUrl = `/uploads/${req.file.filename}`;
+      const updatedTrack = await storage.updateTrack(req.params.trackId, { audioUrl });
+
+      res.json(updatedTrack);
+    } catch (error) {
+      if (error instanceof Error) {
+        res.status(400).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: "Failed to upload file" });
       }
     }
   });

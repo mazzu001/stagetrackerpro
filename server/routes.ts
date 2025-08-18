@@ -279,6 +279,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`Searching lyrics for "${title}" by ${artist}...`);
       
       const response = await fetch(lyricsUrl);
+      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.log('API returned non-JSON response, likely rate limited or down');
+        return res.json({
+          success: false,
+          error: "Lyrics service temporarily unavailable",
+          message: "The lyrics service is currently unavailable. Please try again later or enter lyrics manually."
+        });
+      }
+      
       const data = await response.json();
       
       if (response.ok && data.lyrics) {

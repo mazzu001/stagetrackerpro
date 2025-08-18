@@ -9,6 +9,7 @@ import StatusBar from "@/components/status-bar";
 import TrackManager from "@/components/track-manager";
 import StereoVUMeter from "@/components/stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
+import { FileReconnectionDialog } from "@/components/file-reconnection-dialog";
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -16,10 +17,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2 } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { AudioFileStorage } from "@/lib/audio-file-storage";
 import type { SongWithTracks } from "@shared/schema";
 
 export default function Performance() {
@@ -33,6 +35,8 @@ export default function Performance() {
   const [lyricsText, setLyricsText] = useState("");
   const [isImportingLyrics, setIsImportingLyrics] = useState(false);
   const [isDeleteSongOpen, setIsDeleteSongOpen] = useState(false);
+  const [isFileReconnectionOpen, setIsFileReconnectionOpen] = useState(false);
+  const [hasMissingFiles, setHasMissingFiles] = useState(false);
 
 
   const { toast } = useToast();
@@ -71,6 +75,24 @@ export default function Performance() {
     onTrackMute: updateTrackMute,
     isPlaying
   });
+
+  // Check for missing files on component mount and song selection
+  useEffect(() => {
+    const checkMissingFiles = () => {
+      if (selectedSong) {
+        const audioStorage = AudioFileStorage.getInstance();
+        const missingFiles = selectedSong.tracks.filter(track => !audioStorage.getAudioUrl(track.id));
+        setHasMissingFiles(missingFiles.length > 0);
+        
+        // Auto-open reconnection dialog if there are missing files
+        if (missingFiles.length > 0) {
+          setIsFileReconnectionOpen(true);
+        }
+      }
+    };
+
+    checkMissingFiles();
+  }, [selectedSong]);
 
   // Simulate latency monitoring
   useEffect(() => {
@@ -351,6 +373,18 @@ export default function Performance() {
         <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col">
           <div className="p-4 border-b border-gray-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Songs</h2>
+            {hasMissingFiles && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsFileReconnectionOpen(true)}
+                className="border-orange-200 text-orange-700 hover:bg-orange-50 dark:border-orange-800 dark:text-orange-300 dark:hover:bg-orange-900"
+                data-testid="button-reconnect-files"
+              >
+                <FileAudio className="w-4 h-4 mr-1" />
+                Reconnect
+              </Button>
+            )}
             <div className="flex items-center space-x-2">
               <Dialog open={isAddSongOpen} onOpenChange={(open) => !isPlaying && setIsAddSongOpen(open)}>
                 <DialogTrigger asChild>
@@ -667,6 +701,19 @@ export default function Performance() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* File Reconnection Dialog */}
+      <FileReconnectionDialog
+        open={isFileReconnectionOpen}
+        onOpenChange={setIsFileReconnectionOpen}
+        onFilesReconnected={() => {
+          if (selectedSongId) {
+            queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
+            queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+          }
+          setHasMissingFiles(false);
+        }}
+      />
     </div>
   );
 }

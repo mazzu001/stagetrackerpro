@@ -162,7 +162,7 @@ export default function Performance() {
       setIsDeleteSongOpen(false);
       toast({
         title: "Song deleted",
-        description: "Song and all its tracks have been removed."
+        description: "Song removed from app. Your local audio files are safe."
       });
     },
     onError: () => {
@@ -433,7 +433,7 @@ export default function Performance() {
                     <div className="text-sm text-red-400 bg-red-900/20 border border-red-700 rounded-lg p-3">
                       <div className="flex items-center space-x-2">
                         <Trash2 className="w-4 h-4" />
-                        <span>This action cannot be undone. All tracks and lyrics will be permanently deleted.</span>
+                        <span>This will remove the song from the app only. Your local audio files will remain safe and untouched.</span>
                       </div>
                     </div>
                     <div className="flex justify-end space-x-2 pt-4">

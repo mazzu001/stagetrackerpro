@@ -6,12 +6,15 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Router } from "wouter";
 import Performance from "@/pages/performance";
 import Subscribe from "@/pages/subscribe";
+import Landing from "@/pages/landing";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
+import { useAuth } from '@/hooks/useAuth';
 
-function App() {
+function AppContent() {
   const [isLocalFSReady, setIsLocalFSReady] = useState(false);
   const [isCheckingFS, setIsCheckingFS] = useState(true);
+  const { isAuthenticated, isLoading } = useAuth();
 
   useEffect(() => {
     // Check if local file system is already initialized
@@ -46,35 +49,43 @@ function App() {
     setIsLocalFSReady(true);
   };
 
-  if (isCheckingFS) {
+  if (isCheckingFS || isLoading) {
     return (
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <div className="min-h-screen bg-background flex items-center justify-center">
-            <div className="text-center">
-              <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <p className="text-gray-400">Checking local storage...</p>
-            </div>
+      <TooltipProvider>
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-400">
+              {isLoading ? 'Checking authentication...' : 'Checking local storage...'}
+            </p>
           </div>
-          <Toaster />
-        </TooltipProvider>
-      </QueryClientProvider>
+        </div>
+        <Toaster />
+      </TooltipProvider>
     );
   }
 
   return (
+    <TooltipProvider>
+      {!isAuthenticated ? (
+        <Landing />
+      ) : !isLocalFSReady ? (
+        <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
+      ) : (
+        <Router>
+          <Route path="/" component={Performance} />
+          <Route path="/subscribe" component={Subscribe} />
+        </Router>
+      )}
+      <Toaster />
+    </TooltipProvider>
+  );
+}
+
+function App() {
+  return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        {isLocalFSReady ? (
-          <Router>
-            <Route path="/" component={Performance} />
-            <Route path="/subscribe" component={Subscribe} />
-          </Router>
-        ) : (
-          <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
-        )}
-        <Toaster />
-      </TooltipProvider>
+      <AppContent />
     </QueryClientProvider>
   );
 }

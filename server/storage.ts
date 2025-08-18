@@ -77,13 +77,13 @@ export class DatabaseStorage implements IStorage {
       .insert(users)
       .values({
         ...userData,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       })
       .onConflictDoUpdate({
         target: users.id,
         set: {
           ...userData,
-          updatedAt: new Date(),
+          updatedAt: new Date().toISOString(),
         },
       })
       .returning();
@@ -99,7 +99,7 @@ export class DatabaseStorage implements IStorage {
         stripeCustomerId,
         stripeSubscriptionId,
         subscriptionStatus: 'active',
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       })
       .where(eq(users.id, id))
       .returning();
@@ -188,11 +188,11 @@ export class DatabaseStorage implements IStorage {
       const tracksResult = await db.delete(tracks).where(eq(tracks.songId, id));
       const midiResult = await db.delete(midiEvents).where(eq(midiEvents.songId, id));
       
-      console.log(`Deleted ${tracksResult.rowCount || 0} tracks and ${midiResult.rowCount || 0} MIDI events for song: ${id}`);
+      console.log(`Deleted ${tracksResult.changes || 0} tracks and ${midiResult.changes || 0} MIDI events for song: ${id}`);
       
       // Delete the song itself
       const result = await db.delete(songs).where(eq(songs.id, id));
-      const deleted = result.rowCount ? result.rowCount > 0 : false;
+      const deleted = result.changes ? result.changes > 0 : false;
       
       if (deleted) {
         console.log('Song and all associated data deleted from database:', id);
@@ -295,7 +295,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteTrack(id: string): Promise<boolean> {
     const result = await db.delete(tracks).where(eq(tracks.id, id));
-    const deleted = result.rowCount ? result.rowCount > 0 : false;
+    const deleted = result.changes ? result.changes > 0 : false;
     
     if (deleted) {
       console.log('Track deleted from database:', id);
@@ -334,7 +334,7 @@ export class DatabaseStorage implements IStorage {
 
   async deleteMidiEvent(id: string): Promise<boolean> {
     const result = await db.delete(midiEvents).where(eq(midiEvents.id, id));
-    const deleted = result.rowCount ? result.rowCount > 0 : false;
+    const deleted = result.changes ? result.changes > 0 : false;
     
     if (deleted) {
       console.log('MIDI event deleted from database:', id);

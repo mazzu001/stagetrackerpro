@@ -38,18 +38,19 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware disabled for testing
-  // await setupAuth(app);
+  // Enable auth middleware
+  await setupAuth(app);
 
-  // Auth routes disabled for testing
-  app.get('/api/auth/user', async (req: any, res) => {
-    // Return dummy user for testing without authentication
-    res.json({
-      id: "test-user",
-      email: "test@example.com",
-      firstName: "Test",
-      lastName: "User"
-    });
+  // Auth routes with proper authentication
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
   });
 
   // Stripe subscription route (simplified for testing)

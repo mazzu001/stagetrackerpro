@@ -28,14 +28,24 @@ export class StoragePersistence {
     this.blobUrlMap.set(trackId, blobUrl);
     
     // Store file data for persistence across sessions
-    if (fileData) {
+    if (fileData && fileData instanceof ArrayBuffer) {
       try {
         const uint8Array = new Uint8Array(fileData);
-        const base64 = btoa(String.fromCharCode.apply(null, Array.from(uint8Array)));
+        // Convert ArrayBuffer to base64 in chunks to avoid call stack size exceeded
+        const chunkSize = 8192;
+        let binary = '';
+        for (let i = 0; i < uint8Array.length; i += chunkSize) {
+          const chunk = uint8Array.subarray(i, i + chunkSize);
+          binary += String.fromCharCode.apply(null, Array.from(chunk));
+        }
+        const base64 = btoa(binary);
         this.fileDataMap.set(trackId, base64);
+        console.log(`Successfully stored file data for track: ${trackId} (${Math.round(fileData.byteLength / 1024)}KB)`);
       } catch (error) {
         console.warn('Failed to store file data for track:', trackId, error);
       }
+    } else {
+      console.warn('No valid file data provided for track:', trackId);
     }
   }
 

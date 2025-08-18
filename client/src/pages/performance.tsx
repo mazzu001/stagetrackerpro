@@ -35,7 +35,7 @@ export default function Performance() {
   const [songArtist, setSongArtist] = useState("");
   const [isEditLyricsOpen, setIsEditLyricsOpen] = useState(false);
   const [lyricsText, setLyricsText] = useState("");
-  const [isImportingLyrics, setIsImportingLyrics] = useState(false);
+
   const [isDeleteSongOpen, setIsDeleteSongOpen] = useState(false);
 
 
@@ -281,83 +281,20 @@ export default function Performance() {
     }
   };
 
-  const handleImportLyrics = async () => {
+  const handleSearchLyrics = () => {
     if (!selectedSong) return;
     
-    setIsImportingLyrics(true);
-    try {
-      // Call search API to get lyrics
-      const response = await apiRequest('POST', '/api/lyrics/search', {
-        title: selectedSong.title,
-        artist: selectedSong.artist
-      });
-      
-      const result = await response.json();
-      
-      if (result.success && result.lyrics) {
-        setLyricsText(result.lyrics);
-        toast({
-          title: "Lyrics imported!",
-          description: result.verification || `Found lyrics for "${selectedSong.title}" by ${selectedSong.artist}`,
-        });
-        
-        // If lyrics came from web search, ask for verification
-        if (result.source === "Web Search" && result.sourceUrl) {
-          setTimeout(() => {
-            const verifyAccuracy = confirm(
-              `Lyrics imported from ${result.sourceUrl}\n\nPlease verify the lyrics are correct. If they're wrong, click OK to open your browser and search for the correct lyrics to copy and paste.`
-            );
-            
-            if (verifyAccuracy) {
-              // Open browser for manual correction
-              const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(selectedSong.title + ' ' + selectedSong.artist + ' lyrics')}`;
-              window.open(searchUrl, '_blank');
-            }
-          }, 2000);
-        }
-      } else {
-        // Handle different error types
-        const isManualRecommendation = result.error === "Manual entry recommended";
-        const needsVerification = result.error === "Manual verification needed";
-        
-        toast({
-          title: needsVerification ? "Browser opening for lyrics" : (isManualRecommendation ? "Opening browser search" : "No lyrics found"),
-          description: result.message || "Unable to find lyrics for this song. You can enter them manually.",
-          variant: (isManualRecommendation || needsVerification) ? "default" : "destructive"
-        });
-        
-        // Open browser if requested
-        if (result.openBrowser) {
-          let searchUrl;
-          
-          if (result.searchResult?.url) {
-            // Direct lyrics page found
-            searchUrl = result.searchResult.url;
-          } else if (result.searchQuery) {
-            // General search
-            searchUrl = `https://www.google.com/search?q=${encodeURIComponent(result.searchQuery)}`;
-          }
-          
-          if (searchUrl) {
-            console.log(`Opening browser with: ${searchUrl}`);
-            window.open(searchUrl, '_blank');
-          }
-        }
-        
-        // If we got guidance, show it
-        if (result.guidance) {
-          console.log("Lyrics guidance:", result.guidance);
-        }
-      }
-    } catch (error) {
-      toast({
-        title: "Import failed",
-        description: "Failed to search for lyrics. Please check your internet connection.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsImportingLyrics(false);
-    }
+    // Open Google search with song name, artist name, and "lyrics"
+    const searchQuery = `${selectedSong.title} ${selectedSong.artist} lyrics`;
+    const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
+    
+    console.log(`Opening Google search for: ${searchQuery}`);
+    window.open(searchUrl, '_blank');
+    
+    toast({
+      title: "Search opened in browser",
+      description: "Copy lyrics from the search results and paste them into the text area below."
+    });
   };
 
   return (
@@ -728,12 +665,12 @@ export default function Performance() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={handleImportLyrics}
-                  disabled={isImportingLyrics || !selectedSong}
-                  data-testid="button-import-lyrics"
+                  onClick={handleSearchLyrics}
+                  disabled={!selectedSong}
+                  data-testid="button-search-lyrics"
                 >
                   <Music className="w-4 h-4 mr-1" />
-                  {isImportingLyrics ? 'Searching...' : 'Import Lyrics'}
+                  Search for Lyrics
                 </Button>
               </div>
               <div className="text-sm text-gray-400">

@@ -1,240 +1,228 @@
-import { useState, useRef } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { AudioFileStorage } from "@/lib/audio-file-storage";
-import { Upload, CheckCircle, AlertCircle, FileAudio, FolderOpen } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { AudioFileStorage } from "@/lib/audio-file-storage";
+import { FolderOpen, Music, CheckCircle2, AlertTriangle, RefreshCw } from "lucide-react";
 
 interface FileReconnectionDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onFilesReconnected: () => void;
+  onReconnection?: () => void;
 }
 
-export function FileReconnectionDialog({ open, onOpenChange, onFilesReconnected }: FileReconnectionDialogProps) {
-  const [missingFiles, setMissingFiles] = useState<Array<{ id: string; name: string; filePath: string }>>([]);
-  const [reconnectedFiles, setReconnectedFiles] = useState<Set<string>>(new Set());
-  const [isScanning, setIsScanning] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const folderInputRef = useRef<HTMLInputElement>(null);
+export function FileReconnectionDialog({ onReconnection }: FileReconnectionDialogProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [connectedFiles, setConnectedFiles] = useState<Set<string>>(new Set());
   const { toast } = useToast();
 
-  // Initialize missing files when dialog opens
-  useState(() => {
-    if (open) {
-      const audioStorage = AudioFileStorage.getInstance();
-      const allFiles = audioStorage.getAllStoredFiles();
-      const missing = allFiles.filter(file => !audioStorage.getAudioUrl(file.id));
-      setMissingFiles(missing.map(f => ({ id: f.id, name: f.name, filePath: f.filePath })));
-      setReconnectedFiles(new Set());
-    }
-  });
+  const audioStorage = AudioFileStorage.getInstance();
+  const expectedFiles = audioStorage.getAllStoredFiles();
+  const availableFiles = expectedFiles.filter(file => audioStorage.hasAudioFile(file.id));
+  const missingFiles = expectedFiles.filter(file => !audioStorage.hasAudioFile(file.id));
 
-  const handleFileSelect = async (files: FileList | null) => {
-    if (!files) return;
-
-    setIsScanning(true);
-    const audioStorage = AudioFileStorage.getInstance();
-    let reconnectedCount = 0;
-
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+  const handleSelectFiles = async () => {
+    setIsLoading(true);
+    
+    try {
+      // Create file input for multiple file selection
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'audio/*,.mp3,.wav,.ogg,.m4a';
+      input.multiple = true;
       
-      // Check if this file matches any missing files by name
-      const matchingFile = missingFiles.find(mf => 
-        mf.name.toLowerCase() === file.name.toLowerCase() ||
-        mf.filePath.toLowerCase().includes(file.name.toLowerCase())
-      );
+      const fileSelectPromise = new Promise<File[]>((resolve) => {
+        input.onchange = (event) => {
+          const files = Array.from((event.target as HTMLInputElement).files || []);
+          resolve(files);
+        };
+        
+        // Handle cancel
+        input.oncancel = () => resolve([]);
+        
+        // Auto-resolve if input is not clicked within 30 seconds
+        setTimeout(() => resolve([]), 30000);
+      });
+      
+      input.click();
+      const selectedFiles = await fileSelectPromise;
+      
+      if (selectedFiles.length === 0) {
+        setIsLoading(false);
+        return;
+      }
 
-      if (matchingFile) {
-        try {
-          await audioStorage.storeAudioFile(matchingFile.id, file);
-          setReconnectedFiles(prev => new Set([...Array.from(prev), matchingFile.id]));
-          reconnectedCount++;
+      // Try to match files with missing tracks
+      let reconnectedCount = 0;
+      const newConnected = new Set(connectedFiles);
+
+      for (const file of selectedFiles) {
+        const fileName = file.name;
+        const baseFileName = fileName.replace(/\.[^/.]+$/, ""); // Remove extension
+        
+        // Find matching tracks by name
+        for (const missingFile of missingFiles) {
+          if (newConnected.has(missingFile.id)) continue; // Already connected
           
-          console.log(`Reconnected: ${file.name} to track ${matchingFile.id}`);
-        } catch (error) {
-          console.error(`Failed to reconnect ${file.name}:`, error);
+          const trackBaseName = missingFile.name.replace(/\.[^/.]+$/, "");
+          
+          // Match by exact name or base name
+          if (fileName === missingFile.name || 
+              baseFileName === trackBaseName ||
+              fileName.includes(trackBaseName) ||
+              trackBaseName.includes(baseFileName)) {
+            
+            // Store the file in audio storage
+            await audioStorage.storeAudioFile(missingFile.id, file);
+            newConnected.add(missingFile.id);
+            reconnectedCount++;
+            
+            console.log(`Reconnected: ${fileName} -> ${missingFile.name} (${missingFile.id})`);
+            break;
+          }
         }
       }
-    }
 
-    setIsScanning(false);
+      setConnectedFiles(newConnected);
 
-    if (reconnectedCount > 0) {
-      toast({
-        title: "Files Reconnected",
-        description: `Successfully reconnected ${reconnectedCount} audio file${reconnectedCount > 1 ? 's' : ''}`,
-      });
-
-      // If all files are reconnected, close dialog and refresh
-      if (reconnectedFiles.size === missingFiles.length) {
-        setTimeout(() => {
-          onFilesReconnected();
-          onOpenChange(false);
-        }, 1000);
+      if (reconnectedCount > 0) {
+        toast({
+          title: "Files reconnected",
+          description: `Successfully reconnected ${reconnectedCount} audio file${reconnectedCount > 1 ? 's' : ''}`,
+        });
+        
+        // Notify parent component
+        onReconnection?.();
+      } else {
+        toast({
+          title: "No matches found",
+          description: "Could not match selected files to missing tracks. Make sure file names are similar to track names.",
+          variant: "destructive"
+        });
       }
-    } else {
+      
+    } catch (error) {
+      console.error('File reconnection failed:', error);
       toast({
-        title: "No Matches Found",
-        description: "None of the selected files matched your missing audio tracks",
-        variant: "destructive",
+        title: "Reconnection failed",
+        description: error instanceof Error ? error.message : "Failed to reconnect files",
+        variant: "destructive"
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleSelectFiles = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleSelectFolder = () => {
-    if (folderInputRef.current) {
-      folderInputRef.current.click();
-    }
-  };
-
-  const progress = missingFiles.length > 0 ? (reconnectedFiles.size / missingFiles.length) * 100 : 0;
-  const allReconnected = missingFiles.length > 0 && reconnectedFiles.size === missingFiles.length;
+  const allConnected = missingFiles.length === 0;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl">
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant={allConnected ? "outline" : "default"} size="sm">
+          {allConnected ? (
+            <>
+              <CheckCircle2 className="w-4 h-4 mr-2" />
+              All Files Ready
+            </>
+          ) : (
+            <>
+              <AlertTriangle className="w-4 h-4 mr-2" />
+              Reconnect Files ({missingFiles.length} missing)
+            </>
+          )}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <FileAudio className="w-5 h-5" />
-            Reconnect Audio Files
-          </DialogTitle>
+          <DialogTitle>Reconnect Audio Files</DialogTitle>
         </DialogHeader>
-
+        
         <div className="space-y-6">
-          {missingFiles.length === 0 ? (
+          <div className="text-sm text-muted-foreground">
+            Your tracks are stored in the database, but the audio files need to be reconnected for playback. 
+            Select your audio files to reconnect them with your tracks.
+          </div>
+
+          {/* Available Files */}
+          {availableFiles.length > 0 && (
             <Card>
-              <CardContent className="flex items-center justify-center py-8">
-                <div className="text-center">
-                  <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">All Files Connected</h3>
-                  <p className="text-gray-600">All your audio tracks are ready to play</p>
+              <CardHeader>
+                <CardTitle className="text-sm flex items-center text-green-600">
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  Connected Files ({availableFiles.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {availableFiles.map((file) => (
+                  <div key={file.id} className="flex items-center gap-2 text-sm">
+                    <Music className="w-4 h-4 text-green-600" />
+                    <span>{file.name}</span>
+                    <span className="text-muted-foreground">({Math.round(file.size / 1024)}KB)</span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Missing Files */}
+          {missingFiles.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-sm flex items-center text-orange-600">
+                  <AlertTriangle className="w-4 h-4 mr-2" />
+                  Missing Files ({missingFiles.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                {missingFiles.map((file) => (
+                  <div key={file.id} className="flex items-center gap-2 text-sm">
+                    <Music className="w-4 h-4 text-orange-600" />
+                    <span>{file.name}</span>
+                    <span className="text-muted-foreground">({Math.round(file.size / 1024)}KB)</span>
+                    {connectedFiles.has(file.id) && (
+                      <CheckCircle2 className="w-4 h-4 text-green-600 ml-auto" />
+                    )}
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Action Button */}
+          {missingFiles.length > 0 && (
+            <div className="flex justify-center">
+              <Button 
+                onClick={handleSelectFiles} 
+                disabled={isLoading}
+                className="w-full max-w-sm"
+              >
+                {isLoading ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    Reconnecting Files...
+                  </>
+                ) : (
+                  <>
+                    <FolderOpen className="w-4 h-4 mr-2" />
+                    Select Audio Files to Reconnect
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+
+          {/* All Connected Message */}
+          {allConnected && (
+            <Card className="bg-green-50 dark:bg-green-950">
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-center gap-2 text-green-700 dark:text-green-300">
+                  <CheckCircle2 className="w-5 h-5" />
+                  <span className="font-medium">All audio files are connected and ready!</span>
                 </div>
               </CardContent>
             </Card>
-          ) : (
-            <>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold">Missing Audio Files</h3>
-                  <span className="text-sm text-gray-500">
-                    {reconnectedFiles.size} of {missingFiles.length} reconnected
-                  </span>
-                </div>
-                
-                <Progress value={progress} className="w-full" />
-
-                <div className="grid gap-2 max-h-48 overflow-y-auto">
-                  {missingFiles.map((file) => (
-                    <Card key={file.id} className={`transition-colors ${reconnectedFiles.has(file.id) ? 'bg-green-50 border-green-200' : 'bg-gray-50'}`}>
-                      <CardContent className="p-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            {reconnectedFiles.has(file.id) ? (
-                              <CheckCircle className="w-4 h-4 text-green-500" />
-                            ) : (
-                              <AlertCircle className="w-4 h-4 text-orange-500" />
-                            )}
-                            <div>
-                              <p className="font-medium text-sm">{file.name}</p>
-                              <p className="text-xs text-gray-500">{file.filePath}</p>
-                            </div>
-                          </div>
-                          {reconnectedFiles.has(file.id) && (
-                            <span className="text-xs text-green-600 font-medium">Connected</span>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <h4 className="font-medium">Select your audio files to reconnect them:</h4>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <Button 
-                    onClick={handleSelectFiles}
-                    disabled={isScanning}
-                    className="flex items-center gap-2"
-                    data-testid="button-select-files"
-                  >
-                    <Upload className="w-4 h-4" />
-                    {isScanning ? "Scanning..." : "Select Files"}
-                  </Button>
-                  
-                  <Button 
-                    onClick={handleSelectFolder}
-                    disabled={isScanning}
-                    variant="outline"
-                    className="flex items-center gap-2"
-                    data-testid="button-select-folder"
-                  >
-                    <FolderOpen className="w-4 h-4" />
-                    Select Folder
-                  </Button>
-                </div>
-                
-                <p className="text-xs text-gray-500">
-                  Tip: Select the folder containing your audio files to automatically match them by name
-                </p>
-              </div>
-
-              {allReconnected && (
-                <Card className="bg-green-50 border-green-200">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-5 h-5 text-green-500" />
-                      <div>
-                        <p className="font-medium text-green-800">All Files Reconnected!</p>
-                        <p className="text-sm text-green-600">Your tracks are ready to play</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </>
           )}
-
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => onOpenChange(false)} data-testid="button-close">
-              {allReconnected ? "Done" : "Skip for Now"}
-            </Button>
-            {allReconnected && (
-              <Button onClick={() => { onFilesReconnected(); onOpenChange(false); }} data-testid="button-continue">
-                Continue to Performance
-              </Button>
-            )}
-          </div>
         </div>
-
-        {/* Hidden file inputs */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          accept="audio/*,.mp3,.wav,.ogg,.m4a"
-          className="hidden"
-          onChange={(e) => handleFileSelect(e.target.files)}
-        />
-        <input
-          ref={folderInputRef}
-          type="file"
-          multiple
-          {...({ webkitdirectory: "" } as any)}
-          className="hidden"
-          onChange={(e) => handleFileSelect(e.target.files)}
-        />
       </DialogContent>
     </Dialog>
   );

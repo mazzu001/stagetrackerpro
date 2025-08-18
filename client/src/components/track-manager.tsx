@@ -7,11 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { DatabaseAudioStorage } from "@/lib/database-audio-storage";
+import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import VUMeter from "@/components/vu-meter";
 import { TrackRecovery } from "@/components/track-recovery";
+import { FileReconnectionDialog } from "@/components/file-reconnection-dialog";
 import type { Track, SongWithTracks } from "@shared/schema";
 
 interface TrackManagerProps {
@@ -417,22 +418,12 @@ export default function TrackManager({
             });
           });
 
-          // Upload audio file to database
-          console.log(`Uploading audio file for track: ${createdTrack.id}`);
-          const formData = new FormData();
-          formData.append('audio', file);
+          // Store audio file in local file storage for fast access
+          console.log(`Storing audio file locally for track: ${createdTrack.id}`);
+          const audioStorage = AudioFileStorage.getInstance();
+          await audioStorage.storeAudioFile(createdTrack.id, file);
           
-          const response = await fetch(`/api/tracks/${createdTrack.id}/audio`, {
-            method: 'POST',
-            body: formData
-          });
-          
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({ message: response.statusText }));
-            throw new Error(`Upload failed: ${errorData.message}`);
-          }
-          
-          console.log(`Successfully uploaded audio for track: ${name}`);
+          console.log(`Successfully stored audio locally for track: ${name}`);
           results.successful++;
           
           // Small delay to prevent overwhelming the server
@@ -542,7 +533,16 @@ export default function TrackManager({
             Track Manager
             <span className="ml-2 text-sm text-gray-400">({tracks.length}/6)</span>
           </h2>
-          <div className="flex items-center space-x-2">
+        </div>
+        <div className="flex items-center space-x-2">
+          <FileReconnectionDialog 
+            onReconnection={() => {
+              console.log('Files reconnected, refreshing track data...');
+              refetchTracks();
+              queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id, 'tracks'] });
+              onTrackUpdate?.();
+            }}
+          />
             {tracks.length > 0 && (
               <Button
                 variant="ghost"
@@ -593,7 +593,6 @@ export default function TrackManager({
             >
               {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
             </Button>
-          </div>
         </div>
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogTrigger asChild>

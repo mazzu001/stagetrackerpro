@@ -7,6 +7,7 @@ export function useAudioEngine(song?: SongWithTracks) {
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [audioLevels, setAudioLevels] = useState<Record<string, number>>({});
+  const [masterStereoLevels, setMasterStereoLevels] = useState<{ left: number; right: number }>({ left: 0, right: 0 });
   const [cpuUsage, setCpuUsage] = useState(23);
   const [isAudioEngineOnline, setIsAudioEngineOnline] = useState(true);
   const [isMidiConnected, setIsMidiConnected] = useState(true);
@@ -57,6 +58,9 @@ export function useAudioEngine(song?: SongWithTracks) {
       if (audioEngineRef.current && song) {
         const levels = audioEngineRef.current.getAudioLevels();
         setAudioLevels(levels);
+        
+        const masterLevels = audioEngineRef.current.getMasterStereoLevels();
+        setMasterStereoLevels(masterLevels);
         
         // Use audio engine's state to determine if we should update time
         const engineIsPlaying = audioEngineRef.current.getIsPlaying();
@@ -241,6 +245,7 @@ export function useAudioEngine(song?: SongWithTracks) {
     currentTime,
     duration,
     audioLevels,
+    masterStereoLevels,
     cpuUsage,
     isAudioEngineOnline,
     isMidiConnected,

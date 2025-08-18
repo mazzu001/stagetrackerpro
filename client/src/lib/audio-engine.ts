@@ -322,6 +322,7 @@ export class AudioEngine {
     this.stop();
     this.tracks.clear();
     this.analyzerNodes.clear();
+    this.levelCache.clear();
     
     if (this.audioContext) {
       this.audioContext.close();

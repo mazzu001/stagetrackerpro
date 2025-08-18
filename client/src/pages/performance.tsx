@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -31,6 +31,7 @@ export default function Performance() {
   const [isEditLyricsOpen, setIsEditLyricsOpen] = useState(false);
   const [lyricsText, setLyricsText] = useState("");
   const [isImportingLyrics, setIsImportingLyrics] = useState(false);
+  const [isDeleteSongOpen, setIsDeleteSongOpen] = useState(false);
 
 
   const { toast } = useToast();
@@ -147,6 +148,32 @@ export default function Performance() {
     }
   });
 
+  // Mutation for deleting song
+  const deleteSongMutation = useMutation({
+    mutationFn: async () => {
+      if (!selectedSongId) throw new Error('No song selected');
+      const response = await apiRequest('DELETE', `/api/songs/${selectedSongId}`);
+      if (!response.ok) throw new Error('Failed to delete song');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+      setSelectedSongId(null);
+      setIsDeleteSongOpen(false);
+      toast({
+        title: "Song deleted",
+        description: "Song and all its tracks have been removed."
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to delete song. Please try again.",
+        variant: "destructive"
+      });
+    }
+  });
+
   const handleAddSong = () => {
     if (!songTitle.trim() || !songArtist.trim()) {
       toast({
@@ -173,6 +200,10 @@ export default function Performance() {
 
   const handleSaveLyrics = () => {
     updateLyricsMutation.mutate(lyricsText);
+  };
+
+  const handleDeleteSong = () => {
+    deleteSongMutation.mutate();
   };
 
   const handleInsertTimestamp = () => {
@@ -304,22 +335,24 @@ export default function Performance() {
         <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col">
           <div className="p-4 border-b border-gray-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Songs</h2>
-            <Dialog open={isAddSongOpen} onOpenChange={(open) => !isPlaying && setIsAddSongOpen(open)}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className={`h-8 w-8 p-0 ${
-                    isPlaying 
-                      ? 'cursor-not-allowed opacity-50' 
-                      : 'hover:bg-gray-700'
-                  }`}
-                  disabled={isPlaying}
-                  data-testid="button-add-song"
-                >
-                  <Plus className="w-4 h-4" />
-                </Button>
-              </DialogTrigger>
+            <div className="flex items-center space-x-2">
+              <Dialog open={isAddSongOpen} onOpenChange={(open) => !isPlaying && setIsAddSongOpen(open)}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={`h-8 w-8 p-0 ${
+                      isPlaying 
+                        ? 'cursor-not-allowed opacity-50' 
+                        : 'hover:bg-gray-700'
+                    }`}
+                    disabled={isPlaying}
+                    title="Add new song"
+                    data-testid="button-add-song"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
                   <DialogTitle>Add New Song</DialogTitle>
@@ -370,7 +403,61 @@ export default function Performance() {
                   </div>
                 </div>
               </DialogContent>
-            </Dialog>
+              </Dialog>
+              
+              <Dialog open={isDeleteSongOpen} onOpenChange={(open) => !isPlaying && setIsDeleteSongOpen(open)}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className={`h-8 w-8 p-0 ${
+                      isPlaying || !selectedSongId
+                        ? 'cursor-not-allowed opacity-50' 
+                        : 'hover:bg-red-700/20 text-red-400 hover:text-red-300'
+                    }`}
+                    disabled={isPlaying || !selectedSongId}
+                    title="Delete selected song"
+                    data-testid="button-delete-song"
+                  >
+                    <Minus className="w-4 h-4" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>Delete Song</DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 mt-4">
+                    <div className="text-sm text-gray-300">
+                      Are you sure you want to delete <strong>"{selectedSong?.title}"</strong> by <strong>{selectedSong?.artist}</strong>?
+                    </div>
+                    <div className="text-sm text-red-400 bg-red-900/20 border border-red-700 rounded-lg p-3">
+                      <div className="flex items-center space-x-2">
+                        <Trash2 className="w-4 h-4" />
+                        <span>This action cannot be undone. All tracks and lyrics will be permanently deleted.</span>
+                      </div>
+                    </div>
+                    <div className="flex justify-end space-x-2 pt-4">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setIsDeleteSongOpen(false)}
+                        disabled={deleteSongMutation.isPending}
+                        data-testid="button-cancel-delete"
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        variant="destructive"
+                        onClick={handleDeleteSong}
+                        disabled={deleteSongMutation.isPending}
+                        data-testid="button-confirm-delete"
+                      >
+                        {deleteSongMutation.isPending ? "Deleting..." : "Delete Song"}
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
           </div>
           <div className="flex-1 overflow-y-auto">
             {allSongs.map((song) => (

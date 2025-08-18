@@ -82,8 +82,14 @@ export class AudioFileStorage {
     // Try to get from in-memory file objects first
     let fileObject = this.fileObjects.get(trackId);
     
-    // If not in memory, try to find the file by path
+    // If not in memory, check if we have file info in persistence system
     if (!fileObject) {
+      const fileInfo = this.filePersistence.getFileInfo(trackId);
+      if (fileInfo) {
+        console.log(`File info found for ${fileInfo.fileName}, but file not loaded. Need to re-select files.`);
+        return null;
+      }
+      
       const storedFile = this.audioFiles.get(trackId);
       if (storedFile) {
         console.log(`Trying to locate file: ${storedFile.name} at path: ${storedFile.filePath}`);

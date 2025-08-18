@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { audioStorage } from "@/lib/audio-file-storage";
+import { DatabaseAudioStorage } from "@/lib/database-audio-storage";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import VUMeter from "@/components/vu-meter";
@@ -386,11 +386,23 @@ export default function TrackManager({
               try {
                 // Store the audio file path reference and register the file immediately
                 console.log(`Track created successfully: ${createdTrack.id}, storing audio file...`);
-                await audioStorage.storeAudioFile(createdTrack.id, file);
                 
-                // Also register the file for immediate access by filename/path
-                const filePath = (file as any).path || file.name;
-                audioStorage.registerFoundFile(filePath, file);
+                // Upload to database using the new upload endpoint
+                const formData = new FormData();
+                formData.append('audio', file);
+                
+                const response = await fetch(`/api/tracks/${createdTrack.id}/audio`, {
+                  method: 'POST',
+                  body: formData
+                });
+                
+                if (!response.ok) {
+                  throw new Error(`Upload failed: ${response.statusText}`);
+                }
+                
+                // Invalidate queries to refresh the track list
+                queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id, 'tracks'] });
+                queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id] });
                 
                 resolve(createdTrack);
               } catch (error) {
@@ -630,7 +642,7 @@ export default function TrackManager({
       ) : (
         <>
           {/* Show warning for tracks that need to be re-added */}
-          {tracks.some(track => track.audioUrl && !audioStorage.hasAudioFile(track.id)) && (
+          {tracks.some(track => track.audioUrl && !(track as any).hasAudioData) && (
             <div className="bg-blue-900/20 border border-blue-500 rounded-lg p-4 mb-4">
               <div className="flex items-start space-x-3">
                 <AlertTriangle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />

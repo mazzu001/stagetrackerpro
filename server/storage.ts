@@ -190,7 +190,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getTracksBySongId(songId: string): Promise<Track[]> {
-    return await db.select().from(tracks).where(eq(tracks.songId, songId));
+    const trackData = await db.select().from(tracks).where(eq(tracks.songId, songId));
+    
+    // Add hasAudioData field to indicate if track has blob data
+    return trackData.map(track => ({
+      ...track,
+      hasAudioData: !!track.audioData
+    }));
   }
 
   async createTrack(track: InsertTrack): Promise<Track> {

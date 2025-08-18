@@ -359,7 +359,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Audio file stored successfully",
         trackId,
         size: file.size,
-        mimeType: file.mimetype
+        mimeType: file.mimetype,
+        success: true
       });
     } catch (error) {
       console.error('Error storing audio file:', error);

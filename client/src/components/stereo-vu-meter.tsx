@@ -89,7 +89,7 @@ export default function StereoVUMeter({
   }, [animatedRightLevel, rightPeak]);
 
   const createChannelMeter = (level: number, peak: number, channelName: string) => {
-    const segments = 8; // Fewer segments for horizontal compact display
+    const segments = 12; // More segments for longer display
     const activeSegments = Math.floor((level / 100) * segments);
     const peakSegment = Math.floor((peak / 100) * segments);
 
@@ -119,15 +119,15 @@ export default function StereoVUMeter({
     };
 
     return (
-      <div className="flex flex-col items-center space-y-0.5">
-        <div className="text-xs text-gray-400 font-mono text-center leading-none">
+      <div className="flex items-center space-x-1">
+        <div className="text-xs text-gray-400 font-mono w-2 text-center leading-none">
           {channelName}
         </div>
         <div className="flex space-x-0.5">
           {Array.from({ length: segments }, (_, index) => (
             <div
               key={index}
-              className={`w-1 h-2 rounded-sm ${getSegmentColor(index)}`}
+              className={`w-1 h-1.5 rounded-sm ${getSegmentColor(index)}`}
               style={{
                 opacity: index < activeSegments || index === peakSegment - 1 ? 1 : 0.3
               }}
@@ -139,7 +139,7 @@ export default function StereoVUMeter({
   };
 
   return (
-    <div className={`flex items-center space-x-1.5 ${className}`}>
+    <div className={`flex flex-col space-y-0.5 ${className}`}>
       {createChannelMeter(animatedLeftLevel, leftPeak, 'L')}
       {createChannelMeter(animatedRightLevel, rightPeak, 'R')}
     </div>

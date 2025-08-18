@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { sqliteTable, text, integer, blob } from "drizzle-orm/sqlite-core";
+import { pgTable, text as pgText, integer as pgInteger, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -107,3 +108,29 @@ export const sessions = sqliteTable("sessions", {
   sess: text("sess").notNull(), // JSON string instead of jsonb
   expire: text("expire").notNull(), // ISO datetime string
 });
+
+// PostgreSQL versions for cloud database
+export const usersPg = pgTable("users", {
+  id: pgText("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  email: pgText("email").unique(),
+  firstName: pgText("first_name"),
+  lastName: pgText("last_name"),
+  profileImageUrl: pgText("profile_image_url"),
+  stripeCustomerId: pgText("stripe_customer_id"),
+  stripeSubscriptionId: pgText("stripe_subscription_id"),
+  subscriptionStatus: pgText("subscription_status"), // active, canceled, incomplete, etc.
+  subscriptionEndDate: pgText("subscription_end_date"), // ISO datetime string
+  songCount: pgInteger("song_count").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const sessionsPg = pgTable("sessions", {
+  sid: pgText("sid").primaryKey(),
+  sess: pgText("sess").notNull(), // JSON string instead of jsonb
+  expire: timestamp("expire").notNull(),
+});
+
+// PostgreSQL user types
+export type UserPg = typeof usersPg.$inferSelect;
+export type UpsertUserPg = z.infer<typeof insertUserSchema>;

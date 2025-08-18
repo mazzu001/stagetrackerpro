@@ -1,4 +1,4 @@
-import { songs, tracks, midiEvents, users, type Song, type InsertSong, type Track, type InsertTrack, type MidiEvent, type InsertMidiEvent, type SongWithTracks, type User, type UpsertUser } from "@shared/schema";
+import { songs, tracks, midiEvents, users, usersPg, type Song, type InsertSong, type Track, type InsertTrack, type MidiEvent, type InsertMidiEvent, type SongWithTracks, type User, type UpsertUser, type UserPg } from "@shared/schema";
 import { localDb, userDb } from "./db";
 import { eq, and } from "drizzle-orm";
 
@@ -74,8 +74,15 @@ export class DatabaseStorage implements IStorage {
       console.error('Cloud database not available for user operations');
       return undefined;
     }
-    const [user] = await userDb.select().from(users).where(eq(users.id, id));
-    return user || undefined;
+    const [user] = await userDb.select().from(usersPg).where(eq(usersPg.id, id));
+    if (!user) return undefined;
+    
+    // Convert PostgreSQL user to SQLite user format
+    return {
+      ...user,
+      createdAt: user.createdAt?.toISOString() || null,
+      updatedAt: user.updatedAt?.toISOString() || null,
+    };
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
@@ -83,22 +90,28 @@ export class DatabaseStorage implements IStorage {
       throw new Error('Cloud database not available for user operations');
     }
     const [user] = await userDb
-      .insert(users)
+      .insert(usersPg)
       .values({
         ...userData,
-        updatedAt: new Date().toISOString(),
+        updatedAt: new Date(),
       })
       .onConflictDoUpdate({
-        target: users.id,
+        target: usersPg.id,
         set: {
           ...userData,
-          updatedAt: new Date().toISOString(),
+          updatedAt: new Date(),
         },
       })
       .returning();
     
     console.log('User upserted in cloud database:', user.id, user.email);
-    return user;
+    
+    // Convert PostgreSQL user to SQLite user format
+    return {
+      ...user,
+      createdAt: user.createdAt?.toISOString() || null,
+      updatedAt: user.updatedAt?.toISOString() || null,
+    };
   }
 
   async updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined> {
@@ -107,22 +120,28 @@ export class DatabaseStorage implements IStorage {
       return undefined;
     }
     const [user] = await userDb
-      .update(users)
+      .update(usersPg)
       .set({
         stripeCustomerId,
         stripeSubscriptionId,
         subscriptionStatus: 'active',
-        updatedAt: new Date().toISOString(),
+        updatedAt: new Date(),
       })
-      .where(eq(users.id, id))
+      .where(eq(usersPg.id, id))
       .returning();
 
     if (user) {
       console.log('Updated user Stripe info in cloud database:', id, stripeCustomerId);
+      // Convert PostgreSQL user to SQLite user format
+      return {
+        ...user,
+        createdAt: user.createdAt?.toISOString() || null,
+        updatedAt: user.updatedAt?.toISOString() || null,
+      };
     } else {
       console.error('User not found for Stripe update:', id);
+      return undefined;
     }
-    return user || undefined;
   }
 
   // Song operations (use local SQLite database)

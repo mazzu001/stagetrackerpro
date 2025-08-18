@@ -13,9 +13,10 @@ if (process.env.DATABASE_URL) {
   const sql = neon(process.env.DATABASE_URL);
   cloudDb = drizzleNeon(sql, { 
     schema: { 
-      users: schema.users, 
-      sessions: schema.sessions 
-    } 
+      users: schema.usersPg, 
+      sessions: schema.sessionsPg 
+    },
+    logger: false
   });
   console.log('Cloud PostgreSQL database initialized for user management');
 } else {

@@ -285,9 +285,19 @@ export default function Performance() {
             <span className="bg-primary/20 text-primary px-2 py-1 rounded text-sm">LIVE</span>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="text-sm text-gray-400">
-              <span>Latency: </span>
-              <span className="text-secondary">{latency.toFixed(1)}ms</span>
+            {/* Waveform Visualizer */}
+            <div className="flex items-center space-x-3">
+              <WaveformVisualizer
+                song={selectedSong}
+                currentTime={currentTime}
+                isPlaying={isPlaying}
+                audioLevels={audioLevels}
+                className="border border-gray-600 rounded"
+              />
+              <div className="text-sm text-gray-400">
+                <span>Latency: </span>
+                <span className="text-secondary">{latency.toFixed(1)}ms</span>
+              </div>
             </div>
             <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
               <DialogContent className="max-w-[85vw] max-h-[90vh] overflow-y-auto">

@@ -1,6 +1,5 @@
 import type { Track } from "@shared/schema";
-import { FilePersistence } from "./file-persistence";
-import { FilePathManager } from "./file-path-manager";
+import { LocalFileSystem } from "./local-file-system";
 
 interface StoredAudioFile {
   id: string;
@@ -19,8 +18,7 @@ export class AudioFileStorage {
   private fileObjects: Map<string, File> = new Map(); // Keep original File objects in memory
   private blobUrls: Map<string, string> = new Map(); // Cache blob URLs to avoid recreating
   private fileCache: Map<string, File> = new Map(); // Cache files by path for faster access
-  private filePersistence: FilePersistence;
-  private filePathManager: FilePathManager;
+  private localFS: LocalFileSystem;
 
   static getInstance(): AudioFileStorage {
     if (!AudioFileStorage.instance) {
@@ -31,105 +29,75 @@ export class AudioFileStorage {
   }
 
   constructor() {
-    this.filePersistence = FilePersistence.getInstance();
-    this.filePathManager = FilePathManager.getInstance();
+    this.localFS = LocalFileSystem.getInstance();
   }
 
-  // Store file path reference for local file system access
+  // Store file using local file system (100% offline)
   async storeAudioFile(trackId: string, file: File, track?: Track, songTitle?: string): Promise<void> {
     try {
-      console.log(`Storing file path reference: ${file.name}, size: ${file.size} bytes`);
+      console.log(`Storing audio file locally: ${file.name}, size: ${file.size} bytes`);
       
-      // Extract file path from File object (if available) or use name as fallback
-      const filePath = (file as any).path || file.name;
+      if (!track) {
+        throw new Error('Track information required for local storage');
+      }
+
+      // Store file in local file system
+      const success = await this.localFS.addAudioFile(track.songId, trackId, track.name, file);
       
+      if (!success) {
+        throw new Error('Failed to save file to local file system');
+      }
+
+      // Keep file object in memory cache for immediate access
+      this.fileObjects.set(trackId, file);
+      
+      // Create metadata entry for compatibility
       const storedFile: StoredAudioFile = {
         id: trackId,
         name: file.name,
-        filePath: filePath,
+        filePath: `local://${track.songId}/${trackId}`,
         mimeType: file.type,
         size: file.size,
         lastModified: file.lastModified || Date.now()
       };
 
-      // Keep the actual file object in memory for immediate access
-      this.fileObjects.set(trackId, file);
       this.audioFiles.set(trackId, storedFile);
       
-      // Cache file by path for faster future access
-      this.fileCache.set(filePath, file);
-      
-      // Save lightweight metadata to localStorage
-      this.saveToStorage();
-
-      // Register with persistent file path manager (primary system)
-      if (track && songTitle) {
-        await this.filePathManager.registerFilePath(track, file, songTitle);
-      }
-
-      // Also register with the legacy file persistence system
-      if (track) {
-        await this.filePersistence.registerFile(track, file);
-      }
-      
-      console.log(`Successfully stored file path reference for track: ${trackId} (${Math.round(file.size / 1024)}KB)`);
-      console.log(`File path: ${filePath}`);
+      console.log(`Successfully stored audio file locally for track: ${track.name} (${Math.round(file.size / 1024)}KB)`);
     } catch (error) {
-      console.error('Failed to store audio file reference:', error);
+      console.error('Failed to store audio file:', error);
       throw error;
     }
   }
 
-  // Get audio file as blob URL, automatically load from path if needed
+  // Get audio file as blob URL using local file system
   async getAudioUrl(trackId: string): Promise<string | null> {
     // Return cached blob URL if available
     if (this.blobUrls.has(trackId)) {
       return this.blobUrls.get(trackId)!;
     }
 
-    // Try to get from in-memory file objects first
+    // Try to get from in-memory cache first
     let fileObject = this.fileObjects.get(trackId);
     
-    // If not in memory, try to load automatically from file path
+    // If not in memory, load from local file system
     if (!fileObject) {
-      console.log(`Attempting to auto-load file for track: ${trackId}`);
+      console.log(`Loading file from local file system for track: ${trackId}`);
       
       try {
-        // Try to load from registered file path
-        fileObject = await this.filePathManager.loadFileFromPath(trackId);
+        fileObject = await this.localFS.getAudioFile(trackId) || undefined;
         
         if (fileObject) {
-          console.log(`Successfully auto-loaded file: ${fileObject.name}`);
+          console.log(`Successfully loaded file: ${fileObject.name} from local storage`);
           this.fileObjects.set(trackId, fileObject);
         } else {
-          // Fall back to legacy storage system
-          const storedFile = this.audioFiles.get(trackId);
-          if (storedFile) {
-            console.log(`Trying to locate file: ${storedFile.name} at path: ${storedFile.filePath}`);
-            
-            // Check if we have it cached by path
-            fileObject = this.fileCache.get(storedFile.filePath);
-            if (fileObject) {
-              console.log(`Found cached file for: ${storedFile.name}`);
-              this.fileObjects.set(trackId, fileObject);
-            } else {
-              console.warn(`File not found in cache: ${storedFile.name} (${storedFile.filePath}). Auto-load failed.`);
-            }
-          }
+          console.warn(`Audio file not found in local storage for track: ${trackId}`);
+          return null;
         }
       } catch (error) {
-        console.error(`Error during auto-load for track ${trackId}:`, error);
+        console.error(`Error loading file from local storage for track ${trackId}:`, error);
+        return null;
       }
-    }
-
-    if (!fileObject) {
-      const mapping = this.filePathManager.getFileMapping(trackId);
-      if (mapping) {
-        console.warn(`Could not auto-load audio file: ${mapping.fileName} from path: ${mapping.filePath}`);
-      } else {
-        console.warn(`No file path mapping found for track: ${trackId}`);
-      }
-      return null;
     }
 
     try {

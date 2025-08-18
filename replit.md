@@ -47,9 +47,9 @@ This is a live music performance application built with React, Express, and in-m
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
-Architecture preference: **Native mobile app with local file storage** - cloud storage too slow for live performance.
-Data persistence: Local SQLite database with audio files stored on device file system for maximum performance and offline reliability.
-Performance priority: Fast, dependable operation without internet connection required.
+Architecture preference: **100% local file storage using File System Access API** - completely eliminate all cloud dependencies and web storage.
+Data persistence: Local file system with organized folders for audio files and JSON config files for metadata. All data must be stored locally on user's device.
+Performance priority: Fast, dependable operation without any internet connection required. Zero web-based components.
 
 # System Architecture
 

@@ -38,21 +38,15 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Disable auth middleware for testing to avoid database connection issues
-  // await setupAuth(app);
+  // Enable auth middleware for user-specific songs
+  await setupAuth(app);
 
-  // Auth routes without authentication for testing
-  app.get('/api/auth/user', async (req: any, res) => {
+  // Auth routes with proper authentication
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
-      // Return mock user for testing without authentication
-      res.json({
-        id: 'test-user',
-        email: 'test@example.com',
-        firstName: 'Test',
-        lastName: 'User',
-        profileImageUrl: null,
-        subscriptionStatus: 'active'
-      });
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
@@ -90,19 +84,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Serve uploaded files
   app.use("/uploads", express.static(uploadDir));
 
-  // Songs routes (authentication disabled for testing)
-  app.get("/api/songs", async (req, res) => {
+  // Songs routes (require authentication for user-specific songs)
+  app.get("/api/songs", isAuthenticated, async (req: any, res) => {
     try {
-      const songs = await storage.getAllSongs();
+      const userId = req.user.claims.sub;
+      const songs = await storage.getAllSongs(userId);
       res.json(songs);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch songs" });
     }
   });
 
-  app.get("/api/songs/:id", async (req, res) => {
+  app.get("/api/songs/:id", isAuthenticated, async (req: any, res) => {
     try {
-      const song = await storage.getSongWithTracks(req.params.id);
+      const userId = req.user.claims.sub;
+      const song = await storage.getSongWithTracks(req.params.id, userId);
       if (!song) {
         return res.status(404).json({ message: "Song not found" });
       }
@@ -112,9 +108,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/songs", async (req, res) => {
+  app.post("/api/songs", isAuthenticated, async (req: any, res) => {
     try {
-      const validatedData = insertSongSchema.parse(req.body);
+      const userId = req.user.claims.sub;
+      const validatedData = insertSongSchema.parse({
+        ...req.body,
+        userId: userId  // Associate song with authenticated user
+      });
       const song = await storage.createSong(validatedData);
       res.status(201).json(song);
     } catch (error) {
@@ -126,10 +126,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/songs/:id", async (req, res) => {
+  app.patch("/api/songs/:id", isAuthenticated, async (req: any, res) => {
     try {
+      const userId = req.user.claims.sub;
       const partialData = insertSongSchema.partial().parse(req.body);
-      const song = await storage.updateSong(req.params.id, partialData);
+      const song = await storage.updateSong(req.params.id, partialData, userId);
       if (!song) {
         return res.status(404).json({ message: "Song not found" });
       }
@@ -143,12 +144,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/songs/:id", async (req, res) => {
+  app.delete("/api/songs/:id", isAuthenticated, async (req: any, res) => {
     try {
-      console.log('DELETE request received for song ID:', req.params.id);
-      const success = await storage.deleteSong(req.params.id);
+      const userId = req.user.claims.sub;
+      console.log('DELETE request received for song ID:', req.params.id, 'by user:', userId);
+      const success = await storage.deleteSong(req.params.id, userId);
       if (!success) {
-        console.log('Song deletion failed - not found:', req.params.id);
+        console.log('Song deletion failed - not found or not owned by user:', req.params.id);
         return res.status(404).json({ message: "Song not found" });
       }
       console.log('Song deletion successful:', req.params.id);
@@ -159,9 +161,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Tracks routes
-  app.get("/api/songs/:songId/tracks", async (req, res) => {
+  // Tracks routes (require authentication)
+  app.get("/api/songs/:songId/tracks", isAuthenticated, async (req: any, res) => {
     try {
+      const userId = req.user.claims.sub;
+      // Verify song belongs to user first
+      const song = await storage.getSong(req.params.songId, userId);
+      if (!song) {
+        return res.status(404).json({ message: "Song not found" });
+      }
+      
       const tracks = await storage.getTracksBySongId(req.params.songId);
       res.json(tracks);
     } catch (error) {
@@ -169,10 +178,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/songs/:songId/tracks", async (req, res) => {
+  app.post("/api/songs/:songId/tracks", isAuthenticated, async (req: any, res) => {
     try {
-      // Check if song exists and track limit
-      const song = await storage.getSong(req.params.songId);
+      const userId = req.user.claims.sub;
+      // Check if song exists and belongs to user
+      const song = await storage.getSong(req.params.songId, userId);
       if (!song) {
         return res.status(404).json({ message: "Song not found" });
       }

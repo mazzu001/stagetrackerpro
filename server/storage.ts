@@ -10,12 +10,12 @@ export interface IStorage {
   updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined>;
 
   // Songs
-  getSong(id: string): Promise<Song | undefined>;
-  getAllSongs(): Promise<SongWithTracks[]>;
+  getSong(id: string, userId?: string): Promise<Song | undefined>;
+  getAllSongs(userId?: string): Promise<SongWithTracks[]>;
   createSong(song: InsertSong): Promise<Song>;
-  updateSong(id: string, song: Partial<InsertSong>): Promise<Song | undefined>;
-  deleteSong(id: string): Promise<boolean>;
-  getSongWithTracks(id: string): Promise<SongWithTracks | undefined>;
+  updateSong(id: string, song: Partial<InsertSong>, userId?: string): Promise<Song | undefined>;
+  deleteSong(id: string, userId?: string): Promise<boolean>;
+  getSongWithTracks(id: string, userId?: string): Promise<SongWithTracks | undefined>;
 
   // Tracks
   getTrack(id: string): Promise<Track | undefined>;
@@ -145,15 +145,19 @@ export class DatabaseStorage implements IStorage {
   }
 
   // Song operations (use local SQLite database)
-  async getSong(id: string): Promise<Song | undefined> {
-    const [song] = await localDb.select().from(songs).where(eq(songs.id, id));
+  async getSong(id: string, userId?: string): Promise<Song | undefined> {
+    let query = localDb.select().from(songs).where(eq(songs.id, id));
+    if (userId) {
+      query = query.where(and(eq(songs.id, id), eq(songs.userId, userId))) as any;
+    }
+    const [song] = await query;
     return song || undefined;
   }
 
-  async getAllSongs(): Promise<SongWithTracks[]> {
-    // Use a more efficient query by fetching everything in parallel
+  async getAllSongs(userId?: string): Promise<SongWithTracks[]> {
+    // Use a more efficient query by fetching everything in parallel, filtered by user
     const [allSongs, allTracks, allMidiEvents] = await Promise.all([
-      localDb.select().from(songs),
+      userId ? localDb.select().from(songs).where(eq(songs.userId, userId)) : localDb.select().from(songs),
       localDb.select().from(tracks),
       localDb.select().from(midiEvents)
     ]);
@@ -192,11 +196,16 @@ export class DatabaseStorage implements IStorage {
     return newSong;
   }
 
-  async updateSong(id: string, song: Partial<InsertSong>): Promise<Song | undefined> {
+  async updateSong(id: string, song: Partial<InsertSong>, userId?: string): Promise<Song | undefined> {
+    let whereClause = eq(songs.id, id);
+    if (userId) {
+      whereClause = and(eq(songs.id, id), eq(songs.userId, userId)) as any;
+    }
+    
     const [updatedSong] = await localDb
       .update(songs)
       .set(song)
-      .where(eq(songs.id, id))
+      .where(whereClause)
       .returning();
     
     if (updatedSong) {
@@ -205,10 +214,15 @@ export class DatabaseStorage implements IStorage {
     return updatedSong || undefined;
   }
 
-  async deleteSong(id: string): Promise<boolean> {
+  async deleteSong(id: string, userId?: string): Promise<boolean> {
     try {
-      // First check if the song exists
-      const existingSong = await localDb.select().from(songs).where(eq(songs.id, id));
+      // First check if the song exists and belongs to user
+      let whereClause = eq(songs.id, id);
+      if (userId) {
+        whereClause = and(eq(songs.id, id), eq(songs.userId, userId)) as any;
+      }
+      
+      const existingSong = await localDb.select().from(songs).where(whereClause);
       if (existingSong.length === 0) {
         console.log('Song not found for deletion:', id);
         return false;
@@ -223,7 +237,7 @@ export class DatabaseStorage implements IStorage {
       console.log(`Deleted ${tracksResult.changes || 0} tracks and ${midiResult.changes || 0} MIDI events for song: ${id}`);
       
       // Delete the song itself
-      const result = await localDb.delete(songs).where(eq(songs.id, id));
+      const result = await localDb.delete(songs).where(whereClause);
       const deleted = result.changes ? result.changes > 0 : false;
       
       if (deleted) {
@@ -239,8 +253,8 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async getSongWithTracks(id: string): Promise<SongWithTracks | undefined> {
-    const song = await this.getSong(id);
+  async getSongWithTracks(id: string, userId?: string): Promise<SongWithTracks | undefined> {
+    const song = await this.getSong(id, userId);
     if (!song) return undefined;
 
     const songTracks = await localDb.select().from(tracks).where(eq(tracks.songId, id));

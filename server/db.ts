@@ -15,8 +15,7 @@ if (process.env.DATABASE_URL) {
     schema: { 
       users: schema.usersPg, 
       sessions: schema.sessionsPg 
-    },
-    logger: false
+    }
   });
   console.log('Cloud PostgreSQL database initialized for user management');
 } else {

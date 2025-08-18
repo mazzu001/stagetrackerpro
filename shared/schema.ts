@@ -6,6 +6,7 @@ import { z } from "zod";
 
 export const songs = sqliteTable("songs", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id").notNull(), // Associate songs with users
   title: text("title").notNull(),
   artist: text("artist").notNull(),
   duration: integer("duration").notNull(), // in seconds

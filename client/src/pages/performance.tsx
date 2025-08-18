@@ -193,12 +193,17 @@ export default function Performance() {
         <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col">
           <div className="p-4 border-b border-gray-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Songs</h2>
-            <Dialog open={isAddSongOpen} onOpenChange={setIsAddSongOpen}>
+            <Dialog open={isAddSongOpen} onOpenChange={(open) => !isPlaying && setIsAddSongOpen(open)}>
               <DialogTrigger asChild>
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="h-8 w-8 p-0 hover:bg-gray-700"
+                  className={`h-8 w-8 p-0 ${
+                    isPlaying 
+                      ? 'cursor-not-allowed opacity-50' 
+                      : 'hover:bg-gray-700'
+                  }`}
+                  disabled={isPlaying}
                   data-testid="button-add-song"
                 >
                   <Plus className="w-4 h-4" />
@@ -260,21 +265,30 @@ export default function Performance() {
             {allSongs.map((song) => (
               <div
                 key={song.id}
-                className={`p-4 border-b border-gray-700 cursor-pointer transition-colors hover:bg-gray-700 ${
+                className={`p-4 border-b border-gray-700 transition-colors ${
                   selectedSongId === song.id ? 'bg-primary/20 border-l-4 border-l-primary' : ''
+                } ${
+                  isPlaying ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-gray-700'
                 }`}
-                onClick={() => setSelectedSongId(song.id)}
+                onClick={() => !isPlaying && setSelectedSongId(song.id)}
                 data-testid={`song-item-${song.id}`}
               >
                 <div className="flex items-center justify-between">
                   <div className="font-medium">{song.title}</div>
                   <button
-                    className="text-xs bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded transition-colors"
+                    className={`text-xs px-2 py-1 rounded transition-colors ${
+                      isPlaying 
+                        ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                        : 'bg-gray-700 hover:bg-gray-600'
+                    }`}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setSelectedSongId(song.id);
-                      setIsTrackManagerOpen(true);
+                      if (!isPlaying) {
+                        setSelectedSongId(song.id);
+                        setIsTrackManagerOpen(true);
+                      }
                     }}
+                    disabled={isPlaying}
                     data-testid={`button-tracks-${song.id}`}
                   >
                     {song.tracks ? song.tracks.length : 0} tracks

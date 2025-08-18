@@ -9,6 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
+import VUMeter from "@/components/vu-meter";
 import type { Track, SongWithTracks } from "@shared/schema";
 
 interface TrackManagerProps {
@@ -545,21 +546,12 @@ export default function TrackManager({
                       <div className="flex-1">
                         <div className="flex items-center space-x-3">
                           <h4 className="font-medium">{track.name}</h4>
-                          {/* Volume Meter */}
-                          <div className="flex items-center space-x-2">
-                            <div className="w-16 h-2 bg-gray-700 rounded-full overflow-hidden">
-                              <div 
-                                className={`h-full transition-all duration-100 ${
-                                  (audioLevels[track.id] || 0) < 70 ? 'bg-green-500' :
-                                  (audioLevels[track.id] || 0) < 85 ? 'bg-yellow-500' : 'bg-red-500'
-                                }`}
-                                style={{ width: `${track.isMuted ? 0 : (audioLevels[track.id] || 0)}%` }}
-                              />
-                            </div>
-                            <span className="text-xs text-gray-400 w-8">
-                              {track.isMuted ? 'M' : `${Math.round(audioLevels[track.id] || 0)}`}
-                            </span>
-                          </div>
+                          {/* VU Meter */}
+                          <VUMeter 
+                            level={audioLevels[track.id] || 0}
+                            isMuted={track.isMuted}
+                            className="flex-shrink-0"
+                          />
                         </div>
                         {(track as any).localFileName && (
                           <div className="text-xs text-gray-500 font-mono mt-1 truncate">

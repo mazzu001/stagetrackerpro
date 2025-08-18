@@ -547,7 +547,7 @@ export default function TrackManager({
       ) : (
         <>
           {/* Show warning for tracks that need to be re-added */}
-          {tracks.some(track => track.audioUrl && !persistence.hasFileData?.(track.id)) && (
+          {tracks.some(track => track.audioUrl && !audioStorage.hasAudioFile(track.id)) && (
             <div className="bg-blue-900/20 border border-blue-500 rounded-lg p-4 mb-4">
               <div className="flex items-start space-x-3">
                 <AlertTriangle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />

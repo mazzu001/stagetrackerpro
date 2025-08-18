@@ -4,7 +4,7 @@ interface StoredAudioFile {
   id: string;
   name: string;
   mimeType: string;
-  data: string; // base64 encoded audio data
+  filePath: string; // Store file path instead of data
   size: number;
 }
 
@@ -13,6 +13,7 @@ const AUDIO_STORAGE_KEY = "music-app-audio-files";
 export class AudioFileStorage {
   private static instance: AudioFileStorage;
   private audioFiles: Map<string, StoredAudioFile> = new Map();
+  private fileObjects: Map<string, File> = new Map(); // Keep original File objects in memory
 
   static getInstance(): AudioFileStorage {
     if (!AudioFileStorage.instance) {
@@ -22,52 +23,48 @@ export class AudioFileStorage {
     return AudioFileStorage.instance;
   }
 
-  // Store audio file data
+  // Store audio file reference (not the data)
   async storeAudioFile(trackId: string, file: File): Promise<void> {
     try {
-      console.log(`Preparing to store audio file for: ${file.name}, size: ${file.size} bytes`);
-      const arrayBuffer = await file.arrayBuffer();
-      const base64Data = this.arrayBufferToBase64(arrayBuffer);
+      console.log(`Storing file reference for: ${file.name}, size: ${file.size} bytes`);
       
       const storedFile: StoredAudioFile = {
         id: trackId,
         name: file.name,
         mimeType: file.type,
-        data: base64Data,
+        filePath: file.name, // Store file name as reference
         size: file.size
       };
 
+      // Keep the actual file object in memory for immediate access
+      this.fileObjects.set(trackId, file);
       this.audioFiles.set(trackId, storedFile);
-      console.log(`Added to memory map, now have ${this.audioFiles.size} files`);
+      
+      // Only save lightweight metadata to localStorage
       this.saveToStorage();
       
-      // Verify it was saved by immediately checking localStorage
-      const verification = localStorage.getItem(AUDIO_STORAGE_KEY);
-      if (verification) {
-        console.log(`Verified: audio data persisted in localStorage (${Math.round(verification.length / 1024)}KB total)`);
-      } else {
-        console.error('Failed to verify localStorage persistence!');
-      }
-      
-      console.log(`Successfully stored audio file for track: ${trackId} (${Math.round(file.size / 1024)}KB)`);
+      console.log(`Successfully stored file reference for track: ${trackId} (${Math.round(file.size / 1024)}KB)`);
     } catch (error) {
-      console.error('Failed to store audio file:', error);
+      console.error('Failed to store audio file reference:', error);
       throw error;
     }
   }
 
-  // Get audio file as blob URL
+  // Get audio file as blob URL from memory
   getAudioUrl(trackId: string): string | null {
-    const storedFile = this.audioFiles.get(trackId);
-    if (!storedFile) {
-      console.warn(`No audio file found for track: ${trackId}`);
+    const fileObject = this.fileObjects.get(trackId);
+    if (!fileObject) {
+      const storedFile = this.audioFiles.get(trackId);
+      if (storedFile) {
+        console.warn(`No file data available for track ${storedFile.name}. Please re-add the audio file.`);
+      } else {
+        console.warn(`No audio file found for track: ${trackId}`);
+      }
       return null;
     }
 
     try {
-      const binaryData = this.base64ToArrayBuffer(storedFile.data);
-      const blob = new Blob([binaryData], { type: storedFile.mimeType });
-      const url = URL.createObjectURL(blob);
+      const url = URL.createObjectURL(fileObject);
       console.log(`Created audio URL for track: ${trackId}`);
       return url;
     } catch (error) {
@@ -76,91 +73,47 @@ export class AudioFileStorage {
     }
   }
 
-  // Check if audio file exists
+  // Check if audio file exists in memory
   hasAudioFile(trackId: string): boolean {
-    return this.audioFiles.has(trackId);
+    return this.fileObjects.has(trackId);
   }
 
   // Remove audio file
   removeAudioFile(trackId: string): void {
     this.audioFiles.delete(trackId);
+    this.fileObjects.delete(trackId);
     this.saveToStorage();
     console.log(`Removed audio file for track: ${trackId}`);
   }
 
-  // Get storage info
-  getStorageInfo(): { fileCount: number; totalSizeMB: number } {
-    let totalSize = 0;
-    this.audioFiles.forEach(file => {
-      totalSize += file.size;
-    });
-
-    return {
-      fileCount: this.audioFiles.size,
-      totalSizeMB: Math.round(totalSize / (1024 * 1024) * 100) / 100
-    };
+  // Get all stored audio files
+  getAllStoredFiles(): StoredAudioFile[] {
+    return Array.from(this.audioFiles.values());
   }
 
-  // Convert ArrayBuffer to base64 in chunks to avoid stack overflow
-  private arrayBufferToBase64(buffer: ArrayBuffer): string {
-    const uint8Array = new Uint8Array(buffer);
-    const chunkSize = 8192;
-    let binary = '';
-    
-    for (let i = 0; i < uint8Array.length; i += chunkSize) {
-      const chunk = uint8Array.subarray(i, i + chunkSize);
-      binary += String.fromCharCode.apply(null, Array.from(chunk));
+  // Get audio file data for direct loading
+  async getAudioFileData(trackId: string): Promise<ArrayBuffer | null> {
+    const fileObject = this.fileObjects.get(trackId);
+    if (!fileObject) {
+      return null;
     }
-    
-    return btoa(binary);
-  }
 
-  // Convert base64 to ArrayBuffer
-  private base64ToArrayBuffer(base64: string): ArrayBuffer {
-    const binaryString = atob(base64);
-    const uint8Array = new Uint8Array(binaryString.length);
-    
-    for (let i = 0; i < binaryString.length; i++) {
-      uint8Array[i] = binaryString.charCodeAt(i);
-    }
-    
-    return uint8Array.buffer;
-  }
-
-  // Save to localStorage
-  private saveToStorage(): void {
     try {
-      const data = Array.from(this.audioFiles.entries()).map(([id, file]) => [id, file]);
-      const jsonData = JSON.stringify(data);
-      console.log(`Saving ${this.audioFiles.size} audio files to localStorage (${Math.round(jsonData.length / 1024)}KB)`);
-      localStorage.setItem(AUDIO_STORAGE_KEY, jsonData);
-      console.log('Successfully saved audio files to localStorage');
+      return await fileObject.arrayBuffer();
     } catch (error) {
-      console.error('Failed to save audio files to storage:', error);
-      // If localStorage is full, try to clear and save again
-      if (error instanceof Error && error.name === 'QuotaExceededError') {
-        console.warn('localStorage quota exceeded, clearing other data and retrying...');
-        try {
-          // Clear our previous audio storage and try again
-          localStorage.removeItem(AUDIO_STORAGE_KEY);
-          localStorage.setItem(AUDIO_STORAGE_KEY, jsonData);
-          console.log('Successfully saved audio files after clearing storage');
-        } catch (retryError) {
-          console.error('Failed to save even after clearing storage:', retryError);
-        }
-      }
+      console.error(`Failed to get audio data for track: ${trackId}`, error);
+      return null;
     }
   }
 
-  // Load from localStorage
+  // Load audio file metadata from localStorage (not the actual files)
   private loadFromStorage(): void {
     try {
       const stored = localStorage.getItem(AUDIO_STORAGE_KEY);
       if (stored) {
-        console.log(`Found stored audio data: ${Math.round(stored.length / 1024)}KB`);
         const data = JSON.parse(stored);
         this.audioFiles = new Map(data);
-        console.log(`Loaded ${this.audioFiles.size} audio files from storage:`, Array.from(this.audioFiles.keys()));
+        console.log(`Loaded ${this.audioFiles.size} audio file references from localStorage`);
       } else {
         console.log('No stored audio files found');
       }
@@ -170,9 +123,22 @@ export class AudioFileStorage {
     }
   }
 
+  // Save only metadata to localStorage (much faster and smaller)
+  private saveToStorage(): void {
+    try {
+      const data = Array.from(this.audioFiles.entries());
+      const jsonData = JSON.stringify(data);
+      localStorage.setItem(AUDIO_STORAGE_KEY, jsonData);
+      console.log(`Saved ${data.length} audio file references to localStorage (${Math.round(jsonData.length / 1024)}KB)`);
+    } catch (error) {
+      console.error('Failed to save audio file references:', error);
+    }
+  }
+
   // Clear all audio files
   clearAll(): void {
     this.audioFiles.clear();
+    this.fileObjects.clear();
     localStorage.removeItem(AUDIO_STORAGE_KEY);
     console.log('Cleared all audio files');
   }

@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { SongWithTracks } from '@shared/schema';
 import { audioStorage } from '@/lib/audio-file-storage';
-import { apiRequest } from '@/lib/queryClient';
 
 interface WaveformVisualizerProps {
   song: SongWithTracks | null;
@@ -23,24 +21,33 @@ export function WaveformVisualizer({
   const animationFrameRef = useRef<number>();
   const [waveformData, setWaveformData] = useState<number[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
-  const queryClient = useQueryClient();
 
-  // Check for cached waveform first
-  const { data: cachedWaveform } = useQuery({
-    queryKey: ['/api/waveforms', song?.id],
-    enabled: !!song?.id,
-    staleTime: Infinity, // Cache waveforms permanently until manually invalidated
-  });
-
-  // Mutation to save waveform
-  const saveWaveformMutation = useMutation({
-    mutationFn: async ({ songId, waveformData }: { songId: string; waveformData: number[] }) => {
-      return apiRequest(`/api/waveforms/${songId}`, 'POST', { waveformData });
-    },
-    onSuccess: (_, { songId }) => {
-      queryClient.invalidateQueries({ queryKey: ['/api/waveforms', songId] });
+  // Local storage waveform cache
+  const getWaveformCacheKey = (songId: string) => `waveform_${songId}`;
+  
+  const getCachedWaveform = (songId: string): number[] | null => {
+    try {
+      const cached = localStorage.getItem(getWaveformCacheKey(songId));
+      if (cached) {
+        const data = JSON.parse(cached);
+        if (Array.isArray(data)) {
+          return data;
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load cached waveform:', error);
     }
-  });
+    return null;
+  };
+
+  const saveWaveformToCache = (songId: string, waveformData: number[]) => {
+    try {
+      localStorage.setItem(getWaveformCacheKey(songId), JSON.stringify(waveformData));
+      console.log(`Waveform cached for song: ${songId}`);
+    } catch (error) {
+      console.error('Failed to save waveform to cache:', error);
+    }
+  };
 
   // Generate real waveform from combined audio tracks
   const generateWaveformFromAudio = async (song: SongWithTracks) => {
@@ -125,13 +132,9 @@ export function WaveformVisualizer({
         console.log(`Generated comprehensive waveform from ${tracksProcessed} tracks, duration: ${maxDuration.toFixed(1)}s`);
         setWaveformData(combinedData);
         
-        // Save waveform to cache for instant loading next time
+        // Save waveform to local cache for instant loading next time
         if (song?.id && combinedData.length > 0) {
-          saveWaveformMutation.mutate({
-            songId: song.id,
-            waveformData: combinedData
-          });
-          console.log('Waveform saved to cache');
+          saveWaveformToCache(song.id, combinedData);
         }
       } else {
         console.log('No tracks with audio data available, generating fallback waveform pattern');
@@ -196,9 +199,10 @@ export function WaveformVisualizer({
     }
 
     // Check if we have cached waveform data
-    if (cachedWaveform && 'success' in cachedWaveform && cachedWaveform.success && 'waveformData' in cachedWaveform && cachedWaveform.waveformData) {
+    const cachedData = getCachedWaveform(song.id);
+    if (cachedData) {
       console.log(`Loading cached waveform for "${song.title}"`);
-      setWaveformData(cachedWaveform.waveformData as number[]);
+      setWaveformData(cachedData);
       setIsGenerating(false);
       return;
     }
@@ -210,7 +214,7 @@ export function WaveformVisualizer({
     } else {
       setWaveformData([]);
     }
-  }, [song?.id, cachedWaveform]);
+  }, [song?.id]);
 
   const draw = () => {
     const canvas = canvasRef.current;

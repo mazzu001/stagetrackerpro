@@ -11,7 +11,6 @@ interface LyricsDisplayProps {
 
 export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps) {
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
-  const [lastScrollTime, setLastScrollTime] = useState(0);
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
   
@@ -20,13 +19,10 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   });
 
-  // Adaptive smooth scrolling that keeps current line centered
+  // Simple synchronized scrolling that follows song timing
   useEffect(() => {
-    if (song && parsedLyrics.length > 0 && lyricsContainerRef.current && currentLineIndex >= 0) {
+    if (song && parsedLyrics.length > 0 && lyricsContainerRef.current) {
       const container = lyricsContainerRef.current;
-      const containerHeight = container.clientHeight;
-      const containerCenter = containerHeight / 2;
-      const now = Date.now();
       
       // Check if lyrics contain actual timestamps (not just default sequential ones)
       const hasRealTimestamps = parsedLyrics.some((line, index) => {
@@ -46,47 +42,22 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
       }
       
       if (shouldStartScrolling) {
-        // Throttle scrolling updates to prevent excessive movement
-        const timeSinceLastScroll = now - lastScrollTime;
-        if (timeSinceLastScroll < 200) return; // Wait at least 200ms between scroll updates
+        // Simple progress-based scrolling synchronized with song
+        const songDuration = song.duration || 180;
+        const scrollProgress = Math.min(currentTime / songDuration, 1);
         
-        // Get the current active line element
-        const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
+        // Calculate total scrollable area
+        const maxScrollTop = container.scrollHeight - container.clientHeight;
+        const targetScrollTop = scrollProgress * maxScrollTop;
         
-        if (currentLineElement) {
-          const lineOffsetTop = currentLineElement.offsetTop;
-          const lineHeight = currentLineElement.offsetHeight;
-          const currentScrollTop = container.scrollTop;
-          
-          // Calculate where the line currently appears in the visible area
-          const linePositionInContainer = lineOffsetTop - currentScrollTop;
-          const lineCenterInContainer = linePositionInContainer + (lineHeight / 2);
-          
-          // Calculate distance from ideal center position
-          const distanceFromCenter = Math.abs(lineCenterInContainer - containerCenter);
-          
-          // Only scroll if line is significantly off-center (more than 20% of container height)
-          if (distanceFromCenter > containerHeight * 0.2) {
-            // Calculate target scroll position to center the line
-            const idealScrollTop = lineOffsetTop - containerCenter + (lineHeight / 2);
-            
-            // Use gradual movement - only move 30% of the way toward target
-            const scrollDifference = idealScrollTop - currentScrollTop;
-            const gentleScrollAmount = scrollDifference * 0.3;
-            const targetScrollTop = currentScrollTop + gentleScrollAmount;
-            
-            // Apply gentle scroll movement
-            container.scrollTo({
-              top: Math.max(0, targetScrollTop),
-              behavior: 'smooth'
-            });
-            
-            setLastScrollTime(now);
-          }
-        }
+        // Smooth scroll without any jumping
+        container.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth'
+        });
       }
     }
-  }, [currentTime, song, parsedLyrics.length, currentLineIndex, lastScrollTime]);
+  }, [currentTime, song, parsedLyrics.length]);
 
   if (!song) {
     return (

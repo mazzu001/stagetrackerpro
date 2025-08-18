@@ -16,11 +16,17 @@ function App() {
     const checkLocalFS = async () => {
       try {
         const browserFS = BrowserFileSystem.getInstance();
-        const isReady = browserFS.isReady();
+        const isAlreadyInitialized = await browserFS.isAlreadyInitialized();
         
-        if (isReady) {
-          console.log('Browser file system already ready');
-          setIsLocalFSReady(true);
+        if (isAlreadyInitialized) {
+          console.log('Browser file system already initialized - auto-initializing');
+          // Auto-initialize since it was already set up before
+          const success = await browserFS.initialize();
+          if (success) {
+            setIsLocalFSReady(true);
+          } else {
+            console.log('Auto-initialization failed - showing setup screen');
+          }
         } else {
           console.log('Browser file system needs initialization');
         }

@@ -59,11 +59,24 @@ export class BrowserFileSystem {
     };
   }
 
+  // Check if already initialized
+  async isAlreadyInitialized(): Promise<boolean> {
+    try {
+      const initialized = localStorage.getItem('browserfs-initialized');
+      return initialized === 'true';
+    } catch (error) {
+      return false;
+    }
+  }
+
   // Initialize IndexedDB for file storage
   async initialize(): Promise<boolean> {
     try {
       await this.initializeDB();
       await this.loadConfig();
+      
+      // Mark as initialized in localStorage
+      localStorage.setItem('browserfs-initialized', 'true');
       console.log('Browser file system initialized successfully');
       return true;
     } catch (error) {

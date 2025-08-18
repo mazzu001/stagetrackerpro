@@ -19,24 +19,50 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   });
 
-  // Smooth auto-scroll based on song progress
+  // Smart auto-scroll: timestamp-based when available, progress-based fallback
   useEffect(() => {
     if (song && parsedLyrics.length > 0 && lyricsContainerRef.current) {
       const container = lyricsContainerRef.current;
-      const songDuration = song.duration || 180; // Default to 3 minutes if no duration
-      const progress = Math.min(currentTime / songDuration, 1); // Cap at 100%
       
-      // Calculate smooth scroll position based on progress
-      const maxScrollTop = container.scrollHeight - container.clientHeight;
-      const targetScrollTop = progress * maxScrollTop;
-      
-      // Use smooth scrolling
-      container.scrollTo({
-        top: targetScrollTop,
-        behavior: 'smooth'
+      // Check if lyrics contain actual timestamps (not just default sequential ones)
+      const hasRealTimestamps = parsedLyrics.some((line, index) => {
+        // Real timestamps won't follow the sequential 5-second pattern
+        return line.timestamp !== (index + 1) * 5;
       });
+      
+      if (hasRealTimestamps && currentLineIndex >= 0) {
+        // Use timestamp-based scrolling: scroll to current line
+        const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
+        if (currentLineElement) {
+          const containerHeight = container.clientHeight;
+          const lineOffsetTop = currentLineElement.offsetTop;
+          const lineHeight = currentLineElement.offsetHeight;
+          
+          // Center the current line in the container
+          const targetScrollTop = lineOffsetTop - (containerHeight / 2) + (lineHeight / 2);
+          
+          container.scrollTo({
+            top: Math.max(0, targetScrollTop),
+            behavior: 'smooth'
+          });
+        }
+      } else {
+        // Fall back to progress-based scrolling for lyrics without timestamps
+        const songDuration = song.duration || 180; // Default to 3 minutes if no duration
+        const progress = Math.min(currentTime / songDuration, 1); // Cap at 100%
+        
+        // Calculate smooth scroll position based on progress
+        const maxScrollTop = container.scrollHeight - container.clientHeight;
+        const targetScrollTop = progress * maxScrollTop;
+        
+        // Use smooth scrolling
+        container.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth'
+        });
+      }
     }
-  }, [currentTime, song, parsedLyrics.length]);
+  }, [currentTime, song, parsedLyrics.length, currentLineIndex]);
 
   if (!song) {
     return (
@@ -65,7 +91,16 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
           Lyrics
         </h2>
         <div className="flex items-center space-x-2">
-          <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded">AUTO-SCROLL</span>
+          <span className={`text-xs px-2 py-1 rounded ${
+            parsedLyrics.some((line, index) => line.timestamp !== (index + 1) * 5)
+              ? 'bg-primary/20 text-primary'
+              : 'bg-accent/20 text-accent'
+          }`}>
+            {parsedLyrics.some((line, index) => line.timestamp !== (index + 1) * 5)
+              ? 'TIMESTAMP-SYNC'
+              : 'AUTO-SCROLL'
+            }
+          </span>
           <Button
             variant="secondary"
             size="sm"

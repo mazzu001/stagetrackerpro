@@ -68,7 +68,12 @@ export class LocalFileSystem {
     try {
       // Check if File System Access API is supported
       if (!('showDirectoryPicker' in window)) {
-        throw new Error('File System Access API not supported in this browser');
+        throw new Error('File System Access API not supported in this browser. Please use Chrome, Edge, or another Chromium-based browser.');
+      }
+
+      // Check if we're in a secure context (required for File System Access API)
+      if (!window.isSecureContext) {
+        throw new Error('File System Access API requires a secure context (HTTPS). Please access this application over HTTPS.');
       }
 
       // Try to load existing project directory
@@ -80,10 +85,23 @@ export class LocalFileSystem {
 
       // Ask user to select or create project directory
       console.log('Requesting project directory selection...');
-      this.projectDir = await (window as any).showDirectoryPicker({
-        mode: 'readwrite',
-        startIn: 'documents'
-      });
+      
+      try {
+        this.projectDir = await (window as any).showDirectoryPicker({
+          mode: 'readwrite',
+          startIn: 'documents'
+        });
+      } catch (pickerError: any) {
+        if (pickerError.name === 'AbortError') {
+          console.log('User cancelled directory selection');
+          return false;
+        }
+        throw new Error(`Failed to open directory picker: ${pickerError.message}`);
+      }
+
+      if (!this.projectDir) {
+        throw new Error('No directory selected');
+      }
 
       await this.setupProjectStructure();
       await this.loadConfig();
@@ -91,9 +109,9 @@ export class LocalFileSystem {
       console.log('Local file system initialized successfully');
       return true;
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to initialize local file system:', error);
-      return false;
+      throw error; // Re-throw to let the UI handle the error display
     }
   }
 

@@ -15,9 +15,33 @@ export function LocalFileSystemInit({ onInitialized }: LocalFileSystemInitProps)
 
   useEffect(() => {
     // Check if File System Access API is supported
-    if (!('showDirectoryPicker' in window)) {
-      setIsSupported(false);
-    }
+    const checkSupport = () => {
+      const hasAPI = 'showDirectoryPicker' in window;
+      const isSecureContext = window.isSecureContext;
+      const userAgent = navigator.userAgent.toLowerCase();
+      
+      console.log('Browser support check:', {
+        hasAPI,
+        isSecureContext,
+        userAgent: userAgent.substring(0, 100)
+      });
+      
+      if (!hasAPI) {
+        console.warn('File System Access API not available');
+        setIsSupported(false);
+        return;
+      }
+      
+      if (!isSecureContext) {
+        console.warn('Secure context required for File System Access API');
+        setIsSupported(false);
+        return;
+      }
+      
+      setIsSupported(true);
+    };
+    
+    checkSupport();
   }, []);
 
   const handleInitialize = async () => {
@@ -32,11 +56,28 @@ export function LocalFileSystemInit({ onInitialized }: LocalFileSystemInitProps)
         console.log('Local file system initialized successfully');
         onInitialized();
       } else {
-        setError('Failed to initialize local file system');
+        setError('Directory selection was cancelled. Please try again to set up your music project folder.');
       }
     } catch (error: any) {
       console.error('Initialization error:', error);
-      setError(error.message || 'Unknown error during initialization');
+      
+      let errorMessage = 'Unknown error during initialization';
+      
+      if (error.message.includes('not supported')) {
+        errorMessage = 'Your browser doesn\'t support the File System Access API. Please use Chrome, Edge, or another Chromium-based browser.';
+      } else if (error.message.includes('secure context')) {
+        errorMessage = 'This feature requires HTTPS. Please make sure you\'re accessing the app over a secure connection.';
+      } else if (error.message.includes('AbortError') || error.message.includes('cancelled')) {
+        errorMessage = 'Directory selection was cancelled. Click the button again to choose your project folder.';
+      } else if (error.message.includes('picker')) {
+        errorMessage = 'Could not open the folder selection dialog. Please ensure you\'re using a supported browser and try again.';
+      } else if (error.message.includes('Permission denied')) {
+        errorMessage = 'Permission denied. Please grant permission to access the folder when prompted by your browser.';
+      } else {
+        errorMessage = error.message || 'Failed to set up local file storage.';
+      }
+      
+      setError(errorMessage);
     } finally {
       setIsInitializing(false);
     }
@@ -54,11 +95,19 @@ export function LocalFileSystemInit({ onInitialized }: LocalFileSystemInitProps)
           </CardHeader>
           <CardContent>
             <p className="text-red-300 mb-4">
-              This application requires the File System Access API, which is not supported in your current browser.
+              This application requires the File System Access API for local file storage, which is not available in your current browser.
             </p>
-            <p className="text-red-400 text-sm">
-              Please use a modern Chromium-based browser (Chrome, Edge, Opera) for full functionality.
-            </p>
+            <div className="space-y-2 text-sm">
+              <p className="text-red-400">
+                <strong>Required:</strong> Chrome 86+, Edge 86+, or another Chromium-based browser
+              </p>
+              <p className="text-red-400">
+                <strong>Not supported:</strong> Firefox, Safari, Internet Explorer
+              </p>
+              <p className="text-red-300 mt-3">
+                Please switch to a supported browser and make sure you're on HTTPS to use this application.
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -83,16 +132,26 @@ export function LocalFileSystemInit({ onInitialized }: LocalFileSystemInitProps)
             <div className="bg-blue-950/20 border border-blue-500 rounded-lg p-4">
               <h3 className="text-blue-300 font-medium mb-2">What happens next:</h3>
               <ul className="text-blue-200 text-sm space-y-1">
-                <li>• You'll select a folder on your computer for the project</li>
-                <li>• Audio files will be stored in organized subfolders</li>
+                <li>• You'll see a folder picker dialog</li>
+                <li>• Choose or create a folder for your music project</li>
+                <li>• Audio files will be organized in subfolders by song</li>
                 <li>• A config file will track all your songs and settings</li>
                 <li>• Everything stays 100% local - no cloud or internet required</li>
               </ul>
             </div>
 
+            <div className="bg-yellow-950/20 border border-yellow-500 rounded-lg p-4">
+              <h3 className="text-yellow-300 font-medium mb-2">Browser Requirements:</h3>
+              <p className="text-yellow-200 text-sm">
+                This feature requires Chrome, Edge, or another Chromium-based browser. 
+                Safari and Firefox don't support local file system access yet.
+              </p>
+            </div>
+
             {error && (
               <div className="bg-red-950/20 border border-red-500 rounded-lg p-4">
-                <p className="text-red-300 text-sm">{error}</p>
+                <h3 className="text-red-300 font-medium mb-2">Setup Error:</h3>
+                <p className="text-red-200 text-sm">{error}</p>
               </div>
             )}
 
@@ -108,7 +167,7 @@ export function LocalFileSystemInit({ onInitialized }: LocalFileSystemInitProps)
               </Button>
               
               <p className="text-xs text-gray-500 text-center">
-                This will open a folder picker dialog
+                Your browser will ask permission to access a folder on your computer
               </p>
             </div>
           </div>

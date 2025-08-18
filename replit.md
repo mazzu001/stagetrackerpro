@@ -4,6 +4,7 @@ This is a live music performance application built with React, Express, and in-m
 
 ## Recent Updates (August 18, 2025)
 
+### Web Application (Legacy)
 ✓ **Subscription system** - Complete $4.99/month Stripe payment processing with user authentication
 ✓ **Professional landing page** - Marketing page with features, pricing, and sign-up flow
 ✓ **Development mode access** - Subscription checks bypassed in development for testing  
@@ -28,36 +29,62 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Multiple file upload fix** - Fixed track manager to properly process all selected files instead of just the first one
 ✓ **Enhanced upload error handling** - Added sequential processing, progress tracking, and detailed error reporting for file uploads
 
+### Mobile Application (Primary)
+✓ **React Native mobile app** - Complete migration from web to native Android/iOS application
+✓ **Local file storage** - Audio files stored locally on device for maximum performance and offline operation
+✓ **SQLite database** - Local database replaces cloud PostgreSQL for complete offline functionality  
+✓ **Native audio engine** - Expo AV replaces Web Audio API for platform-optimized audio performance
+✓ **Touch-optimized UI** - Mobile-first interface with landscape orientation for stage performance
+✓ **Offline-first architecture** - Zero internet dependency for live performance reliability
+✓ **Local file management** - Expo File System and Document Picker for seamless audio file handling
+✓ **React Navigation** - Native mobile navigation replacing web routing
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
-Architecture preference: Completely offline operation using database blob storage - no file system dependency required.
-Data persistence: All data including audio files stored as binary blobs in PostgreSQL database with automatic caching.
+Architecture preference: **Native mobile app with local file storage** - cloud storage too slow for live performance.
+Data persistence: Local SQLite database with audio files stored on device file system for maximum performance and offline reliability.
+Performance priority: Fast, dependable operation without internet connection required.
 
 # System Architecture
 
-## Frontend Architecture
+## Mobile App Architecture (Primary)
+- **Framework**: React Native with TypeScript using Expo managed workflow
+- **Platform**: Cross-platform Android/iOS native application
+- **UI Components**: Native React Native components optimized for touch interfaces
+- **Navigation**: React Navigation with stack-based routing for mobile screens
+- **Audio Processing**: Expo AV for native platform audio performance
+- **State Management**: React Context for local state management (no server state needed)
+
+## Mobile Data Layer
+- **Database**: SQLite with Expo SQLite for local data persistence
+- **File Storage**: Expo File System for local audio file management in device documents directory
+- **Audio Handling**: Expo Document Picker for file selection, native audio caching
+- **Offline Operation**: Complete functionality without internet dependency
+
+## Legacy Web Architecture (Deprecated)
 - **Framework**: React with TypeScript using Vite for development and building
 - **Styling**: Tailwind CSS with shadcn/ui component library for consistent design system
 - **State Management**: TanStack Query for server state management and caching
 - **Routing**: Wouter for lightweight client-side routing
 - **Audio Processing**: Web Audio API through custom AudioEngine class for real-time audio manipulation
-
-## Backend Architecture
-- **Runtime**: Node.js with Express.js REST API server
+- **Backend**: Node.js with Express.js REST API server
 - **Database**: PostgreSQL with Drizzle ORM for type-safe database operations
-- **File Storage**: Local file path references with automatic registration - no server storage needed
-- **Session Management**: PostgreSQL-backed sessions using connect-pg-simple
-- **Development**: Hot module replacement with Vite middleware integration
 
 ## Data Storage
-- **Primary Database**: PostgreSQL cloud database with four main tables:
+
+### Mobile App (Primary)
+- **Local Database**: SQLite database stored on device with three main tables:
   - `songs`: Core song metadata including title, artist, duration, BPM, key, and lyrics with waveform data
-  - `tracks`: Individual audio tracks per song with volume, mute, and solo controls (references local files)
+  - `tracks`: Individual audio tracks per song with volume, mute, and solo controls (references local file paths)
   - `midiEvents`: Time-stamped MIDI events for automation and effects
-  - `users`: User authentication and subscription data for production deployment
-- **File Storage**: Database BYTEA blob storage with local blob URL caching (MP3, WAV, OGG, M4A) - completely offline
-- **Cloud Persistence**: All data automatically saved to PostgreSQL, no localStorage dependency
+- **File Storage**: Local device file system using Expo File System API (MP3, WAV, OGG, M4A)
+- **Offline Operation**: Complete local data persistence with zero cloud dependency
+
+### Legacy Web App
+- **Cloud Database**: PostgreSQL cloud database with user authentication
+- **File Storage**: Database BYTEA blob storage with local blob URL caching
+- **Cloud Persistence**: All data automatically saved to PostgreSQL
 
 ## Core Features
 - **Multi-track Audio Engine**: Real-time audio mixing with individual track controls (up to 6 tracks per song)

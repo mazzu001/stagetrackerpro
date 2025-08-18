@@ -188,9 +188,9 @@ export default function Performance() {
 
 
       {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden h-0">
+      <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar - Song List (30%) */}
-        <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col h-full">
+        <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col">
           <div className="p-4 border-b border-gray-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Songs</h2>
             <Dialog open={isAddSongOpen} onOpenChange={(open) => !isPlaying && setIsAddSongOpen(open)}>
@@ -319,7 +319,7 @@ export default function Performance() {
             )}
           </div>
           
-          {/* Transport Controls - Fixed at bottom of sidebar */}
+          {/* Compact Transport Controls */}
           <div className="p-4 border-t border-gray-700 flex-shrink-0">
             <CompactTransportControls
               isPlaying={isPlaying}

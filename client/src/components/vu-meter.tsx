@@ -10,7 +10,7 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
   const [animatedLevel, setAnimatedLevel] = useState(0);
   const [peakLevel, setPeakLevel] = useState(0);
 
-  // Smooth animation for level changes
+  // Real-time animation for level changes
   useEffect(() => {
     if (isMuted) {
       setAnimatedLevel(0);
@@ -20,16 +20,17 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
 
     const targetLevel = Math.max(0, Math.min(100, level));
     
-    // Smooth interpolation to target level
+    // Fast interpolation for real-time response
     const animate = () => {
       setAnimatedLevel(prev => {
         const diff = targetLevel - prev;
-        const step = diff * 0.15; // Smooth interpolation factor
-        return Math.abs(step) < 0.5 ? targetLevel : prev + step;
+        // Much faster interpolation for real-time feel
+        const step = diff * 0.8; 
+        return Math.abs(step) < 0.1 ? targetLevel : prev + step;
       });
     };
 
-    const interval = setInterval(animate, 16); // ~60fps
+    const interval = setInterval(animate, 8); // ~120fps for smoother animation
     return () => clearInterval(interval);
   }, [level, isMuted]);
 
@@ -38,11 +39,11 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
     if (animatedLevel > peakLevel) {
       setPeakLevel(animatedLevel);
     } else {
-      // Decay peak slowly
+      // Faster peak decay for more responsive feel
       const decay = () => {
-        setPeakLevel(prev => Math.max(animatedLevel, prev - 0.5));
+        setPeakLevel(prev => Math.max(animatedLevel, prev - 2.0));
       };
-      const interval = setInterval(decay, 50);
+      const interval = setInterval(decay, 20); // Faster decay updates
       return () => clearInterval(interval);
     }
   }, [animatedLevel, peakLevel]);
@@ -85,7 +86,7 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
         {Array.from({ length: segments }, (_, index) => (
           <div
             key={index}
-            className={`w-1 h-3 rounded-sm transition-colors duration-75 ${getSegmentColor(index)}`}
+            className={`w-1 h-3 rounded-sm ${getSegmentColor(index)}`}
             style={{
               opacity: index < activeSegments || index === peakSegment - 1 ? 1 : 0.3
             }}

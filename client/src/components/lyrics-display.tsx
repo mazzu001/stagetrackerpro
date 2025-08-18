@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AlignLeft, Type } from "lucide-react";
+import { AlignLeft, Type, ChevronUp, ChevronDown } from "lucide-react";
 import { parseLyricsWithMidi } from "@/lib/midi-parser";
 import type { SongWithTracks } from "@shared/schema";
 
@@ -12,8 +12,25 @@ interface LyricsDisplayProps {
 export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps) {
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
   const [lastScrolledLine, setLastScrolledLine] = useState(-1);
+  const [scrollSpeed, setScrollSpeed] = useState(() => {
+    // Load scroll speed from localStorage, default to 1.0
+    const saved = localStorage.getItem('lyrics-scroll-speed');
+    return saved ? parseFloat(saved) : 1.0;
+  });
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
+
+  // Save scroll speed to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('lyrics-scroll-speed', scrollSpeed.toString());
+  }, [scrollSpeed]);
+
+  const adjustScrollSpeed = (delta: number) => {
+    setScrollSpeed(prev => {
+      const newSpeed = Math.max(0.1, Math.min(3.0, prev + delta));
+      return Math.round(newSpeed * 10) / 10; // Round to 1 decimal place
+    });
+  };
   
   // Check if lyrics contain actual timestamps (not just default sequential ones)
   const hasRealTimestamps = parsedLyrics.some((line, index) => {
@@ -74,9 +91,10 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
         }
       }
     } else if (!hasRealTimestamps && currentTime >= 5) {
-      // Non-timestamped lyrics: smooth auto-scroll based on song progress
+      // Non-timestamped lyrics: smooth auto-scroll based on song progress with adjustable speed
       const songDuration = song.duration || 300; // Default to 5 minutes if no duration
-      const scrollProgress = Math.min((currentTime - 5) / (songDuration - 5), 1); // Start scrolling after 5 seconds
+      const adjustedDuration = (songDuration - 5) / scrollSpeed; // Apply scroll speed multiplier
+      const scrollProgress = Math.min((currentTime - 5) / adjustedDuration, 1); // Start scrolling after 5 seconds
       
       const maxScrollTop = container.scrollHeight - container.clientHeight;
       const targetScrollTop = scrollProgress * maxScrollTop;
@@ -86,7 +104,7 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
         behavior: 'smooth'
       });
     }
-  }, [currentTime, song, parsedLyrics.length, currentLineIndex, lastScrolledLine, hasRealTimestamps]);
+  }, [currentTime, song, parsedLyrics.length, currentLineIndex, lastScrolledLine, hasRealTimestamps, scrollSpeed]);
 
   if (!song) {
     return (
@@ -122,9 +140,35 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
           }`}>
             {parsedLyrics.some((line, index) => line.timestamp !== (index + 1) * 5)
               ? 'TIMESTAMP-SYNC'
-              : 'AUTO-SCROLL'
+              : `AUTO-SCROLL ${scrollSpeed}x`
             }
           </span>
+          
+          {!hasRealTimestamps && (
+            <div className="flex items-center space-x-1">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
+                title="Decrease Scroll Speed"
+                onClick={() => adjustScrollSpeed(-0.1)}
+                data-testid="button-decrease-speed"
+              >
+                <ChevronDown className="w-3 h-3" />
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
+                title="Increase Scroll Speed"
+                onClick={() => adjustScrollSpeed(0.1)}
+                data-testid="button-increase-speed"
+              >
+                <ChevronUp className="w-3 h-3" />
+              </Button>
+            </div>
+          )}
+          
           <Button
             variant="secondary"
             size="sm"

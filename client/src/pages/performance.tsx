@@ -286,7 +286,7 @@ export default function Performance() {
           </div>
           
           {/* Waveform Visualizer - positioned 10px from LIVE badge and auto-fits remaining space */}
-          <div className="flex-1 flex items-center ml-[10px] mr-4">
+          <div className="flex-1 flex items-center ml-[10px] mr-4 py-1">
             <div className="flex-1 max-w-[600px]">
               <WaveformVisualizer
                 song={selectedSong || null}

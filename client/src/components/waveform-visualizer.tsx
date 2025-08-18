@@ -204,7 +204,7 @@ export function WaveformVisualizer({
 
     const barWidth = width / waveformData.length;
     const centerY = height / 2;
-    const maxHeight = height * 0.8;
+    const maxHeight = height * 0.9; // Use more of the available height
 
     // Draw waveform bars
     waveformData.forEach((amplitude, index) => {
@@ -267,8 +267,8 @@ export function WaveformVisualizer({
         const seconds = Math.floor(time % 60);
         const timeLabel = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         
-        if (x > 20 && x < width - 20) { // Don't draw too close to edges
-          ctx.fillText(timeLabel, x, height - 4);
+        if (x > 25 && x < width - 25) { // Don't draw too close to edges
+          ctx.fillText(timeLabel, x, height - 6);
         }
       }
     }
@@ -313,9 +313,9 @@ export function WaveformVisualizer({
       <canvas
         ref={canvasRef}
         width={600}
-        height={40}
+        height={60}
         className="w-full h-full"
-        style={{ display: 'block', height: '40px' }}
+        style={{ display: 'block', height: '60px' }}
       />
     </div>
   );

@@ -15,35 +15,29 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
   
-  const currentLineIndex = parsedLyrics.findIndex((line, index) => {
-    const nextLine = parsedLyrics[index + 1];
-    return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
+  // Check if lyrics contain actual timestamps (not just default sequential ones)
+  const hasRealTimestamps = parsedLyrics.some((line, index) => {
+    // Real timestamps won't follow the sequential 5-second pattern
+    return line.timestamp !== (index + 1) * 5;
   });
 
-  // Conservative line-based scrolling - only moves when current line needs to be visible
+  const currentLineIndex = hasRealTimestamps ? parsedLyrics.findIndex((line, index) => {
+    const nextLine = parsedLyrics[index + 1];
+    return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
+  }) : -1; // Don't highlight lines when no real timestamps
+
+  // Scrolling logic based on whether lyrics have timestamps
   useEffect(() => {
-    if (song && parsedLyrics.length > 0 && lyricsContainerRef.current && currentLineIndex >= 0) {
-      const container = lyricsContainerRef.current;
+    if (!song || parsedLyrics.length === 0 || !lyricsContainerRef.current) return;
+    
+    const container = lyricsContainerRef.current;
+
+    if (hasRealTimestamps && currentLineIndex >= 0) {
+      // Timestamped lyrics: line-based scrolling with highlighting
+      const firstTimestamp = Math.min(...parsedLyrics.map(line => line.timestamp));
+      const shouldStartScrolling = currentTime >= firstTimestamp;
       
-      // Check if lyrics contain actual timestamps (not just default sequential ones)
-      const hasRealTimestamps = parsedLyrics.some((line, index) => {
-        // Real timestamps won't follow the sequential 5-second pattern
-        return line.timestamp !== (index + 1) * 5;
-      });
-      
-      let shouldStartScrolling = false;
-      
-      if (hasRealTimestamps) {
-        // For timestamped lyrics, wait until first timestamp is reached
-        const firstTimestamp = Math.min(...parsedLyrics.map(line => line.timestamp));
-        shouldStartScrolling = currentTime >= firstTimestamp;
-      } else {
-        // For non-timestamped lyrics, wait 5 seconds
-        shouldStartScrolling = currentTime >= 5;
-      }
-      
-      // Only scroll when we have a new line AND it's time to scroll
-      if (shouldStartScrolling && currentLineIndex !== lastScrolledLine && currentLineIndex >= 0) {
+      if (shouldStartScrolling && currentLineIndex !== lastScrolledLine) {
         const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
         
         if (currentLineElement) {
@@ -52,27 +46,22 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
           const lineTop = currentLineElement.offsetTop;
           const lineBottom = lineTop + currentLineElement.offsetHeight;
           
-          // Only scroll if the current line is not fully visible in the viewport
           const visibleTop = currentScrollTop;
           const visibleBottom = currentScrollTop + containerHeight;
           
-          // Check if line is completely outside visible area (much more conservative)
           const lineCompletelyAbove = lineBottom < visibleTop;
           const lineCompletelyBelow = lineTop > visibleBottom;
           const needsScroll = lineCompletelyAbove || lineCompletelyBelow;
           
           if (needsScroll) {
-            // Minimal scrolling - just bring the line into view at the top
             let targetScrollTop;
             
             if (lineCompletelyBelow) {
-              // Line is below viewport - scroll just enough to bring it into view at bottom
-              targetScrollTop = lineBottom - containerHeight + 20; // 20px margin from bottom
+              targetScrollTop = lineBottom - containerHeight + 20;
             } else if (lineCompletelyAbove) {
-              // Line is above viewport - scroll just enough to bring it into view at top  
-              targetScrollTop = lineTop - 20; // 20px margin from top
+              targetScrollTop = lineTop - 20;
             } else {
-              targetScrollTop = currentScrollTop; // No scroll needed
+              targetScrollTop = currentScrollTop;
             }
             
             container.scrollTo({
@@ -84,8 +73,20 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
           setLastScrolledLine(currentLineIndex);
         }
       }
+    } else if (!hasRealTimestamps && currentTime >= 5) {
+      // Non-timestamped lyrics: smooth auto-scroll based on song progress
+      const songDuration = song.duration || 300; // Default to 5 minutes if no duration
+      const scrollProgress = Math.min((currentTime - 5) / (songDuration - 5), 1); // Start scrolling after 5 seconds
+      
+      const maxScrollTop = container.scrollHeight - container.clientHeight;
+      const targetScrollTop = scrollProgress * maxScrollTop;
+      
+      container.scrollTo({
+        top: Math.max(0, targetScrollTop),
+        behavior: 'smooth'
+      });
     }
-  }, [currentTime, song, parsedLyrics.length, currentLineIndex, lastScrolledLine]);
+  }, [currentTime, song, parsedLyrics.length, currentLineIndex, lastScrolledLine, hasRealTimestamps]);
 
   if (!song) {
     return (
@@ -148,8 +149,8 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
         ) : (
           <div className="space-y-4 text-lg leading-relaxed">
             {parsedLyrics.map((line, index) => {
-              const isCurrentLine = index === currentLineIndex;
-              const isUpcoming = line.timestamp > currentTime;
+              const isCurrentLine = hasRealTimestamps && index === currentLineIndex;
+              const isUpcoming = hasRealTimestamps && line.timestamp > currentTime;
               
               return (
                 <div 
@@ -161,7 +162,9 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
                         ? 'text-white bg-primary/20 px-2 py-1 rounded border-l-4 border-primary'
                         : isUpcoming
                           ? 'text-gray-400'
-                          : 'text-gray-500'
+                          : hasRealTimestamps 
+                            ? 'text-gray-500'
+                            : 'text-gray-300' // All lines same color for auto-scroll
                   }`}
                   data-testid={`lyrics-line-${index}`}
                 >

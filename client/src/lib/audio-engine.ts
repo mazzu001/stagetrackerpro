@@ -349,10 +349,15 @@ class TrackController {
       let audioUrl = this.track.audioUrl;
       
       // Try to get restored blob URL from persistence if current one fails
-      let response = await fetch(audioUrl).catch(() => null);
+      let response: Response | null = null;
+      try {
+        response = await fetch(audioUrl);
+      } catch (error) {
+        console.log(`Original blob URL failed for ${this.track.name}, trying to restore from persistence...`);
+        response = null;
+      }
       
       if (!response || !response.ok) {
-        console.log(`Original blob URL failed for ${this.track.name}, trying to restore from persistence...`);
         const restoredUrl = persistence.getBlobUrl(this.track.id);
         if (restoredUrl && restoredUrl !== audioUrl) {
           console.log(`Using restored blob URL for ${this.track.name}`);

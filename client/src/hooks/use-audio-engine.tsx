@@ -67,10 +67,7 @@ export function useAudioEngine(song?: SongWithTracks) {
           // Simulate CPU usage fluctuation
           setCpuUsage(20 + Math.random() * 10);
           
-          // Debug occasionally
-          if (Math.random() < 0.02) { // ~2% chance
-            console.log('Animation loop: engineIsPlaying=', engineIsPlaying, 'time=', time, 'reactIsPlaying=', isPlaying);
-          }
+
           
           // Auto-stop at end
           if (time >= duration) {
@@ -105,7 +102,7 @@ export function useAudioEngine(song?: SongWithTracks) {
         return;
       }
       
-      console.log('Hook play() called - engine state:', audioEngineRef.current.getIsPlaying(), 'react state:', isPlaying);
+
       
       // Wait for all tracks to be ready if song was just loaded
       let loadedCount = audioEngineRef.current.getLoadedTrackCount();

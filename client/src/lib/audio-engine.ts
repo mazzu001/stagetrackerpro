@@ -88,7 +88,7 @@ export class AudioEngine {
       return;
     }
     
-    console.log('AudioEngine: play() called - current state:', this.isPlaying);
+
 
     // Resume audio context if suspended and wait for it
     if (this.audioContext.state === 'suspended') {
@@ -154,10 +154,7 @@ export class AudioEngine {
     if (this.isPlaying) {
       const currentTime = this.audioContext.currentTime - this.startTime;
       const result = Math.max(0, currentTime);
-      // Debug every 60 frames (roughly 1 second at 60fps)
-      if (Math.random() < 0.016) { // ~1/60 chance
-        console.log('getCurrentTime: isPlaying=', this.isPlaying, 'contextTime=', this.audioContext.currentTime, 'startTime=', this.startTime, 'result=', result);
-      }
+
       return result;
     }
     return this.pausedTime;

@@ -103,7 +103,9 @@ export default function CompactTransportControls({
           data-testid="progress-bar"
         >
           <div 
-            className="bg-secondary h-2 rounded-full transition-all duration-100 group-hover:bg-green-400"
+            className={`bg-secondary h-2 rounded-full group-hover:bg-green-400 ${
+              isPlaying ? '' : 'transition-all duration-100'
+            }`}
             style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
           />
         </div>

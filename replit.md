@@ -22,12 +22,15 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Memory-efficient caching** - Files cached by path for instant access without data duplication
 ✓ **Lyrics import feature** - Added web search functionality to import song lyrics automatically
 ✓ **Delete song feature** - Added safe song deletion with confirmation dialog that protects local files
+✓ **Database blob storage migration** - Completely replaced file reconnection system with PostgreSQL BYTEA blob storage
+✓ **TrackFileUploader component** - New drag-and-drop interface for uploading audio files directly to database
+✓ **Offline blob system** - Audio files stored as binary data in database with local blob URL caching for instant access
 
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
-Architecture preference: Completely offline operation using local file paths - no file uploads or internet dependency required.
-Data persistence: Automatic saving to localStorage with file path references and smart file registration for audio files.
+Architecture preference: Completely offline operation using database blob storage - no file system dependency required.
+Data persistence: All data including audio files stored as binary blobs in PostgreSQL database with automatic caching.
 
 # System Architecture
 
@@ -51,7 +54,7 @@ Data persistence: Automatic saving to localStorage with file path references and
   - `tracks`: Individual audio tracks per song with volume, mute, and solo controls (references local files)
   - `midiEvents`: Time-stamped MIDI events for automation and effects
   - `users`: User authentication and subscription data for production deployment
-- **File Storage**: Local file path storage with smart caching (MP3, WAV, OGG, M4A) - completely offline
+- **File Storage**: Database BYTEA blob storage with local blob URL caching (MP3, WAV, OGG, M4A) - completely offline
 - **Cloud Persistence**: All data automatically saved to PostgreSQL, no localStorage dependency
 
 ## Core Features

@@ -21,13 +21,7 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 const upload = multer({
-  storage: multer.diskStorage({
-    destination: uploadDir,
-    filename: (req: any, file: any, cb: any) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-    }
-  }),
+  storage: multer.memoryStorage(), // Use memory storage to access file.buffer
   fileFilter: (req: any, file: any, cb: any) => {
     const allowedTypes = ['.mp3', '.wav', '.ogg', '.m4a'];
     const ext = path.extname(file.originalname).toLowerCase();

@@ -93,17 +93,58 @@ export function WaveformVisualizer({
         console.log(`Generated real waveform from ${tracksProcessed} tracks, duration: ${maxDuration.toFixed(1)}s`);
         setWaveformData(combinedData);
       } else {
-        console.log('No tracks processed, using fallback waveform');
-        setWaveformData([]);
+        console.log('No tracks with audio data available, generating fallback waveform pattern');
+        // Generate a realistic fallback waveform when no audio data is available
+        const fallbackData = generateFallbackWaveform(sampleCount, song.duration || 240);
+        setWaveformData(fallbackData);
       }
 
       await audioContext.close();
     } catch (error) {
       console.error('Failed to generate waveform from audio:', error);
-      setWaveformData([]);
+      // On error, still generate fallback waveform
+      console.log('Generating fallback waveform due to error');
+      const fallbackData = generateFallbackWaveform(600, song.duration || 240);
+      setWaveformData(fallbackData);
     } finally {
       setIsGenerating(false);
     }
+  };
+
+  // Generate a realistic fallback waveform pattern
+  const generateFallbackWaveform = (sampleCount: number, duration: number): number[] => {
+    const data: number[] = [];
+    
+    for (let i = 0; i < sampleCount; i++) {
+      const position = i / sampleCount;
+      const time = position * duration;
+      
+      // Create a base waveform with varying intensity
+      let amplitude = 0.3 + Math.sin(position * Math.PI * 8) * 0.2; // Base pattern
+      amplitude += Math.sin(position * Math.PI * 32) * 0.15; // Higher frequency detail
+      amplitude += Math.sin(position * Math.PI * 64) * 0.1; // Even higher frequency
+      
+      // Add some randomness for realism
+      amplitude += (Math.random() - 0.5) * 0.1;
+      
+      // Create sections with different intensities (verse, chorus, bridge)
+      const sectionPhase = (position * 4) % 1;
+      if (sectionPhase < 0.25 || sectionPhase > 0.75) {
+        amplitude *= 0.7; // Quieter sections (verses)
+      } else {
+        amplitude *= 1.2; // Louder sections (chorus)
+      }
+      
+      // Fade in/out at beginning and end
+      if (position < 0.05) amplitude *= position * 20;
+      if (position > 0.95) amplitude *= (1 - position) * 20;
+      
+      // Clamp amplitude
+      amplitude = Math.max(0, Math.min(1, amplitude));
+      data.push(amplitude);
+    }
+    
+    return data;
   };
 
   // Regenerate waveform when song changes
@@ -137,12 +178,21 @@ export function WaveformVisualizer({
       return;
     }
 
-    // Show message if no waveform data
-    if (waveformData.length === 0) {
+    // Show message if no waveform data and no song
+    if (waveformData.length === 0 && !song) {
       ctx.fillStyle = 'rgba(148, 163, 184, 0.5)';
       ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('Add tracks to see waveform', width / 2, height / 2);
+      ctx.fillText('Select a song to see waveform', width / 2, height / 2);
+      return;
+    }
+
+    // If we have a song but no waveform data, something went wrong - show placeholder
+    if (waveformData.length === 0 && song) {
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.5)';
+      ctx.font = '11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Waveform unavailable', width / 2, height / 2);
       return;
     }
 

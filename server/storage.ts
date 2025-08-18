@@ -1,5 +1,5 @@
 import { songs, tracks, midiEvents, users, type Song, type InsertSong, type Track, type InsertTrack, type MidiEvent, type InsertMidiEvent, type SongWithTracks, type User, type UpsertUser } from "@shared/schema";
-import { db } from "./db";
+import { localDb, userDb } from "./db";
 import { eq, and } from "drizzle-orm";
 
 export interface IStorage {
@@ -43,7 +43,9 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   constructor() {
-    console.log('DatabaseStorage initialized - using local SQLite database');
+    console.log('DatabaseStorage initialized - using hybrid database setup');
+    console.log('- User data: Cloud PostgreSQL database');  
+    console.log('- Music data: Local SQLite database');
   }
 
   // Legacy methods for compatibility (no-op since data is in cloud database)
@@ -66,14 +68,21 @@ export class DatabaseStorage implements IStorage {
     console.log('setAutoSaveCallback: Data auto-saves to local SQLite database');
   }
 
-  // User operations
+  // User operations (use cloud PostgreSQL database)
   async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
+    if (!userDb) {
+      console.error('Cloud database not available for user operations');
+      return undefined;
+    }
+    const [user] = await userDb.select().from(users).where(eq(users.id, id));
     return user || undefined;
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
-    const [user] = await db
+    if (!userDb) {
+      throw new Error('Cloud database not available for user operations');
+    }
+    const [user] = await userDb
       .insert(users)
       .values({
         ...userData,
@@ -88,12 +97,16 @@ export class DatabaseStorage implements IStorage {
       })
       .returning();
     
-    console.log('User upserted in database:', user.id, user.email);
+    console.log('User upserted in cloud database:', user.id, user.email);
     return user;
   }
 
   async updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined> {
-    const [user] = await db
+    if (!userDb) {
+      console.error('Cloud database not available for user operations');
+      return undefined;
+    }
+    const [user] = await userDb
       .update(users)
       .set({
         stripeCustomerId,
@@ -105,25 +118,25 @@ export class DatabaseStorage implements IStorage {
       .returning();
 
     if (user) {
-      console.log('Updated user Stripe info in database:', id, stripeCustomerId);
+      console.log('Updated user Stripe info in cloud database:', id, stripeCustomerId);
     } else {
       console.error('User not found for Stripe update:', id);
     }
     return user || undefined;
   }
 
-  // Song operations
+  // Song operations (use local SQLite database)
   async getSong(id: string): Promise<Song | undefined> {
-    const [song] = await db.select().from(songs).where(eq(songs.id, id));
+    const [song] = await localDb.select().from(songs).where(eq(songs.id, id));
     return song || undefined;
   }
 
   async getAllSongs(): Promise<SongWithTracks[]> {
     // Use a more efficient query by fetching everything in parallel
     const [allSongs, allTracks, allMidiEvents] = await Promise.all([
-      db.select().from(songs),
-      db.select().from(tracks),
-      db.select().from(midiEvents)
+      localDb.select().from(songs),
+      localDb.select().from(tracks),
+      localDb.select().from(midiEvents)
     ]);
     
     // Group tracks and MIDI events by song ID
@@ -155,13 +168,13 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createSong(song: InsertSong): Promise<Song> {
-    const [newSong] = await db.insert(songs).values(song).returning();
-    console.log('Song created in database:', newSong.id, newSong.title);
+    const [newSong] = await localDb.insert(songs).values(song).returning();
+    console.log('Song created in local database:', newSong.id, newSong.title);
     return newSong;
   }
 
   async updateSong(id: string, song: Partial<InsertSong>): Promise<Song | undefined> {
-    const [updatedSong] = await db
+    const [updatedSong] = await localDb
       .update(songs)
       .set(song)
       .where(eq(songs.id, id))
@@ -176,22 +189,22 @@ export class DatabaseStorage implements IStorage {
   async deleteSong(id: string): Promise<boolean> {
     try {
       // First check if the song exists
-      const existingSong = await db.select().from(songs).where(eq(songs.id, id));
+      const existingSong = await localDb.select().from(songs).where(eq(songs.id, id));
       if (existingSong.length === 0) {
         console.log('Song not found for deletion:', id);
         return false;
       }
 
-      console.log('Deleting song from database:', id, existingSong[0].title);
+      console.log('Deleting song from local database:', id, existingSong[0].title);
 
       // Delete associated tracks (including audio data) and MIDI events first
-      const tracksResult = await db.delete(tracks).where(eq(tracks.songId, id));
-      const midiResult = await db.delete(midiEvents).where(eq(midiEvents.songId, id));
+      const tracksResult = await localDb.delete(tracks).where(eq(tracks.songId, id));
+      const midiResult = await localDb.delete(midiEvents).where(eq(midiEvents.songId, id));
       
       console.log(`Deleted ${tracksResult.changes || 0} tracks and ${midiResult.changes || 0} MIDI events for song: ${id}`);
       
       // Delete the song itself
-      const result = await db.delete(songs).where(eq(songs.id, id));
+      const result = await localDb.delete(songs).where(eq(songs.id, id));
       const deleted = result.changes ? result.changes > 0 : false;
       
       if (deleted) {
@@ -211,8 +224,8 @@ export class DatabaseStorage implements IStorage {
     const song = await this.getSong(id);
     if (!song) return undefined;
 
-    const songTracks = await db.select().from(tracks).where(eq(tracks.songId, id));
-    const songMidiEvents = await db.select().from(midiEvents).where(eq(midiEvents.songId, id));
+    const songTracks = await localDb.select().from(tracks).where(eq(tracks.songId, id));
+    const songMidiEvents = await localDb.select().from(midiEvents).where(eq(midiEvents.songId, id));
 
     return {
       ...song,
@@ -221,14 +234,14 @@ export class DatabaseStorage implements IStorage {
     };
   }
 
-  // Track operations
+  // Track operations (use local SQLite database)
   async getTrack(id: string): Promise<Track | undefined> {
-    const [track] = await db.select().from(tracks).where(eq(tracks.id, id));
+    const [track] = await localDb.select().from(tracks).where(eq(tracks.id, id));
     return track || undefined;
   }
 
   async getTracksBySongId(songId: string): Promise<Track[]> {
-    const trackData = await db.select().from(tracks).where(eq(tracks.songId, songId));
+    const trackData = await localDb.select().from(tracks).where(eq(tracks.songId, songId));
     
     // Add hasAudioData field to indicate if track has blob data
     return trackData.map(track => ({
@@ -238,14 +251,14 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createTrack(track: InsertTrack): Promise<Track> {
-    const [newTrack] = await db.insert(tracks).values(track).returning();
-    console.log('Track created in database:', newTrack.id, newTrack.name);
+    const [newTrack] = await localDb.insert(tracks).values(track).returning();
+    console.log('Track created in local database:', newTrack.id, newTrack.name);
     return newTrack;
   }
 
   // Store audio file data directly in database as base64
   async storeAudioFile(trackId: string, audioData: string, mimeType: string, fileSize: number): Promise<void> {
-    await db
+    await localDb
       .update(tracks)
       .set({ 
         audioData,
@@ -255,12 +268,12 @@ export class DatabaseStorage implements IStorage {
       })
       .where(eq(tracks.id, trackId));
     
-    console.log('Audio file stored in database for track:', trackId, `(${Math.round(fileSize / 1024)}KB)`);
+    console.log('Audio file stored in local database for track:', trackId, `(${Math.round(fileSize / 1024)}KB)`);
   }
 
   // Get audio file data from database
   async getAudioFileData(trackId: string): Promise<{ data: string; mimeType: string; size: number } | null> {
-    const [track] = await db
+    const [track] = await localDb
       .select({ 
         audioData: tracks.audioData, 
         mimeType: tracks.mimeType, 
@@ -281,70 +294,70 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateTrack(id: string, track: Partial<InsertTrack>): Promise<Track | undefined> {
-    const [updatedTrack] = await db
+    const [updatedTrack] = await localDb
       .update(tracks)
       .set(track)
       .where(eq(tracks.id, id))
       .returning();
     
     if (updatedTrack) {
-      console.log('Track updated in database:', id, updatedTrack.name);
+      console.log('Track updated in local database:', id, updatedTrack.name);
     }
     return updatedTrack || undefined;
   }
 
   async deleteTrack(id: string): Promise<boolean> {
-    const result = await db.delete(tracks).where(eq(tracks.id, id));
+    const result = await localDb.delete(tracks).where(eq(tracks.id, id));
     const deleted = result.changes ? result.changes > 0 : false;
     
     if (deleted) {
-      console.log('Track deleted from database:', id);
+      console.log('Track deleted from local database:', id);
     }
     return deleted;
   }
 
-  // MIDI Event operations
+  // MIDI Event operations (use local SQLite database)
   async getMidiEvent(id: string): Promise<MidiEvent | undefined> {
-    const [event] = await db.select().from(midiEvents).where(eq(midiEvents.id, id));
+    const [event] = await localDb.select().from(midiEvents).where(eq(midiEvents.id, id));
     return event || undefined;
   }
 
   async getMidiEventsBySongId(songId: string): Promise<MidiEvent[]> {
-    return await db.select().from(midiEvents).where(eq(midiEvents.songId, songId));
+    return await localDb.select().from(midiEvents).where(eq(midiEvents.songId, songId));
   }
 
   async createMidiEvent(midiEvent: InsertMidiEvent): Promise<MidiEvent> {
-    const [newEvent] = await db.insert(midiEvents).values(midiEvent).returning();
-    console.log('MIDI event created in database:', newEvent.id, newEvent.eventType);
+    const [newEvent] = await localDb.insert(midiEvents).values(midiEvent).returning();
+    console.log('MIDI event created in local database:', newEvent.id, newEvent.eventType);
     return newEvent;
   }
 
   async updateMidiEvent(id: string, midiEvent: Partial<InsertMidiEvent>): Promise<MidiEvent | undefined> {
-    const [updatedEvent] = await db
+    const [updatedEvent] = await localDb
       .update(midiEvents)
       .set(midiEvent)
       .where(eq(midiEvents.id, id))
       .returning();
     
     if (updatedEvent) {
-      console.log('MIDI event updated in database:', id, updatedEvent.eventType);
+      console.log('MIDI event updated in local database:', id, updatedEvent.eventType);
     }
     return updatedEvent || undefined;
   }
 
   async deleteMidiEvent(id: string): Promise<boolean> {
-    const result = await db.delete(midiEvents).where(eq(midiEvents.id, id));
+    const result = await localDb.delete(midiEvents).where(eq(midiEvents.id, id));
     const deleted = result.changes ? result.changes > 0 : false;
     
     if (deleted) {
-      console.log('MIDI event deleted from database:', id);
+      console.log('MIDI event deleted from local database:', id);
     }
     return deleted;
   }
 
-  // Waveform operations (store in song's waveformData field)
+  // Waveform operations (store in song's waveformData field in local database)
   async saveWaveform(songId: string, waveformData: number[]): Promise<void> {
-    await db
+    await localDb
       .update(songs)
       .set({ 
         waveformData: JSON.stringify(waveformData),
@@ -352,11 +365,11 @@ export class DatabaseStorage implements IStorage {
       })
       .where(eq(songs.id, songId));
     
-    console.log('Waveform saved to database for song:', songId);
+    console.log('Waveform saved to local database for song:', songId);
   }
 
   async getWaveform(songId: string): Promise<number[] | null> {
-    const [song] = await db.select({ waveformData: songs.waveformData }).from(songs).where(eq(songs.id, songId));
+    const [song] = await localDb.select({ waveformData: songs.waveformData }).from(songs).where(eq(songs.id, songId));
     
     if (song?.waveformData) {
       try {

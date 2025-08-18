@@ -99,17 +99,17 @@ export default function StereoVUMeter({
       const percentage = (index / segments) * 100;
       
       if (index === peakSegment - 1 && peakSegment > activeSegments) {
-        // Peak indicator
-        if (percentage < 60) return 'bg-green-400';
-        if (percentage < 80) return 'bg-yellow-400';
-        return 'bg-red-400';
+        // Peak indicator - bright with strong glow
+        if (percentage < 60) return 'bg-green-300 shadow-green-300/70';
+        if (percentage < 80) return 'bg-yellow-300 shadow-yellow-300/70';
+        return 'bg-red-300 shadow-red-300/70';
       }
       
       if (index < activeSegments) {
-        // Active segments
-        if (percentage < 60) return 'bg-green-500';
-        if (percentage < 80) return 'bg-yellow-500';
-        return 'bg-red-500';
+        // Active segments - brighter colors with glow
+        if (percentage < 60) return 'bg-green-400 shadow-green-400/50';
+        if (percentage < 80) return 'bg-yellow-400 shadow-yellow-400/50';
+        return 'bg-red-400 shadow-red-400/50';
       }
       
       // Inactive segments
@@ -127,9 +127,11 @@ export default function StereoVUMeter({
           {Array.from({ length: segments }, (_, index) => (
             <div
               key={index}
-              className={`w-1 h-1.5 rounded-sm ${getSegmentColor(index)}`}
+              className={`w-1 h-1.5 rounded-sm ${getSegmentColor(index)} shadow-sm`}
               style={{
-                opacity: index < activeSegments || index === peakSegment - 1 ? 1 : 0.3
+                opacity: index < activeSegments || index === peakSegment - 1 ? 1 : 0.3,
+                boxShadow: (index < activeSegments || index === peakSegment - 1) ? 
+                  '0 0 3px currentColor, 0 0 6px currentColor' : 'none'
               }}
             />
           ))}

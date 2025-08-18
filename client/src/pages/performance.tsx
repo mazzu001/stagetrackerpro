@@ -298,17 +298,51 @@ export default function Performance() {
         setLyricsText(result.lyrics);
         toast({
           title: "Lyrics imported!",
-          description: `Found lyrics for "${selectedSong.title}" by ${selectedSong.artist}`
+          description: result.verification || `Found lyrics for "${selectedSong.title}" by ${selectedSong.artist}`,
         });
+        
+        // If lyrics came from web search, ask for verification
+        if (result.source === "Web Search" && result.sourceUrl) {
+          setTimeout(() => {
+            const verifyAccuracy = confirm(
+              `Lyrics imported from ${result.sourceUrl}\n\nPlease verify the lyrics are correct. If they're wrong, click OK to open your browser and search for the correct lyrics to copy and paste.`
+            );
+            
+            if (verifyAccuracy) {
+              // Open browser for manual correction
+              const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(selectedSong.title + ' ' + selectedSong.artist + ' lyrics')}`;
+              window.open(searchUrl, '_blank');
+            }
+          }, 2000);
+        }
       } else {
         // Handle different error types
         const isManualRecommendation = result.error === "Manual entry recommended";
+        const needsVerification = result.error === "Manual verification needed";
         
         toast({
-          title: isManualRecommendation ? "Manual entry recommended" : "No lyrics found",
+          title: needsVerification ? "Browser opening for lyrics" : (isManualRecommendation ? "Opening browser search" : "No lyrics found"),
           description: result.message || "Unable to find lyrics for this song. You can enter them manually.",
-          variant: isManualRecommendation ? "default" : "destructive"
+          variant: (isManualRecommendation || needsVerification) ? "default" : "destructive"
         });
+        
+        // Open browser if requested
+        if (result.openBrowser) {
+          let searchUrl;
+          
+          if (result.searchResult?.url) {
+            // Direct lyrics page found
+            searchUrl = result.searchResult.url;
+          } else if (result.searchQuery) {
+            // General search
+            searchUrl = `https://www.google.com/search?q=${encodeURIComponent(result.searchQuery)}`;
+          }
+          
+          if (searchUrl) {
+            console.log(`Opening browser with: ${searchUrl}`);
+            window.open(searchUrl, '_blank');
+          }
+        }
         
         // If we got guidance, show it
         if (result.guidance) {

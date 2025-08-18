@@ -470,20 +470,97 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log(`Searching lyrics for "${title}" by ${artist}...`);
 
-      // For development: provide a helpful message since external lyrics APIs are unreliable
-      // In production, this would connect to a reliable lyrics service
-      
-      // Simple fallback that provides guidance
-      console.log(`External lyrics APIs are currently unreliable. Providing manual entry guidance.`);
+      // Use web search to find lyrics from Google
+      try {
+        const searchQuery = `${title} ${artist} lyrics site:genius.com OR site:azlyrics.com OR site:metrolyrics.com`;
+        const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${process.env.GOOGLE_API_KEY}&cx=${process.env.GOOGLE_SEARCH_ENGINE_ID}&q=${encodeURIComponent(searchQuery)}`;
+        
+        if (!process.env.GOOGLE_API_KEY || !process.env.GOOGLE_SEARCH_ENGINE_ID) {
+          console.log('Google Search API credentials not configured, using fallback');
+          throw new Error('Search API not configured');
+        }
+
+        const response = await fetch(searchUrl);
+        const data = await response.json();
+
+        if (data.items && data.items.length > 0) {
+          // Get the first result URL
+          const firstResult = data.items[0];
+          const lyricsUrl = firstResult.link;
+          
+          console.log(`Found lyrics page: ${lyricsUrl}`);
+          
+          // Try to fetch and extract lyrics from the page
+          const lyricsResponse = await fetch(lyricsUrl, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            }
+          });
+          
+          if (lyricsResponse.ok) {
+            const html = await lyricsResponse.text();
+            
+            // Basic lyrics extraction (this would need more sophisticated parsing in production)
+            let extractedLyrics = '';
+            
+            if (lyricsUrl.includes('genius.com')) {
+              // Extract from Genius format
+              const lyricsMatch = html.match(/<div[^>]*data-lyrics-container[^>]*>(.*?)<\/div>/gs);
+              if (lyricsMatch) {
+                extractedLyrics = lyricsMatch[0].replace(/<[^>]*>/g, '\n').replace(/\n+/g, '\n').trim();
+              }
+            } else if (lyricsUrl.includes('azlyrics.com')) {
+              // Extract from AZLyrics format
+              const lyricsMatch = html.match(/<!-- Usage of azlyrics\.com content.*?-->(.*?)<!-- MxM banner -->/s);
+              if (lyricsMatch) {
+                extractedLyrics = lyricsMatch[1].replace(/<[^>]*>/g, '\n').replace(/\n+/g, '\n').trim();
+              }
+            }
+            
+            if (extractedLyrics && extractedLyrics.length > 100) {
+              console.log(`Successfully extracted lyrics for "${title}" by ${artist}`);
+              return res.json({
+                success: true,
+                lyrics: extractedLyrics,
+                source: "Web Search",
+                sourceUrl: lyricsUrl,
+                verification: `Lyrics found from ${firstResult.displayLink}. Please verify accuracy.`
+              });
+            }
+          }
+          
+          // If extraction failed, provide the search result for manual access
+          console.log(`Lyrics page found but extraction failed, providing link for manual access`);
+          return res.json({
+            success: false,
+            error: "Manual verification needed",
+            message: `Found lyrics page but need manual verification. Opening browser for copy-paste.`,
+            searchResult: {
+              url: lyricsUrl,
+              title: firstResult.title,
+              snippet: firstResult.snippet
+            },
+            openBrowser: true
+          });
+        }
+        
+      } catch (searchError) {
+        console.log('Web search failed, using manual guidance:', searchError.message);
+      }
+
+      // Fallback to manual entry guidance
+      console.log(`Providing manual entry guidance for "${title}" by ${artist}`);
       
       return res.json({
         success: false,
         error: "Manual entry recommended",
-        message: `Please enter lyrics manually for "${title}" by ${artist}. External lyrics services are currently unreliable in this environment. You can copy lyrics from your preferred lyrics website and paste them into the lyrics editor.`,
+        message: `Please search and copy lyrics manually for "${title}" by ${artist}. Click OK to open your browser with a lyrics search.`,
         guidance: {
-          suggestion: `Try searching for "${title} ${artist} lyrics" in your web browser`,
-          tip: "You can paste lyrics directly into the text area and they'll be saved with your song"
-        }
+          suggestion: `Search for "${title} ${artist} lyrics" will be opened in your browser`,
+          tip: "Copy lyrics from your preferred site and paste them into the text area"
+        },
+        searchQuery: `${title} ${artist} lyrics`,
+        openBrowser: true
       });
 
       // Legacy code for multiple APIs (currently disabled due to reliability issues)

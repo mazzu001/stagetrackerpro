@@ -131,7 +131,7 @@ export default function Performance() {
   };
 
   return (
-    <div className="bg-background text-white min-h-screen font-inter flex flex-col">
+    <div className="bg-background text-white h-screen font-inter flex flex-col overflow-hidden">
       {/* Header */}
       <header className="bg-surface border-b border-gray-700 p-4 flex-shrink-0" data-testid="app-header">
         <div className="max-w-full flex items-center justify-between">

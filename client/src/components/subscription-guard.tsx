@@ -129,7 +129,7 @@ export function SubscriptionGuard({ songCount, onUpgrade }: SubscriptionGuardPro
           {hasActiveSubscription ? 'Full Version' : 'Trial'}
         </span>
         
-        {!hasActiveSubscription && (
+        {!hasActiveSubscription && songCount >= MAX_FREE_SONGS && (
           <Button
             size="sm"
             variant="outline"

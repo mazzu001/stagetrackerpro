@@ -43,12 +43,12 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   constructor() {
-    console.log('DatabaseStorage initialized - using PostgreSQL cloud database');
+    console.log('DatabaseStorage initialized - using local SQLite database');
   }
 
   // Legacy methods for compatibility (no-op since data is in cloud database)
   getAllData() {
-    console.log('getAllData: Data is now stored in cloud database');
+    console.log('getAllData: Data is now stored in local SQLite database');
     return {
       users: [],
       songs: [],
@@ -59,11 +59,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   loadData(songData: Song[], trackData: Track[], midiEventData: MidiEvent[], waveforms?: Record<string, number[]>, userData?: User[]) {
-    console.log('loadData: Data is now stored in cloud database, ignoring localStorage');
+    console.log('loadData: Data is now stored in local SQLite database, ignoring localStorage');
   }
 
   setAutoSaveCallback(callback: () => void) {
-    console.log('setAutoSaveCallback: Data auto-saves to cloud database');
+    console.log('setAutoSaveCallback: Data auto-saves to local SQLite database');
   }
 
   // User operations

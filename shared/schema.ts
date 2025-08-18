@@ -1,10 +1,10 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, jsonb, integer, boolean, timestamp, index } from "drizzle-orm/pg-core";
+import { sqliteTable, text, integer, blob } from "drizzle-orm/sqlite-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const songs = pgTable("songs", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+export const songs = sqliteTable("songs", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   title: text("title").notNull(),
   artist: text("artist").notNull(),
   duration: integer("duration").notNull(), // in seconds
@@ -12,13 +12,13 @@ export const songs = pgTable("songs", {
   key: text("key"),
   lyrics: text("lyrics"), // lyrics with timestamps and MIDI commands
   waveformData: text("waveform_data"), // JSON array of waveform amplitudes
-  waveformGenerated: boolean("waveform_generated").default(false),
-  createdAt: text("created_at").default(sql`now()`),
+  waveformGenerated: integer("waveform_generated", { mode: 'boolean' }).default(false),
+  createdAt: text("created_at").default(sql`(datetime('now'))`),
 });
 
-export const tracks = pgTable("tracks", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  songId: varchar("song_id").references(() => songs.id).notNull(),
+export const tracks = sqliteTable("tracks", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  songId: text("song_id").references(() => songs.id).notNull(),
   name: text("name").notNull(),
   trackNumber: integer("track_number").notNull(),
   audioUrl: text("audio_url").notNull(), // Will be blob URL or "blob:stored" for database blobs
@@ -28,15 +28,13 @@ export const tracks = pgTable("tracks", {
   fileSize: integer("file_size").default(0), // File size in bytes
   volume: integer("volume").default(100), // 0-100
   balance: integer("balance").default(0), // -50 to +50 (L to R)
-  isMuted: boolean("is_muted").default(false),
-  isSolo: boolean("is_solo").default(false),
-}, (table) => ({
-  uniqueTrackNumber: sql`UNIQUE (${table.songId}, ${table.trackNumber})`
-}));
+  isMuted: integer("is_muted", { mode: 'boolean' }).default(false),
+  isSolo: integer("is_solo", { mode: 'boolean' }).default(false),
+});
 
-export const midiEvents = pgTable("midi_events", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  songId: varchar("song_id").references(() => songs.id).notNull(),
+export const midiEvents = sqliteTable("midi_events", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  songId: text("song_id").references(() => songs.id).notNull(),
   timestamp: integer("timestamp").notNull(), // milliseconds
   eventType: text("event_type").notNull(), // 'program_change', 'control_change', etc.
   channel: integer("channel").default(1),
@@ -74,30 +72,26 @@ export type SongWithTracks = Song & {
 
 // Session storage table.
 // (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
-export const sessions = pgTable(
-  "sessions",
-  {
-    sid: varchar("sid").primaryKey(),
-    sess: jsonb("sess").notNull(),
-    expire: timestamp("expire").notNull(),
-  },
-  (table) => [index("IDX_session_expire").on(table.expire)],
-);
+export const sessions = sqliteTable("sessions", {
+  sid: text("sid").primaryKey(),
+  sess: text("sess").notNull(), // JSON string instead of jsonb
+  expire: text("expire").notNull(), // ISO datetime string
+});
 
 // User storage table.
 // (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
-export const users = pgTable("users", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  email: varchar("email").unique(),
-  firstName: varchar("first_name"),
-  lastName: varchar("last_name"),
-  profileImageUrl: varchar("profile_image_url"),
-  stripeCustomerId: varchar("stripe_customer_id"),
-  stripeSubscriptionId: varchar("stripe_subscription_id"),
-  subscriptionStatus: varchar("subscription_status"), // active, canceled, incomplete, etc.
-  subscriptionEndDate: timestamp("subscription_end_date"),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+export const users = sqliteTable("users", {
+  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
+  email: text("email").unique(),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  profileImageUrl: text("profile_image_url"),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  subscriptionStatus: text("subscription_status"), // active, canceled, incomplete, etc.
+  subscriptionEndDate: text("subscription_end_date"), // ISO datetime string
+  createdAt: text("created_at").default(sql`(datetime('now'))`),
+  updatedAt: text("updated_at").default(sql`(datetime('now'))`),
 });
 
 export type UpsertUser = typeof users.$inferInsert;

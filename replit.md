@@ -31,6 +31,8 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Local file storage migration** - Converted from database blob storage to fast local file storage for live performance
 ✓ **File reconnection system** - Added smart dialog to easily reconnect existing tracks with local audio files
 ✓ **Performance optimization** - Local file access eliminates database slowdowns during live shows
+✓ **SQLite database migration** - Converted from PostgreSQL cloud to SQLite local database for complete offline operation
+✓ **Local-first architecture** - All data now stored locally: audio files on filesystem, metadata in SQLite database
 
 ### Mobile Application (Primary)
 ✓ **React Native mobile app** - Complete migration from web to native Android/iOS application

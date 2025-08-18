@@ -319,20 +319,23 @@ export default function Performance() {
             )}
           </div>
           
-          {/* Compact Transport Controls */}
-          <div className="p-4 border-t border-gray-700">
-            <CompactTransportControls
-              isPlaying={isPlaying}
-              currentTime={currentTime}
-              duration={duration}
-              progress={progress}
-              isMidiConnected={isMidiConnected}
-              onPlay={play}
-              onPause={pause}
-              onStop={stop}
-              onSeek={seek}
-            />
-          </div>
+          {/* Spacer for fixed transport controls */}
+          <div className="h-20"></div>
+        </div>
+
+        {/* Fixed Transport Controls */}
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-gray-700 p-4">
+          <CompactTransportControls
+            isPlaying={isPlaying}
+            currentTime={currentTime}
+            duration={duration}
+            progress={progress}
+            isMidiConnected={isMidiConnected}
+            onPlay={play}
+            onPause={pause}
+            onStop={stop}
+            onSeek={seek}
+          />
         </div>
 
         {/* Right Content Area - Lyrics (70%) */}
@@ -342,7 +345,7 @@ export default function Performance() {
               {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
             </h2>
           </div>
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto p-4 pb-24">
             <LyricsDisplay
               song={selectedSong}
               currentTime={currentTime}
@@ -352,7 +355,7 @@ export default function Performance() {
       </div>
 
       {/* Status Bar */}
-      <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0">
+      <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 pb-24">
         <StatusBar
           isAudioEngineOnline={isAudioEngineOnline}
           isMidiConnected={isMidiConnected}

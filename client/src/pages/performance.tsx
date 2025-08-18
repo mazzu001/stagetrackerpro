@@ -9,7 +9,7 @@ import StatusBar from "@/components/status-bar";
 import TrackManager from "@/components/track-manager";
 import StereoVUMeter from "@/components/stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
-import { TrackFileUploader } from "@/components/track-file-uploader";
+
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -37,8 +37,7 @@ export default function Performance() {
   const [lyricsText, setLyricsText] = useState("");
   const [isImportingLyrics, setIsImportingLyrics] = useState(false);
   const [isDeleteSongOpen, setIsDeleteSongOpen] = useState(false);
-  const [isFileUploaderOpen, setIsFileUploaderOpen] = useState(false);
-  const [hasMissingFiles, setHasMissingFiles] = useState(false);
+
 
 
   const { toast } = useToast();
@@ -422,18 +421,7 @@ export default function Performance() {
         <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col">
           <div className="p-4 border-b border-gray-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Songs</h2>
-            {hasMissingFiles && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsFileUploaderOpen(true)}
-                className="border-orange-200 text-orange-700 hover:bg-orange-50 dark:border-orange-800 dark:text-orange-300 dark:hover:bg-orange-900"
-                data-testid="button-upload-files"
-              >
-                <FileAudio className="w-4 h-4 mr-1" />
-                Upload Files
-              </Button>
-            )}
+
             <div className="flex items-center space-x-2">
               <Dialog open={isAddSongOpen} onOpenChange={(open) => !isPlaying && setIsAddSongOpen(open)}>
                 <DialogTrigger asChild>
@@ -751,19 +739,7 @@ export default function Performance() {
         </DialogContent>
       </Dialog>
 
-      {/* Track File Uploader Dialog */}
-      <TrackFileUploader
-        open={isFileUploaderOpen}
-        onOpenChange={setIsFileUploaderOpen}
-        tracks={selectedSong?.tracks || []}
-        onUploadComplete={() => {
-          if (selectedSongId) {
-            queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
-            queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
-          }
-          setHasMissingFiles(false);
-        }}
-      />
+
     </div>
   );
 }

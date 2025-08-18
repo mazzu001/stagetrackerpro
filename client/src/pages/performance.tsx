@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown } from "lucide-react";
 import { SubscriptionGuard } from "@/components/subscription-guard";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
@@ -233,15 +233,14 @@ export default function Performance() {
       return;
     }
 
-    // Check subscription limits
+    // Check subscription limits - prevent adding more than 2 songs for free users
     const MAX_FREE_SONGS = 2;
-    if (allSongs.length >= MAX_FREE_SONGS && !user?.subscriptionStatus) {
+    if (allSongs.length >= MAX_FREE_SONGS && user?.subscriptionStatus !== 'active') {
       toast({
         title: "Upgrade Required",
         description: `Free trial limited to ${MAX_FREE_SONGS} songs. Upgrade to add unlimited songs.`,
         variant: "destructive"
       });
-      setLocation('/subscribe');
       return;
     }
 
@@ -340,15 +339,6 @@ export default function Performance() {
     <div className="bg-background text-white h-screen font-inter flex flex-col overflow-hidden">
       {/* Header */}
       <header className="bg-surface border-b border-gray-700 p-4 flex-shrink-0" data-testid="app-header">
-        {/* Subscription Guard */}
-        <SubscriptionGuard 
-          songCount={allSongs.length} 
-          onUpgrade={handleUpgrade}
-        />
-      </header>
-      
-      {/* Main Header Content */}
-      <header className="bg-surface border-b border-gray-700 p-4 flex-shrink-0" data-testid="app-header">
         <div className="max-w-full flex items-center">
           <div className="flex items-center space-x-3 flex-shrink-0">
             <Music className="text-primary text-2xl" />
@@ -374,6 +364,12 @@ export default function Performance() {
               <span>Latency: </span>
               <span className="text-secondary">{latency.toFixed(1)}ms</span>
             </div>
+            
+            {/* Subscription Status */}
+            <SubscriptionGuard 
+              songCount={allSongs.length} 
+              onUpgrade={handleUpgrade}
+            />
             <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
               <DialogContent className="max-w-[85vw] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
@@ -415,6 +411,14 @@ export default function Performance() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem 
+                  onClick={() => setLocation('/subscribe')}
+                  className="flex items-center cursor-pointer"
+                  data-testid="menu-subscribe"
+                >
+                  <Crown className="w-4 h-4 mr-2" />
+                  <span>Subscribe Now</span>
+                </DropdownMenuItem>
                 <DropdownMenuItem disabled className="flex items-center">
                   <User className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">

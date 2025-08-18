@@ -108,20 +108,26 @@ export function useAudioEngine(song?: SongWithTracks) {
       
 
       
-      // Wait for all tracks to be ready if song was just loaded
+      // Wait for tracks to be ready, but with shorter timeout for better responsiveness
       let loadedCount = audioEngineRef.current.getLoadedTrackCount();
       let attempts = 0;
-      const maxAttempts = 20; // Max 10 seconds (20 * 500ms)
+      const maxAttempts = 6; // Max 1.2 seconds (6 * 200ms) for better responsiveness
       
       while (loadedCount < song.tracks.length && attempts < maxAttempts) {
         console.log(`Waiting for all tracks to load (${loadedCount}/${song.tracks.length})...`);
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 200)); // Reduced from 500ms to 200ms
         loadedCount = audioEngineRef.current.getLoadedTrackCount();
         attempts++;
       }
       
+      // Don't wait for broken tracks - proceed with loaded tracks
+      if (loadedCount === 0) {
+        console.warn("No tracks loaded, cannot start playback");
+        return;
+      }
+      
       if (loadedCount < song.tracks.length) {
-        console.warn(`Timeout waiting for tracks to load. Playing with ${loadedCount}/${song.tracks.length} tracks.`);
+        console.warn(`Starting playback with ${loadedCount}/${song.tracks.length} tracks (some failed to load).`);
       }
       
       await audioEngineRef.current.play();

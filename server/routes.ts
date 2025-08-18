@@ -468,41 +468,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const cleanArtist = encodeURIComponent(artist.trim());
       const cleanTitle = encodeURIComponent(title.trim());
       
-      // Use Lyrics.ovh API (free, no API key required)
-      const lyricsUrl = `https://api.lyrics.ovh/v1/${cleanArtist}/${cleanTitle}`;
-      
       console.log(`Searching lyrics for "${title}" by ${artist}...`);
+
+      // For development: provide a helpful message since external lyrics APIs are unreliable
+      // In production, this would connect to a reliable lyrics service
       
-      const response = await fetch(lyricsUrl);
+      // Simple fallback that provides guidance
+      console.log(`External lyrics APIs are currently unreliable. Providing manual entry guidance.`);
       
-      // Check if response is JSON
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        console.log('API returned non-JSON response, likely rate limited or down');
-        return res.json({
-          success: false,
-          error: "Lyrics service temporarily unavailable",
-          message: "The lyrics service is currently unavailable. Please try again later or enter lyrics manually."
-        });
-      }
-      
-      const data = await response.json();
-      
-      if (response.ok && data.lyrics) {
-        console.log(`Found lyrics for "${title}" by ${artist}`);
-        res.json({
-          success: true,
-          lyrics: data.lyrics.trim(),
-          source: "Lyrics.ovh"
-        });
-      } else {
-        console.log(`No lyrics found for "${title}" by ${artist}`);
-        res.json({
-          success: false,
-          error: "Lyrics not found",
-          message: `Could not find lyrics for "${title}" by ${artist}. Try checking the spelling or enter them manually.`
-        });
-      }
+      return res.json({
+        success: false,
+        error: "Manual entry recommended",
+        message: `Please enter lyrics manually for "${title}" by ${artist}. External lyrics services are currently unreliable in this environment. You can copy lyrics from your preferred lyrics website and paste them into the lyrics editor.`,
+        guidance: {
+          suggestion: `Try searching for "${title} ${artist} lyrics" in your web browser`,
+          tip: "You can paste lyrics directly into the text area and they'll be saved with your song"
+        }
+      });
+
+      // Legacy code for multiple APIs (currently disabled due to reliability issues)
+      /*
+      const apis = [
+        {
+          name: "Lyrics.ovh",
+          url: `https://api.lyrics.ovh/v1/${cleanArtist}/${cleanTitle}`,
+          timeout: 8000
+        }
+      ];
+
+      // Legacy API calling code (disabled)
+      */
       
     } catch (error) {
       console.error("Lyrics search error:", error);

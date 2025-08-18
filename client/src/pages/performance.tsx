@@ -301,11 +301,19 @@ export default function Performance() {
           description: `Found lyrics for "${selectedSong.title}" by ${selectedSong.artist}`
         });
       } else {
+        // Handle different error types
+        const isManualRecommendation = result.error === "Manual entry recommended";
+        
         toast({
-          title: "No lyrics found",
+          title: isManualRecommendation ? "Manual entry recommended" : "No lyrics found",
           description: result.message || "Unable to find lyrics for this song. You can enter them manually.",
-          variant: "destructive"
+          variant: isManualRecommendation ? "default" : "destructive"
         });
+        
+        // If we got guidance, show it
+        if (result.guidance) {
+          console.log("Lyrics guidance:", result.guidance);
+        }
       }
     } catch (error) {
       toast({

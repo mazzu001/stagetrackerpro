@@ -62,8 +62,18 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
           const needsScroll = lineCompletelyAbove || lineCompletelyBelow;
           
           if (needsScroll) {
-            // Gently center the line in the viewport
-            const targetScrollTop = lineTop - (containerHeight / 2) + (currentLineElement.offsetHeight / 2);
+            // Minimal scrolling - just bring the line into view at the top
+            let targetScrollTop;
+            
+            if (lineCompletelyBelow) {
+              // Line is below viewport - scroll just enough to bring it into view at bottom
+              targetScrollTop = lineBottom - containerHeight + 20; // 20px margin from bottom
+            } else if (lineCompletelyAbove) {
+              // Line is above viewport - scroll just enough to bring it into view at top  
+              targetScrollTop = lineTop - 20; // 20px margin from top
+            } else {
+              targetScrollTop = currentScrollTop; // No scroll needed
+            }
             
             container.scrollTo({
               top: Math.max(0, targetScrollTop),

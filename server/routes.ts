@@ -504,20 +504,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
             let extractedLyrics = '';
             
             if (lyricsUrl.includes('genius.com')) {
-              // Extract from Genius format
-              const lyricsMatch = html.match(/<div[^>]*data-lyrics-container[^>]*>(.*?)<\/div>/gs);
-              if (lyricsMatch) {
-                extractedLyrics = lyricsMatch[0].replace(/<[^>]*>/g, '\n').replace(/\n+/g, '\n').trim();
+              // Extract from Genius format - try multiple patterns
+              let lyricsMatch = html.match(/<div[^>]*data-lyrics-container[^>]*>(.*?)<\/div>/g);
+              
+              if (!lyricsMatch) {
+                // Try alternative Genius patterns  
+                const regex = new RegExp('<div[^>]*class="[^"]*lyrics[^"]*"[^>]*>(.*?)<\/div>', 'gi');
+                lyricsMatch = html.match(regex);
               }
+              
+              if (!lyricsMatch) {
+                // Try finding content between specific Genius markers
+                lyricsMatch = html.match(/Lyrics<\/span>(.*?)(?:<div class="lyric_sharing|<\/section>)/);
+              }
+              
+              if (lyricsMatch) {
+                extractedLyrics = lyricsMatch[0]
+                  .replace(/<[^>]*>/g, '\n')
+                  .replace(/&[a-zA-Z]+;/g, ' ')  // Replace HTML entities
+                  .replace(/\[.*?\]/g, '\n')     // Remove [Verse], [Chorus] markers
+                  .replace(/\n+/g, '\n')
+                  .trim();
+              }
+              
             } else if (lyricsUrl.includes('azlyrics.com')) {
               // Extract from AZLyrics format
               const lyricsMatch = html.match(/<!-- Usage of azlyrics\.com content.*?-->(.*?)<!-- MxM banner -->/s);
               if (lyricsMatch) {
-                extractedLyrics = lyricsMatch[1].replace(/<[^>]*>/g, '\n').replace(/\n+/g, '\n').trim();
+                extractedLyrics = lyricsMatch[1]
+                  .replace(/<[^>]*>/g, '\n')
+                  .replace(/&[a-zA-Z]+;/g, ' ')
+                  .replace(/\n+/g, '\n')
+                  .trim();
+              }
+              
+            } else {
+              // Generic lyrics extraction for other sites
+              // Look for common lyrics patterns
+              const patterns = [
+                new RegExp('<div[^>]*class="[^"]*lyric[^"]*"[^>]*>(.*?)<\/div>', 'gi'),
+                new RegExp('<p[^>]*class="[^"]*lyric[^"]*"[^>]*>(.*?)<\/p>', 'gi'),
+                /<pre[^>]*>(.*?)<\/pre>/gi
+              ];
+              
+              for (const pattern of patterns) {
+                const matches = html.match(pattern);
+                if (matches && matches.length > 0) {
+                  extractedLyrics = matches.join('\n')
+                    .replace(/<[^>]*>/g, '\n')
+                    .replace(/&[a-zA-Z]+;/g, ' ')
+                    .replace(/\n+/g, '\n')
+                    .trim();
+                  break;
+                }
               }
             }
             
-            if (extractedLyrics && extractedLyrics.length > 100) {
+            // Clean up and validate extracted lyrics
+            if (extractedLyrics) {
+              extractedLyrics = extractedLyrics
+                .replace(/^\s*\n+/, '')  // Remove leading newlines
+                .replace(/\n+\s*$/, '')  // Remove trailing newlines
+                .replace(/\n{3,}/g, '\n\n'); // Limit consecutive newlines
+            }
+            
+            if (extractedLyrics && extractedLyrics.length > 50 && extractedLyrics.split('\n').length > 3) {
               console.log(`Successfully extracted lyrics for "${title}" by ${artist}`);
               return res.json({
                 success: true,
@@ -544,8 +595,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           });
         }
         
-      } catch (searchError) {
-        console.log('Web search failed, using manual guidance:', searchError.message);
+      } catch (searchError: any) {
+        console.log('Web search failed, using manual guidance:', searchError?.message || 'Unknown error');
       }
 
       // Fallback to manual entry guidance

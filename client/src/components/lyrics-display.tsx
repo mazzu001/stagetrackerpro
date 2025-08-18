@@ -19,18 +19,24 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   });
 
-  // Auto-scroll to current line
+  // Smooth auto-scroll based on song progress
   useEffect(() => {
-    if (lyricsContainerRef.current && currentLineIndex >= 0) {
-      const currentElement = lyricsContainerRef.current.children[currentLineIndex] as HTMLElement;
-      if (currentElement) {
-        currentElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
-      }
+    if (song && parsedLyrics.length > 0 && lyricsContainerRef.current) {
+      const container = lyricsContainerRef.current;
+      const songDuration = song.duration || 180; // Default to 3 minutes if no duration
+      const progress = Math.min(currentTime / songDuration, 1); // Cap at 100%
+      
+      // Calculate smooth scroll position based on progress
+      const maxScrollTop = container.scrollHeight - container.clientHeight;
+      const targetScrollTop = progress * maxScrollTop;
+      
+      // Use smooth scrolling
+      container.scrollTo({
+        top: targetScrollTop,
+        behavior: 'smooth'
+      });
     }
-  }, [currentLineIndex]);
+  }, [currentTime, song, parsedLyrics.length]);
 
   if (!song) {
     return (
@@ -108,9 +114,6 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
                     </div>
                   ) : (
                     <div>
-                      <span className="text-gray-500 text-sm mr-2">
-                        [{Math.floor(line.timestamp / 60)}:{Math.floor(line.timestamp % 60).toString().padStart(2, '0')}]
-                      </span>
                       {line.content}
                     </div>
                   )}

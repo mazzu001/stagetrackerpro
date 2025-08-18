@@ -1,11 +1,13 @@
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Music, Shield, Zap } from "lucide-react";
+import { LoginPopup } from '@/components/login-popup';
+import { useLocalAuth } from '@/hooks/useLocalAuth';
 
 export default function Landing() {
-  const handleLogin = () => {
-    window.location.href = '/api/login';
-  };
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const { login } = useLocalAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
@@ -60,23 +62,38 @@ export default function Landing() {
           <CardHeader className="text-center">
             <CardTitle className="text-2xl text-white">Get Started</CardTitle>
             <CardDescription className="text-gray-400">
-              Sign in with your email to access the performance app
+              Sign in to access your personal music collection
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Button 
-              onClick={handleLogin}
+              onClick={() => setIsLoginOpen(true)}
               className="w-full bg-purple-600 hover:bg-purple-700 text-white"
               size="lg"
               data-testid="button-login"
             >
-              Sign In with Email
+              Sign In
+            </Button>
+            <Button 
+              onClick={() => setIsLoginOpen(true)}
+              variant="outline"
+              className="w-full border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white"
+              size="lg"
+              data-testid="button-signup"
+            >
+              Sign Up
             </Button>
             <p className="text-xs text-gray-500 text-center">
-              Secure authentication powered by Replit
+              Local authentication • No internet required
             </p>
           </CardContent>
         </Card>
+
+        <LoginPopup
+          isOpen={isLoginOpen}
+          onClose={() => setIsLoginOpen(false)}
+          onLogin={login}
+        />
 
         {/* Trial Info */}
         <div className="text-center mt-12">

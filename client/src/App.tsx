@@ -9,12 +9,12 @@ import Subscribe from "@/pages/subscribe";
 import Landing from "@/pages/landing";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
-import { useAuth } from '@/hooks/useAuth';
+import { useLocalAuth } from '@/hooks/useLocalAuth';
 
 function AppContent() {
   const [isLocalFSReady, setIsLocalFSReady] = useState(false);
   const [isCheckingFS, setIsCheckingFS] = useState(true);
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
 
   useEffect(() => {
     // Check if local file system is already initialized
@@ -73,7 +73,7 @@ function AppContent() {
         <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
       ) : (
         <Router>
-          <Route path="/" component={Performance} />
+          <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
           <Route path="/subscribe" component={Subscribe} />
         </Router>
       )}

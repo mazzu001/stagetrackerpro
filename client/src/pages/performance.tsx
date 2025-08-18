@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { queryClient } from "@/lib/queryClient";
 import { useLocation } from "wouter";
 import CompactTransportControls from "@/components/compact-transport-controls";
 import AudioMixer from "@/components/audio-mixer";
@@ -20,15 +18,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown } from "lucide-react";
-import { SubscriptionGuard } from "@/components/subscription-guard";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
-import { DatabaseAudioStorage } from "@/lib/database-audio-storage";
-import { useAuth } from "@/hooks/useAuth";
-import type { SongWithTracks } from "@shared/schema";
+import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
+import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 
-export default function Performance() {
+interface PerformanceProps {
+  userType: UserType;
+}
+
+export default function Performance({ userType }: PerformanceProps) {
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [, setLocation] = useLocation();
   const [latency, setLatency] = useState(2.1);
@@ -38,18 +36,36 @@ export default function Performance() {
   const [songArtist, setSongArtist] = useState("");
   const [isEditLyricsOpen, setIsEditLyricsOpen] = useState(false);
   const [lyricsText, setLyricsText] = useState("");
-
   const [isDeleteSongOpen, setIsDeleteSongOpen] = useState(false);
-
-
+  const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
+  const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
 
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { user, logout } = useLocalAuth();
 
-  const { data: selectedSong } = useQuery<SongWithTracks>({
-    queryKey: ['/api/songs', selectedSongId],
-    enabled: !!selectedSongId
-  });
+  // Load songs from localStorage when component mounts or user changes
+  useEffect(() => {
+    if (user?.email) {
+      const songs = LocalSongStorage.getAllSongs(user.email);
+      setAllSongs(songs);
+      
+      // If we had a selected song, try to restore it
+      if (selectedSongId) {
+        const song = LocalSongStorage.getSong(user.email, selectedSongId);
+        setSelectedSong(song || null);
+      }
+    }
+  }, [user?.email, selectedSongId]);
+
+  // Update selected song when selectedSongId changes
+  useEffect(() => {
+    if (selectedSongId && user?.email) {
+      const song = LocalSongStorage.getSong(user.email, selectedSongId);
+      setSelectedSong(song || null);
+    } else {
+      setSelectedSong(null);
+    }
+  }, [selectedSongId, user?.email]);
 
   const {
     isPlaying,
@@ -70,7 +86,7 @@ export default function Performance() {
     updateTrackSolo,
     updateMasterVolume,
     masterVolume
-  } = useAudioEngine(selectedSong);
+  } = useAudioEngine(selectedSong as any);
 
   useKeyboardShortcuts({
     onPlay: play,
@@ -106,24 +122,30 @@ export default function Performance() {
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Get all songs for the sidebar and subscription tracking
-  const { data: allSongs = [] } = useQuery<SongWithTracks[]>({
-    queryKey: ['/api/songs']
-  });
+  // Refresh songs helper function
+  const refreshSongs = () => {
+    if (user?.email) {
+      const songs = LocalSongStorage.getAllSongs(user.email);
+      setAllSongs(songs);
+    }
+  };
 
-  // Mutation for adding new songs
-  const addSongMutation = useMutation({
-    mutationFn: async (songData: { title: string; artist: string; duration: number }) => {
-      const response = await fetch('/api/songs', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(songData)
+  // Add new song function
+  const handleAddSongLocal = () => {
+    if (!user?.email) return;
+    
+    try {
+      const newSong = LocalSongStorage.addSong(user.email, {
+        title: songTitle.trim(),
+        artist: songArtist.trim(),
+        duration: 180, // Default duration
+        bpm: null,
+        key: null,
+        lyrics: null,
+        waveformData: null
       });
-      if (!response.ok) throw new Error('Failed to create song');
-      return response.json();
-    },
-    onSuccess: (newSong) => {
-      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+
+      refreshSongs();
       setSelectedSongId(newSong.id);
       setIsAddSongOpen(false);
       setSongTitle("");
@@ -133,97 +155,69 @@ export default function Performance() {
         title: "Song created",
         description: `"${newSong.title}" has been added to your library.`
       });
-    },
-    onError: () => {
+    } catch (error) {
       toast({
         title: "Error",
         description: "Failed to create song. Please try again.",
         variant: "destructive"
       });
     }
-  });
+  };
 
-  // Mutation for updating lyrics
-  const updateLyricsMutation = useMutation({
-    mutationFn: async (lyrics: string) => {
-      if (!selectedSongId) throw new Error('No song selected');
-      const response = await fetch(`/api/songs/${selectedSongId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lyrics })
-      });
-      if (!response.ok) throw new Error('Failed to update lyrics');
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
-      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+  // Update lyrics function
+  const handleUpdateLyrics = () => {
+    if (!user?.email || !selectedSongId) return;
+    
+    try {
+      LocalSongStorage.updateSong(user.email, selectedSongId, { lyrics: lyricsText });
+      refreshSongs();
       setIsEditLyricsOpen(false);
+      
       toast({
         title: "Lyrics updated",
-        description: "Song lyrics have been saved successfully."
+        description: "Song lyrics have been saved."
       });
-    },
-    onError: () => {
+    } catch (error) {
       toast({
         title: "Error",
         description: "Failed to update lyrics. Please try again.",
         variant: "destructive"
       });
     }
-  });
+  };
 
-  // Mutation for deleting song
-  const deleteSongMutation = useMutation({
-    mutationFn: async () => {
-      if (!selectedSongId) throw new Error('No song selected');
-      console.log('Deleting song:', selectedSongId);
-      const response = await apiRequest('DELETE', `/api/songs/${selectedSongId}`);
-      if (!response.ok) {
-        const errorText = await response.text();
-        let errorMessage = 'Unknown error';
-        try {
-          const errorObj = JSON.parse(errorText);
-          errorMessage = errorObj.message || errorText;
-        } catch {
-          errorMessage = errorText;
+  // Delete song function
+  const handleDeleteSongLocal = () => {
+    if (!user?.email || !selectedSongId) return;
+    
+    try {
+      const success = LocalSongStorage.deleteSong(user.email, selectedSongId);
+      
+      if (success) {
+        refreshSongs();
+        setSelectedSongId(null);
+        setIsDeleteSongOpen(false);
+        
+        // Stop any playing audio if something is playing
+        if (isPlaying) {
+          pause();
         }
-        throw new Error(`Failed to delete song: ${errorMessage}`);
+        
+        toast({
+          title: "Song deleted",
+          description: "Song removed successfully."
+        });
+      } else {
+        throw new Error("Song not found");
       }
-      console.log('Song deletion request successful');
-      // DELETE returns 204 No Content, so no JSON to parse
-      return;
-    },
-    onSuccess: () => {
-      console.log('Song deleted successfully, updating cache');
-      
-      // Force refresh all song data to ensure sync
-      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
-      queryClient.removeQueries({ queryKey: ['/api/songs', selectedSongId] });
-      
-      // Clear selected song and close dialog
-      setSelectedSongId(null);
-      setIsDeleteSongOpen(false);
-      
-      // Stop any playing audio if something is playing
-      if (isPlaying) {
-        pause();
-      }
-      
-      toast({
-        title: "Song deleted",
-        description: "Song removed successfully."
-      });
-    },
-    onError: (error) => {
-      console.error('Song deletion failed:', error);
+    } catch (error) {
       toast({
         title: "Error",
-        description: `Failed to delete song: ${error.message}`,
+        description: "Failed to delete song. Please try again.",
         variant: "destructive"
       });
     }
-  });
+  };
 
   const handleAddSong = () => {
     if (!songTitle.trim() || !songArtist.trim()) {
@@ -237,20 +231,16 @@ export default function Performance() {
 
     // Check subscription limits - prevent adding more than 2 songs for free users
     const MAX_FREE_SONGS = 2;
-    if (allSongs.length >= MAX_FREE_SONGS && (user as any)?.subscriptionStatus !== 'active') {
+    if (allSongs.length >= MAX_FREE_SONGS && userType === 'free') {
       toast({
         title: "Upgrade Required",
-        description: `Free trial limited to ${MAX_FREE_SONGS} songs. Upgrade to add unlimited songs.`,
+        description: `Free users limited to ${MAX_FREE_SONGS} songs. Click the crown icon to upgrade for unlimited songs.`,
         variant: "destructive"
       });
       return;
     }
 
-    addSongMutation.mutate({
-      title: songTitle.trim(),
-      artist: songArtist.trim(),
-      duration: 180 // Default duration, will be updated when tracks are added
-    });
+    handleAddSongLocal();
   };
 
   const handleEditLyrics = () => {
@@ -261,11 +251,11 @@ export default function Performance() {
   };
 
   const handleSaveLyrics = () => {
-    updateLyricsMutation.mutate(lyricsText);
+    handleUpdateLyrics();
   };
 
   const handleDeleteSong = () => {
-    deleteSongMutation.mutate();
+    handleDeleteSongLocal();
   };
 
   const handleInsertTimestamp = () => {
@@ -352,7 +342,7 @@ export default function Performance() {
           <div className="flex-1 flex items-center ml-[10px] mr-4 py-1">
             <div className="flex-1 max-w-[600px]">
               <WaveformVisualizer
-                song={selectedSong || null}
+                song={selectedSong as any || null}
                 currentTime={currentTime}
                 isPlaying={isPlaying}
                 audioLevels={audioLevels}
@@ -368,10 +358,28 @@ export default function Performance() {
             </div>
             
             {/* Subscription Status */}
-            <SubscriptionGuard 
-              songCount={allSongs.length} 
-              onUpgrade={handleUpgrade}
-            />
+            {userType === 'free' && (
+              <div className="flex items-center space-x-2 bg-gray-800 px-3 py-1 rounded-lg">
+                <Crown className="w-4 h-4 text-yellow-500" />
+                <span className="text-sm text-gray-300">
+                  Free: {allSongs.length}/2 songs
+                </span>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="text-xs px-2 py-1 h-6"
+                  onClick={handleUpgrade}
+                >
+                  Upgrade
+                </Button>
+              </div>
+            )}
+            {userType === 'paid' && (
+              <div className="flex items-center space-x-2 bg-green-900/30 px-3 py-1 rounded-lg">
+                <Crown className="w-4 h-4 text-yellow-500" />
+                <span className="text-sm text-green-300">Premium</span>
+              </div>
+            )}
             <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
               <DialogContent className="max-w-[85vw] max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
@@ -380,11 +388,10 @@ export default function Performance() {
                 <div className="mt-4 space-y-6">
                   <div className="max-w-full">
                     <TrackManager
-                      song={selectedSong}
+                      song={selectedSong as any}
                       onTrackUpdate={() => {
                         if (selectedSongId) {
-                          queryClient.invalidateQueries({ queryKey: ['/api/songs', selectedSongId] });
-                          queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+                          refreshSongs();
                         }
                       }}
                       onTrackVolumeChange={updateTrackVolume}
@@ -505,17 +512,16 @@ export default function Performance() {
                         setSongArtist("");
 
                       }}
-                      disabled={addSongMutation.isPending}
                       data-testid="button-cancel-song"
                     >
                       Cancel
                     </Button>
                     <Button 
                       onClick={handleAddSong}
-                      disabled={addSongMutation.isPending || !songTitle.trim() || !songArtist.trim()}
+                      disabled={!songTitle.trim() || !songArtist.trim()}
                       data-testid="button-create-song"
                     >
-                      {addSongMutation.isPending ? "Creating..." : "Create Song"}
+                      Create Song
                     </Button>
                   </div>
                 </div>
@@ -557,7 +563,6 @@ export default function Performance() {
                       <Button 
                         variant="outline" 
                         onClick={() => setIsDeleteSongOpen(false)}
-                        disabled={deleteSongMutation.isPending}
                         data-testid="button-cancel-delete"
                       >
                         Cancel
@@ -565,10 +570,9 @@ export default function Performance() {
                       <Button 
                         variant="destructive"
                         onClick={handleDeleteSong}
-                        disabled={deleteSongMutation.isPending}
                         data-testid="button-confirm-delete"
                       >
-                        {deleteSongMutation.isPending ? "Deleting..." : "Delete Song"}
+                        Delete Song
                       </Button>
                     </div>
                   </div>
@@ -670,7 +674,7 @@ export default function Performance() {
           </div>
           <div className="flex-1 overflow-y-auto p-4">
             <LyricsDisplay
-              song={selectedSong}
+              song={selectedSong as any}
               currentTime={currentTime}
             />
           </div>
@@ -755,17 +759,15 @@ export default function Performance() {
                   setIsEditLyricsOpen(false);
                   setLyricsText("");
                 }}
-                disabled={updateLyricsMutation.isPending}
                 data-testid="button-cancel-lyrics"
               >
                 Cancel
               </Button>
               <Button 
                 onClick={handleSaveLyrics}
-                disabled={updateLyricsMutation.isPending}
                 data-testid="button-save-lyrics"
               >
-                {updateLyricsMutation.isPending ? "Saving..." : "Save Lyrics"}
+                Save Lyrics
               </Button>
             </div>
           </div>

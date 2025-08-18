@@ -13,15 +13,17 @@ import { FileReconnectionDialog } from "@/components/file-reconnection-dialog";
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
+import { useAuth } from "@/hooks/useAuth";
 import type { SongWithTracks } from "@shared/schema";
 
 export default function Performance() {
@@ -40,6 +42,7 @@ export default function Performance() {
 
 
   const { toast } = useToast();
+  const { user } = useAuth();
 
   const { data: selectedSong } = useQuery<SongWithTracks>({
     queryKey: ['/api/songs', selectedSongId],
@@ -354,13 +357,36 @@ export default function Performance() {
                 </div>
               </DialogContent>
             </Dialog>
-            <button 
-              className="bg-surface hover:bg-gray-700 p-2 rounded-lg transition-colors" 
-              title="Settings"
-              data-testid="button-settings"
-            >
-              <Settings className="w-4 h-4" />
-            </button>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button 
+                  className="bg-surface hover:bg-gray-700 p-2 rounded-lg transition-colors" 
+                  title="Settings"
+                  data-testid="button-settings"
+                >
+                  <Settings className="w-4 h-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem disabled className="flex items-center">
+                  <User className="w-4 h-4 mr-2" />
+                  <div className="flex flex-col">
+                    <span className="text-sm">{user?.email || 'User'}</span>
+                    <span className="text-xs text-gray-500">Pro Subscription</span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  onClick={() => window.location.href = '/api/logout'}
+                  className="flex items-center text-red-600 focus:text-red-600"
+                  data-testid="menu-item-logout"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>

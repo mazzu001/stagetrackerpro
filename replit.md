@@ -4,6 +4,11 @@ This is a live music performance application built with React, Express, and in-m
 
 ## Recent Updates (August 18, 2025)
 
+✓ **Subscription system** - Complete $4.99/month Stripe payment processing with user authentication
+✓ **Professional landing page** - Marketing page with features, pricing, and sign-up flow
+✓ **Subscription protection** - All performance features protected behind active subscription paywall
+✓ **Smart file reconnection** - Improved dialog for bulk file selection and automatic name matching
+✓ **Settings menu** - Added dropdown menu under settings gear with user info and logout option
 ✓ **File path-based storage system** - Stores local file paths instead of blob data for true offline operation
 ✓ **Automatic file discovery** - App displays expected files on startup and loads them when selected
 ✓ **Smart file registration** - Files become immediately available when added through file picker
@@ -11,7 +16,6 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Memory-efficient caching** - Files cached by path for instant access without data duplication
 ✓ **Lyrics import feature** - Added web search functionality to import song lyrics automatically
 ✓ **Delete song feature** - Added safe song deletion with confirmation dialog that protects local files
-✓ **Improved error handling** - Clear messaging when files need to be re-selected
 
 # User Preferences
 

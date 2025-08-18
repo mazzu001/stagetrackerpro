@@ -78,7 +78,7 @@ export default function Performance() {
     isPlaying
   });
 
-  // Check for tracks that need audio files when song changes
+  // Log tracks that need audio files when song changes
   useEffect(() => {
     if (selectedSong) {
       // Check if any tracks need audio files (don't have blob:stored or data)
@@ -86,12 +86,9 @@ export default function Performance() {
         track.audioUrl !== 'blob:stored' && !track.audioData
       );
       
-      setHasMissingFiles(tracksNeedingFiles.length > 0);
-      
-      // Auto-open upload dialog if there are tracks needing files
+      // Just log for debugging purposes
       if (tracksNeedingFiles.length > 0) {
         console.log(`${tracksNeedingFiles.length} tracks need audio files in song: ${selectedSong.title}`);
-        setIsFileUploaderOpen(true);
       }
     }
   }, [selectedSong]);

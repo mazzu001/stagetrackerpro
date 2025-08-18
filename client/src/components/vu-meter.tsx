@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 interface VUMeterProps {
   level: number; // 0-100
@@ -9,44 +9,67 @@ interface VUMeterProps {
 export default function VUMeter({ level, isMuted = false, className = "" }: VUMeterProps) {
   const [animatedLevel, setAnimatedLevel] = useState(0);
   const [peakLevel, setPeakLevel] = useState(0);
+  const animationFrameRef = useRef<number>();
+  const lastUpdateRef = useRef<number>(0);
+  const targetLevelRef = useRef<number>(0);
+  const currentLevelRef = useRef<number>(0);
+  const peakLevelRef = useRef<number>(0);
+  const peakHoldTimeRef = useRef<number>(0);
 
-  // Real-time animation for level changes
+  // Single requestAnimationFrame loop for smooth 60fps animation
   useEffect(() => {
     if (isMuted) {
       setAnimatedLevel(0);
       setPeakLevel(0);
+      currentLevelRef.current = 0;
+      peakLevelRef.current = 0;
+      targetLevelRef.current = 0;
       return;
     }
 
-    const targetLevel = Math.max(0, Math.min(100, level));
-    
-    // Fast interpolation for real-time response
-    const animate = () => {
-      setAnimatedLevel(prev => {
-        const diff = targetLevel - prev;
-        // Much faster interpolation for real-time feel
-        const step = diff * 0.8; 
-        return Math.abs(step) < 0.1 ? targetLevel : prev + step;
-      });
+    targetLevelRef.current = Math.max(0, Math.min(100, level));
+
+    const animate = (timestamp: number) => {
+      const deltaTime = timestamp - lastUpdateRef.current;
+      
+      // Only update if enough time has passed (60fps = ~16.67ms)
+      if (deltaTime >= 16) {
+        // Smooth level interpolation
+        const diff = targetLevelRef.current - currentLevelRef.current;
+        const smoothingFactor = Math.min(1, deltaTime / 50); // Adaptive smoothing based on frame time
+        currentLevelRef.current += diff * smoothingFactor * 0.9; // Fast response
+        
+        // Peak detection and hold
+        const currentTime = timestamp;
+        if (currentLevelRef.current > peakLevelRef.current) {
+          peakLevelRef.current = currentLevelRef.current;
+          peakHoldTimeRef.current = currentTime;
+        } else if (currentTime - peakHoldTimeRef.current > 500) { // Hold peak for 500ms
+          // Smooth peak decay
+          peakLevelRef.current = Math.max(currentLevelRef.current, peakLevelRef.current - (deltaTime * 0.1));
+        }
+
+        // Update state only when values change significantly (reduces React re-renders)
+        const newLevel = Math.round(currentLevelRef.current * 10) / 10;
+        const newPeak = Math.round(peakLevelRef.current * 10) / 10;
+        
+        setAnimatedLevel(prev => Math.abs(prev - newLevel) > 0.1 ? newLevel : prev);
+        setPeakLevel(prev => Math.abs(prev - newPeak) > 0.1 ? newPeak : prev);
+        
+        lastUpdateRef.current = timestamp;
+      }
+
+      animationFrameRef.current = requestAnimationFrame(animate);
     };
 
-    const interval = setInterval(animate, 8); // ~120fps for smoother animation
-    return () => clearInterval(interval);
-  }, [level, isMuted]);
+    animationFrameRef.current = requestAnimationFrame(animate);
 
-  // Peak hold functionality
-  useEffect(() => {
-    if (animatedLevel > peakLevel) {
-      setPeakLevel(animatedLevel);
-    } else {
-      // Faster peak decay for more responsive feel
-      const decay = () => {
-        setPeakLevel(prev => Math.max(animatedLevel, prev - 2.0));
-      };
-      const interval = setInterval(decay, 20); // Faster decay updates
-      return () => clearInterval(interval);
-    }
-  }, [animatedLevel, peakLevel]);
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [level, isMuted]);
 
   // Create LED segments
   const segments = 20;

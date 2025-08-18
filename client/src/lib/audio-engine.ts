@@ -219,69 +219,102 @@ export class AudioEngine {
     return this.isPlaying;
   }
 
+  private levelCache: Map<string, { level: number, lastUpdate: number }> = new Map();
+  private smoothingFactor = 0.3; // Smoother level transitions
+
   getAudioLevels(): Record<string, number> {
     const levels: Record<string, number> = {};
+    const now = performance.now();
     
     this.analyzerNodes.forEach((analyzer, trackId) => {
       const track = this.tracks.get(trackId);
       if (!track || !this.isPlaying) {
         levels[trackId] = 0;
+        this.levelCache.delete(trackId);
         return;
       }
 
       const bufferLength = analyzer.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
-      analyzer.getByteTimeDomainData(dataArray); // Use time domain for better level detection
+      analyzer.getByteFrequencyData(dataArray); // Use frequency data for more responsive VU meters
       
-      // Calculate RMS level from time domain data
+      // Calculate average frequency response (better for VU meter visualization)
       let sum = 0;
-      for (let i = 0; i < bufferLength; i++) {
-        const normalized = (dataArray[i] - 128) / 128; // Convert to -1 to 1 range
-        sum += normalized * normalized;
+      const startBin = Math.floor(bufferLength * 0.1); // Skip very low frequencies
+      const endBin = Math.floor(bufferLength * 0.8); // Skip very high frequencies
+      
+      for (let i = startBin; i < endBin; i++) {
+        sum += dataArray[i];
       }
-      const rms = Math.sqrt(sum / bufferLength);
-      levels[trackId] = Math.min(100, rms * 100 * 3); // Scale and limit for better visibility
+      const average = sum / (endBin - startBin);
+      let rawLevel = Math.min(100, (average / 255) * 120); // Scale to 0-100 range
+      
+      // Apply logarithmic scaling for more natural VU meter response
+      rawLevel = rawLevel > 0 ? Math.log10(rawLevel / 10 + 1) * 50 : 0;
+      
+      // Smooth the level changes
+      const cached = this.levelCache.get(trackId);
+      if (cached && now - cached.lastUpdate < 50) { // Don't update too frequently
+        rawLevel = cached.level + (rawLevel - cached.level) * this.smoothingFactor;
+      }
+      
+      this.levelCache.set(trackId, { level: rawLevel, lastUpdate: now });
+      levels[trackId] = Math.max(0, Math.min(100, rawLevel));
     });
     
     return levels;
   }
+
+  private masterLevelCache: { left: number; right: number; lastUpdate: number } = { left: 0, right: 0, lastUpdate: 0 };
 
   getMasterStereoLevels(): { left: number; right: number } {
     if (!this.masterAnalyzerNode || !this.isPlaying) {
       return { left: 0, right: 0 };
     }
 
+    const now = performance.now();
+    
+    // Throttle updates for performance
+    if (now - this.masterLevelCache.lastUpdate < 33) { // ~30fps for master meters
+      return { left: this.masterLevelCache.left, right: this.masterLevelCache.right };
+    }
+
     const bufferLength = this.masterAnalyzerNode.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
-    this.masterAnalyzerNode.getByteTimeDomainData(dataArray);
+    this.masterAnalyzerNode.getByteFrequencyData(dataArray); // Use frequency data
     
-    // For stereo simulation, split data into left and right channels
-    const leftChannelData = dataArray.slice(0, bufferLength / 2);
-    const rightChannelData = dataArray.slice(bufferLength / 2);
+    // Calculate average across mid-range frequencies for better visualization
+    let sum = 0;
+    const startBin = Math.floor(bufferLength * 0.1);
+    const endBin = Math.floor(bufferLength * 0.8);
     
-    // Calculate RMS for left channel
-    let leftSum = 0;
-    for (let i = 0; i < leftChannelData.length; i++) {
-      const normalized = (leftChannelData[i] - 128) / 128;
-      leftSum += normalized * normalized;
+    for (let i = startBin; i < endBin; i++) {
+      sum += dataArray[i];
     }
-    const leftRms = Math.sqrt(leftSum / leftChannelData.length);
+    const average = sum / (endBin - startBin);
+    let baseLevel = Math.min(100, (average / 255) * 110);
     
-    // Calculate RMS for right channel
-    let rightSum = 0;
-    for (let i = 0; i < rightChannelData.length; i++) {
-      const normalized = (rightChannelData[i] - 128) / 128;
-      rightSum += normalized * normalized;
-    }
-    const rightRms = Math.sqrt(rightSum / rightChannelData.length);
+    // Apply logarithmic scaling
+    baseLevel = baseLevel > 0 ? Math.log10(baseLevel / 10 + 1) * 50 : 0;
     
-    // Add some variation between channels for visual interest
-    const leftLevel = Math.min(100, leftRms * 100 * 3);
-    const rightLevel = Math.min(100, rightRms * 100 * 3 * (0.95 + Math.random() * 0.1));
+    // Create slight stereo variation for visual interest
+    const variation = Math.sin(now * 0.001) * 2; // Subtle sine wave variation
+    const leftLevel = Math.max(0, Math.min(100, baseLevel + variation));
+    const rightLevel = Math.max(0, Math.min(100, baseLevel - variation));
+    
+    // Apply smoothing
+    const smoothedLeft = this.masterLevelCache.left + (leftLevel - this.masterLevelCache.left) * 0.4;
+    const smoothedRight = this.masterLevelCache.right + (rightLevel - this.masterLevelCache.right) * 0.4;
+    
+    this.masterLevelCache = {
+      left: smoothedLeft,
+      right: smoothedRight,
+      lastUpdate: now
+    };
     
     return { 
-      left: leftLevel, 
-      right: rightLevel 
+      left: smoothedLeft, 
+      right: smoothedRight 
     };
   }
 

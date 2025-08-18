@@ -1,10 +1,11 @@
 # Overview
 
-This is a live music performance application built with React, Express, and PostgreSQL. The system provides real-time audio mixing, MIDI event sequencing, and synchronized lyrics display for live performances. It features a comprehensive audio engine with multi-track playback (up to 6 tracks per song), visual level monitoring, transport controls, and automatic song duration detection from uploaded audio files for professional stage use.
+This is a live music performance application built with React, Express, and in-memory storage. The system provides real-time audio mixing, MIDI event sequencing, and synchronized lyrics display for live performances. It features a comprehensive audio engine with multi-track playback (up to 6 tracks per song), visual level monitoring, transport controls, and automatic song duration detection from local audio files for professional stage use. The app works completely offline using client-side blob URLs for audio files - no internet connection or file uploads required.
 
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
+Architecture preference: Completely offline operation - no file uploads or internet dependency required.
 
 # System Architecture
 
@@ -18,17 +19,17 @@ Preferred communication style: Simple, everyday language.
 ## Backend Architecture
 - **Runtime**: Node.js with Express.js REST API server
 - **Database**: PostgreSQL with Drizzle ORM for type-safe database operations
-- **File Storage**: Local file system for audio file uploads with multer middleware
+- **File Storage**: Client-side blob URLs for local audio files - no server storage needed
 - **Session Management**: PostgreSQL-backed sessions using connect-pg-simple
 - **Development**: Hot module replacement with Vite middleware integration
 
 ## Data Storage
-- **Primary Database**: PostgreSQL with three main tables:
+- **Primary Database**: In-memory storage with three main collections:
   - `songs`: Core song metadata including title, artist, duration, BPM, key, and lyrics
-  - `tracks`: Individual audio tracks per song with volume, mute, and solo controls
+  - `tracks`: Individual audio tracks per song with volume, mute, and solo controls (using blob URLs)
   - `midiEvents`: Time-stamped MIDI events for automation and effects
-- **File Storage**: Local uploads directory for audio files (MP3, WAV, OGG, M4A)
-- **Schema Management**: Drizzle migrations for database versioning
+- **File Storage**: Client-side blob URLs for local audio files (MP3, WAV, OGG, M4A) - no server storage
+- **Schema Management**: TypeScript types for data validation
 
 ## Core Features
 - **Multi-track Audio Engine**: Real-time audio mixing with individual track controls (up to 6 tracks per song)
@@ -37,7 +38,7 @@ Preferred communication style: Simple, everyday language.
 - **Transport Controls**: Play, pause, stop, and seek functionality with keyboard shortcuts
 - **Live Monitoring**: Real-time audio level meters and system status indicators
 - **Lyrics Display**: Synchronized lyrics with auto-scrolling and MIDI command highlighting
-- **Local File Reference**: Support for MP3, WAV, OGG, and M4A audio formats from local file system
+- **Local File Reference**: Support for MP3, WAV, OGG, and M4A audio formats using blob URLs (completely offline)
 
 ## Audio Processing Pipeline
 - **Track Loading**: Dynamic audio buffer management for multiple simultaneous tracks

@@ -131,7 +131,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         songId: req.params.songId,
         name: req.body.name,
         trackNumber: parseInt(req.body.trackNumber) || (existingTracks.length + 1),
-        audioUrl: req.body.audioUrl, // This will be the blob URL initially
+        audioUrl: req.body.audioUrl, // This will be the blob URL for local files
         volume: parseInt(req.body.volume) || 100,
         balance: parseInt(req.body.balance) || 0,
         isMuted: req.body.isMuted === true,
@@ -154,32 +154,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.status(400).json({ message: error.message });
       } else {
         res.status(500).json({ message: "Failed to create track" });
-      }
-    }
-  });
-
-  // Separate endpoint for file upload
-  app.post("/api/songs/:songId/tracks/:trackId/upload", upload.single('audioFile'), async (req, res) => {
-    try {
-      if (!req.file) {
-        return res.status(400).json({ message: "No file uploaded" });
-      }
-
-      const track = await storage.getTrack(req.params.trackId);
-      if (!track) {
-        return res.status(404).json({ message: "Track not found" });
-      }
-
-      // Update track with server file path
-      const audioUrl = `/uploads/${req.file.filename}`;
-      const updatedTrack = await storage.updateTrack(req.params.trackId, { audioUrl });
-
-      res.json(updatedTrack);
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(400).json({ message: error.message });
-      } else {
-        res.status(500).json({ message: "Failed to upload file" });
       }
     }
   });

@@ -311,28 +311,21 @@ export default function TrackManager({
           }
         }
         
-        // Create track with blob URL for immediate playback
+        // Create track with blob URL for local playback
         const trackData = {
           name,
           trackNumber: tracks.length + i + 1,
-          audioUrl: objectUrl, // Use blob URL for immediate loading
+          audioUrl: objectUrl, // Use blob URL for local loading
           localFileName: file.name,
           duration,
           volume: 100,
           isMuted: false,
-          isSolo: false,
-          _originalFile: file // Store original file for background upload
+          isSolo: false
         };
 
         await new Promise((resolve, reject) => {
           addTrackMutation.mutate(trackData, {
-            onSuccess: (createdTrack) => {
-              // Start background upload after track is created
-              if (file) {
-                uploadFileInBackground(createdTrack.id, file);
-              }
-              resolve(createdTrack);
-            },
+            onSuccess: resolve,
             onError: reject
           });
         });
@@ -353,21 +346,7 @@ export default function TrackManager({
     }
   };
 
-  // Background file upload function
-  const uploadFileInBackground = async (trackId: string, file: File) => {
-    try {
-      const formData = new FormData();
-      formData.append('audioFile', file);
-      
-      await apiRequest('POST', `/api/songs/${song?.id}/tracks/${trackId}/upload`, formData);
-      console.log(`Background upload completed for track ${trackId}`);
-      
-      // Invalidate cache to refresh track with server URL
-      queryClient.invalidateQueries({ queryKey: ['/api/songs', song?.id, 'tracks'] });
-    } catch (error) {
-      console.warn(`Background upload failed for track ${trackId}:`, error);
-    }
-  };
+
 
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';
@@ -549,7 +528,7 @@ export default function TrackManager({
           <Music className="w-12 h-12 mx-auto mb-4 opacity-50" />
           <p>No backing tracks yet. Add your first track to get started.</p>
           <p className="text-sm mt-2">Supported formats: MP3, WAV, OGG, M4A</p>
-          <p className="text-xs mt-1">Files will be referenced from your local system</p>
+          <p className="text-xs mt-1">Files stay on your device - no uploads, completely offline</p>
         </div>
       ) : (
         <div className="space-y-3">

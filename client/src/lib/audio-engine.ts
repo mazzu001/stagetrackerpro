@@ -340,29 +340,18 @@ class TrackController {
         throw new Error(`Track ${this.track.name} has no audio URL`);
       }
       
-      let arrayBuffer: ArrayBuffer;
-      
-      if (this.track.audioUrl.startsWith('blob:')) {
-        // Handle blob URLs (temporary client-side)
-        const response = await fetch(this.track.audioUrl);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch blob audio: ${response.status} ${response.statusText}`);
-        }
-        
-        arrayBuffer = await response.arrayBuffer();
-      } else if (this.track.audioUrl.startsWith('/uploads/') || this.track.audioUrl.startsWith('http')) {
-        // Handle server-side file URLs
-        const response = await fetch(this.track.audioUrl);
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch server audio: ${response.status} ${response.statusText}`);
-        }
-        
-        arrayBuffer = await response.arrayBuffer();
-      } else {
-        throw new Error(`Track ${this.track.name} has invalid audio URL format: ${this.track.audioUrl}`);
+      if (!this.track.audioUrl.startsWith('blob:')) {
+        throw new Error(`Track ${this.track.name} must use blob URL for offline operation`);
       }
+      
+      // Handle blob URLs (client-side files)
+      const response = await fetch(this.track.audioUrl);
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch audio: ${response.status} ${response.statusText}`);
+      }
+      
+      const arrayBuffer = await response.arrayBuffer();
       
       if (arrayBuffer.byteLength === 0) {
         throw new Error(`Empty audio file for track ${this.track.name}`);

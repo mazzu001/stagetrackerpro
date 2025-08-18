@@ -11,7 +11,6 @@ interface LyricsDisplayProps {
 
 export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps) {
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
-  const [scrollStartTime, setScrollStartTime] = useState<number | null>(null);
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
   
@@ -20,10 +19,12 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   });
 
-  // Original smooth auto-scroll with timestamp delay
+  // Center-based scrolling that keeps active line in middle
   useEffect(() => {
-    if (song && parsedLyrics.length > 0 && lyricsContainerRef.current) {
+    if (song && parsedLyrics.length > 0 && lyricsContainerRef.current && currentLineIndex >= 0) {
       const container = lyricsContainerRef.current;
+      const containerHeight = container.clientHeight;
+      const containerCenter = containerHeight / 2;
       
       // Check if lyrics contain actual timestamps (not just default sequential ones)
       const hasRealTimestamps = parsedLyrics.some((line, index) => {
@@ -31,7 +32,6 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
         return line.timestamp !== (index + 1) * 5;
       });
       
-      const songDuration = song.duration || 180; // Default to 3 minutes if no duration
       let shouldStartScrolling = false;
       
       if (hasRealTimestamps) {
@@ -44,32 +44,32 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
       }
       
       if (shouldStartScrolling) {
-        // Track when scrolling first starts
-        if (scrollStartTime === null) {
-          setScrollStartTime(currentTime);
-        }
+        // Get the current active line element
+        const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
         
-        // Calculate scroll progress from when scrolling actually started
-        const scrollDuration = currentTime - scrollStartTime;
-        const adjustedProgress = Math.min(scrollDuration / songDuration, 1);
-        
-        // Calculate smooth scroll position based on adjusted progress
-        const maxScrollTop = container.scrollHeight - container.clientHeight;
-        const targetScrollTop = adjustedProgress * maxScrollTop;
-        
-        // Use smooth scrolling
-        container.scrollTo({
-          top: targetScrollTop,
-          behavior: 'smooth'
-        });
-      } else {
-        // Reset scroll start time when not scrolling
-        if (scrollStartTime !== null) {
-          setScrollStartTime(null);
+        if (currentLineElement) {
+          const lineOffsetTop = currentLineElement.offsetTop;
+          const lineHeight = currentLineElement.offsetHeight;
+          const currentScrollTop = container.scrollTop;
+          
+          // Calculate where the line currently appears in the visible area
+          const linePositionInContainer = lineOffsetTop - currentScrollTop;
+          
+          // Only scroll if the current line has reached or passed the center
+          if (linePositionInContainer >= containerCenter) {
+            // Position the current line in the center of the container
+            const targetScrollTop = lineOffsetTop - containerCenter + (lineHeight / 2);
+            
+            // Use smooth scrolling to center the current line
+            container.scrollTo({
+              top: Math.max(0, targetScrollTop),
+              behavior: 'smooth'
+            });
+          }
         }
       }
     }
-  }, [currentTime, song, parsedLyrics.length]);
+  }, [currentTime, song, parsedLyrics.length, currentLineIndex, scrollStartTime]);
 
   if (!song) {
     return (

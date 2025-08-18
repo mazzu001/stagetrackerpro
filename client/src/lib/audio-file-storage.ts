@@ -1,5 +1,5 @@
 import type { Track } from "@shared/schema";
-import { LocalFileSystem } from "./local-file-system";
+import { BrowserFileSystem } from "./browser-file-system";
 
 interface StoredAudioFile {
   id: string;
@@ -18,7 +18,7 @@ export class AudioFileStorage {
   private fileObjects: Map<string, File> = new Map(); // Keep original File objects in memory
   private blobUrls: Map<string, string> = new Map(); // Cache blob URLs to avoid recreating
   private fileCache: Map<string, File> = new Map(); // Cache files by path for faster access
-  private localFS: LocalFileSystem;
+  private browserFS: BrowserFileSystem;
 
   static getInstance(): AudioFileStorage {
     if (!AudioFileStorage.instance) {
@@ -29,23 +29,23 @@ export class AudioFileStorage {
   }
 
   constructor() {
-    this.localFS = LocalFileSystem.getInstance();
+    this.browserFS = BrowserFileSystem.getInstance();
   }
 
-  // Store file using local file system (100% offline)
+  // Store file using browser storage (IndexedDB + File API)
   async storeAudioFile(trackId: string, file: File, track?: Track, songTitle?: string): Promise<void> {
     try {
-      console.log(`Storing audio file locally: ${file.name}, size: ${file.size} bytes`);
+      console.log(`Storing audio file in browser: ${file.name}, size: ${file.size} bytes`);
       
       if (!track) {
-        throw new Error('Track information required for local storage');
+        throw new Error('Track information required for storage');
       }
 
-      // Store file in local file system
-      const success = await this.localFS.addAudioFile(track.songId, trackId, track.name, file);
+      // Store file in browser file system
+      const success = await this.browserFS.addAudioFile(track.songId, trackId, track.name, file);
       
       if (!success) {
-        throw new Error('Failed to save file to local file system');
+        throw new Error('Failed to save file to browser storage');
       }
 
       // Keep file object in memory cache for immediate access
@@ -55,7 +55,7 @@ export class AudioFileStorage {
       const storedFile: StoredAudioFile = {
         id: trackId,
         name: file.name,
-        filePath: `local://${track.songId}/${trackId}`,
+        filePath: `browser://${track.songId}/${trackId}`,
         mimeType: file.type,
         size: file.size,
         lastModified: file.lastModified || Date.now()
@@ -63,47 +63,37 @@ export class AudioFileStorage {
 
       this.audioFiles.set(trackId, storedFile);
       
-      console.log(`Successfully stored audio file locally for track: ${track.name} (${Math.round(file.size / 1024)}KB)`);
+      console.log(`Successfully stored audio file for track: ${track.name} (${Math.round(file.size / 1024)}KB)`);
     } catch (error) {
       console.error('Failed to store audio file:', error);
       throw error;
     }
   }
 
-  // Get audio file as blob URL using local file system
+  // Get audio file as blob URL using browser storage
   async getAudioUrl(trackId: string): Promise<string | null> {
-    // Return cached blob URL if available
-    if (this.blobUrls.has(trackId)) {
-      return this.blobUrls.get(trackId)!;
+    // Try browser file system first (handles caching internally)
+    try {
+      const url = await this.browserFS.getAudioUrl(trackId);
+      if (url) {
+        console.log(`Got audio URL from browser storage for track: ${trackId}`);
+        return url;
+      }
+    } catch (error) {
+      console.error(`Error getting URL from browser storage for track ${trackId}:`, error);
     }
 
-    // Try to get from in-memory cache first
-    let fileObject = this.fileObjects.get(trackId);
-    
-    // If not in memory, load from local file system
+    // Fallback to in-memory cache
+    const fileObject = this.fileObjects.get(trackId);
     if (!fileObject) {
-      console.log(`Loading file from local file system for track: ${trackId}`);
-      
-      try {
-        fileObject = await this.localFS.getAudioFile(trackId) || undefined;
-        
-        if (fileObject) {
-          console.log(`Successfully loaded file: ${fileObject.name} from local storage`);
-          this.fileObjects.set(trackId, fileObject);
-        } else {
-          console.warn(`Audio file not found in local storage for track: ${trackId}`);
-          return null;
-        }
-      } catch (error) {
-        console.error(`Error loading file from local storage for track ${trackId}:`, error);
-        return null;
-      }
+      console.warn(`Audio file not found for track: ${trackId}`);
+      return null;
     }
 
     try {
       const url = URL.createObjectURL(fileObject);
       this.blobUrls.set(trackId, url); // Cache the blob URL
-      console.log(`Created audio URL for track: ${trackId}`);
+      console.log(`Created fallback audio URL for track: ${trackId}`);
       return url;
     } catch (error) {
       console.error(`Failed to create audio URL for track: ${trackId}`, error);

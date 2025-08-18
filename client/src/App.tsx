@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Performance from "@/pages/performance";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
-import { LocalFileSystem } from '@/lib/local-file-system';
+import { BrowserFileSystem } from '@/lib/browser-file-system';
 
 function App() {
   const [isLocalFSReady, setIsLocalFSReady] = useState(false);
@@ -15,17 +15,17 @@ function App() {
     // Check if local file system is already initialized
     const checkLocalFS = async () => {
       try {
-        const localFS = LocalFileSystem.getInstance();
-        const isReady = localFS.isReady();
+        const browserFS = BrowserFileSystem.getInstance();
+        const isReady = browserFS.isReady();
         
         if (isReady) {
-          console.log('Local file system already ready');
+          console.log('Browser file system already ready');
           setIsLocalFSReady(true);
         } else {
-          console.log('Local file system needs initialization');
+          console.log('Browser file system needs initialization');
         }
       } catch (error) {
-        console.error('Error checking local file system:', error);
+        console.error('Error checking browser file system:', error);
       } finally {
         setIsCheckingFS(false);
       }

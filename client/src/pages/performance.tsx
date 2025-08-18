@@ -382,12 +382,9 @@ export default function Performance() {
         {/* Right Content Area - Lyrics (70%) */}
         <div className="flex-1 flex flex-col">
           <div className="p-4 border-b border-gray-700 bg-surface flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold">Lyrics</h2>
-              {selectedSong && (
-                <p className="text-sm text-gray-400">{selectedSong.title} - {selectedSong.artist}</p>
-              )}
-            </div>
+            <h2 className="text-lg font-semibold">
+              {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
+            </h2>
             {selectedSong && (
               <Button
                 variant="outline"

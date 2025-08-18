@@ -37,11 +37,11 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold flex items-center">
             <AlignLeft className="mr-2 text-accent w-5 h-5" />
-            Lyrics & MIDI
+            Lyrics
           </h2>
         </div>
         <div className="text-center py-8 text-gray-400">
-          Select a song to view lyrics and MIDI events
+          Select a song to view lyrics
         </div>
       </div>
     );
@@ -55,7 +55,7 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold flex items-center">
           <AlignLeft className="mr-2 text-accent w-5 h-5" />
-          Lyrics & MIDI
+          Lyrics
         </h2>
         <div className="flex items-center space-x-2">
           <span className="text-xs bg-accent/20 text-accent px-2 py-1 rounded">AUTO-SCROLL</span>

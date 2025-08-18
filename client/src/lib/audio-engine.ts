@@ -348,28 +348,24 @@ class TrackController {
       // Handle blob URLs (client-side files)
       let audioUrl = this.track.audioUrl;
       
-      // Try to get restored blob URL from persistence if current one fails
+      // Check if we can restore the blob URL from stored file data first
+      const restoredUrl = persistence.getBlobUrl(this.track.id);
+      if (restoredUrl) {
+        console.log(`Using restored blob URL for ${this.track.name}`);
+        audioUrl = restoredUrl;
+      }
+      
+      // Try to fetch the audio data
       let response: Response | null = null;
       try {
         response = await fetch(audioUrl);
-      } catch (error) {
-        console.log(`Original blob URL failed for ${this.track.name}, trying to restore from persistence...`);
-        response = null;
-      }
-      
-      if (!response || !response.ok) {
-        const restoredUrl = persistence.getBlobUrl(this.track.id);
-        if (restoredUrl && restoredUrl !== audioUrl) {
-          console.log(`Using restored blob URL for ${this.track.name}`);
-          audioUrl = restoredUrl;
-          response = await fetch(audioUrl);
-        } else {
-          console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
-      }
-      
-      if (!response || !response.ok) {
-        throw new Error(`Failed to fetch audio: ${response?.status || 'network error'} ${response?.statusText || ''}`);
+      } catch (error) {
+        // If both original and restored URLs fail, the file data is missing
+        console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
+        throw new Error(`Audio file not available for ${this.track.name}. Please re-add the audio file.`);
       }
       
       const arrayBuffer = await response.arrayBuffer();

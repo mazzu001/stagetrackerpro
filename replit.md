@@ -9,6 +9,8 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Smart fallback recovery** - Automatically recreates blob URLs when they expire
 ✓ **User-friendly warnings** - Displays helpful messages for tracks that need to be re-added
 ✓ **Lyrics import feature** - Added web search functionality to import song lyrics automatically
+✓ **Delete song feature** - Added safe song deletion with confirmation dialog that protects local files
+✓ **Improved error handling** - Fixed fetch errors and enhanced blob URL restoration system
 
 # User Preferences
 

@@ -86,10 +86,23 @@ export class AudioEngine {
   async play(): Promise<void> {
     if (!this.audioContext || !this.currentSong) return;
 
-    // Don't start playback if no tracks are loaded
-    if (this.tracks.size === 0) {
-      console.warn('No tracks loaded, cannot start playback');
-      return;
+    // Wait for tracks to load if they're still loading
+    if (this.tracks.size === 0 && this.currentSong.tracks.length > 0) {
+      console.log('Waiting for tracks to load...');
+      // Wait up to 10 seconds for tracks to load
+      const maxWaitTime = 10000; // 10 seconds
+      const startTime = Date.now();
+      
+      while (this.tracks.size === 0 && (Date.now() - startTime) < maxWaitTime) {
+        console.log(`Waiting for all tracks to load (${this.tracks.size}/${this.currentSong.tracks.length})...`);
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+      
+      if (this.tracks.size === 0) {
+        console.warn('Timeout waiting for tracks to load. Playing with 0/6 tracks.');
+        console.warn('No tracks loaded, cannot start playback');
+        return;
+      }
     }
 
     // Don't restart if already playing

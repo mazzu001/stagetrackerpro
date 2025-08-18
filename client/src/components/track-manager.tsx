@@ -543,10 +543,23 @@ export default function TrackManager({
         <>
           {/* Show warning for tracks that need to be re-added */}
           {tracks.some(track => track.audioUrl && !persistence.hasFileData?.(track.id)) && (
-            <div className="bg-yellow-900/20 border border-yellow-600 rounded-lg p-3 mb-4">
-              <div className="flex items-center space-x-2 text-yellow-400 text-sm">
-                <AlertTriangle className="w-4 h-4" />
-                <span>Some tracks need to be re-added after the app restart. Please delete and re-add your audio files.</span>
+            <div className="bg-blue-900/20 border border-blue-500 rounded-lg p-4 mb-4">
+              <div className="flex items-start space-x-3">
+                <AlertTriangle className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                <div className="space-y-2">
+                  <h4 className="text-blue-300 font-medium">Tracks Need File Re-selection</h4>
+                  <p className="text-blue-200 text-sm">
+                    Some tracks can't load their audio files and won't play. To fix this:
+                  </p>
+                  <ol className="text-blue-200 text-sm space-y-1 ml-4">
+                    <li>1. Delete the affected tracks using the trash icon</li>
+                    <li>2. Add them again by selecting your local audio files</li>
+                    <li>3. Your local files are safe - only the app references need updating</li>
+                  </ol>
+                  <p className="text-blue-300 text-xs">
+                    New tracks added now will persist properly across app restarts.
+                  </p>
+                </div>
               </div>
             </div>
           )}

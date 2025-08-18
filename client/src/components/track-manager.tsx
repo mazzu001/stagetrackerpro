@@ -162,6 +162,38 @@ export default function TrackManager({
     }
   });
 
+  const handleClearBrokenTracks = async () => {
+    const brokenTracks = tracks.filter(track => !audioStorage.hasAudioFile(track.id));
+    
+    if (brokenTracks.length === 0) return;
+
+    try {
+      // Delete all broken tracks in parallel
+      await Promise.all(
+        brokenTracks.map(track => 
+          apiRequest('DELETE', `/api/tracks/${track.id}`)
+        )
+      );
+      
+      // Refresh data
+      queryClient.invalidateQueries({ queryKey: ['/api/songs', song?.id, 'tracks'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/songs', song?.id] });
+      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+      onTrackUpdate?.();
+      
+      toast({
+        title: "Cleared broken tracks",
+        description: `Removed ${brokenTracks.length} tracks without audio files.`
+      });
+    } catch (error) {
+      toast({
+        title: "Clear failed",
+        description: "Failed to clear broken tracks",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleFileSelect = () => {
     // Use traditional file input for reliable file selection
     const input = document.createElement('input');
@@ -400,6 +432,19 @@ export default function TrackManager({
             <span className="ml-2 text-sm text-gray-400">({tracks.length}/6)</span>
           </h2>
           <div className="flex items-center space-x-2">
+            {tracks.length > 0 && tracks.some(track => !audioStorage.hasAudioFile(track.id)) && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => handleClearBrokenTracks()}
+                className="h-8 px-2 text-red-400 hover:bg-red-900/20 hover:text-red-300"
+                title="Clear tracks without audio files"
+                data-testid="button-clear-broken-tracks"
+              >
+                <Trash2 className="w-4 h-4 mr-1" />
+                Clear Broken
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="sm"

@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, CreditCard } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Crown, Music, Zap, Star } from "lucide-react";
 
 // Make sure to call `loadStripe` outside of a component's render to avoid
 // recreating the `Stripe` object on every render.
@@ -18,16 +18,16 @@ const SubscribeForm = () => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
     if (!stripe || !elements) {
-      setIsLoading(false);
       return;
     }
+
+    setIsProcessing(true);
 
     const { error } = await stripe.confirmPayment({
       elements,
@@ -35,8 +35,6 @@ const SubscribeForm = () => {
         return_url: window.location.origin,
       },
     });
-
-    setIsLoading(false);
 
     if (error) {
       toast({
@@ -46,134 +44,152 @@ const SubscribeForm = () => {
       });
     } else {
       toast({
-        title: "Welcome to Pro!",
-        description: "Your subscription is now active. You have full access to all features.",
+        title: "Payment Successful",
+        description: "Welcome to Music Performance Pro! You now have unlimited songs.",
       });
-      // Redirect to performance page
-      window.location.href = '/';
+      // Redirect to performance app after successful payment
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 2000);
     }
-  }
+
+    setIsProcessing(false);
+  };
 
   return (
-    <Card className="max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <CreditCard className="w-5 h-5" />
-          Complete Your Subscription
-        </CardTitle>
-        <CardDescription>
-          $4.99/month - Cancel anytime
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <PaymentElement />
-          <Button 
-            type="submit" 
-            className="w-full" 
-            disabled={!stripe || isLoading}
-            data-testid="button-complete-payment"
-          >
-            {isLoading ? "Processing..." : "Complete Payment"}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <PaymentElement />
+      <Button 
+        type="submit" 
+        disabled={!stripe || isProcessing} 
+        className="w-full h-12 text-lg"
+        data-testid="button-subscribe"
+      >
+        {isProcessing ? "Processing..." : "Subscribe for $4.99/month"}
+      </Button>
+    </form>
   );
 };
 
 export default function Subscribe() {
   const [clientSecret, setClientSecret] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const { toast } = useToast();
 
   useEffect(() => {
-    // Create subscription as soon as the page loads
+    // Create subscription payment intent
     apiRequest("POST", "/api/create-subscription")
       .then((res) => res.json())
       .then((data) => {
-        console.log('Subscription response:', data);
-        if (data.clientSecret) {
-          setClientSecret(data.clientSecret);
-        } else if (data.subscriptionId && !data.clientSecret) {
-          // Subscription exists but no payment needed (already active)
-          toast({
-            title: "Already Subscribed",
-            description: "You already have an active subscription!",
-          });
-          setTimeout(() => {
-            window.location.href = '/';
-          }, 2000);
-        } else {
-          console.error('No client secret in response:', data);
-          toast({
-            title: "Payment Setup Issue",
-            description: "Unable to initialize payment. Please contact support if this continues.",
-            variant: "destructive",
-          });
-        }
+        setClientSecret(data.clientSecret);
       })
       .catch((error) => {
-        console.error('Subscription creation error:', error);
-        toast({
-          title: "Subscription Error",
-          description: error.message || "Failed to create subscription. Please try again.",
-          variant: "destructive",
-        });
+        console.error('Error creating subscription:', error);
       })
-      .finally(() => setIsLoading(false));
-  }, [toast]);
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-900">
-        <Card className="max-w-md mx-auto">
-          <CardContent className="flex items-center justify-center py-12">
-            <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full" aria-label="Loading"/>
-            <span className="ml-3 text-lg">Setting up your subscription...</span>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  if (!clientSecret) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-900">
-        <Card className="max-w-md mx-auto">
-          <CardContent className="text-center py-12">
-            <p className="text-red-500 mb-4">Failed to initialize payment</p>
-            <Button onClick={() => window.location.href = '/'} data-testid="button-back-home">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
+          <p className="text-gray-400">Setting up subscription...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 py-12">
-      <div className="container mx-auto px-4">
+    <div className="min-h-screen bg-background p-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Subscribe to Pro</h1>
-          <p className="text-gray-400">Get full access to all professional features</p>
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
+            <Crown className="w-8 h-8 text-primary" />
+          </div>
+          <h1 className="text-3xl font-bold mb-2">Upgrade to Music Performance Pro</h1>
+          <p className="text-gray-400">Unlock unlimited songs and professional features</p>
         </div>
-        
-        {/* Make SURE to wrap the form in <Elements> which provides the stripe context. */}
-        <Elements stripe={stripePromise} options={{ clientSecret }}>
-          <SubscribeForm />
-        </Elements>
 
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Features */}
+          <div className="space-y-6">
+            <Card className="bg-surface border-gray-700">
+              <CardHeader>
+                <CardTitle className="flex items-center text-xl">
+                  <Music className="w-5 h-5 mr-2 text-primary" />
+                  What You Get
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <Star className="w-5 h-5 text-yellow-500 mt-0.5" />
+                  <div>
+                    <h3 className="font-medium">Unlimited Songs</h3>
+                    <p className="text-sm text-gray-400">Create and manage as many songs as you need</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <Zap className="w-5 h-5 text-blue-500 mt-0.5" />
+                  <div>
+                    <h3 className="font-medium">Professional Features</h3>
+                    <p className="text-sm text-gray-400">Advanced MIDI control, waveform analysis, and more</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <Crown className="w-5 h-5 text-purple-500 mt-0.5" />
+                  <div>
+                    <h3 className="font-medium">Priority Support</h3>
+                    <p className="text-sm text-gray-400">Get help when you need it most</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <div className="text-center p-6 bg-green-950/20 border border-green-500 rounded-lg">
+              <h3 className="text-green-300 font-medium mb-2">Special Launch Price</h3>
+              <p className="text-green-200 text-sm">
+                Just $4.99/month - Cancel anytime. No setup fees or long-term commitments.
+              </p>
+            </div>
+          </div>
+
+          {/* Payment Form */}
+          <Card className="bg-surface border-gray-700">
+            <CardHeader>
+              <CardTitle>Complete Your Subscription</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {clientSecret ? (
+                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                  <SubscribeForm />
+                </Elements>
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-red-400">Unable to initialize payment. Please try again.</p>
+                  <Button 
+                    onClick={() => window.location.reload()} 
+                    variant="outline" 
+                    className="mt-4"
+                  >
+                    Retry
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Back to App */}
         <div className="text-center mt-8">
           <Button 
             variant="ghost" 
             onClick={() => window.location.href = '/'}
-            data-testid="button-back"
+            data-testid="button-back-to-app"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
+            ← Back to App
           </Button>
         </div>
       </div>

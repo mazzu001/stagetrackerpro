@@ -3,7 +3,9 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Route, Router } from "wouter";
 import Performance from "@/pages/performance";
+import Subscribe from "@/pages/subscribe";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
 
@@ -64,7 +66,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         {isLocalFSReady ? (
-          <Performance />
+          <Router>
+            <Route path="/" component={Performance} />
+            <Route path="/subscribe" component={Subscribe} />
+          </Router>
         ) : (
           <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
         )}

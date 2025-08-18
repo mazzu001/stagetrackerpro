@@ -70,16 +70,7 @@ export type SongWithTracks = Song & {
   midiEvents: MidiEvent[];
 };
 
-// Session storage table.
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
-export const sessions = sqliteTable("sessions", {
-  sid: text("sid").primaryKey(),
-  sess: text("sess").notNull(), // JSON string instead of jsonb
-  expire: text("expire").notNull(), // ISO datetime string
-});
-
-// User storage table.
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+// User table for subscription tracking  
 export const users = sqliteTable("users", {
   id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
   email: text("email").unique(),
@@ -90,9 +81,23 @@ export const users = sqliteTable("users", {
   stripeSubscriptionId: text("stripe_subscription_id"),
   subscriptionStatus: text("subscription_status"), // active, canceled, incomplete, etc.
   subscriptionEndDate: text("subscription_end_date"), // ISO datetime string
+  songCount: integer("song_count").default(0),
   createdAt: text("created_at").default(sql`(datetime('now'))`),
   updatedAt: text("updated_at").default(sql`(datetime('now'))`),
 });
 
-export type UpsertUser = typeof users.$inferInsert;
+export const insertUserSchema = createInsertSchema(users).omit({
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+// Session storage table.
+// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+export const sessions = sqliteTable("sessions", {
+  sid: text("sid").primaryKey(),
+  sess: text("sess").notNull(), // JSON string instead of jsonb
+  expire: text("expire").notNull(), // ISO datetime string
+});

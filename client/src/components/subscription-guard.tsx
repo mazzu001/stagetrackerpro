@@ -1,102 +1,110 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Crown, Music, Lock, Star } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { CreditCard, Lock, Zap } from "lucide-react";
 
 interface SubscriptionGuardProps {
-  children: React.ReactNode;
+  songCount: number;
+  onUpgrade: () => void;
 }
 
-export function SubscriptionGuard({ children }: SubscriptionGuardProps) {
-  const { toast } = useToast();
-  const [showSubscriptionPrompt, setShowSubscriptionPrompt] = useState(false);
+export function SubscriptionGuard({ songCount, onUpgrade }: SubscriptionGuardProps) {
+  const MAX_FREE_SONGS = 2;
+  const songsRemaining = Math.max(0, MAX_FREE_SONGS - songCount);
+  const isTrialExpired = songCount >= MAX_FREE_SONGS;
 
-  const { data: subscriptionStatus, isLoading } = useQuery({
-    queryKey: ["/api/subscription/status"],
-    retry: false,
+  // Check subscription status
+  const { data: user } = useQuery({
+    queryKey: ['/api/auth/user'],
+    queryFn: async () => {
+      const res = await fetch('/api/auth/user');
+      if (!res.ok) throw new Error('Failed to fetch user');
+      return res.json();
+    }
   });
 
-  useEffect(() => {
-    const status = subscriptionStatus as any;
-    if (status && !status.hasSubscription) {
-      setShowSubscriptionPrompt(true);
-    } else if (status && status.status !== 'active') {
-      toast({
-        title: "Subscription Issue",
-        description: "Your subscription is not active. Please check your payment method.",
-        variant: "destructive",
-      });
-      setShowSubscriptionPrompt(true);
-    }
-  }, [subscriptionStatus, toast]);
+  const hasActiveSubscription = user?.subscriptionStatus === 'active';
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full" />
-      </div>
-    );
+  if (hasActiveSubscription) {
+    return null; // Don't show guard if user has active subscription
   }
 
-  if (showSubscriptionPrompt) {
+  if (!isTrialExpired) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-        <Card className="max-w-md mx-auto bg-slate-800 border-slate-700 text-white">
-          <CardHeader className="text-center">
-            <Lock className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-            <CardTitle className="text-2xl">Subscription Required</CardTitle>
-            <CardDescription className="text-gray-300">
-              Get full access to all professional performance features for just $4.99/month
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex items-center text-sm">
-                <Zap className="w-4 h-4 text-green-400 mr-2" />
-                Up to 6 tracks per song
-              </div>
-              <div className="flex items-center text-sm">
-                <Zap className="w-4 h-4 text-green-400 mr-2" />
-                Unlimited songs
-              </div>
-              <div className="flex items-center text-sm">
-                <Zap className="w-4 h-4 text-green-400 mr-2" />
-                MIDI event sequencing
-              </div>
-              <div className="flex items-center text-sm">
-                <Zap className="w-4 h-4 text-green-400 mr-2" />
-                Lyrics import & editing
-              </div>
-              <div className="flex items-center text-sm">
-                <Zap className="w-4 h-4 text-green-400 mr-2" />
-                Real-time visualization
-              </div>
+      <div className="mb-6 p-4 bg-blue-950/20 border border-blue-500 rounded-lg">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Star className="w-5 h-5 text-blue-400" />
+            <div>
+              <h3 className="text-blue-300 font-medium">Free Trial</h3>
+              <p className="text-blue-200 text-sm">
+                {songsRemaining} of {MAX_FREE_SONGS} songs remaining
+              </p>
             </div>
-            
-            <Button 
-              className="w-full bg-purple-600 hover:bg-purple-700"
-              onClick={() => window.location.href = '/subscribe'}
-              data-testid="button-subscribe-guard"
-            >
-              <CreditCard className="w-4 h-4 mr-2" />
-              Subscribe Now - $4.99/month
-            </Button>
-
-            <Button 
-              variant="ghost" 
-              className="w-full text-gray-400 hover:text-white"
-              onClick={() => window.location.href = '/api/logout'}
-              data-testid="button-logout"
-            >
-              Sign Out
-            </Button>
-          </CardContent>
-        </Card>
+          </div>
+          <Button
+            onClick={onUpgrade}
+            variant="outline"
+            size="sm"
+            className="border-blue-500 text-blue-300 hover:bg-blue-500/20"
+            data-testid="button-upgrade-trial"
+          >
+            <Crown className="w-4 h-4 mr-2" />
+            Upgrade Now
+          </Button>
+        </div>
       </div>
     );
   }
 
-  return <>{children}</>;
+  return (
+    <Card className="mb-6 bg-gradient-to-r from-purple-950/20 to-blue-950/20 border-purple-500">
+      <CardHeader>
+        <CardTitle className="flex items-center text-xl">
+          <Lock className="w-6 h-6 mr-2 text-purple-400" />
+          Trial Limit Reached
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <p className="text-gray-300">
+          You've created {songCount} songs and reached your free trial limit of {MAX_FREE_SONGS} songs.
+        </p>
+        
+        <div className="bg-purple-950/30 border border-purple-600 rounded-lg p-4">
+          <h3 className="text-purple-300 font-medium mb-2">Upgrade to Music Performance Pro</h3>
+          <div className="space-y-2 text-sm text-purple-200">
+            <div className="flex items-center space-x-2">
+              <Music className="w-4 h-4" />
+              <span>Unlimited songs</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Star className="w-4 h-4" />
+              <span>Professional features</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Crown className="w-4 h-4" />
+              <span>Priority support</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-2xl font-bold text-primary">$4.99<span className="text-sm text-gray-400">/month</span></p>
+            <p className="text-sm text-gray-400">Cancel anytime</p>
+          </div>
+          <Button
+            onClick={onUpgrade}
+            size="lg"
+            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+            data-testid="button-upgrade-required"
+          >
+            <Crown className="w-5 h-5 mr-2" />
+            Upgrade Now
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
 }

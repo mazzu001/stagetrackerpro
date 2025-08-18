@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
+import { useLocation } from "wouter";
 import CompactTransportControls from "@/components/compact-transport-controls";
 import AudioMixer from "@/components/audio-mixer";
 import LyricsDisplay from "@/components/lyrics-display";
@@ -19,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User } from "lucide-react";
+import { SubscriptionGuard } from "@/components/subscription-guard";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -28,6 +30,7 @@ import type { SongWithTracks } from "@shared/schema";
 
 export default function Performance() {
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
+  const [, setLocation] = useLocation();
   const [latency, setLatency] = useState(2.1);
   const [isTrackManagerOpen, setIsTrackManagerOpen] = useState(false);
   const [isAddSongOpen, setIsAddSongOpen] = useState(false);
@@ -103,7 +106,7 @@ export default function Performance() {
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Get all songs for the sidebar
+  // Get all songs for the sidebar and subscription tracking
   const { data: allSongs = [] } = useQuery<SongWithTracks[]>({
     queryKey: ['/api/songs']
   });
@@ -230,6 +233,18 @@ export default function Performance() {
       return;
     }
 
+    // Check subscription limits
+    const MAX_FREE_SONGS = 2;
+    if (allSongs.length >= MAX_FREE_SONGS && !user?.subscriptionStatus) {
+      toast({
+        title: "Upgrade Required",
+        description: `Free trial limited to ${MAX_FREE_SONGS} songs. Upgrade to add unlimited songs.`,
+        variant: "destructive"
+      });
+      setLocation('/subscribe');
+      return;
+    }
+
     addSongMutation.mutate({
       title: songTitle.trim(),
       artist: songArtist.trim(),
@@ -317,9 +332,22 @@ export default function Performance() {
     }, 0);
   };
 
+  const handleUpgrade = () => {
+    setLocation('/subscribe');
+  };
+
   return (
     <div className="bg-background text-white h-screen font-inter flex flex-col overflow-hidden">
       {/* Header */}
+      <header className="bg-surface border-b border-gray-700 p-4 flex-shrink-0" data-testid="app-header">
+        {/* Subscription Guard */}
+        <SubscriptionGuard 
+          songCount={allSongs.length} 
+          onUpgrade={handleUpgrade}
+        />
+      </header>
+      
+      {/* Main Header Content */}
       <header className="bg-surface border-b border-gray-700 p-4 flex-shrink-0" data-testid="app-header">
         <div className="max-w-full flex items-center">
           <div className="flex items-center space-x-3 flex-shrink-0">

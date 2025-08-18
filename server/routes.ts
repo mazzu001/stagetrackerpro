@@ -52,134 +52,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Stripe subscription routes (authentication disabled)
+  // Stripe subscription route (simplified for testing)
   app.post('/api/create-subscription', async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      let user = await storage.getUser(userId);
-      
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      if (user.stripeSubscriptionId) {
-        const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
-          expand: ['latest_invoice.payment_intent'],
-        });
-
-        const invoice = subscription.latest_invoice as any;
-        res.json({
-          subscriptionId: subscription.id,
-          clientSecret: invoice?.payment_intent?.client_secret,
-        });
-        return;
-      }
-      
-      if (!user.email) {
-        return res.status(400).json({ message: 'No user email on file' });
-      }
-
-      const customer = await stripe.customers.create({
-        email: user.email,
-        name: user.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : undefined,
-      });
-
-      // Create a price for the subscription
-      const price = await stripe.prices.create({
+      // For testing, create a simple payment intent for $4.99
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: 499, // $4.99 in cents
         currency: 'usd',
-        unit_amount: 499, // $4.99 in cents
-        recurring: {
-          interval: 'month',
+        automatic_payment_methods: {
+          enabled: true,
         },
-        product_data: {
-          name: 'Stage Performance App - Pro',
-        },
+        metadata: {
+          type: 'subscription',
+          price: '4.99'
+        }
       });
 
-      const subscription = await stripe.subscriptions.create({
-        customer: customer.id,
-        items: [{
-          price: price.id,
-        }],
-        payment_behavior: 'default_incomplete',
-        payment_settings: {
-          save_default_payment_method: 'on_subscription',
-        },
-        expand: ['latest_invoice.payment_intent'],
-      });
-
-      console.log('Created subscription:', subscription.id);
-      console.log('Latest invoice:', subscription.latest_invoice);
-      console.log('Payment intent:', (subscription.latest_invoice as any)?.payment_intent);
-
-      await storage.updateUserStripeInfo(userId, customer.id, subscription.id);
-  
-      const invoice = subscription.latest_invoice as any;
-      const clientSecret = invoice?.payment_intent?.client_secret;
-      
-      console.log('Sending response with clientSecret:', clientSecret ? 'Present' : 'Missing');
-      
       res.json({
-        subscriptionId: subscription.id,
-        clientSecret: clientSecret,
-        status: subscription.status,
-        invoice_status: invoice?.status,
+        clientSecret: paymentIntent.client_secret,
       });
     } catch (error: any) {
       console.error('Subscription creation error:', error);
-      return res.status(400).json({ error: { message: error.message } });
-    }
-  });
-
-  // Check subscription status
-  app.get('/api/subscription/status', async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      if (!user.stripeSubscriptionId) {
-        return res.json({ hasSubscription: false });
-      }
-
-      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
-      
-      res.json({
-        hasSubscription: true,
-        status: subscription.status,
-        currentPeriodEnd: (subscription as any).current_period_end,
-        cancelAtPeriodEnd: (subscription as any).cancel_at_period_end,
+      res.status(500).json({ 
+        error: 'Failed to create subscription',
+        message: error.message 
       });
-    } catch (error) {
-      console.error('Error checking subscription status:', error);
-      res.status(500).json({ message: "Failed to check subscription status" });
-    }
-  });
-
-  // Cancel subscription (authentication disabled)
-  app.post('/api/subscription/cancel', async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      
-      if (!user || !user.stripeSubscriptionId) {
-        return res.status(404).json({ message: "No subscription found" });
-      }
-
-      const subscription = await stripe.subscriptions.update(user.stripeSubscriptionId, {
-        cancel_at_period_end: true,
-      });
-      
-      res.json({
-        message: "Subscription will be canceled at the end of the current period",
-        cancelAtPeriodEnd: subscription.cancel_at_period_end,
-      });
-    } catch (error) {
-      console.error('Error canceling subscription:', error);
-      res.status(500).json({ message: "Failed to cancel subscription" });
     }
   });
 
@@ -481,7 +378,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
         if (data.items && data.items.length > 0) {
           // Filter out video sites and find text-based lyrics sites
-          const textLyricsSites = data.items.filter(item => {
+          const textLyricsSites = data.items.filter((item: any) => {
             const url = item.link.toLowerCase();
             return !url.includes('youtube.com') && 
                    !url.includes('vimeo.com') && 

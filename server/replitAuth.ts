@@ -180,7 +180,14 @@ export const requireSubscription: RequestHandler = async (req, res, next) => {
     console.log('User recreated successfully:', user.id, user.email);
   }
 
-  // Check if user has a Stripe subscription ID
+  // DEVELOPMENT MODE: Skip subscription check
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Development mode: skipping subscription check for user:', user.email);
+    next();
+    return;
+  }
+
+  // PRODUCTION: Check if user has a Stripe subscription ID
   if (!user.stripeSubscriptionId) {
     return res.status(403).json({ 
       message: "Subscription required", 

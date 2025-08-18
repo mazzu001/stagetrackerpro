@@ -6,8 +6,9 @@ This is a live music performance application built with React, Express, and in-m
 
 ✓ **Subscription system** - Complete $4.99/month Stripe payment processing with user authentication
 ✓ **Professional landing page** - Marketing page with features, pricing, and sign-up flow
-✓ **Development mode access** - Subscription checks bypassed in development for testing
-✓ **Subscription protection** - All performance features protected behind active subscription paywall (production only)
+✓ **Development mode access** - Subscription checks bypassed in development for testing  
+✓ **Authentication disabled** - Sign-in and landing page removed for simpler testing
+✓ **Direct app access** - Performance app loads immediately without authentication flow
 ✓ **Smart file reconnection** - Improved dialog for bulk file selection and automatic name matching
 ✓ **Settings menu** - Added dropdown menu under settings gear with user info and logout option
 ✓ **File path-based storage system** - Stores local file paths instead of blob data for true offline operation

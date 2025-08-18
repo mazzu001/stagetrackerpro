@@ -43,19 +43,18 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Auth middleware
-  await setupAuth(app);
+  // Auth middleware disabled for testing
+  // await setupAuth(app);
 
-  // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      res.status(500).json({ message: "Failed to fetch user" });
-    }
+  // Auth routes disabled for testing
+  app.get('/api/auth/user', async (req: any, res) => {
+    // Return dummy user for testing without authentication
+    res.json({
+      id: "test-user",
+      email: "test@example.com",
+      firstName: "Test",
+      lastName: "User"
+    });
   });
 
   // Stripe subscription routes
@@ -192,8 +191,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Serve uploaded files
   app.use("/uploads", express.static(uploadDir));
 
-  // Songs routes (protected by subscription requirement)
-  app.get("/api/songs", isAuthenticated, requireSubscription, async (req, res) => {
+  // Songs routes (authentication disabled for testing)
+  app.get("/api/songs", async (req, res) => {
     try {
       const songs = await storage.getAllSongs();
       res.json(songs);
@@ -202,7 +201,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/songs/:id", isAuthenticated, requireSubscription, async (req, res) => {
+  app.get("/api/songs/:id", async (req, res) => {
     try {
       const song = await storage.getSongWithTracks(req.params.id);
       if (!song) {
@@ -214,7 +213,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/songs", isAuthenticated, requireSubscription, async (req, res) => {
+  app.post("/api/songs", async (req, res) => {
     try {
       const validatedData = insertSongSchema.parse(req.body);
       const song = await storage.createSong(validatedData);
@@ -228,7 +227,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/songs/:id", isAuthenticated, requireSubscription, async (req, res) => {
+  app.patch("/api/songs/:id", async (req, res) => {
     try {
       const partialData = insertSongSchema.partial().parse(req.body);
       const song = await storage.updateSong(req.params.id, partialData);
@@ -245,7 +244,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/songs/:id", isAuthenticated, requireSubscription, async (req, res) => {
+  app.delete("/api/songs/:id", async (req, res) => {
     try {
       const success = await storage.deleteSong(req.params.id);
       if (!success) {

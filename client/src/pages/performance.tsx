@@ -293,8 +293,28 @@ export default function Performance() {
     
     toast({
       title: "Search opened in browser",
-      description: "Copy lyrics from the search results and paste them into the text area below."
+      description: "Copy lyrics from the search results and paste them into the text area below. Formatting will be preserved."
     });
+  };
+
+  const handleLyricsPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pastedText = e.clipboardData.getData('text/plain');
+    
+    // Get cursor position
+    const textarea = e.target as HTMLTextAreaElement;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    
+    // Insert pasted text at cursor position while preserving formatting
+    const newText = lyricsText.substring(0, start) + pastedText + lyricsText.substring(end);
+    setLyricsText(newText);
+    
+    // Restore cursor position after the pasted text
+    setTimeout(() => {
+      textarea.selectionStart = textarea.selectionEnd = start + pastedText.length;
+      textarea.focus();
+    }, 0);
   };
 
   return (
@@ -683,8 +703,11 @@ export default function Performance() {
                 id="lyrics"
                 value={lyricsText}
                 onChange={(e) => setLyricsText(e.target.value)}
+                onPaste={handleLyricsPaste}
                 placeholder="Enter song lyrics with timestamps and MIDI commands..."
-                className="min-h-[400px] font-mono text-sm"
+                className="min-h-[400px] font-mono text-sm whitespace-pre-wrap"
+                style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
+                spellCheck={false}
                 data-testid="textarea-lyrics"
               />
               <p className="text-xs text-gray-500 mt-2">

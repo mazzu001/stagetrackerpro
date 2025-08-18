@@ -11,6 +11,7 @@ interface LyricsDisplayProps {
 
 export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps) {
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
+  const [lastScrolledLine, setLastScrolledLine] = useState(-1);
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
   
@@ -19,9 +20,9 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   });
 
-  // Simple synchronized scrolling that follows song timing
+  // Conservative line-based scrolling - only moves when current line needs to be visible
   useEffect(() => {
-    if (song && parsedLyrics.length > 0 && lyricsContainerRef.current) {
+    if (song && parsedLyrics.length > 0 && lyricsContainerRef.current && currentLineIndex >= 0) {
       const container = lyricsContainerRef.current;
       
       // Check if lyrics contain actual timestamps (not just default sequential ones)
@@ -41,23 +42,38 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
         shouldStartScrolling = currentTime >= 5;
       }
       
-      if (shouldStartScrolling) {
-        // Simple progress-based scrolling synchronized with song
-        const songDuration = song.duration || 180;
-        const scrollProgress = Math.min(currentTime / songDuration, 1);
+      // Only scroll when we have a new line AND it's time to scroll
+      if (shouldStartScrolling && currentLineIndex !== lastScrolledLine && currentLineIndex >= 0) {
+        const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
         
-        // Calculate total scrollable area
-        const maxScrollTop = container.scrollHeight - container.clientHeight;
-        const targetScrollTop = scrollProgress * maxScrollTop;
-        
-        // Smooth scroll without any jumping
-        container.scrollTo({
-          top: targetScrollTop,
-          behavior: 'smooth'
-        });
+        if (currentLineElement) {
+          const containerHeight = container.clientHeight;
+          const currentScrollTop = container.scrollTop;
+          const lineTop = currentLineElement.offsetTop;
+          const lineBottom = lineTop + currentLineElement.offsetHeight;
+          
+          // Only scroll if the current line is not fully visible in the viewport
+          const visibleTop = currentScrollTop;
+          const visibleBottom = currentScrollTop + containerHeight;
+          
+          // Check if line is outside visible area or too close to edges
+          const needsScroll = lineTop < visibleTop + 50 || lineBottom > visibleBottom - 50;
+          
+          if (needsScroll) {
+            // Gently center the line in the viewport
+            const targetScrollTop = lineTop - (containerHeight / 2) + (currentLineElement.offsetHeight / 2);
+            
+            container.scrollTo({
+              top: Math.max(0, targetScrollTop),
+              behavior: 'smooth'
+            });
+          }
+          
+          setLastScrolledLine(currentLineIndex);
+        }
       }
     }
-  }, [currentTime, song, parsedLyrics.length]);
+  }, [currentTime, song, parsedLyrics.length, currentLineIndex, lastScrolledLine]);
 
   if (!song) {
     return (

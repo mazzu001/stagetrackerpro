@@ -26,7 +26,7 @@ export default function Performance() {
   const [isAddSongOpen, setIsAddSongOpen] = useState(false);
   const [songTitle, setSongTitle] = useState("");
   const [songArtist, setSongArtist] = useState("");
-  const [songDuration, setSongDuration] = useState(180);
+
 
   const { toast } = useToast();
 
@@ -96,7 +96,7 @@ export default function Performance() {
       setIsAddSongOpen(false);
       setSongTitle("");
       setSongArtist("");
-      setSongDuration(180);
+
       toast({
         title: "Song created",
         description: `"${newSong.title}" has been added to your library.`
@@ -124,7 +124,7 @@ export default function Performance() {
     addSongMutation.mutate({
       title: songTitle.trim(),
       artist: songArtist.trim(),
-      duration: songDuration
+      duration: 180 // Default duration, will be updated when tracks are added
     });
   };
 
@@ -227,20 +227,7 @@ export default function Performance() {
                       data-testid="input-song-artist"
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="songDuration">Duration (seconds)</Label>
-                    <Input
-                      id="songDuration"
-                      type="number"
-                      value={songDuration}
-                      onChange={(e) => setSongDuration(parseInt(e.target.value) || 180)}
-                      placeholder="180"
-                      data-testid="input-song-duration"
-                    />
-                    <div className="text-xs text-gray-400 mt-1">
-                      Estimated duration - will be updated when tracks are added
-                    </div>
-                  </div>
+
                   <div className="flex justify-end space-x-2 pt-4">
                     <Button 
                       variant="outline" 
@@ -248,7 +235,7 @@ export default function Performance() {
                         setIsAddSongOpen(false);
                         setSongTitle("");
                         setSongArtist("");
-                        setSongDuration(180);
+
                       }}
                       disabled={addSongMutation.isPending}
                       data-testid="button-cancel-song"

@@ -21,7 +21,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   const [newSong, setNewSong] = useState<InsertSong>({
     title: "",
     artist: "",
-    duration: 0,
+    duration: 180, // Default duration, will be updated when tracks are added
     bpm: undefined,
     key: "",
     lyrics: ""
@@ -44,7 +44,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       setNewSong({
         title: "",
         artist: "",
-        duration: 0,
+        duration: 180, // Default duration, will be updated when tracks are added
         bpm: undefined,
         key: "",
         lyrics: ""
@@ -141,29 +141,16 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                     data-testid="input-song-artist"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="duration">Duration (seconds)</Label>
-                    <Input
-                      id="duration"
-                      type="number"
-                      value={newSong.duration}
-                      onChange={(e) => setNewSong({ ...newSong, duration: parseInt(e.target.value) || 0 })}
-                      placeholder="300"
-                      data-testid="input-song-duration"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="bpm">BPM</Label>
-                    <Input
-                      id="bpm"
-                      type="number"
-                      value={newSong.bpm || ""}
-                      onChange={(e) => setNewSong({ ...newSong, bpm: parseInt(e.target.value) || undefined })}
-                      placeholder="120"
-                      data-testid="input-song-bpm"
-                    />
-                  </div>
+                <div>
+                  <Label htmlFor="bpm">BPM</Label>
+                  <Input
+                    id="bpm"
+                    type="number"
+                    value={newSong.bpm || ""}
+                    onChange={(e) => setNewSong({ ...newSong, bpm: parseInt(e.target.value) || undefined })}
+                    placeholder="120"
+                    data-testid="input-song-bpm"
+                  />
                 </div>
                 <div>
                   <Label htmlFor="key">Key</Label>

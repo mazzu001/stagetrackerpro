@@ -77,14 +77,19 @@ export class MemStorage implements IStorage {
 
   // Method to load data from persistence
   loadData(songs: Song[], tracks: Track[], midiEvents: MidiEvent[], waveforms?: Record<string, number[]>, users?: User[]) {
-    this.users.clear();
+    // Don't clear users - preserve existing users in memory to avoid auth issues
     this.songs.clear();
     this.tracks.clear();
     this.midiEvents.clear();
     this.waveforms.clear();
 
+    // Only load users if they don't already exist (preserve authenticated users)
     if (users) {
-      users.forEach(user => this.users.set(user.id, user));
+      users.forEach(user => {
+        if (!this.users.has(user.id)) {
+          this.users.set(user.id, user);
+        }
+      });
     }
     songs.forEach(song => this.songs.set(song.id, song));
     tracks.forEach(track => this.tracks.set(track.id, track));
@@ -95,6 +100,8 @@ export class MemStorage implements IStorage {
         this.waveforms.set(songId, data)
       );
     }
+
+    console.log('Data loaded - users count:', this.users.size, 'songs count:', this.songs.size);
   }
 
   // User operations

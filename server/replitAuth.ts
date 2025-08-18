@@ -166,11 +166,18 @@ export const requireSubscription: RequestHandler = async (req, res, next) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const user = await storage.getUser(userSession.claims.sub);
+  let user = await storage.getUser(userSession.claims.sub);
   if (!user) {
-    console.error('User not found in requireSubscription middleware:', userSession.claims.sub);
-    console.log('Available users:', Array.from((storage as any).users.keys()));
-    return res.status(401).json({ message: "User not found" });
+    console.log('User not found, creating user from session claims:', userSession.claims.sub);
+    // User might have been cleared from storage, recreate from session
+    user = await storage.upsertUser({
+      id: userSession.claims.sub,
+      email: userSession.claims.email,
+      firstName: userSession.claims.first_name,
+      lastName: userSession.claims.last_name,
+      profileImageUrl: userSession.claims.profile_image_url,
+    });
+    console.log('User recreated successfully:', user.id, user.email);
   }
 
   // Check if user has a Stripe subscription ID

@@ -402,8 +402,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/persistence/load", (req, res) => {
     try {
-      const { songs, tracks, midiEvents, waveforms } = req.body;
-      storage.loadData(songs || [], tracks || [], midiEvents || [], waveforms);
+      const { songs, tracks, midiEvents, waveforms, users } = req.body;
+      storage.loadData(songs || [], tracks || [], midiEvents || [], waveforms, users || []);
       res.json({ success: true, message: "Data loaded successfully" });
     } catch (error) {
       res.status(500).json({ success: false, error: "Failed to load data" });

@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
@@ -172,6 +172,35 @@ export default function Performance() {
 
   const handleSaveLyrics = () => {
     updateLyricsMutation.mutate(lyricsText);
+  };
+
+  const handleInsertTimestamp = () => {
+    const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}]`;
+    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
+    if (textarea) {
+      const cursorPosition = textarea.selectionStart;
+      const beforeCursor = lyricsText.substring(0, cursorPosition);
+      const afterCursor = lyricsText.substring(cursorPosition);
+      
+      // Insert timestamp and move to next line
+      const newText = beforeCursor + timestamp + ' ' + afterCursor;
+      setLyricsText(newText);
+      
+      // Set cursor position after the timestamp and space, then move to next line
+      setTimeout(() => {
+        const newCursorPosition = cursorPosition + timestamp.length + 1;
+        textarea.selectionStart = newCursorPosition;
+        textarea.selectionEnd = newCursorPosition;
+        textarea.focus();
+        
+        // Find the next newline and position cursor there
+        const nextNewlineIndex = newText.indexOf('\n', newCursorPosition);
+        if (nextNewlineIndex !== -1) {
+          textarea.selectionStart = nextNewlineIndex + 1;
+          textarea.selectionEnd = nextNewlineIndex + 1;
+        }
+      }, 0);
+    }
   };
 
   return (
@@ -424,6 +453,32 @@ export default function Performance() {
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 mt-4">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={isPlaying ? pause : play}
+                  disabled={!selectedSong || !selectedSong.tracks || selectedSong.tracks.length === 0}
+                  data-testid="button-preview-playback"
+                >
+                  {isPlaying ? <Pause className="w-4 h-4 mr-1" /> : <Play className="w-4 h-4 mr-1" />}
+                  {isPlaying ? 'Pause' : 'Preview'}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleInsertTimestamp}
+                  data-testid="button-insert-timestamp"
+                >
+                  <Clock className="w-4 h-4 mr-1" />
+                  Insert Time Stamp
+                </Button>
+              </div>
+              <div className="text-sm text-gray-400">
+                Current Time: {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60).toString().padStart(2, '0')}
+              </div>
+            </div>
             <div>
               <Label htmlFor="lyrics">Lyrics</Label>
               <Textarea
@@ -435,7 +490,7 @@ export default function Performance() {
                 data-testid="textarea-lyrics"
               />
               <p className="text-xs text-gray-500 mt-2">
-                Tip: Use [00:15] for timestamps and [[CC:1:64]] for MIDI commands
+                Tip: Use [00:15] for timestamps and [[CC:1:64]] for MIDI commands. Use the "Insert Time Stamp" button to add current playback time.
               </p>
             </div>
             <div className="flex justify-end space-x-2 pt-4">

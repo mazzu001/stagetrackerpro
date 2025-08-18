@@ -32,65 +32,78 @@ export function WaveformVisualizer({
     setIsGenerating(true);
     try {
       const audioContext = new AudioContext();
-      const sampleCount = 600; // Number of waveform samples
+      const sampleCount = 400; // Reduced for faster processing
       const combinedData: number[] = new Array(sampleCount).fill(0);
       let maxDuration = 0;
       let tracksProcessed = 0;
 
-      console.log(`Generating real waveform from ${song.tracks.length} tracks`);
+      console.log(`Generating fast waveform from ${song.tracks.length} tracks`);
 
-      // Process each track that has audio data
-      for (const track of song.tracks) {
+      // Process tracks in parallel for faster loading
+      const trackPromises = song.tracks.map(async (track) => {
         const audioData = await audioStorage.getAudioFileData(track.id);
         if (!audioData) {
           console.log(`Skipping track ${track.name} - no audio data available`);
-          continue;
+          return null;
         }
 
         try {
           const audioBuffer = await audioContext.decodeAudioData(audioData.slice(0));
           const channelData = audioBuffer.getChannelData(0); // Use first channel
-          maxDuration = Math.max(maxDuration, audioBuffer.duration);
           
-          // Sample the audio data to create waveform
+          // Fast sampling: use larger steps to reduce processing time
           const samplesPerPoint = Math.floor(channelData.length / sampleCount);
+          const trackData: number[] = new Array(sampleCount).fill(0);
           
+          // Use decimation for faster processing
           for (let i = 0; i < sampleCount; i++) {
-            let sum = 0;
-            let count = 0;
+            const startIndex = i * samplesPerPoint;
+            const endIndex = Math.min(startIndex + samplesPerPoint, channelData.length);
             
-            // Average the audio samples for this waveform point
-            for (let j = 0; j < samplesPerPoint; j++) {
-              const sampleIndex = i * samplesPerPoint + j;
-              if (sampleIndex < channelData.length) {
-                sum += Math.abs(channelData[sampleIndex]);
-                count++;
+            // Sample every 10th point for speed, then get max amplitude in the range
+            let maxAmplitude = 0;
+            for (let j = startIndex; j < endIndex; j += 10) {
+              const amplitude = Math.abs(channelData[j]);
+              if (amplitude > maxAmplitude) {
+                maxAmplitude = amplitude;
               }
             }
-            
-            if (count > 0) {
-              const amplitude = sum / count;
-              combinedData[i] += amplitude; // Add to combined waveform
-            }
+            trackData[i] = maxAmplitude;
           }
           
-          tracksProcessed++;
           console.log(`Processed track: ${track.name} (${audioBuffer.duration.toFixed(1)}s)`);
+          return { trackData, duration: audioBuffer.duration };
         } catch (error) {
           console.error(`Failed to process track ${track.name}:`, error);
+          return null;
         }
-      }
+      });
 
-      // Normalize the combined waveform
+      // Wait for all tracks to process in parallel
+      const results = await Promise.all(trackPromises);
+      
+      // Combine all track data
+      results.forEach((result) => {
+        if (result) {
+          maxDuration = Math.max(maxDuration, result.duration);
+          for (let i = 0; i < sampleCount; i++) {
+            combinedData[i] += result.trackData[i];
+          }
+          tracksProcessed++;
+        }
+      });
+
+      // Fast normalization
       if (tracksProcessed > 0) {
         const maxAmplitude = Math.max(...combinedData);
         if (maxAmplitude > 0) {
+          // Vectorized normalization for speed
           for (let i = 0; i < combinedData.length; i++) {
             combinedData[i] = combinedData[i] / maxAmplitude;
           }
         }
         
-        console.log(`Generated real waveform from ${tracksProcessed} tracks, duration: ${maxDuration.toFixed(1)}s`);
+        console.log(`Generated fast waveform from ${tracksProcessed} tracks in parallel, duration: ${maxDuration.toFixed(1)}s`);
         setWaveformData(combinedData);
       } else {
         console.log('No tracks with audio data available, generating fallback waveform pattern');
@@ -104,7 +117,7 @@ export function WaveformVisualizer({
       console.error('Failed to generate waveform from audio:', error);
       // On error, still generate fallback waveform
       console.log('Generating fallback waveform due to error');
-      const fallbackData = generateFallbackWaveform(600, song.duration || 240);
+      const fallbackData = generateFallbackWaveform(400, song.duration || 240);
       setWaveformData(fallbackData);
     } finally {
       setIsGenerating(false);
@@ -312,7 +325,7 @@ export function WaveformVisualizer({
     <div className={`bg-slate-900/80 rounded-lg border border-slate-700 overflow-hidden ${className}`}>
       <canvas
         ref={canvasRef}
-        width={600}
+        width={400}
         height={60}
         className="w-full h-full"
         style={{ display: 'block', height: '60px' }}

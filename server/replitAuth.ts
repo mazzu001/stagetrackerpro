@@ -168,18 +168,33 @@ export const requireSubscription: RequestHandler = async (req, res, next) => {
     return res.status(401).json({ message: "User not found" });
   }
 
-  // Check if user has active subscription
-  if (user.subscriptionStatus !== 'active') {
+  // Check if user has a Stripe subscription ID
+  if (!user.stripeSubscriptionId) {
     return res.status(403).json({ 
       message: "Subscription required", 
       requiresSubscription: true 
     });
   }
 
-  // Check if subscription has expired
-  if (user.subscriptionEndDate && new Date() > user.subscriptionEndDate) {
+  try {
+    // Import Stripe dynamically to avoid circular import
+    const Stripe = (await import('stripe')).default;
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+    
+    // Check actual subscription status with Stripe
+    const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+    
+    if (subscription.status !== 'active' && subscription.status !== 'trialing') {
+      return res.status(403).json({ 
+        message: "Subscription required", 
+        requiresSubscription: true,
+        subscriptionStatus: subscription.status
+      });
+    }
+  } catch (error) {
+    console.error('Error checking subscription with Stripe:', error);
     return res.status(403).json({ 
-      message: "Subscription expired", 
+      message: "Subscription verification failed", 
       requiresSubscription: true 
     });
   }

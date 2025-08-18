@@ -188,9 +188,9 @@ export default function Performance() {
 
 
       {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden h-0">
         {/* Left Sidebar - Song List (30%) */}
-        <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col">
+        <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col h-full">
           <div className="p-4 border-b border-gray-700 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Songs</h2>
             <Dialog open={isAddSongOpen} onOpenChange={(open) => !isPlaying && setIsAddSongOpen(open)}>

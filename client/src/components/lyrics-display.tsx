@@ -11,6 +11,7 @@ interface LyricsDisplayProps {
 
 export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps) {
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
+  const [scrollStartTime, setScrollStartTime] = useState<number | null>(null);
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
   
@@ -43,18 +44,29 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
       }
       
       if (shouldStartScrolling) {
-        // Use original smooth progress-based scrolling
-        const progress = Math.min(currentTime / songDuration, 1); // Cap at 100%
+        // Track when scrolling first starts
+        if (scrollStartTime === null) {
+          setScrollStartTime(currentTime);
+        }
         
-        // Calculate smooth scroll position based on progress
+        // Calculate scroll progress from when scrolling actually started
+        const scrollDuration = currentTime - scrollStartTime;
+        const adjustedProgress = Math.min(scrollDuration / songDuration, 1);
+        
+        // Calculate smooth scroll position based on adjusted progress
         const maxScrollTop = container.scrollHeight - container.clientHeight;
-        const targetScrollTop = progress * maxScrollTop;
+        const targetScrollTop = adjustedProgress * maxScrollTop;
         
         // Use smooth scrolling
         container.scrollTo({
           top: targetScrollTop,
           behavior: 'smooth'
         });
+      } else {
+        // Reset scroll start time when not scrolling
+        if (scrollStartTime !== null) {
+          setScrollStartTime(null);
+        }
       }
     }
   }, [currentTime, song, parsedLyrics.length]);

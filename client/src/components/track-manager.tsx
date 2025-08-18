@@ -50,10 +50,15 @@ export default function TrackManager({
   const { toast } = useToast();
   const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
 
-  const { data: tracks = [] } = useQuery<Track[]>({
+  const { data: tracks = [], refetch: refetchTracks } = useQuery<Track[]>({
     queryKey: ['/api/songs', song?.id, 'tracks'],
-    enabled: !!song?.id
+    enabled: !!song?.id,
+    staleTime: 0, // Force fresh data
+    gcTime: 0 // Don't cache results
   });
+
+  // Debug: Log tracks data when it changes
+  console.log(`Track Manager: Found ${tracks.length} tracks for song ${song?.title}:`, tracks.map(t => t.name));
 
   // Debounced volume update function
   const debouncedVolumeUpdate = useCallback((trackId: string, volume: number) => {
@@ -400,7 +405,8 @@ export default function TrackManager({
                   throw new Error(`Upload failed: ${response.statusText}`);
                 }
                 
-                // Invalidate queries to refresh the track list
+                // Force refresh the track list immediately
+                await refetchTracks();
                 queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id, 'tracks'] });
                 queryClient.invalidateQueries({ queryKey: ['/api/songs', song.id] });
                 

@@ -56,8 +56,10 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
           const visibleTop = currentScrollTop;
           const visibleBottom = currentScrollTop + containerHeight;
           
-          // Check if line is outside visible area or too close to edges
-          const needsScroll = lineTop < visibleTop + 50 || lineBottom > visibleBottom - 50;
+          // Check if line is completely outside visible area (much more conservative)
+          const lineCompletelyAbove = lineBottom < visibleTop;
+          const lineCompletelyBelow = lineTop > visibleBottom;
+          const needsScroll = lineCompletelyAbove || lineCompletelyBelow;
           
           if (needsScroll) {
             // Gently center the line in the viewport

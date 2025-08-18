@@ -6,36 +6,24 @@ export function useAutoSave() {
   const isLoadingRef = useRef(false);
   const saveTimeoutRef = useRef<NodeJS.Timeout>();
 
-  // Auto-save data to localStorage
+  // No-op auto-save (data is now in cloud database)
   const saveToLocalStorage = async () => {
     if (isLoadingRef.current) return;
-
-    try {
-      // Get current data from server
-      const response = await apiRequest('POST', '/api/persistence/save');
-      const result = await response.json();
-      
-      if (result.success) {
-        const { songs, tracks, midiEvents } = result.data;
-        persistence.saveData(songs, tracks, midiEvents);
-      }
-    } catch (error) {
-      console.warn('Failed to auto-save data:', error);
-    }
+    // Data is automatically saved to cloud database - no action needed
+    console.log('Data auto-saves to cloud database');
   };
 
-  // Load data from localStorage on startup
+  // Load audio file cache from localStorage (files only, not data)
   const loadFromLocalStorage = async () => {
     try {
       isLoadingRef.current = true;
-      const data = persistence.loadData();
-      
-      if (data) {
-        await apiRequest('POST', '/api/persistence/load', data);
-        console.log('Loaded data from localStorage');
+      // Only load audio file references from localStorage
+      const audioFileCache = localStorage.getItem('audioFileCache');
+      if (audioFileCache) {
+        console.log('Audio file cache loaded from localStorage');
       }
     } catch (error) {
-      console.warn('Failed to load data from localStorage:', error);
+      console.warn('Failed to load audio file cache:', error);
     } finally {
       isLoadingRef.current = false;
     }

@@ -193,6 +193,22 @@ export class AudioFileStorage {
     }
   }
 
+  // Store a track reference for file reconnection (without the actual file)
+  storeTrackReference(trackId: string, fileInfo: { name: string; filePath: string; mimeType: string; size: number; lastModified: number }): void {
+    const storedFile: StoredAudioFile = {
+      id: trackId,
+      name: fileInfo.name,
+      filePath: fileInfo.filePath,
+      mimeType: fileInfo.mimeType,
+      size: fileInfo.size,
+      lastModified: fileInfo.lastModified
+    };
+
+    this.audioFiles.set(trackId, storedFile);
+    this.saveToStorage();
+    console.log(`Stored track reference: ${trackId} -> ${fileInfo.name}`);
+  }
+
   // Add a method to manually register found files
   registerFoundFile(filePath: string, file: File): void {
     this.fileCache.set(filePath, file);
@@ -204,8 +220,48 @@ export class AudioFileStorage {
       if (storedFile.filePath === filePath || storedFile.name === file.name) {
         this.fileObjects.set(trackId, file);
         console.log(`Connected file ${file.name} to track: ${trackId}`);
+        
+        // Create blob URL for immediate access
+        const blobUrl = URL.createObjectURL(file);
+        this.blobUrls.set(trackId, blobUrl);
       }
     }
+  }
+
+  // Register files in bulk from file picker
+  registerFiles(files: FileList | File[]): { registered: number; expectedCount: number } {
+    console.log(`Attempting to register ${files.length} files`);
+    
+    const expectedFiles = Array.from(this.audioFiles.values());
+    let registered = 0;
+
+    Array.from(files).forEach(file => {
+      // Match files by name (removing .mp3 extension and common prefixes)
+      const cleanFileName = file.name.replace(/\.(mp3|wav|ogg|m4a)$/i, '');
+      
+      const matchingStoredFile = expectedFiles.find(stored => {
+        const cleanStoredName = stored.name.replace(/\.(mp3|wav|ogg|m4a)$/i, '');
+        return cleanStoredName === cleanFileName || stored.name === file.name;
+      });
+        
+      if (matchingStoredFile) {
+        console.log(`Registering file: ${file.name} for track: ${matchingStoredFile.id}`);
+        this.fileObjects.set(matchingStoredFile.id, file);
+        this.fileCache.set(file.name, file);
+        this.fileCache.set(matchingStoredFile.filePath, file); // Also cache by stored path
+        
+        // Create blob URL for immediate access
+        const blobUrl = URL.createObjectURL(file);
+        this.blobUrls.set(matchingStoredFile.id, blobUrl);
+        
+        registered++;
+      } else {
+        console.log(`File ${file.name} does not match any expected tracks`);
+      }
+    });
+
+    console.log(`Registered ${registered} out of ${expectedFiles.length} expected files`);
+    return { registered, expectedCount: expectedFiles.length };
   }
 
   // Save audio file path references to localStorage

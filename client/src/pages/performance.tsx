@@ -79,22 +79,38 @@ export default function Performance() {
     isPlaying
   });
 
-  // Check for missing files on component mount and song selection
+  // Register tracks from database with audio storage system when song changes
   useEffect(() => {
-    const checkMissingFiles = () => {
-      if (selectedSong) {
-        const audioStorage = AudioFileStorage.getInstance();
-        const missingFiles = selectedSong.tracks.filter(track => !audioStorage.getAudioUrl(track.id));
-        setHasMissingFiles(missingFiles.length > 0);
+    if (selectedSong) {
+      const audioStorage = AudioFileStorage.getInstance();
+      
+      // Store track references in audio storage for file reconnection
+      selectedSong.tracks.forEach(track => {
+        // Extract filename from audioUrl (remove "stored:" prefix)
+        const fileName = track.audioUrl.replace('stored:', '');
         
-        // Auto-open reconnection dialog if there are missing files
-        if (missingFiles.length > 0) {
-          setIsFileReconnectionOpen(true);
+        // Create a stored file entry if not already exists
+        if (!audioStorage.hasAudioFile(track.id)) {
+          audioStorage.storeTrackReference(track.id, {
+            name: fileName,
+            filePath: fileName,
+            mimeType: 'audio/mpeg', // Default to MP3
+            size: 0,
+            lastModified: Date.now()
+          });
         }
+      });
+      
+      // Check for missing audio files
+      const missingFiles = selectedSong.tracks.filter(track => !audioStorage.getAudioUrl(track.id));
+      setHasMissingFiles(missingFiles.length > 0);
+      
+      // Auto-open reconnection dialog if there are missing files
+      if (missingFiles.length > 0) {
+        console.log(`Missing audio files for ${missingFiles.length} tracks in song: ${selectedSong.title}`);
+        setIsFileReconnectionOpen(true);
       }
-    };
-
-    checkMissingFiles();
+    }
   }, [selectedSong]);
 
   // Simulate latency monitoring
@@ -372,7 +388,7 @@ export default function Performance() {
                 <DropdownMenuItem disabled className="flex items-center">
                   <User className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
-                    <span className="text-sm">{user?.email || 'User'}</span>
+                    <span className="text-sm">{user?.email || 'Test User'}</span>
                     <span className="text-xs text-gray-500">Pro Subscription</span>
                   </div>
                 </DropdownMenuItem>

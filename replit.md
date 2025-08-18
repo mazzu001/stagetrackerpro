@@ -11,6 +11,8 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Direct app access** - Performance app loads immediately without authentication flow
 ✓ **Cloud database migration** - All data now stored in PostgreSQL cloud database instead of localStorage
 ✓ **Persistent storage** - Songs, tracks, MIDI events, and user data automatically saved to cloud
+✓ **Database persistence verified** - All songs and tracks persist across page reloads using cloud database
+✓ **Smart file reconnection** - Audio files automatically registered from database tracks for easy file picker connection
 ✓ **Smart file reconnection** - Improved dialog for bulk file selection and automatic name matching
 ✓ **Settings menu** - Added dropdown menu under settings gear with user info and logout option
 ✓ **File path-based storage system** - Stores local file paths instead of blob data for true offline operation

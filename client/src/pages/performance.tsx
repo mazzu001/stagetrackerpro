@@ -180,8 +180,15 @@ export default function Performance() {
       console.log('Deleting song:', selectedSongId);
       const response = await apiRequest('DELETE', `/api/songs/${selectedSongId}`);
       if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Failed to delete song: ${error}`);
+        const errorText = await response.text();
+        let errorMessage = 'Unknown error';
+        try {
+          const errorObj = JSON.parse(errorText);
+          errorMessage = errorObj.message || errorText;
+        } catch {
+          errorMessage = errorText;
+        }
+        throw new Error(`Failed to delete song: ${errorMessage}`);
       }
       console.log('Song deletion request successful');
       // DELETE returns 204 No Content, so no JSON to parse
@@ -190,13 +197,8 @@ export default function Performance() {
     onSuccess: () => {
       console.log('Song deleted successfully, updating cache');
       
-      // Instead of invalidating, directly update the cache to remove the deleted song
-      queryClient.setQueryData(['/api/songs'], (oldData: any) => {
-        if (!oldData) return oldData;
-        return oldData.filter((song: any) => song.id !== selectedSongId);
-      });
-      
-      // Remove the specific song query from cache
+      // Force refresh all song data to ensure sync
+      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
       queryClient.removeQueries({ queryKey: ['/api/songs', selectedSongId] });
       
       // Clear selected song and close dialog
@@ -210,7 +212,7 @@ export default function Performance() {
       
       toast({
         title: "Song deleted",
-        description: "Song and all audio files removed completely."
+        description: "Song removed successfully."
       });
     },
     onError: (error) => {

@@ -25,6 +25,7 @@ export class AudioFileStorage {
   // Store audio file data
   async storeAudioFile(trackId: string, file: File): Promise<void> {
     try {
+      console.log(`Preparing to store audio file for: ${file.name}, size: ${file.size} bytes`);
       const arrayBuffer = await file.arrayBuffer();
       const base64Data = this.arrayBufferToBase64(arrayBuffer);
       
@@ -37,7 +38,16 @@ export class AudioFileStorage {
       };
 
       this.audioFiles.set(trackId, storedFile);
+      console.log(`Added to memory map, now have ${this.audioFiles.size} files`);
       this.saveToStorage();
+      
+      // Verify it was saved by immediately checking localStorage
+      const verification = localStorage.getItem(AUDIO_STORAGE_KEY);
+      if (verification) {
+        console.log(`Verified: audio data persisted in localStorage (${Math.round(verification.length / 1024)}KB total)`);
+      } else {
+        console.error('Failed to verify localStorage persistence!');
+      }
       
       console.log(`Successfully stored audio file for track: ${trackId} (${Math.round(file.size / 1024)}KB)`);
     } catch (error) {
@@ -121,9 +131,24 @@ export class AudioFileStorage {
   private saveToStorage(): void {
     try {
       const data = Array.from(this.audioFiles.entries()).map(([id, file]) => [id, file]);
-      localStorage.setItem(AUDIO_STORAGE_KEY, JSON.stringify(data));
+      const jsonData = JSON.stringify(data);
+      console.log(`Saving ${this.audioFiles.size} audio files to localStorage (${Math.round(jsonData.length / 1024)}KB)`);
+      localStorage.setItem(AUDIO_STORAGE_KEY, jsonData);
+      console.log('Successfully saved audio files to localStorage');
     } catch (error) {
       console.error('Failed to save audio files to storage:', error);
+      // If localStorage is full, try to clear and save again
+      if (error instanceof Error && error.name === 'QuotaExceededError') {
+        console.warn('localStorage quota exceeded, clearing other data and retrying...');
+        try {
+          // Clear our previous audio storage and try again
+          localStorage.removeItem(AUDIO_STORAGE_KEY);
+          localStorage.setItem(AUDIO_STORAGE_KEY, jsonData);
+          console.log('Successfully saved audio files after clearing storage');
+        } catch (retryError) {
+          console.error('Failed to save even after clearing storage:', retryError);
+        }
+      }
     }
   }
 
@@ -132,9 +157,12 @@ export class AudioFileStorage {
     try {
       const stored = localStorage.getItem(AUDIO_STORAGE_KEY);
       if (stored) {
+        console.log(`Found stored audio data: ${Math.round(stored.length / 1024)}KB`);
         const data = JSON.parse(stored);
         this.audioFiles = new Map(data);
-        console.log(`Loaded ${this.audioFiles.size} audio files from storage`);
+        console.log(`Loaded ${this.audioFiles.size} audio files from storage:`, Array.from(this.audioFiles.keys()));
+      } else {
+        console.log('No stored audio files found');
       }
     } catch (error) {
       console.error('Failed to load audio files from storage:', error);

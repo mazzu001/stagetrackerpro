@@ -214,7 +214,7 @@ export function WaveformVisualizer({
     } else {
       setWaveformData([]);
     }
-  }, [song?.id]);
+  }, [song?.id, song?.tracks?.length]); // Also trigger when track count changes
 
   const draw = () => {
     const canvas = canvasRef.current;

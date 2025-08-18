@@ -124,9 +124,17 @@ export default function TrackManager({
       setSelectedFiles([]);
       setEstimatedDuration(0);
       onTrackUpdate?.();
+      
+      // Clear cached waveform to force regeneration with new tracks
+      if (song?.id) {
+        const waveformCacheKey = `waveform_${song.id}`;
+        localStorage.removeItem(waveformCacheKey);
+        console.log(`Cleared waveform cache for "${song.title}" - will regenerate with new tracks`);
+      }
+      
       toast({
         title: "Track added",
-        description: "Audio track has been added successfully."
+        description: "Audio track has been added successfully. Waveform will regenerate with all tracks."
       });
     },
     onError: (error) => {
@@ -148,9 +156,17 @@ export default function TrackManager({
       queryClient.invalidateQueries({ queryKey: ['/api/songs', song?.id] });
       queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
       onTrackUpdate?.();
+      
+      // Clear cached waveform to force regeneration with remaining tracks
+      if (song?.id) {
+        const waveformCacheKey = `waveform_${song.id}`;
+        localStorage.removeItem(waveformCacheKey);
+        console.log(`Cleared waveform cache for "${song.title}" - will regenerate with remaining tracks`);
+      }
+      
       toast({
         title: "Track deleted",
-        description: "Audio track has been removed."
+        description: "Audio track has been removed. Waveform will regenerate with remaining tracks."
       });
     },
     onError: (error) => {
@@ -178,6 +194,13 @@ export default function TrackManager({
       queryClient.invalidateQueries({ queryKey: ['/api/songs', song?.id] });
       queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
       onTrackUpdate?.();
+      
+      // Clear cached waveform since all tracks are removed
+      if (song?.id) {
+        const waveformCacheKey = `waveform_${song.id}`;
+        localStorage.removeItem(waveformCacheKey);
+        console.log(`Cleared waveform cache for "${song.title}" - all tracks removed`);
+      }
       
       toast({
         title: "Cleared all tracks",

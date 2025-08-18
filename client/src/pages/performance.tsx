@@ -278,26 +278,30 @@ export default function Performance() {
     <div className="bg-background text-white h-screen font-inter flex flex-col overflow-hidden">
       {/* Header */}
       <header className="bg-surface border-b border-gray-700 p-4 flex-shrink-0" data-testid="app-header">
-        <div className="max-w-full flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+        <div className="max-w-full flex items-center">
+          <div className="flex items-center space-x-3 flex-shrink-0">
             <Music className="text-primary text-2xl" />
             <h1 className="text-2xl font-bold">StageTracker Pro</h1>
             <span className="bg-primary/20 text-primary px-2 py-1 rounded text-sm">LIVE</span>
           </div>
-          <div className="flex items-center space-x-4">
-            {/* Waveform Visualizer */}
-            <div className="flex items-center space-x-3">
+          
+          {/* Waveform Visualizer - positioned 10px from LIVE badge and auto-fits remaining space */}
+          <div className="flex-1 flex items-center ml-[10px] mr-4">
+            <div className="flex-1 max-w-[600px]">
               <WaveformVisualizer
                 song={selectedSong}
                 currentTime={currentTime}
                 isPlaying={isPlaying}
                 audioLevels={audioLevels}
-                className="border border-gray-600 rounded"
+                className="border border-gray-600 rounded w-full"
               />
-              <div className="text-sm text-gray-400">
-                <span>Latency: </span>
-                <span className="text-secondary">{latency.toFixed(1)}ms</span>
-              </div>
+            </div>
+          </div>
+          
+          <div className="flex items-center space-x-4 flex-shrink-0">
+            <div className="text-sm text-gray-400">
+              <span>Latency: </span>
+              <span className="text-secondary">{latency.toFixed(1)}ms</span>
             </div>
             <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
               <DialogContent className="max-w-[85vw] max-h-[90vh] overflow-y-auto">

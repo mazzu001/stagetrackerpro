@@ -189,10 +189,10 @@ export function WaveformVisualizer({
     <div className={`bg-slate-900/80 rounded-lg border border-slate-700 overflow-hidden ${className}`}>
       <canvas
         ref={canvasRef}
-        width={200}
+        width={600}
         height={40}
         className="w-full h-full"
-        style={{ display: 'block', maxWidth: '200px', maxHeight: '40px' }}
+        style={{ display: 'block', height: '40px' }}
       />
     </div>
   );

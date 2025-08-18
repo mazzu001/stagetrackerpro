@@ -324,11 +324,14 @@ export default function TrackManager({
           isSolo: false
         };
 
+        // Store the file data for persistence
+        const arrayBuffer = await file.arrayBuffer();
+        
         await new Promise((resolve, reject) => {
           addTrackMutation.mutate(trackData, {
             onSuccess: (createdTrack) => {
-              // Store blob URL for persistence
-              persistence.storeBlobUrl(createdTrack.id, objectUrl);
+              // Store blob URL and file data for persistence
+              persistence.storeBlobUrl(createdTrack.id, objectUrl, arrayBuffer);
               resolve(createdTrack);
             },
             onError: reject

@@ -1,4 +1,5 @@
 import type { SongWithTracks, Track } from "@shared/schema";
+import { persistence } from "./storage-persistence";
 
 export class AudioEngine {
   private audioContext: AudioContext | null = null;
@@ -345,10 +346,23 @@ class TrackController {
       }
       
       // Handle blob URLs (client-side files)
-      const response = await fetch(this.track.audioUrl);
+      let audioUrl = this.track.audioUrl;
       
-      if (!response.ok) {
-        throw new Error(`Failed to fetch audio: ${response.status} ${response.statusText}`);
+      // Try to get restored blob URL from persistence if current one fails
+      let response = await fetch(audioUrl).catch(() => null);
+      
+      if (!response || !response.ok) {
+        console.log(`Original blob URL failed for ${this.track.name}, trying to restore from persistence...`);
+        const restoredUrl = persistence.getBlobUrl(this.track.id);
+        if (restoredUrl && restoredUrl !== audioUrl) {
+          console.log(`Using restored blob URL for ${this.track.name}`);
+          audioUrl = restoredUrl;
+          response = await fetch(audioUrl);
+        }
+      }
+      
+      if (!response || !response.ok) {
+        throw new Error(`Failed to fetch audio: ${response?.status || 'network error'} ${response?.statusText || ''}`);
       }
       
       const arrayBuffer = await response.arrayBuffer();

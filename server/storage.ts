@@ -1,7 +1,13 @@
-import { type Song, type InsertSong, type Track, type InsertTrack, type MidiEvent, type InsertMidiEvent, type SongWithTracks } from "@shared/schema";
+import { type Song, type InsertSong, type Track, type InsertTrack, type MidiEvent, type InsertMidiEvent, type SongWithTracks, type User, type UpsertUser } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
+  // User operations
+  // (IMPORTANT) these user operations are mandatory for Replit Auth.
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
+  updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined>;
+
   // Songs
   getSong(id: string): Promise<Song | undefined>;
   getAllSongs(): Promise<SongWithTracks[]>;
@@ -30,6 +36,7 @@ export interface IStorage {
 }
 
 export class MemStorage implements IStorage {
+  private users: Map<string, User>;
   private songs: Map<string, Song>;
   private tracks: Map<string, Track>;
   private midiEvents: Map<string, MidiEvent>;
@@ -37,6 +44,7 @@ export class MemStorage implements IStorage {
   private autoSaveCallback?: () => void;
 
   constructor() {
+    this.users = new Map();
     this.songs = new Map();
     this.tracks = new Map();
     this.midiEvents = new Map();
@@ -59,6 +67,7 @@ export class MemStorage implements IStorage {
   // Method to get all data for persistence
   getAllData() {
     return {
+      users: Array.from(this.users.values()),
       songs: Array.from(this.songs.values()),
       tracks: Array.from(this.tracks.values()),
       midiEvents: Array.from(this.midiEvents.values()),
@@ -67,12 +76,16 @@ export class MemStorage implements IStorage {
   }
 
   // Method to load data from persistence
-  loadData(songs: Song[], tracks: Track[], midiEvents: MidiEvent[], waveforms?: Record<string, number[]>) {
+  loadData(songs: Song[], tracks: Track[], midiEvents: MidiEvent[], waveforms?: Record<string, number[]>, users?: User[]) {
+    this.users.clear();
     this.songs.clear();
     this.tracks.clear();
     this.midiEvents.clear();
     this.waveforms.clear();
 
+    if (users) {
+      users.forEach(user => this.users.set(user.id, user));
+    }
     songs.forEach(song => this.songs.set(song.id, song));
     tracks.forEach(track => this.tracks.set(track.id, track));
     midiEvents.forEach(event => this.midiEvents.set(event.id, event));
@@ -82,6 +95,58 @@ export class MemStorage implements IStorage {
         this.waveforms.set(songId, data)
       );
     }
+  }
+
+  // User operations
+  async getUser(id: string): Promise<User | undefined> {
+    return this.users.get(id);
+  }
+
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const existing = this.users.get(userData.id!);
+    
+    if (existing) {
+      // Update existing user
+      const updated: User = {
+        ...existing,
+        ...userData,
+        updatedAt: new Date(),
+      };
+      this.users.set(userData.id!, updated);
+      return updated;
+    } else {
+      // Create new user
+      const newUser: User = {
+        id: userData.id || randomUUID(),
+        email: userData.email || null,
+        firstName: userData.firstName || null,
+        lastName: userData.lastName || null,
+        profileImageUrl: userData.profileImageUrl || null,
+        stripeCustomerId: userData.stripeCustomerId || null,
+        stripeSubscriptionId: userData.stripeSubscriptionId || null,
+        subscriptionStatus: userData.subscriptionStatus || null,
+        subscriptionEndDate: userData.subscriptionEndDate || null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      this.users.set(newUser.id, newUser);
+      return newUser;
+    }
+  }
+
+  async updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined> {
+    const user = this.users.get(id);
+    if (!user) return undefined;
+
+    const updated: User = {
+      ...user,
+      stripeCustomerId,
+      stripeSubscriptionId,
+      subscriptionStatus: 'active',
+      updatedAt: new Date(),
+    };
+    this.users.set(id, updated);
+    return updated;
   }
 
   // Songs

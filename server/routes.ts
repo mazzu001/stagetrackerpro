@@ -3,9 +3,16 @@ import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertSongSchema, insertTrackSchema, insertMidiEventSchema } from "@shared/schema";
+import { setupAuth, isAuthenticated, requireSubscription } from "./replitAuth";
+import Stripe from "stripe";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Configure multer for file uploads
 const uploadDir = path.join(process.cwd(), "uploads");
@@ -36,11 +43,148 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Auth middleware
+  await setupAuth(app);
+
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Stripe subscription routes
+  app.post('/api/create-subscription', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      let user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      if (user.stripeSubscriptionId) {
+        const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
+          expand: ['latest_invoice.payment_intent'],
+        });
+
+        const invoice = subscription.latest_invoice as any;
+        res.json({
+          subscriptionId: subscription.id,
+          clientSecret: invoice?.payment_intent?.client_secret,
+        });
+        return;
+      }
+      
+      if (!user.email) {
+        return res.status(400).json({ message: 'No user email on file' });
+      }
+
+      const customer = await stripe.customers.create({
+        email: user.email,
+        name: user.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : undefined,
+      });
+
+      // Create a price for the subscription
+      const price = await stripe.prices.create({
+        currency: 'usd',
+        unit_amount: 499, // $4.99 in cents
+        recurring: {
+          interval: 'month',
+        },
+        product_data: {
+          name: 'Stage Performance App - Pro',
+          description: 'Full access to all performance features and unlimited songs',
+        },
+      });
+
+      const subscription = await stripe.subscriptions.create({
+        customer: customer.id,
+        items: [{
+          price: price.id,
+        }],
+        payment_behavior: 'default_incomplete',
+        payment_settings: {
+          save_default_payment_method: 'on_subscription',
+        },
+        expand: ['latest_invoice.payment_intent'],
+      });
+
+      await storage.updateUserStripeInfo(userId, customer.id, subscription.id);
+  
+      const invoice = subscription.latest_invoice as any;
+      res.json({
+        subscriptionId: subscription.id,
+        clientSecret: invoice?.payment_intent?.client_secret,
+      });
+    } catch (error: any) {
+      console.error('Subscription creation error:', error);
+      return res.status(400).json({ error: { message: error.message } });
+    }
+  });
+
+  // Check subscription status
+  app.get('/api/subscription/status', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      if (!user.stripeSubscriptionId) {
+        return res.json({ hasSubscription: false });
+      }
+
+      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+      
+      res.json({
+        hasSubscription: true,
+        status: subscription.status,
+        currentPeriodEnd: (subscription as any).current_period_end,
+        cancelAtPeriodEnd: (subscription as any).cancel_at_period_end,
+      });
+    } catch (error) {
+      console.error('Error checking subscription status:', error);
+      res.status(500).json({ message: "Failed to check subscription status" });
+    }
+  });
+
+  // Cancel subscription
+  app.post('/api/subscription/cancel', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user || !user.stripeSubscriptionId) {
+        return res.status(404).json({ message: "No subscription found" });
+      }
+
+      const subscription = await stripe.subscriptions.update(user.stripeSubscriptionId, {
+        cancel_at_period_end: true,
+      });
+      
+      res.json({
+        message: "Subscription will be canceled at the end of the current period",
+        cancelAtPeriodEnd: subscription.cancel_at_period_end,
+      });
+    } catch (error) {
+      console.error('Error canceling subscription:', error);
+      res.status(500).json({ message: "Failed to cancel subscription" });
+    }
+  });
+
   // Serve uploaded files
   app.use("/uploads", express.static(uploadDir));
 
-  // Songs routes
-  app.get("/api/songs", async (req, res) => {
+  // Songs routes (protected by subscription requirement)
+  app.get("/api/songs", isAuthenticated, requireSubscription, async (req, res) => {
     try {
       const songs = await storage.getAllSongs();
       res.json(songs);
@@ -49,7 +193,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/songs/:id", async (req, res) => {
+  app.get("/api/songs/:id", isAuthenticated, requireSubscription, async (req, res) => {
     try {
       const song = await storage.getSongWithTracks(req.params.id);
       if (!song) {
@@ -61,7 +205,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/songs", async (req, res) => {
+  app.post("/api/songs", isAuthenticated, requireSubscription, async (req, res) => {
     try {
       const validatedData = insertSongSchema.parse(req.body);
       const song = await storage.createSong(validatedData);
@@ -75,7 +219,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/songs/:id", async (req, res) => {
+  app.patch("/api/songs/:id", isAuthenticated, requireSubscription, async (req, res) => {
     try {
       const partialData = insertSongSchema.partial().parse(req.body);
       const song = await storage.updateSong(req.params.id, partialData);
@@ -92,7 +236,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/songs/:id", async (req, res) => {
+  app.delete("/api/songs/:id", isAuthenticated, requireSubscription, async (req, res) => {
     try {
       const success = await storage.deleteSong(req.params.id);
       if (!success) {

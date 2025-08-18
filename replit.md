@@ -25,6 +25,8 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Database blob storage migration** - Completely replaced file reconnection system with PostgreSQL BYTEA blob storage
 ✓ **TrackFileUploader component** - New drag-and-drop interface for uploading audio files directly to database
 ✓ **Offline blob system** - Audio files stored as binary data in database with local blob URL caching for instant access
+✓ **Multiple file upload fix** - Fixed track manager to properly process all selected files instead of just the first one
+✓ **Enhanced upload error handling** - Added sequential processing, progress tracking, and detailed error reporting for file uploads
 
 # User Preferences
 

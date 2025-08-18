@@ -313,6 +313,8 @@ export default function TrackManager({
   };
 
   const handleAddTracks = async () => {
+    console.log(`Starting track upload for ${selectedFiles.length} files`);
+    
     if (selectedFiles.length === 0 || !song) {
       toast({
         title: "Validation Error",

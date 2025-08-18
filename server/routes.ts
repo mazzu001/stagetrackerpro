@@ -57,8 +57,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
-  // Stripe subscription routes
-  app.post('/api/create-subscription', isAuthenticated, async (req: any, res) => {
+  // Stripe subscription routes (authentication disabled)
+  app.post('/api/create-subscription', async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       let user = await storage.getUser(userId);
@@ -137,7 +137,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Check subscription status
-  app.get('/api/subscription/status', isAuthenticated, async (req: any, res) => {
+  app.get('/api/subscription/status', async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
@@ -164,8 +164,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Cancel subscription
-  app.post('/api/subscription/cancel', isAuthenticated, async (req: any, res) => {
+  // Cancel subscription (authentication disabled)
+  app.post('/api/subscription/cancel', async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
@@ -385,28 +385,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Persistence routes for auto-saving
+  // Legacy persistence routes (no-op - data is now in cloud database)
   app.post("/api/persistence/save", (req, res) => {
-    try {
-      const data = storage.getAllData();
-      res.json({ 
-        success: true, 
-        data,
-        timestamp: new Date().toISOString() 
-      });
-    } catch (error) {
-      res.status(500).json({ success: false, error: "Failed to get data" });
-    }
+    res.json({ 
+      success: true, 
+      message: "Data is automatically saved to cloud database",
+      timestamp: new Date().toISOString() 
+    });
   });
 
   app.post("/api/persistence/load", (req, res) => {
-    try {
-      const { songs, tracks, midiEvents, waveforms, users } = req.body;
-      storage.loadData(songs || [], tracks || [], midiEvents || [], waveforms, users || []);
-      res.json({ success: true, message: "Data loaded successfully" });
-    } catch (error) {
-      res.status(500).json({ success: false, error: "Failed to load data" });
-    }
+    res.json({ success: true, message: "Data is loaded from cloud database automatically" });
   });
 
   // Lyrics search route

@@ -9,6 +9,8 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Development mode access** - Subscription checks bypassed in development for testing  
 ✓ **Authentication disabled** - Sign-in and landing page removed for simpler testing
 ✓ **Direct app access** - Performance app loads immediately without authentication flow
+✓ **Cloud database migration** - All data now stored in PostgreSQL cloud database instead of localStorage
+✓ **Persistent storage** - Songs, tracks, MIDI events, and user data automatically saved to cloud
 ✓ **Smart file reconnection** - Improved dialog for bulk file selection and automatic name matching
 ✓ **Settings menu** - Added dropdown menu under settings gear with user info and logout option
 ✓ **File path-based storage system** - Stores local file paths instead of blob data for true offline operation
@@ -42,12 +44,13 @@ Data persistence: Automatic saving to localStorage with file path references and
 - **Development**: Hot module replacement with Vite middleware integration
 
 ## Data Storage
-- **Primary Database**: In-memory storage with three main collections:
-  - `songs`: Core song metadata including title, artist, duration, BPM, key, and lyrics
-  - `tracks`: Individual audio tracks per song with volume, mute, and solo controls (using blob URLs)
+- **Primary Database**: PostgreSQL cloud database with four main tables:
+  - `songs`: Core song metadata including title, artist, duration, BPM, key, and lyrics with waveform data
+  - `tracks`: Individual audio tracks per song with volume, mute, and solo controls (references local files)
   - `midiEvents`: Time-stamped MIDI events for automation and effects
+  - `users`: User authentication and subscription data for production deployment
 - **File Storage**: Local file path storage with smart caching (MP3, WAV, OGG, M4A) - completely offline
-- **Schema Management**: TypeScript types for data validation
+- **Cloud Persistence**: All data automatically saved to PostgreSQL, no localStorage dependency
 
 ## Core Features
 - **Multi-track Audio Engine**: Real-time audio mixing with individual track controls (up to 6 tracks per song)

@@ -1,5 +1,6 @@
-import { type Song, type InsertSong, type Track, type InsertTrack, type MidiEvent, type InsertMidiEvent, type SongWithTracks, type User, type UpsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { songs, tracks, midiEvents, users, type Song, type InsertSong, type Track, type InsertTrack, type MidiEvent, type InsertMidiEvent, type SongWithTracks, type User, type UpsertUser } from "@shared/schema";
+import { db } from "./db";
+import { eq, and } from "drizzle-orm";
 
 export interface IStorage {
   // User operations
@@ -33,330 +34,255 @@ export interface IStorage {
   // Waveform caching
   saveWaveform(songId: string, waveformData: number[]): Promise<void>;
   getWaveform(songId: string): Promise<number[] | null>;
+
+  // Legacy methods for compatibility (no-op in database mode)
+  getAllData(): any;
+  loadData(songs: Song[], tracks: Track[], midiEvents: MidiEvent[], waveforms?: Record<string, number[]>, users?: User[]): void;
+  setAutoSaveCallback(callback: () => void): void;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private songs: Map<string, Song>;
-  private tracks: Map<string, Track>;
-  private midiEvents: Map<string, MidiEvent>;
-  private waveforms: Map<string, number[]>; // Cache for waveforms
-  private autoSaveCallback?: () => void;
-
+export class DatabaseStorage implements IStorage {
   constructor() {
-    this.users = new Map();
-    this.songs = new Map();
-    this.tracks = new Map();
-    this.midiEvents = new Map();
-    this.waveforms = new Map();
+    console.log('DatabaseStorage initialized - using PostgreSQL cloud database');
   }
 
-  setAutoSaveCallback(callback: () => void) {
-    this.autoSaveCallback = callback;
-  }
-
-  private triggerAutoSave() {
-    if (this.autoSaveCallback) {
-      // Debounce auto-save to avoid too frequent saves
-      setTimeout(() => {
-        this.autoSaveCallback?.();
-      }, 500);
-    }
-  }
-
-  // Method to get all data for persistence
+  // Legacy methods for compatibility (no-op since data is in cloud database)
   getAllData() {
+    console.log('getAllData: Data is now stored in cloud database');
     return {
-      users: Array.from(this.users.values()),
-      songs: Array.from(this.songs.values()),
-      tracks: Array.from(this.tracks.values()),
-      midiEvents: Array.from(this.midiEvents.values()),
-      waveforms: Object.fromEntries(this.waveforms)
+      users: [],
+      songs: [],
+      tracks: [],
+      midiEvents: [],
+      waveforms: {}
     };
   }
 
-  // Method to load data from persistence
-  loadData(songs: Song[], tracks: Track[], midiEvents: MidiEvent[], waveforms?: Record<string, number[]>, users?: User[]) {
-    // Don't clear users - preserve existing users in memory to avoid auth issues
-    this.songs.clear();
-    this.tracks.clear();
-    this.midiEvents.clear();
-    this.waveforms.clear();
+  loadData(songData: Song[], trackData: Track[], midiEventData: MidiEvent[], waveforms?: Record<string, number[]>, userData?: User[]) {
+    console.log('loadData: Data is now stored in cloud database, ignoring localStorage');
+  }
 
-    // Only load users if they don't already exist (preserve authenticated users)
-    if (users) {
-      users.forEach(user => {
-        if (!this.users.has(user.id)) {
-          this.users.set(user.id, user);
-        }
-      });
-    }
-    songs.forEach(song => this.songs.set(song.id, song));
-    tracks.forEach(track => this.tracks.set(track.id, track));
-    midiEvents.forEach(event => this.midiEvents.set(event.id, event));
-    
-    if (waveforms) {
-      Object.entries(waveforms).forEach(([songId, data]) => 
-        this.waveforms.set(songId, data)
-      );
-    }
-
-    console.log('Data loaded - users count:', this.users.size, 'songs count:', this.songs.size);
+  setAutoSaveCallback(callback: () => void) {
+    console.log('setAutoSaveCallback: Data auto-saves to cloud database');
   }
 
   // User operations
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
-    const existing = this.users.get(userData.id!);
-    
-    if (existing) {
-      // Update existing user
-      const updated: User = {
-        ...existing,
+    const [user] = await db
+      .insert(users)
+      .values({
         ...userData,
         updatedAt: new Date(),
-      };
-      this.users.set(userData.id!, updated);
-      this.triggerAutoSave();
-      return updated;
-    } else {
-      // Create new user
-      const newUser: User = {
-        id: userData.id || randomUUID(),
-        email: userData.email || null,
-        firstName: userData.firstName || null,
-        lastName: userData.lastName || null,
-        profileImageUrl: userData.profileImageUrl || null,
-        stripeCustomerId: userData.stripeCustomerId || null,
-        stripeSubscriptionId: userData.stripeSubscriptionId || null,
-        subscriptionStatus: userData.subscriptionStatus || null,
-        subscriptionEndDate: userData.subscriptionEndDate || null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      this.users.set(newUser.id, newUser);
-      this.triggerAutoSave();
-      console.log('Created new user:', newUser.id, newUser.email);
-      return newUser;
-    }
+      })
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          ...userData,
+          updatedAt: new Date(),
+        },
+      })
+      .returning();
+    
+    console.log('User upserted in database:', user.id, user.email);
+    return user;
   }
 
   async updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined> {
-    const user = this.users.get(id);
-    if (!user) {
-      console.error('User not found for Stripe update:', id);
-      return undefined;
-    }
+    const [user] = await db
+      .update(users)
+      .set({
+        stripeCustomerId,
+        stripeSubscriptionId,
+        subscriptionStatus: 'active',
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, id))
+      .returning();
 
-    const updated: User = {
-      ...user,
-      stripeCustomerId,
-      stripeSubscriptionId,
-      subscriptionStatus: 'active',
-      updatedAt: new Date(),
-    };
-    this.users.set(id, updated);
-    this.triggerAutoSave();
-    console.log('Updated user Stripe info:', id, stripeCustomerId);
-    return updated;
+    if (user) {
+      console.log('Updated user Stripe info in database:', id, stripeCustomerId);
+    } else {
+      console.error('User not found for Stripe update:', id);
+    }
+    return user || undefined;
   }
 
-  // Songs
+  // Song operations
   async getSong(id: string): Promise<Song | undefined> {
-    return this.songs.get(id);
+    const [song] = await db.select().from(songs).where(eq(songs.id, id));
+    return song || undefined;
   }
 
   async getAllSongs(): Promise<SongWithTracks[]> {
-    const songs = Array.from(this.songs.values()).sort((a, b) => a.title.localeCompare(b.title));
-    const songsWithTracks = await Promise.all(
-      songs.map(async (song) => {
-        const tracks = await this.getTracksBySongId(song.id);
-        const midiEvents = await this.getMidiEventsBySongId(song.id);
-        return {
-          ...song,
-          tracks: tracks.sort((a, b) => a.trackNumber - b.trackNumber),
-          midiEvents: midiEvents.sort((a, b) => a.timestamp - b.timestamp)
-        };
-      })
-    );
+    const allSongs = await db.select().from(songs);
+    
+    const songsWithTracks: SongWithTracks[] = [];
+    for (const song of allSongs) {
+      const songTracks = await db.select().from(tracks).where(eq(tracks.songId, song.id));
+      const songMidiEvents = await db.select().from(midiEvents).where(eq(midiEvents.songId, song.id));
+      
+      songsWithTracks.push({
+        ...song,
+        tracks: songTracks,
+        midiEvents: songMidiEvents,
+      });
+    }
+    
     return songsWithTracks;
   }
 
-  async createSong(insertSong: InsertSong): Promise<Song> {
-    const id = randomUUID();
-    const song: Song = { 
-      ...insertSong,
-      key: insertSong.key || null,
-      bpm: insertSong.bpm || null,
-      lyrics: insertSong.lyrics || null,
-      waveformData: null,
-      waveformGenerated: null,
-      id,
-      createdAt: new Date().toISOString()
-    };
-    this.songs.set(id, song);
-    this.triggerAutoSave();
-    return song;
+  async createSong(song: InsertSong): Promise<Song> {
+    const [newSong] = await db.insert(songs).values(song).returning();
+    console.log('Song created in database:', newSong.id, newSong.title);
+    return newSong;
   }
 
-  async updateSong(id: string, updateData: Partial<InsertSong>): Promise<Song | undefined> {
-    const existing = this.songs.get(id);
-    if (!existing) return undefined;
+  async updateSong(id: string, song: Partial<InsertSong>): Promise<Song | undefined> {
+    const [updatedSong] = await db
+      .update(songs)
+      .set(song)
+      .where(eq(songs.id, id))
+      .returning();
     
-    const updated = { ...existing, ...updateData };
-    this.songs.set(id, updated);
-    this.triggerAutoSave();
-    return updated;
+    if (updatedSong) {
+      console.log('Song updated in database:', id, updatedSong.title);
+    }
+    return updatedSong || undefined;
   }
 
   async deleteSong(id: string): Promise<boolean> {
-    // Delete associated tracks and MIDI events
-    const tracks = await this.getTracksBySongId(id);
-    const midiEvents = await this.getMidiEventsBySongId(id);
+    // Delete associated tracks and MIDI events first
+    await db.delete(tracks).where(eq(tracks.songId, id));
+    await db.delete(midiEvents).where(eq(midiEvents.songId, id));
     
-    tracks.forEach(track => this.tracks.delete(track.id));
-    midiEvents.forEach(event => this.midiEvents.delete(event.id));
+    const result = await db.delete(songs).where(eq(songs.id, id));
+    const deleted = result.rowCount ? result.rowCount > 0 : false;
     
-    const result = this.songs.delete(id);
-    this.triggerAutoSave();
-    return result;
+    if (deleted) {
+      console.log('Song deleted from database:', id);
+    }
+    return deleted;
   }
 
   async getSongWithTracks(id: string): Promise<SongWithTracks | undefined> {
-    const song = this.songs.get(id);
+    const song = await this.getSong(id);
     if (!song) return undefined;
 
-    const tracks = await this.getTracksBySongId(id);
-    const midiEvents = await this.getMidiEventsBySongId(id);
+    const songTracks = await db.select().from(tracks).where(eq(tracks.songId, id));
+    const songMidiEvents = await db.select().from(midiEvents).where(eq(midiEvents.songId, id));
 
     return {
       ...song,
-      tracks: tracks.sort((a, b) => a.trackNumber - b.trackNumber),
-      midiEvents: midiEvents.sort((a, b) => a.timestamp - b.timestamp)
+      tracks: songTracks,
+      midiEvents: songMidiEvents,
     };
   }
 
-  // Tracks
+  // Track operations
   async getTrack(id: string): Promise<Track | undefined> {
-    return this.tracks.get(id);
+    const [track] = await db.select().from(tracks).where(eq(tracks.id, id));
+    return track || undefined;
   }
 
   async getTracksBySongId(songId: string): Promise<Track[]> {
-    return Array.from(this.tracks.values())
-      .filter(track => track.songId === songId)
-      .sort((a, b) => a.trackNumber - b.trackNumber);
+    return await db.select().from(tracks).where(eq(tracks.songId, songId));
   }
 
-  async createTrack(insertTrack: InsertTrack): Promise<Track> {
-    const id = randomUUID();
-    const track: Track = { 
-      ...insertTrack,
-      volume: insertTrack.volume ?? 100,
-      balance: insertTrack.balance ?? 0,
-      isMuted: insertTrack.isMuted ?? false,
-      isSolo: insertTrack.isSolo ?? false,
-      localFileName: insertTrack.localFileName ?? null,
-      id 
-    };
-    this.tracks.set(id, track);
-    this.triggerAutoSave();
-    return track;
+  async createTrack(track: InsertTrack): Promise<Track> {
+    const [newTrack] = await db.insert(tracks).values(track).returning();
+    console.log('Track created in database:', newTrack.id, newTrack.name);
+    return newTrack;
   }
 
-  async updateTrack(id: string, updateData: Partial<InsertTrack>): Promise<Track | undefined> {
-    const existing = this.tracks.get(id);
-    if (!existing) return undefined;
+  async updateTrack(id: string, track: Partial<InsertTrack>): Promise<Track | undefined> {
+    const [updatedTrack] = await db
+      .update(tracks)
+      .set(track)
+      .where(eq(tracks.id, id))
+      .returning();
     
-    const updated = { ...existing, ...updateData };
-    this.tracks.set(id, updated);
-    this.triggerAutoSave();
-    return updated;
+    if (updatedTrack) {
+      console.log('Track updated in database:', id, updatedTrack.name);
+    }
+    return updatedTrack || undefined;
   }
 
   async deleteTrack(id: string): Promise<boolean> {
-    const result = this.tracks.delete(id);
-    this.triggerAutoSave();
-    return result;
+    const result = await db.delete(tracks).where(eq(tracks.id, id));
+    const deleted = result.rowCount ? result.rowCount > 0 : false;
+    
+    if (deleted) {
+      console.log('Track deleted from database:', id);
+    }
+    return deleted;
   }
 
-  // MIDI Events
+  // MIDI Event operations
   async getMidiEvent(id: string): Promise<MidiEvent | undefined> {
-    return this.midiEvents.get(id);
+    const [event] = await db.select().from(midiEvents).where(eq(midiEvents.id, id));
+    return event || undefined;
   }
 
   async getMidiEventsBySongId(songId: string): Promise<MidiEvent[]> {
-    return Array.from(this.midiEvents.values())
-      .filter(event => event.songId === songId)
-      .sort((a, b) => a.timestamp - b.timestamp);
+    return await db.select().from(midiEvents).where(eq(midiEvents.songId, songId));
   }
 
-  async createMidiEvent(insertMidiEvent: InsertMidiEvent): Promise<MidiEvent> {
-    const id = randomUUID();
-    const midiEvent: MidiEvent = { 
-      ...insertMidiEvent,
-      channel: insertMidiEvent.channel || 1,
-      data1: insertMidiEvent.data1 || null,
-      data2: insertMidiEvent.data2 || null,
-      description: insertMidiEvent.description || null,
-      id 
-    };
-    this.midiEvents.set(id, midiEvent);
-    this.triggerAutoSave();
-    return midiEvent;
+  async createMidiEvent(midiEvent: InsertMidiEvent): Promise<MidiEvent> {
+    const [newEvent] = await db.insert(midiEvents).values(midiEvent).returning();
+    console.log('MIDI event created in database:', newEvent.id, newEvent.eventType);
+    return newEvent;
   }
 
-  async updateMidiEvent(id: string, updateData: Partial<InsertMidiEvent>): Promise<MidiEvent | undefined> {
-    const existing = this.midiEvents.get(id);
-    if (!existing) return undefined;
+  async updateMidiEvent(id: string, midiEvent: Partial<InsertMidiEvent>): Promise<MidiEvent | undefined> {
+    const [updatedEvent] = await db
+      .update(midiEvents)
+      .set(midiEvent)
+      .where(eq(midiEvents.id, id))
+      .returning();
     
-    const updated = { ...existing, ...updateData };
-    this.midiEvents.set(id, updated);
-    this.triggerAutoSave();
-    return updated;
+    if (updatedEvent) {
+      console.log('MIDI event updated in database:', id, updatedEvent.eventType);
+    }
+    return updatedEvent || undefined;
   }
 
   async deleteMidiEvent(id: string): Promise<boolean> {
-    const result = this.midiEvents.delete(id);
-    this.triggerAutoSave();
-    return result;
+    const result = await db.delete(midiEvents).where(eq(midiEvents.id, id));
+    const deleted = result.rowCount ? result.rowCount > 0 : false;
+    
+    if (deleted) {
+      console.log('MIDI event deleted from database:', id);
+    }
+    return deleted;
   }
 
-  // Waveform caching
+  // Waveform operations (store in song's waveformData field)
   async saveWaveform(songId: string, waveformData: number[]): Promise<void> {
-    this.waveforms.set(songId, waveformData);
+    await db
+      .update(songs)
+      .set({ 
+        waveformData: JSON.stringify(waveformData),
+        waveformGenerated: true 
+      })
+      .where(eq(songs.id, songId));
     
-    // Also update the song to mark waveform as generated
-    const song = this.songs.get(songId);
-    if (song) {
-      const updatedSong: Song = { 
-        ...song, 
-        waveformGenerated: true, 
-        waveformData: JSON.stringify(waveformData) 
-      };
-      this.songs.set(songId, updatedSong);
-    }
-    this.triggerAutoSave();
+    console.log('Waveform saved to database for song:', songId);
   }
 
   async getWaveform(songId: string): Promise<number[] | null> {
-    // First check in-memory cache
-    const cached = this.waveforms.get(songId);
-    if (cached) return cached;
+    const [song] = await db.select({ waveformData: songs.waveformData }).from(songs).where(eq(songs.id, songId));
     
-    // Check if stored in song data
-    const song = this.songs.get(songId);
-    if (song && song.waveformData) {
+    if (song?.waveformData) {
       try {
-        const waveformData = JSON.parse(song.waveformData);
-        if (Array.isArray(waveformData)) {
-          this.waveforms.set(songId, waveformData); // Cache for next time
-          return waveformData;
-        }
+        return JSON.parse(song.waveformData);
       } catch (error) {
-        console.error('Failed to parse stored waveform data:', error);
+        console.error('Error parsing waveform data:', error);
+        return null;
       }
     }
     
@@ -364,4 +290,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

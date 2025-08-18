@@ -1,6 +1,14 @@
 # Overview
 
-This is a live music performance application built with React, Express, and in-memory storage. The system provides real-time audio mixing, MIDI event sequencing, and synchronized lyrics display for live performances. It features a comprehensive audio engine with multi-track playback (up to 6 tracks per song), visual level monitoring, transport controls, and automatic song duration detection from local audio files for professional stage use. The app works completely offline using client-side blob URLs for audio files - no internet connection or file uploads required.
+This is a live music performance application built with React, Express, and in-memory storage. The system provides real-time audio mixing, MIDI event sequencing, and synchronized lyrics display for live performances. It features a comprehensive audio engine with multi-track playbook (up to 6 tracks per song), visual level monitoring, transport controls, and automatic song duration detection from local audio files for professional stage use. The app works completely offline using client-side blob URLs for audio files with persistent file data storage - no internet connection or file uploads required.
+
+## Recent Updates (August 18, 2025)
+
+✓ **Fixed critical blob URL persistence issue** - Audio files now persist across app restarts
+✓ **Enhanced storage system** - Stores actual file data in base64 format for blob URL recreation  
+✓ **Smart fallback recovery** - Automatically recreates blob URLs when they expire
+✓ **User-friendly warnings** - Displays helpful messages for tracks that need to be re-added
+✓ **Lyrics import feature** - Added web search functionality to import song lyrics automatically
 
 # User Preferences
 

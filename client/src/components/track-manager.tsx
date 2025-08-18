@@ -8,9 +8,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { persistence } from "@/lib/storage-persistence";
-import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause } from "lucide-react";
+import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import VUMeter from "@/components/vu-meter";
+import { TrackRecovery } from "@/components/track-recovery";
 import type { Track, SongWithTracks } from "@shared/schema";
 
 interface TrackManagerProps {
@@ -539,8 +540,19 @@ export default function TrackManager({
           <p className="text-xs mt-1">Files stay on your device - no uploads, completely offline</p>
         </div>
       ) : (
-        <div className="space-y-3">
-          {tracks.map((track, index) => (
+        <>
+          {/* Show warning for tracks that need to be re-added */}
+          {tracks.some(track => track.audioUrl && !persistence.hasFileData?.(track.id)) && (
+            <div className="bg-yellow-900/20 border border-yellow-600 rounded-lg p-3 mb-4">
+              <div className="flex items-center space-x-2 text-yellow-400 text-sm">
+                <AlertTriangle className="w-4 h-4" />
+                <span>Some tracks need to be re-added after the app restart. Please delete and re-add your audio files.</span>
+              </div>
+            </div>
+          )}
+          
+          <div className="space-y-3">
+            {tracks.map((track, index) => (
             <Card
               key={track.id}
               className="bg-gray-800 border border-gray-600 hover:bg-gray-750 transition-colors"
@@ -668,7 +680,8 @@ export default function TrackManager({
               </CardContent>
             </Card>
           ))}
-        </div>
+          </div>
+        </>
       )}
 
       {tracks.length > 0 && (

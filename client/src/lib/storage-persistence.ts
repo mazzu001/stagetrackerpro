@@ -69,6 +69,7 @@ export class StoragePersistence {
     try {
       const base64Data = this.fileDataMap.get(trackId);
       if (!base64Data) {
+        console.warn(`No file data found for track: ${trackId}`);
         return undefined;
       }
 
@@ -89,6 +90,11 @@ export class StoragePersistence {
       console.warn('Failed to recreate blob URL for track:', trackId, error);
       return undefined;
     }
+  }
+
+  // Check if file data exists for a track
+  hasFileData(trackId: string): boolean {
+    return this.fileDataMap.has(trackId);
   }
 
   // Save all data to localStorage

@@ -358,6 +358,8 @@ class TrackController {
           console.log(`Using restored blob URL for ${this.track.name}`);
           audioUrl = restoredUrl;
           response = await fetch(audioUrl);
+        } else {
+          console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
         }
       }
       

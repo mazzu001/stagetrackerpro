@@ -134,10 +134,7 @@ export class DatabaseStorage implements IStorage {
       if (!tracksBySong.has(track.songId)) {
         tracksBySong.set(track.songId, []);
       }
-      tracksBySong.get(track.songId)!.push({
-        ...track,
-        hasAudioData: !!track.audioData
-      });
+      tracksBySong.get(track.songId)!.push(track);
     });
     
     allMidiEvents.forEach(event => {

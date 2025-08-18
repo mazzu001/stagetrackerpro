@@ -37,27 +37,31 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
         const firstTimestamp = Math.min(...parsedLyrics.map(line => line.timestamp));
         
         if (currentTime >= firstTimestamp && currentLineIndex >= 0) {
-          // Only scroll when line changes and throttle scrolling to prevent jitter
+          // Only scroll when line changes and with much longer throttling for readability
           const now = Date.now();
           const timeSinceLastScroll = now - lastScrollTime;
           
-          if (currentLineIndex !== lastScrolledLine && timeSinceLastScroll > 500) {
-            // Use timestamp-based scrolling: scroll to current line with better positioning
+          if (currentLineIndex !== lastScrolledLine && timeSinceLastScroll > 1500) {
+            // Use timestamp-based scrolling with very gentle movement
             const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
             if (currentLineElement) {
               const containerHeight = container.clientHeight;
               const lineOffsetTop = currentLineElement.offsetTop;
-              const lineHeight = currentLineElement.offsetHeight;
+              const currentScrollTop = container.scrollTop;
               
-              // Position current line in upper third of container for better readability
-              // This keeps upcoming lines visible while maintaining focus on current line
-              const targetScrollTop = lineOffsetTop - (containerHeight / 3);
+              // Only scroll if the current line is getting close to the bottom of visible area
+              const linePositionInContainer = lineOffsetTop - currentScrollTop;
+              const shouldScroll = linePositionInContainer > (containerHeight * 0.7);
               
-              // Use slower, more readable scrolling
-              container.scrollTo({
-                top: Math.max(0, targetScrollTop),
-                behavior: 'smooth'
-              });
+              if (shouldScroll) {
+                // Very gentle scroll - just move enough to keep current line visible
+                // Position current line in middle of container for optimal reading
+                const targetScrollTop = lineOffsetTop - (containerHeight * 0.4);
+                
+                // Use CSS scroll-behavior for ultra-smooth movement
+                container.style.scrollBehavior = 'smooth';
+                container.scrollTop = Math.max(0, targetScrollTop);
+              }
               
               setLastScrollTime(now);
               setLastScrolledLine(currentLineIndex);
@@ -65,28 +69,29 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
           }
         }
       } else {
-        // For lyrics without timestamps, use slower progress-based scrolling with throttling
+        // For lyrics without timestamps, use very gentle progress-based scrolling
         if (currentTime >= 5) {
           const now = Date.now();
           const timeSinceLastScroll = now - lastScrollTime;
           
-          // Only update scroll every 2 seconds for smoother experience
-          if (timeSinceLastScroll > 2000) {
+          // Only update scroll every 5 seconds for very smooth experience
+          if (timeSinceLastScroll > 5000) {
             const songDuration = song.duration || 180; // Default to 3 minutes if no duration
-            // Slower progress calculation - only use 80% of the song duration for scrolling
-            // This leaves time at the end to read final lyrics
-            const adjustedDuration = songDuration * 0.8;
-            const progress = Math.min(currentTime / adjustedDuration, 1); // Cap at 100%
+            // Much slower progress calculation - only use 70% of the song duration
+            const adjustedDuration = songDuration * 0.7;
+            const progress = Math.min(currentTime / adjustedDuration, 1);
             
-            // Calculate smooth scroll position based on adjusted progress
+            // Very gradual scroll movement
             const maxScrollTop = container.scrollHeight - container.clientHeight;
             const targetScrollTop = progress * maxScrollTop;
+            const currentScrollTop = container.scrollTop;
             
-            // Use smooth scrolling with reduced frequency
-            container.scrollTo({
-              top: targetScrollTop,
-              behavior: 'smooth'
-            });
+            // Move only a small amount each time for ultra-smooth experience
+            const scrollDifference = targetScrollTop - currentScrollTop;
+            const gentleScrollAmount = scrollDifference * 0.3; // Move only 30% of the way
+            
+            container.style.scrollBehavior = 'smooth';
+            container.scrollTop = currentScrollTop + gentleScrollAmount;
             
             setLastScrollTime(now);
           }
@@ -147,6 +152,7 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
       <div 
         ref={lyricsContainerRef}
         className="lyrics-container bg-gray-800 rounded-lg p-4 h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800"
+        style={{ scrollBehavior: 'smooth' }}
         data-testid="lyrics-container"
       >
         {parsedLyrics.length === 0 ? (

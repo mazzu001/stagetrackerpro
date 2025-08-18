@@ -1,5 +1,6 @@
 import type { Track } from "@shared/schema";
 import { FilePersistence } from "./file-persistence";
+import { FilePathManager } from "./file-path-manager";
 
 interface StoredAudioFile {
   id: string;
@@ -19,6 +20,7 @@ export class AudioFileStorage {
   private blobUrls: Map<string, string> = new Map(); // Cache blob URLs to avoid recreating
   private fileCache: Map<string, File> = new Map(); // Cache files by path for faster access
   private filePersistence: FilePersistence;
+  private filePathManager: FilePathManager;
 
   static getInstance(): AudioFileStorage {
     if (!AudioFileStorage.instance) {
@@ -30,10 +32,11 @@ export class AudioFileStorage {
 
   constructor() {
     this.filePersistence = FilePersistence.getInstance();
+    this.filePathManager = FilePathManager.getInstance();
   }
 
   // Store file path reference for local file system access
-  async storeAudioFile(trackId: string, file: File, track?: Track): Promise<void> {
+  async storeAudioFile(trackId: string, file: File, track?: Track, songTitle?: string): Promise<void> {
     try {
       console.log(`Storing file path reference: ${file.name}, size: ${file.size} bytes`);
       
@@ -59,7 +62,12 @@ export class AudioFileStorage {
       // Save lightweight metadata to localStorage
       this.saveToStorage();
 
-      // Also register with the new persistent file system
+      // Register with persistent file path manager (primary system)
+      if (track && songTitle) {
+        await this.filePathManager.registerFilePath(track, file, songTitle);
+      }
+
+      // Also register with the legacy file persistence system
       if (track) {
         await this.filePersistence.registerFile(track, file);
       }
@@ -72,8 +80,8 @@ export class AudioFileStorage {
     }
   }
 
-  // Get audio file as blob URL, try to find local file if needed
-  getAudioUrl(trackId: string): string | null {
+  // Get audio file as blob URL, automatically load from path if needed
+  async getAudioUrl(trackId: string): Promise<string | null> {
     // Return cached blob URL if available
     if (this.blobUrls.has(trackId)) {
       return this.blobUrls.get(trackId)!;
@@ -82,35 +90,44 @@ export class AudioFileStorage {
     // Try to get from in-memory file objects first
     let fileObject = this.fileObjects.get(trackId);
     
-    // If not in memory, check if we have file info in persistence system
+    // If not in memory, try to load automatically from file path
     if (!fileObject) {
-      const fileInfo = this.filePersistence.getFileInfo(trackId);
-      if (fileInfo) {
-        console.log(`File info found for ${fileInfo.fileName}, but file not loaded. Need to re-select files.`);
-        return null;
-      }
+      console.log(`Attempting to auto-load file for track: ${trackId}`);
       
-      const storedFile = this.audioFiles.get(trackId);
-      if (storedFile) {
-        console.log(`Trying to locate file: ${storedFile.name} at path: ${storedFile.filePath}`);
+      try {
+        // Try to load from registered file path
+        fileObject = await this.filePathManager.loadFileFromPath(trackId);
         
-        // Check if we have it cached by path
-        fileObject = this.fileCache.get(storedFile.filePath);
         if (fileObject) {
-          console.log(`Found cached file for: ${storedFile.name}`);
+          console.log(`Successfully auto-loaded file: ${fileObject.name}`);
           this.fileObjects.set(trackId, fileObject);
         } else {
-          console.warn(`File not found in cache: ${storedFile.name} (${storedFile.filePath}). Please re-add the audio file.`);
+          // Fall back to legacy storage system
+          const storedFile = this.audioFiles.get(trackId);
+          if (storedFile) {
+            console.log(`Trying to locate file: ${storedFile.name} at path: ${storedFile.filePath}`);
+            
+            // Check if we have it cached by path
+            fileObject = this.fileCache.get(storedFile.filePath);
+            if (fileObject) {
+              console.log(`Found cached file for: ${storedFile.name}`);
+              this.fileObjects.set(trackId, fileObject);
+            } else {
+              console.warn(`File not found in cache: ${storedFile.name} (${storedFile.filePath}). Auto-load failed.`);
+            }
+          }
         }
+      } catch (error) {
+        console.error(`Error during auto-load for track ${trackId}:`, error);
       }
     }
 
     if (!fileObject) {
-      const storedFile = this.audioFiles.get(trackId);
-      if (storedFile) {
-        console.warn(`Could not locate audio file: ${storedFile.name} at ${storedFile.filePath}. Please re-add the audio file.`);
+      const mapping = this.filePathManager.getFileMapping(trackId);
+      if (mapping) {
+        console.warn(`Could not auto-load audio file: ${mapping.fileName} from path: ${mapping.filePath}`);
       } else {
-        console.warn(`No audio file found for track: ${trackId}`);
+        console.warn(`No file path mapping found for track: ${trackId}`);
       }
       return null;
     }

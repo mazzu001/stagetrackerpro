@@ -591,6 +591,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // File Path Configuration API for persistent file location tracking
+  const FILE_PATHS_CONFIG_PATH = path.join(process.cwd(), "data", "file-paths-config.json");
+
+  app.get("/api/file-paths", async (req, res) => {
+    try {
+      if (fs.existsSync(FILE_PATHS_CONFIG_PATH)) {
+        const configData = await fsPromises.readFile(FILE_PATHS_CONFIG_PATH, 'utf8');
+        const config = JSON.parse(configData);
+        res.json(config);
+      } else {
+        // Return empty config
+        const emptyConfig = {
+          version: '1.0.0',
+          lastUpdated: Date.now(),
+          mappings: []
+        };
+        res.json(emptyConfig);
+      }
+    } catch (error) {
+      console.error('Error reading file paths config:', error);
+      res.status(500).json({ message: "Failed to read file paths config" });
+    }
+  });
+
+  app.post("/api/file-paths", async (req, res) => {
+    try {
+      const configData = JSON.stringify(req.body, null, 2);
+      await fsPromises.writeFile(FILE_PATHS_CONFIG_PATH, configData, 'utf8');
+      console.log(`File paths config saved with ${req.body.mappings?.length || 0} mappings`);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error saving file paths config:', error);
+      res.status(500).json({ message: "Failed to save file paths config" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

@@ -372,7 +372,7 @@ class TrackController {
       const audioStorage = AudioFileStorage.getInstance();
       
       // Get audio URL from local file storage (cached blob URLs)
-      const audioUrl = audioStorage.getAudioUrl(this.track.id);
+      const audioUrl = await audioStorage.getAudioUrl(this.track.id);
       if (!audioUrl) {
         console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
         throw new Error(`Audio file not available for ${this.track.name}. Please re-add the audio file.`);

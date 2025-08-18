@@ -23,18 +23,24 @@ export interface IStorage {
   createMidiEvent(midiEvent: InsertMidiEvent): Promise<MidiEvent>;
   updateMidiEvent(id: string, midiEvent: Partial<InsertMidiEvent>): Promise<MidiEvent | undefined>;
   deleteMidiEvent(id: string): Promise<boolean>;
+
+  // Waveform caching
+  saveWaveform(songId: string, waveformData: number[]): Promise<void>;
+  getWaveform(songId: string): Promise<number[] | null>;
 }
 
 export class MemStorage implements IStorage {
   private songs: Map<string, Song>;
   private tracks: Map<string, Track>;
   private midiEvents: Map<string, MidiEvent>;
+  private waveforms: Map<string, number[]>; // Cache for waveforms
   private autoSaveCallback?: () => void;
 
   constructor() {
     this.songs = new Map();
     this.tracks = new Map();
     this.midiEvents = new Map();
+    this.waveforms = new Map();
   }
 
   setAutoSaveCallback(callback: () => void) {
@@ -55,19 +61,27 @@ export class MemStorage implements IStorage {
     return {
       songs: Array.from(this.songs.values()),
       tracks: Array.from(this.tracks.values()),
-      midiEvents: Array.from(this.midiEvents.values())
+      midiEvents: Array.from(this.midiEvents.values()),
+      waveforms: Object.fromEntries(this.waveforms)
     };
   }
 
   // Method to load data from persistence
-  loadData(songs: Song[], tracks: Track[], midiEvents: MidiEvent[]) {
+  loadData(songs: Song[], tracks: Track[], midiEvents: MidiEvent[], waveforms?: Record<string, number[]>) {
     this.songs.clear();
     this.tracks.clear();
     this.midiEvents.clear();
+    this.waveforms.clear();
 
     songs.forEach(song => this.songs.set(song.id, song));
     tracks.forEach(track => this.tracks.set(track.id, track));
     midiEvents.forEach(event => this.midiEvents.set(event.id, event));
+    
+    if (waveforms) {
+      Object.entries(waveforms).forEach(([songId, data]) => 
+        this.waveforms.set(songId, data)
+      );
+    }
   }
 
   // Songs
@@ -98,6 +112,8 @@ export class MemStorage implements IStorage {
       key: insertSong.key || null,
       bpm: insertSong.bpm || null,
       lyrics: insertSong.lyrics || null,
+      waveformData: null,
+      waveformGenerated: null,
       id,
       createdAt: new Date().toISOString()
     };
@@ -226,6 +242,45 @@ export class MemStorage implements IStorage {
     const result = this.midiEvents.delete(id);
     this.triggerAutoSave();
     return result;
+  }
+
+  // Waveform caching
+  async saveWaveform(songId: string, waveformData: number[]): Promise<void> {
+    this.waveforms.set(songId, waveformData);
+    
+    // Also update the song to mark waveform as generated
+    const song = this.songs.get(songId);
+    if (song) {
+      const updatedSong: Song = { 
+        ...song, 
+        waveformGenerated: true, 
+        waveformData: JSON.stringify(waveformData) 
+      };
+      this.songs.set(songId, updatedSong);
+    }
+    this.triggerAutoSave();
+  }
+
+  async getWaveform(songId: string): Promise<number[] | null> {
+    // First check in-memory cache
+    const cached = this.waveforms.get(songId);
+    if (cached) return cached;
+    
+    // Check if stored in song data
+    const song = this.songs.get(songId);
+    if (song && song.waveformData) {
+      try {
+        const waveformData = JSON.parse(song.waveformData);
+        if (Array.isArray(waveformData)) {
+          this.waveforms.set(songId, waveformData); // Cache for next time
+          return waveformData;
+        }
+      } catch (error) {
+        console.error('Failed to parse stored waveform data:', error);
+      }
+    }
+    
+    return null;
   }
 }
 

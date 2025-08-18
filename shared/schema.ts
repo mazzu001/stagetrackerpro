@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, jsonb, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, jsonb, integer, boolean, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -11,6 +11,8 @@ export const songs = pgTable("songs", {
   bpm: integer("bpm"),
   key: text("key"),
   lyrics: text("lyrics"), // lyrics with timestamps and MIDI commands
+  waveformData: text("waveform_data"), // JSON array of waveform amplitudes
+  waveformGenerated: boolean("waveform_generated").default(false),
   createdAt: text("created_at").default(sql`now()`),
 });
 

@@ -249,8 +249,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/persistence/load", (req, res) => {
     try {
-      const { songs, tracks, midiEvents } = req.body;
-      storage.loadData(songs || [], tracks || [], midiEvents || []);
+      const { songs, tracks, midiEvents, waveforms } = req.body;
+      storage.loadData(songs || [], tracks || [], midiEvents || [], waveforms);
       res.json({ success: true, message: "Data loaded successfully" });
     } catch (error) {
       res.status(500).json({ success: false, error: "Failed to load data" });
@@ -316,6 +316,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
         error: "Failed to search for lyrics",
         message: "Network error occurred while searching for lyrics. Please check your internet connection."
       });
+    }
+  });
+
+  // Waveform caching routes
+  app.post("/api/waveforms/:songId", async (req, res) => {
+    try {
+      const { songId } = req.params;
+      const { waveformData } = req.body;
+      
+      if (!Array.isArray(waveformData)) {
+        return res.status(400).json({ error: 'Invalid waveform data' });
+      }
+      
+      await storage.saveWaveform(songId, waveformData);
+      res.json({ success: true, message: 'Waveform saved successfully' });
+    } catch (error) {
+      console.error('Error saving waveform:', error);
+      res.status(500).json({ error: 'Failed to save waveform' });
+    }
+  });
+
+  app.get("/api/waveforms/:songId", async (req, res) => {
+    try {
+      const { songId } = req.params;
+      const waveformData = await storage.getWaveform(songId);
+      
+      if (waveformData) {
+        res.json({ success: true, waveformData });
+      } else {
+        res.status(404).json({ success: false, message: 'Waveform not found' });
+      }
+    } catch (error) {
+      console.error('Error loading waveform:', error);
+      res.status(500).json({ error: 'Failed to load waveform' });
     }
   });
 

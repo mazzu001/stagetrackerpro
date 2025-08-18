@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { SongWithTracks } from '@shared/schema';
 import { audioStorage } from '@/lib/audio-file-storage';
+import { apiRequest } from '@/lib/queryClient';
 
 interface WaveformVisualizerProps {
   song: SongWithTracks | null;
@@ -21,6 +23,24 @@ export function WaveformVisualizer({
   const animationFrameRef = useRef<number>();
   const [waveformData, setWaveformData] = useState<number[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const queryClient = useQueryClient();
+
+  // Check for cached waveform first
+  const { data: cachedWaveform } = useQuery({
+    queryKey: ['/api/waveforms', song?.id],
+    enabled: !!song?.id,
+    staleTime: Infinity, // Cache waveforms permanently until manually invalidated
+  });
+
+  // Mutation to save waveform
+  const saveWaveformMutation = useMutation({
+    mutationFn: async ({ songId, waveformData }: { songId: string; waveformData: number[] }) => {
+      return apiRequest(`/api/waveforms/${songId}`, 'POST', { waveformData });
+    },
+    onSuccess: (_, { songId }) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/waveforms', songId] });
+    }
+  });
 
   // Generate real waveform from combined audio tracks
   const generateWaveformFromAudio = async (song: SongWithTracks) => {
@@ -37,73 +57,60 @@ export function WaveformVisualizer({
       let maxDuration = 0;
       let tracksProcessed = 0;
 
-      console.log(`Generating ultra-fast waveform from first available track of ${song.tracks.length} total`);
+      console.log(`Generating comprehensive waveform from all ${song.tracks.length} tracks`);
 
-      // Find the first track with audio data for super fast processing
-      let bestTrack = null;
-      
-      // Prioritize certain track types for better waveform representation
-      const preferredTrackTypes = ['drums', 'drum', 'mix', 'master', 'bass', 'guitar'];
-      
-      // First try to find a preferred track type
-      for (const trackType of preferredTrackTypes) {
-        const track = song.tracks.find(t => 
-          t.name.toLowerCase().includes(trackType)
-        );
-        if (track) {
-          const audioData = await audioStorage.getAudioFileData(track.id);
-          if (audioData) {
-            bestTrack = { track, audioData };
-            break;
-          }
+      // Process all tracks in parallel for comprehensive waveform
+      const trackPromises = song.tracks.map(async (track) => {
+        const audioData = await audioStorage.getAudioFileData(track.id);
+        if (!audioData) {
+          console.log(`Skipping track ${track.name} - no audio data available`);
+          return null;
         }
-      }
-      
-      // If no preferred track found, use the first available track
-      if (!bestTrack) {
-        for (const track of song.tracks) {
-          const audioData = await audioStorage.getAudioFileData(track.id);
-          if (audioData) {
-            bestTrack = { track, audioData };
-            break;
-          }
-        }
-      }
 
-      if (!bestTrack) {
-        console.log('No tracks with audio data available');
-        tracksProcessed = 0;
-      } else {
         try {
-          const audioBuffer = await audioContext.decodeAudioData(bestTrack.audioData.slice(0));
-          const channelData = audioBuffer.getChannelData(0);
-          maxDuration = audioBuffer.duration;
+          const audioBuffer = await audioContext.decodeAudioData(audioData.slice(0));
+          const channelData = audioBuffer.getChannelData(0); // Use first channel
           
-          // Ultra-fast sampling with aggressive decimation
+          // Efficient sampling for good quality
           const samplesPerPoint = Math.floor(channelData.length / sampleCount);
+          const trackData: number[] = new Array(sampleCount).fill(0);
           
           for (let i = 0; i < sampleCount; i++) {
             const startIndex = i * samplesPerPoint;
             const endIndex = Math.min(startIndex + samplesPerPoint, channelData.length);
             
-            // Sample every 20th point for maximum speed
+            // Get max amplitude in the range
             let maxAmplitude = 0;
-            for (let j = startIndex; j < endIndex; j += 20) {
+            for (let j = startIndex; j < endIndex; j += 5) { // Sample every 5th point for quality
               const amplitude = Math.abs(channelData[j]);
               if (amplitude > maxAmplitude) {
                 maxAmplitude = amplitude;
               }
             }
-            combinedData[i] = maxAmplitude;
+            trackData[i] = maxAmplitude;
           }
           
-          tracksProcessed = 1;
-          console.log(`Ultra-fast processed: ${bestTrack.track.name} (${audioBuffer.duration.toFixed(1)}s)`);
+          console.log(`Processed track: ${track.name} (${audioBuffer.duration.toFixed(1)}s)`);
+          return { trackData, duration: audioBuffer.duration };
         } catch (error) {
-          console.error(`Failed to process track ${bestTrack.track.name}:`, error);
-          tracksProcessed = 0;
+          console.error(`Failed to process track ${track.name}:`, error);
+          return null;
         }
-      }
+      });
+
+      // Wait for all tracks to process in parallel
+      const results = await Promise.all(trackPromises);
+      
+      // Combine all track data for comprehensive waveform
+      results.forEach((result) => {
+        if (result) {
+          maxDuration = Math.max(maxDuration, result.duration);
+          for (let i = 0; i < sampleCount; i++) {
+            combinedData[i] += result.trackData[i];
+          }
+          tracksProcessed++;
+        }
+      });
 
       // Fast normalization
       if (tracksProcessed > 0) {
@@ -115,8 +122,17 @@ export function WaveformVisualizer({
           }
         }
         
-        console.log(`Generated ultra-fast waveform from ${tracksProcessed} track, duration: ${maxDuration.toFixed(1)}s`);
+        console.log(`Generated comprehensive waveform from ${tracksProcessed} tracks, duration: ${maxDuration.toFixed(1)}s`);
         setWaveformData(combinedData);
+        
+        // Save waveform to cache for instant loading next time
+        if (song?.id && combinedData.length > 0) {
+          saveWaveformMutation.mutate({
+            songId: song.id,
+            waveformData: combinedData
+          });
+          console.log('Waveform saved to cache');
+        }
       } else {
         console.log('No tracks with audio data available, generating fallback waveform pattern');
         // Generate a realistic fallback waveform when no audio data is available
@@ -172,14 +188,29 @@ export function WaveformVisualizer({
     return data;
   };
 
-  // Regenerate waveform when song changes
+  // Use cached waveform or generate new one
   useEffect(() => {
-    if (song && song.tracks.length > 0) {
+    if (!song) {
+      setWaveformData([]);
+      return;
+    }
+
+    // Check if we have cached waveform data
+    if (cachedWaveform && 'success' in cachedWaveform && cachedWaveform.success && 'waveformData' in cachedWaveform && cachedWaveform.waveformData) {
+      console.log(`Loading cached waveform for "${song.title}"`);
+      setWaveformData(cachedWaveform.waveformData as number[]);
+      setIsGenerating(false);
+      return;
+    }
+
+    // Generate new waveform if no cache found
+    if (song.tracks.length > 0) {
+      console.log(`No cached waveform found for "${song.title}", generating new one...`);
       generateWaveformFromAudio(song);
     } else {
       setWaveformData([]);
     }
-  }, [song]);
+  }, [song?.id, cachedWaveform]);
 
   const draw = () => {
     const canvas = canvasRef.current;

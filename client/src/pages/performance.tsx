@@ -284,30 +284,17 @@ export default function Performance({ userType }: PerformanceProps) {
       
       // Step 2: Find next line with text and move cursor to its beginning
       setTimeout(() => {
-        // Look for the next newline character starting from current cursor position
-        let searchStart = cursorPosition;
-        let nextLineStart = -1;
+        // Find the first newline after the original cursor position
+        const nextNewlineIndex = newText.indexOf('\n', cursorPosition);
         
-        // Find the next newline
-        const nextNewline = newText.indexOf('\n', searchStart);
-        if (nextNewline !== -1) {
-          // Start of next line is right after the newline
-          nextLineStart = nextNewline + 1;
+        if (nextNewlineIndex !== -1) {
+          // The beginning of the next line is exactly at nextNewlineIndex + 1
+          const beginningOfNextLine = nextNewlineIndex + 1;
           
-          // Skip any empty lines to find a line with actual text
-          while (nextLineStart < newText.length && newText[nextLineStart] === '\n') {
-            nextLineStart++;
-          }
+          console.log('Debug - cursorPosition:', cursorPosition, 'nextNewlineIndex:', nextNewlineIndex, 'beginningOfNextLine:', beginningOfNextLine);
           
-          // Position cursor at the beginning of the next line with text
-          if (nextLineStart < newText.length) {
-            textarea.selectionStart = nextLineStart;
-            textarea.selectionEnd = nextLineStart;
-          } else {
-            // No more lines with text, position after timestamp
-            textarea.selectionStart = cursorPosition + timestamp.length;
-            textarea.selectionEnd = cursorPosition + timestamp.length;
-          }
+          textarea.selectionStart = beginningOfNextLine;
+          textarea.selectionEnd = beginningOfNextLine;
         } else {
           // No next line exists, position cursor after the timestamp
           textarea.selectionStart = cursorPosition + timestamp.length;

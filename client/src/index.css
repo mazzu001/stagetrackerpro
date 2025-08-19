@@ -203,4 +203,53 @@
     cursor: pointer;
     border: 2px solid white;
   }
+  
+  /* Position slider custom styles */
+  .slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    border-radius: 4px;
+    background: hsl(217, 10%, 25%);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  
+  .slider:hover {
+    background: hsl(217, 10%, 30%);
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+  }
+  
+  .slider::-webkit-slider-thumb:hover {
+    background: hsl(207, 89%, 50%);
+    transform: scale(1.1);
+  }
+  
+  .slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+  }
+  
+  .slider::-moz-range-thumb:hover {
+    background: hsl(207, 89%, 50%);
+    transform: scale(1.1);
+  }
 }

@@ -746,6 +746,36 @@ export default function Performance({ userType }: PerformanceProps) {
                 Current Time: {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60).toString().padStart(2, '0')}
               </div>
             </div>
+            
+            {/* Position Slider */}
+            {selectedSong && selectedSong.duration && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs text-gray-500">
+                  <span>0:00</span>
+                  <span>Position</span>
+                  <span>{Math.floor(selectedSong.duration / 60)}:{Math.floor(selectedSong.duration % 60).toString().padStart(2, '0')}</span>
+                </div>
+                <div className="relative">
+                  <input
+                    type="range"
+                    min="0"
+                    max={selectedSong.duration || 100}
+                    step="0.1"
+                    value={currentTime}
+                    onChange={(e) => {
+                      const newTime = parseFloat(e.target.value);
+                      seek(newTime);
+                    }}
+                    className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                    data-testid="slider-song-position"
+                  />
+                  <div 
+                    className="absolute top-0 h-2 bg-primary rounded-lg pointer-events-none"
+                    style={{ width: `${(currentTime / (selectedSong.duration || 1)) * 100}%` }}
+                  />
+                </div>
+              </div>
+            )}
             <div>
               <Label htmlFor="lyrics">Lyrics</Label>
               <Textarea

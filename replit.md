@@ -21,6 +21,7 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Latency display relocated** - Moved latency reading from header to status bar beside MIDI status for better UI organization
 ✓ **Waveform positioning improved** - Centered waveform visualizer in header with responsive sizing (200px-500px) and proper margins
 ✓ **Timestamp insertion bug fixed** - Resolved critical cursor positioning issue where timestamp insertion was causing cursor jumps and empty line insertions
+✓ **Position slider in lyrics editor** - Added interactive slider for scrubbing through song position while editing lyrics, with visual progress indicator and professional styling
 
 ### Web Application (Legacy)
 ✓ **Subscription system** - Complete $4.99/month Stripe payment processing with user authentication

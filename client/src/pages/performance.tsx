@@ -271,25 +271,26 @@ export default function Performance({ userType }: PerformanceProps) {
   };
 
   const handleInsertTimestamp = () => {
-    const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}] `;
+    const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}]`;
     const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
     if (textarea) {
       const cursorPosition = textarea.selectionStart;
       const beforeCursor = lyricsText.substring(0, cursorPosition);
       const afterCursor = lyricsText.substring(cursorPosition);
       
-      // Find the start of the current line
-      const lineStart = beforeCursor.lastIndexOf('\n') + 1;
-      const beforeLine = lyricsText.substring(0, lineStart);
-      const currentLine = lyricsText.substring(lineStart, cursorPosition);
-      
-      // Insert timestamp at the beginning of the current line
-      const newText = beforeLine + timestamp + currentLine + afterCursor;
+      // Insert timestamp and newline
+      const newText = beforeCursor + timestamp + '\n' + afterCursor;
       setLyricsText(newText);
       
-      // Position cursor after the timestamp on the same line
+      // Position cursor at the beginning of the next line, skipping empty lines
       setTimeout(() => {
-        const newCursorPosition = lineStart + timestamp.length + currentLine.length;
+        let newCursorPosition = cursorPosition + timestamp.length + 1; // +1 for the newline
+        
+        // Skip empty lines by finding the next non-empty line or end of text
+        while (newCursorPosition < newText.length && newText[newCursorPosition] === '\n') {
+          newCursorPosition++;
+        }
+        
         textarea.selectionStart = newCursorPosition;
         textarea.selectionEnd = newCursorPosition;
         textarea.focus();

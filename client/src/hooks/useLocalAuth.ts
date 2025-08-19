@@ -61,6 +61,7 @@ export function useLocalAuth() {
     console.log('localStorage cleared');
     setUser(null);
     console.log('User state set to null');
+    console.log('isAuthenticated should now be:', !null);
   };
 
   const upgrade = () => {

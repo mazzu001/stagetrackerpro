@@ -247,10 +247,11 @@ export class AudioEngine {
         sum += dataArray[i];
       }
       const average = sum / (endBin - startBin);
-      let rawLevel = Math.min(100, (average / 255) * 120); // Scale to 0-100 range
+      // Much more conservative scaling for realistic VU meter levels
+      let rawLevel = Math.min(100, (average / 255) * 30); // Reduced from 120 to 30
       
-      // Apply logarithmic scaling for more natural VU meter response
-      rawLevel = rawLevel > 0 ? Math.log10(rawLevel / 10 + 1) * 50 : 0;
+      // Apply more conservative logarithmic scaling for natural VU meter response
+      rawLevel = rawLevel > 0 ? Math.log10(rawLevel / 10 + 1) * 20 : 0; // Reduced from 50 to 20
       
       // Smooth the level changes
       const cached = this.levelCache.get(trackId);
@@ -292,10 +293,10 @@ export class AudioEngine {
       sum += dataArray[i];
     }
     const average = sum / (endBin - startBin);
-    let baseLevel = Math.min(100, (average / 255) * 110);
+    let baseLevel = Math.min(100, (average / 255) * 40); // Much more conservative scaling
     
-    // Apply logarithmic scaling
-    baseLevel = baseLevel > 0 ? Math.log10(baseLevel / 10 + 1) * 50 : 0;
+    // Apply conservative logarithmic scaling
+    baseLevel = baseLevel > 0 ? Math.log10(baseLevel / 10 + 1) * 20 : 0; // Reduced scaling
     
     // Create slight stereo variation for visual interest
     const variation = Math.sin(now * 0.001) * 2; // Subtle sine wave variation

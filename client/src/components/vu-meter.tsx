@@ -27,8 +27,8 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
       return;
     }
 
-    // Ultra conservative level scaling for realistic VU meter behavior
-    const amplifiedLevel = Math.min(level * 15, 100); // Direct linear scaling, much lower
+    // Normal level scaling - audio engine now provides realistic levels
+    const amplifiedLevel = Math.min(level * 100, 100); // Direct 1:1 scaling
     targetLevelRef.current = Math.max(0, Math.min(100, amplifiedLevel));
 
     const animate = (timestamp: number) => {

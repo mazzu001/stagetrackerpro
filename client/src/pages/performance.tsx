@@ -271,20 +271,25 @@ export default function Performance({ userType }: PerformanceProps) {
   };
 
   const handleInsertTimestamp = () => {
-    const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}]`;
+    const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}] `;
     const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
     if (textarea) {
       const cursorPosition = textarea.selectionStart;
       const beforeCursor = lyricsText.substring(0, cursorPosition);
       const afterCursor = lyricsText.substring(cursorPosition);
       
-      // Insert timestamp followed by a newline for the next lyrics line
-      const newText = beforeCursor + timestamp + '\n' + afterCursor;
+      // Find the start of the current line
+      const lineStart = beforeCursor.lastIndexOf('\n') + 1;
+      const beforeLine = lyricsText.substring(0, lineStart);
+      const currentLine = lyricsText.substring(lineStart, cursorPosition);
+      
+      // Insert timestamp at the beginning of the current line
+      const newText = beforeLine + timestamp + currentLine + afterCursor;
       setLyricsText(newText);
       
-      // Position cursor at the beginning of the new line after the timestamp
+      // Position cursor after the timestamp on the same line
       setTimeout(() => {
-        const newCursorPosition = cursorPosition + timestamp.length + 1; // +1 for the newline
+        const newCursorPosition = lineStart + timestamp.length + currentLine.length;
         textarea.selectionStart = newCursorPosition;
         textarea.selectionEnd = newCursorPosition;
         textarea.focus();

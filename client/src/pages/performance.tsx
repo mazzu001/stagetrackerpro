@@ -287,22 +287,20 @@ export default function Performance({ userType }: PerformanceProps) {
         // Get the actual textarea value after React state update
         const actualText = textarea.value;
         
-        // Find the first newline after the original cursor position in the actual text
-        const nextNewlineIndex = actualText.indexOf('\n', cursorPosition);
+        // Find the first newline after the timestamp insertion position
+        const afterTimestampPosition = cursorPosition + timestamp.length;
+        const nextNewlineIndex = actualText.indexOf('\n', afterTimestampPosition);
         
         if (nextNewlineIndex !== -1) {
           // Position cursor exactly at the beginning of next line
           const targetPosition = nextNewlineIndex + 1;
           
-          console.log('Debug - actualText length:', actualText.length, 'cursorPosition:', cursorPosition, 'nextNewlineIndex:', nextNewlineIndex, 'targetPosition:', targetPosition);
-          
           textarea.selectionStart = targetPosition;
           textarea.selectionEnd = targetPosition;
         } else {
           // No next line exists, position cursor after the timestamp
-          const fallbackPosition = cursorPosition + timestamp.length;
-          textarea.selectionStart = fallbackPosition;
-          textarea.selectionEnd = fallbackPosition;
+          textarea.selectionStart = afterTimestampPosition;
+          textarea.selectionEnd = afterTimestampPosition;
         }
         
         textarea.focus();

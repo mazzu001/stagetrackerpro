@@ -18,6 +18,9 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Full track controls restored** - Volume, mute, solo, balance, and VU meters working in track manager
 ✓ **Automatic waveform generation** - Created standalone waveform generator that automatically creates waveforms when tracks are loaded
 ✓ **VU meter persistence fix** - Fixed critical bug where VU meters stopped working when new tracks were added by monitoring track count changes
+✓ **Latency display relocated** - Moved latency reading from header to status bar beside MIDI status for better UI organization
+✓ **Waveform positioning improved** - Centered waveform visualizer in header with responsive sizing (200px-500px) and proper margins
+✓ **Timestamp insertion bug fixed** - Resolved critical cursor positioning issue where timestamp insertion was causing cursor jumps and empty line insertions
 
 ### Web Application (Legacy)
 ✓ **Subscription system** - Complete $4.99/month Stripe payment processing with user authentication

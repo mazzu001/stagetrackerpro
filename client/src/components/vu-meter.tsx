@@ -27,8 +27,8 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
       return;
     }
 
-    // Professional VU meter scaling - balanced for realistic levels
-    const amplifiedLevel = level * 12000; // Slightly higher amplification for the reduced engine scaling
+    // Final VU meter calibration for professional studio levels
+    const amplifiedLevel = level * 15000; // Compensate for 20% engine reduction
     
     // Debug logging to see actual values
     if (level > 0) {

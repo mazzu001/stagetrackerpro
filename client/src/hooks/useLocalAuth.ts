@@ -43,6 +43,7 @@ export function useLocalAuth() {
     
     // Listen for auth changes to force re-renders
     const handleAuthChange = () => {
+      setIsLoading(true);
       checkExistingSession();
     };
     
@@ -64,17 +65,23 @@ export function useLocalAuth() {
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
     setUser(userData);
+    setIsLoading(false);
     
     // Force a re-render by triggering a window event
-    window.dispatchEvent(new Event('auth-change'));
+    setTimeout(() => {
+      window.dispatchEvent(new Event('auth-change'));
+    }, 0);
   };
 
   const logout = () => {
     localStorage.removeItem(STORAGE_KEY);
     setUser(null);
+    setIsLoading(false);
     
     // Force a re-render by triggering a window event
-    window.dispatchEvent(new Event('auth-change'));
+    setTimeout(() => {
+      window.dispatchEvent(new Event('auth-change'));
+    }, 0);
   };
 
   const upgrade = () => {

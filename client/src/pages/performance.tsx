@@ -288,11 +288,9 @@ export default function Performance({ userType }: PerformanceProps) {
         const nextNewlineIndex = newText.indexOf('\n', afterTimestamp);
         
         if (nextNewlineIndex !== -1) {
-          // Move to exactly the beginning of the next line (right after the newline)
-          const newCursorPosition = nextNewlineIndex + 1;
-          
-          textarea.selectionStart = newCursorPosition;
-          textarea.selectionEnd = newCursorPosition;
+          // Move to exactly the beginning of the next line
+          textarea.selectionStart = nextNewlineIndex + 1;
+          textarea.selectionEnd = nextNewlineIndex + 1;
         } else {
           // No next line exists, position cursor after the timestamp
           textarea.selectionStart = afterTimestamp;

@@ -278,21 +278,32 @@ export default function Performance({ userType }: PerformanceProps) {
       const beforeCursor = lyricsText.substring(0, cursorPosition);
       const afterCursor = lyricsText.substring(cursorPosition);
       
-      // Insert timestamp and newline
-      const newText = beforeCursor + timestamp + '\n' + afterCursor;
+      // Insert timestamp without adding a newline
+      const newText = beforeCursor + timestamp + afterCursor;
       setLyricsText(newText);
       
-      // Position cursor at the beginning of the next line, skipping empty lines
+      // Find the next line and position cursor at its beginning
       setTimeout(() => {
-        let newCursorPosition = cursorPosition + timestamp.length + 1; // +1 for the newline
+        const afterTimestamp = cursorPosition + timestamp.length;
+        const nextNewlineIndex = newText.indexOf('\n', afterTimestamp);
         
-        // Skip empty lines by finding the next non-empty line or end of text
-        while (newCursorPosition < newText.length && newText[newCursorPosition] === '\n') {
-          newCursorPosition++;
+        if (nextNewlineIndex !== -1) {
+          // Move to the beginning of the next line
+          let newCursorPosition = nextNewlineIndex + 1;
+          
+          // Skip empty lines
+          while (newCursorPosition < newText.length && newText[newCursorPosition] === '\n') {
+            newCursorPosition++;
+          }
+          
+          textarea.selectionStart = newCursorPosition;
+          textarea.selectionEnd = newCursorPosition;
+        } else {
+          // No next line exists, position cursor after the timestamp
+          textarea.selectionStart = afterTimestamp;
+          textarea.selectionEnd = afterTimestamp;
         }
         
-        textarea.selectionStart = newCursorPosition;
-        textarea.selectionEnd = newCursorPosition;
         textarea.focus();
       }, 0);
     }

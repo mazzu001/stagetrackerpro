@@ -20,16 +20,22 @@ export function useLocalAuth() {
     const checkExistingSession = () => {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
+        console.log('Checking localStorage for user session:', stored);
         if (stored) {
           const userData = JSON.parse(stored) as LocalUser;
+          console.log('Found user data:', userData);
           
           // Check if session is still valid (within 24 hours)
           if (Date.now() - userData.loginTime < SESSION_DURATION) {
+            console.log('Session valid, setting user');
             setUser(userData);
           } else {
             // Session expired, remove it
+            console.log('Session expired, removing');
             localStorage.removeItem(STORAGE_KEY);
           }
+        } else {
+          console.log('No stored user session found');
         }
       } catch (error) {
         console.error('Error checking local session:', error);

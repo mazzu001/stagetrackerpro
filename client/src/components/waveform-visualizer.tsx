@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo, useState } from 'react';
 import type { SongWithTracks } from '@shared/schema';
-import { audioStorage } from '@/lib/audio-file-storage';
+import { waveformGenerator } from '@/lib/waveform-generator';
 
 interface WaveformVisualizerProps {
   song: SongWithTracks | null;
@@ -22,174 +22,7 @@ export function WaveformVisualizer({
   const [waveformData, setWaveformData] = useState<number[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  // Local storage waveform cache
-  const getWaveformCacheKey = (songId: string) => `waveform_${songId}`;
-  
-  const getCachedWaveform = (songId: string): number[] | null => {
-    try {
-      const cached = localStorage.getItem(getWaveformCacheKey(songId));
-      if (cached) {
-        const data = JSON.parse(cached);
-        if (Array.isArray(data)) {
-          return data;
-        }
-      }
-    } catch (error) {
-      console.error('Failed to load cached waveform:', error);
-    }
-    return null;
-  };
-
-  const saveWaveformToCache = (songId: string, waveformData: number[]) => {
-    try {
-      localStorage.setItem(getWaveformCacheKey(songId), JSON.stringify(waveformData));
-      console.log(`Waveform cached for song: ${songId}`);
-    } catch (error) {
-      console.error('Failed to save waveform to cache:', error);
-    }
-  };
-
-  // Generate real waveform from combined audio tracks
-  const generateWaveformFromAudio = async (song: SongWithTracks) => {
-    if (!song || song.tracks.length === 0) {
-      setWaveformData([]);
-      return;
-    }
-
-    setIsGenerating(true);
-    try {
-      const audioContext = new AudioContext();
-      const sampleCount = 400; // Reduced for faster processing
-      const combinedData: number[] = new Array(sampleCount).fill(0);
-      let maxDuration = 0;
-      let tracksProcessed = 0;
-
-      console.log(`Generating comprehensive waveform from all ${song.tracks.length} tracks`);
-
-      // Process all tracks in parallel for comprehensive waveform
-      const trackPromises = song.tracks.map(async (track) => {
-        const audioData = await audioStorage.getAudioFileData(track.id);
-        if (!audioData) {
-          console.log(`Skipping track ${track.name} - no audio data available`);
-          return null;
-        }
-
-        try {
-          const audioBuffer = await audioContext.decodeAudioData(audioData.slice(0));
-          const channelData = audioBuffer.getChannelData(0); // Use first channel
-          
-          // Efficient sampling for good quality
-          const samplesPerPoint = Math.floor(channelData.length / sampleCount);
-          const trackData: number[] = new Array(sampleCount).fill(0);
-          
-          for (let i = 0; i < sampleCount; i++) {
-            const startIndex = i * samplesPerPoint;
-            const endIndex = Math.min(startIndex + samplesPerPoint, channelData.length);
-            
-            // Get max amplitude in the range
-            let maxAmplitude = 0;
-            for (let j = startIndex; j < endIndex; j += 5) { // Sample every 5th point for quality
-              const amplitude = Math.abs(channelData[j]);
-              if (amplitude > maxAmplitude) {
-                maxAmplitude = amplitude;
-              }
-            }
-            trackData[i] = maxAmplitude;
-          }
-          
-          console.log(`Processed track: ${track.name} (${audioBuffer.duration.toFixed(1)}s)`);
-          return { trackData, duration: audioBuffer.duration };
-        } catch (error) {
-          console.error(`Failed to process track ${track.name}:`, error);
-          return null;
-        }
-      });
-
-      // Wait for all tracks to process in parallel
-      const results = await Promise.all(trackPromises);
-      
-      // Combine all track data for comprehensive waveform
-      results.forEach((result) => {
-        if (result) {
-          maxDuration = Math.max(maxDuration, result.duration);
-          for (let i = 0; i < sampleCount; i++) {
-            combinedData[i] += result.trackData[i];
-          }
-          tracksProcessed++;
-        }
-      });
-
-      // Fast normalization
-      if (tracksProcessed > 0) {
-        const maxAmplitude = Math.max(...combinedData);
-        if (maxAmplitude > 0) {
-          // Vectorized normalization for speed
-          for (let i = 0; i < combinedData.length; i++) {
-            combinedData[i] = combinedData[i] / maxAmplitude;
-          }
-        }
-        
-        console.log(`Generated comprehensive waveform from ${tracksProcessed} tracks, duration: ${maxDuration.toFixed(1)}s`);
-        setWaveformData(combinedData);
-        
-        // Save waveform to local cache for instant loading next time
-        if (song?.id && combinedData.length > 0) {
-          saveWaveformToCache(song.id, combinedData);
-        }
-      } else {
-        console.log('No tracks with audio data available, generating fallback waveform pattern');
-        // Generate a realistic fallback waveform when no audio data is available
-        const fallbackData = generateFallbackWaveform(sampleCount, song.duration || 240);
-        setWaveformData(fallbackData);
-      }
-
-      await audioContext.close();
-    } catch (error) {
-      console.error('Failed to generate waveform from audio:', error);
-      // On error, still generate fallback waveform
-      console.log('Generating fallback waveform due to error');
-      const fallbackData = generateFallbackWaveform(400, song.duration || 240);
-      setWaveformData(fallbackData);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  // Generate a realistic fallback waveform pattern
-  const generateFallbackWaveform = (sampleCount: number, duration: number): number[] => {
-    const data: number[] = [];
-    
-    for (let i = 0; i < sampleCount; i++) {
-      const position = i / sampleCount;
-      const time = position * duration;
-      
-      // Create a base waveform with varying intensity
-      let amplitude = 0.3 + Math.sin(position * Math.PI * 8) * 0.2; // Base pattern
-      amplitude += Math.sin(position * Math.PI * 32) * 0.15; // Higher frequency detail
-      amplitude += Math.sin(position * Math.PI * 64) * 0.1; // Even higher frequency
-      
-      // Add some randomness for realism
-      amplitude += (Math.random() - 0.5) * 0.1;
-      
-      // Create sections with different intensities (verse, chorus, bridge)
-      const sectionPhase = (position * 4) % 1;
-      if (sectionPhase < 0.25 || sectionPhase > 0.75) {
-        amplitude *= 0.7; // Quieter sections (verses)
-      } else {
-        amplitude *= 1.2; // Louder sections (chorus)
-      }
-      
-      // Fade in/out at beginning and end
-      if (position < 0.05) amplitude *= position * 20;
-      if (position > 0.95) amplitude *= (1 - position) * 20;
-      
-      // Clamp amplitude
-      amplitude = Math.max(0, Math.min(1, amplitude));
-      data.push(amplitude);
-    }
-    
-    return data;
-  };
+  // Cache and waveform generation is now handled by waveformGenerator utility
 
   // Use cached waveform or generate new one
   useEffect(() => {
@@ -198,8 +31,8 @@ export function WaveformVisualizer({
       return;
     }
 
-    // Always check for cached waveform first when song changes
-    const cachedData = getCachedWaveform(song.id);
+    // Check for cached waveform first (auto-generated by audio engine)
+    const cachedData = waveformGenerator.getCachedWaveform(song.id);
     if (cachedData) {
       console.log(`Loading cached waveform for "${song.title}" (${cachedData.length} data points)`);
       setWaveformData(cachedData);
@@ -207,10 +40,18 @@ export function WaveformVisualizer({
       return;
     }
 
-    // Only generate new waveform if no cache found AND has tracks
+    // If no cache found, generate waveform (should rarely happen now due to auto-generation)
     if (song.tracks.length > 0) {
-      console.log(`No cached waveform found for "${song.title}", generating from ${song.tracks.length} tracks...`);
-      generateWaveformFromAudio(song);
+      console.log(`No cached waveform found for "${song.title}", generating...`);
+      setIsGenerating(true);
+      waveformGenerator.generateWaveformFromSong(song).then((waveformData) => {
+        setWaveformData(waveformData);
+        setIsGenerating(false);
+      }).catch((error) => {
+        console.error(`Failed to generate waveform for "${song.title}":`, error);
+        setWaveformData([]);
+        setIsGenerating(false);
+      });
     } else {
       // No tracks and no cache - show empty waveform
       console.log(`No tracks or cached waveform for "${song.title}"`);

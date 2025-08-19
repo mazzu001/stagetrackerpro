@@ -1,5 +1,6 @@
 import type { SongWithTracks, Track } from "@shared/schema";
 import { AudioFileStorage } from "./audio-file-storage";
+import { waveformGenerator } from "./waveform-generator";
 
 export class AudioEngine {
   private audioContext: AudioContext | null = null;
@@ -81,6 +82,17 @@ export class AudioEngine {
     await Promise.allSettled(loadPromises);
     
     console.log(`Loaded ${this.tracks.size} out of ${song.tracks.length} tracks successfully`);
+    
+    // Auto-generate waveform in background after tracks are loaded
+    if (this.tracks.size > 0) {
+      console.log(`Starting automatic waveform generation for "${song.title}"...`);
+      // Run in background without blocking playback
+      waveformGenerator.generateWaveformFromSong(song).then((waveformData) => {
+        console.log(`Waveform auto-generated for "${song.title}" (${waveformData.length} data points)`);
+      }).catch((error) => {
+        console.error(`Failed to auto-generate waveform for "${song.title}":`, error);
+      });
+    }
   }
 
   async play(): Promise<void> {

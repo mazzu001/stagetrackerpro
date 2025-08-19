@@ -303,6 +303,11 @@ export class AudioEngine {
     if (!this.masterAnalyzerNode || !this.isPlaying) {
       return { left: 0, right: 0 };
     }
+    
+    // Debug logging
+    if (Math.random() < 0.01) { // Log occasionally to avoid spam
+      console.log('Getting master stereo levels - isPlaying:', this.isPlaying, 'analyzer exists:', !!this.masterAnalyzerNode);
+    }
 
     const now = performance.now();
     
@@ -331,7 +336,7 @@ export class AudioEngine {
     }
     const rms = Math.sqrt(sum2 / (endBin - startBin));
     
-    let baseLevel = rms * 0.020; // Match the track scaling approach
+    let baseLevel = rms * 2.0; // Higher base scaling for master levels
     
     // Apply same compression as tracks
     if (baseLevel > 0.1) {
@@ -357,6 +362,11 @@ export class AudioEngine {
       right: smoothedRight,
       lastUpdate: now
     };
+    
+    // Debug logging
+    if (Math.random() < 0.01) { // Log occasionally
+      console.log('Master levels - left:', smoothedLeft.toFixed(3), 'right:', smoothedRight.toFixed(3), 'baseLevel:', baseLevel.toFixed(3));
+    }
     
     return { 
       left: smoothedLeft, 

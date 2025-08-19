@@ -400,32 +400,112 @@ export default function TrackManager({
         </Card>
       ) : (
         <div className="space-y-2">
-          {tracks.map((track) => (
-            <Card key={track.id}>
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <File className="h-5 w-5 text-blue-500" />
-                    <div>
-                      <p className="font-medium">{track.name}</p>
-                      <p className="text-sm text-gray-500">{track.localFileName || 'No file connected'}</p>
+          {tracks.map((track) => {
+            const currentVolume = localTrackValues[track.id]?.volume ?? track.volume ?? 50;
+            const currentBalance = localTrackValues[track.id]?.balance ?? track.balance ?? 0;
+            const isMuted = track.isMuted ?? false;
+            const isSolo = track.isSolo ?? false;
+            const level = audioLevels[track.id] || 0;
+            
+            return (
+              <Card key={track.id}>
+                <CardContent className="p-4">
+                  <div className="space-y-3">
+                    {/* Track header */}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <File className="h-5 w-5 text-blue-500" />
+                        <div>
+                          <p className="font-medium">{track.name}</p>
+                          <p className="text-xs text-gray-500">{track.localFileName || 'No file connected'}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <Button
+                          onClick={() => deleteTrack(track.id)}
+                          variant="ghost"
+                          size="sm"
+                          data-testid={`button-delete-track-${track.id}`}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Track controls */}
+                    <div className="grid grid-cols-12 gap-2 items-center">
+                      {/* Mute/Solo buttons */}
+                      <div className="col-span-2 flex gap-1">
+                        <Button
+                          onClick={() => onTrackMuteToggle?.(track.id)}
+                          variant={isMuted ? "destructive" : "outline"}
+                          size="sm"
+                          className="h-8 w-12 text-xs"
+                          data-testid={`button-mute-${track.id}`}
+                        >
+                          {isMuted ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
+                        </Button>
+                        <Button
+                          onClick={() => onTrackSoloToggle?.(track.id)}
+                          variant={isSolo ? "default" : "outline"}
+                          size="sm"
+                          className="h-8 w-12 text-xs"
+                          data-testid={`button-solo-${track.id}`}
+                        >
+                          <Headphones className="h-3 w-3" />
+                        </Button>
+                      </div>
+
+                      {/* Volume control */}
+                      <div className="col-span-4">
+                        <div className="flex items-center gap-2">
+                          <Volume2 className="h-4 w-4 text-gray-500" />
+                          <Slider
+                            value={[currentVolume]}
+                            onValueChange={(value) => debouncedVolumeUpdate(track.id, value[0])}
+                            min={0}
+                            max={100}
+                            step={1}
+                            className="flex-1"
+                            data-testid={`slider-volume-${track.id}`}
+                          />
+                          <span className="text-xs text-gray-500 w-8">{Math.round(currentVolume)}</span>
+                        </div>
+                      </div>
+
+                      {/* Balance control */}
+                      <div className="col-span-4">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-gray-500">L</span>
+                          <Slider
+                            value={[currentBalance]}
+                            onValueChange={(value) => debouncedBalanceUpdate(track.id, value[0])}
+                            min={-100}
+                            max={100}
+                            step={1}
+                            className="flex-1"
+                            data-testid={`slider-balance-${track.id}`}
+                          />
+                          <span className="text-xs text-gray-500">R</span>
+                        </div>
+                      </div>
+
+                      {/* VU Meter */}
+                      <div className="col-span-2">
+                        <VUMeter
+                          level={level}
+                          width={40}
+                          height={20}
+                          showLabel={false}
+                        />
+                      </div>
                     </div>
                   </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <Button
-                      onClick={() => deleteTrack(track.id)}
-                      variant="ghost"
-                      size="sm"
-                      data-testid={`button-delete-track-${track.id}`}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>

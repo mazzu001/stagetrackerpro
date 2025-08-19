@@ -238,24 +238,22 @@ export class AudioEngine {
       const dataArray = new Uint8Array(bufferLength);
       analyzer.getByteFrequencyData(dataArray); // Use frequency data for more responsive VU meters
       
-      // Professional VU meter calculation with proper RMS-style averaging
+      // Extremely conservative VU meter calculation - start from scratch
       let sum = 0;
-      const startBin = Math.floor(bufferLength * 0.1);
-      const endBin = Math.floor(bufferLength * 0.7);
+      const sampleCount = Math.min(32, bufferLength); // Only sample a few bins
       
-      // Calculate RMS-style average for more consistent levels across tracks
-      for (let i = startBin; i < endBin; i++) {
-        const normalizedValue = dataArray[i] / 255;
-        sum += normalizedValue * normalizedValue; // Square for RMS
+      // Just take a simple average of the first few frequency bins
+      for (let i = 0; i < sampleCount; i++) {
+        sum += dataArray[i];
       }
-      const rms = Math.sqrt(sum / (endBin - startBin));
+      const average = sum / sampleCount;
       
-      // Convert to dB-style level with professional scaling
-      let rawLevel = rms * 25; // Conservative but consistent scaling
+      // Ultra-conservative scaling - professional VU meters barely move
+      let rawLevel = (average / 255) * 2; // Extremely low scaling
       
-      // Apply gentle compression for more even levels
-      if (rawLevel > 10) {
-        rawLevel = 10 + (rawLevel - 10) * 0.5; // Compress levels above 10
+      // Log the actual values for debugging
+      if (track && track.name) {
+        console.log(`Track ${track.name}: raw average=${average.toFixed(1)}, final level=${rawLevel.toFixed(2)}`);
       }
       
       rawLevel = Math.max(0, Math.min(100, rawLevel));

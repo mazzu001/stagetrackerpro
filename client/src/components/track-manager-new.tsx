@@ -128,41 +128,54 @@ export default function TrackManager({
     }, 300);
   }, [onTrackBalanceChange, song?.id, user?.email]);
 
-  const addTrack = async (audioFilePath: string, trackName: string) => {
+  const addTrack = async (audioFileName: string, trackName: string, file: File) => {
     if (!song?.id || !user?.email) throw new Error('No song selected or user not authenticated');
     
-    console.log(`Adding track "${trackName}" with file path: ${audioFilePath}`);
+    console.log(`Adding track "${trackName}" with file: ${audioFileName}`);
     
     try {
       const newTrack = LocalSongStorage.addTrack(user.email, song.id, {
         name: trackName,
-        audioFilePath: audioFilePath || '',
+        songId: song.id,
+        trackNumber: tracks.length + 1,
+        audioUrl: '', // Will be set when file is loaded
+        localFileName: audioFileName,
+        audioData: null,
+        mimeType: file.type,
+        fileSize: file.size,
         volume: 50,
-        muted: false,
-        solo: false,
-        balance: 0
+        balance: 0,
+        isMuted: false,
+        isSolo: false
       });
       
-      console.log('Track added successfully:', newTrack);
-      refetchTracks();
-      
-      // Clear cached waveform to force regeneration with new tracks
-      if (song?.id) {
-        const waveformCacheKey = `waveform_${song.id}`;
-        localStorage.removeItem(waveformCacheKey);
-        console.log(`Cleared waveform cache for "${song.title}" - will regenerate on next view`);
+      if (newTrack) {
+        // Store the file in audio storage system
+        const audioStorage = AudioFileStorage.getInstance();
+        await audioStorage.storeAudioFile(newTrack.id, file, newTrack, song.title);
+        
+        console.log('Track added successfully:', newTrack);
+        refetchTracks();
+        
+        // Clear cached waveform to force regeneration with new tracks
+        if (song?.id) {
+          const waveformCacheKey = `waveform_${song.id}`;
+          localStorage.removeItem(waveformCacheKey);
+          console.log(`Cleared waveform cache for "${song.title}" - will regenerate on next view`);
+        }
+        
+        toast({
+          title: "Track added successfully",
+          description: "Audio track has been registered and is ready for use"
+        });
+        
+        // Clear the form
+        setTrackName("");
+        setAudioFilePath("");
+        setIsAddDialogOpen(false);
       }
-      
-      toast({
-        title: "Track added successfully",
-        description: "Audio track has been registered and is ready for use"
-      });
-      
-      // Clear the form
-      setTrackName("");
-      setAudioFilePath("");
-      setIsAddDialogOpen(false);
     } catch (error) {
+      console.error('Error adding track:', error);
       toast({
         title: "Add track failed",
         description: error instanceof Error ? error.message : "Failed to add track",
@@ -302,15 +315,11 @@ export default function TrackManager({
       try {
         console.log(`Processing file ${i + 1}/${files.length}: ${file.name}`);
         
-        // Store file and get path
-        const filePath = await AudioFileStorage.storeFile(file);
-        console.log(`File stored at: ${filePath}`);
-        
         // Extract track name from filename (remove extension)
         const trackName = file.name.replace(/\.[^/.]+$/, "");
         
-        // Add track to song
-        await addTrack(filePath, trackName);
+        // Add track to song with file object for now
+        await addTrack(file.name, trackName, file);
         results.success++;
         
         console.log(`Successfully processed: ${file.name}`);
@@ -399,7 +408,7 @@ export default function TrackManager({
                     <File className="h-5 w-5 text-blue-500" />
                     <div>
                       <p className="font-medium">{track.name}</p>
-                      <p className="text-sm text-gray-500">{track.audioFilePath}</p>
+                      <p className="text-sm text-gray-500">{track.localFileName || 'No file connected'}</p>
                     </div>
                   </div>
                   

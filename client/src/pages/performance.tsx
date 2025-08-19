@@ -282,27 +282,31 @@ export default function Performance({ userType }: PerformanceProps) {
       const newText = beforeCursor + timestamp + afterCursor;
       setLyricsText(newText);
       
-      // Step 2: Find next line with text and move cursor to its beginning
+      // Step 2: Find next line with text and move cursor to its beginning  
       setTimeout(() => {
-        // Find the first newline after the original cursor position
-        const nextNewlineIndex = newText.indexOf('\n', cursorPosition);
+        // Get the actual textarea value after React state update
+        const actualText = textarea.value;
+        
+        // Find the first newline after the original cursor position in the actual text
+        const nextNewlineIndex = actualText.indexOf('\n', cursorPosition);
         
         if (nextNewlineIndex !== -1) {
-          // The beginning of the next line is exactly at nextNewlineIndex + 1
-          const beginningOfNextLine = nextNewlineIndex + 1;
+          // Position cursor exactly at the beginning of next line
+          const targetPosition = nextNewlineIndex + 1;
           
-          console.log('Debug - cursorPosition:', cursorPosition, 'nextNewlineIndex:', nextNewlineIndex, 'beginningOfNextLine:', beginningOfNextLine);
+          console.log('Debug - actualText length:', actualText.length, 'cursorPosition:', cursorPosition, 'nextNewlineIndex:', nextNewlineIndex, 'targetPosition:', targetPosition);
           
-          textarea.selectionStart = beginningOfNextLine;
-          textarea.selectionEnd = beginningOfNextLine;
+          textarea.selectionStart = targetPosition;
+          textarea.selectionEnd = targetPosition;
         } else {
           // No next line exists, position cursor after the timestamp
-          textarea.selectionStart = cursorPosition + timestamp.length;
-          textarea.selectionEnd = cursorPosition + timestamp.length;
+          const fallbackPosition = cursorPosition + timestamp.length;
+          textarea.selectionStart = fallbackPosition;
+          textarea.selectionEnd = fallbackPosition;
         }
         
         textarea.focus();
-      }, 0);
+      }, 10);
     }
   };
 

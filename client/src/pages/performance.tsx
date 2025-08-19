@@ -347,7 +347,7 @@ export default function Performance({ userType }: PerformanceProps) {
   };
 
   return (
-    <div className="bg-background text-white h-screen font-inter flex flex-col overflow-hidden">
+    <div className="bg-background text-white min-h-screen h-screen font-inter flex flex-col overflow-hidden">
       {/* Header */}
       <header className="bg-surface border-b border-gray-700 p-4 flex-shrink-0" data-testid="app-header">
         <div className="max-w-full flex items-center">
@@ -463,7 +463,7 @@ export default function Performance({ userType }: PerformanceProps) {
 
 
       {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 min-h-0 overflow-hidden">
         {/* Left Sidebar - Song List (30%) */}
         <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col">
           <div className="p-4 border-b border-gray-700 flex items-center justify-between">
@@ -665,7 +665,7 @@ export default function Performance({ userType }: PerformanceProps) {
         </div>
 
         {/* Right Content Area - Lyrics (70%) */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col min-h-0">
           <div className="p-4 border-b border-gray-700 bg-surface flex items-center justify-between">
             <h2 className="text-lg font-semibold">
               {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}

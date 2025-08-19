@@ -176,8 +176,17 @@ export class AudioEngine {
     if (this.isPlaying) {
       const currentTime = this.audioContext.currentTime - this.startTime;
       const result = Math.max(0, currentTime);
+      
+      // Cap the time at the song duration to prevent overflow
+      const songDuration = this.currentSong?.duration || 0;
+      const cappedResult = songDuration > 0 ? Math.min(result, songDuration) : result;
+      
+      // Debug logging when time gets stuck around 180 seconds (3 minutes)
+      if (result >= 175 && result <= 185) {
+        console.log(`AudioEngine debug - rawTime: ${result}, cappedTime: ${cappedResult}, songDuration: ${songDuration}, audioContext.currentTime: ${this.audioContext.currentTime}, startTime: ${this.startTime}, pausedTime: ${this.pausedTime}`);
+      }
 
-      return result;
+      return cappedResult;
     }
     return this.pausedTime;
   }
@@ -473,9 +482,16 @@ class TrackController {
     
     // Start playback from the current position
     try {
-      this.sourceNode.start(0, offset);
+      // Ensure offset doesn't exceed buffer duration
+      const safeOffset = Math.min(offset, this.audioBuffer.duration - 0.1);
+      this.sourceNode.start(0, safeOffset);
+      
+      // Debug logging for timing issues
+      if (offset >= 175 && offset <= 185) {
+        console.log(`Track ${this.track.name} play debug - offset: ${offset}, safeOffset: ${safeOffset}, bufferDuration: ${this.audioBuffer.duration}`);
+      }
     } catch (error) {
-      console.warn(`Failed to start track ${this.track.name}:`, error);
+      console.warn(`Failed to start track ${this.track.name} at offset ${offset}:`, error);
     }
   }
 

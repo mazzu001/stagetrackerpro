@@ -271,6 +271,7 @@ export default function Performance({ userType }: PerformanceProps) {
   };
 
   const handleInsertTimestamp = () => {
+    console.log(`Insert timestamp - currentTime: ${currentTime}, duration: ${duration}, isPlaying: ${isPlaying}`);
     const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}]`;
     const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
     if (textarea) {
@@ -742,7 +743,7 @@ export default function Performance({ userType }: PerformanceProps) {
                 </Button>
               </div>
               <div className="text-sm text-gray-400">
-                Current Time: {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60).toString().padStart(2, '0')}
+                Current Time: {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60).toString().padStart(2, '0')} ({currentTime.toFixed(1)}s)
               </div>
             </div>
             

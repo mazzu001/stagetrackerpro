@@ -22,6 +22,9 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Waveform positioning improved** - Centered waveform visualizer in header with responsive sizing (200px-500px) and proper margins
 ✓ **Timestamp insertion bug fixed** - Resolved critical cursor positioning issue where timestamp insertion was causing cursor jumps and empty line insertions
 ✓ **Position slider in lyrics editor** - Added interactive slider for scrubbing through song position while editing lyrics, with visual progress indicator and professional styling
+✓ **3-minute position slider cap fixed** - Resolved critical issue where position slider and timestamp insertion were capped at 3 minutes due to incorrect database duration (180s vs 229s actual audio length)
+✓ **Automatic duration detection** - Audio engine now automatically detects correct song duration from audio buffer analysis and updates UI in real-time
+✓ **Timestamp insertion past 3 minutes** - Insert Time Stamp button now works correctly throughout the entire song duration without time limitations
 
 ### Web Application (Legacy)
 ✓ **Subscription system** - Complete $4.99/month Stripe payment processing with user authentication

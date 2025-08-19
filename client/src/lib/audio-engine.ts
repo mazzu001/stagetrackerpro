@@ -248,11 +248,8 @@ export class AudioEngine {
       }
       const average = sum / sampleCount;
       
-      // Professional VU meter scaling with final fine-tuning
-      let rawLevel = (average / 255) * 0.012; // 20% reduction from 0.015 for perfect balance
-      
-      // Log the actual values for debugging
-      console.log(`Track ${trackId}: raw average=${average.toFixed(1)}, final level=${rawLevel.toFixed(2)}`);
+      // Ultra-conservative VU meter scaling for realistic studio levels
+      let rawLevel = (average / 255) * 0.008; // Much more aggressive reduction
       
       rawLevel = Math.max(0, Math.min(100, rawLevel));
       
@@ -303,7 +300,7 @@ export class AudioEngine {
     }
     const rms = Math.sqrt(sum2 / (endBin - startBin));
     
-    let baseLevel = rms * 14.4; // 20% reduction to match track scaling (18 * 0.8)
+    let baseLevel = rms * 10; // Much more conservative master scaling
     
     // Apply same compression as tracks
     if (baseLevel > 10) {

@@ -27,13 +27,8 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
       return;
     }
 
-    // Final VU meter calibration for professional studio levels
-    const amplifiedLevel = level * 15000; // Compensate for 20% engine reduction
-    
-    // Debug logging to see actual values
-    if (level > 0) {
-      console.log(`VU Meter: input level=${level.toFixed(6)}, amplified=${amplifiedLevel.toFixed(1)}`);
-    }
+    // Professional VU meter response - conservative scaling
+    const amplifiedLevel = level * 20000; // Higher compensation for much lower engine values
     
     targetLevelRef.current = Math.max(0, Math.min(100, amplifiedLevel));
 

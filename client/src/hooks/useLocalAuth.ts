@@ -76,12 +76,9 @@ export function useLocalAuth() {
   const logout = () => {
     localStorage.removeItem(STORAGE_KEY);
     setUser(null);
-    setIsLoading(false);
     
-    // Force a re-render by triggering a window event
-    setTimeout(() => {
-      window.dispatchEvent(new Event('auth-change'));
-    }, 0);
+    // Force page refresh to ensure clean logout
+    window.location.reload();
   };
 
   const upgrade = () => {

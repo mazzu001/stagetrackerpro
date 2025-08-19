@@ -12,6 +12,8 @@ This is a live music performance application built with React, Express, and in-m
 ✓ **Demo credentials functional** - Both free@demo.com and paid@demo.com accounts working perfectly
 ✓ **Offline-first operation confirmed** - Zero server dependencies for authentication or user management
 ✓ **Landing page to app transition** - Smooth flow from sign-in to performance interface
+✓ **React refresh issue resolved** - Login now updates UI immediately without browser refresh required
+✓ **Logout with page refresh** - Logout procedure includes automatic page refresh for reliable state clearing
 
 ### Web Application (Legacy)
 ✓ **Subscription system** - Complete $4.99/month Stripe payment processing with user authentication

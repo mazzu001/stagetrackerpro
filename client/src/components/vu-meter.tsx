@@ -27,7 +27,9 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
       return;
     }
 
-    targetLevelRef.current = Math.max(0, Math.min(100, level));
+    // Amplify the level with exponential scaling for more dramatic peaks
+    const amplifiedLevel = Math.min(Math.pow(level * 2.5, 0.6), 1) * 100;
+    targetLevelRef.current = Math.max(0, Math.min(100, amplifiedLevel));
 
     const animate = (timestamp: number) => {
       const deltaTime = timestamp - lastUpdateRef.current;
@@ -84,21 +86,21 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
     
     if (index === peakSegment - 1 && peakSegment > activeSegments) {
       // Peak indicator
-      if (percentage < 70) return 'bg-green-400';
-      if (percentage < 85) return 'bg-yellow-400';
+      if (percentage < 60) return 'bg-green-400';
+      if (percentage < 80) return 'bg-yellow-400';
       return 'bg-red-400';
     }
     
     if (index < activeSegments) {
       // Active segments
-      if (percentage < 70) return 'bg-green-500';
-      if (percentage < 85) return 'bg-yellow-500';
+      if (percentage < 60) return 'bg-green-500';
+      if (percentage < 80) return 'bg-yellow-500';
       return 'bg-red-500';
     }
     
     // Inactive segments
-    if (percentage < 70) return 'bg-green-900/30';
-    if (percentage < 85) return 'bg-yellow-900/30';
+    if (percentage < 60) return 'bg-green-900/30';
+    if (percentage < 80) return 'bg-yellow-900/30';
     return 'bg-red-900/30';
   };
 

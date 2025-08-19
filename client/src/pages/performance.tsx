@@ -285,12 +285,15 @@ export default function Performance({ userType }: PerformanceProps) {
       // Find the next line and position cursor at its beginning
       setTimeout(() => {
         const afterTimestamp = cursorPosition + timestamp.length;
-        const nextNewlineIndex = newText.indexOf('\n', afterTimestamp);
+        
+        // Find the next newline from the original cursor position (before timestamp insertion)
+        const nextNewlineIndex = lyricsText.indexOf('\n', cursorPosition);
         
         if (nextNewlineIndex !== -1) {
-          // Move to exactly the beginning of the next line
-          textarea.selectionStart = nextNewlineIndex + 1;
-          textarea.selectionEnd = nextNewlineIndex + 1;
+          // Position cursor at the beginning of the next line (add timestamp length to account for insertion)
+          const newCursorPosition = nextNewlineIndex + 1 + timestamp.length;
+          textarea.selectionStart = newCursorPosition;
+          textarea.selectionEnd = newCursorPosition;
         } else {
           // No next line exists, position cursor after the timestamp
           textarea.selectionStart = afterTimestamp;

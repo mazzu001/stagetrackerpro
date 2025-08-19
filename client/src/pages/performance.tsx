@@ -431,13 +431,13 @@ export default function Performance({ userType }: PerformanceProps) {
                 <DropdownMenuItem disabled className="flex items-center">
                   <User className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
-                    <span className="text-sm">{(user as any)?.email || 'Test User'}</span>
-                    <span className="text-xs text-gray-500">Pro Subscription</span>
+                    <span className="text-sm">{user?.email || 'Test User'}</span>
+                    <span className="text-xs text-gray-500">{userType === 'paid' ? 'Premium User' : 'Free User'}</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem 
-                  onClick={() => window.location.href = '/api/logout'}
+                  onClick={logout}
                   className="flex items-center text-red-600 focus:text-red-600"
                   data-testid="menu-item-logout"
                 >

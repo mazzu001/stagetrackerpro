@@ -27,12 +27,12 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
       return;
     }
 
-    // Simple linear scaling - no complex math
-    const amplifiedLevel = level * 2000; // High amplification since engine gives tiny values
+    // Conservative VU meter response - expecting very small input values
+    const amplifiedLevel = level * 10000; // Very high amplification for tiny engine values
     
     // Debug logging to see actual values
     if (level > 0) {
-      console.log(`VU Meter: input level=${level.toFixed(4)}, amplified=${amplifiedLevel.toFixed(1)}`);
+      console.log(`VU Meter: input level=${level.toFixed(6)}, amplified=${amplifiedLevel.toFixed(1)}`);
     }
     
     targetLevelRef.current = Math.max(0, Math.min(100, amplifiedLevel));

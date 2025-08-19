@@ -248,13 +248,11 @@ export class AudioEngine {
       }
       const average = sum / sampleCount;
       
-      // Ultra-conservative scaling - professional VU meters barely move
-      let rawLevel = (average / 255) * 2; // Extremely low scaling
+      // Extremely aggressive reduction - VU meters should barely register
+      let rawLevel = (average / 255) * 0.02; // Tiny scaling - 100x reduction from before
       
       // Log the actual values for debugging
-      if (track && track.name) {
-        console.log(`Track ${track.name}: raw average=${average.toFixed(1)}, final level=${rawLevel.toFixed(2)}`);
-      }
+      console.log(`Track ${trackId}: raw average=${average.toFixed(1)}, final level=${rawLevel.toFixed(2)}`);
       
       rawLevel = Math.max(0, Math.min(100, rawLevel));
       

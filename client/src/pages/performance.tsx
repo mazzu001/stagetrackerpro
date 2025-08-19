@@ -271,40 +271,30 @@ export default function Performance({ userType }: PerformanceProps) {
   };
 
   const handleInsertTimestamp = () => {
-    const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}]`;
+    const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}] `;
     const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
     if (textarea) {
-      const cursorPosition = textarea.selectionStart;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
       
-      // Step 1: Insert timestamp at cursor position
-      const beforeCursor = lyricsText.substring(0, cursorPosition);
-      const afterCursor = lyricsText.substring(cursorPosition);
-      const newText = beforeCursor + timestamp + afterCursor;
-      setLyricsText(newText);
+      // Insert timestamp using execCommand for proper undo support
+      textarea.focus();
       
-      // Step 2: Find next line with text and move cursor to its beginning  
-      setTimeout(() => {
-        // Get the actual textarea value after React state update
-        const actualText = textarea.value;
+      if (document.queryCommandSupported('insertText')) {
+        document.execCommand('insertText', false, timestamp);
+      } else {
+        // Fallback for browsers that don't support execCommand
+        const currentValue = textarea.value;
+        const before = currentValue.substring(0, start);
+        const after = currentValue.substring(end);
+        const newValue = before + timestamp + after;
         
-        // Find the first newline after the timestamp insertion position
-        const afterTimestampPosition = cursorPosition + timestamp.length;
-        const nextNewlineIndex = actualText.indexOf('\n', afterTimestampPosition);
-        
-        if (nextNewlineIndex !== -1) {
-          // Position cursor exactly at the beginning of next line
-          const targetPosition = nextNewlineIndex + 1;
-          
-          textarea.selectionStart = targetPosition;
-          textarea.selectionEnd = targetPosition;
-        } else {
-          // No next line exists, position cursor after the timestamp
-          textarea.selectionStart = afterTimestampPosition;
-          textarea.selectionEnd = afterTimestampPosition;
-        }
-        
-        textarea.focus();
-      }, 10);
+        textarea.value = newValue;
+        textarea.selectionStart = textarea.selectionEnd = start + timestamp.length;
+      }
+      
+      // Update React state with current textarea value
+      setLyricsText(textarea.value);
     }
   };
 

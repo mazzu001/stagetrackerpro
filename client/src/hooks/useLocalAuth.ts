@@ -49,8 +49,10 @@ export function useLocalAuth() {
       loginTime: Date.now()
     };
     
+    console.log('Setting user in localStorage:', userData);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
     setUser(userData);
+    console.log('User state updated:', userData);
   };
 
   const logout = () => {

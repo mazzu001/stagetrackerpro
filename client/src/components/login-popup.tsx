@@ -44,6 +44,7 @@ export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
     }
 
     // Successful login
+    console.log('Login successful:', { email, userType: user.type });
     onLogin(user.type, email);
     onClose();
     setEmail('');

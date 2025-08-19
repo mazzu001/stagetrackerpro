@@ -278,23 +278,16 @@ export default function Performance({ userType }: PerformanceProps) {
       const beforeCursor = lyricsText.substring(0, cursorPosition);
       const afterCursor = lyricsText.substring(cursorPosition);
       
-      // Insert timestamp and move to next line
-      const newText = beforeCursor + timestamp + ' ' + afterCursor;
+      // Insert timestamp followed by a newline for the next lyrics line
+      const newText = beforeCursor + timestamp + '\n' + afterCursor;
       setLyricsText(newText);
       
-      // Set cursor position after the timestamp and space, then move to next line
+      // Position cursor at the beginning of the new line after the timestamp
       setTimeout(() => {
-        const newCursorPosition = cursorPosition + timestamp.length + 1;
+        const newCursorPosition = cursorPosition + timestamp.length + 1; // +1 for the newline
         textarea.selectionStart = newCursorPosition;
         textarea.selectionEnd = newCursorPosition;
         textarea.focus();
-        
-        // Find the next newline and position cursor there
-        const nextNewlineIndex = newText.indexOf('\n', newCursorPosition);
-        if (nextNewlineIndex !== -1) {
-          textarea.selectionStart = nextNewlineIndex + 1;
-          textarea.selectionEnd = nextNewlineIndex + 1;
-        }
       }, 0);
     }
   };

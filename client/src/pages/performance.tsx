@@ -369,7 +369,7 @@ export default function Performance({ userType }: PerformanceProps) {
                 currentTime={currentTime}
                 isPlaying={isPlaying}
                 audioLevels={audioLevels}
-                className="border border-gray-600 rounded w-full h-12"
+                className="border border-gray-600 rounded w-full h-[68px]"
               />
             </div>
           </div>

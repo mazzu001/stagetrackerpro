@@ -275,29 +275,43 @@ export default function Performance({ userType }: PerformanceProps) {
     const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
     if (textarea) {
       const cursorPosition = textarea.selectionStart;
+      
+      // Step 1: Insert timestamp at cursor position
       const beforeCursor = lyricsText.substring(0, cursorPosition);
       const afterCursor = lyricsText.substring(cursorPosition);
-      
-      // Insert timestamp without adding a newline
       const newText = beforeCursor + timestamp + afterCursor;
       setLyricsText(newText);
       
-      // Find the next line and position cursor at its beginning
+      // Step 2: Find next line with text and move cursor to its beginning
       setTimeout(() => {
-        const afterTimestamp = cursorPosition + timestamp.length;
+        // Look for the next newline character starting from current cursor position
+        let searchStart = cursorPosition;
+        let nextLineStart = -1;
         
-        // Find the next newline from the original cursor position (before timestamp insertion)
-        const nextNewlineIndex = lyricsText.indexOf('\n', cursorPosition);
-        
-        if (nextNewlineIndex !== -1) {
-          // Position cursor at the beginning of the next line (add timestamp length to account for insertion)
-          const newCursorPosition = nextNewlineIndex + 1 + timestamp.length;
-          textarea.selectionStart = newCursorPosition;
-          textarea.selectionEnd = newCursorPosition;
+        // Find the next newline
+        const nextNewline = newText.indexOf('\n', searchStart);
+        if (nextNewline !== -1) {
+          // Start of next line is right after the newline
+          nextLineStart = nextNewline + 1;
+          
+          // Skip any empty lines to find a line with actual text
+          while (nextLineStart < newText.length && newText[nextLineStart] === '\n') {
+            nextLineStart++;
+          }
+          
+          // Position cursor at the beginning of the next line with text
+          if (nextLineStart < newText.length) {
+            textarea.selectionStart = nextLineStart;
+            textarea.selectionEnd = nextLineStart;
+          } else {
+            // No more lines with text, position after timestamp
+            textarea.selectionStart = cursorPosition + timestamp.length;
+            textarea.selectionEnd = cursorPosition + timestamp.length;
+          }
         } else {
           // No next line exists, position cursor after the timestamp
-          textarea.selectionStart = afterTimestamp;
-          textarea.selectionEnd = afterTimestamp;
+          textarea.selectionStart = cursorPosition + timestamp.length;
+          textarea.selectionEnd = cursorPosition + timestamp.length;
         }
         
         textarea.focus();

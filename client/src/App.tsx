@@ -65,6 +65,8 @@ function AppContent() {
     );
   }
 
+  console.log('App render - Auth state:', { isAuthenticated, isLocalFSReady, isPaidUser });
+
   return (
     <TooltipProvider>
       {!isAuthenticated ? (
@@ -73,7 +75,10 @@ function AppContent() {
         <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
       ) : (
         <Router>
-          <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
+          <Route path="/" component={() => {
+            console.log('Rendering Performance component with userType:', isPaidUser ? 'paid' : 'free');
+            return <Performance userType={isPaidUser ? 'paid' : 'free'} />;
+          }} />
           <Route path="/subscribe" component={Subscribe} />
         </Router>
       )}

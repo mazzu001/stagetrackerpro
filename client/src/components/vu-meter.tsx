@@ -27,8 +27,8 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
       return;
     }
 
-    // Reduced level scaling for proper VU meter behavior (30% less sensitive)
-    const amplifiedLevel = Math.min(Math.pow(level * 0.56, 0.9), 1) * 100;
+    // Much reduced level scaling for proper VU meter behavior (50% less sensitive)
+    const amplifiedLevel = Math.min(Math.pow(level * 0.28, 0.9), 1) * 100;
     targetLevelRef.current = Math.max(0, Math.min(100, amplifiedLevel));
 
     const animate = (timestamp: number) => {

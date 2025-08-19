@@ -274,35 +274,35 @@ export default function Performance({ userType }: PerformanceProps) {
     const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}]`;
     const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
     if (textarea) {
-      const cursorPosition = textarea.selectionStart;
+      // Get current cursor position and selected text
+      const startPos = textarea.selectionStart;
+      const endPos = textarea.selectionEnd;
       
-      // Insert timestamp at current cursor position
-      const beforeCursor = lyricsText.substring(0, cursorPosition);
-      const afterCursor = lyricsText.substring(cursorPosition);
-      const newText = beforeCursor + timestamp + afterCursor;
-      setLyricsText(newText);
+      // Get current textarea value directly
+      const currentValue = textarea.value;
       
-      // Move cursor to beginning of next line
-      setTimeout(() => {
-        const updatedText = textarea.value;
-        const timestampEnd = cursorPosition + timestamp.length;
-        
-        // Find next newline after the timestamp
-        const nextNewlineIndex = updatedText.indexOf('\n', timestampEnd);
-        
-        if (nextNewlineIndex !== -1) {
-          // Position cursor at beginning of next line
-          const nextLineStart = nextNewlineIndex + 1;
-          textarea.selectionStart = nextLineStart;
-          textarea.selectionEnd = nextLineStart;
-        } else {
-          // If no next line, position cursor after timestamp
-          textarea.selectionStart = timestampEnd;
-          textarea.selectionEnd = timestampEnd;
-        }
-        
-        textarea.focus();
-      }, 0);
+      // Insert timestamp, replacing any selected text
+      const newValue = currentValue.substring(0, startPos) + timestamp + currentValue.substring(endPos);
+      
+      // Update both DOM and React state
+      textarea.value = newValue;
+      setLyricsText(newValue);
+      
+      // Calculate new cursor position after timestamp
+      const newCursorPos = startPos + timestamp.length;
+      
+      // Find the next newline starting from the new cursor position
+      const nextNewlineIdx = newValue.indexOf('\n', newCursorPos);
+      
+      if (nextNewlineIdx !== -1) {
+        // Move cursor to beginning of next line
+        textarea.setSelectionRange(nextNewlineIdx + 1, nextNewlineIdx + 1);
+      } else {
+        // No next line found, position after timestamp
+        textarea.setSelectionRange(newCursorPos, newCursorPos);
+      }
+      
+      textarea.focus();
     }
   };
 

@@ -271,30 +271,38 @@ export default function Performance({ userType }: PerformanceProps) {
   };
 
   const handleInsertTimestamp = () => {
-    const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}] `;
+    const timestamp = `[${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}]`;
     const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
     if (textarea) {
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
+      const cursorPosition = textarea.selectionStart;
       
-      // Insert timestamp using execCommand for proper undo support
-      textarea.focus();
+      // Insert timestamp at current cursor position
+      const beforeCursor = lyricsText.substring(0, cursorPosition);
+      const afterCursor = lyricsText.substring(cursorPosition);
+      const newText = beforeCursor + timestamp + afterCursor;
+      setLyricsText(newText);
       
-      if (document.queryCommandSupported('insertText')) {
-        document.execCommand('insertText', false, timestamp);
-      } else {
-        // Fallback for browsers that don't support execCommand
-        const currentValue = textarea.value;
-        const before = currentValue.substring(0, start);
-        const after = currentValue.substring(end);
-        const newValue = before + timestamp + after;
+      // Move cursor to beginning of next line
+      setTimeout(() => {
+        const updatedText = textarea.value;
+        const timestampEnd = cursorPosition + timestamp.length;
         
-        textarea.value = newValue;
-        textarea.selectionStart = textarea.selectionEnd = start + timestamp.length;
-      }
-      
-      // Update React state with current textarea value
-      setLyricsText(textarea.value);
+        // Find next newline after the timestamp
+        const nextNewlineIndex = updatedText.indexOf('\n', timestampEnd);
+        
+        if (nextNewlineIndex !== -1) {
+          // Position cursor at beginning of next line
+          const nextLineStart = nextNewlineIndex + 1;
+          textarea.selectionStart = nextLineStart;
+          textarea.selectionEnd = nextLineStart;
+        } else {
+          // If no next line, position cursor after timestamp
+          textarea.selectionStart = timestampEnd;
+          textarea.selectionEnd = timestampEnd;
+        }
+        
+        textarea.focus();
+      }, 0);
     }
   };
 

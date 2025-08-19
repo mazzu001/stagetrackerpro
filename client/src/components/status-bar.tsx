@@ -4,12 +4,14 @@ interface StatusBarProps {
   isAudioEngineOnline: boolean;
   isMidiConnected: boolean;
   cpuUsage: number;
+  latency: number;
 }
 
 export default function StatusBar({ 
   isAudioEngineOnline, 
   isMidiConnected, 
-  cpuUsage 
+  cpuUsage,
+  latency 
 }: StatusBarProps) {
   return (
     <div className="bg-surface rounded-xl p-4 border border-gray-700" data-testid="status-bar">
@@ -29,6 +31,11 @@ export default function StatusBar({
               MIDI: <span className={isMidiConnected ? 'text-secondary' : 'text-gray-400'}>
                 {isMidiConnected ? 'Connected' : 'Disconnected'}
               </span>
+            </span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-400">
+              Latency: <span className="text-secondary">{latency.toFixed(1)}ms</span>
             </span>
           </div>
           <div className="flex items-center space-x-2">

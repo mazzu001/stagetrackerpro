@@ -375,11 +375,6 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
           
           <div className="flex items-center space-x-4 flex-shrink-0">
-            <div className="text-sm text-gray-400">
-              <span>Latency: </span>
-              <span className="text-secondary">{latency.toFixed(1)}ms</span>
-            </div>
-            
             {/* Subscription Status */}
             {userType === 'free' && (
               <div className="flex items-center space-x-2 bg-gray-800 px-3 py-1 rounded-lg">
@@ -706,6 +701,7 @@ export default function Performance({ userType }: PerformanceProps) {
           isAudioEngineOnline={isAudioEngineOnline}
           isMidiConnected={isMidiConnected}
           cpuUsage={cpuUsage}
+          latency={latency}
         />
       </div>
 

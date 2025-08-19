@@ -41,15 +41,16 @@ export function useAudioEngine(song?: SongWithTracks) {
     };
   }, []);
 
-  // Load song when selected
+  // Load song when selected OR when track count changes
   useEffect(() => {
     if (song && audioEngineRef.current) {
+      console.log(`Loading song: "${song.title}" with ${song.tracks.length} tracks`);
       audioEngineRef.current.loadSong(song);
       setDuration(song.duration);
       setCurrentTime(0);
       setIsPlaying(false);
     }
-  }, [song]);
+  }, [song, song?.tracks.length]); // Re-load when track count changes
 
   // Animation loop for real-time updates
 

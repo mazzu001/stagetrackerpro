@@ -288,13 +288,8 @@ export default function Performance({ userType }: PerformanceProps) {
         const nextNewlineIndex = newText.indexOf('\n', afterTimestamp);
         
         if (nextNewlineIndex !== -1) {
-          // Move to the beginning of the next line
-          let newCursorPosition = nextNewlineIndex + 1;
-          
-          // Skip empty lines
-          while (newCursorPosition < newText.length && newText[newCursorPosition] === '\n') {
-            newCursorPosition++;
-          }
+          // Move to exactly the beginning of the next line (right after the newline)
+          const newCursorPosition = nextNewlineIndex + 1;
           
           textarea.selectionStart = newCursorPosition;
           textarea.selectionEnd = newCursorPosition;

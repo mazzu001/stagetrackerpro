@@ -437,11 +437,7 @@ export default function Performance({ userType }: PerformanceProps) {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem 
-                  onClick={() => {
-                    console.log('Logout button clicked!');
-                    logout();
-                    console.log('Logout function called');
-                  }}
+                  onClick={logout}
                   className="flex items-center text-red-600 focus:text-red-600 cursor-pointer"
                   data-testid="menu-item-logout"
                 >

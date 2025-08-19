@@ -49,19 +49,13 @@ export function useLocalAuth() {
       loginTime: Date.now()
     };
     
-    console.log('Login function called with:', { userType, email });
     localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
     setUser(userData);
-    console.log('User state set to:', userData);
   };
 
   const logout = () => {
-    console.log('Logout function executing...');
     localStorage.removeItem(STORAGE_KEY);
-    console.log('localStorage cleared');
     setUser(null);
-    console.log('User state set to null');
-    console.log('isAuthenticated should now be:', !null);
   };
 
   const upgrade = () => {

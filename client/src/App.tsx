@@ -14,10 +14,7 @@ import { useLocalAuth } from '@/hooks/useLocalAuth';
 function AppContent() {
   const [isLocalFSReady, setIsLocalFSReady] = useState(false);
   const [isCheckingFS, setIsCheckingFS] = useState(true);
-  const { isAuthenticated, isLoading, isPaidUser, user } = useLocalAuth();
-  
-  // Debug authentication state changes
-  console.log('App render - Auth state:', { isAuthenticated, isLoading, isPaidUser, user });
+  const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
 
   useEffect(() => {
     // Check if local file system is already initialized

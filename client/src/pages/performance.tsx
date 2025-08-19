@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import CompactTransportControls from "@/components/compact-transport-controls";
 import AudioMixer from "@/components/audio-mixer";
@@ -127,8 +127,20 @@ export default function Performance({ userType }: PerformanceProps) {
     if (user?.email) {
       const songs = LocalSongStorage.getAllSongs(user.email);
       setAllSongs(songs);
+      
+      // Also refresh the currently selected song to pick up track changes
+      if (selectedSongId) {
+        const updatedSong = LocalSongStorage.getSong(user.email, selectedSongId);
+        setSelectedSong(updatedSong || null);
+      }
     }
   };
+
+  // Track update handler for when tracks are added/removed/modified
+  const handleTrackUpdate = useCallback(() => {
+    console.log('Track data updated, refreshing song...');
+    refreshSongs();
+  }, [user?.email, selectedSongId]);
 
   // Add new song function
   const handleAddSongLocal = () => {
@@ -389,11 +401,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   <div className="max-w-full">
                     <TrackManager
                       song={selectedSong as any}
-                      onTrackUpdate={() => {
-                        if (selectedSongId) {
-                          refreshSongs();
-                        }
-                      }}
+                      onTrackUpdate={handleTrackUpdate}
                       onTrackVolumeChange={updateTrackVolume}
                       onTrackMuteToggle={updateTrackMute}
                       onTrackSoloToggle={updateTrackSolo}

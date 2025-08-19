@@ -183,6 +183,9 @@ export default function TrackManager({
         console.log('Track added successfully:', newTrack);
         refetchTracks();
         
+        // Notify parent component that song data has changed
+        onTrackUpdate?.();
+        
         // Clear cached waveform to force regeneration with new tracks
         if (song?.id) {
           const waveformCacheKey = `waveform_${song.id}`;
@@ -218,6 +221,9 @@ export default function TrackManager({
       if (success) {
         refetchTracks();
         
+        // Notify parent component that song data has changed
+        onTrackUpdate?.();
+        
         // Clear cached waveform to force regeneration with remaining tracks
         if (song?.id) {
           const waveformCacheKey = `waveform_${song.id}`;
@@ -249,6 +255,9 @@ export default function TrackManager({
       }
       
       refetchTracks();
+      
+      // Notify parent component that song data has changed
+      onTrackUpdate?.();
       
       // Clear cached waveform since all tracks are removed
       if (song?.id) {

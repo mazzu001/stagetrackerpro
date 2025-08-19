@@ -128,6 +128,32 @@ export default function TrackManager({
     }, 300);
   }, [onTrackBalanceChange, song?.id, user?.email]);
 
+  // Handle mute toggle with local storage
+  const handleMuteToggle = useCallback((trackId: string) => {
+    if (song?.id && user?.email) {
+      const track = tracks.find(t => t.id === trackId);
+      if (track) {
+        const newMutedState = !track.isMuted;
+        LocalSongStorage.updateTrack(user.email, song.id, trackId, { isMuted: newMutedState });
+        onTrackMuteToggle?.(trackId);
+        refetchTracks();
+      }
+    }
+  }, [song?.id, user?.email, tracks, onTrackMuteToggle, refetchTracks]);
+
+  // Handle solo toggle with local storage
+  const handleSoloToggle = useCallback((trackId: string) => {
+    if (song?.id && user?.email) {
+      const track = tracks.find(t => t.id === trackId);
+      if (track) {
+        const newSoloState = !track.isSolo;
+        LocalSongStorage.updateTrack(user.email, song.id, trackId, { isSolo: newSoloState });
+        onTrackSoloToggle?.(trackId);
+        refetchTracks();
+      }
+    }
+  }, [song?.id, user?.email, tracks, onTrackSoloToggle, refetchTracks]);
+
   const addTrack = async (audioFileName: string, trackName: string, file: File) => {
     if (!song?.id || !user?.email) throw new Error('No song selected or user not authenticated');
     
@@ -364,6 +390,18 @@ export default function TrackManager({
         </h3>
         
         <div className="flex gap-2">
+          {tracks.length > 0 && (
+            <Button
+              onClick={isPlaying ? onPause : onPlay}
+              variant={isPlaying ? "destructive" : "default"}
+              size="sm"
+              data-testid="button-play-pause"
+            >
+              {isPlaying ? <Pause className="h-4 w-4 mr-2" /> : <Play className="h-4 w-4 mr-2" />}
+              {isPlaying ? 'Pause' : 'Play'}
+            </Button>
+          )}
+          
           <Button
             onClick={handleFileSelect}
             disabled={tracks.length >= 6 || isImporting}
@@ -438,7 +476,7 @@ export default function TrackManager({
                       {/* Mute/Solo buttons */}
                       <div className="col-span-2 flex gap-1">
                         <Button
-                          onClick={() => onTrackMuteToggle?.(track.id)}
+                          onClick={() => handleMuteToggle(track.id)}
                           variant={isMuted ? "destructive" : "outline"}
                           size="sm"
                           className="h-8 w-12 text-xs"
@@ -447,7 +485,7 @@ export default function TrackManager({
                           {isMuted ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
                         </Button>
                         <Button
-                          onClick={() => onTrackSoloToggle?.(track.id)}
+                          onClick={() => handleSoloToggle(track.id)}
                           variant={isSolo ? "default" : "outline"}
                           size="sm"
                           className="h-8 w-12 text-xs"

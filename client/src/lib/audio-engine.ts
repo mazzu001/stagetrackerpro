@@ -260,8 +260,27 @@ export class AudioEngine {
       }
       const average = sum / sampleCount;
       
-      // Ultra-conservative VU meter scaling for realistic studio levels
-      let rawLevel = (average / 255) * 0.008; // Much more aggressive reduction
+      // Track-specific VU meter scaling for realistic studio levels
+      const currentTrack = this.tracks.get(trackId);
+      const trackName = currentTrack?.getTrackName()?.toLowerCase() || '';
+      
+      // Apply track-specific scaling based on instrument type
+      let scalingFactor = 0.008; // Default conservative scaling
+      
+      // Bass tracks need higher sensitivity due to low frequency content
+      if (trackName.includes('bass')) {
+        scalingFactor = 0.015; // Double sensitivity for bass
+      }
+      // Drum tracks also need higher sensitivity
+      else if (trackName.includes('drum') || trackName.includes('kick') || trackName.includes('snare')) {
+        scalingFactor = 0.012; // 50% higher for drums
+      }
+      // Click tracks are usually very quiet
+      else if (trackName.includes('click')) {
+        scalingFactor = 0.025; // Much higher for click tracks
+      }
+      
+      let rawLevel = (average / 255) * scalingFactor;
       
       rawLevel = Math.max(0, Math.min(100, rawLevel));
       
@@ -510,5 +529,9 @@ class TrackController {
   connectAnalyzer(analyzerNode: AnalyserNode): void {
     // Connect after the panner but before mute for accurate level monitoring
     this.pannerNode.connect(analyzerNode);
+  }
+
+  getTrackName(): string {
+    return this.track.name || '';
   }
 }

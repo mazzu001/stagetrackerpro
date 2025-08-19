@@ -40,6 +40,19 @@ export function useLocalAuth() {
     };
 
     checkExistingSession();
+    
+    // Listen for auth changes to force re-renders
+    const handleAuthChange = () => {
+      checkExistingSession();
+    };
+    
+    window.addEventListener('auth-change', handleAuthChange);
+    window.addEventListener('storage', handleAuthChange);
+    
+    return () => {
+      window.removeEventListener('auth-change', handleAuthChange);
+      window.removeEventListener('storage', handleAuthChange);
+    };
   }, []);
 
   const login = (userType: UserType, email: string) => {
@@ -51,11 +64,17 @@ export function useLocalAuth() {
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
     setUser(userData);
+    
+    // Force a re-render by triggering a window event
+    window.dispatchEvent(new Event('auth-change'));
   };
 
   const logout = () => {
     localStorage.removeItem(STORAGE_KEY);
     setUser(null);
+    
+    // Force a re-render by triggering a window event
+    window.dispatchEvent(new Event('auth-change'));
   };
 
   const upgrade = () => {

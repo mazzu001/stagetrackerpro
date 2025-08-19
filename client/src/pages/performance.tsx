@@ -361,15 +361,15 @@ export default function Performance({ userType }: PerformanceProps) {
             <span className="bg-primary/20 text-primary px-2 py-1 rounded text-sm">LIVE</span>
           </div>
           
-          {/* Waveform Visualizer - positioned 10px from LIVE badge and auto-fits remaining space */}
-          <div className="flex-1 flex items-center ml-[10px] mr-4 py-1">
-            <div className="flex-1 max-w-[600px]">
+          {/* Waveform Visualizer - centered and responsive */}
+          <div className="flex-1 flex items-center justify-center mx-4 py-1">
+            <div className="w-full max-w-[500px] min-w-[200px]">
               <WaveformVisualizer
                 song={selectedSong as any || null}
                 currentTime={currentTime}
                 isPlaying={isPlaying}
                 audioLevels={audioLevels}
-                className="border border-gray-600 rounded w-full"
+                className="border border-gray-600 rounded w-full h-12"
               />
             </div>
           </div>

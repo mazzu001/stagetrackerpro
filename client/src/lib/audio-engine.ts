@@ -238,19 +238,26 @@ export class AudioEngine {
       const dataArray = new Uint8Array(bufferLength);
       analyzer.getByteFrequencyData(dataArray); // Use frequency data for more responsive VU meters
       
-      // Ultra conservative level calculation for realistic VU meters
+      // Professional VU meter calculation with proper RMS-style averaging
       let sum = 0;
-      const startBin = Math.floor(bufferLength * 0.2); // Focus on mid frequencies
-      const endBin = Math.floor(bufferLength * 0.6); // Avoid high frequencies
+      const startBin = Math.floor(bufferLength * 0.1);
+      const endBin = Math.floor(bufferLength * 0.7);
       
+      // Calculate RMS-style average for more consistent levels across tracks
       for (let i = startBin; i < endBin; i++) {
-        sum += dataArray[i];
+        const normalizedValue = dataArray[i] / 255;
+        sum += normalizedValue * normalizedValue; // Square for RMS
       }
-      const average = sum / (endBin - startBin);
-      // Very conservative scaling - professional VU meters are not very sensitive
-      let rawLevel = (average / 255) * 8; // Dramatically reduced scaling
+      const rms = Math.sqrt(sum / (endBin - startBin));
       
-      // Simple linear scaling, no logarithmic amplification
+      // Convert to dB-style level with professional scaling
+      let rawLevel = rms * 25; // Conservative but consistent scaling
+      
+      // Apply gentle compression for more even levels
+      if (rawLevel > 10) {
+        rawLevel = 10 + (rawLevel - 10) * 0.5; // Compress levels above 10
+      }
+      
       rawLevel = Math.max(0, Math.min(100, rawLevel));
       
       // Smooth the level changes
@@ -292,11 +299,21 @@ export class AudioEngine {
     for (let i = startBin; i < endBin; i++) {
       sum += dataArray[i];
     }
-    const average = sum / (endBin - startBin);
-    // Ultra conservative master level scaling
-    let baseLevel = (average / 255) * 8; // Very low scaling for realistic levels
+    // Calculate RMS for master levels to match track calculation
+    let sum2 = 0;
+    for (let i = startBin; i < endBin; i++) {
+      const normalizedValue = dataArray[i] / 255;
+      sum2 += normalizedValue * normalizedValue;
+    }
+    const rms = Math.sqrt(sum2 / (endBin - startBin));
     
-    // No logarithmic scaling - keep it simple and realistic
+    let baseLevel = rms * 25; // Same scaling as tracks for consistency
+    
+    // Apply same compression as tracks
+    if (baseLevel > 10) {
+      baseLevel = 10 + (baseLevel - 10) * 0.5;
+    }
+    
     baseLevel = Math.max(0, Math.min(100, baseLevel));
     
     // Create slight stereo variation for visual interest

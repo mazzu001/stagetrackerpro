@@ -27,8 +27,19 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
       return;
     }
 
-    // Professional VU meter scaling - expect very low input levels
-    const amplifiedLevel = Math.min(level * 300, 100); // Amplify the already conservative levels
+    // Professional VU meter with dynamic range optimization
+    let amplifiedLevel;
+    if (level < 1) {
+      // Boost very quiet signals
+      amplifiedLevel = level * 500;
+    } else if (level < 5) {
+      // Normal scaling for low levels
+      amplifiedLevel = level * 100;
+    } else {
+      // Gentle scaling for higher levels
+      amplifiedLevel = 500 + (level - 5) * 50;
+    }
+    
     targetLevelRef.current = Math.max(0, Math.min(100, amplifiedLevel));
 
     const animate = (timestamp: number) => {

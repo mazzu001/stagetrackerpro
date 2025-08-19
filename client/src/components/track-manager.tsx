@@ -1,13 +1,13 @@
-import { useState, useCallback, useRef } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { queryClient, apiRequest } from "@/lib/queryClient";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
+import { LocalSongStorage } from "@/lib/local-song-storage";
+import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import VUMeter from "@/components/vu-meter";
@@ -49,20 +49,26 @@ export default function TrackManager({
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
 
   const { toast } = useToast();
+  const { user } = useLocalAuth();
   const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
+  const [tracks, setTracks] = useState<Track[]>([]);
 
-  const { data: tracks = [], refetch: refetchTracks } = useQuery<Track[]>({
-    queryKey: ['/api/songs', song?.id, 'tracks'],
-    enabled: !!song?.id,
-    staleTime: 0, // Force fresh data
-    gcTime: 0, // Don't cache results
-    refetchOnMount: true,
-    refetchOnWindowFocus: true
-  });
+  // Load tracks from local storage
+  useEffect(() => {
+    if (song?.id && user?.email) {
+      const localTracks = LocalSongStorage.getTracks(user.email, song.id);
+      setTracks(localTracks);
+      console.log(`Track Manager: Found ${localTracks.length} tracks for song ${song.title} (ID: ${song.id}):`, localTracks.map(t => t.name));
+    }
+  }, [song?.id, user?.email, song?.title]);
 
-  // Debug: Log tracks data when it changes
-  console.log(`Track Manager: Found ${tracks.length} tracks for song ${song?.title} (ID: ${song?.id}):`, tracks.map(t => t.name));
-  console.log('Query enabled:', !!song?.id, 'Song object:', song);
+  const refetchTracks = useCallback(() => {
+    if (song?.id && user?.email) {
+      const localTracks = LocalSongStorage.getTracks(user.email, song.id);
+      setTracks(localTracks);
+      onTrackUpdate?.();
+    }
+  }, [song?.id, user?.email, onTrackUpdate]);
 
   // Debounced volume update function
   const debouncedVolumeUpdate = useCallback((trackId: string, volume: number) => {

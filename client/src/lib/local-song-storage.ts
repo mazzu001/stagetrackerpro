@@ -74,6 +74,60 @@ export class LocalSongStorage {
     return true;
   }
 
+  static addTrack(userEmail: string, songId: string, track: Omit<any, 'id' | 'songId'>): any | null {
+    const songs = this.getAllSongs(userEmail);
+    const songIndex = songs.findIndex(song => song.id === songId);
+    
+    if (songIndex === -1) return null;
+    
+    const newTrack = {
+      id: crypto.randomUUID(),
+      songId,
+      ...track,
+      createdAt: new Date().toISOString()
+    };
+    
+    songs[songIndex].tracks.push(newTrack);
+    this.saveSongs(userEmail, songs);
+    return newTrack;
+  }
+
+  static getTracks(userEmail: string, songId: string): any[] {
+    const song = this.getSong(userEmail, songId);
+    return song?.tracks || [];
+  }
+
+  static deleteTrack(userEmail: string, songId: string, trackId: string): boolean {
+    const songs = this.getAllSongs(userEmail);
+    const songIndex = songs.findIndex(song => song.id === songId);
+    
+    if (songIndex === -1) return false;
+    
+    const originalLength = songs[songIndex].tracks.length;
+    songs[songIndex].tracks = songs[songIndex].tracks.filter(track => track.id !== trackId);
+    
+    if (songs[songIndex].tracks.length === originalLength) {
+      return false; // Track not found
+    }
+    
+    this.saveSongs(userEmail, songs);
+    return true;
+  }
+
+  static updateTrack(userEmail: string, songId: string, trackId: string, updates: Partial<any>): any | null {
+    const songs = this.getAllSongs(userEmail);
+    const songIndex = songs.findIndex(song => song.id === songId);
+    
+    if (songIndex === -1) return null;
+    
+    const trackIndex = songs[songIndex].tracks.findIndex(track => track.id === trackId);
+    if (trackIndex === -1) return null;
+    
+    songs[songIndex].tracks[trackIndex] = { ...songs[songIndex].tracks[trackIndex], ...updates };
+    this.saveSongs(userEmail, songs);
+    return songs[songIndex].tracks[trackIndex];
+  }
+
   static addTrackToSong(userEmail: string, songId: string, track: any): LocalSong | null {
     const song = this.getSong(userEmail, songId);
     if (!song) return null;

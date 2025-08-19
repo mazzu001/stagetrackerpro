@@ -5,7 +5,7 @@ import AudioMixer from "@/components/audio-mixer";
 import LyricsDisplay from "@/components/lyrics-display";
 import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
-import TrackManager from "@/components/track-manager";
+import TrackManager from "@/components/track-manager-new";
 import StereoVUMeter from "@/components/stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
 

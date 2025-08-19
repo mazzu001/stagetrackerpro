@@ -54,8 +54,11 @@ export function useLocalAuth() {
   };
 
   const logout = () => {
+    console.log('Logout function executing...');
     localStorage.removeItem(STORAGE_KEY);
+    console.log('localStorage cleared');
     setUser(null);
+    console.log('User state set to null');
   };
 
   const upgrade = () => {

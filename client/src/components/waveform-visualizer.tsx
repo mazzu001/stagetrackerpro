@@ -213,7 +213,7 @@ export function WaveformVisualizer({
   }
 
   return (
-    <div className={`bg-slate-900/80 rounded-lg border border-slate-700 overflow-hidden ${className}`}>
+    <div className="bg-slate-900/80 overflow-hidden border border-gray-600 rounded w-full h-[68px] mt-[-10px] mb-[-10px] pt-[4px] pb-[4px]">
       <canvas
         ref={canvasRef}
         width={400}

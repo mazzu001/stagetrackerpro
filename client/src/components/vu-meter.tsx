@@ -27,8 +27,8 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
       return;
     }
 
-    // Conservative VU meter response - expecting very small input values
-    const amplifiedLevel = level * 10000; // Very high amplification for tiny engine values
+    // Professional VU meter scaling - balanced for realistic levels
+    const amplifiedLevel = level * 12000; // Slightly higher amplification for the reduced engine scaling
     
     // Debug logging to see actual values
     if (level > 0) {

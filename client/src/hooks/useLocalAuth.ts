@@ -54,8 +54,10 @@ export function useLocalAuth() {
   };
 
   const logout = () => {
+    console.log('Logout function called');
     localStorage.removeItem(STORAGE_KEY);
     setUser(null);
+    console.log('User cleared, should redirect to landing page');
   };
 
   const upgrade = () => {

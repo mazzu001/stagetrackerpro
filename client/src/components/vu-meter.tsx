@@ -27,8 +27,8 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
       return;
     }
 
-    // Normal level scaling - audio engine now provides realistic levels
-    const amplifiedLevel = Math.min(level * 100, 100); // Direct 1:1 scaling
+    // Professional VU meter scaling - expect very low input levels
+    const amplifiedLevel = Math.min(level * 300, 100); // Amplify the already conservative levels
     targetLevelRef.current = Math.max(0, Math.min(100, amplifiedLevel));
 
     const animate = (timestamp: number) => {
@@ -86,21 +86,21 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
     
     if (index === peakSegment - 1 && peakSegment > activeSegments) {
       // Peak indicator
-      if (percentage < 75) return 'bg-green-400';
-      if (percentage < 90) return 'bg-yellow-400';
+      if (percentage < 60) return 'bg-green-400';
+      if (percentage < 80) return 'bg-yellow-400';
       return 'bg-red-400';
     }
     
     if (index < activeSegments) {
       // Active segments
-      if (percentage < 75) return 'bg-green-500';
-      if (percentage < 90) return 'bg-yellow-500';
+      if (percentage < 60) return 'bg-green-500';
+      if (percentage < 80) return 'bg-yellow-500';
       return 'bg-red-500';
     }
     
     // Inactive segments
-    if (percentage < 75) return 'bg-green-900/30';
-    if (percentage < 90) return 'bg-yellow-900/30';
+    if (percentage < 60) return 'bg-green-900/30';
+    if (percentage < 80) return 'bg-yellow-900/30';
     return 'bg-red-900/30';
   };
 

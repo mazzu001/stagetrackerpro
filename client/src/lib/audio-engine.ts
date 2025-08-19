@@ -238,20 +238,20 @@ export class AudioEngine {
       const dataArray = new Uint8Array(bufferLength);
       analyzer.getByteFrequencyData(dataArray); // Use frequency data for more responsive VU meters
       
-      // Calculate average frequency response (better for VU meter visualization)
+      // Ultra conservative level calculation for realistic VU meters
       let sum = 0;
-      const startBin = Math.floor(bufferLength * 0.1); // Skip very low frequencies
-      const endBin = Math.floor(bufferLength * 0.8); // Skip very high frequencies
+      const startBin = Math.floor(bufferLength * 0.2); // Focus on mid frequencies
+      const endBin = Math.floor(bufferLength * 0.6); // Avoid high frequencies
       
       for (let i = startBin; i < endBin; i++) {
         sum += dataArray[i];
       }
       const average = sum / (endBin - startBin);
-      // Much more conservative scaling for realistic VU meter levels
-      let rawLevel = Math.min(100, (average / 255) * 30); // Reduced from 120 to 30
+      // Very conservative scaling - professional VU meters are not very sensitive
+      let rawLevel = (average / 255) * 8; // Dramatically reduced scaling
       
-      // Apply more conservative logarithmic scaling for natural VU meter response
-      rawLevel = rawLevel > 0 ? Math.log10(rawLevel / 10 + 1) * 20 : 0; // Reduced from 50 to 20
+      // Simple linear scaling, no logarithmic amplification
+      rawLevel = Math.max(0, Math.min(100, rawLevel));
       
       // Smooth the level changes
       const cached = this.levelCache.get(trackId);
@@ -293,10 +293,11 @@ export class AudioEngine {
       sum += dataArray[i];
     }
     const average = sum / (endBin - startBin);
-    let baseLevel = Math.min(100, (average / 255) * 40); // Much more conservative scaling
+    // Ultra conservative master level scaling
+    let baseLevel = (average / 255) * 8; // Very low scaling for realistic levels
     
-    // Apply conservative logarithmic scaling
-    baseLevel = baseLevel > 0 ? Math.log10(baseLevel / 10 + 1) * 20 : 0; // Reduced scaling
+    // No logarithmic scaling - keep it simple and realistic
+    baseLevel = Math.max(0, Math.min(100, baseLevel));
     
     // Create slight stereo variation for visual interest
     const variation = Math.sin(now * 0.001) * 2; // Subtle sine wave variation

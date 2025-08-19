@@ -146,12 +146,15 @@ export class DatabaseStorage implements IStorage {
 
   // Song operations (use local SQLite database)
   async getSong(id: string, userId?: string): Promise<Song | undefined> {
-    let query = localDb.select().from(songs).where(eq(songs.id, id));
     if (userId) {
-      query = query.where(and(eq(songs.id, id), eq(songs.userId, userId))) as any;
+      const [song] = await localDb.select().from(songs)
+        .where(and(eq(songs.id, id), eq(songs.userId, userId)));
+      return song || undefined;
+    } else {
+      const [song] = await localDb.select().from(songs)
+        .where(eq(songs.id, id));
+      return song || undefined;
     }
-    const [song] = await query;
-    return song || undefined;
   }
 
   async getAllSongs(userId?: string): Promise<SongWithTracks[]> {

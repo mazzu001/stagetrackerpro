@@ -38,24 +38,38 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Enable auth middleware for user-specific songs
-  await setupAuth(app);
+  console.log('🔧 Starting route registration...');
+  
+  try {
+    // Enable auth middleware for user-specific songs
+    console.log('🔐 Setting up authentication middleware...');
+    await setupAuth(app);
+    console.log('✅ Authentication middleware configured successfully');
+  } catch (error: any) {
+    console.error('❌ Failed to setup authentication:', error);
+    throw new Error(`Authentication setup failed: ${error.message}`);
+  }
 
   // Auth routes with proper authentication
+  console.log('📝 Registering authentication routes...');
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
+      console.log(`🔍 Fetching user data for userId: ${userId}`);
       const user = await storage.getUser(userId);
       res.json(user);
     } catch (error) {
-      console.error("Error fetching user:", error);
+      console.error("❌ Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
     }
   });
+  console.log('✅ Authentication routes registered');
 
   // Stripe subscription route (simplified for testing)
+  console.log('💳 Registering Stripe payment routes...');
   app.post('/api/create-subscription', async (req: any, res) => {
     try {
+      console.log('💰 Creating Stripe payment intent for subscription...');
       // For testing, create a simple payment intent for $4.99
       const paymentIntent = await stripe.paymentIntents.create({
         amount: 499, // $4.99 in cents
@@ -69,6 +83,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       });
 
+      console.log(`✅ Payment intent created successfully: ${paymentIntent.id}`);
       res.json({
         clientSecret: paymentIntent.client_secret,
       });
@@ -590,6 +605,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  console.log('🗄️ Registering database storage routes...');
+  console.log('🎵 Registering song management routes...');
+  console.log('🎧 Registering track management routes...');
+  console.log('🎹 Registering MIDI event routes...');
+  console.log('📊 Registering waveform caching routes...');
+  console.log('🔍 Registering lyrics search routes...');
+  console.log('📁 Registering file registry routes...');
+  
+  console.log('🌐 Creating HTTP server...');
   const httpServer = createServer(app);
+  console.log('✅ HTTP server created successfully');
+  console.log('🎯 Route registration completed successfully');
+  
   return httpServer;
 }

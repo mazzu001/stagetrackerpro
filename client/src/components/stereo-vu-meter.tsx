@@ -26,7 +26,9 @@ export default function StereoVUMeter({
       return;
     }
 
-    const targetLevel = Math.max(0, Math.min(100, leftLevel));
+    // Apply same amplification as individual VU meters
+    const amplifiedLevel = leftLevel * 20000; // Match VUMeter component amplification
+    const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
     const animate = () => {
       setAnimatedLeftLevel(prev => {
@@ -48,7 +50,9 @@ export default function StereoVUMeter({
       return;
     }
 
-    const targetLevel = Math.max(0, Math.min(100, rightLevel));
+    // Apply same amplification as individual VU meters
+    const amplifiedLevel = rightLevel * 20000; // Match VUMeter component amplification
+    const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
     const animate = () => {
       setAnimatedRightLevel(prev => {

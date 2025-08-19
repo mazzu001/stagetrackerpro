@@ -331,12 +331,15 @@ export class AudioEngine {
     }
     const rms = Math.sqrt(sum2 / (endBin - startBin));
     
-    let baseLevel = rms * 10; // Much more conservative master scaling
+    let baseLevel = rms * 0.020; // Match the track scaling approach
     
     // Apply same compression as tracks
-    if (baseLevel > 10) {
-      baseLevel = 10 + (baseLevel - 10) * 0.5;
+    if (baseLevel > 0.1) {
+      baseLevel = 0.1 + (baseLevel - 0.1) * 0.5;
     }
+    
+    // Convert to 0-100 scale
+    baseLevel = baseLevel * 100;
     
     baseLevel = Math.max(0, Math.min(100, baseLevel));
     

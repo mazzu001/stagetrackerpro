@@ -1,16 +1,12 @@
-import { Cpu } from "lucide-react";
-
 interface StatusBarProps {
   isAudioEngineOnline: boolean;
   isMidiConnected: boolean;
-  cpuUsage: number;
   latency: number;
 }
 
 export default function StatusBar({ 
   isAudioEngineOnline, 
   isMidiConnected, 
-  cpuUsage,
   latency 
 }: StatusBarProps) {
   return (
@@ -38,12 +34,7 @@ export default function StatusBar({
               Latency: <span className="text-secondary">{latency.toFixed(1)}ms</span>
             </span>
           </div>
-          <div className="flex items-center space-x-2">
-            <Cpu className="text-primary w-4 h-4" />
-            <span className="text-sm">
-              CPU: <span className="text-primary">{cpuUsage}%</span>
-            </span>
-          </div>
+
         </div>
         
         <div className="flex items-center space-x-4 text-sm text-gray-400">

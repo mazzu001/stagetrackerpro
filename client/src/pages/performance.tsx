@@ -696,7 +696,6 @@ export default function Performance({ userType }: PerformanceProps) {
         <StatusBar
           isAudioEngineOnline={isAudioEngineOnline}
           isMidiConnected={isMidiConnected}
-          cpuUsage={cpuUsage}
           latency={latency}
         />
       </div>

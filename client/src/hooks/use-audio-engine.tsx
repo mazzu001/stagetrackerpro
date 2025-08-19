@@ -21,6 +21,13 @@ export function useAudioEngine(song?: SongWithTracks) {
     const initAudioEngine = async () => {
       try {
         audioEngineRef.current = new AudioEngine();
+        
+        // Set up duration update callback
+        audioEngineRef.current.onDurationUpdated = (newDuration: number) => {
+          console.log(`Duration updated from audio buffers: ${newDuration}s`);
+          setDuration(newDuration);
+        };
+        
         await audioEngineRef.current.initialize();
         setIsAudioEngineOnline(true);
       } catch (error) {

@@ -12,6 +12,7 @@ export class AudioEngine {
   private isPlaying: boolean = false;
   private analyzerNodes: Map<string, AnalyserNode> = new Map();
   private masterAnalyzerNode: AnalyserNode | null = null;
+  public onDurationUpdated?: (duration: number) => void;
 
   async initialize(): Promise<void> {
     try {
@@ -82,6 +83,27 @@ export class AudioEngine {
     await Promise.allSettled(loadPromises);
     
     console.log(`Loaded ${this.tracks.size} out of ${song.tracks.length} tracks successfully`);
+    
+    // Update song duration based on the longest track's actual audio buffer duration
+    if (this.tracks.size > 0) {
+      let maxDuration = 0;
+      this.tracks.forEach(track => {
+        const trackDuration = track.getAudioBufferDuration();
+        if (trackDuration > maxDuration) {
+          maxDuration = trackDuration;
+        }
+      });
+      
+      if (maxDuration > 0 && maxDuration !== this.currentSong.duration) {
+        console.log(`Updating song duration from ${this.currentSong.duration}s to ${maxDuration}s based on audio buffer analysis`);
+        this.currentSong.duration = maxDuration;
+        
+        // Trigger a callback to update the UI with the correct duration
+        if (this.onDurationUpdated) {
+          this.onDurationUpdated(maxDuration);
+        }
+      }
+    }
     
     // Auto-generate waveform in background after tracks are loaded
     if (this.tracks.size > 0) {
@@ -562,5 +584,9 @@ class TrackController {
 
   getTrackName(): string {
     return this.track.name || '';
+  }
+
+  getAudioBufferDuration(): number {
+    return this.audioBuffer?.duration || 0;
   }
 }

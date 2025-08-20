@@ -98,12 +98,12 @@ export default function CompactTransportControls({
       {/* Progress Bar */}
       <div className="space-y-2">
         <div 
-          className="w-full bg-gray-700 rounded-full h-3 md:h-2 cursor-pointer group touch-target"
+          className="w-full bg-gray-700 rounded-full h-2 cursor-pointer group touch-target md:h-2 sm:h-3"
           onClick={handleProgressClick}
           data-testid="progress-bar"
         >
           <div 
-            className={`bg-secondary h-3 md:h-2 rounded-full group-hover:bg-green-400 ${
+            className={`bg-secondary h-2 rounded-full group-hover:bg-green-400 md:h-2 sm:h-3 ${
               isPlaying ? '' : 'transition-all duration-100'
             }`}
             style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}

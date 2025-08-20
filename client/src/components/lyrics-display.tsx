@@ -253,18 +253,17 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
             })}
           </div>
         ) : (
-          <div className="space-y-2" style={{ fontSize: `${fontSize}px` }}>
+          <div style={{ fontSize: `${fontSize}px`, paddingBottom: '80vh' }}>
             {plainLines.map((line: string, index: number) => (
               <div
                 key={index}
-                className="text-gray-300 leading-relaxed"
+                className="text-gray-300 leading-relaxed mb-4"
                 data-testid={`lyrics-line-${index}`}
                 id={`auto-scroll-line-${index}`}
               >
                 {line}
               </div>
             ))}
-            <div style={{ height: '100vh' }}></div>
           </div>
         )}
       </div>

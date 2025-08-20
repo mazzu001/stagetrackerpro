@@ -518,8 +518,8 @@ export default function Performance({ userType }: PerformanceProps) {
 
       {/* Main Content Area */}
       <div className="flex flex-1 min-h-0 overflow-hidden flex-col md:flex-row">
-        {/* Left Sidebar - Song List (30% on desktop, full width on mobile) */}
-        <div className="w-full md:w-[30%] bg-surface border-b md:border-b-0 md:border-r border-gray-700 flex flex-col max-h-[40vh] md:max-h-none">
+        {/* Mobile: Song List at top */}
+        <div className="w-full md:w-[30%] bg-surface border-b md:border-b-0 md:border-r border-gray-700 flex flex-col max-h-[30vh] md:max-h-none">
           <div className="p-2 md:p-4 border-b border-gray-700 flex items-center justify-between">
             <h2 className="text-base md:text-lg font-semibold">Songs</h2>
 
@@ -702,8 +702,8 @@ export default function Performance({ userType }: PerformanceProps) {
             )}
           </div>
           
-          {/* Compact Transport Controls */}
-          <div className="p-2 md:p-4 border-t border-gray-700 flex-shrink-0">
+          {/* Desktop only: Compact Transport Controls */}
+          <div className="p-2 md:p-4 border-t border-gray-700 flex-shrink-0 mobile-hidden">
             <CompactTransportControls
               isPlaying={isPlaying}
               currentTime={currentTime}
@@ -718,36 +718,54 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
         </div>
 
-        {/* Right Content Area - Lyrics (70% on desktop, full width on mobile) */}
-        <div className="flex-1 flex flex-col min-h-0">
-          <div className="p-2 md:p-4 border-b border-gray-700 bg-surface flex items-center justify-between">
-            <h2 className="text-sm md:text-lg font-semibold truncate mr-2">
-              {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
-            </h2>
-            {selectedSong && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleEditLyrics}
-                data-testid="button-edit-lyrics"
-                className="touch-target flex-shrink-0"
-              >
-                <Edit className="w-4 h-4 md:mr-1" />
-                <span className="mobile-hidden">Edit Lyrics</span>
-              </Button>
-            )}
-          </div>
-          <div className="flex-1 overflow-y-auto p-2 md:p-4">
-            <LyricsDisplay
-              song={selectedSong as any}
-              currentTime={currentTime}
-            />
+        {/* Right Content Area - Lyrics */}
+        <div className="flex-1 flex flex-col min-h-0 md:flex-row">
+          {/* Mobile: Lyrics above transport controls */}
+          <div className="flex-1 flex flex-col min-h-0">
+            <div className="p-2 md:p-4 border-b border-gray-700 bg-surface flex items-center justify-between mobile-hidden">
+              <h2 className="text-sm md:text-lg font-semibold truncate mr-2">
+                {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
+              </h2>
+              {selectedSong && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleEditLyrics}
+                  data-testid="button-edit-lyrics"
+                  className="touch-target flex-shrink-0"
+                >
+                  <Edit className="w-4 h-4 md:mr-1" />
+                  <span className="mobile-hidden">Edit Lyrics</span>
+                </Button>
+              )}
+            </div>
+            <div className="flex-1 overflow-y-auto p-2 md:p-4">
+              <LyricsDisplay
+                song={selectedSong as any}
+                currentTime={currentTime}
+              />
+            </div>
+            
+            {/* Mobile only: Transport controls at bottom */}
+            <div className="p-2 border-t border-gray-700 flex-shrink-0 mobile-flex md:hidden">
+              <CompactTransportControls
+                isPlaying={isPlaying}
+                currentTime={currentTime}
+                duration={duration}
+                progress={progress}
+                isMidiConnected={isMidiConnected}
+                onPlay={play}
+                onPause={pause}
+                onStop={stop}
+                onSeek={seek}
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Status Bar */}
-      <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0">
+      {/* Status Bar - Desktop only */}
+      <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 mobile-hidden">
         <StatusBar
           isAudioEngineOnline={isAudioEngineOnline}
           isMidiConnected={isMidiConnected}

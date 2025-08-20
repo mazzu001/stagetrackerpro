@@ -281,7 +281,7 @@ export class AudioEngine {
   }
 
   private levelCache: Map<string, { level: number, lastUpdate: number }> = new Map();
-  private smoothingFactor = 0.3; // Smoother level transitions
+  private smoothingFactor = 0.8; // Much faster response for reactive meters
 
   getAudioLevels(): Record<string, number> {
     const levels: Record<string, number> = {};
@@ -313,29 +313,29 @@ export class AudioEngine {
       const currentTrack = this.tracks.get(trackId);
       const trackName = currentTrack?.getTrackName()?.toLowerCase() || '';
       
-      // Apply much higher scaling to match stereo meter sensitivity
-      let scalingFactor = 0.15; // Much higher base scaling to match stereo meters
+      // Improved scaling to provide responsive VU meters that match stereo meter behavior
+      let scalingFactor = 8.0; // Much higher base scaling for responsive meters
       
       // Bass tracks need higher sensitivity due to low frequency content
       if (trackName.includes('bass')) {
-        scalingFactor = 0.25; // Higher sensitivity for bass
+        scalingFactor = 12.0; // Higher sensitivity for bass
       }
       // Drum tracks also need higher sensitivity
       else if (trackName.includes('drum') || trackName.includes('kick') || trackName.includes('snare')) {
-        scalingFactor = 0.20; // Higher for drums
+        scalingFactor = 10.0; // Higher for drums
       }
       // Click tracks are usually very quiet
       else if (trackName.includes('click')) {
-        scalingFactor = 0.35; // Much higher for click tracks
+        scalingFactor = 15.0; // Much higher for click tracks
       }
       
       let rawLevel = (average / 255) * scalingFactor;
       
       rawLevel = Math.max(0, Math.min(100, rawLevel));
       
-      // Smooth the level changes
+      // Smooth the level changes with faster updates like the master meters
       const cached = this.levelCache.get(trackId);
-      if (cached && now - cached.lastUpdate < 50) { // Don't update too frequently
+      if (cached && now - cached.lastUpdate < 16) { // ~60fps updates like master meters
         rawLevel = cached.level + (rawLevel - cached.level) * this.smoothingFactor;
       }
       

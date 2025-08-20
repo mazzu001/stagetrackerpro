@@ -23,7 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import { MIDIDeviceManager } from "@/components/midi-device-manager";
-import { useMIDI } from "@/hooks/useMIDI";
+import { useMIDISystem } from "@/hooks/useMIDISystem";
 import { useMIDISequencer } from "@/hooks/useMIDISequencer";
 
 interface PerformanceProps {
@@ -53,17 +53,8 @@ export default function Performance({ userType }: PerformanceProps) {
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
-  const { isSupported: midiSupported, connectedOutputs, connectedInputs, initializeMIDI } = useMIDI();
-  const { 
-    commands: midiCommands, 
-    isActive: isMIDISequencerActive, 
-    startSequencer, 
-    stopSequencer, 
-    updateSequencer, 
-    resetSequencer, 
-    getUpcomingCommands,
-    getCommandStats 
-  } = useMIDISequencer(midiAccess);
+  const { midiAccess: midiSystemAccess, isConnected: midiConnected, deviceCount, sendMIDICommand } = useMIDISystem();
+  const { startSequence, stopSequence, processEvents } = useMIDISequencer();
 
   // Fullscreen functionality
   const toggleFullscreen = useCallback(async () => {
@@ -95,99 +86,10 @@ export default function Performance({ userType }: PerformanceProps) {
     };
   }, []);
 
-  // Initialize MIDI access for both lyrics editor and sequencer
+  // Set MIDI access state from the MIDI system
   useEffect(() => {
-    const initMIDIAccess = async () => {
-      try {
-        console.log('[PERFORMANCE] Checking Web MIDI API support...');
-        
-        if (!(navigator as any).requestMIDIAccess) {
-          console.error('[PERFORMANCE] Web MIDI API not supported in this browser');
-          toast({
-            title: "MIDI Not Supported",
-            description: "Your browser doesn't support Web MIDI API. Please use Chrome, Edge, or Opera.",
-            variant: "destructive"
-          });
-          return;
-        }
-
-        console.log('[PERFORMANCE] Requesting MIDI access...');
-        
-        // First check if we already have permission
-        if ((navigator as any).permissions) {
-          try {
-            const permission = await (navigator as any).permissions.query({ name: 'midi', sysex: false });
-            console.log('[PERFORMANCE] MIDI permission status:', permission.state);
-          } catch (permError) {
-            console.log('[PERFORMANCE] Could not check MIDI permissions:', permError);
-          }
-        }
-        
-        const access = await (navigator as any).requestMIDIAccess({ 
-          sysex: false,
-          software: true
-        });
-        setMidiAccess(access);
-        
-        console.log('[PERFORMANCE] MIDI access granted successfully');
-        console.log('[PERFORMANCE] Available input devices:', access.inputs.size);
-        console.log('[PERFORMANCE] Available output devices:', access.outputs.size);
-        
-        // Log device details
-        access.inputs.forEach((input: any) => {
-          console.log('[PERFORMANCE] Input device:', input.name, input.state);
-        });
-        access.outputs.forEach((output: any) => {
-          console.log('[PERFORMANCE] Output device:', output.name, output.state);
-        });
-        
-        if (access.outputs.size === 0) {
-          console.warn('[PERFORMANCE] No MIDI output devices found - enabling console logging mode');
-          toast({
-            title: "MIDI Console Mode",
-            description: "No devices found. MIDI commands will be logged to console for testing.",
-            variant: "default"
-          });
-        } else {
-          toast({
-            title: "MIDI Ready", 
-            description: `Found ${access.outputs.size} MIDI device(s)`,
-          });
-        }
-        
-      } catch (error) {
-        console.error('Failed to initialize MIDI for performance page:', error);
-        
-        // Create a fake MIDI access for testing when real MIDI fails
-        const fakeMidiAccess = {
-          inputs: new Map(),
-          outputs: new Map([
-            ['console-output', {
-              id: 'console-output',
-              name: 'Console MIDI Output (Testing)',
-              state: 'connected',
-              send: (data: number[]) => {
-                console.log('🎹 MIDI COMMAND SENT:', data, 
-                  `[${data.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              }
-            }]
-          ]),
-          onstatechange: null
-        };
-        
-        setMidiAccess(fakeMidiAccess as any);
-        console.log('[PERFORMANCE] Using console MIDI output for testing');
-        
-        toast({
-          title: "MIDI Console Mode",
-          description: "MIDI permission denied. Using console output for testing. Both manual and automated MIDI commands will work via console.",
-          variant: "default"
-        });
-      }
-    };
-    
-    initMIDIAccess();
-  }, [toast]);
+    setMidiAccess(midiSystemAccess);
+  }, [midiSystemAccess]);
 
   // MIDI message listener for lyrics editor
   useEffect(() => {
@@ -361,64 +263,7 @@ export default function Performance({ userType }: PerformanceProps) {
     }
   };
 
-  // Parse MIDI command string into MIDI data bytes
-  const parseMIDICommand = (command: string): { data: number[]; description: string } | null => {
-    const parts = command.split(':');
-    const type = parts[0];
 
-    try {
-      switch (type) {
-        case 'CC': {
-          const controller = parseInt(parts[1]);
-          const value = parseInt(parts[2]);
-          const channel = parseInt(parts[3] || '1') - 1;
-          return {
-            data: [0xB0 | channel, controller, value],
-            description: `Control Change Ch${channel + 1} CC${controller} Val${value}`
-          };
-        }
-        case 'NOTE': {
-          const note = parseInt(parts[1]);
-          const velocity = parseInt(parts[2]);
-          const channel = parseInt(parts[3] || '1') - 1;
-          return {
-            data: [0x90 | channel, note, velocity],
-            description: `Note On Ch${channel + 1} Note${note} Vel${velocity}`
-          };
-        }
-        case 'NOTEOFF': {
-          const note = parseInt(parts[1]);
-          const channel = parseInt(parts[2] || '1') - 1;
-          return {
-            data: [0x80 | channel, note, 0],
-            description: `Note Off Ch${channel + 1} Note${note}`
-          };
-        }
-        case 'PC': {
-          const program = parseInt(parts[1]);
-          const channel = parseInt(parts[2] || '1') - 1;
-          return {
-            data: [0xC0 | channel, program],
-            description: `Program Change Ch${channel + 1} Program${program}`
-          };
-        }
-        case 'PITCH': {
-          const value = parseInt(parts[1]);
-          const channel = parseInt(parts[2] || '1') - 1;
-          const lsb = value & 0x7F;
-          const msb = (value >> 7) & 0x7F;
-          return {
-            data: [0xE0 | channel, lsb, msb],
-            description: `Pitch Bend Ch${channel + 1} Val${value}`
-          };
-        }
-        default:
-          return null;
-      }
-    } catch (error) {
-      return null;
-    }
-  };
 
   // Load songs from localStorage when component mounts or user changes
   useEffect(() => {
@@ -445,16 +290,16 @@ export default function Performance({ userType }: PerformanceProps) {
       // Start MIDI sequencer with song lyrics if available
       if (song && song.lyrics) {
         console.log('[PERFORMANCE] Starting MIDI sequencer for song:', song.title);
-        startSequencer(song.lyrics);
+        startSequence(song.lyrics);
       } else {
         console.log('[PERFORMANCE] No lyrics found, stopping sequencer');
-        stopSequencer();
+        stopSequence();
       }
     } else {
       setSelectedSong(null);
-      stopSequencer();
+      stopSequence();
     }
-  }, [selectedSongId, user?.email, startSequencer, stopSequencer]);
+  }, [selectedSongId, user?.email, startSequence, stopSequence]);
 
   const {
     isPlaying,
@@ -480,17 +325,16 @@ export default function Performance({ userType }: PerformanceProps) {
 
   // Wrap play/stop functions to reset MIDI sequencer properly
   const play = useCallback(() => {
-    console.log('[PERFORMANCE] Starting playback - resetting MIDI sequencer to position 0');
+    console.log('[PERFORMANCE] Starting playback');
     originalPlay();
-    // Reset after a short delay to ensure audio engine is ready
-    setTimeout(() => resetSequencer(0), 100);
-  }, [originalPlay, resetSequencer]);
+    // MIDI sequencing will be handled via processEvents
+  }, [originalPlay]);
 
   const stop = useCallback(() => {
-    console.log('[PERFORMANCE] Stopping playback - resetting MIDI sequencer');
+    console.log('[PERFORMANCE] Stopping playback');
     originalStop();
-    setTimeout(() => resetSequencer(0), 100); // Reset to start when stopped
-  }, [originalStop, resetSequencer]);
+    // MIDI sequencing will be handled via processEvents
+  }, [originalStop]);
 
   useKeyboardShortcuts({
     onPlay: play,
@@ -503,18 +347,18 @@ export default function Performance({ userType }: PerformanceProps) {
 
   // Update MIDI sequencer with current playback time
   useEffect(() => {
-    // Only call updateSequencer if we have meaningful currentTime updates
-    if (currentTime > 0 || isPlaying) {
-      updateSequencer(currentTime, isPlaying);
+    // Process MIDI events at current playback time
+    if (isPlaying && currentTime >= 0) {
+      processEvents(currentTime);
     }
-  }, [currentTime, isPlaying, updateSequencer]);
+  }, [currentTime, isPlaying, processEvents]);
 
   // Handle seeking - reset MIDI sequencer position
   const handleSeek = useCallback((time: number) => {
     console.log(`[PERFORMANCE] Seeking to ${time.toFixed(1)}s`);
     seek(time);
-    resetSequencer(time);
-  }, [seek, resetSequencer]);
+    // MIDI events will be processed from the new position automatically
+  }, [seek]);
 
   // Log tracks that need audio files when song changes
   useEffect(() => {
@@ -636,9 +480,9 @@ export default function Performance({ userType }: PerformanceProps) {
       
       // Restart MIDI sequencer with updated lyrics
       if (lyricsText) {
-        startSequencer(lyricsText);
+        startSequence(lyricsText);
       } else {
-        stopSequencer();
+        stopSequence();
       }
       
       toast({
@@ -940,7 +784,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   <div className="flex flex-col">
                     <span>MIDI Devices</span>
                     <span className="text-xs text-gray-500">
-                      {midiSupported ? `${connectedOutputs.length + connectedInputs.length} connected` : 'Not supported'}
+                      {midiConnected ? `${deviceCount} connected` : 'Not connected'}
                     </span>
                   </div>
                 </DropdownMenuItem>
@@ -1474,14 +1318,20 @@ Click "Timestamp" to insert current time`}
         </DialogContent>
       </Dialog>
 
-      {/* MIDI Device Manager */}
-      <MIDIDeviceManager 
-        isOpen={isMIDIManagerOpen}
-        onClose={() => setIsMIDIManagerOpen(false)}
-        onDevicesChange={(devices) => {
-          console.log('MIDI devices updated:', devices);
-        }}
-      />
+      {/* MIDI Device Manager Dialog */}
+      <Dialog open={isMIDIManagerOpen} onOpenChange={setIsMIDIManagerOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>MIDI Device Manager</DialogTitle>
+          </DialogHeader>
+          <MIDIDeviceManager
+            midiAccess={midiSystemAccess}
+            isConnected={midiConnected}
+            deviceCount={deviceCount}
+            sendCommand={sendMIDICommand}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

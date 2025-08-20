@@ -12,6 +12,7 @@ export function useAudioEngine(song?: SongWithTracks) {
   const [isAudioEngineOnline, setIsAudioEngineOnline] = useState(true);
   const [isMidiConnected, setIsMidiConnected] = useState(true);
   const [masterVolume, setMasterVolume] = useState(85);
+  const [isLoadingTracks, setIsLoadingTracks] = useState(false);
 
   const audioEngineRef = useRef<AudioEngine | null>(null);
   const animationFrameRef = useRef<number>();
@@ -52,7 +53,16 @@ export function useAudioEngine(song?: SongWithTracks) {
   useEffect(() => {
     if (song && audioEngineRef.current) {
       console.log(`Loading song: "${song.title}" with ${song.tracks.length} tracks`);
-      audioEngineRef.current.loadSong(song);
+      setIsLoadingTracks(true);
+      
+      audioEngineRef.current.loadSong(song).then(() => {
+        setIsLoadingTracks(false);
+        console.log(`Finished loading song: "${song.title}"`);
+      }).catch((error) => {
+        setIsLoadingTracks(false);
+        console.error(`Failed to load song: "${song.title}"`, error);
+      });
+      
       setDuration(song.duration);
       setCurrentTime(0);
       setIsPlaying(false);
@@ -264,6 +274,7 @@ export function useAudioEngine(song?: SongWithTracks) {
     isAudioEngineOnline,
     isMidiConnected,
     masterVolume,
+    isLoadingTracks,
     play,
     pause,
     stop,

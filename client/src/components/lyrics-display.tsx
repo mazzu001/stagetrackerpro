@@ -94,21 +94,22 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           
           if (currentLineIndex >= 3) {
             // Only start scrolling from line 3 onwards
+            // Check if current line is getting close to bottom of visible area
             const lineBottom = lineTop + lineHeight;
             const visibleBottom = currentScrollTop + containerHeight;
+            const bottomPadding = 60; // Keep this much space at bottom
             
-            // Only scroll if the line is going out of view at the bottom
-            if (lineBottom > visibleBottom) {
-              // Scroll just enough to show the line with some padding
-              const targetScrollTop = lineBottom - containerHeight + 40;
-              console.log(`Line ${currentLineIndex}: Scrolling to keep line visible: ${targetScrollTop}`);
+            if (lineBottom > (visibleBottom - bottomPadding)) {
+              // Scroll by exactly one line height to bring next line into view
+              const targetScrollTop = currentScrollTop + lineHeight;
+              console.log(`Line ${currentLineIndex}: Scrolling one line height from ${currentScrollTop} to ${targetScrollTop}`);
               
               container.scrollTo({
-                top: Math.max(0, targetScrollTop),
+                top: targetScrollTop,
                 behavior: 'smooth'
               });
             } else {
-              console.log(`Line ${currentLineIndex}: Line still visible, no scroll needed`);
+              console.log(`Line ${currentLineIndex}: Line has enough space at bottom, no scroll needed`);
             }
           } else {
             console.log(`Line ${currentLineIndex}: Not scrolling (first 3 lines stay at top)`);

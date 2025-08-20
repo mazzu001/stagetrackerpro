@@ -102,7 +102,7 @@ export function SubscriptionGuard({ songCount, onUpgrade }: SubscriptionGuardPro
               <Button
                 onClick={() => {
                   setShowUpgradeDialog(false);
-                  onUpgrade();
+                  window.location.href = '/subscribe';
                 }}
                 className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
                 data-testid="button-proceed-upgrade"

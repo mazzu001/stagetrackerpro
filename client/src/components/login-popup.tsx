@@ -12,12 +12,9 @@ interface LoginPopupProps {
   onLogin: (userType: 'free' | 'paid', email: string) => void;
 }
 
-// Demo users for testing
+// Beta testing account for demo access
 const DEMO_USERS = {
-  'free@demo.com': { password: 'demo123', type: 'free' as const },
   'paid@demo.com': { password: 'demo123', type: 'paid' as const },
-  'user@example.com': { password: 'password', type: 'free' as const },
-  'premium@example.com': { password: 'password', type: 'paid' as const },
 };
 
 export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
@@ -67,14 +64,9 @@ export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
     setIsLoading(false);
   };
 
-  const fillDemoCredentials = (type: 'free' | 'paid') => {
-    if (type === 'free') {
-      setEmail('free@demo.com');
-      setPassword('demo123');
-    } else {
-      setEmail('paid@demo.com');
-      setPassword('demo123');
-    }
+  const fillDemoCredentials = (type: 'paid') => {
+    setEmail('paid@demo.com');
+    setPassword('demo123');
     setError('');
   };
 
@@ -145,19 +137,10 @@ export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
               </Button>
             </form>
 
-            {/* Demo credentials section */}
+            {/* Beta testing access */}
             <div className="border-t pt-4">
-              <p className="text-sm text-gray-600 mb-2">Try demo accounts:</p>
+              <p className="text-sm text-gray-600 mb-2">Beta tester access:</p>
               <div className="flex gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => fillDemoCredentials('free')}
-                  data-testid="button-demo-free"
-                >
-                  Free User
-                </Button>
                 <Button
                   type="button"
                   variant="outline"
@@ -165,7 +148,7 @@ export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
                   onClick={() => fillDemoCredentials('paid')}
                   data-testid="button-demo-paid"
                 >
-                  Premium User
+                  Beta Access
                 </Button>
               </div>
             </div>
@@ -227,7 +210,7 @@ export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
             </form>
 
             <p className="text-xs text-gray-500 text-center">
-              Start with 2 free songs • Upgrade anytime for unlimited songs
+              Start with 2 free songs • Upgrade to Premium ($4.99/month) for unlimited songs
             </p>
           </TabsContent>
         </Tabs>

@@ -3,9 +3,9 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Crown, Music, Zap, Star } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Crown, Check, Music } from 'lucide-react';
 
 // Make sure to call `loadStripe` outside of a component's render to avoid
 // recreating the `Stripe` object on every render.
@@ -14,25 +14,25 @@ if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
 }
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
-const SubscribeForm = () => {
+const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!stripe || !elements) {
+      setIsLoading(false);
       return;
     }
-
-    setIsProcessing(true);
 
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: window.location.origin,
+        return_url: `${window.location.origin}?subscription=success`,
       },
     });
 
@@ -44,16 +44,13 @@ const SubscribeForm = () => {
       });
     } else {
       toast({
-        title: "Payment Successful",
-        description: "Welcome to Music Performance Pro! You now have unlimited songs.",
+        title: "Welcome to Premium!",
+        description: "Your subscription is now active. Enjoy unlimited songs!",
       });
-      // Redirect to performance app after successful payment
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 2000);
+      onSuccess();
     }
-
-    setIsProcessing(false);
+    
+    setIsLoading(false);
   };
 
   return (
@@ -61,138 +58,166 @@ const SubscribeForm = () => {
       <PaymentElement />
       <Button 
         type="submit" 
-        disabled={!stripe || isProcessing} 
-        className="w-full h-12 text-lg"
+        disabled={!stripe || isLoading} 
+        className="w-full"
         data-testid="button-subscribe"
       >
-        {isProcessing ? "Processing..." : "Subscribe for $4.99/month"}
+        {isLoading ? 'Processing...' : 'Subscribe to Premium - $4.99/month'}
       </Button>
     </form>
   );
 };
 
-export default function Subscribe() {
+export default function Subscribe({ onClose }: { onClose: () => void }) {
   const [clientSecret, setClientSecret] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [showPayment, setShowPayment] = useState(false);
 
   useEffect(() => {
-    // Create subscription payment intent
-    apiRequest("POST", "/api/create-subscription")
-      .then((res) => res.json())
-      .then((data) => {
-        setClientSecret(data.clientSecret);
-      })
-      .catch((error) => {
-        console.error('Error creating subscription:', error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+    // Create subscription when payment form is shown
+    if (showPayment && !clientSecret) {
+      apiRequest("POST", "/api/create-subscription")
+        .then((res) => res.json())
+        .then((data) => {
+          setClientSecret(data.clientSecret);
+        })
+        .catch((error) => {
+          console.error('Error creating subscription:', error);
+        });
+    }
+  }, [showPayment, clientSecret]);
 
-  if (isLoading) {
+  if (!showPayment) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
-          <p className="text-gray-400">Setting up subscription...</p>
-        </div>
+      <div className="max-w-2xl mx-auto p-6">
+        <Card>
+          <CardHeader className="text-center">
+            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mb-4">
+              <Crown className="w-8 h-8 text-white" />
+            </div>
+            <CardTitle className="text-2xl">Upgrade to Premium</CardTitle>
+            <p className="text-gray-600">Unlock unlimited songs and advanced features</p>
+          </CardHeader>
+          
+          <CardContent className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Free Plan */}
+              <div className="border rounded-lg p-4">
+                <h3 className="font-semibold mb-2">Free Plan</h3>
+                <p className="text-2xl font-bold mb-4">$0<span className="text-sm font-normal">/month</span></p>
+                <ul className="space-y-2 mb-4">
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span>Up to 2 songs</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span>Basic audio controls</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span>Lyrics display</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Premium Plan */}
+              <div className="border-2 border-orange-500 rounded-lg p-4 relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    Recommended
+                  </span>
+                </div>
+                <h3 className="font-semibold mb-2">Premium Plan</h3>
+                <p className="text-2xl font-bold mb-4">$4.99<span className="text-sm font-normal">/month</span></p>
+                <ul className="space-y-2 mb-4">
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span>Unlimited songs</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span>Up to 6 tracks per song</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span>Advanced audio mixing</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span>MIDI integration</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-500" />
+                    <span>Priority support</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="text-center space-y-4">
+              <Button
+                onClick={() => setShowPayment(true)}
+                className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white px-8 py-3"
+                data-testid="button-show-payment"
+              >
+                <Crown className="w-4 h-4 mr-2" />
+                Upgrade to Premium
+              </Button>
+              
+              <Button
+                variant="ghost"
+                onClick={onClose}
+                data-testid="button-cancel"
+              >
+                Continue with Free Plan
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  if (!clientSecret) {
+    return (
+      <div className="max-w-md mx-auto p-6">
+        <Card>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Setting up your subscription...</h3>
+              <p className="text-sm text-gray-600">Please wait while we prepare your payment.</p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background p-4">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-            <Crown className="w-8 h-8 text-primary" />
-          </div>
-          <h1 className="text-3xl font-bold mb-2">Upgrade to Music Performance Pro</h1>
-          <p className="text-gray-400">Unlock unlimited songs and professional features</p>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Features */}
-          <div className="space-y-6">
-            <Card className="bg-surface border-gray-700">
-              <CardHeader>
-                <CardTitle className="flex items-center text-xl">
-                  <Music className="w-5 h-5 mr-2 text-primary" />
-                  What You Get
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <Star className="w-5 h-5 text-yellow-500 mt-0.5" />
-                  <div>
-                    <h3 className="font-medium">Unlimited Songs</h3>
-                    <p className="text-sm text-gray-400">Create and manage as many songs as you need</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Zap className="w-5 h-5 text-blue-500 mt-0.5" />
-                  <div>
-                    <h3 className="font-medium">Professional Features</h3>
-                    <p className="text-sm text-gray-400">Advanced MIDI control, waveform analysis, and more</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <Crown className="w-5 h-5 text-purple-500 mt-0.5" />
-                  <div>
-                    <h3 className="font-medium">Priority Support</h3>
-                    <p className="text-sm text-gray-400">Get help when you need it most</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <div className="text-center p-6 bg-green-950/20 border border-green-500 rounded-lg">
-              <h3 className="text-green-300 font-medium mb-2">Special Launch Price</h3>
-              <p className="text-green-200 text-sm">
-                Just $4.99/month - Cancel anytime. No setup fees or long-term commitments.
-              </p>
-            </div>
-          </div>
-
-          {/* Payment Form */}
-          <Card className="bg-surface border-gray-700">
-            <CardHeader>
-              <CardTitle>Complete Your Subscription</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {clientSecret ? (
-                <Elements stripe={stripePromise} options={{ clientSecret }}>
-                  <SubscribeForm />
-                </Elements>
-              ) : (
-                <div className="text-center py-8">
-                  <p className="text-red-400">Unable to initialize payment. Please try again.</p>
-                  <Button 
-                    onClick={() => window.location.reload()} 
-                    variant="outline" 
-                    className="mt-4"
-                  >
-                    Retry
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Back to App */}
-        <div className="text-center mt-8">
-          <Button 
-            variant="ghost" 
-            onClick={() => window.location.href = '/'}
-            data-testid="button-back-to-app"
+    <div className="max-w-md mx-auto p-6">
+      <Card>
+        <CardHeader className="text-center">
+          <Crown className="w-12 h-12 mx-auto mb-2 text-yellow-500" />
+          <CardTitle>Complete Your Subscription</CardTitle>
+          <p className="text-sm text-gray-600">Premium Plan - $4.99/month</p>
+        </CardHeader>
+        
+        <CardContent>
+          <Elements stripe={stripePromise} options={{ clientSecret }}>
+            <SubscribeForm onSuccess={onClose} />
+          </Elements>
+          
+          <Button
+            variant="ghost"
+            onClick={() => setShowPayment(false)}
+            className="w-full mt-4"
+            data-testid="button-back"
           >
-            ← Back to App
+            Back to Plans
           </Button>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

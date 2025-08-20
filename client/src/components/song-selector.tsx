@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { useUpgradePrompt } from "@/hooks/useSubscription";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { ListMusic, Plus, FolderOpen } from "lucide-react";
 import type { Song, InsertSong } from "@shared/schema";
@@ -29,6 +30,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   });
 
   const { toast } = useToast();
+  const { handleSongLimitExceeded } = useUpgradePrompt();
 
   const { data: songsData = [], isLoading } = useQuery<Song[]>({
     queryKey: ['/api/songs']
@@ -40,6 +42,13 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   const createSongMutation = useMutation({
     mutationFn: async (songData: InsertSong) => {
       const response = await apiRequest('POST', '/api/songs', songData);
+      if (!response.ok) {
+        const errorData = await response.json();
+        const error = new Error(errorData.message || 'Failed to create song');
+        error.response = response;
+        error.data = errorData;
+        throw error;
+      }
       return response.json();
     },
     onSuccess: (song) => {
@@ -60,7 +69,24 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
         description: `${song.title} has been added successfully.`
       });
     },
-    onError: (error) => {
+    onError: async (error) => {
+      // Check if it's a song limit error
+      if (error instanceof Error && error.message.includes('song_limit_exceeded')) {
+        handleSongLimitExceeded();
+        return;
+      }
+      
+      // Check if response contains upgrade prompt
+      try {
+        const errorResponse = await error.response?.json();
+        if (errorResponse?.error === 'song_limit_exceeded') {
+          handleSongLimitExceeded();
+          return;
+        }
+      } catch {
+        // Fall through to regular error handling
+      }
+
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Failed to create song",

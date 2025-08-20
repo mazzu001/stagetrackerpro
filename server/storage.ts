@@ -8,6 +8,7 @@ export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
   updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined>;
+  updateUserSubscriptionStatus(id: string, status: string, endDate: number): Promise<User | undefined>;
 
   // Songs
   getSong(id: string, userId?: string): Promise<Song | undefined>;
@@ -140,6 +141,40 @@ export class DatabaseStorage implements IStorage {
       };
     } else {
       console.error('User not found for Stripe update:', id);
+      return undefined;
+    }
+  }
+
+  async updateUserSubscriptionStatus(id: string, status: string, endDate: number): Promise<User | undefined> {
+    if (!userDb) {
+      console.error('Cloud database not available for user operations');
+      return undefined;
+    }
+    
+    try {
+      const endDateISO = new Date(endDate * 1000).toISOString();
+      
+      const [user] = await userDb
+        .update(usersPg)
+        .set({ 
+          subscriptionStatus: status,
+          subscriptionEndDate: endDateISO,
+          updatedAt: new Date()
+        })
+        .where(eq(usersPg.id, id))
+        .returning();
+      
+      if (!user) return undefined;
+      
+      console.log('User subscription status updated:', user.id, status, endDateISO);
+      
+      return {
+        ...user,
+        createdAt: user.createdAt?.toISOString() || null,
+        updatedAt: user.updatedAt?.toISOString() || null,
+      };
+    } catch (error) {
+      console.error('Error updating user subscription status:', error);
       return undefined;
     }
   }

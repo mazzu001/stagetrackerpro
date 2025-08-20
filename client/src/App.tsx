@@ -74,7 +74,7 @@ function AppContent() {
       ) : (
         <Router>
           <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
-          <Route path="/subscribe" component={Subscribe} />
+          <Route path="/subscribe" component={() => <Subscribe onClose={() => window.history.back()} />} />
         </Router>
       )}
       <Toaster />

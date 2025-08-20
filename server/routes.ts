@@ -88,27 +88,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   console.log('✅ Sample file download routes registered');
 
-  // Stripe subscription route (simplified for testing)
+  // Stripe subscription routes
   console.log('💳 Registering Stripe payment routes...');
-  app.post('/api/create-subscription', async (req: any, res) => {
+  
+  app.post('/api/create-subscription', isAuthenticated, async (req: any, res) => {
     try {
-      console.log('💰 Creating Stripe payment intent for subscription...');
-      // For testing, create a simple payment intent for $4.99
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: 499, // $4.99 in cents
-        currency: 'usd',
-        automatic_payment_methods: {
-          enabled: true,
-        },
-        metadata: {
-          type: 'subscription',
-          price: '4.99'
-        }
+      const userId = req.user.claims.sub;
+      const userEmail = req.user.claims.email || req.user.email;
+      
+      console.log('💰 Creating Stripe subscription for user:', userId);
+      
+      // Get or create user record
+      let user = await storage.getUser(userId);
+      if (!user) {
+        user = await storage.upsertUser({
+          id: userId,
+          email: userEmail,
+          firstName: req.user.claims.given_name,
+          lastName: req.user.claims.family_name,
+          subscriptionStatus: 'inactive'
+        });
+      }
+
+      // Create Stripe customer if one doesn't exist
+      let customerId = user.stripeCustomerId;
+      if (!customerId) {
+        const customer = await stripe.customers.create({
+          email: userEmail,
+          name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
+          metadata: { userId: userId }
+        });
+        customerId = customer.id;
+        
+        // Update user with customer ID
+        await storage.updateUserStripeInfo(userId, customerId, '');
+      }
+
+      // Create subscription
+      const subscription = await stripe.subscriptions.create({
+        customer: customerId,
+        items: [{
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: 'Live Performance Pro Premium',
+              description: 'Unlimited songs and advanced features'
+            },
+            unit_amount: 499, // $4.99 in cents
+            recurring: {
+              interval: 'month'
+            }
+          }
+        }],
+        payment_behavior: 'default_incomplete',
+        expand: ['latest_invoice.payment_intent'],
+        metadata: { userId: userId }
       });
 
-      console.log(`✅ Payment intent created successfully: ${paymentIntent.id}`);
+      // Update user with subscription ID
+      await storage.updateUserStripeInfo(userId, customerId, subscription.id);
+
+      console.log(`✅ Subscription created: ${subscription.id}`);
+      
+      const paymentIntent = subscription.latest_invoice?.payment_intent;
       res.json({
-        clientSecret: paymentIntent.client_secret,
+        subscriptionId: subscription.id,
+        clientSecret: paymentIntent?.client_secret,
       });
     } catch (error: any) {
       console.error('Subscription creation error:', error);
@@ -119,15 +164,97 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Subscription status endpoint
+  app.get('/api/subscription-status', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      if (!user || !user.stripeSubscriptionId) {
+        return res.json({ 
+          hasActiveSubscription: false, 
+          status: 'inactive' 
+        });
+      }
+
+      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+      const isActive = subscription.status === 'active';
+
+      // Update user status if it changed
+      if (user.subscriptionStatus !== subscription.status) {
+        await storage.updateUserSubscriptionStatus(userId, subscription.status, subscription.current_period_end);
+      }
+
+      res.json({
+        hasActiveSubscription: isActive,
+        status: subscription.status,
+        currentPeriodEnd: subscription.current_period_end,
+        cancelAtPeriodEnd: subscription.cancel_at_period_end
+      });
+    } catch (error: any) {
+      console.error('Subscription status error:', error);
+      res.status(500).json({ 
+        error: 'Failed to get subscription status',
+        message: error.message 
+      });
+    }
+  });
+
   // Serve uploaded files
   app.use("/uploads", express.static(uploadDir));
+
+  // Subscription checking middleware
+  const requireSubscription = async (req: any, res: any, next: any) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      // Always allow beta test account
+      if (req.user.claims.email === 'paid@demo.com') {
+        return next();
+      }
+      
+      if (!user || !user.stripeSubscriptionId) {
+        return res.status(403).json({ 
+          error: 'subscription_required',
+          message: 'Premium subscription required. Please upgrade to continue.' 
+        });
+      }
+
+      // Check subscription status with Stripe
+      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+      if (subscription.status !== 'active') {
+        return res.status(403).json({ 
+          error: 'subscription_inactive',
+          message: 'Your subscription is not active. Please update your payment method.' 
+        });
+      }
+
+      next();
+    } catch (error: any) {
+      console.error('Subscription check error:', error);
+      res.status(500).json({ 
+        error: 'subscription_check_failed',
+        message: 'Unable to verify subscription status' 
+      });
+    }
+  };
 
   // Songs routes (require authentication for user-specific songs)
   app.get("/api/songs", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
       const songs = await storage.getAllSongs(userId);
-      res.json(songs);
+      
+      // Check song count limits for free users
+      const isFreeTier = !user?.stripeSubscriptionId && req.user.claims.email !== 'paid@demo.com';
+      if (isFreeTier && songs.length > 2) {
+        // Return only first 2 songs for free tier users
+        res.json(songs.slice(0, 2));
+      } else {
+        res.json(songs);
+      }
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch songs" });
     }
@@ -149,6 +276,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/songs", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      
+      // Check song limits for free tier users
+      const isFreeTier = !user?.stripeSubscriptionId && req.user.claims.email !== 'paid@demo.com';
+      if (isFreeTier) {
+        const existingSongs = await storage.getAllSongs(userId);
+        if (existingSongs.length >= 2) {
+          return res.status(403).json({ 
+            error: 'song_limit_exceeded',
+            message: 'Free tier is limited to 2 songs. Please upgrade to Premium for unlimited songs.' 
+          });
+        }
+      }
+      
       const validatedData = insertSongSchema.parse({
         ...req.body,
         userId: userId  // Associate song with authenticated user

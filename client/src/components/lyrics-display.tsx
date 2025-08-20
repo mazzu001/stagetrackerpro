@@ -80,11 +80,10 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
         // Calculate the center point of the visible area
         const visibleCenter = currentScrollTop + (containerHeight / 2);
         
-        // Only scroll when highlighted line passes center AND we're past the first 3 lines
-        const shouldScroll = currentLineIndex >= 3 && lineCenter > visibleCenter;
-        
-        if (shouldScroll) {
-          // Scroll down by one line height to keep the highlighted line visible
+        // Only scroll when the highlighted line is below the center mark
+        // This keeps the highlighted line centered throughout the song
+        if (lineCenter > visibleCenter) {
+          // Scroll down by one line height to keep the highlighted line centered
           const nextScrollTop = currentScrollTop + (currentLineElement.offsetHeight + 16); // 16px for space-y-4
           const maxScrollTop = container.scrollHeight - containerHeight;
           

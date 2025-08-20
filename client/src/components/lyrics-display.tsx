@@ -122,25 +122,38 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
     }
   }, [currentLineIndex, hasTimestamps]);
 
-  // Auto-scroll for non-timestamped lyrics
+  // Timer-based auto-scroll for non-timestamped lyrics
   useEffect(() => {
-    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && duration && currentTime >= 0 && autoScrollEnabled) {
+    let scrollTimer: NodeJS.Timeout | null = null;
+    
+    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && autoScrollEnabled && currentTime > 0) {
       const container = containerRef.current;
-      const contentHeight = container.scrollHeight;
-      const containerHeight = container.clientHeight;
-      const maxScrollDistance = Math.max(0, contentHeight - containerHeight);
       
-      // Only scroll if there's content to scroll
-      if (maxScrollDistance > 0) {
-        // Calculate scroll position as percentage of song progress
-        const songProgress = Math.min(currentTime / duration, 1);
-        // Linear scroll from start to finish with scroll speed multiplier
-        const targetScrollTop = songProgress * maxScrollDistance * scrollSpeed;
-        
-        container.scrollTop = Math.min(targetScrollTop, maxScrollDistance);
-      }
+      // Calculate scroll increment based on speed setting
+      // scrollSpeed ranges from 0.1 to 2.0, we'll use this to determine interval time
+      const baseInterval = 1000; // 1 second base interval
+      const intervalMs = baseInterval / scrollSpeed; // Faster speed = shorter interval
+      const scrollIncrement = 2; // pixels to scroll each interval
+      
+      scrollTimer = setInterval(() => {
+        if (container && currentTime > 0) {
+          const contentHeight = container.scrollHeight;
+          const containerHeight = container.clientHeight;
+          const maxScrollDistance = Math.max(0, contentHeight - containerHeight);
+          
+          if (container.scrollTop < maxScrollDistance) {
+            container.scrollTop += scrollIncrement;
+          }
+        }
+      }, intervalMs);
     }
-  }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration, autoScrollEnabled]);
+    
+    return () => {
+      if (scrollTimer) {
+        clearInterval(scrollTimer);
+      }
+    };
+  }, [currentTime > 0, hasTimestamps, plainLines.length, scrollSpeed, autoScrollEnabled]);
 
   const adjustFontSize = (delta: number) => {
     const newSize = Math.max(12, Math.min(32, fontSize + delta));

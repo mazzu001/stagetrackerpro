@@ -63,7 +63,7 @@ export function LyricsControls({ onEditLyrics, song }: LyricsControlsProps) {
         <div className="flex items-center space-x-1">
           <button
             className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7 rounded text-white text-xs flex items-center justify-center"
-            title="Decrease Scroll Speed"
+            title="Slower Auto-Scroll (Longer Timer Intervals)"
             onClick={() => adjustScrollSpeed(-0.1)}
           >
             ⬇
@@ -73,7 +73,7 @@ export function LyricsControls({ onEditLyrics, song }: LyricsControlsProps) {
           </span>
           <button
             className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7 rounded text-white text-xs flex items-center justify-center"
-            title="Increase Scroll Speed"
+            title="Faster Auto-Scroll (Shorter Timer Intervals)"
             onClick={() => adjustScrollSpeed(0.1)}
           >
             ⬆

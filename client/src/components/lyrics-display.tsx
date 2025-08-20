@@ -84,26 +84,11 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
 
   // Auto-scroll for non-timestamped lyrics
   useEffect(() => {
-    console.log('Auto-scroll check:', {
-      hasTimestamps,
-      plainLinesLength: plainLines.length,
-      containerExists: !!containerRef.current,
-      songDuration: song?.duration,
-      currentTime,
-      scrollSpeed
-    });
-    
     if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 1) {
       const container = containerRef.current;
-      
-      // Simple time-based scroll calculation
-      const scrollPixelsPerSecond = (100 * scrollSpeed); // Base scroll speed
+      const scrollPixelsPerSecond = (100 * scrollSpeed);
       const totalScrollDistance = (currentTime - 1) * scrollPixelsPerSecond;
-      
-      console.log('Setting scroll position to:', totalScrollDistance);
-      console.log('Container scroll before:', container.scrollTop, 'max:', container.scrollHeight - container.clientHeight);
       container.scrollTop = totalScrollDistance;
-      console.log('Container scroll after:', container.scrollTop);
     }
   }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration]);
 

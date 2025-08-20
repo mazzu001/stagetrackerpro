@@ -68,40 +68,31 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
     
     const container = lyricsContainerRef.current;
 
-    if (hasRealTimestamps && currentLineIndex >= 0) {
-      // Timestamped lyrics: Start scrolling after the first few lines (line 3 and beyond)
-      const shouldScroll = currentLineIndex >= 3; // Start scrolling after first 3 lines
+    if (hasRealTimestamps && currentLineIndex >= 0 && currentLineIndex !== lastScrolledLine) {
+      const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
       
-      if (shouldScroll && currentLineIndex !== lastScrolledLine) {
-        const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
+      if (currentLineElement) {
+        const containerHeight = container.clientHeight;
+        const currentScrollTop = container.scrollTop;
+        const lineTop = currentLineElement.offsetTop;
+        const lineCenter = lineTop + (currentLineElement.offsetHeight / 2);
         
-        if (currentLineElement) {
-          const containerHeight = container.clientHeight;
-          const currentScrollTop = container.scrollTop;
-          const lineTop = currentLineElement.offsetTop;
-          const lineBottom = lineTop + currentLineElement.offsetHeight;
+        // Calculate the center point of the visible area
+        const visibleCenter = currentScrollTop + (containerHeight / 2);
+        
+        // Only scroll when the highlighted line passes the center of the text box
+        if (lineCenter > visibleCenter) {
+          // Scroll down by one line height to keep the highlighted line visible
+          const nextScrollTop = currentScrollTop + (currentLineElement.offsetHeight + 16); // 16px for space-y-4
+          const maxScrollTop = container.scrollHeight - containerHeight;
           
-          const visibleTop = currentScrollTop;
-          const visibleBottom = currentScrollTop + containerHeight;
-          
-          // Only scroll if the line is getting close to the edge or out of view
-          const margin = containerHeight * 0.2; // 20% margin from edges
-          const needsScroll = lineBottom > (visibleBottom - margin) || lineTop < (visibleTop + margin);
-          
-          if (needsScroll) {
-            // Position line at about 1/3 from top for better readability
-            const targetScrollTop = lineTop - (containerHeight / 3);
-            const maxScrollTop = container.scrollHeight - containerHeight;
-            const finalScrollTop = Math.max(0, Math.min(targetScrollTop, maxScrollTop));
-            
-            container.scrollTo({
-              top: finalScrollTop,
-              behavior: 'smooth'
-            });
-          }
-          
-          setLastScrolledLine(currentLineIndex);
+          container.scrollTo({
+            top: Math.min(nextScrollTop, maxScrollTop),
+            behavior: 'smooth'
+          });
         }
+        
+        setLastScrolledLine(currentLineIndex);
       }
     } else if (!hasRealTimestamps && currentTime >= 5) {
       // Non-timestamped lyrics: smooth auto-scroll based on song progress with adjustable speed

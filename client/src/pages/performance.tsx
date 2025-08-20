@@ -895,7 +895,7 @@ Examples:
                 data-testid="textarea-lyrics"
               />
               
-              <div className="text-xs text-gray-500 dark:bg-gray-800/50 p-3 rounded-lg bg-[#2a2c37]">
+              <div className="text-xs dark:bg-gray-800/50 p-3 rounded-lg bg-[#2a2c37] text-[#96bbd4]">
                 <div className="font-medium mb-1">Formatting Guide:</div>
                 <div className="space-y-1">
                   <div>• Use <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">[MM:SS]</code> for timestamps (e.g., [01:23])</div>

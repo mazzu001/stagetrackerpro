@@ -130,7 +130,7 @@ export default function TrackManager({
     }, 300);
   }, [onTrackBalanceChange, song?.id, user?.email]);
 
-  // Handle mute toggle with local storage
+  // Handle mute toggle with local storage (no refetch needed - causes loading dialog)
   const handleMuteToggle = useCallback((trackId: string) => {
     if (song?.id && user?.email) {
       const track = tracks.find(t => t.id === trackId);
@@ -138,12 +138,15 @@ export default function TrackManager({
         const newMutedState = !track.isMuted;
         LocalSongStorage.updateTrack(user.email, song.id, trackId, { isMuted: newMutedState });
         onTrackMuteToggle?.(trackId);
-        refetchTracks();
+        // Update local state immediately for UI responsiveness
+        setTracks(prevTracks => 
+          prevTracks.map(t => t.id === trackId ? { ...t, isMuted: newMutedState } : t)
+        );
       }
     }
-  }, [song?.id, user?.email, tracks, onTrackMuteToggle, refetchTracks]);
+  }, [song?.id, user?.email, tracks, onTrackMuteToggle]);
 
-  // Handle solo toggle with local storage
+  // Handle solo toggle with local storage (no refetch needed - causes loading dialog)
   const handleSoloToggle = useCallback((trackId: string) => {
     if (song?.id && user?.email) {
       const track = tracks.find(t => t.id === trackId);
@@ -151,10 +154,13 @@ export default function TrackManager({
         const newSoloState = !track.isSolo;
         LocalSongStorage.updateTrack(user.email, song.id, trackId, { isSolo: newSoloState });
         onTrackSoloToggle?.(trackId);
-        refetchTracks();
+        // Update local state immediately for UI responsiveness
+        setTracks(prevTracks => 
+          prevTracks.map(t => t.id === trackId ? { ...t, isSolo: newSoloState } : t)
+        );
       }
     }
-  }, [song?.id, user?.email, tracks, onTrackSoloToggle, refetchTracks]);
+  }, [song?.id, user?.email, tracks, onTrackSoloToggle]);
 
   const addTrack = async (audioFileName: string, trackName: string, file: File) => {
     if (!song?.id || !user?.email) throw new Error('No song selected or user not authenticated');
@@ -555,9 +561,7 @@ export default function TrackManager({
                       <div className="col-span-2">
                         <VUMeter
                           level={level}
-                          width={40}
-                          height={20}
-                          showLabel={false}
+                          isMuted={isMuted}
                         />
                       </div>
                     </div>

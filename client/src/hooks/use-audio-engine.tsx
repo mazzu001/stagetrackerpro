@@ -49,7 +49,7 @@ export function useAudioEngine(song?: SongWithTracks) {
     };
   }, []);
 
-  // Load song when selected OR when track count changes
+  // Load song when selected (but not when just mute/solo properties change)
   useEffect(() => {
     if (song && audioEngineRef.current) {
       console.log(`Loading song: "${song.title}" with ${song.tracks.length} tracks`);
@@ -67,7 +67,7 @@ export function useAudioEngine(song?: SongWithTracks) {
       setCurrentTime(0);
       setIsPlaying(false);
     }
-  }, [song, song?.tracks.length]); // Re-load when track count changes
+  }, [song?.id]); // Only reload when song ID changes, not on track property updates
 
   // Animation loop for real-time updates
 

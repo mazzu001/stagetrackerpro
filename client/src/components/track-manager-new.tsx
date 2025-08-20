@@ -436,11 +436,13 @@ export default function TrackManager({
             </Button>
           )}
           
+          {/* Desktop buttons */}
           <Button
             onClick={handleFileSelect}
             disabled={tracks.length >= 6 || isImporting}
             size="sm"
-            data-testid="button-add-tracks"
+            className="hidden md:flex"
+            data-testid="button-add-tracks-desktop"
           >
             <Plus className="h-4 w-4 mr-2" />
             {isImporting ? 'Adding...' : 'Add Tracks'}
@@ -451,10 +453,36 @@ export default function TrackManager({
               onClick={handleClearBrokenTracks}
               variant="outline"
               size="sm"
-              data-testid="button-clear-tracks"
+              className="hidden md:flex"
+              data-testid="button-clear-tracks-desktop"
             >
               <Trash2 className="h-4 w-4 mr-2" />
               Clear All
+            </Button>
+          )}
+
+          {/* Mobile buttons - more compact */}
+          <Button
+            onClick={handleFileSelect}
+            disabled={tracks.length >= 6 || isImporting}
+            size="sm"
+            className="flex md:hidden"
+            data-testid="button-add-tracks-mobile"
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            {isImporting ? 'Adding...' : 'Add'}
+          </Button>
+          
+          {tracks.length > 0 && (
+            <Button
+              onClick={handleClearBrokenTracks}
+              variant="outline"
+              size="sm"
+              className="flex md:hidden h-8 w-8 p-0"
+              title="Clear All Tracks"
+              data-testid="button-clear-tracks-mobile"
+            >
+              <Trash2 className="h-4 w-4" />
             </Button>
           )}
         </div>
@@ -642,7 +670,7 @@ export default function TrackManager({
                         </div>
 
                         {/* Bottom row: VU Meter and Delete button */}
-                        <div className="flex items-center justify-between gap-2 pt-1">
+                        <div className="flex items-center gap-2 pt-1">
                           <div className="flex-shrink-0 w-16">
                             <VUMeter
                               level={level}
@@ -654,7 +682,7 @@ export default function TrackManager({
                             onClick={() => deleteTrack(track.id)}
                             variant="ghost"
                             size="sm"
-                            className="h-8 w-8 p-0 ml-auto"
+                            className="h-8 w-8 p-0 flex-shrink-0"
                             data-testid={`button-delete-track-${track.id}`}
                           >
                             <Trash2 className="h-3 w-3" />

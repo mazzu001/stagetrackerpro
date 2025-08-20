@@ -91,48 +91,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Stripe subscription routes
   console.log('💳 Registering Stripe payment routes...');
   
-  app.post('/api/create-subscription', isAuthenticated, async (req: any, res) => {
+  app.post('/api/create-subscription', async (req, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const userEmail = req.user.claims.email || req.user.email;
+      const { email } = req.body;
       
-      console.log('💰 Creating Stripe subscription for user:', userId);
-      
-      // Get or create user record
-      let user = await storage.getUser(userId);
-      if (!user) {
-        user = await storage.upsertUser({
-          id: userId,
-          email: userEmail,
-          firstName: req.user.claims.given_name,
-          lastName: req.user.claims.family_name,
-          subscriptionStatus: 'inactive'
+      if (!email) {
+        return res.status(400).json({ 
+          error: 'Email required',
+          message: 'Email address is required to create subscription' 
         });
       }
+      
+      console.log('💰 Creating Stripe subscription for email:', email);
 
-      // Create Stripe customer if one doesn't exist
-      let customerId = user.stripeCustomerId;
-      if (!customerId) {
-        const customer = await stripe.customers.create({
-          email: userEmail,
-          name: `${user.firstName || ''} ${user.lastName || ''}`.trim(),
-          metadata: { userId: userId }
-        });
-        customerId = customer.id;
-        
-        // Update user with customer ID
-        await storage.updateUserStripeInfo(userId, customerId, '');
-      }
+      // Create Stripe customer
+      const customer = await stripe.customers.create({
+        email: email,
+        name: email, // Use email as name for simplicity
+        metadata: { email: email }
+      });
 
       // Create subscription
       const subscription = await stripe.subscriptions.create({
-        customer: customerId,
+        customer: customer.id,
         items: [{
           price_data: {
             currency: 'usd',
             product_data: {
-              name: 'Live Performance Pro Premium',
-              description: 'Unlimited songs and advanced features'
+              name: 'StageTracker Pro Premium',
+              description: 'Unlimited songs and advanced performance features'
             },
             unit_amount: 499, // $4.99 in cents
             recurring: {
@@ -142,11 +129,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }],
         payment_behavior: 'default_incomplete',
         expand: ['latest_invoice.payment_intent'],
-        metadata: { userId: userId }
+        metadata: { email: email }
       });
-
-      // Update user with subscription ID
-      await storage.updateUserStripeInfo(userId, customerId, subscription.id);
 
       console.log(`✅ Subscription created: ${subscription.id}`);
       
@@ -154,6 +138,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({
         subscriptionId: subscription.id,
         clientSecret: paymentIntent?.client_secret,
+        customerId: customer.id
       });
     } catch (error: any) {
       console.error('Subscription creation error:', error);
@@ -164,32 +149,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Subscription status endpoint
-  app.get('/api/subscription-status', isAuthenticated, async (req: any, res) => {
+  // Simplified subscription status endpoint for local auth
+  app.get('/api/subscription-status', async (req, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      
-      if (!user || !user.stripeSubscriptionId) {
-        return res.json({ 
-          hasActiveSubscription: false, 
-          status: 'inactive' 
-        });
-      }
-
-      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
-      const isActive = subscription.status === 'active';
-
-      // Update user status if it changed
-      if (user.subscriptionStatus !== subscription.status) {
-        await storage.updateUserSubscriptionStatus(userId, subscription.status, subscription.current_period_end);
-      }
-
-      res.json({
-        hasActiveSubscription: isActive,
-        status: subscription.status,
-        currentPeriodEnd: subscription.current_period_end,
-        cancelAtPeriodEnd: subscription.cancel_at_period_end
+      // For local authentication, just return based on stored user type
+      res.json({ 
+        hasActiveSubscription: false, 
+        status: 'inactive',
+        message: 'Using local authentication - subscriptions managed locally'
       });
     } catch (error: any) {
       console.error('Subscription status error:', error);

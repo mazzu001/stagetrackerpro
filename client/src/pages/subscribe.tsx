@@ -43,6 +43,21 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
         variant: "destructive",
       });
     } else {
+      // Update local user type to paid
+      const storedUser = localStorage.getItem('lpp_local_user');
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          userData.userType = 'paid';
+          localStorage.setItem('lpp_local_user', JSON.stringify(userData));
+          
+          // Trigger auth change event to update the UI
+          window.dispatchEvent(new Event('auth-change'));
+        } catch (error) {
+          console.error('Error updating user type:', error);
+        }
+      }
+      
       toast({
         title: "Welcome to Premium!",
         description: "Your subscription is now active. Enjoy unlimited songs!",
@@ -75,10 +90,35 @@ export default function Subscribe({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     // Create subscription when payment form is shown
     if (showPayment && !clientSecret) {
-      apiRequest("POST", "/api/create-subscription")
+      // Get user email from localStorage
+      const storedUser = localStorage.getItem('lpp_local_user');
+      let userEmail = 'user@example.com'; // Default fallback
+      
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          userEmail = userData.email || 'user@example.com';
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+        }
+      }
+      
+      console.log('Creating subscription for:', userEmail);
+      
+      fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: userEmail }),
+      })
         .then((res) => res.json())
         .then((data) => {
-          setClientSecret(data.clientSecret);
+          if (data.clientSecret) {
+            setClientSecret(data.clientSecret);
+          } else {
+            console.error('No client secret returned:', data);
+          }
         })
         .catch((error) => {
           console.error('Error creating subscription:', error);

@@ -92,8 +92,8 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           
           console.log(`Line ${currentLineIndex}: lineTop=${lineTop}, containerHeight=${containerHeight}, currentScroll=${currentScrollTop}`);
           
-          if (currentLineIndex >= 2) {
-            // Calculate how much we need to scroll to keep the current line visible
+          if (currentLineIndex >= 3) {
+            // Only start scrolling from line 3 onwards
             const lineBottom = lineTop + lineHeight;
             const visibleBottom = currentScrollTop + containerHeight;
             
@@ -111,7 +111,7 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
               console.log(`Line ${currentLineIndex}: Line still visible, no scroll needed`);
             }
           } else {
-            console.log(`Line ${currentLineIndex}: Not scrolling (first 2 lines)`);
+            console.log(`Line ${currentLineIndex}: Not scrolling (first 3 lines stay at top)`);
           }
           
           setLastScrolledLine(currentLineIndex);

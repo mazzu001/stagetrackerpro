@@ -38,9 +38,7 @@ export default function Landing() {
             <CardHeader>
               <Zap className="w-8 h-8 text-yellow-400 mb-2" />
               <CardTitle className="text-white">MIDI Integration and Time Stamps</CardTitle>
-              <CardDescription className="text-gray-400">
-                Timed MIDI events embedded in lyrics for lighting and effects control
-              </CardDescription>
+              <CardDescription className="text-gray-400">Timed MIDI events embedded in lyrics for lighting and effects control. Time stamps help your lyrics scroll in perfect time with the music Karaoke style.</CardDescription>
             </CardHeader>
           </Card>
 

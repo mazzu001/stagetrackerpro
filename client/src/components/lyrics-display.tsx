@@ -258,7 +258,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
             })}
           </div>
         ) : (
-          <div style={{ fontSize: `${fontSize}px`, height: '300vh' }}>
+          <div style={{ fontSize: `${fontSize}px`, paddingBottom: '80vh' }}>
             {plainLines.map((line: string, index: number) => (
               <div
                 key={index}

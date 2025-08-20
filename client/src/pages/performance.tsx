@@ -45,6 +45,8 @@ export default function Performance({ userType }: PerformanceProps) {
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMIDIManagerOpen, setIsMIDIManagerOpen] = useState(false);
+  const [isMidiListening, setIsMidiListening] = useState(false);
+  const [lastMidiMessage, setLastMidiMessage] = useState<{ device: string; data: number[]; timestamp: number } | null>(null);
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
@@ -123,6 +125,111 @@ export default function Performance({ userType }: PerformanceProps) {
       stopSequencer();
     }
   }, [selectedSongId, user?.email, startSequencer, stopSequencer]);
+
+  // Listen for MIDI messages when in lyrics editor
+  useEffect(() => {
+    if (!isMidiListening || !isEditLyricsOpen) return;
+
+    const handleMidiMessage = (event: CustomEvent) => {
+      const { device, data, timestamp } = event.detail;
+      setLastMidiMessage({ device, data, timestamp });
+      
+      // Auto-convert MIDI message to text command
+      const midiCommand = formatMidiMessageAsCommand(data);
+      if (midiCommand) {
+        // Insert the MIDI command at current cursor position
+        insertMidiCommandAtCursor(midiCommand);
+      }
+    };
+
+    window.addEventListener('midiMessage', handleMidiMessage as EventListener);
+    return () => {
+      window.removeEventListener('midiMessage', handleMidiMessage as EventListener);
+    };
+  }, [isMidiListening, isEditLyricsOpen]);
+
+  // Format MIDI data as text command
+  const formatMidiMessageAsCommand = (data: number[]): string | null => {
+    if (data.length < 2) return null;
+
+    const [status, ...params] = data;
+    const messageType = (status & 0xF0) >> 4;
+    const channel = (status & 0x0F) + 1; // Convert to 1-based channel
+
+    switch (messageType) {
+      case 0x9: // Note On
+        if (params.length >= 2) {
+          const [note, velocity] = params;
+          return `[[NOTE:${note}:${velocity}:${channel}]]`;
+        }
+        break;
+      case 0x8: // Note Off
+        if (params.length >= 1) {
+          const [note] = params;
+          return `[[NOTEOFF:${note}:${channel}]]`;
+        }
+        break;
+      case 0xB: // Control Change
+        if (params.length >= 2) {
+          const [controller, value] = params;
+          return `[[CC:${controller}:${value}:${channel}]]`;
+        }
+        break;
+      case 0xC: // Program Change
+        if (params.length >= 1) {
+          const [program] = params;
+          return `[[PC:${program}:${channel}]]`;
+        }
+        break;
+      default:
+        return null;
+    }
+    return null;
+  };
+
+  // Insert MIDI command at cursor position in textarea
+  const insertMidiCommandAtCursor = (command: string) => {
+    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const currentText = lyricsText;
+    
+    // Insert command at cursor position
+    const newText = currentText.substring(0, start) + command + currentText.substring(end);
+    setLyricsText(newText);
+    
+    // Restore cursor position after the inserted command
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + command.length, start + command.length);
+    }, 0);
+
+    toast({
+      title: "MIDI Command Added",
+      description: `Inserted: ${command}`,
+      duration: 2000,
+    });
+  };
+
+  // Toggle MIDI listening mode
+  const toggleMidiListening = () => {
+    setIsMidiListening(!isMidiListening);
+    if (!isMidiListening) {
+      toast({
+        title: "MIDI Listening Active",
+        description: "Play MIDI notes or send CC messages to insert commands into lyrics",
+        duration: 3000,
+      });
+    } else {
+      toast({
+        title: "MIDI Listening Disabled",
+        description: "MIDI input will no longer be captured",
+        duration: 2000,
+      });
+    }
+  };
 
   const {
     isPlaying,
@@ -961,6 +1068,17 @@ export default function Performance({ userType }: PerformanceProps) {
                 <Music className="w-3 h-3 mr-1" />
                 Search
               </Button>
+              <Button
+                variant={isMidiListening ? "default" : "outline"}
+                size="sm"
+                onClick={toggleMidiListening}
+                disabled={!midiSupported || connectedInputs.length === 0}
+                data-testid="button-midi-listen"
+                className="h-8 px-3"
+              >
+                <Bluetooth className="w-3 h-3 mr-1" />
+                {isMidiListening ? 'Stop Listen' : 'MIDI Listen'}
+              </Button>
               
               {/* Compact Position Slider */}
               {selectedSong && selectedSong.duration && (
@@ -992,6 +1110,17 @@ export default function Performance({ userType }: PerformanceProps) {
                 <span className="text-xs text-gray-500">
                   {lyricsText.length} chars
                 </span>
+                {isMidiListening && (
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span className="text-xs text-green-600 font-medium">MIDI Listening</span>
+                  </div>
+                )}
+                {lastMidiMessage && (
+                  <div className="text-xs text-blue-600 font-mono">
+                    Last: {formatMidiMessageAsCommand(lastMidiMessage.data)}
+                  </div>
+                )}
                 <div className="text-xs text-gray-400">
                   <code className="text-xs">[MM:SS]</code> timestamps • <code className="text-xs">[[CC:1:64]]</code> MIDI
                 </div>
@@ -1012,7 +1141,8 @@ export default function Performance({ userType }: PerformanceProps) {
 [[NOTE:60:127]] MIDI note on
 [[PC:5]] Program change
 
-Click "Timestamp" to insert current time`}
+Click "Timestamp" to insert current time
+Click "MIDI Listen" then play your MIDI device to insert commands automatically`}
               className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
               style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
               spellCheck={false}

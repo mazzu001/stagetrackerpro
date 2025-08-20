@@ -220,7 +220,7 @@ export function useMIDI() {
           // Emit custom event for other components to listen
           window.dispatchEvent(new CustomEvent('midiMessage', {
             detail: {
-              device: input.name,
+              device: input.name || 'Unknown Device',
               data,
               timestamp: Date.now()
             }
@@ -229,6 +229,18 @@ export function useMIDI() {
       }
     });
   }, []);
+
+  // Setup input listeners when access changes
+  useEffect(() => {
+    if (midiAccess) {
+      setupInputListeners(midiAccess);
+      
+      // Listen for new devices being connected
+      midiAccess.onstatechange = () => {
+        setupInputListeners(midiAccess);
+      };
+    }
+  }, [midiAccess, setupInputListeners]);
 
   // Auto-initialize on first use with enhanced Bluetooth support
   useEffect(() => {

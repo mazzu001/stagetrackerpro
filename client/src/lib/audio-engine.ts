@@ -283,62 +283,11 @@ export class AudioEngine {
   private levelCache: Map<string, { level: number, lastUpdate: number }> = new Map();
   private smoothingFactor = 0.3; // Smoother level transitions
   
-  // Cache device detection to avoid repeated user agent parsing
-  private deviceDetectionCache: { needsSamsungWorkaround: boolean; lastCheck: number } | null = null;
-  
-  // Performance monitoring for debugging PC slowdown
-  private performanceMonitor = {
-    lastLogTime: 0,
-    callCount: 0,
-    totalTime: 0,
-    maxTime: 0
-  };
-  
-  private detectSamsungDevice(): boolean {
-    const now = performance.now();
-    
-    // Cache device detection for 60 seconds to avoid repeated parsing
-    if (this.deviceDetectionCache && now - this.deviceDetectionCache.lastCheck < 60000) {
-      return this.deviceDetectionCache.needsSamsungWorkaround;
-    }
-    
-    const userAgent = navigator.userAgent.toLowerCase();
-    
-    // Be very specific about Samsung device detection to avoid false positives on desktop
-    const isSamsungDevice = (userAgent.includes('samsung') && userAgent.includes('tablet')) || 
-                           (userAgent.includes('sm-') && userAgent.includes('android')) ||
-                           userAgent.includes('samsungbrowser');
-    
-    // Must be Android to apply workaround - this prevents desktop browsers from triggering it
-    const needsSamsungWorkaround = isSamsungDevice && userAgent.includes('android');
-    
-    this.deviceDetectionCache = { needsSamsungWorkaround, lastCheck: now };
-    
-    // Log detection result occasionally - temporarily more frequent for debugging PC issue
-    if (Math.random() < 0.1) {
-      console.log('Device detection result:', {
-        userAgent: navigator.userAgent,
-        needsSamsungWorkaround,
-        isSamsungDevice,
-        isAndroid: userAgent.includes('android'),
-        platform: navigator.platform,
-        vendor: navigator.vendor
-      });
-    }
-    
-    return needsSamsungWorkaround;
-  }
+
 
   getAudioLevels(): Record<string, number> {
-    const startTime = performance.now();
     const levels: Record<string, number> = {};
     const now = performance.now();
-    
-    // Use cached device detection for better performance
-    const needsSamsungWorkaround = this.detectSamsungDevice();
-    
-    // Performance monitoring
-    this.performanceMonitor.callCount++;
     
     this.analyzerNodes.forEach((analyzer, trackId) => {
       const track = this.tracks.get(trackId);
@@ -351,42 +300,15 @@ export class AudioEngine {
       const bufferLength = analyzer.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
       
-      // Samsung tablets may have issues with frequency data, try time domain as fallback
-      if (needsSamsungWorkaround) {
-        analyzer.getByteTimeDomainData(dataArray); // Use time domain for Samsung devices
-        
-        // Debug logging for Samsung devices (reduced frequency)
-        if (Math.random() < 0.001) { // Much less frequent logging now that it's working
-          console.log('Samsung device using time domain VU data. Buffer length:', bufferLength);
-        }
-      } else {
-        analyzer.getByteFrequencyData(dataArray); // Use frequency data for other devices
-      }
+      analyzer.getByteFrequencyData(dataArray);
       
-      // Adjust calculation method based on device type
+      const sampleCount = Math.min(32, bufferLength);
       let sum = 0;
-      let average = 0;
       
-      if (needsSamsungWorkaround) {
-        // For Samsung devices using time domain data, calculate RMS
-        const sampleCount = Math.min(128, bufferLength);
-        let sumSquares = 0;
-        
-        for (let i = 0; i < sampleCount; i++) {
-          const sample = (dataArray[i] - 128) / 128; // Convert to -1 to 1 range
-          sumSquares += sample * sample;
-        }
-        
-        average = Math.sqrt(sumSquares / sampleCount) * 255; // Convert back to 0-255 range
-      } else {
-        // Original frequency domain calculation for other devices
-        const sampleCount = Math.min(32, bufferLength);
-        
-        for (let i = 0; i < sampleCount; i++) {
-          sum += dataArray[i];
-        }
-        average = sum / sampleCount;
+      for (let i = 0; i < sampleCount; i++) {
+        sum += dataArray[i];
       }
+      const average = sum / sampleCount;
       
       // Track-specific VU meter scaling for realistic studio levels
       const currentTrack = this.tracks.get(trackId);
@@ -414,7 +336,7 @@ export class AudioEngine {
       
       // Smooth the level changes
       const cached = this.levelCache.get(trackId);
-      if (cached && now - cached.lastUpdate < 30) { // Update more frequently for smoother meters
+      if (cached && now - cached.lastUpdate < 50) { // Don't update too frequently
         rawLevel = cached.level + (rawLevel - cached.level) * this.smoothingFactor;
       }
       
@@ -432,62 +354,36 @@ export class AudioEngine {
       return { left: 0, right: 0 };
     }
     
-    // Debug logging
-    if (Math.random() < 0.01) { // Log occasionally to avoid spam
-      console.log('Getting master stereo levels - isPlaying:', this.isPlaying, 'analyzer exists:', !!this.masterAnalyzerNode);
-    }
+
 
     const now = performance.now();
     
-    // Throttle updates for performance - reduce to 60fps for smoother VU meters
-    if (now - this.masterLevelCache.lastUpdate < 16) { // ~60fps for master meters
+    // Throttle updates for performance
+    if (now - this.masterLevelCache.lastUpdate < 33) { // ~30fps for master meters
       return { left: this.masterLevelCache.left, right: this.masterLevelCache.right };
     }
 
-    // Use cached device detection for better performance
-    const needsSamsungWorkaround = this.detectSamsungDevice();
-    
     const bufferLength = this.masterAnalyzerNode.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
     
-    // Use appropriate data type based on device
-    if (needsSamsungWorkaround) {
-      this.masterAnalyzerNode.getByteTimeDomainData(dataArray);
-    } else {
-      this.masterAnalyzerNode.getByteFrequencyData(dataArray);
+    this.masterAnalyzerNode.getByteFrequencyData(dataArray);
+    
+    // Original frequency domain calculation
+    let sum = 0;
+    const startBin = Math.floor(bufferLength * 0.1);
+    const endBin = Math.floor(bufferLength * 0.8);
+    
+    for (let i = startBin; i < endBin; i++) {
+      sum += dataArray[i];
     }
     
-    // Calculate levels based on data type and device
-    let rms = 0;
-    
-    if (needsSamsungWorkaround) {
-      // For Samsung devices using time domain data, calculate RMS
-      const sampleCount = Math.min(256, bufferLength);
-      let sumSquares = 0;
-      
-      for (let i = 0; i < sampleCount; i++) {
-        const sample = (dataArray[i] - 128) / 128; // Convert to -1 to 1 range
-        sumSquares += sample * sample;
-      }
-      
-      rms = Math.sqrt(sumSquares / sampleCount);
-      
-      // Debug logging for Samsung devices
-      if (Math.random() < 0.02) {
-        console.log('Samsung tablet master levels - RMS:', rms, 'Buffer length:', bufferLength);
-      }
-    } else {
-      // Simplified frequency domain calculation for PC performance
-      let sum = 0;
-      const sampleCount = Math.min(64, bufferLength); // Much smaller sample for speed
-      
-      for (let i = 0; i < sampleCount; i++) {
-        sum += dataArray[i];
-      }
-      
-      // Simple average instead of complex RMS calculation
-      rms = (sum / sampleCount) / 255;
+    // Calculate RMS for master levels
+    let sum2 = 0;
+    for (let i = startBin; i < endBin; i++) {
+      const normalizedValue = dataArray[i] / 255;
+      sum2 += normalizedValue * normalizedValue;
     }
+    const rms = Math.sqrt(sum2 / (endBin - startBin));
     
     let baseLevel = rms * 2.0; // Higher base scaling for master levels
     
@@ -516,10 +412,7 @@ export class AudioEngine {
       lastUpdate: now
     };
     
-    // Debug logging
-    if (Math.random() < 0.01) { // Log occasionally
-      console.log('Master levels - left:', smoothedLeft.toFixed(3), 'right:', smoothedRight.toFixed(3), 'baseLevel:', baseLevel.toFixed(3));
-    }
+
     
     return { 
       left: smoothedLeft, 

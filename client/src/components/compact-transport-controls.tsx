@@ -109,6 +109,22 @@ export default function CompactTransportControls({
             style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
           />
         </div>
+      </div>
+      
+      {/* Progress Bar - Desktop only (thin) */}
+      <div className="space-y-2 hidden md:block">
+        <div 
+          className="w-full bg-gray-700 rounded-full h-1 cursor-pointer group"
+          onClick={handleProgressClick}
+          data-testid="progress-bar-desktop"
+        >
+          <div 
+            className={`bg-secondary h-1 rounded-full group-hover:bg-green-400 ${
+              isPlaying ? '' : 'transition-all duration-100'
+            }`}
+            style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+          />
+        </div>
         
         {/* Time Display */}
         <div className="flex justify-between items-center text-xs text-gray-400">

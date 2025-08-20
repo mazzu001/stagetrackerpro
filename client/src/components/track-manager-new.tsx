@@ -479,6 +479,11 @@ export default function TrackManager({
             const isSolo = track.isSolo ?? false;
             const level = audioLevels[track.id] || 0;
             
+            // Debug VU meter data flow
+            if (Math.random() < 0.01) { // Log occasionally
+              console.log(`VU Meter Debug - Track: ${track.name}, Level: ${level}, AudioLevels available:`, Object.keys(audioLevels).length);
+            }
+            
             return (
               <Card key={track.id}>
                 <CardContent className="p-4">

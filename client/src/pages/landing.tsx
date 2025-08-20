@@ -30,9 +30,7 @@ export default function Landing() {
             <CardHeader>
               <Music className="w-8 h-8 text-purple-400 mb-2" />
               <CardTitle className="text-white">Multi-Track Audio</CardTitle>
-              <CardDescription className="text-gray-400">
-                Mix up to 6 audio tracks with individual volume, mute, and solo controls
-              </CardDescription>
+              <CardDescription className="text-gray-400">Mix up to 6 audio tracks with individual volume, mute, and solo controls for each song. Up to 2 songs for free accounts and unlimited songs for subscribers.</CardDescription>
             </CardHeader>
           </Card>
 

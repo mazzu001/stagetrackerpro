@@ -179,83 +179,29 @@ export function useAudioEngine(song?: SongWithTracks) {
     if (audioEngineRef.current) {
       audioEngineRef.current.setTrackVolume(trackId, volume);
     }
-    
-    // Update volume in database
-    if (song) {
-      try {
-        await fetch(`/api/tracks/${trackId}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ volume })
-        });
-      } catch (error) {
-        console.error('Failed to update track volume in database:', error);
-      }
-    }
-  }, [song]);
+    // Note: Volume updates are handled by TrackManager component via LocalSongStorage
+  }, []);
 
   const updateTrackBalance = useCallback(async (trackId: string, balance: number) => {
     if (audioEngineRef.current) {
       audioEngineRef.current.setTrackBalance(trackId, balance);
     }
-    
-    // Update balance in database
-    if (song) {
-      try {
-        await fetch(`/api/tracks/${trackId}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ balance })
-        });
-      } catch (error) {
-        console.error('Failed to update track balance in database:', error);
-      }
-    }
-  }, [song]);
+    // Note: Balance updates are handled by TrackManager component via LocalSongStorage
+  }, []);
 
   const updateTrackMute = useCallback(async (trackId: string) => {
     if (audioEngineRef.current) {
       audioEngineRef.current.toggleTrackMute(trackId);
     }
-    
-    // Update mute state in database
-    if (song) {
-      const track = song.tracks.find(t => t.id === trackId);
-      if (track) {
-        try {
-          await fetch(`/api/tracks/${trackId}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isMuted: !track.isMuted })
-          });
-        } catch (error) {
-          console.error('Failed to update track mute state in database:', error);
-        }
-      }
-    }
-  }, [song]);
+    // Note: Mute state updates are handled by TrackManager component via LocalSongStorage
+  }, []);
 
   const updateTrackSolo = useCallback(async (trackId: string) => {
     if (audioEngineRef.current) {
       audioEngineRef.current.toggleTrackSolo(trackId);
     }
-    
-    // Update solo state in database
-    if (song) {
-      const track = song.tracks.find(t => t.id === trackId);
-      if (track) {
-        try {
-          await fetch(`/api/tracks/${trackId}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ isSolo: !track.isSolo })
-          });
-        } catch (error) {
-          console.error('Failed to update track solo state in database:', error);
-        }
-      }
-    }
-  }, [song]);
+    // Note: Solo state updates are handled by TrackManager component via LocalSongStorage
+  }, []);
 
   const updateMasterVolume = useCallback((volume: number) => {
     if (audioEngineRef.current) {

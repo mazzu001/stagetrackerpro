@@ -125,9 +125,16 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
   useEffect(() => {
     if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 1 && autoScrollEnabled) {
       const container = containerRef.current;
-      const scrollPixelsPerSecond = (100 * scrollSpeed);
-      const totalScrollDistance = (currentTime - 1) * scrollPixelsPerSecond;
-      container.scrollTop = totalScrollDistance;
+      const contentHeight = container.scrollHeight;
+      const containerHeight = container.clientHeight;
+      const maxScrollDistance = Math.max(0, contentHeight - containerHeight);
+      
+      // Calculate scroll position as percentage of song progress
+      const songProgress = Math.min(currentTime / song.duration, 1);
+      const adjustedProgress = Math.max(0, (songProgress - 0.1) / 0.8); // Start scroll at 10% and finish at 90%
+      const targetScrollTop = adjustedProgress * maxScrollDistance * scrollSpeed;
+      
+      container.scrollTop = Math.min(targetScrollTop, maxScrollDistance);
     }
   }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration, autoScrollEnabled]);
 
@@ -154,9 +161,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
   return (
     <div style={{ 
       width: '100%', 
-      height: '500px',
-      maxHeight: '500px',
-      minHeight: '500px',
+      height: '100%',
       backgroundColor: '#111827',
       borderRadius: '8px',
       overflow: 'hidden',
@@ -182,9 +187,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
       <div 
         ref={containerRef}
         style={{ 
-          height: '440px',
-          maxHeight: '440px',
-          minHeight: '440px',
+          flex: 1,
           overflowY: 'auto',
           overflowX: 'hidden',
           padding: '24px',

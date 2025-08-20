@@ -761,7 +761,7 @@ export default function Performance({ userType }: PerformanceProps) {
               {/* Lyrics Controls */}
               {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
-            <div className="p-2 md:p-4" style={{ contain: 'layout style', overflow: 'hidden' }}>
+            <div className="flex-1 min-h-0" style={{ contain: 'layout style' }}>
               <LyricsDisplay
                 song={selectedSong}
                 currentTime={currentTime}

@@ -52,6 +52,15 @@ This project is a live music performance application designed for professional s
 - **FIXED**: TypeScript errors in song selector and local storage components
 - **Status**: Complete application with enhanced lyrics controls and clean UI
 
+### Working Build 5 (August 20, 2025)
+- All functionality from Working Build 4
+- **FIXED**: App shifting issue when lyrics scroll using CSS containment
+- **FIXED**: Lyrics container sizing - removed fixed 500px height for responsive layout
+- **IMPROVED**: Auto-scroll calculation now based on content size and song progress
+- **ELIMINATED**: Unnecessary container padding that pushed content below viewport
+- Lyrics now properly fit within available screen space without scrolling out of view
+- **Status**: Complete responsive lyrics system with proper viewport containment
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

@@ -73,7 +73,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
       const trimmed = line.trim();
       if (!trimmed) continue;
       
-      // Look for timestamp pattern [mm:ss] or [m:ss]
+      // Look for timestamp pattern [mm:ss] or [m:ss] at start of line only
       const timestampMatch = trimmed.match(/^\[(\d{1,2}):(\d{2})\]/);
       
       if (timestampMatch) {
@@ -96,14 +96,10 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
 
   const lyrics = song?.lyrics ? parseLyrics(song.lyrics) : [];
   
-  // Debug logging
-  console.log('Song lyrics raw:', song?.lyrics);
-  console.log('Parsed lyrics:', lyrics);
-  console.log('Plain lines would be:', song?.lyrics?.split('\n'));
-  
-  // Check if lyrics actually contain timestamp patterns anywhere in the text
+  // Check if lyrics actually contain timestamp patterns at start of lines
+  // Only matches [MM:SS] format at the very beginning of a line
   const hasTimestamps = song?.lyrics ? 
-    /\[(\d{1,2}):(\d{2})\]/.test(song.lyrics) : false;
+    song.lyrics.split('\n').some(line => /^\[(\d{1,2}):(\d{2})\]/.test(line.trim())) : false;
   
   // Split lyrics by lines for non-timestamped lyrics, filtering out timestamps and MIDI commands
   const plainLines = song?.lyrics && !hasTimestamps ? 
@@ -115,9 +111,6 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
                   .trim();
       })
       .filter((line: string) => line.trim()) : [];
-      
-  console.log('Has timestamps:', hasTimestamps);
-  console.log('Plain lines:', plainLines);
   
   // Find current line based on timestamp (for timestamped lyrics)
   const currentLineIndex = hasTimestamps ? lyrics.findIndex((line, index) => {

@@ -94,7 +94,7 @@ export function LyricsDisplay({ song, currentTime, isPlaying, onSeek }: LyricsDi
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   }) : -1;
 
-  // Karaoke-style scrolling: keep current line centered
+  // Scrolling logic - only when highlighted line goes below halfway mark
   useEffect(() => {
     if (!song || !hasRealTimestamps || currentLineIndex < 0 || !lyricsContainerRef.current) return;
     
@@ -104,18 +104,24 @@ export function LyricsDisplay({ song, currentTime, isPlaying, onSeek }: LyricsDi
     if (!currentLineElement) return;
     
     const containerHeight = container.clientHeight;
+    const scrollTop = container.scrollTop;
     const lineTop = currentLineElement.offsetTop;
-    const lineHeight = currentLineElement.offsetHeight;
+    const lineBottom = lineTop + currentLineElement.offsetHeight;
     
-    // Calculate scroll position to center the current line
-    const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
-    const maxScrollTop = container.scrollHeight - containerHeight;
-    const finalScrollTop = Math.max(0, Math.min(targetScrollTop, maxScrollTop));
+    // Calculate halfway mark of visible area
+    const halfwayMark = scrollTop + (containerHeight / 2);
     
-    container.scrollTo({
-      top: finalScrollTop,
-      behavior: 'smooth'
-    });
+    // Only scroll when highlighted line bottom goes below halfway mark
+    if (lineBottom > halfwayMark) {
+      // Scroll one line at a time
+      const newScrollTop = scrollTop + currentLineElement.offsetHeight + 16; // 16px for spacing
+      const maxScroll = container.scrollHeight - containerHeight;
+      
+      container.scrollTo({
+        top: Math.min(newScrollTop, maxScroll),
+        behavior: 'smooth'
+      });
+    }
   }, [currentLineIndex, hasRealTimestamps, song]);
 
   // Reset scroll on song change
@@ -186,37 +192,21 @@ export function LyricsDisplay({ song, currentTime, isPlaying, onSeek }: LyricsDi
         data-testid="lyrics-container"
       >
         {parsedLyrics.length > 0 ? (
-          <div className="space-y-6 py-8">
-            {parsedLyrics.map((line, index) => {
-              const isCurrent = hasRealTimestamps && currentLineIndex === index;
-              const isPast = hasRealTimestamps && line.timestamp <= currentTime && !isCurrent;
-              const isFuture = hasRealTimestamps && line.timestamp > currentTime;
-              const isNext = hasRealTimestamps && currentLineIndex >= 0 && index === currentLineIndex + 1;
-              
-              return (
-                <div
-                  key={index}
-                  data-testid={`lyrics-line-${index}`}
-                  className={`cursor-pointer transition-all duration-500 text-center leading-relaxed ${
-                    isCurrent
-                      ? 'text-yellow-400 font-bold text-2xl scale-110 bg-yellow-400/10 px-4 py-2 rounded-lg border-l-4 border-yellow-400'
-                      : isNext
-                      ? 'text-blue-300 font-semibold text-xl'
-                      : isPast
-                      ? 'text-gray-500 text-lg'
-                      : isFuture
-                      ? 'text-gray-400 text-lg'
-                      : 'text-foreground text-lg'
-                  } ${isCurrent || isNext ? 'transform' : ''}`}
-                  style={{
-                    transform: isCurrent ? 'scale(1.1)' : isNext ? 'scale(1.05)' : 'scale(1)'
-                  }}
-                  onClick={() => handleLineClick(line.timestamp)}
-                >
-                  {line.text}
-                </div>
-              );
-            })}
+          <div className="space-y-4">
+            {parsedLyrics.map((line, index) => (
+              <div
+                key={index}
+                data-testid={`lyrics-line-${index}`}
+                className={`cursor-pointer transition-colors duration-200 ${
+                  hasRealTimestamps && currentLineIndex === index
+                    ? 'text-primary font-semibold'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+                onClick={() => handleLineClick(line.timestamp)}
+              >
+                {line.text}
+              </div>
+            ))}
           </div>
         ) : (
           <div className="text-center text-muted-foreground py-8">

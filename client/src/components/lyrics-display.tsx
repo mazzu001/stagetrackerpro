@@ -135,15 +135,14 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
   return (
     <div style={{ 
       width: '100%', 
-      height: '300px', 
-      maxHeight: '300px', 
-      minHeight: '300px',
+      flex: '1',
       backgroundColor: '#111827',
       borderRadius: '8px',
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
-      position: 'relative'
+      position: 'relative',
+      minHeight: '0'
     }}>
       {/* Header */}
       <div style={{ 
@@ -153,7 +152,8 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
         padding: '8px 16px',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        flexShrink: '0'
       }}>
         <h3 style={{ fontSize: '18px', fontWeight: '500', color: 'white' }}>{song.title} - Lyrics</h3>
       </div>
@@ -162,12 +162,11 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
       <div 
         ref={containerRef}
         style={{ 
-          height: '240px',
-          maxHeight: '240px',
-          minHeight: '240px',
+          flex: '1',
           overflowY: 'auto',
           padding: '24px',
-          backgroundColor: '#1f2937'
+          backgroundColor: '#1f2937',
+          minHeight: '0'
         }}
         data-testid="lyrics-container"
       >

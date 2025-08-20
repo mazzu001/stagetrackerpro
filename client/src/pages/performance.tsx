@@ -893,6 +893,7 @@ export default function Performance({ userType }: PerformanceProps) {
               </Button>
               <Button 
                 onClick={handleSaveLyrics}
+                className="mt-[25px] mb-[25px]"
                 data-testid="button-save-lyrics"
               >
                 Save Lyrics

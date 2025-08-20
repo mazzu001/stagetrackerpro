@@ -497,12 +497,12 @@ export default function TrackManager({
                         </div>
                       </div>
                       
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 mobile-hidden">
                         <Button
                           onClick={() => deleteTrack(track.id)}
                           variant="ghost"
                           size="sm"
-                          data-testid={`button-delete-track-${track.id}`}
+                          data-testid={`button-delete-track-${track.id}-desktop`}
                         >
                           <Trash2 className="h-4 w-4" />
                         </Button>
@@ -582,69 +582,83 @@ export default function TrackManager({
 
                     {/* Mobile Layout - Compact Vertical */}
                     <div className="block md:hidden">
-                      <div className="flex items-start gap-2">
-                        {/* Left: Mute/Solo buttons */}
-                        <div className="flex flex-col gap-1 flex-shrink-0">
-                          <Button
-                            onClick={() => handleMuteToggle(track.id)}
-                            variant={isMuted ? "destructive" : "outline"}
-                            size="sm"
-                            className="h-8 w-8 p-0"
-                            data-testid={`button-mute-${track.id}`}
-                          >
-                            {isMuted ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
-                          </Button>
-                          <Button
-                            onClick={() => handleSoloToggle(track.id)}
-                            variant={isSolo ? "default" : "outline"}
-                            size="sm"
-                            className="h-8 w-8 p-0"
-                            data-testid={`button-solo-${track.id}`}
-                          >
-                            <Headphones className="h-3 w-3" />
-                          </Button>
+                      <div className="space-y-2">
+                        {/* Top row: Mute/Solo buttons and sliders */}
+                        <div className="flex items-start gap-2">
+                          {/* Left: Mute/Solo buttons */}
+                          <div className="flex flex-col gap-1 flex-shrink-0">
+                            <Button
+                              onClick={() => handleMuteToggle(track.id)}
+                              variant={isMuted ? "destructive" : "outline"}
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                              data-testid={`button-mute-${track.id}`}
+                            >
+                              {isMuted ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
+                            </Button>
+                            <Button
+                              onClick={() => handleSoloToggle(track.id)}
+                              variant={isSolo ? "default" : "outline"}
+                              size="sm"
+                              className="h-8 w-8 p-0"
+                              data-testid={`button-solo-${track.id}`}
+                            >
+                              <Headphones className="h-3 w-3" />
+                            </Button>
+                          </div>
+
+                          {/* Center: Stacked Volume/Balance with reduced width */}
+                          <div className="flex-1 space-y-2 min-w-0 max-w-[65%]">
+                            {/* Volume control */}
+                            <div className="flex items-center gap-1">
+                              <Volume2 className="h-3 w-3 text-gray-500 flex-shrink-0" />
+                              <Slider
+                                value={[currentVolume]}
+                                onValueChange={(value) => debouncedVolumeUpdate(track.id, value[0])}
+                                min={0}
+                                max={100}
+                                step={1}
+                                className="flex-1"
+                                data-testid={`slider-volume-${track.id}`}
+                              />
+                              <span className="text-xs text-gray-500 w-6 text-right">{Math.round(currentVolume)}</span>
+                            </div>
+                            
+                            {/* Balance control */}
+                            <div className="flex items-center gap-1">
+                              <span className="text-xs text-gray-500 flex-shrink-0">L</span>
+                              <Slider
+                                value={[currentBalance]}
+                                onValueChange={(value) => debouncedBalanceUpdate(track.id, value[0])}
+                                min={-100}
+                                max={100}
+                                step={1}
+                                className="flex-1"
+                                data-testid={`slider-balance-${track.id}`}
+                              />
+                              <span className="text-xs text-gray-500 flex-shrink-0">R</span>
+                            </div>
+                          </div>
                         </div>
 
-                        {/* Center: Stacked Volume/Balance */}
-                        <div className="flex-1 space-y-2 min-w-0">
-                          {/* Volume control */}
-                          <div className="flex items-center gap-2">
-                            <Volume2 className="h-3 w-3 text-gray-500 flex-shrink-0" />
-                            <Slider
-                              value={[currentVolume]}
-                              onValueChange={(value) => debouncedVolumeUpdate(track.id, value[0])}
-                              min={0}
-                              max={100}
-                              step={1}
-                              className="flex-1"
-                              data-testid={`slider-volume-${track.id}`}
+                        {/* Bottom row: VU Meter and Delete button */}
+                        <div className="flex items-center justify-between gap-2 pt-1">
+                          <div className="flex-shrink-0 w-16">
+                            <VUMeter
+                              level={level}
+                              isMuted={isMuted}
+                              isPlaying={isPlaying}
                             />
-                            <span className="text-xs text-gray-500 w-6 text-right">{Math.round(currentVolume)}</span>
                           </div>
-                          
-                          {/* Balance control */}
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-gray-500 flex-shrink-0">L</span>
-                            <Slider
-                              value={[currentBalance]}
-                              onValueChange={(value) => debouncedBalanceUpdate(track.id, value[0])}
-                              min={-100}
-                              max={100}
-                              step={1}
-                              className="flex-1"
-                              data-testid={`slider-balance-${track.id}`}
-                            />
-                            <span className="text-xs text-gray-500 flex-shrink-0">R</span>
-                          </div>
-                        </div>
-
-                        {/* Right: VU Meter */}
-                        <div className="flex-shrink-0 w-10">
-                          <VUMeter
-                            level={level}
-                            isMuted={isMuted}
-                            isPlaying={isPlaying}
-                          />
+                          <Button
+                            onClick={() => deleteTrack(track.id)}
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 ml-auto"
+                            data-testid={`button-delete-track-${track.id}`}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
                         </div>
                       </div>
                     </div>

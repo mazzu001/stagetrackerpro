@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Headphones, Square, Activity } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -45,6 +45,11 @@ export default function Performance({ userType }: PerformanceProps) {
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMIDIManagerOpen, setIsMIDIManagerOpen] = useState(false);
+  
+  // MIDI listening state for lyrics editor
+  const [isMIDIListening, setIsMIDIListening] = useState(false);
+  const [midiAccess, setMidiAccess] = useState<any>(null);
+  const [capturedMIDIMessages, setCapturedMIDIMessages] = useState<{ message: string; timestamp: number; device: string; command: string }[]>([]);
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
@@ -89,6 +94,130 @@ export default function Performance({ userType }: PerformanceProps) {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
     };
   }, []);
+
+  // Initialize MIDI access for lyrics editor listening
+  useEffect(() => {
+    const initMIDIAccess = async () => {
+      try {
+        if ((navigator as any).requestMIDIAccess) {
+          const access = await (navigator as any).requestMIDIAccess({ sysex: false });
+          setMidiAccess(access);
+        }
+      } catch (error) {
+        console.error('Failed to initialize MIDI for lyrics editor:', error);
+      }
+    };
+    
+    initMIDIAccess();
+  }, []);
+
+  // MIDI message listener for lyrics editor
+  useEffect(() => {
+    if (!midiAccess || !isMIDIListening || !isEditLyricsOpen) return;
+
+    const handleMIDIMessage = (event: any) => {
+      const data = Array.from(event.data as Uint8Array) as number[];
+      const device = event.target?.name || 'Unknown Device';
+      const message = formatMIDIMessage(data);
+      const command = formatMIDICommand(data);
+      
+      setCapturedMIDIMessages(prev => [
+        { message, timestamp: Date.now(), device, command },
+        ...prev.slice(0, 9) // Keep last 10 messages
+      ]);
+      
+      console.log(`MIDI captured in lyrics editor: ${device} - ${message}`, data);
+    };
+
+    // Set up listeners on all input devices
+    midiAccess.inputs.forEach((input: any) => {
+      if (input.state === 'connected') {
+        input.onmidimessage = handleMIDIMessage;
+      }
+    });
+
+    return () => {
+      // Clean up listeners
+      midiAccess.inputs.forEach((input: any) => {
+        if (input.onmidimessage === handleMIDIMessage) {
+          input.onmidimessage = null;
+        }
+      });
+    };
+  }, [midiAccess, isMIDIListening, isEditLyricsOpen]);
+
+  // Format MIDI message for display
+  const formatMIDIMessage = (data: number[]): string => {
+    if (data.length === 0) return 'Empty message';
+    
+    const [status, ...payload] = data;
+    const command = status & 0xF0;
+    const channel = (status & 0x0F) + 1;
+    
+    switch (command) {
+      case 0x90:
+        return `Note ON: Ch${channel} Note${payload[0]} Vel${payload[1]}`;
+      case 0x80:
+        return `Note OFF: Ch${channel} Note${payload[0]}`;
+      case 0xB0:
+        return `CC: Ch${channel} CC${payload[0]} Val${payload[1]}`;
+      case 0xC0:
+        return `PC: Ch${channel} Program${payload[0]}`;
+      case 0xE0:
+        return `Pitch: Ch${channel} Val${(payload[1] << 7) | payload[0]}`;
+      default:
+        return `Unknown: ${data.map(b => b.toString(16).padStart(2, '0')).join(' ')}`;
+    }
+  };
+
+  // Format MIDI command for lyrics insertion
+  const formatMIDICommand = (data: number[]): string => {
+    if (data.length === 0) return '[[UNKNOWN]]';
+    
+    const [status, ...payload] = data;
+    const command = status & 0xF0;
+    const channel = (status & 0x0F) + 1;
+    
+    switch (command) {
+      case 0x90:
+        return `[[NOTE:${payload[0]}:${payload[1]}:${channel}]]`;
+      case 0x80:
+        return `[[NOTEOFF:${payload[0]}:${channel}]]`;
+      case 0xB0:
+        return `[[CC:${payload[0]}:${payload[1]}:${channel}]]`;
+      case 0xC0:
+        return `[[PC:${payload[0]}:${channel}]]`;
+      case 0xE0:
+        return `[[PITCH:${(payload[1] << 7) | payload[0]}:${channel}]]`;
+      default:
+        return `[[RAW:${data.map(b => b.toString(16).padStart(2, '0')).join(':')}]]`;
+    }
+  };
+
+  // Toggle MIDI listening
+  const toggleMIDIListening = () => {
+    setIsMIDIListening(!isMIDIListening);
+    if (!isMIDIListening) {
+      setCapturedMIDIMessages([]); // Clear previous messages when starting to listen
+    }
+  };
+
+  // Insert MIDI command into lyrics at cursor position
+  const insertMIDICommand = (command: string) => {
+    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
+    if (textarea) {
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const newText = lyricsText.substring(0, start) + command + lyricsText.substring(end);
+      setLyricsText(newText);
+      
+      // Set cursor position after inserted command
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start + command.length, start + command.length);
+      }, 0);
+    }
+  };
 
   // Load songs from localStorage when component mounts or user changes
   useEffect(() => {
@@ -962,6 +1091,27 @@ export default function Performance({ userType }: PerformanceProps) {
                 Search
               </Button>
               
+              {/* MIDI Listen Button */}
+              <Button
+                variant={isMIDIListening ? "default" : "outline"}
+                size="sm"
+                onClick={toggleMIDIListening}
+                className={isMIDIListening ? "bg-red-600 hover:bg-red-700 text-white h-8 px-3" : "h-8 px-3"}
+                data-testid="button-midi-listen-editor"
+              >
+                {isMIDIListening ? (
+                  <>
+                    <Square className="w-3 h-3 mr-1" />
+                    Stop
+                  </>
+                ) : (
+                  <>
+                    <Headphones className="w-3 h-3 mr-1" />
+                    Listen
+                  </>
+                )}
+              </Button>
+              
               {/* Compact Position Slider */}
               {selectedSong && selectedSong.duration && (
                 <div className="flex-1 min-w-[200px] ml-4">
@@ -989,6 +1139,17 @@ export default function Performance({ userType }: PerformanceProps) {
             <div className="flex items-center justify-between mb-2 flex-shrink-0">
               <Label htmlFor="lyrics" className="text-sm font-semibold">Lyrics</Label>
               <div className="flex items-center gap-3">
+                {isMIDIListening && (
+                  <div className="flex items-center gap-1 text-xs">
+                    <Activity className="w-3 h-3 text-green-500 animate-pulse" />
+                    <span className="text-green-500">Listening</span>
+                    {capturedMIDIMessages.length > 0 && (
+                      <span className="bg-green-100 text-green-800 px-1 rounded text-xs">
+                        {capturedMIDIMessages.length}
+                      </span>
+                    )}
+                  </div>
+                )}
                 <span className="text-xs text-gray-500">
                   {lyricsText.length} chars
                 </span>
@@ -1018,6 +1179,43 @@ Click "Timestamp" to insert current time`}
               spellCheck={false}
               data-testid="textarea-lyrics"
             />
+            
+            {/* MIDI Captured Messages Panel */}
+            {isMIDIListening && capturedMIDIMessages.length > 0 && (
+              <div className="mt-2 border border-gray-600 rounded-md bg-gray-800 p-2 max-h-32 overflow-y-auto">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-semibold text-green-400">Captured MIDI Commands</span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCapturedMIDIMessages([])}
+                    className="h-6 px-2 text-xs"
+                    data-testid="button-clear-captured-midi"
+                  >
+                    Clear
+                  </Button>
+                </div>
+                <div className="space-y-1">
+                  {capturedMIDIMessages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between text-xs p-1 bg-gray-700 rounded cursor-pointer hover:bg-gray-600"
+                      onClick={() => insertMIDICommand(msg.command)}
+                      title="Click to insert into lyrics"
+                    >
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <code className="font-mono text-green-300 truncate">{msg.command}</code>
+                        <span className="text-gray-400 text-xs">({msg.message})</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-500 flex-shrink-0">
+                        <span className="truncate max-w-16">{msg.device}</span>
+                        <span>{new Date(msg.timestamp).toLocaleTimeString().slice(-8, -3)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Compact Action Buttons */}

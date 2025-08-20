@@ -27,16 +27,6 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
 
-  // Debug logging
-  useEffect(() => {
-    if (song && parsedLyrics.length > 0) {
-      console.log('Parsed lyrics:', parsedLyrics);
-      console.log('Has real timestamps:', hasRealTimestamps);
-      console.log('Current time:', currentTime);
-      console.log('Current line index:', currentLineIndex);
-    }
-  }, [parsedLyrics, hasRealTimestamps, currentTime, currentLineIndex, song]);
-
   // Save scroll speed to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('lyrics-scroll-speed', scrollSpeed.toString());
@@ -249,7 +239,7 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
             No lyrics available for this song
           </div>
         ) : (
-          <div className="space-y-2 leading-tight" style={{ fontSize: `${fontSize}px` }}>
+          <div className="space-y-4 leading-relaxed" style={{ fontSize: `${fontSize}px` }}>
             {parsedLyrics.map((line, index) => {
               const isCurrentLine = hasRealTimestamps && index === currentLineIndex;
               const isUpcoming = hasRealTimestamps && line.timestamp > currentTime;

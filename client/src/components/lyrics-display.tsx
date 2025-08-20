@@ -186,6 +186,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
       {/* Lyrics Container */}
       <div 
         ref={containerRef}
+        className="mobile-lyrics-spacing"
         style={{ 
           flex: 1,
           overflowY: 'auto',

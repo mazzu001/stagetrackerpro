@@ -772,7 +772,7 @@ export default function Performance({ userType }: PerformanceProps) {
               {/* Mobile Lyrics Controls */}
               {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
-            <div className="flex-1 min-h-0" style={{ contain: 'layout style' }}>
+            <div className="flex-1 min-h-0 mb-2 md:mb-0" style={{ contain: 'layout style' }}>
               <LyricsDisplay
                 song={selectedSong}
                 currentTime={currentTime}

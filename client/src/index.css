@@ -184,6 +184,13 @@
     }
   }
   
+  /* Mobile spacing for lyrics to avoid transport overlap */
+  .mobile-lyrics-spacing {
+    @media (max-width: 768px) {
+      padding-bottom: 100px; /* Space for transport controls */
+    }
+  }
+  
   /* Touch-friendly button sizing */
   .btn-touch {
     min-height: 44px;

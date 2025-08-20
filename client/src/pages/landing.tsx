@@ -16,7 +16,7 @@ export default function Landing() {
         <div className="text-center mb-16">
           <div className="flex justify-center items-center gap-3 mb-6">
             <Music className="w-12 h-12 text-purple-400" />
-            <h1 className="text-4xl font-bold text-white">Live Performance Pro</h1>
+            <h1 className="text-4xl font-bold text-white">StageTracker Pro</h1>
           </div>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Professional live music performance application with multi-track audio, 

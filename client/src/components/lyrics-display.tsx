@@ -92,19 +92,22 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           
           console.log(`Line ${currentLineIndex}: lineTop=${lineTop}, containerHeight=${containerHeight}, currentScroll=${currentScrollTop}`);
           
-          if (currentLineIndex >= 3) {
-            // From line 3 onwards, center the highlighted line in the container
-            const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
-            const clampedScrollTop = Math.max(0, targetScrollTop);
+          // Simple rule: if highlighted line is below the visible area, scroll just enough to show it
+          const lineBottom = lineTop + lineHeight;
+          const visibleBottom = currentScrollTop + containerHeight;
+          
+          if (lineBottom > visibleBottom) {
+            const scrollAmount = lineBottom - visibleBottom + 20; // 20px padding
+            const newScrollTop = currentScrollTop + scrollAmount;
             
-            console.log(`Line ${currentLineIndex}: Centering line at ${lineTop}, scrolling to ${clampedScrollTop}`);
+            console.log(`Line ${currentLineIndex}: Line going out of view, scrolling by ${scrollAmount} pixels`);
             
             container.scrollTo({
-              top: clampedScrollTop,
+              top: newScrollTop,
               behavior: 'smooth'
             });
           } else {
-            console.log(`Line ${currentLineIndex}: Not scrolling (first 3 lines stay at top)`);
+            console.log(`Line ${currentLineIndex}: Line is visible, no scroll needed`);
           }
           
           setLastScrolledLine(currentLineIndex);

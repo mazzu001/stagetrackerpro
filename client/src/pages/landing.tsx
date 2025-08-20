@@ -37,7 +37,7 @@ export default function Landing() {
           <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
               <Zap className="w-8 h-8 text-yellow-400 mb-2" />
-              <CardTitle className="text-white">MIDI Integration</CardTitle>
+              <CardTitle className="text-white">MIDI Integration and Time Stamps</CardTitle>
               <CardDescription className="text-gray-400">
                 Timed MIDI events embedded in lyrics for lighting and effects control
               </CardDescription>

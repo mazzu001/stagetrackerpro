@@ -180,10 +180,14 @@ export function useMIDISequencer() {
       lastTriggeredIndex: -1
     }));
     console.log(`[MIDI SEQUENCER] Sequencer started with ${commands.length} commands`);
+    commands.forEach((cmd, idx) => {
+      console.log(`[MIDI SEQUENCER] Command ${idx}: ${cmd.type} at ${cmd.timestamp}s`);
+    });
   }, [parseMIDICommands]);
 
   // Stop MIDI sequencing
   const stopSequencer = useCallback(() => {
+    console.log('[MIDI SEQUENCER] Stopping sequencer');
     setState(prev => ({
       ...prev,
       isActive: false,
@@ -208,7 +212,7 @@ export function useMIDISequencer() {
     const commandsToTrigger = state.commands.filter((command, index) => {
       const shouldTrigger = index > state.lastTriggeredIndex && 
                            command.timestamp <= currentTime && 
-                           command.timestamp >= currentTime - 1.0; // 1 second tolerance for better catching
+                           command.timestamp >= currentTime - 0.2; // Tight 200ms window to prevent early triggering
       
       if (shouldTrigger) {
         console.log(`[MIDI SEQUENCER] Command ready to trigger:`, command);

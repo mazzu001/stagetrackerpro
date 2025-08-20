@@ -366,8 +366,10 @@ export default function Performance({ userType }: PerformanceProps) {
       
       // Start MIDI sequencer with song lyrics if available
       if (song && song.lyrics) {
+        console.log('[PERFORMANCE] Starting MIDI sequencer for song:', song.title);
         startSequencer(song.lyrics);
       } else {
+        console.log('[PERFORMANCE] No lyrics found, stopping sequencer');
         stopSequencer();
       }
     } else {
@@ -386,9 +388,9 @@ export default function Performance({ userType }: PerformanceProps) {
     isAudioEngineOnline,
     isMidiConnected,
     isLoadingTracks,
-    play,
+    play: originalPlay,
     pause,
-    stop,
+    stop: originalStop,
     seek,
     updateTrackVolume,
     updateTrackBalance,
@@ -397,6 +399,19 @@ export default function Performance({ userType }: PerformanceProps) {
     updateMasterVolume,
     masterVolume
   } = useAudioEngine(selectedSong as any);
+
+  // Wrap play/stop functions to reset MIDI sequencer properly
+  const play = useCallback(() => {
+    console.log('[PERFORMANCE] Starting playback - resetting MIDI sequencer to position 0');
+    resetSequencer(0); // Always reset to start when play is pressed
+    originalPlay();
+  }, [originalPlay, resetSequencer]);
+
+  const stop = useCallback(() => {
+    console.log('[PERFORMANCE] Stopping playback - resetting MIDI sequencer');
+    originalStop();
+    resetSequencer(0); // Reset to start when stopped
+  }, [originalStop, resetSequencer]);
 
   useKeyboardShortcuts({
     onPlay: play,
@@ -409,11 +424,15 @@ export default function Performance({ userType }: PerformanceProps) {
 
   // Update MIDI sequencer with current playback time
   useEffect(() => {
-    updateSequencer(currentTime, isPlaying);
+    // Only call updateSequencer if we have meaningful currentTime updates
+    if (currentTime > 0 || isPlaying) {
+      updateSequencer(currentTime, isPlaying);
+    }
   }, [currentTime, isPlaying, updateSequencer]);
 
   // Handle seeking - reset MIDI sequencer position
   const handleSeek = useCallback((time: number) => {
+    console.log(`[PERFORMANCE] Seeking to ${time.toFixed(1)}s`);
     seek(time);
     resetSequencer(time);
   }, [seek, resetSequencer]);

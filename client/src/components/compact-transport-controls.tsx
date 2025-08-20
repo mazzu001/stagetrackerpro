@@ -95,8 +95,8 @@ export default function CompactTransportControls({
         </Button>
       </div>
       
-      {/* Progress Bar */}
-      <div className="space-y-2">
+      {/* Progress Bar - Mobile only */}
+      <div className="space-y-2 md:hidden">
         <div 
           className="w-full bg-gray-700 rounded-full h-2 cursor-pointer group touch-target"
           onClick={handleProgressClick}

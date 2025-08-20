@@ -27,6 +27,16 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
 
+  // Debug logging
+  useEffect(() => {
+    if (song && parsedLyrics.length > 0) {
+      console.log('Parsed lyrics:', parsedLyrics);
+      console.log('Has real timestamps:', hasRealTimestamps);
+      console.log('Current time:', currentTime);
+      console.log('Current line index:', currentLineIndex);
+    }
+  }, [parsedLyrics, hasRealTimestamps, currentTime, currentLineIndex, song]);
+
   // Save scroll speed to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('lyrics-scroll-speed', scrollSpeed.toString());

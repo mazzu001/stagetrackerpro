@@ -84,12 +84,16 @@ export function useMIDISystem() {
         optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] // MIDI service UUID
       });
     } catch (error: any) {
+      console.error('Bluetooth scan error:', error);
+      
       if (error.name === 'NotFoundError') {
         throw new Error('No Bluetooth device selected or found');
-      } else if (error.name === 'SecurityError') {
-        throw new Error('Bluetooth access denied. Enable Bluetooth and try again.');
-      } else if (error.message.includes('User cancelled')) {
+      } else if (error.name === 'SecurityError' || error.name === 'NotAllowedError') {
+        throw new Error('BLUETOOTH_PERMISSION_DENIED');
+      } else if (error.message && error.message.includes('User cancelled')) {
         throw new Error('User cancelled device selection');
+      } else if (error.message && error.message.includes('permission')) {
+        throw new Error('BLUETOOTH_PERMISSION_DENIED');
       }
       throw new Error(`Bluetooth scan failed: ${error.message || 'Unknown error'}`);
     }

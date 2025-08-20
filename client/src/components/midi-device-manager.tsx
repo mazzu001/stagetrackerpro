@@ -48,11 +48,12 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
           description: "Your browser doesn't support Bluetooth connectivity",
           variant: "destructive"
         });
-      } else if (errorMsg.includes('access denied')) {
+      } else if (errorMsg.includes('access denied') || errorMsg === 'BLUETOOTH_PERMISSION_DENIED') {
         toast({
-          title: "Permission Denied",
-          description: "Please enable Bluetooth and grant permission",
-          variant: "destructive"
+          title: "Chrome Bluetooth Permission Required",
+          description: "Click the address bar lock icon → Bluetooth → Allow, then try again",
+          variant: "destructive",
+          duration: 8000
         });
       } else if (errorMsg.includes('Failed to connect')) {
         toast({
@@ -235,9 +236,28 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
         </div>
       </Card>
 
+      {/* Chrome Bluetooth Permission Help */}
+      <Card className="p-4 bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
+        <h4 className="font-semibold text-amber-800 dark:text-amber-200 mb-2">Chrome Bluetooth Setup</h4>
+        <div className="text-sm text-amber-700 dark:text-amber-300 space-y-2">
+          <div className="font-semibold">If "Permission Denied" appears:</div>
+          <div className="ml-2 space-y-1">
+            <div>1. Look for 🔒 lock icon in address bar</div>
+            <div>2. Click lock → Bluetooth → Allow</div>
+            <div>3. If no lock icon, try F5 to refresh</div>
+          </div>
+          <div className="font-semibold mt-3">Alternative methods:</div>
+          <div className="ml-2 space-y-1">
+            <div>• Type: chrome://settings/content/bluetooth</div>
+            <div>• Enable "Sites can ask to connect"</div>
+            <div>• Right-click page → Site settings</div>
+          </div>
+        </div>
+      </Card>
+
       {/* Help */}
       <Card className="p-4 bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-        <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">MIDI & Bluetooth Setup</h4>
+        <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">MIDI Command Format</h4>
         <div className="text-sm text-blue-700 dark:text-blue-300 space-y-2">
           <div className="font-mono space-y-1">
             <div>CC:controller:value:channel</div>
@@ -246,10 +266,10 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
             <div>PC:program:channel</div>
           </div>
           <div className="border-t border-blue-300 dark:border-blue-700 pt-2">
-            <div className="font-semibold mb-1">Bluetooth Tips:</div>
-            <div>• Put device in pairing mode first</div>
-            <div>• Enable Bluetooth in browser settings</div>
-            <div>• Some devices need MIDI apps on phone</div>
+            <div className="font-semibold mb-1">Device Setup:</div>
+            <div>• Turn on device Bluetooth/pairing mode</div>
+            <div>• Click "Find Bluetooth" above</div>
+            <div>• Select device from browser popup</div>
           </div>
         </div>
       </Card>

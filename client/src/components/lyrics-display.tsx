@@ -62,6 +62,14 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   }) : -1; // Don't highlight lines when no real timestamps
 
+  // Debug logging
+  if (song && parsedLyrics.length > 0 && currentTime > 0) {
+    console.log('Debug - Current time:', currentTime);
+    console.log('Debug - Has real timestamps:', hasRealTimestamps);
+    console.log('Debug - Current line index:', currentLineIndex);
+    console.log('Debug - First 3 lyrics:', parsedLyrics.slice(0, 3));
+  }
+
   // Scrolling logic based on whether lyrics have timestamps
   useEffect(() => {
     if (!song || parsedLyrics.length === 0 || !lyricsContainerRef.current) return;

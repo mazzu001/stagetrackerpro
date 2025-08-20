@@ -45,23 +45,23 @@ export default function CompactTransportControls({
   };
 
   return (
-    <div className="bg-surface border border-gray-700 rounded-lg p-3">
+    <div className="bg-surface border border-gray-700 rounded-lg p-3 w-full">
       {/* Transport Controls Row */}
-      <div className="flex items-center justify-center space-x-2 mb-3">
+      <div className="flex items-center justify-center space-x-4 md:space-x-2 mb-3">
         <Button
           variant="ghost"
           size="sm"
-          className="w-8 h-8 p-0 hover:bg-gray-700"
+          className="w-10 h-10 md:w-8 md:h-8 p-0 hover:bg-gray-700 touch-target"
           title="Previous (P)"
           data-testid="button-previous"
         >
-          <SkipBack className="w-4 h-4" />
+          <SkipBack className="w-5 h-5 md:w-4 md:h-4" />
         </Button>
         
         <Button
           variant={isPlaying ? "default" : "default"}
           size="sm"
-          className={`w-10 h-10 rounded-full ${
+          className={`w-14 h-14 md:w-10 md:h-10 rounded-full touch-target ${
             isPlaying 
               ? 'bg-secondary hover:bg-green-700' 
               : 'bg-secondary hover:bg-green-700'
@@ -70,40 +70,40 @@ export default function CompactTransportControls({
           onClick={isPlaying ? onPause : onPlay}
           data-testid="button-play-pause"
         >
-          {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 ml-0.5" />}
+          {isPlaying ? <Pause className="w-6 h-6 md:w-4 md:h-4" /> : <Play className="w-6 h-6 md:w-4 md:h-4 ml-0.5" />}
         </Button>
         
         <Button
           variant="ghost"
           size="sm"
-          className="w-8 h-8 p-0 hover:bg-red-700"
+          className="w-10 h-10 md:w-8 md:h-8 p-0 hover:bg-red-700 touch-target"
           title="Stop (S)"
           onClick={onStop}
           data-testid="button-stop"
         >
-          <Square className="w-4 h-4" />
+          <Square className="w-5 h-5 md:w-4 md:h-4" />
         </Button>
         
         <Button
           variant="ghost"
           size="sm"
-          className="w-8 h-8 p-0 hover:bg-gray-700"
+          className="w-10 h-10 md:w-8 md:h-8 p-0 hover:bg-gray-700 touch-target"
           title="Next (N)"
           data-testid="button-next"
         >
-          <SkipForward className="w-4 h-4" />
+          <SkipForward className="w-5 h-5 md:w-4 md:h-4" />
         </Button>
       </div>
       
       {/* Progress Bar */}
       <div className="space-y-2">
         <div 
-          className="w-full bg-gray-700 rounded-full h-2 cursor-pointer group"
+          className="w-full bg-gray-700 rounded-full h-3 md:h-2 cursor-pointer group touch-target"
           onClick={handleProgressClick}
           data-testid="progress-bar"
         >
           <div 
-            className={`bg-secondary h-2 rounded-full group-hover:bg-green-400 ${
+            className={`bg-secondary h-3 md:h-2 rounded-full group-hover:bg-green-400 ${
               isPlaying ? '' : 'transition-all duration-100'
             }`}
             style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}

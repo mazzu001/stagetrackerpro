@@ -746,19 +746,21 @@ export default function Performance({ userType }: PerformanceProps) {
               />
             </div>
             
-            {/* Mobile only: Transport controls at bottom */}
-            <div className="p-2 border-t border-gray-700 flex-shrink-0 mobile-flex md:hidden">
-              <CompactTransportControls
-                isPlaying={isPlaying}
-                currentTime={currentTime}
-                duration={duration}
-                progress={progress}
-                isMidiConnected={isMidiConnected}
-                onPlay={play}
-                onPause={pause}
-                onStop={stop}
-                onSeek={seek}
-              />
+            {/* Mobile only: Transport controls at bottom - full width */}
+            <div className="p-3 border-t border-gray-700 flex-shrink-0 mobile-flex md:hidden w-full">
+              <div className="w-full">
+                <CompactTransportControls
+                  isPlaying={isPlaying}
+                  currentTime={currentTime}
+                  duration={duration}
+                  progress={progress}
+                  isMidiConnected={isMidiConnected}
+                  onPlay={play}
+                  onPause={pause}
+                  onStop={stop}
+                  onSeek={seek}
+                />
+              </div>
             </div>
           </div>
         </div>

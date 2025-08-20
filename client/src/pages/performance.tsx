@@ -914,6 +914,7 @@ Examples:
                   setLyricsText("");
                 }}
                 data-testid="button-cancel-lyrics"
+                className="mt-[-90px] mb-[-90px]"
               >
                 Cancel
               </Button>

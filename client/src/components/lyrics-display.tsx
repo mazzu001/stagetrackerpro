@@ -82,23 +82,16 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
     }
   }, [currentLineIndex, hasTimestamps]);
 
-  // Auto-scroll for non-timestamped lyrics  
+  // Auto-scroll for non-timestamped lyrics
   useEffect(() => {
     if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 1) {
       const container = containerRef.current;
-      const songDuration = song.duration - 1; // Start scrolling after 1 second
-      const adjustedDuration = songDuration / scrollSpeed;
-      const scrollProgress = Math.min((currentTime - 1) / adjustedDuration, 1);
       
-      // Calculate smooth scroll position
-      const maxScrollTop = container.scrollHeight - container.clientHeight;
-      const targetScrollTop = scrollProgress * maxScrollTop;
+      // Simple time-based scroll calculation
+      const scrollPixelsPerSecond = (200 * scrollSpeed); // Base scroll speed
+      const totalScrollDistance = (currentTime - 1) * scrollPixelsPerSecond;
       
-      // Use smooth scrolling with requestAnimationFrame for better performance
-      container.scrollTo({
-        top: targetScrollTop,
-        behavior: 'smooth'
-      });
+      container.scrollTop = totalScrollDistance;
     }
   }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration]);
 

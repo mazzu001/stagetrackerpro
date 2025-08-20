@@ -26,13 +26,8 @@
         "android.permission.RECORD_AUDIO",
         "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.READ_EXTERNAL_STORAGE",
-        "android.permission.READ_MEDIA_AUDIO",
-        "android.permission.MANAGE_EXTERNAL_STORAGE",
-        "android.permission.FOREGROUND_SERVICE",
-        "android.permission.WAKE_LOCK"
-      ],
-      "requestLegacyExternalStorage": true,
-      "allowBackup": false
+        "android.permission.FOREGROUND_SERVICE"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

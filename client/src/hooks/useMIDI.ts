@@ -144,12 +144,8 @@ export function useMIDI() {
       }
 
       if (midiData.length > 0) {
-        console.log(`[MIDI] Sending to ${output.name || deviceId}:`, midiData);
         output.send(midiData);
-        console.log(`[MIDI] Successfully sent to ${output.name || deviceId}`);
         return true;
-      } else {
-        console.warn(`[MIDI] No MIDI data generated for command:`, message);
       }
     } catch (error) {
       console.error('Failed to send MIDI message:', error);
@@ -160,25 +156,15 @@ export function useMIDI() {
 
   // Send MIDI message to all enabled output devices
   const broadcastMIDIMessage = useCallback((message: MIDIMessage) => {
-    console.log(`[MIDI] Broadcasting message:`, message);
-    console.log(`[MIDI] Total devices:`, devices.length);
-    
     const enabledOutputs = devices.filter(d => d.type === 'output' && d.enabled && d.state === 'connected');
-    console.log(`[MIDI] Enabled connected outputs:`, enabledOutputs.length, enabledOutputs.map(d => d.name));
-    
     let sentCount = 0;
 
     enabledOutputs.forEach(device => {
-      console.log(`[MIDI] Sending to ${device.name} (${device.id})`);
       if (sendMIDIMessage(device.id, message)) {
         sentCount++;
-        console.log(`[MIDI] ✓ Sent to ${device.name}`);
-      } else {
-        console.log(`[MIDI] ✗ Failed to send to ${device.name}`);
       }
     });
 
-    console.log(`[MIDI] Broadcast result: ${sentCount}/${enabledOutputs.length} devices`);
     return sentCount;
   }, [devices, sendMIDIMessage]);
 

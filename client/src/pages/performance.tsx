@@ -18,12 +18,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Headphones, Square, Activity } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import { MIDIDeviceManager } from "@/components/midi-device-manager";
-import { useMIDISystem } from "@/hooks/useMIDISystem";
+import { useMIDI } from "@/hooks/useMIDI";
 import { useMIDISequencer } from "@/hooks/useMIDISequencer";
 
 interface PerformanceProps {
@@ -45,16 +45,20 @@ export default function Performance({ userType }: PerformanceProps) {
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMIDIManagerOpen, setIsMIDIManagerOpen] = useState(false);
-  
-  // MIDI listening state for lyrics editor
-  const [isMIDIListening, setIsMIDIListening] = useState(false);
-  const [midiAccess, setMidiAccess] = useState<any>(null);
-  const [capturedMIDIMessages, setCapturedMIDIMessages] = useState<{ message: string; timestamp: number; device: string; command: string }[]>([]);
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
-  const { devices, isScanning, scanForBluetoothDevices, sendMIDICommand } = useMIDISystem();
-  const { startSequence, stopSequence, processEvents } = useMIDISequencer();
+  const { isSupported: midiSupported, connectedOutputs, connectedInputs, initializeMIDI } = useMIDI();
+  const { 
+    commands: midiCommands, 
+    isActive: isMIDISequencerActive, 
+    startSequencer, 
+    stopSequencer, 
+    updateSequencer, 
+    resetSequencer, 
+    getUpcomingCommands,
+    getCommandStats 
+  } = useMIDISequencer();
 
   // Fullscreen functionality
   const toggleFullscreen = useCallback(async () => {
@@ -86,182 +90,6 @@ export default function Performance({ userType }: PerformanceProps) {
     };
   }, []);
 
-  // MIDI system is now handled by useMIDISystem hook directly
-
-  // MIDI message listener for lyrics editor
-  useEffect(() => {
-    if (!midiAccess || !isMIDIListening || !isEditLyricsOpen) return;
-
-    const handleMIDIMessage = (event: any) => {
-      const data = Array.from(event.data as Uint8Array) as number[];
-      const device = event.target?.name || 'Unknown Device';
-      const message = formatMIDIMessage(data);
-      const command = formatMIDICommand(data);
-      
-      setCapturedMIDIMessages(prev => [
-        { message, timestamp: Date.now(), device, command },
-        ...prev.slice(0, 9) // Keep last 10 messages
-      ]);
-      
-      console.log(`MIDI captured in lyrics editor: ${device} - ${message}`, data);
-    };
-
-    // Set up listeners on all input devices
-    midiAccess.inputs.forEach((input: any) => {
-      if (input.state === 'connected') {
-        input.onmidimessage = handleMIDIMessage;
-      }
-    });
-
-    return () => {
-      // Clean up listeners
-      midiAccess.inputs.forEach((input: any) => {
-        if (input.onmidimessage === handleMIDIMessage) {
-          input.onmidimessage = null;
-        }
-      });
-    };
-  }, [midiAccess, isMIDIListening, isEditLyricsOpen]);
-
-  // Format MIDI message for display
-  const formatMIDIMessage = (data: number[]): string => {
-    if (data.length === 0) return 'Empty message';
-    
-    const [status, ...payload] = data;
-    const command = status & 0xF0;
-    const channel = (status & 0x0F) + 1;
-    
-    switch (command) {
-      case 0x90:
-        return `Note ON: Ch${channel} Note${payload[0]} Vel${payload[1]}`;
-      case 0x80:
-        return `Note OFF: Ch${channel} Note${payload[0]}`;
-      case 0xB0:
-        return `CC: Ch${channel} CC${payload[0]} Val${payload[1]}`;
-      case 0xC0:
-        return `PC: Ch${channel} Program${payload[0]}`;
-      case 0xE0:
-        return `Pitch: Ch${channel} Val${(payload[1] << 7) | payload[0]}`;
-      default:
-        return `Unknown: ${data.map(b => b.toString(16).padStart(2, '0')).join(' ')}`;
-    }
-  };
-
-  // Format MIDI command for lyrics insertion
-  const formatMIDICommand = (data: number[]): string => {
-    if (data.length === 0) return '[[UNKNOWN]]';
-    
-    const [status, ...payload] = data;
-    const command = status & 0xF0;
-    const channel = (status & 0x0F) + 1;
-    
-    switch (command) {
-      case 0x90:
-        return `[[NOTE:${payload[0]}:${payload[1]}:${channel}]]`;
-      case 0x80:
-        return `[[NOTEOFF:${payload[0]}:${channel}]]`;
-      case 0xB0:
-        return `[[CC:${payload[0]}:${payload[1]}:${channel}]]`;
-      case 0xC0:
-        return `[[PC:${payload[0]}:${channel}]]`;
-      case 0xE0:
-        return `[[PITCH:${(payload[1] << 7) | payload[0]}:${channel}]]`;
-      default:
-        return `[[RAW:${data.map(b => b.toString(16).padStart(2, '0')).join(':')}]]`;
-    }
-  };
-
-  // Toggle MIDI listening
-  const toggleMIDIListening = () => {
-    setIsMIDIListening(!isMIDIListening);
-    if (!isMIDIListening) {
-      setCapturedMIDIMessages([]); // Clear previous messages when starting to listen
-    }
-  };
-
-  // Insert MIDI command into lyrics at cursor position
-  const insertMIDICommand = (command: string) => {
-    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
-    if (textarea) {
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const newText = lyricsText.substring(0, start) + command + lyricsText.substring(end);
-      setLyricsText(newText);
-      
-      // Set cursor position after inserted command
-      setTimeout(() => {
-        textarea.focus();
-        textarea.setSelectionRange(start + command.length, start + command.length);
-      }, 0);
-    }
-  };
-
-  // Send highlighted MIDI command to connected devices
-  const sendHighlightedMIDICommand = () => {
-    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
-    if (!textarea) return;
-
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = lyricsText.substring(start, end).trim();
-    
-    // Look for MIDI command pattern in selected text
-    const midiCommandMatch = selectedText.match(/\[\[([^\]]+)\]\]/);
-    if (!midiCommandMatch) {
-      toast({
-        title: "No MIDI Command Selected",
-        description: "Please highlight a MIDI command like [[CC:1:64:1]] to send",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    const command = midiCommandMatch[1];
-    const parsedCommand = parseMIDICommand(command);
-    
-    if (!parsedCommand) {
-      toast({
-        title: "Invalid MIDI Command",
-        description: `Could not parse MIDI command: ${command}`,
-        variant: "destructive"
-      });
-      return;
-    }
-
-    // Send to all connected MIDI output devices
-    if (midiAccess && midiAccess.outputs.size > 0) {
-      let sentCount = 0;
-      midiAccess.outputs.forEach((output: any) => {
-        if (output.state === 'connected') {
-          output.send(parsedCommand.data);
-          sentCount++;
-          console.log(`Sent MIDI command to ${output.name}:`, parsedCommand.data);
-        }
-      });
-      
-      if (sentCount > 0) {
-        toast({
-          title: "MIDI Command Sent",
-          description: `Sent ${command} to ${sentCount} device(s)`,
-        });
-      } else {
-        toast({
-          title: "No Connected Devices",
-          description: "No MIDI output devices are connected",
-          variant: "destructive"
-        });
-      }
-    } else {
-      toast({
-        title: "MIDI Not Available",
-        description: "No MIDI access or devices available",
-        variant: "destructive"
-      });
-    }
-  };
-
-
-
   // Load songs from localStorage when component mounts or user changes
   useEffect(() => {
     if (user?.email) {
@@ -286,17 +114,15 @@ export default function Performance({ userType }: PerformanceProps) {
       
       // Start MIDI sequencer with song lyrics if available
       if (song && song.lyrics) {
-        console.log('[PERFORMANCE] Starting MIDI sequencer for song:', song.title);
-        startSequence(song.lyrics);
+        startSequencer(song.lyrics);
       } else {
-        console.log('[PERFORMANCE] No lyrics found, stopping sequencer');
-        stopSequence();
+        stopSequencer();
       }
     } else {
       setSelectedSong(null);
-      stopSequence();
+      stopSequencer();
     }
-  }, [selectedSongId, user?.email, startSequence, stopSequence]);
+  }, [selectedSongId, user?.email, startSequencer, stopSequencer]);
 
   const {
     isPlaying,
@@ -308,9 +134,9 @@ export default function Performance({ userType }: PerformanceProps) {
     isAudioEngineOnline,
     isMidiConnected,
     isLoadingTracks,
-    play: originalPlay,
+    play,
     pause,
-    stop: originalStop,
+    stop,
     seek,
     updateTrackVolume,
     updateTrackBalance,
@@ -319,19 +145,6 @@ export default function Performance({ userType }: PerformanceProps) {
     updateMasterVolume,
     masterVolume
   } = useAudioEngine(selectedSong as any);
-
-  // Wrap play/stop functions to reset MIDI sequencer properly
-  const play = useCallback(() => {
-    console.log('[PERFORMANCE] Starting playback');
-    originalPlay();
-    // MIDI sequencing will be handled via processEvents
-  }, [originalPlay]);
-
-  const stop = useCallback(() => {
-    console.log('[PERFORMANCE] Stopping playback');
-    originalStop();
-    // MIDI sequencing will be handled via processEvents
-  }, [originalStop]);
 
   useKeyboardShortcuts({
     onPlay: play,
@@ -344,18 +157,14 @@ export default function Performance({ userType }: PerformanceProps) {
 
   // Update MIDI sequencer with current playback time
   useEffect(() => {
-    // Process MIDI events at current playback time
-    if (isPlaying && currentTime >= 0) {
-      processEvents(currentTime);
-    }
-  }, [currentTime, isPlaying, processEvents]);
+    updateSequencer(currentTime, isPlaying);
+  }, [currentTime, isPlaying, updateSequencer]);
 
   // Handle seeking - reset MIDI sequencer position
   const handleSeek = useCallback((time: number) => {
-    console.log(`[PERFORMANCE] Seeking to ${time.toFixed(1)}s`);
     seek(time);
-    // MIDI events will be processed from the new position automatically
-  }, [seek]);
+    resetSequencer(time);
+  }, [seek, resetSequencer]);
 
   // Log tracks that need audio files when song changes
   useEffect(() => {
@@ -477,9 +286,9 @@ export default function Performance({ userType }: PerformanceProps) {
       
       // Restart MIDI sequencer with updated lyrics
       if (lyricsText) {
-        startSequence(lyricsText);
+        startSequencer(lyricsText);
       } else {
-        stopSequence();
+        stopSequencer();
       }
       
       toast({
@@ -781,7 +590,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   <div className="flex flex-col">
                     <span>MIDI Devices</span>
                     <span className="text-xs text-gray-500">
-                      {devices.length > 0 ? `${devices.length} connected` : 'Not connected'}
+                      {midiSupported ? `${connectedOutputs.length + connectedInputs.length} connected` : 'Not supported'}
                     </span>
                   </div>
                 </DropdownMenuItem>
@@ -1153,27 +962,6 @@ export default function Performance({ userType }: PerformanceProps) {
                 Search
               </Button>
               
-              {/* MIDI Listen Button */}
-              <Button
-                variant={isMIDIListening ? "default" : "outline"}
-                size="sm"
-                onClick={toggleMIDIListening}
-                className={isMIDIListening ? "bg-red-600 hover:bg-red-700 text-white h-8 px-3" : "h-8 px-3"}
-                data-testid="button-midi-listen-editor"
-              >
-                {isMIDIListening ? (
-                  <>
-                    <Square className="w-3 h-3 mr-1" />
-                    Stop
-                  </>
-                ) : (
-                  <>
-                    <Headphones className="w-3 h-3 mr-1" />
-                    Listen
-                  </>
-                )}
-              </Button>
-              
               {/* Compact Position Slider */}
               {selectedSong && selectedSong.duration && (
                 <div className="flex-1 min-w-[200px] ml-4">
@@ -1201,17 +989,6 @@ export default function Performance({ userType }: PerformanceProps) {
             <div className="flex items-center justify-between mb-2 flex-shrink-0">
               <Label htmlFor="lyrics" className="text-sm font-semibold">Lyrics</Label>
               <div className="flex items-center gap-3">
-                {isMIDIListening && (
-                  <div className="flex items-center gap-1 text-xs">
-                    <Activity className="w-3 h-3 text-green-500 animate-pulse" />
-                    <span className="text-green-500">Listening</span>
-                    {capturedMIDIMessages.length > 0 && (
-                      <span className="bg-green-100 text-green-800 px-1 rounded text-xs">
-                        {capturedMIDIMessages.length}
-                      </span>
-                    )}
-                  </div>
-                )}
                 <span className="text-xs text-gray-500">
                   {lyricsText.length} chars
                 </span>
@@ -1241,57 +1018,10 @@ Click "Timestamp" to insert current time`}
               spellCheck={false}
               data-testid="textarea-lyrics"
             />
-            
-            {/* MIDI Captured Messages Panel */}
-            {isMIDIListening && capturedMIDIMessages.length > 0 && (
-              <div className="mt-2 border border-gray-600 rounded-md bg-gray-800 p-2 max-h-32 overflow-y-auto">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-semibold text-green-400">Captured MIDI Commands</span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setCapturedMIDIMessages([])}
-                    className="h-6 px-2 text-xs"
-                    data-testid="button-clear-captured-midi"
-                  >
-                    Clear
-                  </Button>
-                </div>
-                <div className="space-y-1">
-                  {capturedMIDIMessages.map((msg, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between text-xs p-1 bg-gray-700 rounded cursor-pointer hover:bg-gray-600"
-                      onClick={() => insertMIDICommand(msg.command)}
-                      title="Click to insert into lyrics"
-                    >
-                      <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <code className="font-mono text-green-300 truncate">{msg.command}</code>
-                        <span className="text-gray-400 text-xs">({msg.message})</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-gray-500 flex-shrink-0">
-                        <span className="truncate max-w-16">{msg.device}</span>
-                        <span>{new Date(msg.timestamp).toLocaleTimeString().slice(-8, -3)}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Compact Action Buttons */}
           <div className="flex justify-end gap-2 pt-2 mt-2 border-t border-gray-700 flex-shrink-0">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={sendHighlightedMIDICommand}
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-              data-testid="button-send-midi-command"
-            >
-              <Activity className="w-3 h-3 mr-1" />
-              Send Command
-            </Button>
             <Button 
               variant="outline" 
               size="sm"
@@ -1315,20 +1045,14 @@ Click "Timestamp" to insert current time`}
         </DialogContent>
       </Dialog>
 
-      {/* MIDI Device Manager Dialog */}
-      <Dialog open={isMIDIManagerOpen} onOpenChange={setIsMIDIManagerOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>MIDI Device Manager</DialogTitle>
-          </DialogHeader>
-          <MIDIDeviceManager
-            devices={devices}
-            isScanning={isScanning}
-            scanForBluetoothDevices={scanForBluetoothDevices}
-            sendMIDICommand={sendMIDICommand}
-          />
-        </DialogContent>
-      </Dialog>
+      {/* MIDI Device Manager */}
+      <MIDIDeviceManager 
+        isOpen={isMIDIManagerOpen}
+        onClose={() => setIsMIDIManagerOpen(false)}
+        onDevicesChange={(devices) => {
+          console.log('MIDI devices updated:', devices);
+        }}
+      />
     </div>
   );
 }

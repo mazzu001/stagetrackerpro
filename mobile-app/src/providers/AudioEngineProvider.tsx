@@ -112,53 +112,22 @@ export default function AudioEngineProvider({ children }: { children: React.Reac
       
       for (const track of tracks) {
         try {
-          // Validate track file path
-          if (!track.filePath) {
-            console.warn(`Track ${track.name} has no file path`);
-            continue;
-          }
-
-          // Check if file exists and is accessible
-          let fileInfo;
-          try {
-            fileInfo = await FileSystem.getInfoAsync(track.filePath);
-          } catch (fileCheckError) {
-            console.warn(`Cannot access file info for: ${track.filePath}`, fileCheckError);
-            continue;
-          }
-
+          // Check if file exists
+          const fileInfo = await FileSystem.getInfoAsync(track.filePath);
           if (!fileInfo.exists) {
             console.warn(`Audio file not found: ${track.filePath}`);
             continue;
           }
 
-          if (fileInfo.size === 0) {
-            console.warn(`Audio file is empty: ${track.filePath}`);
-            continue;
-          }
-
-          // Create audio sound with timeout and error handling
-          let sound;
-          try {
-            const soundResult = await Promise.race([
-              Audio.Sound.createAsync(
-                { uri: track.filePath },
-                { 
-                  shouldPlay: false,
-                  volume: track.volume * masterVolume,
-                  isMuted: track.muted,
-                  positionMillis: 0,
-                }
-              ),
-              new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('Audio load timeout')), 15000)
-              )
-            ]);
-            sound = (soundResult as any).sound;
-          } catch (audioError) {
-            console.error(`Failed to load audio for track ${track.name}:`, audioError);
-            continue;
-          }
+          const { sound } = await Audio.Sound.createAsync(
+            { uri: track.filePath },
+            { 
+              shouldPlay: false,
+              volume: track.volume * masterVolume,
+              isMuted: track.muted,
+              positionMillis: 0,
+            }
+          );
 
           players.push({
             sound,
@@ -169,15 +138,11 @@ export default function AudioEngineProvider({ children }: { children: React.Reac
             balance: track.balance,
           });
 
-          // Get duration from first track with error handling
+          // Get duration from first track
           if (players.length === 1) {
-            try {
-              const status = await sound.getStatusAsync();
-              if (status.isLoaded && status.durationMillis) {
-                setDuration(status.durationMillis / 1000);
-              }
-            } catch (statusError) {
-              console.warn('Failed to get audio status:', statusError);
+            const status = await sound.getStatusAsync();
+            if (status.isLoaded && status.durationMillis) {
+              setDuration(status.durationMillis / 1000);
             }
           }
         } catch (error) {

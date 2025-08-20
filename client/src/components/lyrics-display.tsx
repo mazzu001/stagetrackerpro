@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Plus, Minus, Edit, ChevronUp, ChevronDown, Headphones, Square, Activity } from "lucide-react";
+import { Plus, Minus, Edit, ChevronUp, ChevronDown } from "lucide-react";
 
 interface LyricsLine {
   timestamp: number; // in seconds
@@ -28,11 +27,6 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
   const [autoScrollEnabled, setAutoScrollEnabled] = useState(() => {
     return localStorage.getItem('lyrics-auto-scroll') !== 'false';
   });
-  
-  // MIDI listening state
-  const [isListening, setIsListening] = useState(false);
-  const [capturedMessages, setCapturedMessages] = useState<{ message: string; timestamp: number; device: string }[]>([]);
-  const [midiAccess, setMidiAccess] = useState<any>(null);
 
   // Reset scroll position when song changes
   useEffect(() => {
@@ -67,91 +61,6 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
       window.removeEventListener('lyrics-auto-scroll-change', handleAutoScrollChange);
     };
   }, []);
-
-  // Initialize MIDI access
-  useEffect(() => {
-    const initMIDI = async () => {
-      try {
-        if ((navigator as any).requestMIDIAccess) {
-          const access = await (navigator as any).requestMIDIAccess({ sysex: false });
-          setMidiAccess(access);
-        }
-      } catch (error) {
-        console.error('Failed to initialize MIDI:', error);
-      }
-    };
-    
-    initMIDI();
-  }, []);
-
-  // MIDI message listener
-  useEffect(() => {
-    if (!midiAccess || !isListening) return;
-
-    const handleMIDIMessage = (event: any) => {
-      const data = Array.from(event.data as Uint8Array) as number[];
-      const device = event.target?.name || 'Unknown Device';
-      const message = formatMIDIMessage(data);
-      
-      setCapturedMessages(prev => [
-        { message, timestamp: Date.now(), device },
-        ...prev.slice(0, 19) // Keep last 20 messages
-      ]);
-      
-      console.log(`MIDI captured in lyrics: ${device} - ${message}`, data);
-    };
-
-    // Set up listeners on all input devices
-    midiAccess.inputs.forEach((input: any) => {
-      if (input.state === 'connected') {
-        input.onmidimessage = handleMIDIMessage;
-      }
-    });
-
-    return () => {
-      // Clean up listeners
-      midiAccess.inputs.forEach((input: any) => {
-        if (input.onmidimessage === handleMIDIMessage) {
-          input.onmidimessage = null;
-        }
-      });
-    };
-  }, [midiAccess, isListening]);
-
-  // Format MIDI message for display
-  const formatMIDIMessage = (data: number[]): string => {
-    if (data.length === 0) return 'Empty message';
-    
-    const [status, ...payload] = data;
-    const command = status & 0xF0;
-    const channel = (status & 0x0F) + 1;
-    
-    switch (command) {
-      case 0x90:
-        return `Note ON: Ch${channel} Note${payload[0]} Vel${payload[1]}`;
-      case 0x80:
-        return `Note OFF: Ch${channel} Note${payload[0]}`;
-      case 0xB0:
-        return `CC: Ch${channel} CC${payload[0]} Val${payload[1]}`;
-      case 0xC0:
-        return `PC: Ch${channel} Program${payload[0]}`;
-      case 0xE0:
-        return `Pitch: Ch${channel} Val${(payload[1] << 7) | payload[0]}`;
-      default:
-        return `Unknown: ${data.map(b => b.toString(16).padStart(2, '0')).join(' ')}`;
-    }
-  };
-
-  const toggleListening = () => {
-    setIsListening(!isListening);
-    if (!isListening) {
-      setCapturedMessages([]); // Clear previous messages when starting to listen
-    }
-  };
-
-  const clearCapturedMessages = () => {
-    setCapturedMessages([]);
-  };
 
   // Parse lyrics with timestamps and filter out anything in brackets for display
   const parseLyrics = (lyricsText: string): LyricsLine[] => {
@@ -320,37 +229,6 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
         justifyContent: 'space-between'
       }}>
         <h3 style={{ fontSize: '18px', fontWeight: '500', color: 'white' }}>{song.title} - Lyrics</h3>
-        
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {/* MIDI Listen Button */}
-          <Button
-            variant={isListening ? "default" : "outline"}
-            size="sm"
-            onClick={toggleListening}
-            className={isListening ? "bg-red-600 hover:bg-red-700 text-white" : ""}
-            data-testid="button-midi-listen"
-          >
-            {isListening ? (
-              <>
-                <Square className="w-4 h-4 mr-2" />
-                Stop
-              </>
-            ) : (
-              <>
-                <Headphones className="w-4 h-4 mr-2" />
-                Listen
-              </>
-            )}
-          </Button>
-          
-          {/* Message Counter */}
-          {capturedMessages.length > 0 && (
-            <Badge variant="secondary" className="text-xs">
-              <Activity className="w-3 h-3 mr-1" />
-              {capturedMessages.length}
-            </Badge>
-          )}
-        </div>
       </div>
 
       {/* Lyrics Container */}
@@ -429,82 +307,6 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
           </div>
         )}
       </div>
-
-      {/* MIDI Activity Panel */}
-      {isListening && (
-        <div style={{
-          height: capturedMessages.length > 0 ? '200px' : '60px',
-          backgroundColor: '#1f2937',
-          borderTop: '1px solid #374151',
-          transition: 'height 0.3s ease'
-        }}>
-          <div style={{
-            padding: '12px 16px',
-            borderBottom: capturedMessages.length > 0 ? '1px solid #374151' : 'none',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Activity className="w-4 h-4 text-green-500 animate-pulse" />
-              <span style={{ fontSize: '14px', color: 'white', fontWeight: '500' }}>
-                MIDI Listening Active
-              </span>
-              <Badge variant="outline" className="text-xs">
-                {capturedMessages.length} captured
-              </Badge>
-            </div>
-            
-            {capturedMessages.length > 0 && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={clearCapturedMessages}
-                data-testid="button-clear-midi-messages"
-              >
-                Clear
-              </Button>
-            )}
-          </div>
-          
-          {capturedMessages.length > 0 && (
-            <div style={{
-              height: '140px',
-              overflowY: 'auto',
-              padding: '8px 16px'
-            }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                {capturedMessages.map((msg, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      fontSize: '12px',
-                      padding: '6px 8px',
-                      backgroundColor: '#111827',
-                      borderRadius: '4px',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <span style={{ fontFamily: 'monospace', color: '#e5e7eb' }}>
-                      {msg.message}
-                    </span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ color: '#9ca3af', fontSize: '11px' }}>
-                        {msg.device}
-                      </span>
-                      <span style={{ color: '#6b7280', fontSize: '10px' }}>
-                        {new Date(msg.timestamp).toLocaleTimeString()}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }

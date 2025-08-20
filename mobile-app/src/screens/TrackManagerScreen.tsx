@@ -7,20 +7,11 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
-  Platform,
-  ActivityIndicator,
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import { useDatabase } from '../providers/DatabaseProvider';
-import { 
-  executeWithCrashProtection, 
-  safeFileOperation, 
-  validateAndroidEnvironment,
-  createAndroidSafeFileName 
-} from '../utils/criticalAndroidFixes';
-import { executeWithEmergencyProtection } from '../utils/emergencyCrashHandler';
 
 interface Track {
   id: string;
@@ -58,62 +49,14 @@ export default function TrackManagerScreen() {
   };
 
   const handleAddTracks = async () => {
-    console.log('=== TRACK IMPORT START ===');
-    
-    // Triple-layer crash protection
-    return await executeWithEmergencyProtection(async () => {
-      return await executeWithCrashProtection(
-        async () => {
-          setIsUploading(true);
-          
-          // Android environment validation
-          if (Platform.OS === 'android') {
-            console.log('Validating Android environment...');
-            const envValid = await validateAndroidEnvironment();
-            if (!envValid) {
-              throw new Error('Android environment validation failed');
-            }
-          }
-          
-          return await performTrackImport();
-        },
-        'Track Import Process',
-        async () => {
-          console.log('Import failed, attempting emergency cleanup...');
-          setIsUploading(false);
-          Alert.alert(
-            'Import Failed',
-            'Track import encountered a critical error and was safely handled. The app remains stable.'
-          );
-        }
-      );
-    }, 'Emergency Track Import Protection');
-  };
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'audio/*',
+        multiple: true,
+        copyToCacheDirectory: true,
+      });
 
-  const performTrackImport = async () => {
-    return await executeWithEmergencyProtection(async () => {
-      console.log('Opening document picker...');
-      
-      // ULTRA-SAFE document picker with multiple fallbacks
-      const result = await executeWithCrashProtection(
-        async () => {
-          return await DocumentPicker.getDocumentAsync({
-            type: 'audio/*',
-            multiple: true,
-            copyToCacheDirectory: false,
-          });
-        },
-        'Document Picker',
-        async () => {
-          Alert.alert('Picker Error', 'File picker failed. Please restart app and try again.');
-          return { canceled: true, assets: [] };
-        }
-      );
-
-      if (!result || result.canceled || !result.assets || result.assets.length === 0) {
-        console.log('No valid files selected');
-        return;
-      }
+      if (result.canceled) return;
 
       if (tracks.length + result.assets.length > 6) {
         Alert.alert(
@@ -125,229 +68,58 @@ export default function TrackManagerScreen() {
 
       setIsUploading(true);
       
-      console.log(`Processing ${result.assets.length} assets...`);
-      for (let i = 0; i < result.assets.length; i++) {
-        const asset = result.assets[i];
-        console.log(`=== Processing asset ${i + 1}/${result.assets.length} ===`);
-        console.log('Asset details:', asset);
-        
+      for (const asset of result.assets) {
         try {
-          // Validate asset
-          if (!asset || !asset.uri) {
-            console.warn('Invalid asset detected, skipping');
-            continue;
-          }
-
-          // Create a critical-safe filename for Android
-          const originalName = asset.name || `track_${Date.now()}.mp3`;
-          console.log('Original filename:', originalName);
+          // Create a permanent file path
+          const fileName = asset.name || `track_${Date.now()}.mp3`;
+          const permanentPath = `${FileSystem.documentDirectory}audio/${fileName}`;
           
-          const safeFileName = createAndroidSafeFileName(originalName);
-          console.log('Safe filename:', safeFileName);
-          
-          const permanentPath = `${FileSystem.documentDirectory}audio/${safeFileName}`;
-          console.log('Target path:', permanentPath);
-          
-          // Check available storage space (Android specific)
-          try {
-            const dirInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory);
-            if (!dirInfo.exists) {
-              throw new Error('Document directory not accessible');
-            }
-          } catch (storageError) {
-            console.error('Storage access error:', storageError);
-            Alert.alert(
-              'Storage Error',
-              'Cannot access device storage. Please check app permissions.'
-            );
-            continue;
-          }
-          
-          // Ensure audio directory exists with proper error handling
-          try {
-            const audioDir = `${FileSystem.documentDirectory}audio/`;
-            const audioDirInfo = await FileSystem.getInfoAsync(audioDir);
-            if (!audioDirInfo.exists) {
-              await FileSystem.makeDirectoryAsync(audioDir, { intermediates: true });
-            }
-          } catch (dirError) {
-            console.error('Directory creation error:', dirError);
-            Alert.alert(
-              'Directory Error',
-              'Cannot create audio directory. Storage may be full.'
-            );
-            continue;
-          }
+          // Ensure audio directory exists
+          await FileSystem.makeDirectoryAsync(
+            `${FileSystem.documentDirectory}audio/`,
+            { intermediates: true }
+          );
 
-          // Verify source file accessibility
-          try {
-            const sourceInfo = await FileSystem.getInfoAsync(asset.uri);
-            if (!sourceInfo.exists) {
-              throw new Error('Source file not accessible');
-            }
-          } catch (sourceError) {
-            console.error('Source file error:', sourceError);
-            Alert.alert(
-              'File Error',
-              `Cannot access selected file: ${originalName}`
-            );
-            continue;
-          }
-
-          // Copy file with critical protection
-          const copySuccess = await safeFileOperation(async () => {
-            console.log(`Copying file from ${asset.uri} to ${permanentPath}`);
-            
-            // Try direct copy first
-            await executeWithCrashProtection(
-              async () => {
-                await Promise.race([
-                  FileSystem.copyAsync({
-                    from: asset.uri,
-                    to: permanentPath,
-                  }),
-                  new Promise((_, reject) => 
-                    setTimeout(() => reject(new Error('Direct copy timeout')), 25000)
-                  )
-                ]);
-                console.log('Direct copy successful');
-              },
-              `Direct copy: ${originalName}`,
-              async () => {
-                // Fallback: Read as Base64 and write
-                console.log('Trying Base64 copy strategy...');
-                const fileContent = await FileSystem.readAsStringAsync(asset.uri, {
-                  encoding: FileSystem.EncodingType.Base64,
-                });
-                await FileSystem.writeAsStringAsync(permanentPath, fileContent, {
-                  encoding: FileSystem.EncodingType.Base64,
-                });
-                console.log('Base64 copy successful');
-              }
-            );
-          }, originalName);
-
-          if (!copySuccess) {
-            console.warn(`Failed to copy ${originalName}, skipping`);
-            Alert.alert('Copy Failed', `Could not copy ${originalName}. Skipping this file.`);
-            continue;
-          }
-
-          // Verify the copied file
-          try {
-            const copiedInfo = await FileSystem.getInfoAsync(permanentPath);
-            if (!copiedInfo.exists || copiedInfo.size === 0) {
-              throw new Error('File copy verification failed');
-            }
-          } catch (verifyError) {
-            console.error('Copy verification error:', verifyError);
-            // Clean up partial file
-            try {
-              await FileSystem.deleteAsync(permanentPath, { idempotent: true });
-            } catch (cleanupError) {
-              console.warn('Cleanup error:', cleanupError);
-            }
-            Alert.alert(
-              'Verification Error',
-              `File copy incomplete for ${originalName}`
-            );
-            continue;
-          }
+          // Copy file to permanent location
+          await FileSystem.copyAsync({
+            from: asset.uri,
+            to: permanentPath,
+          });
 
           // Extract track name from filename
-          const trackName = safeFileName.replace(/\.[^/.]+$/, ''); // Remove extension
+          const trackName = fileName.replace(/\.[^/.]+$/, ''); // Remove extension
 
-          // Add track to database with critical protection
-          const dbSuccess = await executeWithCrashProtection(
-            async () => {
-              await addTrack({
-                songId,
-                name: trackName,
-                filePath: permanentPath,
-                volume: 0.8,
-                muted: false,
-                solo: false,
-                balance: 0,
-              });
-              console.log(`Successfully added track: ${trackName}`);
-              return true;
-            },
-            `Database insert: ${trackName}`,
-            async () => {
-              // Clean up file if database insert fails
-              await executeWithCrashProtection(
-                async () => {
-                  await FileSystem.deleteAsync(permanentPath, { idempotent: true });
-                },
-                `Cleanup after DB failure: ${trackName}`
-              );
-              return false;
-            }
-          );
+          // Add track to database
+          await addTrack({
+            songId,
+            name: trackName,
+            filePath: permanentPath,
+            volume: 0.8,
+            muted: false,
+            solo: false,
+            balance: 0,
+          });
 
-          if (!dbSuccess) {
-            console.warn(`Failed to save ${trackName} to database, skipping`);
-            Alert.alert('Database Error', `Could not save ${originalName} to database.`);
-            continue;
-          }
-
+          console.log(`Added track: ${trackName}`);
         } catch (error) {
-          console.error(`Critical error processing ${asset?.name || 'unknown file'}:`, error);
+          console.error(`Failed to add track ${asset.name}:`, error);
           Alert.alert(
-            'Processing Error',
-            `Failed to process ${asset?.name || 'selected file'}: ${error.message || 'Unknown error'}`
+            'Upload Error',
+            `Failed to add track: ${asset.name}`
           );
         }
       }
 
-      // Refresh data after processing all files
-      try {
-        loadData();
-      } catch (refreshError) {
-        console.error('Failed to refresh data:', refreshError);
-      }
+      // Refresh data
+      loadData();
       
-      // Show success message only if we actually processed some files
-      const successCount = result.assets.length;
-      if (successCount > 0) {
-        Alert.alert(
-          'Import Complete',
-          `Processed ${successCount} file(s). Check the track list for successfully imported tracks.`
-        );
-      }
+      Alert.alert(
+        'Success',
+        `Added ${result.assets.length} track(s) successfully`
+      );
     } catch (error) {
-      console.error('Critical error in track import:', error);
-      const errorMessage = error.message || 'Unknown error occurred';
-      
-      // Specific Android error handling
-      if (Platform.OS === 'android') {
-        if (errorMessage.includes('permission') || errorMessage.includes('EACCES')) {
-          Alert.alert(
-            'Permission Error',
-            'Storage permission denied. Please enable storage permissions in app settings and try again.'
-          );
-        } else if (errorMessage.includes('ENOSPC') || errorMessage.includes('space')) {
-          Alert.alert(
-            'Storage Full',
-            'Device storage is full. Please free up space and try again.'
-          );
-        } else if (errorMessage.includes('timeout')) {
-          Alert.alert(
-            'Operation Timeout',
-            'File operation took too long. This may happen with large files. Please try with smaller files or check your device performance.'
-          );
-        } else {
-          Alert.alert(
-            'Android Import Error',
-            `Import failed: ${errorMessage}. This may be due to Android security restrictions. Try:\n\n1. Restart the app\n2. Check storage permissions\n3. Try smaller files\n4. Free up device storage`
-          );
-        }
-      } else {
-        Alert.alert(
-          'Import Failed', 
-          `Track import failed: ${errorMessage}. Please try again or check device storage.`
-        );
-      }
+      console.error('Failed to add tracks:', error);
+      Alert.alert('Error', 'Failed to add tracks');
     } finally {
       setIsUploading(false);
     }

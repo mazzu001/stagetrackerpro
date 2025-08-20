@@ -77,17 +77,28 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
         
         if (currentLineElement) {
           const containerHeight = container.clientHeight;
+          const currentScrollTop = container.scrollTop;
           const lineTop = currentLineElement.offsetTop;
+          const lineBottom = lineTop + currentLineElement.offsetHeight;
           
-          // Keep current line centered in the view
-          const idealScrollTop = lineTop - (containerHeight / 2);
-          const maxScrollTop = container.scrollHeight - containerHeight;
-          const targetScrollTop = Math.max(0, Math.min(idealScrollTop, maxScrollTop));
+          const visibleTop = currentScrollTop;
+          const visibleBottom = currentScrollTop + containerHeight;
           
-          container.scrollTo({
-            top: targetScrollTop,
-            behavior: 'smooth'
-          });
+          // Only scroll if the line is getting close to the edge or out of view
+          const margin = containerHeight * 0.2; // 20% margin from edges
+          const needsScroll = lineBottom > (visibleBottom - margin) || lineTop < (visibleTop + margin);
+          
+          if (needsScroll) {
+            // Position line at about 1/3 from top for better readability
+            const targetScrollTop = lineTop - (containerHeight / 3);
+            const maxScrollTop = container.scrollHeight - containerHeight;
+            const finalScrollTop = Math.max(0, Math.min(targetScrollTop, maxScrollTop));
+            
+            container.scrollTo({
+              top: finalScrollTop,
+              behavior: 'smooth'
+            });
+          }
           
           setLastScrolledLine(currentLineIndex);
         }

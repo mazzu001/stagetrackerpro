@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 interface VUMeterProps {
   level: number; // 0-100
@@ -9,121 +9,92 @@ interface VUMeterProps {
 export default function VUMeter({ level, isMuted = false, className = "" }: VUMeterProps) {
   const [animatedLevel, setAnimatedLevel] = useState(0);
   const [peakLevel, setPeakLevel] = useState(0);
-  const animationFrameRef = useRef<number>();
-  const lastUpdateRef = useRef<number>(0);
-  const targetLevelRef = useRef<number>(0);
-  const currentLevelRef = useRef<number>(0);
-  const peakLevelRef = useRef<number>(0);
-  const peakHoldTimeRef = useRef<number>(0);
 
-  // Single requestAnimationFrame loop for smooth 60fps animation
+  // Use EXACT same logic as the perfectly working stereo VU meters
   useEffect(() => {
     if (isMuted) {
       setAnimatedLevel(0);
       setPeakLevel(0);
-      currentLevelRef.current = 0;
-      peakLevelRef.current = 0;
-      targetLevelRef.current = 0;
       return;
     }
 
-    // Professional VU meter response - conservative scaling
-    const amplifiedLevel = level * 20000; // Higher compensation for much lower engine values
+    // Apply amplification to make meters more reactive - SAME AS STEREO VU METERS
+    const amplifiedLevel = level * 1.8; // Exact same amplification as stereo meters
+    const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
-    targetLevelRef.current = Math.max(0, Math.min(100, amplifiedLevel));
-
-    const animate = (timestamp: number) => {
-      const deltaTime = timestamp - lastUpdateRef.current;
-      
-      // Only update if enough time has passed (60fps = ~16.67ms)
-      if (deltaTime >= 16) {
-        // Smooth level interpolation
-        const diff = targetLevelRef.current - currentLevelRef.current;
-        const smoothingFactor = Math.min(1, deltaTime / 50); // Adaptive smoothing based on frame time
-        currentLevelRef.current += diff * smoothingFactor * 0.9; // Fast response
-        
-        // Peak detection and hold
-        const currentTime = timestamp;
-        if (currentLevelRef.current > peakLevelRef.current) {
-          peakLevelRef.current = currentLevelRef.current;
-          peakHoldTimeRef.current = currentTime;
-        } else if (currentTime - peakHoldTimeRef.current > 500) { // Hold peak for 500ms
-          // Smooth peak decay
-          peakLevelRef.current = Math.max(currentLevelRef.current, peakLevelRef.current - (deltaTime * 0.1));
-        }
-
-        // Update state only when values change significantly (reduces React re-renders)
-        const newLevel = Math.round(currentLevelRef.current * 10) / 10;
-        const newPeak = Math.round(peakLevelRef.current * 10) / 10;
-        
-        setAnimatedLevel(prev => Math.abs(prev - newLevel) > 0.1 ? newLevel : prev);
-        setPeakLevel(prev => Math.abs(prev - newPeak) > 0.1 ? newPeak : prev);
-        
-        lastUpdateRef.current = timestamp;
-      }
-
-      animationFrameRef.current = requestAnimationFrame(animate);
+    const animate = () => {
+      setAnimatedLevel(prev => {
+        const diff = targetLevel - prev;
+        const step = diff * 0.9; // Exact same response speed as stereo meters
+        return Math.abs(step) < 0.1 ? targetLevel : prev + step;
+      });
     };
 
-    animationFrameRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
+    const interval = setInterval(animate, 6); // Exact same update rate as stereo meters
+    return () => clearInterval(interval);
   }, [level, isMuted]);
 
-  // Create LED segments
-  const segments = 20;
-  const segmentWidth = 100 / segments;
+  // Peak hold - SAME AS STEREO VU METERS
+  useEffect(() => {
+    if (animatedLevel > peakLevel) {
+      setPeakLevel(animatedLevel);
+    } else {
+      const decay = () => {
+        setPeakLevel(prev => Math.max(animatedLevel, prev - 1.5)); // Exact same decay as stereo meters
+      };
+      const interval = setInterval(decay, 15); // Exact same frequency as stereo meters
+      return () => clearInterval(interval);
+    }
+  }, [animatedLevel, peakLevel]);
+
+  // Create LED segments - SAME AS STEREO VU METERS
+  const segments = 12; // Same segment count as stereo meters
   const activeSegments = Math.floor((animatedLevel / 100) * segments);
   const peakSegment = Math.floor((peakLevel / 100) * segments);
 
   const getSegmentColor = (index: number) => {
-    if (isMuted) return 'bg-gray-600';
+    if (isMuted) return 'bg-gray-700'; // Same inactive color as stereo meters
     
     const percentage = (index / segments) * 100;
     
     if (index === peakSegment - 1 && peakSegment > activeSegments) {
-      // Peak indicator
-      if (percentage < 60) return 'bg-green-400';
-      if (percentage < 80) return 'bg-yellow-400';
-      return 'bg-red-400';
+      // Peak indicator - bright with strong glow (SAME AS STEREO)
+      if (percentage < 60) return 'bg-green-300 shadow-green-300/70';
+      if (percentage < 80) return 'bg-yellow-300 shadow-yellow-300/70';
+      return 'bg-red-300 shadow-red-300/70';
     }
     
     if (index < activeSegments) {
-      // Active segments
-      if (percentage < 60) return 'bg-green-500';
-      if (percentage < 80) return 'bg-yellow-500';
-      return 'bg-red-500';
+      // Active segments - brighter colors with glow (SAME AS STEREO)
+      if (percentage < 60) return 'bg-green-400 shadow-green-400/50';
+      if (percentage < 80) return 'bg-yellow-400 shadow-yellow-400/50';
+      return 'bg-red-400 shadow-red-400/50';
     }
     
-    // Inactive segments
-    if (percentage < 60) return 'bg-green-900/30';
-    if (percentage < 80) return 'bg-yellow-900/30';
-    return 'bg-red-900/30';
+    // Inactive segments (SAME AS STEREO)
+    if (percentage < 60) return 'bg-green-900/20';
+    if (percentage < 80) return 'bg-yellow-900/20';
+    return 'bg-red-900/20';
   };
 
   return (
-    <div className={`flex items-center space-x-1 ${className}`}>
-      {/* VU Meter Segments */}
-      <div className="flex space-x-0.5">
+    <div className={`flex items-center justify-center ${className}`}>
+      {/* VU Meter Segments - SAME LAYOUT AS STEREO METERS */}
+      <div className="flex space-x-0.5 px-1">
         {Array.from({ length: segments }, (_, index) => (
           <div
             key={index}
-            className={`w-1 h-3 rounded-sm ${getSegmentColor(index)}`}
+            className={`w-1 h-4 rounded-sm transition-all duration-75 ${getSegmentColor(index)}`}
             style={{
-              opacity: index < activeSegments || index === peakSegment - 1 ? 1 : 0.3
+              boxShadow: (index < activeSegments || index === peakSegment - 1) && !isMuted
+                ? getSegmentColor(index).includes('shadow-') 
+                  ? '0 0 4px currentColor' 
+                  : 'none'
+                : 'none'
             }}
           />
         ))}
       </div>
-      
-      {/* Level Display */}
-      <span className="text-xs text-gray-400 w-8 font-mono">
-        {isMuted ? 'M' : `${Math.round(animatedLevel)}`}
-      </span>
     </div>
   );
 }

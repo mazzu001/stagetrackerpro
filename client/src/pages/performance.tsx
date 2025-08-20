@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -40,9 +40,40 @@ export default function Performance({ userType }: PerformanceProps) {
   const [isDeleteSongOpen, setIsDeleteSongOpen] = useState(false);
   const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
+
+  // Fullscreen functionality
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch (err) {
+      console.error('Error attempting to toggle fullscreen:', err);
+      toast({
+        title: "Fullscreen Error",
+        description: "Unable to toggle fullscreen mode. Your browser may not support this feature.",
+        variant: "destructive"
+      });
+    }
+  }, [toast]);
+
+  // Listen for fullscreen change events
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   // Load songs from localStorage when component mounts or user changes
   useEffect(() => {
@@ -509,6 +540,19 @@ export default function Performance({ userType }: PerformanceProps) {
                   <span>Subscribe Now</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="mobile-hidden" />
+                <DropdownMenuItem 
+                  onClick={toggleFullscreen}
+                  className="flex items-center cursor-pointer"
+                  data-testid="menu-fullscreen"
+                >
+                  {isFullscreen ? (
+                    <Minimize className="w-4 h-4 mr-2" />
+                  ) : (
+                    <Maximize className="w-4 h-4 mr-2" />
+                  )}
+                  <span>{isFullscreen ? 'Exit Full Screen' : 'Full Screen'}</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem 
                   onClick={() => downloadSampleZip('3AM')}
                   className="flex items-center cursor-pointer"

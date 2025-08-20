@@ -87,6 +87,15 @@ This project is a live music performance application designed for professional s
 - **ENHANCED**: Better logging for debugging audio loading and playback states
 - **Status**: Complete race condition protection - prevents audio conflicts during song switches
 
+### Working Build 9 (August 20, 2025) - AUTO-SCROLL PERFECTED
+- All functionality from Working Build 8
+- **FIXED**: Auto-scroll for non-timestamped lyrics now works properly
+- **IMPROVED**: Scroll speed range optimized from 0.2x-3.0x to 0.1x-2.0x for better stage control
+- **REFINED**: Scroll speed step size reduced from 0.2 to 0.1 for finer adjustments
+- **OPTIMIZED**: Auto-scroll timing starts immediately (currentTime >= 0) instead of waiting for 0.5s
+- **SIMPLIFIED**: Linear scroll calculation from start to finish with speed multiplier
+- **Status**: Complete auto-scroll system working for both timestamped and non-timestamped lyrics
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

@@ -123,38 +123,18 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
 
   // Auto-scroll for non-timestamped lyrics
   useEffect(() => {
-    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 0.5 && autoScrollEnabled) {
+    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime >= 0 && autoScrollEnabled) {
       const container = containerRef.current;
       const contentHeight = container.scrollHeight;
       const containerHeight = container.clientHeight;
       const maxScrollDistance = Math.max(0, contentHeight - containerHeight);
       
-      // Debug logging to identify the issue
-      console.log('Auto-scroll check:', {
-        hasTimestamps,
-        plainLinesLength: plainLines.length,
-        songDuration: song?.duration,
-        currentTime,
-        autoScrollEnabled,
-        maxScrollDistance,
-        contentHeight,
-        containerHeight
-      });
-      
       // Only scroll if there's content to scroll
       if (maxScrollDistance > 0) {
         // Calculate scroll position as percentage of song progress
         const songProgress = Math.min(currentTime / song.duration, 1);
-        const adjustedProgress = Math.max(0, (songProgress - 0.05) / 0.9); // Start scroll at 5% and finish at 95%
-        const targetScrollTop = adjustedProgress * maxScrollDistance * scrollSpeed;
-        
-        console.log('Auto-scrolling:', {
-          songProgress,
-          adjustedProgress,
-          scrollSpeed,
-          targetScrollTop,
-          maxScrollDistance
-        });
+        // Linear scroll from start to finish with scroll speed multiplier
+        const targetScrollTop = songProgress * maxScrollDistance * scrollSpeed;
         
         container.scrollTop = Math.min(targetScrollTop, maxScrollDistance);
       }

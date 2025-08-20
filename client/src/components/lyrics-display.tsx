@@ -62,6 +62,14 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   }) : -1; // Don't highlight lines when no real timestamps
 
+  // Reset scroll position when song changes
+  useEffect(() => {
+    if (lyricsContainerRef.current && song) {
+      lyricsContainerRef.current.scrollTop = 0;
+      setLastScrolledLine(-1);
+    }
+  }, [song?.id]);
+
   // Scrolling logic based on whether lyrics have timestamps
   useEffect(() => {
     if (!song || parsedLyrics.length === 0 || !lyricsContainerRef.current) return;
@@ -80,17 +88,48 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           const containerHeight = container.clientHeight;
           const lineTop = currentLineElement.offsetTop;
           const lineHeight = currentLineElement.offsetHeight;
+          const currentScrollTop = container.scrollTop;
+          
+          console.log(`Line ${currentLineIndex}: lineTop=${lineTop}, containerHeight=${containerHeight}, currentScroll=${currentScrollTop}`);
           
           if (currentLineIndex >= 2) {
-            // For line 2 and beyond, center the highlighted line
+            // Calculate target position to center the line
             const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
+            const maxScroll = Math.max(0, targetScrollTop);
             
-            container.scrollTo({
-              top: Math.max(0, targetScrollTop),
-              behavior: 'smooth'
-            });
+            if (currentLineIndex === 2) {
+              // Special handling for first centering scroll
+              console.log(`First centering scroll (line 2): current=${currentScrollTop}, target=${maxScroll}, difference=${maxScroll - currentScrollTop}`);
+              
+              // If this is a big jump (more than 2 line heights), scroll more gradually
+              const jumpSize = Math.abs(maxScroll - currentScrollTop);
+              const lineHeightThreshold = lineHeight * 2;
+              
+              if (jumpSize > lineHeightThreshold) {
+                // Large jump - scroll to a position that's closer to current position
+                const intermediateScroll = currentScrollTop + (maxScroll - currentScrollTop) * 0.6;
+                console.log(`Large jump detected, using intermediate scroll: ${intermediateScroll}`);
+                container.scrollTo({
+                  top: Math.max(0, intermediateScroll),
+                  behavior: 'smooth'
+                });
+              } else {
+                container.scrollTo({
+                  top: maxScroll,
+                  behavior: 'smooth'
+                });
+              }
+            } else {
+              // Line 3 and beyond - normal centering
+              console.log(`Centering line ${currentLineIndex}: targetScrollTop=${maxScroll}`);
+              container.scrollTo({
+                top: maxScroll,
+                behavior: 'smooth'
+              });
+            }
+          } else {
+            console.log(`Line ${currentLineIndex}: Not scrolling (first 2 lines)`);
           }
-          // For lines 0 and 1, don't scroll (stay at top)
           
           setLastScrolledLine(currentLineIndex);
         }

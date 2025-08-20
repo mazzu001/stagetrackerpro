@@ -161,70 +161,119 @@ export function useMIDISequencer() {
     return sortedCommands;
   }, []);
 
-  // Execute a single MIDI command using direct MIDI access (same as manual Send Command)
+  // Parse MIDI command string into MIDI data bytes (EXACT COPY from manual Send Command)
+  const parseMIDICommand = useCallback((command: string): { data: number[]; description: string } | null => {
+    const parts = command.split(':');
+    const type = parts[0];
+
+    try {
+      switch (type) {
+        case 'CC': {
+          const controller = parseInt(parts[1]);
+          const value = parseInt(parts[2]);
+          const channel = parseInt(parts[3] || '1') - 1;
+          return {
+            data: [0xB0 | channel, controller, value],
+            description: `Control Change Ch${channel + 1} CC${controller} Val${value}`
+          };
+        }
+        case 'NOTE': {
+          const note = parseInt(parts[1]);
+          const velocity = parseInt(parts[2]);
+          const channel = parseInt(parts[3] || '1') - 1;
+          return {
+            data: [0x90 | channel, note, velocity],
+            description: `Note On Ch${channel + 1} Note${note} Vel${velocity}`
+          };
+        }
+        case 'NOTEOFF': {
+          const note = parseInt(parts[1]);
+          const channel = parseInt(parts[2] || '1') - 1;
+          return {
+            data: [0x80 | channel, note, 0],
+            description: `Note Off Ch${channel + 1} Note${note}`
+          };
+        }
+        case 'PC': {
+          const program = parseInt(parts[1]);
+          const channel = parseInt(parts[2] || '1') - 1;
+          return {
+            data: [0xC0 | channel, program],
+            description: `Program Change Ch${channel + 1} Program${program}`
+          };
+        }
+        case 'PITCH': {
+          const value = parseInt(parts[1]);
+          const channel = parseInt(parts[2] || '1') - 1;
+          const lsb = value & 0x7F;
+          const msb = (value >> 7) & 0x7F;
+          return {
+            data: [0xE0 | channel, lsb, msb],
+            description: `Pitch Bend Ch${channel + 1} Val${value}`
+          };
+        }
+        default:
+          return null;
+      }
+    } catch (error) {
+      return null;
+    }
+  }, []);
+
+  // Execute automated MIDI command EXACTLY like manual Send Command 
   const executeMIDICommand = useCallback((command: MIDICommand) => {
-    const channel = command.channel || 0;
-    
-    console.log(`[MIDI SEQUENCER] Executing command: ${command.type} at ${command.timestamp}s`);
-    console.log(`[MIDI SEQUENCER] AUTOMATED SEND - Using direct MIDI access like manual Send Command`);
+    console.log(`[MIDI SEQUENCER] Executing automated command at ${command.timestamp}s:`, command);
+    console.log(`[MIDI SEQUENCER] AUTOMATED - Using EXACT same logic as manual Send Command`);
     
     if (!midiAccess || !midiAccess.outputs || midiAccess.outputs.size === 0) {
-      console.log('[MIDI SEQUENCER] No MIDI access or devices available for automated sending');
+      console.log('[MIDI SEQUENCER] No MIDI access or devices available');
       return;
     }
-    
-    let midiData: number[] = [];
-    
-    // Convert command to MIDI data bytes (same logic as manual parseMIDICommand)
-    try {
-      switch (command.type) {
-        case 'note_on':
-          if (command.note !== undefined && command.velocity !== undefined) {
-            midiData = [0x90 | channel, command.note, command.velocity];
-          }
-          break;
-          
-        case 'note_off':
-          if (command.note !== undefined) {
-            midiData = [0x80 | channel, command.note, 0];
-          }
-          break;
-          
-        case 'control_change':
-          if (command.controller !== undefined && command.value !== undefined) {
-            midiData = [0xB0 | channel, command.controller, command.value];
-          }
-          break;
-          
-        case 'program_change':
-          if (command.program !== undefined) {
-            midiData = [0xC0 | channel, command.program];
-          }
-          break;
-      }
-      
-      if (midiData.length > 0) {
-        let sentCount = 0;
-        console.log(`[MIDI SEQUENCER] Sending MIDI data directly: [${midiData.join(', ')}]`);
-        
-        // Send to all connected output devices (same as manual Send Command)
-        midiAccess.outputs.forEach((output: any) => {
-          if (output.state === 'connected') {
-            output.send(midiData);
-            sentCount++;
-            console.log(`[MIDI SEQUENCER] AUTOMATED: Sent to ${output.name}:`, midiData);
-          }
-        });
-        
-        console.log(`[MIDI SEQUENCER] AUTOMATED: Successfully sent to ${sentCount} devices`);
-      } else {
-        console.log('[MIDI SEQUENCER] No MIDI data generated for command:', command);
-      }
-      
-    } catch (error) {
-      console.error('[MIDI SEQUENCER] Error executing automated MIDI command:', error, command);
+
+    // Convert our command back to the string format that parseMIDICommand expects
+    let commandString = '';
+    switch (command.type) {
+      case 'control_change':
+        commandString = `CC:${command.controller}:${command.value}:${(command.channel || 0) + 1}`;
+        break;
+      case 'note_on':
+        commandString = `NOTE:${command.note}:${command.velocity}:${(command.channel || 0) + 1}`;
+        break;
+      case 'note_off':
+        commandString = `NOTEOFF:${command.note}:${(command.channel || 0) + 1}`;
+        break;
+      case 'program_change':
+        commandString = `PC:${command.program}:${(command.channel || 0) + 1}`;
+        break;
+      default:
+        console.log('[MIDI SEQUENCER] Unknown command type:', command.type);
+        return;
     }
-  }, [midiAccess]);
+
+    console.log(`[MIDI SEQUENCER] Converted to command string: ${commandString}`);
+    
+    // Use EXACT same parsing logic as manual Send Command
+    const parsedCommand = parseMIDICommand(commandString);
+    
+    if (!parsedCommand) {
+      console.log(`[MIDI SEQUENCER] Failed to parse command: ${commandString}`);
+      return;
+    }
+
+    console.log(`[MIDI SEQUENCER] Parsed MIDI data:`, parsedCommand.data);
+
+    // Send to all connected MIDI output devices (EXACT same logic as manual)
+    let sentCount = 0;
+    midiAccess.outputs.forEach((output: any) => {
+      if (output.state === 'connected') {
+        output.send(parsedCommand.data);
+        sentCount++;
+        console.log(`[MIDI SEQUENCER] AUTOMATED: Sent to ${output.name}:`, parsedCommand.data);
+      }
+    });
+    
+    console.log(`[MIDI SEQUENCER] AUTOMATED: Successfully sent to ${sentCount} devices`);
+  }, [midiAccess, parseMIDICommand]);
 
   // Start MIDI sequencing
   const startSequencer = useCallback((lyricsText: string) => {

@@ -753,12 +753,23 @@ export default function Performance({ userType }: PerformanceProps) {
         <div className="flex-1 flex flex-col min-h-0 md:flex-row">
           {/* Mobile: Lyrics above transport controls */}
           <div className="flex-1 flex flex-col">
+            {/* Desktop Header */}
             <div className="p-2 md:p-4 border-b border-gray-700 bg-surface flex items-center justify-between mobile-hidden">
               <h2 className="text-sm md:text-lg font-semibold truncate mr-2">
                 {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
               </h2>
               
               {/* Lyrics Controls */}
+              {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
+            </div>
+            
+            {/* Mobile Header with Controls */}
+            <div className="p-2 border-b border-gray-700 bg-surface flex items-center justify-between md:hidden">
+              <h2 className="text-sm font-semibold truncate mr-2 flex-1">
+                {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
+              </h2>
+              
+              {/* Mobile Lyrics Controls */}
               {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
             <div className="flex-1 min-h-0" style={{ contain: 'layout style' }}>

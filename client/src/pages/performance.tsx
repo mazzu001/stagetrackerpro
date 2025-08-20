@@ -841,7 +841,7 @@ export default function Performance({ userType }: PerformanceProps) {
             
             {/* Position Slider */}
             {selectedSong && selectedSong.duration && (
-              <div className="space-y-2">
+              <div className="space-y-2 pt-[0px] pb-[0px] mt-[7px] mb-[7px]">
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <span>0:00</span>
                   <span className="font-medium">Playback Position</span>

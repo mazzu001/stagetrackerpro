@@ -790,7 +790,7 @@ export default function Performance({ userType }: PerformanceProps) {
       </div>
       {/* Edit Lyrics Dialog */}
       <Dialog open={isEditLyricsOpen} onOpenChange={setIsEditLyricsOpen}>
-        <DialogContent className="fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg sm:max-w-2xl max-w-[95vw] max-h-[95vh] mobile-padding pt-[0px] pb-[0px] mt-[7px] mb-[7px] ml-[0px] mr-[0px] pl-[10px] pr-[10px]">
+        <DialogContent className="fixed left-[50%] top-[50%] z-50 grid w-full translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg sm:max-w-2xl max-w-[95vw] max-h-[95vh] mobile-padding pt-[0px] pb-[60px] mt-[7px] mb-[7px] ml-[0px] mr-[0px] pl-[10px] pr-[10px]">
           <DialogHeader>
             <DialogTitle>
               Edit Lyrics - {selectedSong?.title} by {selectedSong?.artist}
@@ -880,7 +880,7 @@ export default function Performance({ userType }: PerformanceProps) {
                 Tip: Use [00:15] for timestamps and [[CC:1:64]] for MIDI commands. Use the "Insert Time Stamp" button to add current playback time.
               </p>
             </div>
-            <div className="flex justify-end space-x-2 pt-4" style={{ marginTop: '-50px' }}>
+            <div className="flex justify-end space-x-2 pt-8 pb-4">
               <Button 
                 variant="outline" 
                 onClick={() => {

@@ -506,9 +506,10 @@ export default function TrackManager({
             const isMuted = track.isMuted ?? false;
             const isSolo = track.isSolo ?? false;
             const rawLevel = audioLevels[track.id] || 0;
-            // Use moderate amplification that matches the improved audio engine scaling
-            // The audio engine now provides better scaled values, so we don't need extreme amplification
-            const level = rawLevel * 2.5; // Much more reasonable amplification
+            // Apply the same amplification that makes stereo VU meters work perfectly
+            // Stereo VU meters get values 20-50, track VU meters get 0.04-0.12
+            // So we need to amplify by roughly 500x to match stereo meter levels
+            const level = rawLevel * 500;
             
             return (
               <Card key={track.id}>

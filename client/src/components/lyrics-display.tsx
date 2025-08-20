@@ -211,7 +211,8 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
       {/* Lyrics Container */}
       <div 
         ref={containerRef}
-        className="flex-1 overflow-y-auto p-6 bg-gray-800"
+        className="overflow-y-auto p-6 bg-gray-800"
+        style={{ height: '400px' }}
         data-testid="lyrics-container"
       >
         {!song?.lyrics ? (

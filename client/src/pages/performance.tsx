@@ -542,9 +542,6 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
         </div>
       </header>
-
-
-
       {/* Main Content Area */}
       <div className="flex flex-1 min-h-0 overflow-hidden flex-col md:flex-row">
         {/* Mobile: Song List at top */}
@@ -677,11 +674,7 @@ export default function Performance({ userType }: PerformanceProps) {
             {allSongs.map((song) => (
               <div
                 key={song.id}
-                className={`p-2 md:p-4 border-b border-gray-700 transition-colors touch-target ${
-                  selectedSongId === song.id ? 'bg-primary/20 border-l-4 border-l-primary' : ''
-                } ${
-                  isPlaying ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-gray-700'
-                }`}
+                className="p-2 md:p-4 border-b border-gray-700 transition-colors touch-target bg-primary/20 border-l-4 border-l-primary cursor-pointer hover:bg-gray-700 pt-[8px] pb-[8px]"
                 onClick={() => !isPlaying && setSelectedSongId(song.id)}
                 data-testid={`song-item-${song.id}`}
               >
@@ -783,7 +776,6 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
         </div>
       </div>
-
       {/* Status Bar - Desktop only */}
       <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 mobile-hidden">
         <StatusBar
@@ -792,7 +784,6 @@ export default function Performance({ userType }: PerformanceProps) {
           latency={latency}
         />
       </div>
-
       {/* Edit Lyrics Dialog */}
       <Dialog open={isEditLyricsOpen} onOpenChange={setIsEditLyricsOpen}>
         <DialogContent className="sm:max-w-2xl max-w-[95vw] mobile-padding">
@@ -906,8 +897,6 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
         </DialogContent>
       </Dialog>
-
-
     </div>
   );
 }

@@ -179,48 +179,47 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
           )}
         </div>
         
-        <ScrollArea className="h-32">
+        <ScrollArea className="h-20">
           {devices.length > 0 ? (
-            <div className="space-y-2">
+            <div className="space-y-1">
               {devices.map((device) => (
-                <div key={device.id} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded text-gray-900 dark:text-gray-100">
+                <div key={device.id} className="flex items-center justify-between p-1.5 bg-gray-50 dark:bg-gray-800 rounded text-gray-900 dark:text-gray-100">
                   <div className="flex items-center gap-2">
-                    <Bluetooth className="w-4 h-4 text-blue-500" />
-                    <span className="text-sm">{device.name}</span>
+                    <Bluetooth className="w-3 h-3 text-blue-500" />
+                    <span className="text-xs">{device.name}</span>
                   </div>
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="text-xs px-1 py-0">
                     {device.type}
                   </Badge>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center text-gray-500 dark:text-gray-400 py-4">
-              <Music className="w-8 h-8 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">No MIDI devices found</p>
-              <p className="text-xs mt-1">Console mode active</p>
+            <div className="text-center text-gray-500 dark:text-gray-400 py-2">
+              <Music className="w-6 h-6 mx-auto mb-1 opacity-50" />
+              <p className="text-xs">Console mode active</p>
             </div>
           )}
         </ScrollArea>
       </Card>
 
       {/* Test Controls */}
-      <Card className="p-4">
-        <h3 className="font-semibold mb-3 flex items-center gap-2">
+      <Card className="p-3">
+        <h3 className="font-semibold mb-2 flex items-center gap-2 text-sm">
           <Activity className="w-4 h-4" />
           Test Commands
         </h3>
         
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="flex gap-2">
             <input
               type="text"
               value={testCommand}
               onChange={(e) => setTestCommand(e.target.value)}
               placeholder="CC:1:64:1"
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm font-mono bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              className="flex-1 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-xs font-mono bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             />
-            <Button onClick={sendTestCommand} size="sm">
+            <Button onClick={sendTestCommand} size="sm" className="text-xs px-2">
               Send
             </Button>
           </div>
@@ -228,7 +227,7 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
           <Button 
             onClick={runTestSequence} 
             variant="outline" 
-            className="w-full"
+            className="w-full text-xs py-1"
             disabled={!isConnected}
           >
             Run Test Sequence
@@ -236,40 +235,25 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
         </div>
       </Card>
 
-      {/* Chrome Bluetooth Permission Help */}
-      <Card className="p-4 bg-amber-50 dark:bg-amber-950 border-amber-200 dark:border-amber-800">
-        <h4 className="font-semibold text-amber-800 dark:text-amber-200 mb-2">Chrome Bluetooth Setup</h4>
-        <div className="text-sm text-amber-700 dark:text-amber-300 space-y-2">
-          <div className="font-semibold">If "Permission Denied" appears:</div>
-          <div className="ml-2 space-y-1">
-            <div>1. Look for 🔒 lock icon in address bar</div>
-            <div>2. Click lock → Bluetooth → Allow</div>
-            <div>3. If no lock icon, try F5 to refresh</div>
-          </div>
-          <div className="font-semibold mt-3">Alternative methods:</div>
-          <div className="ml-2 space-y-1">
-            <div>• Type: chrome://settings/content/bluetooth</div>
-            <div>• Enable "Sites can ask to connect"</div>
-            <div>• Right-click page → Site settings</div>
-          </div>
-        </div>
-      </Card>
-
-      {/* Help */}
-      <Card className="p-4 bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-        <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">MIDI Command Format</h4>
-        <div className="text-sm text-blue-700 dark:text-blue-300 space-y-2">
-          <div className="font-mono space-y-1">
-            <div>CC:controller:value:channel</div>
-            <div>NOTE:note:velocity:channel</div>
-            <div>NOTEOFF:note:channel</div>
-            <div>PC:program:channel</div>
-          </div>
-          <div className="border-t border-blue-300 dark:border-blue-700 pt-2">
-            <div className="font-semibold mb-1">Device Setup:</div>
-            <div>• Turn on device Bluetooth/pairing mode</div>
-            <div>• Click "Find Bluetooth" above</div>
-            <div>• Select device from browser popup</div>
+      {/* Compact Help */}
+      <Card className="p-2 bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+        <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-1 text-sm">Setup & Commands</h4>
+        <div className="text-xs text-blue-700 dark:text-blue-300 space-y-1">
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <div className="font-semibold">Commands:</div>
+              <div className="font-mono space-y-0.5">
+                <div>CC:ctrl:val:ch</div>
+                <div>NOTE:note:vel:ch</div>
+                <div>PC:prog:ch</div>
+              </div>
+            </div>
+            <div>
+              <div className="font-semibold">Chrome Setup:</div>
+              <div>🔒 address bar lock</div>
+              <div>→ Bluetooth → Allow</div>
+              <div>Or: chrome://settings/content/bluetooth</div>
+            </div>
           </div>
         </div>
       </Card>

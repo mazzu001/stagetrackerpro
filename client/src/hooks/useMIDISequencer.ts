@@ -223,25 +223,25 @@ export function useMIDISequencer() {
 
     if (commandsToTrigger.length > 0) {
       console.log(`[MIDI SEQUENCER] Triggering ${commandsToTrigger.length} commands at time ${currentTime.toFixed(1)}s`);
-      commandsToTrigger.forEach(executeMIDICommand);
+      
+      // Execute each command and log success
+      commandsToTrigger.forEach(command => {
+        console.log(`[MIDI SEQUENCER] About to execute:`, command);
+        executeMIDICommand(command);
+      });
       
       // Update last triggered index
       const lastIndex = state.commands.indexOf(commandsToTrigger[commandsToTrigger.length - 1]);
+      console.log(`[MIDI SEQUENCER] Updating lastTriggeredIndex from ${state.lastTriggeredIndex} to ${lastIndex}`);
       setState(prev => ({
         ...prev,
         lastTriggeredIndex: lastIndex
       }));
-      console.log(`[MIDI SEQUENCER] Updated lastTriggeredIndex to: ${lastIndex}`);
     }
   }, [state.isActive, state.commands, state.lastTriggeredIndex, executeMIDICommand]);
 
   // Reset sequencer position (for seeking)
   const resetSequencer = useCallback((currentTime: number) => {
-    if (!state.isActive) {
-      console.log('[MIDI SEQUENCER] Reset ignored - sequencer not active');
-      return;
-    }
-    
     console.log(`[MIDI SEQUENCER] Resetting position to ${currentTime.toFixed(1)}s`);
     
     // Find the last command that should have been triggered before current time
@@ -261,7 +261,7 @@ export function useMIDISequencer() {
       ...prev,
       lastTriggeredIndex: lastIndex
     }));
-  }, [state.isActive, state.commands]);
+  }, [state.commands, state.lastTriggeredIndex]);
 
   // Get upcoming MIDI commands for preview
   const getUpcomingCommands = useCallback((currentTime: number, lookAheadSeconds = 10): MIDICommand[] => {

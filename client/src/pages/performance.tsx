@@ -403,14 +403,15 @@ export default function Performance({ userType }: PerformanceProps) {
   // Wrap play/stop functions to reset MIDI sequencer properly
   const play = useCallback(() => {
     console.log('[PERFORMANCE] Starting playback - resetting MIDI sequencer to position 0');
-    resetSequencer(0); // Always reset to start when play is pressed
     originalPlay();
+    // Reset after a short delay to ensure audio engine is ready
+    setTimeout(() => resetSequencer(0), 100);
   }, [originalPlay, resetSequencer]);
 
   const stop = useCallback(() => {
     console.log('[PERFORMANCE] Stopping playback - resetting MIDI sequencer');
     originalStop();
-    resetSequencer(0); // Reset to start when stopped
+    setTimeout(() => resetSequencer(0), 100); // Reset to start when stopped
   }, [originalStop, resetSequencer]);
 
   useKeyboardShortcuts({

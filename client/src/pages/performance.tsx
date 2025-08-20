@@ -754,7 +754,11 @@ export default function Performance({ userType }: PerformanceProps) {
               </h2>
             </div>
             <div className="flex-1 overflow-y-auto p-2 md:p-4">
-              <LyricsDisplay />
+              <LyricsDisplay
+                song={selectedSong}
+                currentTime={currentTime}
+                onEditLyrics={selectedSong ? handleEditLyrics : undefined}
+              />
             </div>
             
             {/* Mobile only: Transport controls at bottom - full width */}

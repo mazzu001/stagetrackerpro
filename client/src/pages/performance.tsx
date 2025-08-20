@@ -914,14 +914,14 @@ Examples:
                   setLyricsText("");
                 }}
                 data-testid="button-cancel-lyrics"
-                className="mt-[-90px] mb-[-90px]"
+                className="mt-[-89px] mb-[-89px]"
               >
                 Cancel
               </Button>
               <Button 
                 onClick={handleSaveLyrics}
                 data-testid="button-save-lyrics"
-                className="bg-primary hover:bg-primary/90"
+                className="bg-primary hover:bg-primary/90 mt-[-90px] mb-[-90px] pl-[14px] pr-[14px] ml-[4px] mr-[4px]"
               >
                 Save Lyrics
               </Button>

@@ -34,12 +34,17 @@ export function useMIDISequencer() {
     const commands: MIDICommand[] = [];
     const lines = lyricsText.split('\n');
     
+    console.log('[MIDI PARSER] Parsing lyrics for MIDI commands...');
+    console.log('[MIDI PARSER] Total lines to parse:', lines.length);
+    
     for (const line of lines) {
       // Match MIDI command pattern: [[TYPE:param1:param2:...]] at [MM:SS] or standalone
       const midiMatch = line.match(/\[\[([^[\]]+)\]\]/g);
       
       if (midiMatch) {
-        // Look for timestamp in the same line or preceding lines
+        console.log('[MIDI PARSER] Found MIDI commands in line:', line);
+        
+        // Look for timestamp in the same line BEFORE the MIDI command
         let timestamp = 0;
         const timestampMatch = line.match(/\[(\d{1,2}):(\d{2})\]/);
         
@@ -47,6 +52,9 @@ export function useMIDISequencer() {
           const minutes = parseInt(timestampMatch[1]);
           const seconds = parseInt(timestampMatch[2]);
           timestamp = minutes * 60 + seconds;
+          console.log('[MIDI PARSER] Found timestamp:', timestampMatch[0], '=', timestamp, 'seconds');
+        } else {
+          console.log('[MIDI PARSER] No timestamp found in line, using 0');
         }
         
         midiMatch.forEach(match => {
@@ -103,13 +111,19 @@ export function useMIDISequencer() {
           
           if (command.type) {
             commands.push(command as MIDICommand);
+            console.log('[MIDI PARSER] Added command:', command);
+          } else {
+            console.log('[MIDI PARSER] Failed to parse command:', parts);
           }
         });
       }
     }
     
     // Sort commands by timestamp
-    return commands.sort((a, b) => a.timestamp - b.timestamp);
+    const sortedCommands = commands.sort((a, b) => a.timestamp - b.timestamp);
+    console.log('[MIDI PARSER] Total commands parsed:', sortedCommands.length);
+    console.log('[MIDI PARSER] Commands:', sortedCommands);
+    return sortedCommands;
   }, []);
 
   // Execute a MIDI command
@@ -147,6 +161,7 @@ export function useMIDISequencer() {
 
   // Start MIDI sequencing
   const startSequencer = useCallback((lyricsText: string) => {
+    console.log('[MIDI SEQUENCER] Starting sequencer with lyrics...');
     const commands = parseMIDICommands(lyricsText);
     setState(prev => ({
       ...prev,
@@ -154,6 +169,7 @@ export function useMIDISequencer() {
       isActive: true,
       lastTriggeredIndex: -1
     }));
+    console.log(`[MIDI SEQUENCER] Sequencer started with ${commands.length} commands`);
   }, [parseMIDICommands]);
 
   // Stop MIDI sequencing
@@ -172,16 +188,27 @@ export function useMIDISequencer() {
 
   // Update sequencer with current playback time
   const updateSequencer = useCallback((currentTime: number, isPlaying: boolean) => {
-    if (!state.isActive || !isPlaying) return;
+    if (!state.isActive || !isPlaying) {
+      return;
+    }
+
+    console.log(`[MIDI SEQUENCER] Update: time=${currentTime.toFixed(1)}s, active=${state.isActive}, playing=${isPlaying}, totalCommands=${state.commands.length}, lastIndex=${state.lastTriggeredIndex}`);
 
     // Find commands that should be triggered at current time
     const commandsToTrigger = state.commands.filter((command, index) => {
-      return index > state.lastTriggeredIndex && 
-             command.timestamp <= currentTime && 
-             command.timestamp >= currentTime - 0.5; // 500ms tolerance
+      const shouldTrigger = index > state.lastTriggeredIndex && 
+                           command.timestamp <= currentTime && 
+                           command.timestamp >= currentTime - 1.0; // 1 second tolerance for better catching
+      
+      if (shouldTrigger) {
+        console.log(`[MIDI SEQUENCER] Command ready to trigger:`, command);
+      }
+      
+      return shouldTrigger;
     });
 
     if (commandsToTrigger.length > 0) {
+      console.log(`[MIDI SEQUENCER] Triggering ${commandsToTrigger.length} commands at time ${currentTime.toFixed(1)}s`);
       commandsToTrigger.forEach(executeMIDICommand);
       
       // Update last triggered index
@@ -190,22 +217,31 @@ export function useMIDISequencer() {
         ...prev,
         lastTriggeredIndex: lastIndex
       }));
+      console.log(`[MIDI SEQUENCER] Updated lastTriggeredIndex to: ${lastIndex}`);
     }
   }, [state.isActive, state.commands, state.lastTriggeredIndex, executeMIDICommand]);
 
   // Reset sequencer position (for seeking)
   const resetSequencer = useCallback((currentTime: number) => {
-    if (!state.isActive) return;
+    if (!state.isActive) {
+      console.log('[MIDI SEQUENCER] Reset ignored - sequencer not active');
+      return;
+    }
+    
+    console.log(`[MIDI SEQUENCER] Resetting position to ${currentTime.toFixed(1)}s`);
     
     // Find the last command that should have been triggered before current time
     let lastIndex = -1;
     for (let i = 0; i < state.commands.length; i++) {
       if (state.commands[i].timestamp <= currentTime) {
         lastIndex = i;
+        console.log(`[MIDI SEQUENCER] Command ${i} at ${state.commands[i].timestamp}s should have been triggered`);
       } else {
         break;
       }
     }
+    
+    console.log(`[MIDI SEQUENCER] Reset lastTriggeredIndex from ${state.lastTriggeredIndex} to ${lastIndex}`);
     
     setState(prev => ({
       ...prev,

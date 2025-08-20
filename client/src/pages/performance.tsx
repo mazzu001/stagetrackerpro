@@ -871,7 +871,7 @@ export default function Performance({ userType }: PerformanceProps) {
                 onChange={(e) => setLyricsText(e.target.value)}
                 onPaste={handleLyricsPaste}
                 placeholder="Enter song lyrics with timestamps and MIDI commands..."
-                className="min-h-[250px] max-h-[300px] font-mono text-sm whitespace-pre-wrap"
+                className="min-h-[350px] max-h-[350px] font-mono text-sm whitespace-pre-wrap"
                 style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
                 spellCheck={false}
                 data-testid="textarea-lyrics"

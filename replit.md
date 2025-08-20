@@ -79,6 +79,14 @@ This project is a live music performance application designed for professional s
 - **RESOLVED**: Lyrics no longer overlap or hide transport controls on mobile
 - **Status**: Complete mobile-optimized layout with all controls accessible
 
+### Working Build 8 (August 20, 2025) - RACE CONDITION FIXED
+- All functionality from Working Build 7
+- **FIXED**: Race condition where switching songs and pressing play too quickly causes multiple tracks to play
+- **ADDED**: Loading state management in AudioEngine to prevent playback during song loading
+- **IMPROVED**: Clean loading checks instead of manual track counting for more reliable playback
+- **ENHANCED**: Better logging for debugging audio loading and playback states
+- **Status**: Complete race condition protection - prevents audio conflicts during song switches
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

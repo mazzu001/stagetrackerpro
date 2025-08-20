@@ -10,6 +10,7 @@ export class AudioEngine {
   private startTime: number = 0;
   private pausedTime: number = 0;
   private isPlaying: boolean = false;
+  private isLoading: boolean = false;
   private analyzerNodes: Map<string, AnalyserNode> = new Map();
   private masterAnalyzerNode: AnalyserNode | null = null;
   public onDurationUpdated?: (duration: number) => void;
@@ -42,10 +43,13 @@ export class AudioEngine {
       throw new Error('Audio engine not initialized');
     }
 
-    // Stop current playback
+    // Set loading state to prevent race conditions
+    this.isLoading = true;
+
+    // Stop current playback and wait for it to complete
     this.stop();
     
-    // Clear existing tracks
+    // Clear existing tracks completely
     this.tracks.clear();
     this.analyzerNodes.clear();
     
@@ -115,10 +119,20 @@ export class AudioEngine {
         console.error(`Failed to auto-generate waveform for "${song.title}":`, error);
       });
     }
+    
+    // Clear loading state - song is ready for playback
+    this.isLoading = false;
+    console.log(`Finished loading song: "${song.title}"`);
   }
 
   async play(): Promise<void> {
     if (!this.audioContext || !this.currentSong) return;
+
+    // Prevent playback while loading to avoid race conditions
+    if (this.isLoading) {
+      console.warn('Song is still loading, cannot start playback yet');
+      return;
+    }
 
     // Check if we have tracks to play
     if (this.tracks.size === 0) {
@@ -260,6 +274,10 @@ export class AudioEngine {
 
   getIsPlaying(): boolean {
     return this.isPlaying;
+  }
+
+  getIsLoading(): boolean {
+    return this.isLoading;
   }
 
   private levelCache: Map<string, { level: number, lastUpdate: number }> = new Map();

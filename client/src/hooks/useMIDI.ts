@@ -209,12 +209,37 @@ export function useMIDI() {
     }
   }, [sendMIDIMessage, broadcastMIDIMessage]);
 
-  // Auto-initialize on first use
+  // Enhanced input message handling for Bluetooth devices
+  const setupInputListeners = useCallback((access: MIDIAccess) => {
+    access.inputs.forEach((input: MIDIInput) => {
+      if (input.state === 'connected') {
+        input.onmidimessage = (event: any) => {
+          const data = Array.from(event.data as Uint8Array) as number[];
+          console.log(`MIDI received from ${input.name}:`, data);
+          
+          // Emit custom event for other components to listen
+          window.dispatchEvent(new CustomEvent('midiMessage', {
+            detail: {
+              device: input.name,
+              data,
+              timestamp: Date.now()
+            }
+          }));
+        };
+      }
+    });
+  }, []);
+
+  // Auto-initialize on first use with enhanced Bluetooth support
   useEffect(() => {
     if (!isInitialized && isSupported === false) {
-      initializeMIDI();
+      initializeMIDI().then(success => {
+        if (success && midiAccess) {
+          setupInputListeners(midiAccess);
+        }
+      });
     }
-  }, [initializeMIDI, isInitialized, isSupported]);
+  }, [initializeMIDI, isInitialized, isSupported, midiAccess, setupInputListeners]);
 
   return {
     isSupported,

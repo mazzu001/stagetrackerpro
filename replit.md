@@ -48,14 +48,14 @@ Mobile optimization: **Mobile-first stage performance design** - optimized for l
 
 # Development History
 
-## RESTORE POINT 14 - CLEAN LYRICS DISPLAY (August 20, 2025)
-### Professional Stage-Ready Lyrics Interface
-- **LYRICS DISPLAY**: Clean performance interface with timestamps and MIDI commands hidden from view
-- **FUNCTIONALITY PRESERVED**: All automation features work invisibly in background
-- **TIMESTAMP DETECTION**: Fixed regex to prevent false matches with song lyrics containing time references (like "3 AM")
-- **BRACKET FILTERING**: Iterative removal system handles all bracket content including nested MIDI commands
-- **LINE HIGHLIGHTING**: Restored timestamp-based line-by-line highlighting for synced performance
-- **AUTO-SCROLL**: Both timestamped (line-based) and smooth (timer-based) scrolling modes active
-- **STAGE PERFORMANCE**: Professional clean interface showing only lyrics text during live performance
-- **MIDI AUTOMATION**: Background MIDI command execution continues seamlessly
-- **STATUS**: STABLE - Complete lyrics system optimized for professional stage use
+## RESTORE POINT 15 - BLUETOOTH MIDI CONNECTIVITY (August 20, 2025)
+### Complete Bluetooth MIDI Device Integration
+- **BLUETOOTH DISCOVERY**: Web Bluetooth API integration for discovering nearby MIDI devices
+- **DEVICE DETECTION**: Automatic identification of Bluetooth vs USB MIDI devices with visual indicators
+- **SIGNAL STRENGTH**: Real-time Bluetooth signal strength monitoring with visual bars
+- **BIDIRECTIONAL COMMUNICATION**: Full send and receive capabilities for both USB and Bluetooth MIDI
+- **ACTIVITY MONITORING**: Live MIDI message display with timestamps and device identification
+- **ENHANCED UI**: Professional device manager with separate sections for input/output devices
+- **CONNECTION STATUS**: Real-time activity indicators and connection state monitoring
+- **TEST FUNCTIONS**: Enhanced test sequences optimized for Bluetooth device validation
+- **STATUS**: STABLE - Professional Bluetooth MIDI connectivity for live performance control

@@ -113,91 +113,42 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
   }
 
   return (
-    <div className="w-full bg-gray-900 rounded-lg overflow-hidden" style={{ height: '300px !important', maxHeight: '300px !important', minHeight: '300px !important' }}>
+    <div style={{ 
+      width: '100%', 
+      height: '300px', 
+      maxHeight: '300px', 
+      minHeight: '300px',
+      backgroundColor: '#111827',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'relative'
+    }}>
       {/* Header */}
-      <div className="bg-gray-800 px-4 py-2 border-b border-gray-700" style={{ height: '60px' }}>
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium text-white">{song.title} - Lyrics</h3>
-          
-          <div className="flex items-center space-x-2">
-            {/* Scroll Speed Controls for non-timestamped lyrics */}
-            {!hasTimestamps && plainLines.length > 0 && (
-              <div className="flex items-center space-x-1">
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
-                  title="Decrease Scroll Speed"
-                  onClick={() => adjustScrollSpeed(-0.2)}
-                  data-testid="button-decrease-scroll-speed"
-                >
-                  <ChevronDown className="w-3 h-3" />
-                </Button>
-                <span className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300 min-w-[32px] text-center">
-                  {scrollSpeed.toFixed(1)}x
-                </span>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
-                  title="Increase Scroll Speed"
-                  onClick={() => adjustScrollSpeed(0.2)}
-                  data-testid="button-increase-scroll-speed"
-                >
-                  <ChevronUp className="w-3 h-3" />
-                </Button>
-              </div>
-            )}
-
-            {/* Font Size Controls */}
-            <div className="flex items-center space-x-1">
-              <Button
-                variant="secondary"
-                size="sm"
-                className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
-                title="Decrease Font Size"
-                onClick={() => adjustFontSize(-2)}
-                data-testid="button-decrease-font"
-              >
-                <Minus className="w-3 h-3" />
-              </Button>
-              <span className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300 min-w-[32px] text-center">
-                {fontSize}
-              </span>
-              <Button
-                variant="secondary"
-                size="sm"
-                className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
-                title="Increase Font Size"
-                onClick={() => adjustFontSize(2)}
-                data-testid="button-increase-font"
-              >
-                <Plus className="w-3 h-3" />
-              </Button>
-            </div>
-
-            {/* Edit Button */}
-            {onEditLyrics && (
-              <Button
-                variant="secondary"
-                size="sm"
-                className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
-                title="Edit Lyrics"
-                onClick={onEditLyrics}
-                data-testid="button-edit-lyrics"
-              >
-                <Edit className="w-3 h-3" />
-              </Button>
-            )}
-          </div>
-        </div>
+      <div style={{ 
+        height: '60px',
+        backgroundColor: '#1f2937',
+        borderBottom: '1px solid #374151',
+        padding: '8px 16px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        <h3 style={{ fontSize: '18px', fontWeight: '500', color: 'white' }}>{song.title} - Lyrics</h3>
       </div>
 
       {/* Lyrics Container */}
       <div 
         ref={containerRef}
-        className="overflow-y-auto p-6 bg-gray-800"
-        style={{ height: '240px !important', maxHeight: '240px !important' }}
+        style={{ 
+          height: '240px',
+          maxHeight: '240px',
+          minHeight: '240px',
+          overflowY: 'auto',
+          padding: '24px',
+          backgroundColor: '#1f2937'
+        }}
         data-testid="lyrics-container"
       >
         {!song?.lyrics ? (

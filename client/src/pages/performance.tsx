@@ -18,10 +18,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
+import { MIDIDeviceManager } from "@/components/midi-device-manager";
+import { useMIDI } from "@/hooks/useMIDI";
 
 interface PerformanceProps {
   userType: UserType;
@@ -41,9 +43,11 @@ export default function Performance({ userType }: PerformanceProps) {
   const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isMIDIManagerOpen, setIsMIDIManagerOpen] = useState(false);
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
+  const { isSupported: midiSupported, connectedOutputs, connectedInputs, initializeMIDI } = useMIDI();
 
   // Fullscreen functionality
   const toggleFullscreen = useCallback(async () => {
@@ -541,6 +545,19 @@ export default function Performance({ userType }: PerformanceProps) {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="mobile-hidden" />
                 <DropdownMenuItem 
+                  onClick={() => setIsMIDIManagerOpen(true)}
+                  className="flex items-center cursor-pointer"
+                  data-testid="menu-midi-devices"
+                >
+                  <Bluetooth className="w-4 h-4 mr-2" />
+                  <div className="flex flex-col">
+                    <span>MIDI Devices</span>
+                    <span className="text-xs text-gray-500">
+                      {midiSupported ? `${connectedOutputs.length + connectedInputs.length} connected` : 'Not supported'}
+                    </span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
                   onClick={toggleFullscreen}
                   className="flex items-center cursor-pointer"
                   data-testid="menu-fullscreen"
@@ -988,6 +1005,15 @@ Click "Timestamp" to insert current time`}
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* MIDI Device Manager */}
+      <MIDIDeviceManager 
+        isOpen={isMIDIManagerOpen}
+        onClose={() => setIsMIDIManagerOpen(false)}
+        onDevicesChange={(devices) => {
+          console.log('MIDI devices updated:', devices);
+        }}
+      />
     </div>
   );
 }

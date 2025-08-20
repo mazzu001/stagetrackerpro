@@ -88,6 +88,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   console.log('✅ Sample file download routes registered');
 
+  // Stripe webhook endpoint for subscription validation
+  app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), async (req, res) => {
+    const sig = req.headers['stripe-signature'];
+    let event;
+
+    try {
+      // For development, we'll skip signature verification
+      // In production, you should verify the webhook signature
+      event = JSON.parse(req.body);
+    } catch (err) {
+      console.error('Webhook signature verification failed.', err);
+      return res.status(400).send(`Webhook Error: ${err}`);
+    }
+
+    // Handle the event
+    switch (event.type) {
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
+      case 'customer.subscription.deleted':
+        const subscription = event.data.object;
+        console.log('Subscription event:', event.type, subscription.id);
+        
+        // Store subscription status in a simple JSON file for local tracking
+        const subscriptionData = {
+          customerId: subscription.customer,
+          subscriptionId: subscription.id,
+          status: subscription.status,
+          email: subscription.metadata?.email,
+          updatedAt: Date.now()
+        };
+        
+        try {
+          const subscriptionsFile = path.join(process.cwd(), 'data', 'subscriptions.json');
+          let subscriptions = {};
+          
+          // Read existing subscriptions
+          if (fs.existsSync(subscriptionsFile)) {
+            subscriptions = JSON.parse(fs.readFileSync(subscriptionsFile, 'utf8'));
+          }
+          
+          // Update subscription
+          subscriptions[subscription.customer] = subscriptionData;
+          
+          // Write back to file
+          fs.writeFileSync(subscriptionsFile, JSON.stringify(subscriptions, null, 2));
+          console.log('Subscription status updated for customer:', subscription.customer);
+        } catch (error) {
+          console.error('Error updating subscription file:', error);
+        }
+        break;
+        
+      case 'invoice.payment_succeeded':
+        console.log('Payment succeeded for subscription:', event.data.object.subscription);
+        break;
+        
+      case 'invoice.payment_failed':
+        console.log('Payment failed for subscription:', event.data.object.subscription);
+        break;
+        
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    res.json({received: true});
+  });
+
   // Stripe subscription routes
   console.log('💳 Registering Stripe payment routes...');
   
@@ -111,21 +177,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         metadata: { email: email }
       });
 
-      // Create subscription
+      // Create a price first
+      const price = await stripe.prices.create({
+        currency: 'usd',
+        unit_amount: 499, // $4.99 in cents
+        recurring: {
+          interval: 'month'
+        },
+        product_data: {
+          name: 'StageTracker Pro Premium',
+          description: 'Unlimited songs and advanced performance features'
+        }
+      });
+
+      // Create subscription with the price ID
       const subscription = await stripe.subscriptions.create({
         customer: customer.id,
         items: [{
-          price_data: {
-            currency: 'usd',
-            product_data: {
-              name: 'StageTracker Pro Premium',
-              description: 'Unlimited songs and advanced performance features'
-            },
-            unit_amount: 499, // $4.99 in cents
-            recurring: {
-              interval: 'month'
-            }
-          }
+          price: price.id
         }],
         payment_behavior: 'default_incomplete',
         expand: ['latest_invoice.payment_intent'],
@@ -149,14 +218,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Simplified subscription status endpoint for local auth
-  app.get('/api/subscription-status', async (req, res) => {
+  // Check subscription status via webhook data
+  app.post('/api/subscription-status', async (req, res) => {
     try {
-      // For local authentication, just return based on stored user type
+      const { email } = req.body;
+      
+      if (!email) {
+        return res.json({ 
+          hasActiveSubscription: false, 
+          status: 'inactive',
+          message: 'No email provided'
+        });
+      }
+      
+      // Check local subscription file for this email
+      const subscriptionsFile = path.join(process.cwd(), 'data', 'subscriptions.json');
+      
+      if (fs.existsSync(subscriptionsFile)) {
+        const subscriptions = JSON.parse(fs.readFileSync(subscriptionsFile, 'utf8'));
+        
+        // Find subscription by email
+        const userSubscription = Object.values(subscriptions).find((sub: any) => sub.email === email);
+        
+        if (userSubscription && userSubscription.status === 'active') {
+          return res.json({
+            hasActiveSubscription: true,
+            status: 'active',
+            subscriptionId: userSubscription.subscriptionId
+          });
+        }
+      }
+      
       res.json({ 
         hasActiveSubscription: false, 
-        status: 'inactive',
-        message: 'Using local authentication - subscriptions managed locally'
+        status: 'inactive'
       });
     } catch (error: any) {
       console.error('Subscription status error:', error);

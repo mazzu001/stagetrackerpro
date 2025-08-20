@@ -10,13 +10,35 @@ export function useSubscription() {
   const { data: subscriptionStatus, isLoading } = useQuery({
     queryKey: ['/api/subscription-status'],
     queryFn: async () => {
-      const response = await apiRequest('GET', '/api/subscription-status');
-      if (!response.ok) {
-        if (response.status === 401) {
-          return { hasActiveSubscription: false, status: 'unauthenticated' };
+      // Get user email from localStorage
+      const storedUser = localStorage.getItem('lpp_local_user');
+      let userEmail = null;
+      
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          userEmail = userData.email;
+        } catch (error) {
+          console.error('Error parsing user data:', error);
         }
+      }
+      
+      if (!userEmail) {
+        return { hasActiveSubscription: false, status: 'no_email' };
+      }
+      
+      const response = await fetch('/api/subscription-status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: userEmail }),
+      });
+      
+      if (!response.ok) {
         throw new Error('Failed to fetch subscription status');
       }
+      
       return response.json();
     },
     retry: 1,

@@ -287,6 +287,11 @@ export class AudioEngine {
     const levels: Record<string, number> = {};
     const now = performance.now();
     
+    // Device detection for Samsung tablets
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isSamsungTablet = userAgent.includes('samsung') && userAgent.includes('tablet');
+    const isSamsungBrowser = userAgent.includes('samsungbrowser');
+    
     this.analyzerNodes.forEach((analyzer, trackId) => {
       const track = this.tracks.get(trackId);
       if (!track || !this.isPlaying) {
@@ -297,17 +302,46 @@ export class AudioEngine {
 
       const bufferLength = analyzer.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
-      analyzer.getByteFrequencyData(dataArray); // Use frequency data for more responsive VU meters
       
-      // Extremely conservative VU meter calculation - start from scratch
-      let sum = 0;
-      const sampleCount = Math.min(32, bufferLength); // Only sample a few bins
-      
-      // Just take a simple average of the first few frequency bins
-      for (let i = 0; i < sampleCount; i++) {
-        sum += dataArray[i];
+      // Samsung tablets may have issues with frequency data, try time domain as fallback
+      if (isSamsungTablet || isSamsungBrowser) {
+        analyzer.getByteTimeDomainData(dataArray); // Use time domain for Samsung devices
+        
+        // Debug logging for Samsung devices
+        if (Math.random() < 0.05) { // Log more frequently for debugging
+          console.log('Samsung device detected for VU meters:');
+          console.log('User Agent:', navigator.userAgent);
+          console.log('Using time domain data. Buffer length:', bufferLength);
+          console.log('Sample data values:', dataArray.slice(0, 10));
+        }
+      } else {
+        analyzer.getByteFrequencyData(dataArray); // Use frequency data for other devices
       }
-      const average = sum / sampleCount;
+      
+      // Adjust calculation method based on device type
+      let sum = 0;
+      let average = 0;
+      
+      if (isSamsungTablet || isSamsungBrowser) {
+        // For Samsung devices using time domain data, calculate RMS
+        const sampleCount = Math.min(128, bufferLength);
+        let sumSquares = 0;
+        
+        for (let i = 0; i < sampleCount; i++) {
+          const sample = (dataArray[i] - 128) / 128; // Convert to -1 to 1 range
+          sumSquares += sample * sample;
+        }
+        
+        average = Math.sqrt(sumSquares / sampleCount) * 255; // Convert back to 0-255 range
+      } else {
+        // Original frequency domain calculation for other devices
+        const sampleCount = Math.min(32, bufferLength);
+        
+        for (let i = 0; i < sampleCount; i++) {
+          sum += dataArray[i];
+        }
+        average = sum / sampleCount;
+      }
       
       // Track-specific VU meter scaling for realistic studio levels
       const currentTrack = this.tracks.get(trackId);
@@ -365,25 +399,57 @@ export class AudioEngine {
       return { left: this.masterLevelCache.left, right: this.masterLevelCache.right };
     }
 
+    // Device detection for Samsung tablets
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isSamsungTablet = userAgent.includes('samsung') && userAgent.includes('tablet');
+    const isSamsungBrowser = userAgent.includes('samsungbrowser');
+    
     const bufferLength = this.masterAnalyzerNode.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
-    this.masterAnalyzerNode.getByteFrequencyData(dataArray); // Use frequency data
     
-    // Calculate average across mid-range frequencies for better visualization
-    let sum = 0;
-    const startBin = Math.floor(bufferLength * 0.1);
-    const endBin = Math.floor(bufferLength * 0.8);
+    // Use appropriate data type based on device
+    if (isSamsungTablet || isSamsungBrowser) {
+      this.masterAnalyzerNode.getByteTimeDomainData(dataArray);
+    } else {
+      this.masterAnalyzerNode.getByteFrequencyData(dataArray);
+    }
     
-    for (let i = startBin; i < endBin; i++) {
-      sum += dataArray[i];
+    // Calculate levels based on data type and device
+    let rms = 0;
+    
+    if (isSamsungTablet || isSamsungBrowser) {
+      // For Samsung devices using time domain data, calculate RMS
+      const sampleCount = Math.min(256, bufferLength);
+      let sumSquares = 0;
+      
+      for (let i = 0; i < sampleCount; i++) {
+        const sample = (dataArray[i] - 128) / 128; // Convert to -1 to 1 range
+        sumSquares += sample * sample;
+      }
+      
+      rms = Math.sqrt(sumSquares / sampleCount);
+      
+      // Debug logging for Samsung devices
+      if (Math.random() < 0.02) {
+        console.log('Samsung tablet master levels - RMS:', rms, 'Buffer length:', bufferLength);
+      }
+    } else {
+      // Original frequency domain calculation for other devices
+      let sum = 0;
+      const startBin = Math.floor(bufferLength * 0.1);
+      const endBin = Math.floor(bufferLength * 0.8);
+      
+      for (let i = startBin; i < endBin; i++) {
+        sum += dataArray[i];
+      }
+      // Calculate RMS for master levels to match track calculation
+      let sum2 = 0;
+      for (let i = startBin; i < endBin; i++) {
+        const normalizedValue = dataArray[i] / 255;
+        sum2 += normalizedValue * normalizedValue;
+      }
+      rms = Math.sqrt(sum2 / (endBin - startBin));
     }
-    // Calculate RMS for master levels to match track calculation
-    let sum2 = 0;
-    for (let i = startBin; i < endBin; i++) {
-      const normalizedValue = dataArray[i] / 255;
-      sum2 += normalizedValue * normalizedValue;
-    }
-    const rms = Math.sqrt(sum2 / (endBin - startBin));
     
     let baseLevel = rms * 2.0; // Higher base scaling for master levels
     

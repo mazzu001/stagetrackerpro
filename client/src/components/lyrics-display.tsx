@@ -82,8 +82,11 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
         const timestamp = minutes * 60 + seconds;
         let text = trimmed.substring(timestampMatch[0].length).trim();
         
-        // Remove everything enclosed in square brackets from display text
-        text = text.replace(/\[[^\]]*\]/g, '').trim();
+        // Remove everything enclosed in square brackets (including nested ones)
+        while (text.includes('[')) {
+          text = text.replace(/\[([^\[\]]*)\]/g, '');
+        }
+        text = text.trim();
         
         if (text) {
           parsedLines.push({ timestamp, text });
@@ -105,8 +108,12 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
   const plainLines = song?.lyrics && !hasTimestamps ? 
     song.lyrics.split('\n')
       .map((line: string) => {
-        // Remove everything enclosed in square brackets from display
-        return line.replace(/\[[^\]]*\]/g, '').trim();
+        // Remove everything enclosed in square brackets (including nested ones)
+        let cleanLine = line;
+        while (cleanLine.includes('[')) {
+          cleanLine = cleanLine.replace(/\[([^\[\]]*)\]/g, '');
+        }
+        return cleanLine.trim();
       })
       .filter((line: string) => line.trim()) : [];
   

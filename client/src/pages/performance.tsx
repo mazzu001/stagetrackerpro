@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import CompactTransportControls from "@/components/compact-transport-controls";
 import AudioMixer from "@/components/audio-mixer";
-import LyricsDisplay from "@/components/lyrics-display";
+import { LyricsDisplay } from "@/components/lyrics-display";
 import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
 import TrackManager from "@/components/track-manager-new";
@@ -754,11 +754,7 @@ export default function Performance({ userType }: PerformanceProps) {
               </h2>
             </div>
             <div className="flex-1 overflow-y-auto p-2 md:p-4">
-              <LyricsDisplay
-                song={selectedSong as any}
-                currentTime={currentTime}
-                onEditLyrics={selectedSong ? handleEditLyrics : undefined}
-              />
+              <LyricsDisplay />
             </div>
             
             {/* Mobile only: Transport controls at bottom - full width */}

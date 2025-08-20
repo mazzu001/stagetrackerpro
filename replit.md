@@ -2,6 +2,17 @@
 
 This project is a live music performance application designed for professional stage use. It provides real-time audio mixing, MIDI event sequencing, and synchronized lyrics display. Key capabilities include a multi-track audio engine (up to 6 tracks per song), visual level monitoring, transport controls, and automatic song duration detection from local audio files. The application is built for offline operation, utilizing client-side blob URLs for audio and persistent file data storage, eliminating the need for an internet connection or file uploads during performance. The business vision is to provide a robust, reliable, and user-friendly tool for musicians to manage their live performances without dependency on external networks.
 
+## Restore Points
+
+### Restore Point 1 (August 20, 2025)
+- Complete working application with multi-track audio engine
+- Real-time VU meters and audio level monitoring  
+- Transport controls (play/pause/stop) with keyboard shortcuts
+- Song management and track loading from local files
+- User authentication system with localStorage
+- Mobile-optimized performance interface
+- **Note**: Lyrics display functionality had scrolling issues and will be rebuilt from scratch
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

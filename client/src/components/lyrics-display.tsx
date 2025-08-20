@@ -84,33 +84,35 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
 
   // Auto-scroll for non-timestamped lyrics
   useEffect(() => {
-    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 1) {
+    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 0.5) {
       const container = containerRef.current;
-      const containerHeight = container.clientHeight;
-      const contentHeight = container.scrollHeight;
-      const maxScrollTop = contentHeight - containerHeight;
       
-      if (currentTime < 3) {
-        console.log('Container dimensions:', {
-          containerHeight,
-          contentHeight,
-          maxScrollTop,
-          plainLinesLength: plainLines.length
-        });
-      }
-      
-      // Only scroll if there's content that extends beyond the visible area
-      if (maxScrollTop > 0) {
-        const songDuration = song.duration - 1; // Start scrolling after 1 second
+      // Force re-calculation of dimensions
+      setTimeout(() => {
+        const containerHeight = container.clientHeight;
+        const contentHeight = container.scrollHeight;
+        const maxScrollTop = contentHeight - containerHeight;
+        
+        if (currentTime < 3) {
+          console.log('Container dimensions:', {
+            containerHeight,
+            contentHeight,
+            maxScrollTop,
+            plainLinesLength: plainLines.length
+          });
+        }
+        
+        // Always attempt to scroll if we have lyrics, even if maxScrollTop is 0
+        const songDuration = song.duration - 0.5; // Start scrolling after 0.5 seconds
         const adjustedDuration = songDuration / scrollSpeed;
-        const scrollProgress = Math.min((currentTime - 1) / adjustedDuration, 1);
-        const targetScrollTop = scrollProgress * maxScrollTop;
+        const scrollProgress = Math.min((currentTime - 0.5) / adjustedDuration, 1);
+        const targetScrollTop = scrollProgress * Math.max(maxScrollTop, containerHeight);
         
         container.scrollTo({
           top: Math.max(0, targetScrollTop),
           behavior: 'smooth'
         });
-      }
+      }, 50);
     }
   }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration]);
 
@@ -265,18 +267,16 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
             })}
           </div>
         ) : (
-          <div className="space-y-8 pb-96" style={{ fontSize: `${fontSize}px` }}>
+          <div className="space-y-4" style={{ fontSize: `${fontSize}px`, minHeight: '200vh' }}>
             {plainLines.map((line: string, index: number) => (
               <div
                 key={index}
-                className="text-gray-300 leading-relaxed py-2"
+                className="text-gray-300 leading-relaxed"
                 data-testid={`lyrics-line-${index}`}
               >
                 {line}
               </div>
             ))}
-            {/* Add extra padding at the bottom to ensure scrollable content */}
-            <div className="h-96"></div>
           </div>
         )}
       </div>

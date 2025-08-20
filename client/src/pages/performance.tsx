@@ -384,7 +384,6 @@ export default function Performance({ userType }: PerformanceProps) {
           <div className="flex items-center space-x-2 md:space-x-3 flex-shrink-0">
             <Music className="text-primary text-xl md:text-2xl" />
             <h1 className="text-lg md:text-2xl font-bold mobile-hidden">StageTracker Pro</h1>
-            <h1 className="text-lg font-bold mobile-only">StagePro</h1>
             <span className="bg-primary/20 text-primary px-1 md:px-2 py-1 rounded text-xs md:text-sm">LIVE</span>
           </div>
           

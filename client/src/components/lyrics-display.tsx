@@ -113,7 +113,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
   }
 
   return (
-    <div className="w-full bg-gray-900 rounded-lg overflow-hidden" style={{ height: '400px' }}>
+    <div className="w-full bg-gray-900 rounded-lg overflow-hidden" style={{ height: '300px !important', maxHeight: '300px !important', minHeight: '300px !important' }}>
       {/* Header */}
       <div className="bg-gray-800 px-4 py-2 border-b border-gray-700" style={{ height: '60px' }}>
         <div className="flex items-center justify-between">
@@ -197,7 +197,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
       <div 
         ref={containerRef}
         className="overflow-y-auto p-6 bg-gray-800"
-        style={{ height: '340px' }}
+        style={{ height: '240px !important', maxHeight: '240px !important' }}
         data-testid="lyrics-container"
       >
         {!song?.lyrics ? (

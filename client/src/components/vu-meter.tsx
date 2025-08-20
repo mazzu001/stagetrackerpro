@@ -3,16 +3,17 @@ import { useEffect, useState } from 'react';
 interface VUMeterProps {
   level: number; // 0-100
   isMuted?: boolean;
+  isPlaying?: boolean; // Add isPlaying prop like stereo VU meters
   className?: string;
 }
 
-export default function VUMeter({ level, isMuted = false, className = "" }: VUMeterProps) {
+export default function VUMeter({ level, isMuted = false, isPlaying = true, className = "" }: VUMeterProps) {
   const [animatedLevel, setAnimatedLevel] = useState(0);
   const [peakLevel, setPeakLevel] = useState(0);
 
   // Use EXACT same logic as the perfectly working stereo VU meters
   useEffect(() => {
-    if (isMuted) {
+    if (isMuted || !isPlaying) {
       setAnimatedLevel(0);
       setPeakLevel(0);
       return;
@@ -32,7 +33,7 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
 
     const interval = setInterval(animate, 6); // Exact same update rate as stereo meters
     return () => clearInterval(interval);
-  }, [level, isMuted]);
+  }, [level, isMuted, isPlaying]);
 
   // Peak hold - SAME AS STEREO VU METERS
   useEffect(() => {
@@ -53,7 +54,7 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
   const peakSegment = Math.floor((peakLevel / 100) * segments);
 
   const getSegmentColor = (index: number) => {
-    if (isMuted) return 'bg-gray-700'; // Same inactive color as stereo meters
+    if (isMuted || !isPlaying) return 'bg-gray-700'; // Same inactive color as stereo meters
     
     const percentage = (index / segments) * 100;
     
@@ -86,7 +87,7 @@ export default function VUMeter({ level, isMuted = false, className = "" }: VUMe
             key={index}
             className={`w-1 h-4 rounded-sm transition-all duration-75 ${getSegmentColor(index)}`}
             style={{
-              boxShadow: (index < activeSegments || index === peakSegment - 1) && !isMuted
+              boxShadow: (index < activeSegments || index === peakSegment - 1) && !isMuted && isPlaying
                 ? getSegmentColor(index).includes('shadow-') 
                   ? '0 0 4px currentColor' 
                   : 'none'

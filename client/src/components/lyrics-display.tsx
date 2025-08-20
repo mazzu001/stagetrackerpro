@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Minus, Edit } from "lucide-react";
+import { Plus, Minus, Edit, ChevronUp, ChevronDown } from "lucide-react";
 
 interface LyricsLine {
   timestamp: number; // in seconds
@@ -18,6 +18,10 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');
     return saved ? parseInt(saved) : 18;
+  });
+  const [scrollSpeed, setScrollSpeed] = useState(() => {
+    const saved = localStorage.getItem('lyrics-scroll-speed');
+    return saved ? parseFloat(saved) : 1.0;
   });
 
   // Parse lyrics with timestamps
@@ -50,16 +54,21 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
   };
 
   const lyrics = song?.lyrics ? parseLyrics(song.lyrics) : [];
+  const hasTimestamps = lyrics.length > 0;
   
-  // Find current line based on timestamp
-  const currentLineIndex = lyrics.findIndex((line, index) => {
+  // Split lyrics by lines for non-timestamped lyrics
+  const plainLines = song?.lyrics && !hasTimestamps ? 
+    song.lyrics.split('\n').filter(line => line.trim()) : [];
+  
+  // Find current line based on timestamp (for timestamped lyrics)
+  const currentLineIndex = hasTimestamps ? lyrics.findIndex((line, index) => {
     const nextLine = lyrics[index + 1];
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
-  });
+  }) : -1;
 
-  // Auto-scroll to current line
+  // Auto-scroll for timestamped lyrics
   useEffect(() => {
-    if (currentLineIndex >= 0 && containerRef.current) {
+    if (hasTimestamps && currentLineIndex >= 0 && containerRef.current) {
       const currentElement = containerRef.current.querySelector(`[data-line="${currentLineIndex}"]`);
       if (currentElement) {
         currentElement.scrollIntoView({
@@ -68,12 +77,36 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
         });
       }
     }
-  }, [currentLineIndex]);
+  }, [currentLineIndex, hasTimestamps]);
+
+  // Auto-scroll for non-timestamped lyrics
+  useEffect(() => {
+    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 5) {
+      const songDuration = song.duration - 5; // Start scrolling after 5 seconds
+      const adjustedDuration = songDuration / scrollSpeed;
+      const scrollProgress = Math.min((currentTime - 5) / adjustedDuration, 1);
+      
+      const container = containerRef.current;
+      const maxScrollTop = container.scrollHeight - container.clientHeight;
+      const targetScrollTop = scrollProgress * maxScrollTop;
+      
+      container.scrollTo({
+        top: Math.max(0, targetScrollTop),
+        behavior: 'smooth'
+      });
+    }
+  }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration]);
 
   const adjustFontSize = (delta: number) => {
     const newSize = Math.max(12, Math.min(32, fontSize + delta));
     setFontSize(newSize);
     localStorage.setItem('lyrics-font-size', newSize.toString());
+  };
+
+  const adjustScrollSpeed = (delta: number) => {
+    const newSpeed = Math.max(0.2, Math.min(3.0, scrollSpeed + delta));
+    setScrollSpeed(newSpeed);
+    localStorage.setItem('lyrics-scroll-speed', newSpeed.toString());
   };
 
   if (!song) {
@@ -92,6 +125,35 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
           <h3 className="text-lg font-medium text-white">{song.title} - Lyrics</h3>
           
           <div className="flex items-center space-x-2">
+            {/* Scroll Speed Controls for non-timestamped lyrics */}
+            {!hasTimestamps && plainLines.length > 0 && (
+              <div className="flex items-center space-x-1">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
+                  title="Decrease Scroll Speed"
+                  onClick={() => adjustScrollSpeed(-0.2)}
+                  data-testid="button-decrease-scroll-speed"
+                >
+                  <ChevronDown className="w-3 h-3" />
+                </Button>
+                <span className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300 min-w-[32px] text-center">
+                  {scrollSpeed.toFixed(1)}x
+                </span>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
+                  title="Increase Scroll Speed"
+                  onClick={() => adjustScrollSpeed(0.2)}
+                  data-testid="button-increase-scroll-speed"
+                >
+                  <ChevronUp className="w-3 h-3" />
+                </Button>
+              </div>
+            )}
+
             {/* Font Size Controls */}
             <div className="flex items-center space-x-1">
               <Button
@@ -142,9 +204,9 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
         className="flex-1 overflow-y-auto p-6 bg-gray-800"
         data-testid="lyrics-container"
       >
-        {lyrics.length === 0 ? (
+        {!song?.lyrics ? (
           <div className="text-center py-8 text-gray-400">
-            <p>No timestamped lyrics available</p>
+            <p>No lyrics available</p>
             {onEditLyrics && (
               <Button
                 variant="outline"
@@ -156,7 +218,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
               </Button>
             )}
           </div>
-        ) : (
+        ) : hasTimestamps ? (
           <div className="space-y-6" style={{ fontSize: `${fontSize}px` }}>
             {lyrics.map((line, index) => {
               const isCurrent = index === currentLineIndex;
@@ -184,6 +246,18 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
                 </div>
               );
             })}
+          </div>
+        ) : (
+          <div className="space-y-4" style={{ fontSize: `${fontSize}px` }}>
+            {plainLines.map((line, index) => (
+              <div
+                key={index}
+                className="text-gray-300 leading-relaxed"
+                data-testid={`lyrics-line-${index}`}
+              >
+                {line}
+              </div>
+            ))}
           </div>
         )}
       </div>

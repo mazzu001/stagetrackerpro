@@ -23,6 +23,15 @@ This project is a live music performance application designed for professional s
 - Clean dark theme design
 - **Status**: Lyrics scrolling working perfectly - smooth and centered
 
+### Working Build 2 (August 20, 2025)
+- All functionality from Working Build 1
+- **NEW**: Hidden timestamps - timestamps work for sync but are hidden from display
+- **NEW**: Auto-scroll feature for lyrics without timestamps
+- Smooth auto-scroll based on song duration and current time
+- Adjustable scroll speed controls (0.2x to 3.0x) with localStorage persistence
+- Support for both timestamped and plain text lyrics
+- **Status**: Complete lyrics system with both timestamp-based and auto-scroll modes
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

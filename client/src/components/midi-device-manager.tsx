@@ -17,7 +17,51 @@ interface MIDIDeviceManagerProps {
 export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCommand, scanForBluetoothDevices }: MIDIDeviceManagerProps) {
   const [testCommand, setTestCommand] = useState("CC:1:64:1");
   const [lastActivity, setLastActivity] = useState<string>("");
+  const [isScanning, setIsScanning] = useState(false);
   const { toast } = useToast();
+
+  // Handle Bluetooth scanning with proper error handling
+  const handleBluetoothScan = async () => {
+    if (!scanForBluetoothDevices) return;
+    
+    setIsScanning(true);
+    try {
+      await scanForBluetoothDevices();
+      toast({
+        title: "Bluetooth Device Connected",
+        description: "Successfully connected to Bluetooth MIDI device",
+      });
+    } catch (error: any) {
+      console.error('Bluetooth scan error:', error);
+      if (error.message.includes('User cancelled')) {
+        toast({
+          title: "Scan Cancelled",
+          description: "Bluetooth device selection was cancelled",
+          variant: "default"
+        });
+      } else if (error.message.includes('not supported')) {
+        toast({
+          title: "Bluetooth Not Supported",
+          description: "Your browser doesn't support Bluetooth MIDI",
+          variant: "destructive"
+        });
+      } else if (error.message.includes('does not support')) {
+        toast({
+          title: "Not a MIDI Device",
+          description: error.message,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Connection Failed",
+          description: "Could not connect to Bluetooth device. Make sure it's in pairing mode.",
+          variant: "destructive"
+        });
+      }
+    } finally {
+      setIsScanning(false);
+    }
+  };
 
   // Run test sequence
   const runTestSequence = () => {
@@ -65,7 +109,7 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
         devices.push({
           id: output.id || 'unknown',
           name: output.name || 'Unknown Device',
-          type: 'output',
+          type: output.type === 'bluetooth' ? 'bluetooth' : 'output',
           state: output.state || 'connected'
         });
       });
@@ -112,13 +156,14 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
           </h3>
           {scanForBluetoothDevices && (
             <Button
-              onClick={scanForBluetoothDevices}
+              onClick={handleBluetoothScan}
               size="sm"
               variant="outline"
               className="flex items-center gap-1"
+              disabled={isScanning}
             >
-              <Search className="w-3 h-3" />
-              Find Bluetooth
+              <Search className={`w-3 h-3 ${isScanning ? 'animate-spin' : ''}`} />
+              {isScanning ? 'Scanning...' : 'Find Bluetooth'}
             </Button>
           )}
         </div>

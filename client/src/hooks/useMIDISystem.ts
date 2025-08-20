@@ -72,66 +72,69 @@ export function useMIDISystem() {
   // Try to connect to Bluetooth MIDI devices
   const tryBluetoothMIDI = useCallback(async () => {
     if (!(navigator as any).bluetooth) {
-      console.log('[MIDI SYSTEM] Bluetooth not supported');
-      return;
+      throw new Error('Bluetooth not supported in this browser');
     }
 
+    console.log('[MIDI SYSTEM] Scanning for Bluetooth MIDI devices...');
+    
+    const device = await (navigator as any).bluetooth.requestDevice({
+      acceptAllDevices: true,
+      optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] // MIDI service UUID
+    });
+
+    console.log('[MIDI SYSTEM] Found Bluetooth device:', device.name);
+    
+    const server = await device.gatt.connect();
+    
+    // Check if device supports MIDI
+    let service;
     try {
-      console.log('[MIDI SYSTEM] Scanning for Bluetooth MIDI devices...');
-      
-      const device = await (navigator as any).bluetooth.requestDevice({
-        filters: [
-          { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] }, // MIDI service UUID
-          { namePrefix: 'MIDI' },
-          { namePrefix: 'BLE-MIDI' },
-          { namePrefix: 'Matt' }, // Look for Matt's pedal specifically
-        ],
-        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
-      });
-
-      console.log('[MIDI SYSTEM] Found Bluetooth device:', device.name);
-      
-      const server = await device.gatt.connect();
-      const service = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
-      const characteristic = await service.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
-
-      // Create Bluetooth MIDI access object
-      const bluetoothMIDI = {
-        inputs: new Map(),
-        outputs: new Map([
-          [device.id, {
-            id: device.id,
-            name: device.name || 'Bluetooth MIDI Device',
-            type: 'bluetooth',
-            send: async (data: number[]) => {
-              try {
-                // Bluetooth MIDI protocol requires timestamp and header
-                const timestamp = Date.now() & 0x1FFF;
-                const header = 0x80 | ((timestamp >> 7) & 0x3F);
-                const timestampLow = 0x80 | (timestamp & 0x7F);
-                const midiData = [header, timestampLow, ...data];
-                
-                await characteristic.writeValue(new Uint8Array(midiData));
-                const hex = data.map(b => b.toString(16).padStart(2, '0')).join(' ');
-                console.log(`🎹 BLUETOOTH MIDI: [${data.join(', ')}] [${hex}] to ${device.name}`);
-              } catch (error) {
-                console.error('[MIDI SYSTEM] Bluetooth send error:', error);
-              }
-            }
-          }]
-        ]),
-        onstatechange: null
-      };
-
-      setMidiAccess(bluetoothMIDI as any);
-      setIsConnected(true);
-      setDeviceCount(1);
-      console.log('[MIDI SYSTEM] Bluetooth MIDI connected:', device.name);
-
+      service = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
     } catch (error) {
-      console.log('[MIDI SYSTEM] Bluetooth MIDI connection failed or cancelled:', error);
+      throw new Error(`Device "${device.name}" does not support Bluetooth MIDI`);
     }
-  }, []);
+    
+    const characteristic = await service.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
+
+    // Merge with existing access or create new one
+    const currentOutputs = midiAccess?.outputs || new Map();
+    const newOutputs = new Map(currentOutputs);
+    
+    newOutputs.set(device.id, {
+      id: device.id,
+      name: device.name || 'Bluetooth MIDI Device',
+      type: 'bluetooth',
+      send: async (data: number[]) => {
+        try {
+          // Bluetooth MIDI protocol requires timestamp and header
+          const timestamp = Date.now() & 0x1FFF;
+          const header = 0x80 | ((timestamp >> 7) & 0x3F);
+          const timestampLow = 0x80 | (timestamp & 0x7F);
+          const midiData = [header, timestampLow, ...data];
+          
+          await characteristic.writeValue(new Uint8Array(midiData));
+          const hex = data.map(b => b.toString(16).padStart(2, '0')).join(' ');
+          console.log(`🎹 BLUETOOTH MIDI: [${data.join(', ')}] [${hex}] to ${device.name}`);
+        } catch (error) {
+          console.error('[MIDI SYSTEM] Bluetooth send error:', error);
+        }
+      }
+    });
+
+    // Create new MIDI access with merged devices
+    const updatedMIDI = {
+      inputs: midiAccess?.inputs || new Map(),
+      outputs: newOutputs,
+      onstatechange: null
+    };
+
+    setMidiAccess(updatedMIDI as any);
+    setIsConnected(true);
+    setDeviceCount(newOutputs.size);
+    console.log('[MIDI SYSTEM] Bluetooth MIDI connected:', device.name);
+    
+    return device.name;
+  }, [midiAccess]);
 
   // Create fallback MIDI for testing when real MIDI fails
   const createFallbackMIDI = useCallback(() => {

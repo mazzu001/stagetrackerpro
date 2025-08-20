@@ -17,6 +17,30 @@ function AppContent() {
   const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
 
   useEffect(() => {
+    // Check URL parameters for successful payment
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectStatus = urlParams.get('redirect_status');
+    
+    if (redirectStatus === 'succeeded') {
+      // Update user to paid status
+      const storedUser = localStorage.getItem('lpp_local_user');
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          userData.userType = 'paid';
+          localStorage.setItem('lpp_local_user', JSON.stringify(userData));
+          
+          // Clear URL parameters
+          window.history.replaceState({}, document.title, window.location.pathname);
+          
+          // Trigger auth change event to update the UI
+          window.dispatchEvent(new Event('auth-change'));
+        } catch (error) {
+          console.error('Error updating user type:', error);
+        }
+      }
+    }
+    
     // Check if local file system is already initialized
     const checkLocalFS = async () => {
       try {

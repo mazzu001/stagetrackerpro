@@ -74,7 +74,7 @@ export class LocalSongStorage {
     return true;
   }
 
-  static addTrack(userEmail: string, songId: string, track: Omit<any, 'id' | 'songId'>): any | null {
+  static addTrack(userEmail: string, songId: string, track: any): any | null {
     const songs = this.getAllSongs(userEmail);
     const songIndex = songs.findIndex(song => song.id === songId);
     
@@ -83,6 +83,17 @@ export class LocalSongStorage {
     const newTrack = {
       id: crypto.randomUUID(),
       songId,
+      name: track.name || '',
+      trackNumber: track.trackNumber || 1,
+      audioUrl: track.audioUrl || '',
+      localFileName: track.localFileName || null,
+      audioData: track.audioData || null,
+      mimeType: track.mimeType || null,
+      fileSize: track.fileSize || null,
+      volume: track.volume || 1.0,
+      balance: track.balance || 0.0,
+      isMuted: track.isMuted || false,
+      isSolo: track.isSolo || false,
       ...track,
       createdAt: new Date().toISOString()
     };

@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Song } from '@shared/schema';
 
 interface LyricsControlsProps {
   onEditLyrics: () => void;
-  song: Song;
+  song: {
+    lyrics?: string | null;
+  };
 }
 
 export function LyricsControls({ onEditLyrics, song }: LyricsControlsProps) {
@@ -12,6 +13,9 @@ export function LyricsControls({ onEditLyrics, song }: LyricsControlsProps) {
   });
   const [scrollSpeed, setScrollSpeed] = useState(() => {
     return parseFloat(localStorage.getItem('lyrics-scroll-speed') || '1.0');
+  });
+  const [autoScrollEnabled, setAutoScrollEnabled] = useState(() => {
+    return localStorage.getItem('lyrics-auto-scroll') !== 'false';
   });
 
   // Check if lyrics have timestamps
@@ -32,10 +36,30 @@ export function LyricsControls({ onEditLyrics, song }: LyricsControlsProps) {
     window.dispatchEvent(new Event('lyrics-scroll-change'));
   };
 
+  const toggleAutoScroll = () => {
+    const newEnabled = !autoScrollEnabled;
+    setAutoScrollEnabled(newEnabled);
+    localStorage.setItem('lyrics-auto-scroll', newEnabled.toString());
+    window.dispatchEvent(new Event('lyrics-auto-scroll-change'));
+  };
+
   return (
     <div className="flex items-center space-x-2">
-      {/* Scroll Speed Controls for non-timestamped lyrics */}
+      {/* Auto-Scroll Toggle for non-timestamped lyrics */}
       {!hasTimestamps && (
+        <button
+          className={`p-1 h-7 w-8 rounded text-white text-xs flex items-center justify-center ${
+            autoScrollEnabled ? 'bg-blue-600 hover:bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'
+          }`}
+          title="Toggle Auto-Scroll"
+          onClick={toggleAutoScroll}
+        >
+          {autoScrollEnabled ? '⏸' : '▶'}
+        </button>
+      )}
+
+      {/* Scroll Speed Controls for non-timestamped lyrics when auto-scroll is enabled */}
+      {!hasTimestamps && autoScrollEnabled && (
         <div className="flex items-center space-x-1">
           <button
             className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7 rounded text-white text-xs flex items-center justify-center"

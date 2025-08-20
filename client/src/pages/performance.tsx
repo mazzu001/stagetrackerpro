@@ -48,7 +48,9 @@ export default function Performance({ userType }: PerformanceProps) {
   useEffect(() => {
     if (user?.email) {
       const songs = LocalSongStorage.getAllSongs(user.email);
-      setAllSongs(songs);
+      // Sort songs alphabetically by title
+      const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
+      setAllSongs(sortedSongs);
       
       // If we had a selected song, try to restore it
       if (selectedSongId) {
@@ -128,7 +130,9 @@ export default function Performance({ userType }: PerformanceProps) {
   const refreshSongs = () => {
     if (user?.email) {
       const songs = LocalSongStorage.getAllSongs(user.email);
-      setAllSongs(songs);
+      // Sort songs alphabetically by title
+      const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
+      setAllSongs(sortedSongs);
       
       // Also refresh the currently selected song to pick up track changes
       if (selectedSongId) {

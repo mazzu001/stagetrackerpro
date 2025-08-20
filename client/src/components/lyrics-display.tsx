@@ -23,6 +23,9 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
     const saved = localStorage.getItem('lyrics-scroll-speed');
     return saved ? parseFloat(saved) : 1.0;
   });
+  const [autoScrollEnabled, setAutoScrollEnabled] = useState(() => {
+    return localStorage.getItem('lyrics-auto-scroll') !== 'false';
+  });
 
   // Listen for font size changes from external controls
   useEffect(() => {
@@ -36,11 +39,18 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
       setScrollSpeed(newSpeed);
     };
 
+    const handleAutoScrollChange = () => {
+      const enabled = localStorage.getItem('lyrics-auto-scroll') !== 'false';
+      setAutoScrollEnabled(enabled);
+    };
+
     window.addEventListener('lyrics-font-change', handleFontChange);
     window.addEventListener('lyrics-scroll-change', handleScrollChange);
+    window.addEventListener('lyrics-auto-scroll-change', handleAutoScrollChange);
     return () => {
       window.removeEventListener('lyrics-font-change', handleFontChange);
       window.removeEventListener('lyrics-scroll-change', handleScrollChange);
+      window.removeEventListener('lyrics-auto-scroll-change', handleAutoScrollChange);
     };
   }, []);
 
@@ -104,13 +114,13 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
 
   // Auto-scroll for non-timestamped lyrics
   useEffect(() => {
-    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 1) {
+    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 1 && autoScrollEnabled) {
       const container = containerRef.current;
       const scrollPixelsPerSecond = (100 * scrollSpeed);
       const totalScrollDistance = (currentTime - 1) * scrollPixelsPerSecond;
       container.scrollTop = totalScrollDistance;
     }
-  }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration]);
+  }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration, autoScrollEnabled]);
 
   const adjustFontSize = (delta: number) => {
     const newSize = Math.max(12, Math.min(32, fontSize + delta));

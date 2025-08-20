@@ -32,6 +32,16 @@ This project is a live music performance application designed for professional s
 - Support for both timestamped and plain text lyrics
 - **Status**: Complete lyrics system with both timestamp-based and auto-scroll modes
 
+### Working Build 3 (August 20, 2025) - RESTORE POINT
+- All functionality from Working Build 2
+- **NEW**: Font size and scroll speed controls moved to performance page header
+- Controls positioned next to song title and band name for easy access
+- Lyrics box set to 500px height for optimal viewing
+- Font size controls (A- and A+ buttons) work for all lyrics
+- Scroll speed controls only appear for non-timestamped lyrics
+- All controls sync properly with lyrics component using localStorage and events
+- **Status**: Complete working application with optimal lyrics control layout
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

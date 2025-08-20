@@ -19,6 +19,7 @@ interface SongSelectorProps {
 export default function SongSelector({ selectedSongId, onSongSelect }: SongSelectorProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [newSong, setNewSong] = useState<InsertSong>({
+    userId: "", // Will be set when creating
     title: "",
     artist: "",
     duration: 180, // Default duration, will be updated when tracks are added
@@ -29,9 +30,12 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
 
   const { toast } = useToast();
 
-  const { data: songs = [], isLoading } = useQuery<Song[]>({
+  const { data: songsData = [], isLoading } = useQuery<Song[]>({
     queryKey: ['/api/songs']
   });
+
+  // Sort songs alphabetically by title
+  const songs = songsData.sort((a, b) => a.title.localeCompare(b.title));
 
   const createSongMutation = useMutation({
     mutationFn: async (songData: InsertSong) => {
@@ -42,6 +46,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
       setIsAddDialogOpen(false);
       setNewSong({
+        userId: "", // Will be set when creating
         title: "",
         artist: "",
         duration: 180, // Default duration, will be updated when tracks are added
@@ -74,7 +79,9 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       return;
     }
 
-    createSongMutation.mutate(newSong);
+    // Set userId from localStorage or default
+    const userId = localStorage.getItem('userId') || 'default-user';
+    createSongMutation.mutate({ ...newSong, userId });
   };
 
   const formatDuration = (seconds: number) => {

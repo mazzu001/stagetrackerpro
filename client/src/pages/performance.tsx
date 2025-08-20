@@ -143,6 +143,32 @@ export default function Performance({ userType }: PerformanceProps) {
     refreshSongs();
   }, [user?.email, selectedSongId]);
 
+  // Download sample ZIP files
+  const downloadSampleZip = (sampleType: '3AM' | 'ComfortablyNumb') => {
+    const zipFiles = {
+      '3AM': 'attached_assets/3AM_1755653001926.zip',
+      'ComfortablyNumb': 'attached_assets/Comfortably Numb_1755653007913.zip'
+    };
+    
+    const fileName = sampleType === '3AM' ? '3AM_Matchbox20_Sample.zip' : 'ComfortablyNumb_PinkFloyd_Sample.zip';
+    const zipPath = zipFiles[sampleType];
+    
+    // Create download link
+    const link = document.createElement('a');
+    link.href = zipPath;
+    link.download = fileName;
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast({
+      title: "Download Started",
+      description: `Downloading ${fileName} for beta testing`,
+      variant: "default"
+    });
+  };
+
 
 
   // Add new song function
@@ -434,7 +460,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   <Settings className="w-4 h-4" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuContent align="end" className="w-64">
                 <DropdownMenuItem 
                   onClick={() => setLocation('/subscribe')}
                   className="flex items-center cursor-pointer"
@@ -443,7 +469,24 @@ export default function Performance({ userType }: PerformanceProps) {
                   <Crown className="w-4 h-4 mr-2" />
                   <span>Subscribe Now</span>
                 </DropdownMenuItem>
-
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  onClick={() => downloadSampleZip('3AM')}
+                  className="flex items-center cursor-pointer"
+                  data-testid="menu-download-3am"
+                >
+                  <FileAudio className="w-4 h-4 mr-2" />
+                  <span>Download 3AM - Matchbox 20</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
+                  onClick={() => downloadSampleZip('ComfortablyNumb')}
+                  className="flex items-center cursor-pointer"
+                  data-testid="menu-download-comfortably-numb"
+                >
+                  <FileAudio className="w-4 h-4 mr-2" />
+                  <span>Download Comfortably Numb - Pink Floyd</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem disabled className="flex items-center">
                   <User className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">

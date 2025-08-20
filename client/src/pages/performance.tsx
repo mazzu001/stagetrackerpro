@@ -880,7 +880,7 @@ export default function Performance({ userType }: PerformanceProps) {
                 Tip: Use [00:15] for timestamps and [[CC:1:64]] for MIDI commands. Use the "Insert Time Stamp" button to add current playback time.
               </p>
             </div>
-            <div className="flex justify-end space-x-2 pt-4">
+            <div className="flex justify-end space-x-2 pt-4" style={{ marginTop: '-50px' }}>
               <Button 
                 variant="outline" 
                 onClick={() => {

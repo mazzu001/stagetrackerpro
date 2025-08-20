@@ -135,9 +135,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
   return (
     <div style={{ 
       width: '100%', 
-      height: '300px', 
-      maxHeight: '300px', 
-      minHeight: '300px',
+      height: '100%',
       backgroundColor: '#111827',
       borderRadius: '8px',
       overflow: 'hidden',
@@ -162,9 +160,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
       <div 
         ref={containerRef}
         style={{ 
-          height: '240px',
-          maxHeight: '240px',
-          minHeight: '240px',
+          flex: '1',
           overflowY: 'auto',
           padding: '24px',
           backgroundColor: '#1f2937'

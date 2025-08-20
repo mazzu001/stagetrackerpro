@@ -80,30 +80,18 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           const containerHeight = container.clientHeight;
           const currentScrollTop = container.scrollTop;
           const lineTop = currentLineElement.offsetTop;
-          const lineBottom = lineTop + currentLineElement.offsetHeight;
+          const lineHeight = currentLineElement.offsetHeight;
+          const lineCenterY = lineTop + (lineHeight / 2);
           
-          const visibleTop = currentScrollTop;
-          const visibleBottom = currentScrollTop + containerHeight;
+          // Calculate the center of the visible text box
+          const textBoxCenterY = currentScrollTop + (containerHeight / 2);
           
-          // Check if line is approaching the center boundaries
-          const centerTop = visibleTop + containerHeight * 0.3; // 30% from top
-          const centerBottom = visibleTop + containerHeight * 0.7; // 70% from top
+          // Check if the highlighted line has passed the center of the text box
+          const linePassedCenter = lineCenterY > textBoxCenterY;
           
-          const lineAboveCenter = lineBottom < centerTop;
-          const lineBelowCenter = lineTop > centerBottom;
-          
-          if (lineAboveCenter || lineBelowCenter) {
-            // Calculate one line height to scroll exactly one line at a time
-            const lineHeight = currentLineElement.offsetHeight;
-            let targetScrollTop = currentScrollTop;
-            
-            if (lineBelowCenter) {
-              // Scroll down by exactly one line height to keep line in center area
-              targetScrollTop = currentScrollTop + lineHeight;
-            } else if (lineAboveCenter) {
-              // Scroll up by exactly one line height to keep line in center area
-              targetScrollTop = currentScrollTop - lineHeight;
-            }
+          if (linePassedCenter) {
+            // Scroll to position this line exactly at the center of the text box
+            const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
             
             container.scrollTo({
               top: Math.max(0, targetScrollTop),

@@ -1,256 +1,302 @@
-import { useState, useEffect, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import { Minus, Plus, Edit3, Save, X } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Textarea } from '@/components/ui/textarea';
-import type { Song } from '@shared/schema';
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { AlignLeft, Type, Plus, Minus, ChevronUp, ChevronDown, Edit } from "lucide-react";
+import { parseLyricsWithMidi } from "@/lib/midi-parser";
+import type { SongWithTracks } from "@shared/schema";
 
 interface LyricsDisplayProps {
-  song: Song | null;
+  song?: SongWithTracks;
   currentTime: number;
-  isPlaying: boolean;
-  onSeek: (time: number) => void;
+  onEditLyrics?: () => void;
 }
 
-interface ParsedLyricsLine {
-  text: string;
-  timestamp: number;
-}
-
-export function LyricsDisplay({ song, currentTime, isPlaying, onSeek }: LyricsDisplayProps) {
-  const [fontSize, setFontSize] = useState(() => {
-    const saved = localStorage.getItem('stagetracker-lyrics-font-size');
-    return saved ? parseInt(saved, 10) : 20;
+export default function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplayProps) {
+  const lyricsContainerRef = useRef<HTMLDivElement>(null);
+  const [lastScrolledLine, setLastScrolledLine] = useState(-1);
+  const [scrollSpeed, setScrollSpeed] = useState(() => {
+    // Load scroll speed from localStorage, default to 1.0
+    const saved = localStorage.getItem('lyrics-scroll-speed');
+    return saved ? parseFloat(saved) : 1.0;
   });
   
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedLyrics, setEditedLyrics] = useState('');
-  
-  const lyricsContainerRef = useRef<HTMLDivElement>(null);
+  const [fontSize, setFontSize] = useState(() => {
+    // Load font size from localStorage, default to 18px
+    const saved = localStorage.getItem('lyrics-font-size');
+    return saved ? parseInt(saved) : 18;
+  });
 
-  // Save font size to localStorage
+  const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
+
+  // Save scroll speed to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('stagetracker-lyrics-font-size', fontSize.toString());
+    localStorage.setItem('lyrics-scroll-speed', scrollSpeed.toString());
+  }, [scrollSpeed]);
+
+  // Save font size to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('lyrics-font-size', fontSize.toString());
   }, [fontSize]);
 
-  const increaseFontSize = () => {
-    if (fontSize < 36) {
-      setFontSize(prev => prev + 2);
-    }
+  const adjustScrollSpeed = (delta: number) => {
+    setScrollSpeed(prev => {
+      const newSpeed = Math.max(0.1, Math.min(3.0, prev + delta));
+      return Math.round(newSpeed * 10) / 10; // Round to 1 decimal place
+    });
   };
 
-  const decreaseFontSize = () => {
-    if (fontSize > 12) {
-      setFontSize(prev => prev - 2);
-    }
+  const adjustFontSize = (delta: number) => {
+    setFontSize(prev => {
+      const newSize = Math.max(12, Math.min(36, prev + delta));
+      return newSize;
+    });
   };
+  
+  // Check if lyrics contain actual timestamps (not just default sequential ones)
+  const hasRealTimestamps = parsedLyrics.some((line, index) => {
+    // Real timestamps won't follow the sequential 5-second pattern
+    return line.timestamp !== (index + 1) * 5;
+  });
 
-  const handleEditClick = () => {
-    setEditedLyrics(song?.lyrics || '');
-    setIsEditing(true);
-  };
-
-  const handleSaveLyrics = async () => {
-    if (!song) return;
-    
-    try {
-      const response = await fetch(`/api/songs/${song.id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ lyrics: editedLyrics }),
-      });
-
-      if (response.ok) {
-        setIsEditing(false);
-        window.location.reload();
-      }
-    } catch (error) {
-      console.error('Failed to save lyrics:', error);
-    }
-  };
-
-  // Parse lyrics to extract timestamps
-  const parsedLyrics: ParsedLyricsLine[] = song?.lyrics 
-    ? song.lyrics.split('\n').map(line => {
-        const timestampMatch = line.match(/^\[(\d+(?:\.\d+)?)\]/);
-        if (timestampMatch) {
-          const timestamp = parseFloat(timestampMatch[1]);
-          const text = line.replace(/^\[(\d+(?:\.\d+)?)\]\s*/, '');
-          return { text, timestamp };
-        }
-        return { text: line, timestamp: -1 };
-      }).filter(line => line.text.trim() !== '')
-    : [];
-
-  // Check if we have real timestamps
-  const hasRealTimestamps = parsedLyrics.some(line => line.timestamp >= 0);
-
-  // Find current highlighted line
   const currentLineIndex = hasRealTimestamps ? parsedLyrics.findIndex((line, index) => {
-    if (line.timestamp === -1) return false;
     const nextLine = parsedLyrics[index + 1];
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
-  }) : -1;
+  }) : -1; // Don't highlight lines when no real timestamps
 
-  // Scrolling logic - only when highlighted line goes below halfway mark
+  // Scrolling logic based on whether lyrics have timestamps
   useEffect(() => {
-    if (!song || !hasRealTimestamps || currentLineIndex < 0 || !lyricsContainerRef.current) return;
+    if (!song || parsedLyrics.length === 0 || !lyricsContainerRef.current) return;
     
     const container = lyricsContainerRef.current;
-    const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
-    
-    if (!currentLineElement) return;
-    
-    const containerHeight = container.clientHeight;
-    const scrollTop = container.scrollTop;
-    const lineTop = currentLineElement.offsetTop;
-    const lineBottom = lineTop + currentLineElement.offsetHeight;
-    
-    // Calculate halfway mark of visible area
-    const halfwayMark = scrollTop + (containerHeight / 2);
-    
-    // Only scroll when highlighted line bottom goes below halfway mark
-    if (lineBottom > halfwayMark) {
-      // Scroll one line at a time
-      const newScrollTop = scrollTop + currentLineElement.offsetHeight + 16; // 16px for spacing
-      const maxScroll = container.scrollHeight - containerHeight;
+
+    if (hasRealTimestamps && currentLineIndex >= 0) {
+      // Timestamped lyrics: line-based scrolling with highlighting
+      const firstTimestamp = Math.min(...parsedLyrics.map(line => line.timestamp));
+      const shouldStartScrolling = currentTime >= firstTimestamp;
+      
+      if (shouldStartScrolling && currentLineIndex !== lastScrolledLine) {
+        const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
+        
+        if (currentLineElement) {
+          const containerHeight = container.clientHeight;
+          const currentScrollTop = container.scrollTop;
+          const lineTop = currentLineElement.offsetTop;
+          const lineBottom = lineTop + currentLineElement.offsetHeight;
+          
+          const visibleTop = currentScrollTop;
+          const visibleBottom = currentScrollTop + containerHeight;
+          
+          const lineCompletelyAbove = lineBottom < visibleTop;
+          const lineCompletelyBelow = lineTop > visibleBottom;
+          const needsScroll = lineCompletelyAbove || lineCompletelyBelow;
+          
+          if (needsScroll) {
+            let targetScrollTop;
+            
+            if (lineCompletelyBelow) {
+              targetScrollTop = lineBottom - containerHeight + 20;
+            } else if (lineCompletelyAbove) {
+              targetScrollTop = lineTop - 20;
+            } else {
+              targetScrollTop = currentScrollTop;
+            }
+            
+            container.scrollTo({
+              top: Math.max(0, targetScrollTop),
+              behavior: 'smooth'
+            });
+          }
+          
+          setLastScrolledLine(currentLineIndex);
+        }
+      }
+    } else if (!hasRealTimestamps && currentTime >= 5) {
+      // Non-timestamped lyrics: smooth auto-scroll based on song progress with adjustable speed
+      const songDuration = song.duration || 300; // Default to 5 minutes if no duration
+      const adjustedDuration = (songDuration - 5) / scrollSpeed; // Apply scroll speed multiplier
+      const scrollProgress = Math.min((currentTime - 5) / adjustedDuration, 1); // Start scrolling after 5 seconds
+      
+      const maxScrollTop = container.scrollHeight - container.clientHeight;
+      const targetScrollTop = scrollProgress * maxScrollTop;
       
       container.scrollTo({
-        top: Math.min(newScrollTop, maxScroll),
+        top: Math.max(0, targetScrollTop),
         behavior: 'smooth'
       });
     }
-  }, [currentLineIndex, hasRealTimestamps, song]);
-
-  // Reset scroll on song change
-  useEffect(() => {
-    if (lyricsContainerRef.current) {
-      lyricsContainerRef.current.scrollTo({ top: 0, behavior: 'instant' });
-    }
-  }, [song?.id]);
-
-  const handleLineClick = (timestamp: number) => {
-    if (timestamp >= 0) {
-      onSeek(timestamp);
-    }
-  };
+  }, [currentTime, song, parsedLyrics.length, currentLineIndex, lastScrolledLine, hasRealTimestamps, scrollSpeed]);
 
   if (!song) {
     return (
-      <div className="flex items-center justify-center h-64 text-muted-foreground">
-        Select a song to view lyrics
+      <div className="bg-surface rounded-xl p-6 border border-gray-700 flex flex-col h-full min-h-0">
+        <div className="flex items-center justify-between mb-4 flex-shrink-0">
+          <h2 className="text-xl font-semibold flex items-center">
+            <AlignLeft className="mr-2 text-accent w-5 h-5" />
+            Lyrics
+          </h2>
+        </div>
+        <div className="flex-1 flex items-center justify-center text-gray-400">
+          Select a song to view lyrics
+        </div>
       </div>
     );
   }
 
-  return (
-    <div className="flex flex-col h-full">
-      {/* Header with controls */}
-      <div className="flex items-center justify-between mb-4 px-2">
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={decreaseFontSize}
-            disabled={fontSize <= 12}
-            data-testid="button-decrease-font"
-          >
-            <Minus className="h-4 w-4" />
-          </Button>
-          <span className="text-sm font-medium min-w-[60px] text-center">
-            {fontSize}px
-          </span>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={increaseFontSize}
-            disabled={fontSize >= 36}
-            data-testid="button-increase-font"
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-        </div>
-        
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleEditClick}
-          data-testid="button-edit-lyrics"
-        >
-          <Edit3 className="h-4 w-4 mr-2" />
-          Edit
-        </Button>
-      </div>
+  const midiEventCount = song.midiEvents?.length || 0;
+  const totalLines = parsedLyrics.length;
 
-      {/* Lyrics container */}
+  return (
+    <div className="bg-surface rounded-xl p-6 border border-gray-700 flex flex-col h-full min-h-0">
+      <div className="flex items-center justify-between mb-4 flex-shrink-0">
+        <h2 className="text-xl font-semibold flex items-center">
+          <AlignLeft className="mr-2 text-accent w-5 h-5" />
+          Lyrics
+        </h2>
+        <div className="flex items-center space-x-2">
+          {onEditLyrics && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onEditLyrics}
+              className="h-7 px-2 text-xs"
+              data-testid="button-edit-lyrics-inline"
+            >
+              <Edit className="w-3 h-3 mr-1" />
+              Edit
+            </Button>
+          )}
+          
+          <span className={`text-xs px-2 py-1 rounded ${
+            parsedLyrics.some((line, index) => line.timestamp !== (index + 1) * 5)
+              ? 'bg-primary/20 text-primary'
+              : 'bg-accent/20 text-accent'
+          }`}>
+            {parsedLyrics.some((line, index) => line.timestamp !== (index + 1) * 5)
+              ? 'TIMESTAMP-SYNC'
+              : `${scrollSpeed}x`
+            }
+          </span>
+          
+          {!hasRealTimestamps && (
+            <div className="flex items-center space-x-1">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
+                title="Decrease Scroll Speed"
+                onClick={() => adjustScrollSpeed(-0.1)}
+                data-testid="button-decrease-speed"
+              >
+                <ChevronDown className="w-3 h-3" />
+              </Button>
+              <Button
+                variant="secondary"
+                size="sm"
+                className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
+                title="Increase Scroll Speed"
+                onClick={() => adjustScrollSpeed(0.1)}
+                data-testid="button-increase-speed"
+              >
+                <ChevronUp className="w-3 h-3" />
+              </Button>
+            </div>
+          )}
+          
+          <div className="flex items-center space-x-1">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
+              title="Decrease Font Size"
+              onClick={() => adjustFontSize(-1)}
+              data-testid="button-decrease-font"
+            >
+              <Minus className="w-3 h-3" />
+            </Button>
+            <span className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300 min-w-[32px] text-center">
+              {fontSize}
+            </span>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
+              title="Increase Font Size"
+              onClick={() => adjustFontSize(1)}
+              data-testid="button-increase-font"
+            >
+              <Plus className="w-3 h-3" />
+            </Button>
+          </div>
+        </div>
+      </div>
+      
       <div 
         ref={lyricsContainerRef}
-        className="flex-1 overflow-y-auto p-4 border rounded-lg bg-background"
-        style={{ fontSize: `${fontSize}px` }}
+        className="lyrics-container bg-gray-800 rounded-lg p-4 flex-1 min-h-0 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800"
         data-testid="lyrics-container"
       >
-        {parsedLyrics.length > 0 ? (
-          <div className="space-y-4">
-            {parsedLyrics.map((line, index) => (
-              <div
-                key={index}
-                data-testid={`lyrics-line-${index}`}
-                className={`cursor-pointer transition-colors duration-200 ${
-                  hasRealTimestamps && currentLineIndex === index
-                    ? 'text-primary font-semibold'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-                onClick={() => handleLineClick(line.timestamp)}
-              >
-                {line.text}
-              </div>
-            ))}
+        {parsedLyrics.length === 0 ? (
+          <div className="text-center py-8 text-gray-400">
+            No lyrics available for this song
           </div>
         ) : (
-          <div className="text-center text-muted-foreground py-8">
-            No lyrics available for this song
+          <div className="space-y-4 leading-relaxed" style={{ fontSize: `${fontSize}px` }}>
+            {parsedLyrics.map((line, index) => {
+              const isCurrentLine = hasRealTimestamps && index === currentLineIndex;
+              const isUpcoming = hasRealTimestamps && line.timestamp > currentTime;
+              
+              return (
+                <div 
+                  key={index}
+                  className={`transition-all duration-300 ${
+                    line.type === 'midi' 
+                      ? 'text-gray-500 text-sm'
+                      : isCurrentLine
+                        ? 'text-white bg-primary/20 px-2 py-1 rounded border-l-4 border-primary'
+                        : isUpcoming
+                          ? 'text-gray-400'
+                          : hasRealTimestamps 
+                            ? 'text-gray-500'
+                            : 'text-gray-300' // All lines same color for auto-scroll
+                  }`}
+                  data-testid={`lyrics-line-${index}`}
+                >
+                  {line.type === 'midi' ? (
+                    <div className="flex items-center">
+                      <span>[{Math.floor(line.timestamp / 60)}:{Math.floor(line.timestamp % 60).toString().padStart(2, '0')}] {line.content}</span>
+                      <span className="bg-accent/20 text-accent px-1 rounded text-xs ml-2">MIDI</span>
+                    </div>
+                  ) : (
+                    <div>
+                      {line.content}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
-
-      {/* Edit Dialog */}
-      <Dialog open={isEditing} onOpenChange={setIsEditing}>
-        <DialogContent className="max-w-4xl w-full h-[600px] flex flex-col">
-          <DialogHeader className="flex-shrink-0">
-            <DialogTitle>Edit Lyrics - {song.title}</DialogTitle>
-          </DialogHeader>
-          
-          <div className="flex-1 flex flex-col min-h-0">
-            <Textarea
-              value={editedLyrics}
-              onChange={(e) => setEditedLyrics(e.target.value)}
-              className="flex-1 resize-none font-mono text-sm min-h-0"
-              placeholder="Enter lyrics here..."
-              data-testid="textarea-lyrics"
-            />
+      
+      <div className="mt-4 pt-4 border-t border-gray-600 flex-shrink-0">
+        <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center space-x-4">
+            <span className="text-gray-400">
+              Line: <span className="text-white">{Math.max(0, currentLineIndex + 1)}/{totalLines}</span>
+            </span>
+            <span className="text-gray-400">
+              MIDI Events: <span className="text-accent">{midiEventCount}</span>
+            </span>
           </div>
-          
-          <div className="flex justify-end gap-2 pt-4 flex-shrink-0">
-            <Button
-              variant="outline"
-              onClick={() => setIsEditing(false)}
-              data-testid="button-cancel-edit"
-            >
-              <X className="h-4 w-4 mr-2" />
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSaveLyrics}
-              data-testid="button-save-lyrics"
-            >
-              <Save className="h-4 w-4 mr-2" />
-              Save
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="bg-primary/20 text-primary hover:bg-primary/30"
+            data-testid="button-midi-timeline"
+          >
+            View MIDI Timeline
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

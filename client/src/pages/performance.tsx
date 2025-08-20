@@ -899,7 +899,7 @@ Examples:
                 <div className="font-medium mb-1">Formatting Guide:</div>
                 <div className="space-y-1">
                   <div>• Use <code className="dark:bg-gray-700 px-1 rounded bg-[#2a2c37]">[MM:SS]</code> for timestamps (e.g., [01:23])</div>
-                  <div>• Use <code className="dark:bg-gray-700 px-1 rounded bg-[#2a2c37]">[[CC:channel:value]]</code> for MIDI commands</div>
+                  <div>• Use <code className="dark:bg-gray-700 px-1 rounded bg-[#23252f]">[[CC:channel:value]]</code> for MIDI commands</div>
                   <div>• Click "Insert Timestamp" to add current playback time</div>
                 </div>
               </div>

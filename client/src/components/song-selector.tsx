@@ -222,10 +222,10 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
               onClick={() => onSongSelect(song.id)}
               data-testid={`song-card-${song.id}`}
             >
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between mb-2">
+              <CardContent className="p-3">
+                <div className="flex items-center justify-between mb-1">
                   <h3 className="font-medium truncate">{song.title}</h3>
-                  <span className={`text-xs px-2 py-1 rounded ${
+                  <span className={`text-xs px-2 py-0.5 rounded ${
                     selectedSongId === song.id
                       ? 'bg-secondary/20 text-secondary'
                       : 'bg-gray-600 text-gray-300'
@@ -233,7 +233,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                     {selectedSongId === song.id ? 'LOADED' : 'READY'}
                   </span>
                 </div>
-                <div className="text-sm text-gray-400 space-y-1">
+                <div className="text-sm text-gray-400 space-y-0.5">
                   <div>Artist: <span className="text-gray-300">{song.artist}</span></div>
                   <div>Duration: <span className="text-gray-300">{formatDuration(song.duration)}</span></div>
                   {song.bpm && <div>BPM: <span className="text-gray-300">{song.bpm}</span></div>}

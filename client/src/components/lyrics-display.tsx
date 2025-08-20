@@ -258,7 +258,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
             })}
           </div>
         ) : (
-          <div style={{ fontSize: `${fontSize}px`, paddingBottom: '80vh' }}>
+          <div style={{ fontSize: `${fontSize}px` }}>
             {plainLines.map((line: string, index: number) => (
               <div
                 key={index}
@@ -269,6 +269,8 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
                 {line}
               </div>
             ))}
+            {/* Spacer for scrolling */}
+            <div style={{ height: '50vh' }} />
           </div>
         )}
       </div>

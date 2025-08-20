@@ -130,33 +130,43 @@ export function useMIDISequencer() {
   const executeMIDICommand = useCallback((command: MIDICommand) => {
     const channel = command.channel || 0;
     
-    switch (command.type) {
-      case 'note_on':
-        if (command.note !== undefined && command.velocity !== undefined) {
-          sendNoteOn(command.note, command.velocity, channel);
-        }
-        break;
-        
-      case 'note_off':
-        if (command.note !== undefined) {
-          sendNoteOff(command.note, channel);
-        }
-        break;
-        
-      case 'control_change':
-        if (command.controller !== undefined && command.value !== undefined) {
-          sendControlChange(command.controller, command.value, channel);
-        }
-        break;
-        
-      case 'program_change':
-        if (command.program !== undefined) {
-          sendProgramChange(command.program, channel);
-        }
-        break;
-    }
+    console.log(`[MIDI SEQUENCER] Executing command: ${command.type} at ${command.timestamp}s`);
     
-    console.log('Executed MIDI command:', command);
+    try {
+      switch (command.type) {
+        case 'note_on':
+          if (command.note !== undefined && command.velocity !== undefined) {
+            console.log(`[MIDI SEQUENCER] Sending Note On: note=${command.note}, vel=${command.velocity}, ch=${channel}`);
+            sendNoteOn(command.note, command.velocity, channel);
+          }
+          break;
+          
+        case 'note_off':
+          if (command.note !== undefined) {
+            console.log(`[MIDI SEQUENCER] Sending Note Off: note=${command.note}, ch=${channel}`);
+            sendNoteOff(command.note, channel);
+          }
+          break;
+          
+        case 'control_change':
+          if (command.controller !== undefined && command.value !== undefined) {
+            console.log(`[MIDI SEQUENCER] Sending CC: controller=${command.controller}, value=${command.value}, ch=${channel}`);
+            sendControlChange(command.controller, command.value, channel);
+          }
+          break;
+          
+        case 'program_change':
+          if (command.program !== undefined) {
+            console.log(`[MIDI SEQUENCER] Sending PC: program=${command.program}, ch=${channel}`);
+            sendProgramChange(command.program, channel);
+          }
+          break;
+      }
+      
+      console.log('[MIDI SEQUENCER] Successfully executed MIDI command:', command);
+    } catch (error) {
+      console.error('[MIDI SEQUENCER] Error executing MIDI command:', error, command);
+    }
   }, [sendNoteOn, sendNoteOff, sendControlChange, sendProgramChange]);
 
   // Start MIDI sequencing

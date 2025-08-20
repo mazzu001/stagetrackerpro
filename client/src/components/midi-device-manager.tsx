@@ -96,7 +96,7 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
         </div>
         
         {lastActivity && (
-          <div className="mt-2 text-sm text-gray-500 font-mono">
+          <div className="mt-2 text-sm text-gray-600 dark:text-gray-400 font-mono">
             Last: {lastActivity}
           </div>
         )}
@@ -113,7 +113,7 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
           {devices.length > 0 ? (
             <div className="space-y-2">
               {devices.map((device) => (
-                <div key={device.id} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded">
+                <div key={device.id} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded text-gray-900 dark:text-gray-100">
                   <div className="flex items-center gap-2">
                     <Bluetooth className="w-4 h-4 text-blue-500" />
                     <span className="text-sm">{device.name}</span>
@@ -125,7 +125,7 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
               ))}
             </div>
           ) : (
-            <div className="text-center text-gray-500 py-4">
+            <div className="text-center text-gray-500 dark:text-gray-400 py-4">
               <Music className="w-8 h-8 mx-auto mb-2 opacity-50" />
               <p className="text-sm">No MIDI devices found</p>
               <p className="text-xs mt-1">Console mode active</p>
@@ -148,7 +148,7 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
               value={testCommand}
               onChange={(e) => setTestCommand(e.target.value)}
               placeholder="CC:1:64:1"
-              className="flex-1 px-3 py-2 border rounded text-sm font-mono"
+              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded text-sm font-mono bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             />
             <Button onClick={sendTestCommand} size="sm">
               Send

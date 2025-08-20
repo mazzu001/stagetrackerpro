@@ -99,21 +99,60 @@ export default function Performance({ userType }: PerformanceProps) {
   useEffect(() => {
     const initMIDIAccess = async () => {
       try {
-        if ((navigator as any).requestMIDIAccess) {
-          const access = await (navigator as any).requestMIDIAccess({ sysex: false });
-          setMidiAccess(access);
-          console.log('[PERFORMANCE] MIDI access initialized successfully');
-          console.log('[PERFORMANCE] Available outputs:', access.outputs.size);
-        } else {
-          console.error('[PERFORMANCE] Web MIDI API not supported');
+        console.log('[PERFORMANCE] Checking Web MIDI API support...');
+        
+        if (!(navigator as any).requestMIDIAccess) {
+          console.error('[PERFORMANCE] Web MIDI API not supported in this browser');
+          toast({
+            title: "MIDI Not Supported",
+            description: "Your browser doesn't support Web MIDI API. Please use Chrome, Edge, or Opera.",
+            variant: "destructive"
+          });
+          return;
         }
+
+        console.log('[PERFORMANCE] Requesting MIDI access...');
+        const access = await (navigator as any).requestMIDIAccess({ sysex: false });
+        setMidiAccess(access);
+        
+        console.log('[PERFORMANCE] MIDI access granted successfully');
+        console.log('[PERFORMANCE] Available input devices:', access.inputs.size);
+        console.log('[PERFORMANCE] Available output devices:', access.outputs.size);
+        
+        // Log device details
+        access.inputs.forEach((input: any) => {
+          console.log('[PERFORMANCE] Input device:', input.name, input.state);
+        });
+        access.outputs.forEach((output: any) => {
+          console.log('[PERFORMANCE] Output device:', output.name, output.state);
+        });
+        
+        if (access.outputs.size === 0) {
+          console.warn('[PERFORMANCE] No MIDI output devices found');
+          toast({
+            title: "No MIDI Devices",
+            description: "No MIDI output devices detected. Connect a MIDI device and refresh the page.",
+            variant: "destructive"
+          });
+        } else {
+          toast({
+            title: "MIDI Ready",
+            description: `Found ${access.outputs.size} MIDI device(s)`,
+          });
+        }
+        
       } catch (error) {
         console.error('Failed to initialize MIDI for performance page:', error);
+        toast({
+          title: "MIDI Access Denied",
+          description: "MIDI access was denied. Check browser permissions and try again.",
+          variant: "destructive"
+        });
       }
     };
     
     initMIDIAccess();
-  }, []);
+  }, [toast]);
 
   // MIDI message listener for lyrics editor
   useEffect(() => {

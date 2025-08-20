@@ -29,11 +29,9 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
       return;
     }
 
-    const { error } = await stripe.confirmPayment({
+    const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
-      confirmParams: {
-        return_url: window.location.origin,
-      },
+      redirect: 'if_required',
     });
 
     if (error) {
@@ -42,7 +40,7 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
         description: error.message,
         variant: "destructive",
       });
-    } else {
+    } else if (paymentIntent && paymentIntent.status === 'succeeded') {
       // Update local user type to paid
       const storedUser = localStorage.getItem('lpp_local_user');
       if (storedUser) {
@@ -63,6 +61,9 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
         description: "Your subscription is now active. Enjoy unlimited songs!",
       });
       onSuccess();
+    } else {
+      // Payment is still processing or requires action
+      console.log('Payment status:', paymentIntent?.status);
     }
     
     setIsLoading(false);

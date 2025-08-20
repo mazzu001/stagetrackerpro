@@ -23,7 +23,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import { MIDIDeviceManager } from "@/components/midi-device-manager";
-import { MIDICommandDisplay } from "@/components/midi-command-display";
 import { useMIDI } from "@/hooks/useMIDI";
 import { useMIDISequencer } from "@/hooks/useMIDISequencer";
 
@@ -877,30 +876,14 @@ export default function Performance({ userType }: PerformanceProps) {
               {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
             
-            {/* Main Content Row */}
-            <div className="flex-1 min-h-0 flex flex-row">
-              {/* Lyrics Area */}
-              <div className="flex-1 min-h-0 overflow-hidden" style={{ contain: 'layout style' }}>
-                <LyricsDisplay
-                  song={selectedSong}
-                  currentTime={currentTime}
-                  duration={duration}
-                  onEditLyrics={selectedSong ? handleEditLyrics : undefined}
-                />
-              </div>
-              
-              {/* MIDI Command Display - Desktop only */}
-              <div className="w-80 border-l border-gray-700 bg-surface mobile-hidden">
-                <div className="p-3 h-full overflow-hidden">
-                  <MIDICommandDisplay
-                    commands={midiCommands}
-                    currentTime={currentTime}
-                    lastTriggeredIndex={isMIDISequencerActive ? getCommandStats().triggered - 1 : -1}
-                    isActive={isMIDISequencerActive}
-                    className="h-full"
-                  />
-                </div>
-              </div>
+            {/* Lyrics Area - Takes remaining space but leaves room for transport */}
+            <div className="flex-1 min-h-0 overflow-hidden" style={{ contain: 'layout style' }}>
+              <LyricsDisplay
+                song={selectedSong}
+                currentTime={currentTime}
+                duration={duration}
+                onEditLyrics={selectedSong ? handleEditLyrics : undefined}
+              />
             </div>
             
             {/* Mobile only: Transport controls at bottom - ALWAYS VISIBLE */}
@@ -1001,29 +984,27 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
 
           {/* Main Content Area */}
-          <div className="flex-1 flex flex-col md:flex-row min-h-0 gap-4">
-            {/* Lyrics Section */}
-            <div className="flex-1 flex flex-col min-h-0">
-              {/* Lyrics Header Row */}
-              <div className="flex items-center justify-between mb-2 flex-shrink-0">
-                <Label htmlFor="lyrics" className="text-sm font-semibold">Lyrics</Label>
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-gray-500">
-                    {lyricsText.length} chars
-                  </span>
-                  <div className="text-xs text-gray-400">
-                    <code className="text-xs">[MM:SS]</code> timestamps • <code className="text-xs">[[CC:1:64]]</code> MIDI
-                  </div>
+          <div className="flex-1 flex flex-col min-h-0">
+            {/* Lyrics Header Row */}
+            <div className="flex items-center justify-between mb-2 flex-shrink-0">
+              <Label htmlFor="lyrics" className="text-sm font-semibold">Lyrics</Label>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-gray-500">
+                  {lyricsText.length} chars
+                </span>
+                <div className="text-xs text-gray-400">
+                  <code className="text-xs">[MM:SS]</code> timestamps • <code className="text-xs">[[CC:1:64]]</code> MIDI
                 </div>
               </div>
-              
-              {/* Lyrics Textarea - Takes all remaining space */}
-              <Textarea
-                id="lyrics"
-                value={lyricsText}
-                onChange={(e) => setLyricsText(e.target.value)}
-                onPaste={handleLyricsPaste}
-                placeholder={`Enter lyrics with timestamps and MIDI commands:
+            </div>
+            
+            {/* Lyrics Textarea - Takes all remaining space */}
+            <Textarea
+              id="lyrics"
+              value={lyricsText}
+              onChange={(e) => setLyricsText(e.target.value)}
+              onPaste={handleLyricsPaste}
+              placeholder={`Enter lyrics with timestamps and MIDI commands:
 
 [00:15] First verse line
 [00:30] Second verse line  
@@ -1032,22 +1013,11 @@ export default function Performance({ userType }: PerformanceProps) {
 [[PC:5]] Program change
 
 Click "Timestamp" to insert current time`}
-                className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
-                style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
-                spellCheck={false}
-                data-testid="textarea-lyrics"
-              />
-            </div>
-
-            {/* MIDI Command Preview - Desktop only */}
-            <div className="w-80 mobile-hidden">
-              <MIDICommandDisplay
-                commands={midiCommands}
-                currentTime={currentTime}
-                lastTriggeredIndex={isMIDISequencerActive ? getCommandStats().triggered - 1 : -1}
-                isActive={isMIDISequencerActive}
-              />
-            </div>
+              className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
+              style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
+              spellCheck={false}
+              data-testid="textarea-lyrics"
+            />
           </div>
 
           {/* Compact Action Buttons */}

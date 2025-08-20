@@ -635,8 +635,8 @@ export default function TrackManager({
                             </Button>
                           </div>
 
-                          {/* Center: Stacked Volume/Balance with reduced width */}
-                          <div className="flex-1 space-y-2 min-w-0 max-w-[65%]">
+                          {/* Center: Stacked Volume/Balance - fill available space */}
+                          <div className="flex-1 space-y-2 min-w-0">
                             {/* Volume control */}
                             <div className="flex items-center gap-1">
                               <Volume2 className="h-3 w-3 text-gray-500 flex-shrink-0" />
@@ -671,7 +671,7 @@ export default function TrackManager({
 
                         {/* Bottom row: VU Meter and Delete button - closer to balance slider */}
                         <div className="flex items-center justify-center gap-3 pt-0.5">
-                          <div className="flex-shrink-0 w-32">
+                          <div className="flex-shrink-0 w-64">
                             <VUMeter
                               level={level}
                               isMuted={isMuted}

@@ -8,49 +8,29 @@ interface VUMeterProps {
 }
 
 export default function VUMeter({ level, isMuted = false, isPlaying = true, className = "" }: VUMeterProps) {
-  const [animatedLevel, setAnimatedLevel] = useState(0);
   const [peakLevel, setPeakLevel] = useState(0);
 
-  // Use EXACT same logic as the perfectly working stereo VU meters
+  // Use direct level - no smoothing since audio engine already provides smooth responsive data
+  const currentLevel = isMuted || !isPlaying ? 0 : Math.max(0, Math.min(100, level));
+
+  // Simple responsive updates - use the level directly from the responsive audio engine
+
+  // Peak hold with responsive updates
   useEffect(() => {
-    if (isMuted || !isPlaying) {
-      setAnimatedLevel(0);
-      setPeakLevel(0);
-      return;
-    }
-
-    // Apply amplification to make meters more reactive - SAME AS STEREO VU METERS
-    const amplifiedLevel = level * 1.8; // Exact same amplification as stereo meters
-    const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
-    
-    const animate = () => {
-      setAnimatedLevel(prev => {
-        const diff = targetLevel - prev;
-        const step = diff * 0.9; // Exact same response speed as stereo meters
-        return Math.abs(step) < 0.1 ? targetLevel : prev + step;
-      });
-    };
-
-    const interval = setInterval(animate, 6); // Exact same update rate as stereo meters
-    return () => clearInterval(interval);
-  }, [level, isMuted, isPlaying]);
-
-  // Peak hold - SAME AS STEREO VU METERS
-  useEffect(() => {
-    if (animatedLevel > peakLevel) {
-      setPeakLevel(animatedLevel);
+    if (currentLevel > peakLevel) {
+      setPeakLevel(currentLevel);
     } else {
       const decay = () => {
-        setPeakLevel(prev => Math.max(animatedLevel, prev - 1.5)); // Exact same decay as stereo meters
+        setPeakLevel(prev => Math.max(currentLevel, prev - 2.0)); // Faster peak decay for responsiveness
       };
-      const interval = setInterval(decay, 15); // Exact same frequency as stereo meters
+      const interval = setInterval(decay, 8); // Faster decay updates
       return () => clearInterval(interval);
     }
-  }, [animatedLevel, peakLevel]);
+  }, [currentLevel, peakLevel]);
 
-  // Create LED segments - SAME AS STEREO VU METERS
-  const segments = 12; // Same segment count as stereo meters
-  const activeSegments = Math.floor((animatedLevel / 100) * segments);
+  // Create LED segments with direct responsive level
+  const segments = 12;
+  const activeSegments = Math.floor((currentLevel / 100) * segments);
   const peakSegment = Math.floor((peakLevel / 100) * segments);
 
   const getSegmentColor = (index: number) => {

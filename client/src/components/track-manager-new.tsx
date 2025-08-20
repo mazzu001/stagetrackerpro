@@ -670,12 +670,13 @@ export default function TrackManager({
                         </div>
 
                         {/* Bottom row: VU Meter and Delete button - closer to balance slider */}
-                        <div className="flex items-center justify-center gap-3 pt-0.5">
-                          <div className="flex-shrink-0 w-64">
+                        <div className="flex items-center gap-2 pt-0.5">
+                          <div className="flex-1 min-w-0">
                             <VUMeter
                               level={level}
                               isMuted={isMuted}
                               isPlaying={isPlaying}
+                              className="w-full"
                             />
                           </div>
                           <Button

@@ -80,12 +80,12 @@ export default function VUMeter({ level, isMuted = false, isPlaying = true, clas
 
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      {/* VU Meter Segments - SAME LAYOUT AS STEREO METERS */}
-      <div className="flex space-x-0.5 px-1">
+      {/* VU Meter Segments - Responsive width for mobile */}
+      <div className="flex space-x-0.5 px-1 w-full justify-center">
         {Array.from({ length: segments }, (_, index) => (
           <div
             key={index}
-            className={`w-1 h-4 rounded-sm transition-all duration-75 ${getSegmentColor(index)}`}
+            className={`flex-1 h-4 rounded-sm transition-all duration-75 max-w-[8px] min-w-[2px] ${getSegmentColor(index)}`}
             style={{
               boxShadow: (index < activeSegments || index === peakSegment - 1) && !isMuted && isPlaying
                 ? getSegmentColor(index).includes('shadow-') 

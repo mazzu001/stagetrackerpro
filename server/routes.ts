@@ -206,9 +206,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`✅ Subscription created: ${subscription.id}`);
       
       const paymentIntent = subscription.latest_invoice?.payment_intent;
+      console.log('Payment intent:', paymentIntent?.id, paymentIntent?.client_secret);
+      
+      if (!paymentIntent?.client_secret) {
+        console.error('No payment intent or client secret found');
+        return res.status(500).json({
+          error: 'Payment setup failed',
+          message: 'Unable to create payment intent'
+        });
+      }
+      
       res.json({
         subscriptionId: subscription.id,
-        clientSecret: paymentIntent?.client_secret,
+        clientSecret: paymentIntent.client_secret,
         customerId: customer.id
       });
     } catch (error: any) {

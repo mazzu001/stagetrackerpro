@@ -158,6 +158,7 @@ export function useMIDISequencer() {
         case 'program_change':
           if (command.program !== undefined) {
             console.log(`[MIDI SEQUENCER] Sending PC: program=${command.program}, ch=${channel}`);
+            console.log(`[MIDI SEQUENCER] This should send MIDI data: [${0xC0 | channel}, ${command.program}]`);
             sendProgramChange(command.program, channel);
           }
           break;

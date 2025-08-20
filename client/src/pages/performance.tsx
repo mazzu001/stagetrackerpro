@@ -921,7 +921,7 @@ Examples:
               <Button 
                 onClick={handleSaveLyrics}
                 data-testid="button-save-lyrics"
-                className="bg-primary hover:bg-primary/90 mt-[-90px] mb-[-90px] pl-[14px] pr-[14px] ml-[4px] mr-[4px]"
+                className="bg-primary hover:bg-primary/90 mt-[-90px] mb-[-90px]"
               >
                 Save Lyrics
               </Button>

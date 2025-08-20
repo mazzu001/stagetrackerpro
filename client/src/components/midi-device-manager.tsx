@@ -57,6 +57,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
   const [isScanning, setIsScanning] = useState(false);
   const [midiSupported, setMidiSupported] = useState(true);
   const [bluetoothSupported, setBluetoothSupported] = useState(false);
+  const [bluetoothPermission, setBluetoothPermission] = useState<'prompt' | 'granted' | 'denied'>('prompt');
   const [receivedMessages, setReceivedMessages] = useState<{ device: string; message: string; timestamp: number }[]>([]);
   const { toast } = useToast();
 
@@ -76,9 +77,10 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
           return;
         }
 
-        // Check Bluetooth support
+        // Check Bluetooth support and permissions
         if ('bluetooth' in navigator) {
           setBluetoothSupported(true);
+          await checkBluetoothPermissions();
         }
 
         setIsScanning(true);
@@ -169,6 +171,94 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
     
     const searchText = `${name} ${manufacturer}`.toLowerCase();
     return bluetoothKeywords.some(keyword => searchText.includes(keyword));
+  };
+
+  // Check and manage Bluetooth permissions
+  const checkBluetoothPermissions = async () => {
+    try {
+      // Check if permissions API is available
+      if ('permissions' in navigator) {
+        const permission = await (navigator as any).permissions.query({ name: 'bluetooth' });
+        setBluetoothPermission(permission.state);
+        
+        permission.onchange = () => {
+          setBluetoothPermission(permission.state);
+        };
+      }
+    } catch (error) {
+      console.log('Bluetooth permission check not available:', error);
+    }
+  };
+
+  // Request Bluetooth permissions with user-friendly guidance
+  const requestBluetoothPermissions = async () => {
+    try {
+      setIsScanning(true);
+      
+      // First, try to get a device to trigger permission prompt
+      const device = await (navigator as any).bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] // MIDI Service
+      });
+
+      toast({
+        title: "Bluetooth Access Granted",
+        description: "You can now discover and connect to Bluetooth MIDI devices.",
+      });
+
+      // Update permission state
+      setBluetoothPermission('granted');
+      
+      // Refresh MIDI devices after getting permission
+      setTimeout(() => {
+        if (midiAccess) {
+          scanDevices(midiAccess);
+        }
+      }, 1000);
+
+    } catch (error: any) {
+      if (error.name === 'NotFoundError') {
+        toast({
+          title: "No Devices Found",
+          description: "Make sure your Bluetooth MIDI device is in pairing mode and try again.",
+          variant: "destructive",
+        });
+      } else if (error.name === 'NotAllowedError') {
+        setBluetoothPermission('denied');
+        toast({
+          title: "Bluetooth Access Denied",
+          description: "To use Bluetooth MIDI devices, please allow Bluetooth access in your browser settings.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Bluetooth Error",
+          description: error.message || "Failed to access Bluetooth",
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setIsScanning(false);
+    }
+  };
+
+  // Open browser settings for Bluetooth permissions
+  const openBluetoothSettings = () => {
+    toast({
+      title: "Bluetooth Permissions",
+      description: (
+        <div className="space-y-2">
+          <p>To enable Bluetooth MIDI:</p>
+          <ol className="list-decimal list-inside space-y-1 text-xs">
+            <li>Click the lock icon in your browser's address bar</li>
+            <li>Find "Bluetooth" in the permissions list</li>
+            <li>Change it from "Block" to "Allow"</li>
+            <li>Refresh this page and try again</li>
+          </ol>
+        </div>
+      ),
+      duration: 10000,
+    });
   };
 
   // Set up MIDI input message listener
@@ -364,12 +454,22 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                 
                 <div className="flex items-center gap-2">
                   {bluetoothSupported ? (
-                    <CheckCircle className="w-4 h-4 text-blue-500" />
+                    bluetoothPermission === 'granted' ? (
+                      <CheckCircle className="w-4 h-4 text-green-500" />
+                    ) : bluetoothPermission === 'denied' ? (
+                      <AlertCircle className="w-4 h-4 text-red-500" />
+                    ) : (
+                      <AlertCircle className="w-4 h-4 text-yellow-500" />
+                    )
                   ) : (
                     <AlertCircle className="w-4 h-4 text-gray-400" />
                   )}
                   <span className="text-sm">
-                    {bluetoothSupported ? 'Bluetooth Supported' : 'Bluetooth Not Available'}
+                    {bluetoothSupported ? (
+                      bluetoothPermission === 'granted' ? 'Bluetooth Ready' :
+                      bluetoothPermission === 'denied' ? 'Bluetooth Blocked' :
+                      'Bluetooth Permission Needed'
+                    ) : 'Bluetooth Not Available'}
                   </span>
                 </div>
               </div>
@@ -387,16 +487,39 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                 {isScanning ? 'Scanning...' : 'Refresh Devices'}
               </Button>
               
-              <Button
-                onClick={discoverBluetoothDevices}
-                disabled={isScanning || !bluetoothSupported}
-                size="sm"
-                variant="outline"
-                data-testid="button-discover-bluetooth"
-              >
-                <Search className="w-4 h-4 mr-2" />
-                Discover Bluetooth
-              </Button>
+              {bluetoothPermission === 'denied' ? (
+                <Button
+                  onClick={openBluetoothSettings}
+                  size="sm"
+                  variant="outline"
+                  data-testid="button-bluetooth-settings"
+                >
+                  <AlertCircle className="w-4 h-4 mr-2" />
+                  Fix Bluetooth Access
+                </Button>
+              ) : bluetoothPermission === 'prompt' ? (
+                <Button
+                  onClick={requestBluetoothPermissions}
+                  disabled={isScanning || !bluetoothSupported}
+                  size="sm"
+                  variant="default"
+                  data-testid="button-allow-bluetooth"
+                >
+                  <Bluetooth className="w-4 h-4 mr-2" />
+                  {isScanning ? 'Requesting...' : 'Allow Bluetooth'}
+                </Button>
+              ) : (
+                <Button
+                  onClick={discoverBluetoothDevices}
+                  disabled={isScanning || !bluetoothSupported}
+                  size="sm"
+                  variant="outline"
+                  data-testid="button-discover-bluetooth"
+                >
+                  <Search className="w-4 h-4 mr-2" />
+                  {isScanning ? 'Scanning...' : 'Discover Devices'}
+                </Button>
+              )}
             </div>
           </div>
 
@@ -569,10 +692,28 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                 Bluetooth MIDI Setup
               </h4>
               <ul className="text-sm space-y-1 text-gray-600 dark:text-gray-300">
-                <li>• Click "Discover Bluetooth" to find nearby devices</li>
-                <li>• Pair Bluetooth MIDI devices in system settings first</li>
-                <li>• Look for devices with Bluetooth icon and signal strength</li>
-                <li>• Activity indicator shows real-time MIDI data flow</li>
+                {bluetoothPermission === 'granted' ? (
+                  <>
+                    <li>• Click "Discover Devices" to find nearby MIDI devices</li>
+                    <li>• Put your MIDI device in pairing mode first</li>
+                    <li>• Look for devices with Bluetooth icon and signal strength</li>
+                    <li>• Activity indicator shows real-time MIDI data flow</li>
+                  </>
+                ) : bluetoothPermission === 'denied' ? (
+                  <>
+                    <li>• Bluetooth access is currently blocked</li>
+                    <li>• Click "Fix Bluetooth Access" for step-by-step help</li>
+                    <li>• Allow Bluetooth in your browser's site settings</li>
+                    <li>• Refresh the page after changing permissions</li>
+                  </>
+                ) : (
+                  <>
+                    <li>• Click "Allow Bluetooth" to enable MIDI device discovery</li>
+                    <li>• Your browser will ask for permission to access Bluetooth</li>
+                    <li>• This is safe and only allows MIDI device communication</li>
+                    <li>• You can revoke this permission anytime in browser settings</li>
+                  </>
+                )}
               </ul>
             </div>
             

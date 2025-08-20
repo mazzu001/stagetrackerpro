@@ -68,48 +68,9 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
     
     const container = lyricsContainerRef.current;
 
-    if (hasRealTimestamps && currentLineIndex >= 0) {
-      // Timestamped lyrics: line-based scrolling with highlighting
-      const firstTimestamp = Math.min(...parsedLyrics.map(line => line.timestamp));
-      const shouldStartScrolling = currentTime >= firstTimestamp;
-      
-      if (shouldStartScrolling && currentLineIndex !== lastScrolledLine) {
-        const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
-        
-        if (currentLineElement) {
-          const containerHeight = container.clientHeight;
-          const currentScrollTop = container.scrollTop;
-          const lineTop = currentLineElement.offsetTop;
-          const lineBottom = lineTop + currentLineElement.offsetHeight;
-          
-          const visibleTop = currentScrollTop;
-          const visibleBottom = currentScrollTop + containerHeight;
-          
-          const lineCompletelyAbove = lineBottom < visibleTop;
-          const lineCompletelyBelow = lineTop > visibleBottom;
-          const needsScroll = lineCompletelyAbove || lineCompletelyBelow;
-          
-          if (needsScroll) {
-            let targetScrollTop;
-            
-            if (lineCompletelyBelow) {
-              targetScrollTop = lineBottom - containerHeight + 20;
-            } else if (lineCompletelyAbove) {
-              targetScrollTop = lineTop - 20;
-            } else {
-              targetScrollTop = currentScrollTop;
-            }
-            
-            container.scrollTo({
-              top: Math.max(0, targetScrollTop),
-              behavior: 'smooth'
-            });
-          }
-          
-          setLastScrolledLine(currentLineIndex);
-        }
-      }
-    } else if (!hasRealTimestamps && currentTime >= 5) {
+    // For timestamped lyrics: NO automatic scrolling, only highlighting
+    // For non-timestamped lyrics: smooth auto-scroll based on song progress
+    if (!hasRealTimestamps && currentTime >= 5) {
       // Non-timestamped lyrics: smooth auto-scroll based on song progress with adjustable speed
       const songDuration = song.duration || 300; // Default to 5 minutes if no duration
       const adjustedDuration = (songDuration - 5) / scrollSpeed; // Apply scroll speed multiplier

@@ -425,7 +425,7 @@ export default function Performance({ userType }: PerformanceProps) {
               </div>
             )}
             <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
-              <DialogContent className="max-w-[95vw] md:max-w-[85vw] max-h-[90vh] overflow-y-auto mobile-padding">
+              <DialogContent className="max-w-[98vw] w-full md:max-w-[85vw] max-h-[90vh] overflow-y-auto p-3 md:p-6">
                 <DialogHeader>
                   <DialogTitle>Track Management</DialogTitle>
                 </DialogHeader>

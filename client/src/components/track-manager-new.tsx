@@ -510,70 +510,142 @@ export default function TrackManager({
                     </div>
 
                     {/* Track controls */}
-                    <div className="grid grid-cols-12 gap-2 items-center">
-                      {/* Mute/Solo buttons */}
-                      <div className="col-span-2 flex gap-1">
-                        <Button
-                          onClick={() => handleMuteToggle(track.id)}
-                          variant={isMuted ? "destructive" : "outline"}
-                          size="sm"
-                          className="h-8 w-12 text-xs"
-                          data-testid={`button-mute-${track.id}`}
-                        >
-                          {isMuted ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
-                        </Button>
-                        <Button
-                          onClick={() => handleSoloToggle(track.id)}
-                          variant={isSolo ? "default" : "outline"}
-                          size="sm"
-                          className="h-8 w-12 text-xs"
-                          data-testid={`button-solo-${track.id}`}
-                        >
-                          <Headphones className="h-3 w-3" />
-                        </Button>
-                      </div>
+                    {/* Desktop Layout */}
+                    <div className="hidden md:block">
+                      <div className="grid grid-cols-12 gap-2 items-center">
+                        {/* Mute/Solo buttons */}
+                        <div className="col-span-2 flex gap-1">
+                          <Button
+                            onClick={() => handleMuteToggle(track.id)}
+                            variant={isMuted ? "destructive" : "outline"}
+                            size="sm"
+                            className="h-8 w-12 text-xs"
+                            data-testid={`button-mute-${track.id}`}
+                          >
+                            {isMuted ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
+                          </Button>
+                          <Button
+                            onClick={() => handleSoloToggle(track.id)}
+                            variant={isSolo ? "default" : "outline"}
+                            size="sm"
+                            className="h-8 w-12 text-xs"
+                            data-testid={`button-solo-${track.id}`}
+                          >
+                            <Headphones className="h-3 w-3" />
+                          </Button>
+                        </div>
 
-                      {/* Volume control */}
-                      <div className="col-span-4">
-                        <div className="flex items-center gap-2">
-                          <Volume2 className="h-4 w-4 text-gray-500" />
-                          <Slider
-                            value={[currentVolume]}
-                            onValueChange={(value) => debouncedVolumeUpdate(track.id, value[0])}
-                            min={0}
-                            max={100}
-                            step={1}
-                            className="flex-1"
-                            data-testid={`slider-volume-${track.id}`}
+                        {/* Volume control */}
+                        <div className="col-span-4">
+                          <div className="flex items-center gap-2">
+                            <Volume2 className="h-4 w-4 text-gray-500" />
+                            <Slider
+                              value={[currentVolume]}
+                              onValueChange={(value) => debouncedVolumeUpdate(track.id, value[0])}
+                              min={0}
+                              max={100}
+                              step={1}
+                              className="flex-1"
+                              data-testid={`slider-volume-${track.id}`}
+                            />
+                            <span className="text-xs text-gray-500 w-8">{Math.round(currentVolume)}</span>
+                          </div>
+                        </div>
+
+                        {/* Balance control */}
+                        <div className="col-span-4">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-gray-500">L</span>
+                            <Slider
+                              value={[currentBalance]}
+                              onValueChange={(value) => debouncedBalanceUpdate(track.id, value[0])}
+                              min={-100}
+                              max={100}
+                              step={1}
+                              className="flex-1"
+                              data-testid={`slider-balance-${track.id}`}
+                            />
+                            <span className="text-xs text-gray-500">R</span>
+                          </div>
+                        </div>
+
+                        {/* VU Meter */}
+                        <div className="col-span-2">
+                          <VUMeter
+                            level={level}
+                            isMuted={isMuted}
+                            isPlaying={isPlaying}
                           />
-                          <span className="text-xs text-gray-500 w-8">{Math.round(currentVolume)}</span>
                         </div>
                       </div>
+                    </div>
 
-                      {/* Balance control */}
-                      <div className="col-span-4">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-gray-500">L</span>
-                          <Slider
-                            value={[currentBalance]}
-                            onValueChange={(value) => debouncedBalanceUpdate(track.id, value[0])}
-                            min={-100}
-                            max={100}
-                            step={1}
-                            className="flex-1"
-                            data-testid={`slider-balance-${track.id}`}
-                          />
-                          <span className="text-xs text-gray-500">R</span>
+                    {/* Mobile Layout - Compact Vertical */}
+                    <div className="block md:hidden">
+                      <div className="flex items-start gap-2">
+                        {/* Left: Mute/Solo buttons */}
+                        <div className="flex flex-col gap-1 flex-shrink-0">
+                          <Button
+                            onClick={() => handleMuteToggle(track.id)}
+                            variant={isMuted ? "destructive" : "outline"}
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            data-testid={`button-mute-${track.id}`}
+                          >
+                            {isMuted ? <VolumeX className="h-3 w-3" /> : <Volume2 className="h-3 w-3" />}
+                          </Button>
+                          <Button
+                            onClick={() => handleSoloToggle(track.id)}
+                            variant={isSolo ? "default" : "outline"}
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                            data-testid={`button-solo-${track.id}`}
+                          >
+                            <Headphones className="h-3 w-3" />
+                          </Button>
                         </div>
-                      </div>
 
-                      {/* VU Meter */}
-                      <div className="col-span-2">
-                        <VUMeter
-                          level={level}
-                          isMuted={isMuted}
-                          isPlaying={isPlaying}
-                        />
+                        {/* Center: Stacked Volume/Balance */}
+                        <div className="flex-1 space-y-2 min-w-0">
+                          {/* Volume control */}
+                          <div className="flex items-center gap-2">
+                            <Volume2 className="h-3 w-3 text-gray-500 flex-shrink-0" />
+                            <Slider
+                              value={[currentVolume]}
+                              onValueChange={(value) => debouncedVolumeUpdate(track.id, value[0])}
+                              min={0}
+                              max={100}
+                              step={1}
+                              className="flex-1"
+                              data-testid={`slider-volume-${track.id}`}
+                            />
+                            <span className="text-xs text-gray-500 w-6 text-right">{Math.round(currentVolume)}</span>
+                          </div>
+                          
+                          {/* Balance control */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs text-gray-500 flex-shrink-0">L</span>
+                            <Slider
+                              value={[currentBalance]}
+                              onValueChange={(value) => debouncedBalanceUpdate(track.id, value[0])}
+                              min={-100}
+                              max={100}
+                              step={1}
+                              className="flex-1"
+                              data-testid={`slider-balance-${track.id}`}
+                            />
+                            <span className="text-xs text-gray-500 flex-shrink-0">R</span>
+                          </div>
+                        </div>
+
+                        {/* Right: VU Meter */}
+                        <div className="flex-shrink-0 w-10">
+                          <VUMeter
+                            level={level}
+                            isMuted={isMuted}
+                            isPlaying={isPlaying}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>

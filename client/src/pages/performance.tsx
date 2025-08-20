@@ -95,16 +95,20 @@ export default function Performance({ userType }: PerformanceProps) {
     };
   }, []);
 
-  // Initialize MIDI access for lyrics editor listening
+  // Initialize MIDI access for both lyrics editor and sequencer
   useEffect(() => {
     const initMIDIAccess = async () => {
       try {
         if ((navigator as any).requestMIDIAccess) {
           const access = await (navigator as any).requestMIDIAccess({ sysex: false });
           setMidiAccess(access);
+          console.log('[PERFORMANCE] MIDI access initialized successfully');
+          console.log('[PERFORMANCE] Available outputs:', access.outputs.size);
+        } else {
+          console.error('[PERFORMANCE] Web MIDI API not supported');
         }
       } catch (error) {
-        console.error('Failed to initialize MIDI for lyrics editor:', error);
+        console.error('Failed to initialize MIDI for performance page:', error);
       }
     };
     

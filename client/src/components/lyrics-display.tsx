@@ -99,10 +99,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
 
   const lyrics = song?.lyrics ? parseLyrics(song.lyrics) : [];
   
-  // Add debug to see what we're working with
-  console.log('Song in component:', song?.title);
-  console.log('Lyrics available:', !!song?.lyrics, 'Length:', song?.lyrics?.length);
-  console.log('Sample lines:', song?.lyrics?.split('\n').slice(0, 3));
+
   
   // Check if lyrics actually contain timestamp patterns at start of lines
   // Only matches [MM:SS] format at the very beginning of a line

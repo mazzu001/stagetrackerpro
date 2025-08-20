@@ -48,15 +48,14 @@ Mobile optimization: **Mobile-first stage performance design** - optimized for l
 
 # Development History
 
-## RESTORE POINT 13 - WORKING BUILD (August 20, 2025)
-### Complete VU Meter Performance Solution
-- **CORE ISSUE RESOLVED**: Eliminated chunky/laggy VU meter behavior in track management
-- **ROOT CAUSE**: VU meter component was double-smoothing already-smooth audio engine data
-- **SOLUTION**: Removed VU meter internal animation system, direct display of audio engine values
-- **AUDIO ENGINE**: 60fps updates (16ms intervals) with 0.8 smoothing factor for responsive data
-- **VU METERS**: Direct level display with faster peak decay (8ms intervals, 2.0 decay rate)
-- **AMPLIFICATION**: Optimized 12x amplification for clear visibility without oversensitivity
-- **PERFORMANCE**: Track VU meters now match master stereo meter responsiveness exactly
-- **FULLSCREEN**: Complete browser fullscreen functionality via settings menu
-- **SMOOTH SCROLLING**: Ultra-smooth 50ms timer-based lyrics auto-scroll with 0.5px increments
-- **STATUS**: STABLE - All core functionality working smoothly and professionally
+## RESTORE POINT 14 - CLEAN LYRICS DISPLAY (August 20, 2025)
+### Professional Stage-Ready Lyrics Interface
+- **LYRICS DISPLAY**: Clean performance interface with timestamps and MIDI commands hidden from view
+- **FUNCTIONALITY PRESERVED**: All automation features work invisibly in background
+- **TIMESTAMP DETECTION**: Fixed regex to prevent false matches with song lyrics containing time references (like "3 AM")
+- **BRACKET FILTERING**: Iterative removal system handles all bracket content including nested MIDI commands
+- **LINE HIGHLIGHTING**: Restored timestamp-based line-by-line highlighting for synced performance
+- **AUTO-SCROLL**: Both timestamped (line-based) and smooth (timer-based) scrolling modes active
+- **STAGE PERFORMANCE**: Professional clean interface showing only lyrics text during live performance
+- **MIDI AUTOMATION**: Background MIDI command execution continues seamlessly
+- **STATUS**: STABLE - Complete lyrics system optimized for professional stage use

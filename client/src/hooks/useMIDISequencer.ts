@@ -241,6 +241,10 @@ export function useMIDISequencer(midiAccess?: any) {
     });
     
     console.log(`[MIDI SEQUENCER] AUTOMATED: Successfully sent to ${sentCount} devices`);
+    
+    if (sentCount === 0) {
+      console.warn('[MIDI SEQUENCER] No connected MIDI devices found for automated command');
+    }
   }, [midiAccess, parseMIDICommand]);
 
   // Start MIDI sequencing

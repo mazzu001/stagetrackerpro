@@ -128,25 +128,46 @@ export default function Performance({ userType }: PerformanceProps) {
         });
         
         if (access.outputs.size === 0) {
-          console.warn('[PERFORMANCE] No MIDI output devices found');
+          console.warn('[PERFORMANCE] No MIDI output devices found - enabling console logging mode');
           toast({
-            title: "No MIDI Devices",
-            description: "No MIDI output devices detected. Connect a MIDI device and refresh the page.",
-            variant: "destructive"
+            title: "MIDI Console Mode",
+            description: "No devices found. MIDI commands will be logged to console for testing.",
+            variant: "default"
           });
         } else {
           toast({
-            title: "MIDI Ready",
+            title: "MIDI Ready", 
             description: `Found ${access.outputs.size} MIDI device(s)`,
           });
         }
         
       } catch (error) {
         console.error('Failed to initialize MIDI for performance page:', error);
+        
+        // Create a fake MIDI access for testing when real MIDI fails
+        const fakeMidiAccess = {
+          inputs: new Map(),
+          outputs: new Map([
+            ['console-output', {
+              id: 'console-output',
+              name: 'Console MIDI Output (Testing)',
+              state: 'connected',
+              send: (data: number[]) => {
+                console.log('🎹 MIDI COMMAND SENT:', data, 
+                  `[${data.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+              }
+            }]
+          ]),
+          onstatechange: null
+        };
+        
+        setMidiAccess(fakeMidiAccess as any);
+        console.log('[PERFORMANCE] Using console MIDI output for testing');
+        
         toast({
-          title: "MIDI Access Denied",
-          description: "MIDI access was denied. Check browser permissions and try again.",
-          variant: "destructive"
+          title: "MIDI Console Mode",
+          description: "Using console output for MIDI testing. Check browser console for MIDI commands.",
+          variant: "default"
         });
       }
     };

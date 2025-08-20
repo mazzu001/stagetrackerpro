@@ -99,6 +99,12 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
 
   const lyrics = song?.lyrics ? parseLyrics(song.lyrics) : [];
   
+  // Debug the issue
+  console.log('Song object:', song);
+  console.log('Raw lyrics exist:', !!song?.lyrics);
+  console.log('Raw lyrics length:', song?.lyrics?.length);
+  console.log('First 100 chars:', song?.lyrics?.substring(0, 100));
+  
   // Check if lyrics actually contain timestamp patterns at start of lines
   // Only matches [MM:SS] format at the very beginning of a line
   const hasTimestamps = song?.lyrics ? 
@@ -116,6 +122,11 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
         return cleanLine.trim();
       })
       .filter((line: string) => line.trim()) : [];
+  
+  console.log('Has timestamps:', hasTimestamps);
+  console.log('Parsed lyrics count:', lyrics.length);
+  console.log('Plain lines count:', plainLines.length);
+  console.log('Plain lines sample:', plainLines.slice(0, 3));
   
   // Find current line based on timestamp (for timestamped lyrics)
   const currentLineIndex = hasTimestamps ? lyrics.findIndex((line, index) => {

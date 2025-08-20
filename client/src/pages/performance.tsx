@@ -63,7 +63,7 @@ export default function Performance({ userType }: PerformanceProps) {
     resetSequencer, 
     getUpcomingCommands,
     getCommandStats 
-  } = useMIDISequencer();
+  } = useMIDISequencer(midiAccess);
 
   // Fullscreen functionality
   const toggleFullscreen = useCallback(async () => {

@@ -19,7 +19,7 @@ interface MIDISequencerState {
   lastTriggeredIndex: number;
 }
 
-export function useMIDISequencer() {
+export function useMIDISequencer(midiAccess?: any) {
   const [state, setState] = useState<MIDISequencerState>({
     commands: [],
     isActive: false,
@@ -28,41 +28,9 @@ export function useMIDISequencer() {
   
   const { broadcastMIDIMessage, sendNoteOn, sendNoteOff, sendControlChange, sendProgramChange } = useMIDI();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [midiAccess, setMidiAccess] = useState<any>(null);
 
-  // Initialize direct MIDI access (same as manual Send Command)
-  useEffect(() => {
-    const initMIDI = async () => {
-      try {
-        if ((navigator as any).requestMIDIAccess) {
-          const access = await (navigator as any).requestMIDIAccess({ sysex: false });
-          setMidiAccess(access);
-          console.log('[MIDI SEQUENCER] Direct MIDI access initialized');
-        }
-      } catch (error) {
-        console.error('[MIDI SEQUENCER] Failed to initialize direct MIDI access:', error);
-      }
-    };
-    
-    initMIDI();
-  }, []);
-
-  // Initialize direct MIDI access (same as manual Send Command)
-  useEffect(() => {
-    const initMIDI = async () => {
-      try {
-        if ((navigator as any).requestMIDIAccess) {
-          const access = await (navigator as any).requestMIDIAccess({ sysex: false });
-          setMidiAccess(access);
-          console.log('[MIDI SEQUENCER] Direct MIDI access initialized');
-        }
-      } catch (error) {
-        console.error('[MIDI SEQUENCER] Failed to initialize direct MIDI access:', error);
-      }
-    };
-    
-    initMIDI();
-  }, []);
+  // Use the passed midiAccess from performance page
+  console.log('[MIDI SEQUENCER] Using midiAccess from performance page:', !!midiAccess);
 
   // Parse MIDI commands from lyrics text
   const parseMIDICommands = useCallback((lyricsText: string): MIDICommand[] => {

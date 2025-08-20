@@ -93,39 +93,22 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           console.log(`Line ${currentLineIndex}: lineTop=${lineTop}, containerHeight=${containerHeight}, currentScroll=${currentScrollTop}`);
           
           if (currentLineIndex >= 2) {
-            // Calculate target position to center the line
-            const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
-            const maxScroll = Math.max(0, targetScrollTop);
+            // Calculate how much we need to scroll to keep the current line visible
+            const lineBottom = lineTop + lineHeight;
+            const visibleBottom = currentScrollTop + containerHeight;
             
-            if (currentLineIndex === 2) {
-              // Special handling for first centering scroll
-              console.log(`First centering scroll (line 2): current=${currentScrollTop}, target=${maxScroll}, difference=${maxScroll - currentScrollTop}`);
+            // Only scroll if the line is going out of view at the bottom
+            if (lineBottom > visibleBottom) {
+              // Scroll just enough to show the line with some padding
+              const targetScrollTop = lineBottom - containerHeight + 40;
+              console.log(`Line ${currentLineIndex}: Scrolling to keep line visible: ${targetScrollTop}`);
               
-              // If this is a big jump (more than 2 line heights), scroll more gradually
-              const jumpSize = Math.abs(maxScroll - currentScrollTop);
-              const lineHeightThreshold = lineHeight * 2;
-              
-              if (jumpSize > lineHeightThreshold) {
-                // Large jump - scroll to a position that's closer to current position
-                const intermediateScroll = currentScrollTop + (maxScroll - currentScrollTop) * 0.6;
-                console.log(`Large jump detected, using intermediate scroll: ${intermediateScroll}`);
-                container.scrollTo({
-                  top: Math.max(0, intermediateScroll),
-                  behavior: 'smooth'
-                });
-              } else {
-                container.scrollTo({
-                  top: maxScroll,
-                  behavior: 'smooth'
-                });
-              }
-            } else {
-              // Line 3 and beyond - normal centering
-              console.log(`Centering line ${currentLineIndex}: targetScrollTop=${maxScroll}`);
               container.scrollTo({
-                top: maxScroll,
+                top: Math.max(0, targetScrollTop),
                 behavior: 'smooth'
               });
+            } else {
+              console.log(`Line ${currentLineIndex}: Line still visible, no scroll needed`);
             }
           } else {
             console.log(`Line ${currentLineIndex}: Not scrolling (first 2 lines)`);

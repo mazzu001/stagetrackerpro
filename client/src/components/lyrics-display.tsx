@@ -92,22 +92,13 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           
           console.log(`Line ${currentLineIndex}: lineTop=${lineTop}, containerHeight=${containerHeight}, currentScroll=${currentScrollTop}`);
           
-          // Simple rule: if highlighted line is below the visible area, scroll just enough to show it
-          const lineBottom = lineTop + lineHeight;
-          const visibleBottom = currentScrollTop + containerHeight;
-          
-          if (lineBottom > visibleBottom) {
-            const scrollAmount = lineBottom - visibleBottom + 20; // 20px padding
-            const newScrollTop = currentScrollTop + scrollAmount;
-            
-            console.log(`Line ${currentLineIndex}: Line going out of view, scrolling by ${scrollAmount} pixels`);
-            
+          // Center the current line in the viewport after the first 2 lines
+          if (currentLineIndex >= 2) {
+            const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
             container.scrollTo({
-              top: newScrollTop,
+              top: Math.max(0, targetScrollTop),
               behavior: 'smooth'
             });
-          } else {
-            console.log(`Line ${currentLineIndex}: Line is visible, no scroll needed`);
           }
           
           setLastScrolledLine(currentLineIndex);
@@ -243,7 +234,7 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
             No lyrics available for this song
           </div>
         ) : (
-          <div className="space-y-4 leading-relaxed pt-[200px] pb-[200px]" style={{ fontSize: `${fontSize}px` }}>
+          <div className="space-y-4 leading-relaxed" style={{ fontSize: `${fontSize}px` }}>
             {parsedLyrics.map((line, index) => {
               const isCurrentLine = hasRealTimestamps && index === currentLineIndex;
               const isUpcoming = hasRealTimestamps && line.timestamp > currentTime;

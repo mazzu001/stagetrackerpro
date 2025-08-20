@@ -82,21 +82,23 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
     }
   }, [currentLineIndex, hasTimestamps]);
 
-  // Auto-scroll for non-timestamped lyrics
+  // Auto-scroll for non-timestamped lyrics  
   useEffect(() => {
-    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 0.5) {
-      const songProgress = currentTime / song.duration;
-      const adjustedProgress = songProgress / scrollSpeed;
-      const expectedLineIndex = Math.floor(adjustedProgress * plainLines.length);
+    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 1) {
+      const container = containerRef.current;
+      const songDuration = song.duration - 1; // Start scrolling after 1 second
+      const adjustedDuration = songDuration / scrollSpeed;
+      const scrollProgress = Math.min((currentTime - 1) / adjustedDuration, 1);
       
-      // Scroll to the current line
-      const currentLineElement = document.getElementById(`auto-scroll-line-${expectedLineIndex}`);
-      if (currentLineElement && containerRef.current) {
-        currentLineElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
-        });
-      }
+      // Calculate smooth scroll position
+      const maxScrollTop = container.scrollHeight - container.clientHeight;
+      const targetScrollTop = scrollProgress * maxScrollTop;
+      
+      // Use smooth scrolling with requestAnimationFrame for better performance
+      container.scrollTo({
+        top: targetScrollTop,
+        behavior: 'smooth'
+      });
     }
   }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration]);
 
@@ -251,30 +253,17 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
             })}
           </div>
         ) : (
-          <div className="space-y-6 pb-screen" style={{ fontSize: `${fontSize}px` }}>
-            {plainLines.map((line: string, index: number) => {
-              // Calculate which line should be highlighted based on progress
-              const songProgress = song?.duration ? (currentTime / song.duration) : 0;
-              const expectedLineIndex = Math.floor(songProgress * plainLines.length);
-              const isCurrent = index === expectedLineIndex;
-              
-              return (
-                <div
-                  key={index}
-                  className={`leading-relaxed transition-all duration-500 py-4 ${
-                    isCurrent 
-                      ? 'text-white bg-blue-600/20 px-4 rounded-lg border-l-4 border-blue-500 font-medium'
-                      : index < expectedLineIndex 
-                      ? 'text-gray-500' 
-                      : 'text-gray-300'
-                  }`}
-                  data-testid={`lyrics-line-${index}`}
-                  id={`auto-scroll-line-${index}`}
-                >
-                  {line}
-                </div>
-              );
-            })}
+          <div className="space-y-2" style={{ fontSize: `${fontSize}px` }}>
+            {plainLines.map((line: string, index: number) => (
+              <div
+                key={index}
+                className="text-gray-300 leading-relaxed"
+                data-testid={`lyrics-line-${index}`}
+                id={`auto-scroll-line-${index}`}
+              >
+                {line}
+              </div>
+            ))}
             <div style={{ height: '100vh' }}></div>
           </div>
         )}

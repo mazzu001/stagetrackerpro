@@ -145,17 +145,17 @@ export default function Performance({ userType }: PerformanceProps) {
 
   // Download sample ZIP files
   const downloadSampleZip = (sampleType: '3AM' | 'ComfortablyNumb') => {
-    const zipFiles = {
-      '3AM': 'attached_assets/3AM_1755653001926.zip',
-      'ComfortablyNumb': 'attached_assets/Comfortably Numb_1755653007913.zip'
+    const downloadUrls = {
+      '3AM': '/api/download/3am-sample',
+      'ComfortablyNumb': '/api/download/comfortably-numb-sample'
     };
     
     const fileName = sampleType === '3AM' ? '3AM_Matchbox20_Sample.zip' : 'ComfortablyNumb_PinkFloyd_Sample.zip';
-    const zipPath = zipFiles[sampleType];
+    const downloadUrl = downloadUrls[sampleType];
     
-    // Create download link
+    // Create download link that uses the server endpoint
     const link = document.createElement('a');
-    link.href = zipPath;
+    link.href = downloadUrl;
     link.download = fileName;
     link.style.display = 'none';
     document.body.appendChild(link);

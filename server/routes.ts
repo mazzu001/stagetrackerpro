@@ -65,6 +65,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   console.log('✅ Authentication routes registered');
 
+  // Sample ZIP file download routes
+  console.log('📦 Registering sample file download routes...');
+  app.get('/api/download/3am-sample', (req, res) => {
+    const filePath = path.join(process.cwd(), 'attached_assets', '3AM_1755653001926.zip');
+    res.download(filePath, '3AM_Matchbox20_Sample.zip', (err) => {
+      if (err) {
+        console.error('Error downloading 3AM sample:', err);
+        res.status(404).json({ error: 'Sample file not found' });
+      }
+    });
+  });
+
+  app.get('/api/download/comfortably-numb-sample', (req, res) => {
+    const filePath = path.join(process.cwd(), 'attached_assets', 'Comfortably Numb_1755653007913.zip');
+    res.download(filePath, 'ComfortablyNumb_PinkFloyd_Sample.zip', (err) => {
+      if (err) {
+        console.error('Error downloading Comfortably Numb sample:', err);
+        res.status(404).json({ error: 'Sample file not found' });
+      }
+    });
+  });
+  console.log('✅ Sample file download routes registered');
+
   // Stripe subscription route (simplified for testing)
   console.log('💳 Registering Stripe payment routes...');
   app.post('/api/create-subscription', async (req: any, res) => {

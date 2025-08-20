@@ -318,10 +318,15 @@ export function useMIDISequencer() {
     const commandsToTrigger = state.commands.filter((command, index) => {
       const shouldTrigger = index > state.lastTriggeredIndex && 
                            command.timestamp <= currentTime && 
-                           command.timestamp >= currentTime - 0.2; // Tight 200ms window to prevent early triggering
+                           command.timestamp >= currentTime - 1.0; // Wider 1 second window
+      
+      // Log ALL commands being checked
+      if (index > state.lastTriggeredIndex) {
+        console.log(`[MIDI SEQUENCER] Checking command ${index}: timestamp=${command.timestamp}s, currentTime=${currentTime.toFixed(1)}s, shouldTrigger=${shouldTrigger}`);
+      }
       
       if (shouldTrigger) {
-        console.log(`[MIDI SEQUENCER] Command ready to trigger:`, command);
+        console.log(`[MIDI SEQUENCER] *** Command ready to trigger:`, command);
       }
       
       return shouldTrigger;

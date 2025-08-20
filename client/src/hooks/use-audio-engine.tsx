@@ -67,7 +67,7 @@ export function useAudioEngine(song?: SongWithTracks) {
       setCurrentTime(0);
       setIsPlaying(false);
     }
-  }, [song?.id]); // Only reload when song ID changes, not on track property updates
+  }, [song?.id, song?.tracks?.length]); // Reload when song ID changes OR when tracks are added/removed
 
   // Animation loop for real-time updates
 

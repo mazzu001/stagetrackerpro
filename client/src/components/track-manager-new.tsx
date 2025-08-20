@@ -194,6 +194,12 @@ export default function TrackManager({
         // Notify parent component that song data has changed
         onTrackUpdate?.();
         
+        // Add small delay then notify again to ensure audio engine reloads
+        setTimeout(() => {
+          console.log('Track data updated, refreshing song...');
+          onTrackUpdate?.();
+        }, 100);
+        
         // Clear cached waveform to force regeneration with new tracks
         if (song?.id) {
           const waveformCacheKey = `waveform_${song.id}`;

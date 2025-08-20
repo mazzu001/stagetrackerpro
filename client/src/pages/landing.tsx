@@ -46,9 +46,7 @@ export default function Landing() {
             <CardHeader>
               <Shield className="w-8 h-8 text-green-400 mb-2" />
               <CardTitle className="text-white">Offline First</CardTitle>
-              <CardDescription className="text-gray-400">
-                Complete local file storage for reliable live performance without internet
-              </CardDescription>
+              <CardDescription className="text-gray-400">Complete local file storage for reliable live performance without internet. With local storage StageTracker Pro offers lightning fast load times because your stage performance depends on it.</CardDescription>
             </CardHeader>
           </Card>
         </div>

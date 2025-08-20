@@ -796,66 +796,58 @@ export default function Performance({ userType }: PerformanceProps) {
           latency={latency}
         />
       </div>
-      {/* Edit Lyrics Dialog - Improved Original Layout */}
+      {/* Edit Lyrics Dialog - Space-Optimized Layout */}
       <Dialog open={isEditLyricsOpen} onOpenChange={setIsEditLyricsOpen}>
-        <DialogContent className="sm:max-w-3xl max-w-[95vw] max-h-[85vh] overflow-y-auto">
-          <DialogHeader className="space-y-2">
-            <DialogTitle className="text-xl font-bold">
-              Edit Lyrics - {selectedSong?.title} by {selectedSong?.artist}
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="space-y-6 mt-6">
-            {/* Control Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-4 p-4 dark:bg-gray-800/50 rounded-lg bg-[#2a2c37]">
-              <div className="flex items-center space-x-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={isPlaying ? pause : play}
-                  disabled={!selectedSong || !selectedSong.tracks || selectedSong.tracks.length === 0}
-                  data-testid="button-preview-playback"
-                  className="h-9"
-                >
-                  {isPlaying ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
-                  {isPlaying ? 'Pause' : 'Preview'}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleInsertTimestamp}
-                  data-testid="button-insert-timestamp"
-                  className="h-9"
-                >
-                  <Clock className="w-4 h-4 mr-2" />
-                  Insert Timestamp
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleSearchLyrics}
-                  disabled={!selectedSong}
-                  data-testid="button-search-lyrics"
-                  className="h-9"
-                >
-                  <Music className="w-4 h-4 mr-2" />
-                  Search Lyrics
-                </Button>
-              </div>
-              <div className="text-sm text-gray-500 font-mono">
+        <DialogContent className="max-w-[95vw] max-h-[95vh] w-full h-full flex flex-col p-3">
+          {/* Compact Header with Controls */}
+          <div className="flex-shrink-0 border-b border-gray-700 pb-2 mb-2">
+            <div className="flex items-center justify-between mb-2">
+              <DialogTitle className="text-lg font-bold truncate flex-1 mr-4">
+                {selectedSong?.title} - {selectedSong?.artist}
+              </DialogTitle>
+              <div className="text-xs text-gray-500 font-mono">
                 {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60).toString().padStart(2, '0')} / {selectedSong?.duration ? `${Math.floor(selectedSong.duration / 60)}:${Math.floor(selectedSong.duration % 60).toString().padStart(2, '0')}` : '--:--'}
               </div>
             </div>
             
-            {/* Position Slider */}
-            {selectedSong && selectedSong.duration && (
-              <div className="space-y-2 pt-[0px] pb-[0px] mt-[7px] mb-[7px]">
-                <div className="flex items-center justify-between text-xs text-gray-500">
-                  <span>0:00</span>
-                  <span className="font-medium">Playback Position</span>
-                  <span>{Math.floor(selectedSong.duration / 60)}:{Math.floor(selectedSong.duration % 60).toString().padStart(2, '0')}</span>
-                </div>
-                <div className="relative">
+            {/* Compact Control Row */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={isPlaying ? pause : play}
+                disabled={!selectedSong || !selectedSong.tracks || selectedSong.tracks.length === 0}
+                data-testid="button-preview-playback"
+                className="h-8 px-3"
+              >
+                {isPlaying ? <Pause className="w-3 h-3 mr-1" /> : <Play className="w-3 h-3 mr-1" />}
+                {isPlaying ? 'Pause' : 'Play'}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleInsertTimestamp}
+                data-testid="button-insert-timestamp"
+                className="h-8 px-3"
+              >
+                <Clock className="w-3 h-3 mr-1" />
+                Timestamp
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSearchLyrics}
+                disabled={!selectedSong}
+                data-testid="button-search-lyrics"
+                className="h-8 px-3"
+              >
+                <Music className="w-3 h-3 mr-1" />
+                Search
+              </Button>
+              
+              {/* Compact Position Slider */}
+              {selectedSong && selectedSong.duration && (
+                <div className="flex-1 min-w-[200px] ml-4">
                   <input
                     type="range"
                     min="0"
@@ -866,74 +858,70 @@ export default function Performance({ userType }: PerformanceProps) {
                       const newTime = parseFloat(e.target.value);
                       seek(newTime);
                     }}
-                    className="w-full h-2 bg-gray-300 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                    className="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
                     data-testid="slider-song-position"
                   />
-                  <div 
-                    className="absolute top-0 h-2 bg-primary rounded-lg pointer-events-none"
-                    style={{ width: `${(currentTime / (selectedSong.duration || 1)) * 100}%` }}
-                  />
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+          </div>
 
-            {/* Lyrics Section */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between pt-[0px] pb-[0px] mt-[-7px] mb-[-7px]">
-                <Label htmlFor="lyrics" className="text-base font-semibold">Lyrics</Label>
-                <span className="text-xs text-gray-500 px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
-                  {lyricsText.length} characters
+          {/* Main Content Area */}
+          <div className="flex-1 flex flex-col min-h-0">
+            {/* Lyrics Header Row */}
+            <div className="flex items-center justify-between mb-2 flex-shrink-0">
+              <Label htmlFor="lyrics" className="text-sm font-semibold">Lyrics</Label>
+              <div className="flex items-center gap-3">
+                <span className="text-xs text-gray-500">
+                  {lyricsText.length} chars
                 </span>
-              </div>
-              
-              <Textarea
-                id="lyrics"
-                value={lyricsText}
-                onChange={(e) => setLyricsText(e.target.value)}
-                onPaste={handleLyricsPaste}
-                placeholder="Enter song lyrics with timestamps and MIDI commands...
-
-Examples:
-[00:15] First verse line
-[00:30] Second verse line
-[[CC:1:64]] MIDI lighting command"
-                className="min-h-[400px] font-mono text-sm leading-relaxed resize-none"
-                style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
-                spellCheck={false}
-                data-testid="textarea-lyrics"
-              />
-              
-              <div className="text-xs dark:bg-gray-800/50 p-3 rounded-lg bg-[#2a2c37] text-[#96bbd4]">
-                <div className="font-medium mb-1">Formatting Guide:</div>
-                <div className="space-y-1">
-                  <div>• Use <code className="dark:bg-gray-700 px-1 rounded bg-[#2a2c37]">[MM:SS]</code> for timestamps (e.g., [01:23])</div>
-                  <div>• Use <code className="dark:bg-gray-700 px-1 rounded bg-[#23252f]">[[CC:channel:value]]</code> for MIDI commands</div>
-                  <div>• Click "Insert Timestamp" to add current playback time</div>
+                <div className="text-xs text-gray-400">
+                  <code className="text-xs">[MM:SS]</code> timestamps • <code className="text-xs">[[CC:1:64]]</code> MIDI
                 </div>
               </div>
             </div>
+            
+            {/* Lyrics Textarea - Takes all remaining space */}
+            <Textarea
+              id="lyrics"
+              value={lyricsText}
+              onChange={(e) => setLyricsText(e.target.value)}
+              onPaste={handleLyricsPaste}
+              placeholder={`Enter lyrics with timestamps and MIDI commands:
 
-            {/* Action Buttons */}
-            <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-              <Button 
-                variant="outline" 
-                onClick={() => {
-                  setIsEditLyricsOpen(false);
-                  setLyricsText("");
-                }}
-                data-testid="button-cancel-lyrics"
-                className="mt-[-89px] mb-[-89px]"
-              >
-                Cancel
-              </Button>
-              <Button 
-                onClick={handleSaveLyrics}
-                data-testid="button-save-lyrics"
-                className="bg-primary hover:bg-primary/90 mt-[-90px] mb-[-90px]"
-              >
-                Save Lyrics
-              </Button>
-            </div>
+[00:15] First verse line
+[00:30] Second verse line  
+[[CC:1:64]] MIDI lighting command
+
+Click "Timestamp" to insert current time`}
+              className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
+              style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
+              spellCheck={false}
+              data-testid="textarea-lyrics"
+            />
+          </div>
+
+          {/* Compact Action Buttons */}
+          <div className="flex justify-end gap-2 pt-2 mt-2 border-t border-gray-700 flex-shrink-0">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => {
+                setIsEditLyricsOpen(false);
+                setLyricsText("");
+              }}
+              data-testid="button-cancel-lyrics"
+            >
+              Cancel
+            </Button>
+            <Button 
+              size="sm"
+              onClick={handleSaveLyrics}
+              data-testid="button-save-lyrics"
+              className="bg-primary hover:bg-primary/90"
+            >
+              Save Lyrics
+            </Button>
           </div>
         </DialogContent>
       </Dialog>

@@ -177,17 +177,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         metadata: { email: email }
       });
 
-      // Create a price first
+      // Create a product first
+      const product = await stripe.products.create({
+        name: 'StageTracker Pro Premium'
+      });
+
+      // Create a price for the product
       const price = await stripe.prices.create({
         currency: 'usd',
         unit_amount: 499, // $4.99 in cents
         recurring: {
           interval: 'month'
         },
-        product_data: {
-          name: 'StageTracker Pro Premium',
-          description: 'Unlimited songs and advanced performance features'
-        }
+        product: product.id
       });
 
       // Create subscription with the price ID

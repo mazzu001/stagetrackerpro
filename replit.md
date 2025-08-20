@@ -113,7 +113,8 @@ This project is a live music performance application designed for professional s
 - **ENHANCED**: Speed controls adjust timer intervals (faster = shorter intervals)
 - **ADDED**: CSS smooth scroll behavior for visual polish
 - **IMPROVED**: Button tooltips clarify timer interval control
-- **Status**: Timer-based auto-scroll working smoothly with user-controlled speed
+- **ADDED**: Auto-reset scroll position to top when switching songs
+- **Status**: Complete timer-based auto-scroll system with smooth operation and song switching
 
 # User Preferences
 

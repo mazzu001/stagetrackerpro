@@ -28,6 +28,13 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
     return localStorage.getItem('lyrics-auto-scroll') !== 'false';
   });
 
+  // Reset scroll position when song changes
+  useEffect(() => {
+    if (containerRef.current && song) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, [song?.id]); // Trigger when song ID changes
+
   // Listen for font size changes from external controls
   useEffect(() => {
     const handleFontChange = () => {

@@ -14,6 +14,13 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import { useDatabase } from '../providers/DatabaseProvider';
+import { 
+  executeWithCrashProtection, 
+  safeFileOperation, 
+  validateAndroidEnvironment,
+  createAndroidSafeFileName 
+} from '../utils/criticalAndroidFixes';
+import { executeWithEmergencyProtection } from '../utils/emergencyCrashHandler';
 
 interface Track {
   id: string;
@@ -53,75 +60,58 @@ export default function TrackManagerScreen() {
   const handleAddTracks = async () => {
     console.log('=== TRACK IMPORT START ===');
     
-    // Global error handler for the import process
-    const globalErrorHandler = (error: any, context: string) => {
-      console.error(`CRITICAL ERROR in ${context}:`, error);
-      console.error('Error stack:', error.stack);
-      Alert.alert(
-        'Import Failed',
-        `Critical error during ${context}: ${error.message || 'Unknown error'}. Please try again or restart the app.`
-      );
-    };
-
-    try {
-      // Android-specific permission and compatibility checks
-      if (Platform.OS === 'android') {
-        console.log('Running Android-specific checks...');
-        
-        try {
-          console.log('Checking storage permissions...');
-          const testDir = FileSystem.documentDirectory;
-          console.log('Document directory:', testDir);
-          if (!testDir) {
-            throw new Error('Document directory not available');
+    // Triple-layer crash protection
+    return await executeWithEmergencyProtection(async () => {
+      return await executeWithCrashProtection(
+        async () => {
+          setIsUploading(true);
+          
+          // Android environment validation
+          if (Platform.OS === 'android') {
+            console.log('Validating Android environment...');
+            const envValid = await validateAndroidEnvironment();
+            if (!envValid) {
+              throw new Error('Android environment validation failed');
+            }
           }
           
-          // Test basic file operations
-          const dirInfo = await FileSystem.getInfoAsync(testDir);
-          console.log('Directory info:', dirInfo);
-          
-          // Test directory creation
-          const testAudioDir = `${testDir}audio/`;
-          await FileSystem.makeDirectoryAsync(testAudioDir, { intermediates: true });
-          console.log('Audio directory created/verified');
-          
-          console.log('Android storage checks passed');
-        } catch (permissionError) {
-          console.error('Android storage error:', permissionError);
+          return await performTrackImport();
+        },
+        'Track Import Process',
+        async () => {
+          console.log('Import failed, attempting emergency cleanup...');
+          setIsUploading(false);
           Alert.alert(
-            'Storage Permission Required',
-            'App needs storage permission to import audio files. Please:\n\n1. Go to device Settings\n2. Find this app\n3. Enable Storage permissions\n4. Restart the app'
+            'Import Failed',
+            'Track import encountered a critical error and was safely handled. The app remains stable.'
           );
-          return;
         }
-      }
+      );
+    }, 'Emergency Track Import Protection');
+  };
 
+  const performTrackImport = async () => {
+    return await executeWithEmergencyProtection(async () => {
       console.log('Opening document picker...');
-      let result;
-      try {
-        result = await DocumentPicker.getDocumentAsync({
-          type: 'audio/*',
-          multiple: true,
-          copyToCacheDirectory: false, // Changed to false to avoid cache issues on Android
-        });
-        console.log('Document picker result:', result);
-      } catch (pickerError) {
-        console.error('Document picker error:', pickerError);
-        Alert.alert(
-          'File Picker Error',
-          'Unable to open file picker. Please check app permissions in device settings.'
-        );
-        return;
-      }
+      
+      // ULTRA-SAFE document picker with multiple fallbacks
+      const result = await executeWithCrashProtection(
+        async () => {
+          return await DocumentPicker.getDocumentAsync({
+            type: 'audio/*',
+            multiple: true,
+            copyToCacheDirectory: false,
+          });
+        },
+        'Document Picker',
+        async () => {
+          Alert.alert('Picker Error', 'File picker failed. Please restart app and try again.');
+          return { canceled: true, assets: [] };
+        }
+      );
 
-      if (result.canceled) {
-        console.log('Document picker was canceled');
-        return;
-      }
-
-      if (!result.assets || result.assets.length === 0) {
-        console.log('No files selected');
-        Alert.alert('No Files', 'No audio files were selected.');
+      if (!result || result.canceled || !result.assets || result.assets.length === 0) {
+        console.log('No valid files selected');
         return;
       }
 
@@ -148,26 +138,13 @@ export default function TrackManagerScreen() {
             continue;
           }
 
-          // Create a safe filename for Android
+          // Create a critical-safe filename for Android
           const originalName = asset.name || `track_${Date.now()}.mp3`;
           console.log('Original filename:', originalName);
           
-          // Platform-specific filename sanitization
-          let safeFileName;
-          if (Platform.OS === 'android') {
-            // Aggressive Android sanitization
-            safeFileName = originalName
-              .replace(/[^a-zA-Z0-9._-]/g, '_') // Replace special chars
-              .replace(/_+/g, '_') // Replace multiple underscores with single
-              .replace(/^_|_$/g, '') // Remove leading/trailing underscores
-              .toLowerCase() // Lowercase for consistency
-              .substring(0, 100); // Limit length for Android
-          } else {
-            // Basic sanitization for iOS
-            safeFileName = originalName.replace(/[<>:"|?*]/g, '_');
-          }
-            
+          const safeFileName = createAndroidSafeFileName(originalName);
           console.log('Safe filename:', safeFileName);
+          
           const permanentPath = `${FileSystem.documentDirectory}audio/${safeFileName}`;
           console.log('Target path:', permanentPath);
           
@@ -217,56 +194,42 @@ export default function TrackManagerScreen() {
             continue;
           }
 
-          // Copy file with timeout and retry logic
-          try {
+          // Copy file with critical protection
+          const copySuccess = await safeFileOperation(async () => {
             console.log(`Copying file from ${asset.uri} to ${permanentPath}`);
             
-            // For Android, try multiple copy strategies
-            let copySuccess = false;
-            
-            // Strategy 1: Direct copy
-            try {
-              await Promise.race([
-                FileSystem.copyAsync({
-                  from: asset.uri,
-                  to: permanentPath,
-                }),
-                new Promise((_, reject) => 
-                  setTimeout(() => reject(new Error('Copy timeout')), 30000)
-                )
-              ]);
-              copySuccess = true;
-              console.log('Direct copy successful');
-            } catch (directCopyError) {
-              console.warn('Direct copy failed:', directCopyError);
-              
-              // Strategy 2: Read and write (for problematic Android URIs)
-              try {
-                console.log('Trying read/write copy strategy...');
+            // Try direct copy first
+            await executeWithCrashProtection(
+              async () => {
+                await Promise.race([
+                  FileSystem.copyAsync({
+                    from: asset.uri,
+                    to: permanentPath,
+                  }),
+                  new Promise((_, reject) => 
+                    setTimeout(() => reject(new Error('Direct copy timeout')), 25000)
+                  )
+                ]);
+                console.log('Direct copy successful');
+              },
+              `Direct copy: ${originalName}`,
+              async () => {
+                // Fallback: Read as Base64 and write
+                console.log('Trying Base64 copy strategy...');
                 const fileContent = await FileSystem.readAsStringAsync(asset.uri, {
                   encoding: FileSystem.EncodingType.Base64,
                 });
                 await FileSystem.writeAsStringAsync(permanentPath, fileContent, {
                   encoding: FileSystem.EncodingType.Base64,
                 });
-                copySuccess = true;
-                console.log('Read/write copy successful');
-              } catch (readWriteError) {
-                console.error('Read/write copy failed:', readWriteError);
-                throw new Error(`Both copy methods failed: ${directCopyError.message}, ${readWriteError.message}`);
+                console.log('Base64 copy successful');
               }
-            }
-            
-            if (!copySuccess) {
-              throw new Error('All copy strategies failed');
-            }
-            
-          } catch (copyError) {
-            console.error('File copy error:', copyError);
-            Alert.alert(
-              'Copy Error',
-              `Failed to copy ${originalName}. ${copyError.message}`
             );
+          }, originalName);
+
+          if (!copySuccess) {
+            console.warn(`Failed to copy ${originalName}, skipping`);
+            Alert.alert('Copy Failed', `Could not copy ${originalName}. Skipping this file.`);
             continue;
           }
 
@@ -294,30 +257,37 @@ export default function TrackManagerScreen() {
           // Extract track name from filename
           const trackName = safeFileName.replace(/\.[^/.]+$/, ''); // Remove extension
 
-          // Add track to database with error handling
-          try {
-            await addTrack({
-              songId,
-              name: trackName,
-              filePath: permanentPath,
-              volume: 0.8,
-              muted: false,
-              solo: false,
-              balance: 0,
-            });
-            console.log(`Successfully added track: ${trackName}`);
-          } catch (dbError) {
-            console.error('Database error:', dbError);
-            // Clean up file if database insert fails
-            try {
-              await FileSystem.deleteAsync(permanentPath, { idempotent: true });
-            } catch (cleanupError) {
-              console.warn('File cleanup error:', cleanupError);
+          // Add track to database with critical protection
+          const dbSuccess = await executeWithCrashProtection(
+            async () => {
+              await addTrack({
+                songId,
+                name: trackName,
+                filePath: permanentPath,
+                volume: 0.8,
+                muted: false,
+                solo: false,
+                balance: 0,
+              });
+              console.log(`Successfully added track: ${trackName}`);
+              return true;
+            },
+            `Database insert: ${trackName}`,
+            async () => {
+              // Clean up file if database insert fails
+              await executeWithCrashProtection(
+                async () => {
+                  await FileSystem.deleteAsync(permanentPath, { idempotent: true });
+                },
+                `Cleanup after DB failure: ${trackName}`
+              );
+              return false;
             }
-            Alert.alert(
-              'Database Error',
-              `Failed to save track info for ${originalName}`
-            );
+          );
+
+          if (!dbSuccess) {
+            console.warn(`Failed to save ${trackName} to database, skipping`);
+            Alert.alert('Database Error', `Could not save ${originalName} to database.`);
             continue;
           }
 

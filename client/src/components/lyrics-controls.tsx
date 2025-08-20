@@ -30,7 +30,7 @@ export function LyricsControls({ onEditLyrics, song }: LyricsControlsProps) {
   };
 
   const adjustScrollSpeed = (delta: number) => {
-    const newSpeed = Math.max(0.2, Math.min(3.0, scrollSpeed + delta));
+    const newSpeed = Math.max(0.1, Math.min(2.0, scrollSpeed + delta));
     setScrollSpeed(newSpeed);
     localStorage.setItem('lyrics-scroll-speed', newSpeed.toString());
     window.dispatchEvent(new Event('lyrics-scroll-change'));
@@ -64,7 +64,7 @@ export function LyricsControls({ onEditLyrics, song }: LyricsControlsProps) {
           <button
             className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7 rounded text-white text-xs flex items-center justify-center"
             title="Decrease Scroll Speed"
-            onClick={() => adjustScrollSpeed(-0.2)}
+            onClick={() => adjustScrollSpeed(-0.1)}
           >
             ⬇
           </button>
@@ -74,7 +74,7 @@ export function LyricsControls({ onEditLyrics, song }: LyricsControlsProps) {
           <button
             className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7 rounded text-white text-xs flex items-center justify-center"
             title="Increase Scroll Speed"
-            onClick={() => adjustScrollSpeed(0.2)}
+            onClick={() => adjustScrollSpeed(0.1)}
           >
             ⬆
           </button>

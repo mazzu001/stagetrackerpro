@@ -123,18 +123,41 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
 
   // Auto-scroll for non-timestamped lyrics
   useEffect(() => {
-    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 1 && autoScrollEnabled) {
+    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime > 0.5 && autoScrollEnabled) {
       const container = containerRef.current;
       const contentHeight = container.scrollHeight;
       const containerHeight = container.clientHeight;
       const maxScrollDistance = Math.max(0, contentHeight - containerHeight);
       
-      // Calculate scroll position as percentage of song progress
-      const songProgress = Math.min(currentTime / song.duration, 1);
-      const adjustedProgress = Math.max(0, (songProgress - 0.1) / 0.8); // Start scroll at 10% and finish at 90%
-      const targetScrollTop = adjustedProgress * maxScrollDistance * scrollSpeed;
+      // Debug logging to identify the issue
+      console.log('Auto-scroll check:', {
+        hasTimestamps,
+        plainLinesLength: plainLines.length,
+        songDuration: song?.duration,
+        currentTime,
+        autoScrollEnabled,
+        maxScrollDistance,
+        contentHeight,
+        containerHeight
+      });
       
-      container.scrollTop = Math.min(targetScrollTop, maxScrollDistance);
+      // Only scroll if there's content to scroll
+      if (maxScrollDistance > 0) {
+        // Calculate scroll position as percentage of song progress
+        const songProgress = Math.min(currentTime / song.duration, 1);
+        const adjustedProgress = Math.max(0, (songProgress - 0.05) / 0.9); // Start scroll at 5% and finish at 95%
+        const targetScrollTop = adjustedProgress * maxScrollDistance * scrollSpeed;
+        
+        console.log('Auto-scrolling:', {
+          songProgress,
+          adjustedProgress,
+          scrollSpeed,
+          targetScrollTop,
+          maxScrollDistance
+        });
+        
+        container.scrollTop = Math.min(targetScrollTop, maxScrollDistance);
+      }
     }
   }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration, autoScrollEnabled]);
 
@@ -145,7 +168,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
   };
 
   const adjustScrollSpeed = (delta: number) => {
-    const newSpeed = Math.max(0.2, Math.min(3.0, scrollSpeed + delta));
+    const newSpeed = Math.max(0.1, Math.min(2.0, scrollSpeed + delta));
     setScrollSpeed(newSpeed);
     localStorage.setItem('lyrics-scroll-speed', newSpeed.toString());
   };

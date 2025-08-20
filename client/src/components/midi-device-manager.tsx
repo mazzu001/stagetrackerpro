@@ -26,38 +26,48 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
     
     setIsScanning(true);
     try {
-      await scanForBluetoothDevices();
+      const deviceName = await scanForBluetoothDevices();
       toast({
         title: "Bluetooth Device Connected",
-        description: "Successfully connected to Bluetooth MIDI device",
+        description: `Successfully connected to ${deviceName}`,
       });
+      setLastActivity(`Connected: ${deviceName}`);
     } catch (error: any) {
       console.error('Bluetooth scan error:', error);
-      if (error.message.includes('User cancelled')) {
+      const errorMsg = error.message || 'Unknown error';
+      
+      if (errorMsg.includes('cancelled') || errorMsg.includes('selected')) {
         toast({
           title: "Scan Cancelled",
-          description: "Bluetooth device selection was cancelled",
+          description: "No device was selected",
           variant: "default"
         });
-      } else if (error.message.includes('not supported')) {
+      } else if (errorMsg.includes('not supported')) {
         toast({
           title: "Bluetooth Not Supported",
-          description: "Your browser doesn't support Bluetooth MIDI",
+          description: "Your browser doesn't support Bluetooth connectivity",
           variant: "destructive"
         });
-      } else if (error.message.includes('does not support')) {
+      } else if (errorMsg.includes('access denied')) {
         toast({
-          title: "Not a MIDI Device",
-          description: error.message,
+          title: "Permission Denied",
+          description: "Please enable Bluetooth and grant permission",
+          variant: "destructive"
+        });
+      } else if (errorMsg.includes('Failed to connect')) {
+        toast({
+          title: "Connection Failed",
+          description: "Device found but couldn't connect. Try putting it in pairing mode.",
           variant: "destructive"
         });
       } else {
         toast({
-          title: "Connection Failed",
-          description: "Could not connect to Bluetooth device. Make sure it's in pairing mode.",
+          title: "Connection Error",
+          description: errorMsg,
           variant: "destructive"
         });
       }
+      setLastActivity(`Error: ${errorMsg}`);
     } finally {
       setIsScanning(false);
     }
@@ -227,12 +237,20 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
 
       {/* Help */}
       <Card className="p-4 bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-        <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">Command Format</h4>
-        <div className="text-sm text-blue-700 dark:text-blue-300 space-y-1 font-mono">
-          <div>CC:controller:value:channel</div>
-          <div>NOTE:note:velocity:channel</div>
-          <div>NOTEOFF:note:channel</div>
-          <div>PC:program:channel</div>
+        <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">MIDI & Bluetooth Setup</h4>
+        <div className="text-sm text-blue-700 dark:text-blue-300 space-y-2">
+          <div className="font-mono space-y-1">
+            <div>CC:controller:value:channel</div>
+            <div>NOTE:note:velocity:channel</div>
+            <div>NOTEOFF:note:channel</div>
+            <div>PC:program:channel</div>
+          </div>
+          <div className="border-t border-blue-300 dark:border-blue-700 pt-2">
+            <div className="font-semibold mb-1">Bluetooth Tips:</div>
+            <div>• Put device in pairing mode first</div>
+            <div>• Enable Bluetooth in browser settings</div>
+            <div>• Some devices need MIDI apps on phone</div>
+          </div>
         </div>
       </Card>
     </div>

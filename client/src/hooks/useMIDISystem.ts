@@ -77,24 +77,77 @@ export function useMIDISystem() {
 
     console.log('[MIDI SYSTEM] Scanning for Bluetooth MIDI devices...');
     
-    const device = await (navigator as any).bluetooth.requestDevice({
-      acceptAllDevices: true,
-      optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] // MIDI service UUID
-    });
+    let device;
+    try {
+      device = await (navigator as any).bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] // MIDI service UUID
+      });
+    } catch (error: any) {
+      if (error.name === 'NotFoundError') {
+        throw new Error('No Bluetooth device selected or found');
+      } else if (error.name === 'SecurityError') {
+        throw new Error('Bluetooth access denied. Enable Bluetooth and try again.');
+      } else if (error.message.includes('User cancelled')) {
+        throw new Error('User cancelled device selection');
+      }
+      throw new Error(`Bluetooth scan failed: ${error.message || 'Unknown error'}`);
+    }
 
-    console.log('[MIDI SYSTEM] Found Bluetooth device:', device.name);
+    console.log('[MIDI SYSTEM] Found Bluetooth device:', device.name || device.id);
     
-    const server = await device.gatt.connect();
+    let server;
+    try {
+      server = await device.gatt.connect();
+      console.log('[MIDI SYSTEM] Connected to GATT server');
+    } catch (error: any) {
+      throw new Error(`Failed to connect to device: ${error.message || 'Connection failed'}`);
+    }
     
     // Check if device supports MIDI
     let service;
     try {
       service = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
+      console.log('[MIDI SYSTEM] Found MIDI service');
     } catch (error) {
-      throw new Error(`Device "${device.name}" does not support Bluetooth MIDI`);
+      // Try alternative approach - add as generic Bluetooth device
+      console.log('[MIDI SYSTEM] No MIDI service found, adding as generic Bluetooth device');
+      
+      const currentOutputs = midiAccess?.outputs || new Map();
+      const newOutputs = new Map(currentOutputs);
+      
+      newOutputs.set(device.id, {
+        id: device.id,
+        name: device.name || 'Bluetooth Device',
+        type: 'bluetooth',
+        send: async (data: number[]) => {
+          const hex = data.map(b => b.toString(16).padStart(2, '0')).join(' ');
+          console.log(`🎹 BLUETOOTH DEVICE: [${data.join(', ')}] [${hex}] to ${device.name || device.id}`);
+          console.log('Note: Device does not support MIDI protocol, commands logged only');
+        }
+      });
+
+      const updatedMIDI = {
+        inputs: midiAccess?.inputs || new Map(),
+        outputs: newOutputs,
+        onstatechange: null
+      };
+
+      setMidiAccess(updatedMIDI as any);
+      setIsConnected(true);
+      setDeviceCount(newOutputs.size);
+      console.log('[MIDI SYSTEM] Bluetooth device connected (no MIDI):', device.name || device.id);
+      
+      return `${device.name || device.id} (Non-MIDI)`;
     }
     
-    const characteristic = await service.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
+    let characteristic;
+    try {
+      characteristic = await service.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
+      console.log('[MIDI SYSTEM] Found MIDI characteristic');
+    } catch (error: any) {
+      throw new Error(`Failed to access MIDI characteristic: ${error.message || 'Characteristic not found'}`);
+    }
 
     // Merge with existing access or create new one
     const currentOutputs = midiAccess?.outputs || new Map();
@@ -133,7 +186,7 @@ export function useMIDISystem() {
     setDeviceCount(newOutputs.size);
     console.log('[MIDI SYSTEM] Bluetooth MIDI connected:', device.name);
     
-    return device.name;
+    return device.name || device.id;
   }, [midiAccess]);
 
   // Create fallback MIDI for testing when real MIDI fails

@@ -62,7 +62,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
     };
   }, []);
 
-  // Parse lyrics with timestamps
+  // Parse lyrics with timestamps and filter out MIDI commands for display
   const parseLyrics = (lyricsText: string): LyricsLine[] => {
     if (!lyricsText) return [];
     
@@ -80,7 +80,10 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
         const minutes = parseInt(timestampMatch[1]);
         const seconds = parseInt(timestampMatch[2]);
         const timestamp = minutes * 60 + seconds;
-        const text = trimmed.substring(timestampMatch[0].length).trim();
+        let text = trimmed.substring(timestampMatch[0].length).trim();
+        
+        // Remove MIDI commands from display text
+        text = text.replace(/\[\[[^\]]+\]\]/g, '').trim();
         
         if (text) {
           parsedLines.push({ timestamp, text });
@@ -97,9 +100,16 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
   const hasTimestamps = song?.lyrics ? 
     /\[(\d{1,2}):(\d{2})\]/.test(song.lyrics) : false;
   
-  // Split lyrics by lines for non-timestamped lyrics
+  // Split lyrics by lines for non-timestamped lyrics, filtering out timestamps and MIDI commands
   const plainLines = song?.lyrics && !hasTimestamps ? 
-    song.lyrics.split('\n').filter((line: string) => line.trim()) : [];
+    song.lyrics.split('\n')
+      .map((line: string) => {
+        // Remove timestamps and MIDI commands from display
+        return line.replace(/^\[(\d{1,2}):(\d{2})\]/, '') // Remove timestamps
+                  .replace(/\[\[[^\]]+\]\]/g, '') // Remove MIDI commands
+                  .trim();
+      })
+      .filter((line: string) => line.trim()) : [];
   
   // Find current line based on timestamp (for timestamped lyrics)
   const currentLineIndex = hasTimestamps ? lyrics.findIndex((line, index) => {

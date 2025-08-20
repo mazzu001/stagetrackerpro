@@ -871,7 +871,7 @@ export default function Performance({ userType }: PerformanceProps) {
 
             {/* Lyrics Section */}
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between pt-[0px] pb-[0px] mt-[-7px] mb-[-7px]">
                 <Label htmlFor="lyrics" className="text-base font-semibold">Lyrics</Label>
                 <span className="text-xs text-gray-500 px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
                   {lyricsText.length} characters

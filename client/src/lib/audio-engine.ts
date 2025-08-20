@@ -220,6 +220,8 @@ export class AudioEngine {
       const songDuration = this.actualDuration > 0 ? this.actualDuration : (this.currentSong?.duration || 0);
       const cappedResult = songDuration > 0 ? Math.min(result, songDuration) : result;
 
+
+
       return cappedResult;
     }
     return this.pausedTime;

@@ -96,6 +96,15 @@ This project is a live music performance application designed for professional s
 - **SIMPLIFIED**: Linear scroll calculation from start to finish with speed multiplier
 - **Status**: Complete auto-scroll system working for both timestamped and non-timestamped lyrics
 
+### Working Build 10 (August 20, 2025) - DURATION SYNC FIXED
+- All functionality from Working Build 9
+- **FIXED**: Duration synchronization between audio engine and React components
+- **RESOLVED**: Auto-scroll now uses actual audio buffer duration instead of database duration
+- **IMPROVED**: Audio engine duration callback properly updates React state
+- **CORRECTED**: LyricsDisplay component now receives duration prop from useAudioEngine hook
+- **CLEANED**: Removed debug logging for production-ready operation
+- **Status**: Auto-scroll fully functional with accurate duration tracking from audio buffers
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

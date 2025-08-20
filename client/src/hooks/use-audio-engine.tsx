@@ -60,7 +60,8 @@ export function useAudioEngine(song?: SongWithTracks) {
         console.error(`Failed to load song: "${song.title}"`, error);
       });
       
-      setDuration(song.duration);
+      // Don't set duration here - let the audio engine callback handle it
+      // setDuration(song.duration); // This overwrites the callback-updated duration
       setCurrentTime(0);
       setIsPlaying(false);
     }

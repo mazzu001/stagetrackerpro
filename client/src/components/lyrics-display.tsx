@@ -10,10 +10,11 @@ interface LyricsLine {
 interface LyricsDisplayProps {
   song: any | null;
   currentTime: number;
+  duration: number;
   onEditLyrics?: () => void;
 }
 
-export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplayProps) {
+export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: LyricsDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');
@@ -123,7 +124,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
 
   // Auto-scroll for non-timestamped lyrics
   useEffect(() => {
-    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && song?.duration && currentTime >= 0 && autoScrollEnabled) {
+    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && duration && currentTime >= 0 && autoScrollEnabled) {
       const container = containerRef.current;
       const contentHeight = container.scrollHeight;
       const containerHeight = container.clientHeight;
@@ -132,7 +133,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
       // Only scroll if there's content to scroll
       if (maxScrollDistance > 0) {
         // Calculate scroll position as percentage of song progress
-        const songProgress = Math.min(currentTime / song.duration, 1);
+        const songProgress = Math.min(currentTime / duration, 1);
         // Linear scroll from start to finish with scroll speed multiplier
         const targetScrollTop = songProgress * maxScrollDistance * scrollSpeed;
         

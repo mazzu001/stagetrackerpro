@@ -778,6 +778,7 @@ export default function Performance({ userType }: PerformanceProps) {
               <LyricsDisplay
                 song={selectedSong}
                 currentTime={currentTime}
+                duration={duration}
                 onEditLyrics={selectedSong ? handleEditLyrics : undefined}
               />
             </div>

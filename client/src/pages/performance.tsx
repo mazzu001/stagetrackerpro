@@ -755,23 +755,12 @@ export default function Performance({ userType }: PerformanceProps) {
               <h2 className="text-sm md:text-lg font-semibold truncate mr-2">
                 {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
               </h2>
-              {selectedSong && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleEditLyrics}
-                  data-testid="button-edit-lyrics"
-                  className="touch-target flex-shrink-0"
-                >
-                  <Edit className="w-4 h-4 md:mr-1" />
-                  <span className="mobile-hidden">Edit Lyrics</span>
-                </Button>
-              )}
             </div>
             <div className="flex-1 overflow-y-auto p-2 md:p-4">
               <LyricsDisplay
                 song={selectedSong as any}
                 currentTime={currentTime}
+                onEditLyrics={selectedSong ? handleEditLyrics : undefined}
               />
             </div>
             

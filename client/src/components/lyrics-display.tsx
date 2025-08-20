@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AlignLeft, Type, ChevronUp, ChevronDown } from "lucide-react";
+import { AlignLeft, Type, ChevronUp, ChevronDown, Edit } from "lucide-react";
 import { parseLyricsWithMidi } from "@/lib/midi-parser";
 import type { SongWithTracks } from "@shared/schema";
 
 interface LyricsDisplayProps {
   song?: SongWithTracks;
   currentTime: number;
+  onEditLyrics?: () => void;
 }
 
-export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps) {
+export default function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplayProps) {
   const lyricsContainerRef = useRef<HTMLDivElement>(null);
   const [lastScrolledLine, setLastScrolledLine] = useState(-1);
   const [scrollSpeed, setScrollSpeed] = useState(() => {
@@ -133,6 +134,19 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
           Lyrics
         </h2>
         <div className="flex items-center space-x-2">
+          {onEditLyrics && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onEditLyrics}
+              className="h-7 px-2 text-xs"
+              data-testid="button-edit-lyrics-inline"
+            >
+              <Edit className="w-3 h-3 mr-1" />
+              Edit
+            </Button>
+          )}
+          
           <span className={`text-xs px-2 py-1 rounded ${
             parsedLyrics.some((line, index) => line.timestamp !== (index + 1) * 5)
               ? 'bg-primary/20 text-primary'
@@ -140,7 +154,7 @@ export default function LyricsDisplay({ song, currentTime }: LyricsDisplayProps)
           }`}>
             {parsedLyrics.some((line, index) => line.timestamp !== (index + 1) * 5)
               ? 'TIMESTAMP-SYNC'
-              : `AUTO-SCROLL ${scrollSpeed}x`
+              : `${scrollSpeed}x`
             }
           </span>
           

@@ -506,9 +506,9 @@ export default function TrackManager({
             const isMuted = track.isMuted ?? false;
             const isSolo = track.isSolo ?? false;
             const rawLevel = audioLevels[track.id] || 0;
-            // Apply conservative amplification for subtle VU meter response
-            // Provides good visibility without overreaction
-            const level = rawLevel * 20;
+            // Apply minimal amplification for natural VU meter response
+            // Provides realistic meter behavior with subtle movement
+            const level = rawLevel * 10;
             
             return (
               <Card key={track.id}>

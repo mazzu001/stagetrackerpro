@@ -164,20 +164,30 @@ export class AudioEngine {
   pause(): void {
     if (!this.audioContext) return;
 
+    console.log(`AudioEngine: Pausing playback - ${this.tracks.size} tracks to pause`);
     this.isPlaying = false;
     this.pausedTime = this.audioContext.currentTime - this.startTime;
 
-    this.tracks.forEach(track => track.pause());
+    this.tracks.forEach((track, trackId) => {
+      console.log(`AudioEngine: Pausing track ${trackId} (${track.getTrackName()})`);
+      track.pause();
+    });
+    console.log(`AudioEngine: All tracks paused`);
   }
 
   stop(): void {
     if (!this.audioContext) return;
 
+    console.log(`AudioEngine: Stopping playback - ${this.tracks.size} tracks to stop`);
     this.isPlaying = false;
     this.startTime = 0;
     this.pausedTime = 0;
 
-    this.tracks.forEach(track => track.stop());
+    this.tracks.forEach((track, trackId) => {
+      console.log(`AudioEngine: Stopping track ${trackId} (${track.getTrackName()})`);
+      track.stop();
+    });
+    console.log(`AudioEngine: All tracks stopped`);
   }
 
   async seek(time: number): Promise<void> {
@@ -519,13 +529,22 @@ class TrackController {
 
   pause(): void {
     if (this.sourceNode) {
-      this.sourceNode.stop();
-      this.sourceNode.disconnect();
-      this.sourceNode = null;
+      console.log(`Pausing track: ${this.track.name}`);
+      try {
+        this.sourceNode.stop();
+        this.sourceNode.disconnect();
+        this.sourceNode = null;
+        console.log(`Successfully paused track: ${this.track.name}`);
+      } catch (error) {
+        console.error(`Error pausing track ${this.track.name}:`, error);
+      }
+    } else {
+      console.log(`No source node to pause for track: ${this.track.name}`);
     }
   }
 
   stop(): void {
+    console.log(`Stopping track: ${this.track.name}`);
     this.pause();
   }
 

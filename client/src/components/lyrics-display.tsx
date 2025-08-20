@@ -68,9 +68,31 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
     
     const container = lyricsContainerRef.current;
 
-    // For timestamped lyrics: NO automatic scrolling, only highlighting
-    // For non-timestamped lyrics: smooth auto-scroll based on song progress
-    if (!hasRealTimestamps && currentTime >= 5) {
+    if (hasRealTimestamps && currentLineIndex >= 0) {
+      // Timestamped lyrics: Start scrolling after the first few lines (line 3 and beyond)
+      const shouldScroll = currentLineIndex >= 3; // Start scrolling after first 3 lines
+      
+      if (shouldScroll && currentLineIndex !== lastScrolledLine) {
+        const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
+        
+        if (currentLineElement) {
+          const containerHeight = container.clientHeight;
+          const lineTop = currentLineElement.offsetTop;
+          
+          // Keep current line centered in the view
+          const idealScrollTop = lineTop - (containerHeight / 2);
+          const maxScrollTop = container.scrollHeight - containerHeight;
+          const targetScrollTop = Math.max(0, Math.min(idealScrollTop, maxScrollTop));
+          
+          container.scrollTo({
+            top: targetScrollTop,
+            behavior: 'smooth'
+          });
+          
+          setLastScrolledLine(currentLineIndex);
+        }
+      }
+    } else if (!hasRealTimestamps && currentTime >= 5) {
       // Non-timestamped lyrics: smooth auto-scroll based on song progress with adjustable speed
       const songDuration = song.duration || 300; // Default to 5 minutes if no duration
       const adjustedDuration = (songDuration - 5) / scrollSpeed; // Apply scroll speed multiplier

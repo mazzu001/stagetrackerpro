@@ -262,7 +262,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
             {plainLines.map((line: string, index: number) => (
               <div
                 key={index}
-                className="text-gray-300 leading-relaxed mb-8 py-4"
+                className="text-gray-300 leading-relaxed mb-4"
                 data-testid={`lyrics-line-${index}`}
                 id={`auto-scroll-line-${index}`}
               >

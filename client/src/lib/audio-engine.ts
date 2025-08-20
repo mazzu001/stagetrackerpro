@@ -7,6 +7,7 @@ export class AudioEngine {
   private masterGainNode: GainNode | null = null;
   private tracks: Map<string, TrackController> = new Map();
   private currentSong: SongWithTracks | null = null;
+  private actualDuration: number = 0; // Track the actual duration from audio buffers
   private startTime: number = 0;
   private pausedTime: number = 0;
   private isPlaying: boolean = false;
@@ -52,6 +53,7 @@ export class AudioEngine {
     // Clear existing tracks completely
     this.tracks.clear();
     this.analyzerNodes.clear();
+    this.actualDuration = 0; // Reset actual duration for new song
     
     this.currentSong = song;
 
@@ -101,6 +103,7 @@ export class AudioEngine {
       if (maxDuration > 0 && maxDuration !== this.currentSong.duration) {
         console.log(`Updating song duration from ${this.currentSong.duration}s to ${maxDuration}s based on audio buffer analysis`);
         this.currentSong.duration = maxDuration;
+        this.actualDuration = maxDuration; // Store the actual detected duration
         
         // Trigger a callback to update the UI with the correct duration
         if (this.onDurationUpdated) {
@@ -213,14 +216,9 @@ export class AudioEngine {
       const currentTime = this.audioContext.currentTime - this.startTime;
       const result = Math.max(0, currentTime);
       
-      // Cap the time at the song duration to prevent overflow
-      const songDuration = this.currentSong?.duration || 0;
+      // Use the actual duration from audio buffers, fallback to song duration
+      const songDuration = this.actualDuration > 0 ? this.actualDuration : (this.currentSong?.duration || 0);
       const cappedResult = songDuration > 0 ? Math.min(result, songDuration) : result;
-      
-      // Debug logging when time gets stuck around 180 seconds (3 minutes)
-      if (result >= 175 && result <= 185) {
-        console.log(`AudioEngine debug - rawTime: ${result}, cappedTime: ${cappedResult}, songDuration: ${songDuration}, audioContext.currentTime: ${this.audioContext.currentTime}, startTime: ${this.startTime}, pausedTime: ${this.pausedTime}`);
-      }
 
       return cappedResult;
     }

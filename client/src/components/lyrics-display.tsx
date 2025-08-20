@@ -85,20 +85,15 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           const visibleTop = currentScrollTop;
           const visibleBottom = currentScrollTop + containerHeight;
           
-          const lineCompletelyAbove = lineBottom < visibleTop;
-          const lineCompletelyBelow = lineTop > visibleBottom;
+          // Add buffer zones to prevent excessive scrolling
+          const bufferZone = containerHeight * 0.2; // 20% of container height
+          const lineCompletelyAbove = lineBottom < (visibleTop + bufferZone);
+          const lineCompletelyBelow = lineTop > (visibleBottom - bufferZone);
           const needsScroll = lineCompletelyAbove || lineCompletelyBelow;
           
           if (needsScroll) {
-            let targetScrollTop;
-            
-            if (lineCompletelyBelow) {
-              targetScrollTop = lineBottom - containerHeight + 20;
-            } else if (lineCompletelyAbove) {
-              targetScrollTop = lineTop - 20;
-            } else {
-              targetScrollTop = currentScrollTop;
-            }
+            // Center the current line in the viewport with some padding
+            const targetScrollTop = lineTop - (containerHeight / 2) + (currentLineElement.offsetHeight / 2);
             
             container.scrollTo({
               top: Math.max(0, targetScrollTop),

@@ -44,6 +44,11 @@
   /* Custom properties for stage app */
   --surface: hsl(220, 13%, 13%);
   --error: hsl(358, 65%, 52%);
+  
+  /* Mobile optimization variables */
+  --touch-target-min: 44px;
+  --mobile-padding: 16px;
+  --mobile-header-height: 60px;
 }
 
 .dark {
@@ -72,10 +77,50 @@
   * {
     @apply border-border;
   }
-
+  
+  /* Prevent zoom on input focus for iOS */
+  @media screen and (max-width: 1024px) {
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"],
+    textarea,
+    select {
+      font-size: 16px;
+    }
+  }
+  
+  /* Touch-friendly scrollbars */
+  @media (hover: none) and (pointer: coarse) {
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: hsl(var(--muted));
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: hsl(var(--accent));
+      border-radius: 4px;
+    }
+  }
+  
   body {
     @apply font-sans antialiased bg-background text-foreground;
     font-family: 'Inter', sans-serif;
+    /* Prevent overscroll bounce on mobile */
+    overscroll-behavior: none;
+    /* Improve touch scrolling performance */
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Mobile viewport height fix */
+  @supports (-webkit-touch-callout: none) {
+    .mobile-vh-fix {
+      height: -webkit-fill-available;
+    }
   }
 }
 
@@ -106,6 +151,63 @@
   
   .bg-primary {
     background-color: var(--primary);
+  }
+  
+  /* Mobile touch optimization utilities */
+  .touch-target {
+    min-height: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+  }
+  
+  .mobile-padding {
+    padding: var(--mobile-padding);
+  }
+  
+  /* Mobile responsive utilities */
+  .mobile-hidden {
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+  
+  .mobile-only {
+    display: none;
+    @media (max-width: 768px) {
+      display: block;
+    }
+  }
+  
+  .mobile-flex {
+    display: none;
+    @media (max-width: 768px) {
+      display: flex;
+    }
+  }
+  
+  /* Touch-friendly button sizing */
+  .btn-touch {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 16px;
+  }
+  
+  /* Mobile text sizes */
+  .text-mobile-sm {
+    @media (max-width: 768px) {
+      font-size: 0.875rem;
+    }
+  }
+  
+  .text-mobile-base {
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
+  }
+  
+  .text-mobile-lg {
+    @media (max-width: 768px) {
+      font-size: 1.125rem;
+    }
   }
   
   .bg-secondary {

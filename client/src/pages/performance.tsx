@@ -377,55 +377,60 @@ export default function Performance({ userType }: PerformanceProps) {
   };
 
   return (
-    <div className="bg-background text-white min-h-screen h-screen font-inter flex flex-col overflow-hidden">
+    <div className="bg-background text-white min-h-screen h-screen mobile-vh-fix font-inter flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="bg-surface border-b border-gray-700 p-4 flex-shrink-0" data-testid="app-header">
+      <header className="bg-surface border-b border-gray-700 p-2 md:p-4 flex-shrink-0" data-testid="app-header">
         <div className="max-w-full flex items-center">
-          <div className="flex items-center space-x-3 flex-shrink-0">
-            <Music className="text-primary text-2xl" />
-            <h1 className="text-2xl font-bold">StageTracker Pro</h1>
-            <span className="bg-primary/20 text-primary px-2 py-1 rounded text-sm">LIVE</span>
+          <div className="flex items-center space-x-2 md:space-x-3 flex-shrink-0">
+            <Music className="text-primary text-xl md:text-2xl" />
+            <h1 className="text-lg md:text-2xl font-bold mobile-hidden">StageTracker Pro</h1>
+            <h1 className="text-lg font-bold mobile-only">StagePro</h1>
+            <span className="bg-primary/20 text-primary px-1 md:px-2 py-1 rounded text-xs md:text-sm">LIVE</span>
           </div>
           
           {/* Waveform Visualizer - centered and responsive */}
-          <div className="flex-1 flex items-center justify-center mx-4 py-1">
-            <div className="w-full max-w-[500px] min-w-[200px]">
+          <div className="flex-1 flex items-center justify-center mx-2 md:mx-4 py-1">
+            <div className="w-full max-w-[500px] min-w-[150px] md:min-w-[200px]">
               <WaveformVisualizer
                 song={selectedSong as any || null}
                 currentTime={currentTime}
                 isPlaying={isPlaying}
                 audioLevels={audioLevels}
-                className="border border-gray-600 rounded w-full h-[68px]"
+                className="border border-gray-600 rounded w-full h-[48px] md:h-[68px]"
               />
             </div>
           </div>
           
-          <div className="flex items-center space-x-4 flex-shrink-0">
+          <div className="flex items-center space-x-2 md:space-x-4 flex-shrink-0">
             {/* Subscription Status */}
             {userType === 'free' && (
-              <div className="flex items-center space-x-2 bg-gray-800 px-3 py-1 rounded-lg">
-                <Crown className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm text-gray-300">
+              <div className="flex items-center space-x-1 md:space-x-2 bg-gray-800 px-2 md:px-3 py-1 rounded-lg">
+                <Crown className="w-3 h-3 md:w-4 md:h-4 text-yellow-500" />
+                <span className="text-xs md:text-sm text-gray-300 mobile-hidden">
                   Free: {allSongs.length}/2 songs
+                </span>
+                <span className="text-xs text-gray-300 mobile-only">
+                  {allSongs.length}/2
                 </span>
                 <Button
                   size="sm"
                   variant="outline"
-                  className="text-xs px-2 py-1 h-6"
+                  className="text-xs px-1 md:px-2 py-1 h-6 btn-touch"
                   onClick={handleUpgrade}
                 >
-                  Upgrade
+                  Up
                 </Button>
               </div>
             )}
             {userType === 'paid' && (
-              <div className="flex items-center space-x-2 bg-green-900/30 px-3 py-1 rounded-lg">
-                <Crown className="w-4 h-4 text-yellow-500" />
-                <span className="text-sm text-green-300">Premium</span>
+              <div className="flex items-center space-x-1 md:space-x-2 bg-green-900/30 px-2 md:px-3 py-1 rounded-lg">
+                <Crown className="w-3 h-3 md:w-4 md:h-4 text-yellow-500" />
+                <span className="text-xs md:text-sm text-green-300 mobile-hidden">Premium</span>
+                <span className="text-xs text-green-300 mobile-only">Pro</span>
               </div>
             )}
             <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
-              <DialogContent className="max-w-[85vw] max-h-[90vh] overflow-y-auto">
+              <DialogContent className="max-w-[95vw] md:max-w-[85vw] max-h-[90vh] overflow-y-auto mobile-padding">
                 <DialogHeader>
                   <DialogTitle>Track Management</DialogTitle>
                 </DialogHeader>
@@ -453,7 +458,7 @@ export default function Performance({ userType }: PerformanceProps) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button 
-                  className="bg-surface hover:bg-gray-700 p-2 rounded-lg transition-colors" 
+                  className="bg-surface hover:bg-gray-700 p-2 rounded-lg transition-colors touch-target" 
                   title="Settings"
                   data-testid="button-settings"
                 >
@@ -512,11 +517,11 @@ export default function Performance({ userType }: PerformanceProps) {
 
 
       {/* Main Content Area */}
-      <div className="flex flex-1 min-h-0 overflow-hidden">
-        {/* Left Sidebar - Song List (30%) */}
-        <div className="w-[30%] bg-surface border-r border-gray-700 flex flex-col">
-          <div className="p-4 border-b border-gray-700 flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Songs</h2>
+      <div className="flex flex-1 min-h-0 overflow-hidden flex-col md:flex-row">
+        {/* Left Sidebar - Song List (30% on desktop, full width on mobile) */}
+        <div className="w-full md:w-[30%] bg-surface border-b md:border-b-0 md:border-r border-gray-700 flex flex-col max-h-[40vh] md:max-h-none">
+          <div className="p-2 md:p-4 border-b border-gray-700 flex items-center justify-between">
+            <h2 className="text-base md:text-lg font-semibold">Songs</h2>
 
             <div className="flex items-center space-x-2">
               <Dialog open={isAddSongOpen} onOpenChange={(open) => !isPlaying && setIsAddSongOpen(open)}>
@@ -524,7 +529,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className={`h-8 w-8 p-0 ${
+                    className={`h-8 w-8 p-0 touch-target ${
                       isPlaying 
                         ? 'cursor-not-allowed opacity-50' 
                         : 'hover:bg-gray-700'
@@ -536,7 +541,7 @@ export default function Performance({ userType }: PerformanceProps) {
                     <Plus className="w-4 h-4" />
                   </Button>
                 </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
+              <DialogContent className="sm:max-w-md mobile-padding">
                 <DialogHeader>
                   <DialogTitle>Add New Song</DialogTitle>
                 </DialogHeader>
@@ -643,7 +648,7 @@ export default function Performance({ userType }: PerformanceProps) {
             {allSongs.map((song) => (
               <div
                 key={song.id}
-                className={`p-4 border-b border-gray-700 transition-colors ${
+                className={`p-2 md:p-4 border-b border-gray-700 transition-colors touch-target ${
                   selectedSongId === song.id ? 'bg-primary/20 border-l-4 border-l-primary' : ''
                 } ${
                   isPlaying ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-gray-700'
@@ -652,9 +657,9 @@ export default function Performance({ userType }: PerformanceProps) {
                 data-testid={`song-item-${song.id}`}
               >
                 <div className="flex items-center justify-between">
-                  <div className="font-medium">{song.title}</div>
+                  <div className="font-medium text-sm md:text-base truncate mr-2">{song.title}</div>
                   <button
-                    className={`text-xs px-2 py-1 rounded transition-colors ${
+                    className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
                       isPlaying 
                         ? 'bg-gray-600 cursor-not-allowed opacity-50' 
                         : 'bg-gray-700 hover:bg-gray-600'
@@ -672,7 +677,7 @@ export default function Performance({ userType }: PerformanceProps) {
                     {song.tracks ? song.tracks.length : 0} tracks
                   </button>
                 </div>
-                <div className="text-sm text-gray-400">{song.artist}</div>
+                <div className="text-xs md:text-sm text-gray-400 truncate">{song.artist}</div>
                 <div className="flex items-center justify-between">
                   <div className="text-xs text-gray-500">
                     {song.duration ? `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}` : 'No duration'}
@@ -698,7 +703,7 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
           
           {/* Compact Transport Controls */}
-          <div className="p-4 border-t border-gray-700 flex-shrink-0">
+          <div className="p-2 md:p-4 border-t border-gray-700 flex-shrink-0">
             <CompactTransportControls
               isPlaying={isPlaying}
               currentTime={currentTime}
@@ -713,10 +718,10 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
         </div>
 
-        {/* Right Content Area - Lyrics (70%) */}
+        {/* Right Content Area - Lyrics (70% on desktop, full width on mobile) */}
         <div className="flex-1 flex flex-col min-h-0">
-          <div className="p-4 border-b border-gray-700 bg-surface flex items-center justify-between">
-            <h2 className="text-lg font-semibold">
+          <div className="p-2 md:p-4 border-b border-gray-700 bg-surface flex items-center justify-between">
+            <h2 className="text-sm md:text-lg font-semibold truncate mr-2">
               {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
             </h2>
             {selectedSong && (
@@ -725,13 +730,14 @@ export default function Performance({ userType }: PerformanceProps) {
                 size="sm"
                 onClick={handleEditLyrics}
                 data-testid="button-edit-lyrics"
+                className="touch-target flex-shrink-0"
               >
-                <Edit className="w-4 h-4 mr-1" />
-                Edit Lyrics
+                <Edit className="w-4 h-4 md:mr-1" />
+                <span className="mobile-hidden">Edit Lyrics</span>
               </Button>
             )}
           </div>
-          <div className="flex-1 overflow-y-auto p-4">
+          <div className="flex-1 overflow-y-auto p-2 md:p-4">
             <LyricsDisplay
               song={selectedSong as any}
               currentTime={currentTime}
@@ -751,7 +757,7 @@ export default function Performance({ userType }: PerformanceProps) {
 
       {/* Edit Lyrics Dialog */}
       <Dialog open={isEditLyricsOpen} onOpenChange={setIsEditLyricsOpen}>
-        <DialogContent className="sm:max-w-2xl">
+        <DialogContent className="sm:max-w-2xl max-w-[95vw] mobile-padding">
           <DialogHeader>
             <DialogTitle>
               Edit Lyrics - {selectedSong?.title} by {selectedSong?.artist}

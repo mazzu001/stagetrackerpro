@@ -313,11 +313,6 @@ export class AudioEngine {
       
       let rawLevel = (average / 255) * scalingFactor;
       
-      // Debug raw analyzer data occasionally
-      if (Math.random() < 0.002) {
-        console.log(`Audio Engine Debug - Track: ${trackName}, average: ${average.toFixed(2)}, scalingFactor: ${scalingFactor}, rawLevel: ${rawLevel.toFixed(4)}`);
-      }
-      
       rawLevel = Math.max(0, Math.min(100, rawLevel));
       
       // Smooth the level changes

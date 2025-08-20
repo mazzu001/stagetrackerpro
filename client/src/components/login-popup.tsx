@@ -137,21 +137,7 @@ export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
               </Button>
             </form>
 
-            {/* Beta testing access */}
-            <div className="border-t pt-4">
-              <p className="text-sm text-gray-600 mb-2">Beta tester access:</p>
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => fillDemoCredentials('paid')}
-                  data-testid="button-demo-paid"
-                >
-                  Beta Access
-                </Button>
-              </div>
-            </div>
+
           </TabsContent>
 
           <TabsContent value="signup" className="space-y-4">

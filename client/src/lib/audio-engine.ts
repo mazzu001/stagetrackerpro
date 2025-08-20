@@ -282,15 +282,49 @@ export class AudioEngine {
 
   private levelCache: Map<string, { level: number, lastUpdate: number }> = new Map();
   private smoothingFactor = 0.3; // Smoother level transitions
+  
+  // Cache device detection to avoid repeated user agent parsing
+  private deviceDetectionCache: { needsSamsungWorkaround: boolean; lastCheck: number } | null = null;
+  
+  private detectSamsungDevice(): boolean {
+    const now = performance.now();
+    
+    // Cache device detection for 60 seconds to avoid repeated parsing
+    if (this.deviceDetectionCache && now - this.deviceDetectionCache.lastCheck < 60000) {
+      return this.deviceDetectionCache.needsSamsungWorkaround;
+    }
+    
+    const userAgent = navigator.userAgent.toLowerCase();
+    
+    // Be very specific about Samsung device detection to avoid false positives on desktop
+    const isSamsungDevice = (userAgent.includes('samsung') && userAgent.includes('tablet')) || 
+                           (userAgent.includes('sm-') && userAgent.includes('android')) ||
+                           userAgent.includes('samsungbrowser');
+    
+    // Must be Android to apply workaround - this prevents desktop browsers from triggering it
+    const needsSamsungWorkaround = isSamsungDevice && userAgent.includes('android');
+    
+    this.deviceDetectionCache = { needsSamsungWorkaround, lastCheck: now };
+    
+    // Log detection result occasionally
+    if (Math.random() < 0.01) {
+      console.log('Samsung device detection result:', {
+        userAgent: navigator.userAgent,
+        needsSamsungWorkaround,
+        isSamsungDevice,
+        isAndroid: userAgent.includes('android')
+      });
+    }
+    
+    return needsSamsungWorkaround;
+  }
 
   getAudioLevels(): Record<string, number> {
     const levels: Record<string, number> = {};
     const now = performance.now();
     
-    // Device detection for Samsung tablets
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isSamsungTablet = userAgent.includes('samsung') && userAgent.includes('tablet');
-    const isSamsungBrowser = userAgent.includes('samsungbrowser');
+    // Use cached device detection for better performance
+    const needsSamsungWorkaround = this.detectSamsungDevice();
     
     this.analyzerNodes.forEach((analyzer, trackId) => {
       const track = this.tracks.get(trackId);
@@ -304,15 +338,12 @@ export class AudioEngine {
       const dataArray = new Uint8Array(bufferLength);
       
       // Samsung tablets may have issues with frequency data, try time domain as fallback
-      if (isSamsungTablet || isSamsungBrowser) {
+      if (needsSamsungWorkaround) {
         analyzer.getByteTimeDomainData(dataArray); // Use time domain for Samsung devices
         
-        // Debug logging for Samsung devices
-        if (Math.random() < 0.05) { // Log more frequently for debugging
-          console.log('Samsung device detected for VU meters:');
-          console.log('User Agent:', navigator.userAgent);
-          console.log('Using time domain data. Buffer length:', bufferLength);
-          console.log('Sample data values:', dataArray.slice(0, 10));
+        // Debug logging for Samsung devices (reduced frequency)
+        if (Math.random() < 0.001) { // Much less frequent logging now that it's working
+          console.log('Samsung device using time domain VU data. Buffer length:', bufferLength);
         }
       } else {
         analyzer.getByteFrequencyData(dataArray); // Use frequency data for other devices
@@ -322,7 +353,7 @@ export class AudioEngine {
       let sum = 0;
       let average = 0;
       
-      if (isSamsungTablet || isSamsungBrowser) {
+      if (needsSamsungWorkaround) {
         // For Samsung devices using time domain data, calculate RMS
         const sampleCount = Math.min(128, bufferLength);
         let sumSquares = 0;
@@ -399,16 +430,14 @@ export class AudioEngine {
       return { left: this.masterLevelCache.left, right: this.masterLevelCache.right };
     }
 
-    // Device detection for Samsung tablets
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isSamsungTablet = userAgent.includes('samsung') && userAgent.includes('tablet');
-    const isSamsungBrowser = userAgent.includes('samsungbrowser');
+    // Use cached device detection for better performance
+    const needsSamsungWorkaround = this.detectSamsungDevice();
     
     const bufferLength = this.masterAnalyzerNode.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
     
     // Use appropriate data type based on device
-    if (isSamsungTablet || isSamsungBrowser) {
+    if (needsSamsungWorkaround) {
       this.masterAnalyzerNode.getByteTimeDomainData(dataArray);
     } else {
       this.masterAnalyzerNode.getByteFrequencyData(dataArray);
@@ -417,7 +446,7 @@ export class AudioEngine {
     // Calculate levels based on data type and device
     let rms = 0;
     
-    if (isSamsungTablet || isSamsungBrowser) {
+    if (needsSamsungWorkaround) {
       // For Samsung devices using time domain data, calculate RMS
       const sampleCount = Math.min(256, bufferLength);
       let sumSquares = 0;

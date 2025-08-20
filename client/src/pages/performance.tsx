@@ -799,7 +799,7 @@ export default function Performance({ userType }: PerformanceProps) {
           
           <div className="space-y-6 mt-6">
             {/* Control Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+            <div className="flex flex-wrap items-center justify-between gap-4 p-4 dark:bg-gray-800/50 rounded-lg bg-[#2a2c37]">
               <div className="flex items-center space-x-3">
                 <Button
                   variant="outline"

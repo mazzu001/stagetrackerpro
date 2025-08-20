@@ -610,7 +610,7 @@ export default function TrackManager({
 
                     {/* Mobile Layout - Compact Vertical */}
                     <div className="block md:hidden">
-                      <div className="space-y-2">
+                      <div className="space-y-1">
                         {/* Top row: Mute/Solo buttons and sliders */}
                         <div className="flex items-start gap-2">
                           {/* Left: Mute/Solo buttons */}
@@ -669,9 +669,9 @@ export default function TrackManager({
                           </div>
                         </div>
 
-                        {/* Bottom row: VU Meter and Delete button */}
-                        <div className="flex items-center gap-2 pt-1">
-                          <div className="flex-shrink-0 w-16">
+                        {/* Bottom row: VU Meter and Delete button - closer to balance slider */}
+                        <div className="flex items-center justify-center gap-3 pt-0.5">
+                          <div className="flex-shrink-0 w-32">
                             <VUMeter
                               level={level}
                               isMuted={isMuted}
@@ -682,7 +682,7 @@ export default function TrackManager({
                             onClick={() => deleteTrack(track.id)}
                             variant="ghost"
                             size="sm"
-                            className="h-8 w-8 p-0 flex-shrink-0"
+                            className="h-6 w-6 p-0 flex-shrink-0"
                             data-testid={`button-delete-track-${track.id}`}
                           >
                             <Trash2 className="h-3 w-3" />

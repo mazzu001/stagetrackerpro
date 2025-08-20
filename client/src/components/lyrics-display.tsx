@@ -129,11 +129,11 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
     if (!hasTimestamps && plainLines.length > 0 && containerRef.current && autoScrollEnabled && currentTime > 0) {
       const container = containerRef.current;
       
-      // Calculate scroll increment based on speed setting
-      // scrollSpeed ranges from 0.1 to 2.0, we'll use this to determine interval time
-      const baseInterval = 1000; // 1 second base interval
-      const intervalMs = baseInterval / scrollSpeed; // Faster speed = shorter interval
-      const scrollIncrement = 2; // pixels to scroll each interval
+      // Calculate scroll increment based on speed setting for ultra-smooth scrolling
+      // scrollSpeed ranges from 0.1 to 2.0, use very short intervals for smoothness
+      const baseInterval = 50; // 50ms for ultra-smooth animation
+      const intervalMs = Math.max(20, baseInterval / scrollSpeed); // Min 20ms, faster speed = shorter interval
+      const scrollIncrement = 0.5; // very small increments for ultra-smoothness
       
       scrollTimer = setInterval(() => {
         if (container && currentTime > 0) {

@@ -105,6 +105,16 @@ This project is a live music performance application designed for professional s
 - **CLEANED**: Removed debug logging for production-ready operation
 - **Status**: Auto-scroll fully functional with accurate duration tracking from audio buffers
 
+### Working Build 11 (August 20, 2025) - SMOOTH TIMER SCROLLING 
+- All functionality from Working Build 10
+- **REPLACED**: Complex duration-based auto-scroll with simple timer-based system
+- **IMPLEMENTED**: Timer starts when music plays and scrolls text at regular intervals
+- **OPTIMIZED**: Ultra-smooth scrolling with 50ms intervals and 0.5px increments
+- **ENHANCED**: Speed controls adjust timer intervals (faster = shorter intervals)
+- **ADDED**: CSS smooth scroll behavior for visual polish
+- **IMPROVED**: Button tooltips clarify timer interval control
+- **Status**: Timer-based auto-scroll working smoothly with user-controlled speed
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

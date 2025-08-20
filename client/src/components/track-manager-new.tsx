@@ -481,7 +481,7 @@ export default function TrackManager({
             
             // Debug VU meter data flow
             if (Math.random() < 0.01) { // Log occasionally
-              console.log(`VU Meter Debug - Track: ${track.name}, Level: ${level}, AudioLevels available:`, Object.keys(audioLevels).length);
+              console.log(`VU Meter Debug - Track: ${track.name} (ID: ${track.id}), Level: ${level}, AudioLevels keys:`, Object.keys(audioLevels));
             }
             
             return (

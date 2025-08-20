@@ -62,14 +62,6 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   }) : -1; // Don't highlight lines when no real timestamps
 
-  // Debug logging
-  if (song && parsedLyrics.length > 0 && currentTime > 0) {
-    console.log('Debug - Current time:', currentTime);
-    console.log('Debug - Has real timestamps:', hasRealTimestamps);
-    console.log('Debug - Current line index:', currentLineIndex);
-    console.log('Debug - First 3 lyrics:', parsedLyrics.slice(0, 3));
-  }
-
   // Scrolling logic based on whether lyrics have timestamps
   useEffect(() => {
     if (!song || parsedLyrics.length === 0 || !lyricsContainerRef.current) return;
@@ -86,18 +78,33 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
         
         if (currentLineElement) {
           const containerHeight = container.clientHeight;
+          const currentScrollTop = container.scrollTop;
           const lineTop = currentLineElement.offsetTop;
-          const lineHeight = currentLineElement.offsetHeight;
+          const lineBottom = lineTop + currentLineElement.offsetHeight;
           
-          // Keep current line centered in the view, with some padding from top
-          const idealScrollTop = lineTop - (containerHeight / 3);
-          const maxScrollTop = container.scrollHeight - containerHeight;
-          const targetScrollTop = Math.max(0, Math.min(idealScrollTop, maxScrollTop));
+          const visibleTop = currentScrollTop;
+          const visibleBottom = currentScrollTop + containerHeight;
           
-          container.scrollTo({
-            top: targetScrollTop,
-            behavior: 'smooth'
-          });
+          const lineCompletelyAbove = lineBottom < visibleTop;
+          const lineCompletelyBelow = lineTop > visibleBottom;
+          const needsScroll = lineCompletelyAbove || lineCompletelyBelow;
+          
+          if (needsScroll) {
+            let targetScrollTop;
+            
+            if (lineCompletelyBelow) {
+              targetScrollTop = lineBottom - containerHeight + 20;
+            } else if (lineCompletelyAbove) {
+              targetScrollTop = lineTop - 20;
+            } else {
+              targetScrollTop = currentScrollTop;
+            }
+            
+            container.scrollTo({
+              top: Math.max(0, targetScrollTop),
+              behavior: 'smooth'
+            });
+          }
           
           setLastScrolledLine(currentLineIndex);
         }

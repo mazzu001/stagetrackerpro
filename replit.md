@@ -13,6 +13,16 @@ This project is a live music performance application designed for professional s
 - Mobile-optimized performance interface
 - **Note**: Lyrics display functionality had scrolling issues and will be rebuilt from scratch
 
+### Working Build 1 (August 20, 2025)
+- All functionality from Restore Point 1
+- **NEW**: Fresh lyrics box with scrolling text and timestamps
+- Timestamp parsing for [mm:ss] format
+- Auto-scrolling to center current line using scrollIntoView
+- Visual highlighting (past/current/future states)
+- Font size controls with localStorage persistence
+- Clean dark theme design
+- **Status**: Lyrics scrolling working perfectly - smooth and centered
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

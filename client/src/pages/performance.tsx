@@ -112,7 +112,21 @@ export default function Performance({ userType }: PerformanceProps) {
         }
 
         console.log('[PERFORMANCE] Requesting MIDI access...');
-        const access = await (navigator as any).requestMIDIAccess({ sysex: false });
+        
+        // First check if we already have permission
+        if ((navigator as any).permissions) {
+          try {
+            const permission = await (navigator as any).permissions.query({ name: 'midi', sysex: false });
+            console.log('[PERFORMANCE] MIDI permission status:', permission.state);
+          } catch (permError) {
+            console.log('[PERFORMANCE] Could not check MIDI permissions:', permError);
+          }
+        }
+        
+        const access = await (navigator as any).requestMIDIAccess({ 
+          sysex: false,
+          software: true
+        });
         setMidiAccess(access);
         
         console.log('[PERFORMANCE] MIDI access granted successfully');
@@ -166,7 +180,7 @@ export default function Performance({ userType }: PerformanceProps) {
         
         toast({
           title: "MIDI Console Mode",
-          description: "Using console output for MIDI testing. Check browser console for MIDI commands.",
+          description: "MIDI permission denied. Using console output for testing. Both manual and automated MIDI commands will work via console.",
           variant: "default"
         });
       }

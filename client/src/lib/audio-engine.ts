@@ -295,23 +295,28 @@ export class AudioEngine {
       const currentTrack = this.tracks.get(trackId);
       const trackName = currentTrack?.getTrackName()?.toLowerCase() || '';
       
-      // Apply track-specific scaling based on instrument type
-      let scalingFactor = 0.008; // Default conservative scaling
+      // Apply much higher scaling to match stereo meter sensitivity
+      let scalingFactor = 0.15; // Much higher base scaling to match stereo meters
       
       // Bass tracks need higher sensitivity due to low frequency content
       if (trackName.includes('bass')) {
-        scalingFactor = 0.015; // Double sensitivity for bass
+        scalingFactor = 0.25; // Higher sensitivity for bass
       }
       // Drum tracks also need higher sensitivity
       else if (trackName.includes('drum') || trackName.includes('kick') || trackName.includes('snare')) {
-        scalingFactor = 0.012; // 50% higher for drums
+        scalingFactor = 0.20; // Higher for drums
       }
       // Click tracks are usually very quiet
       else if (trackName.includes('click')) {
-        scalingFactor = 0.025; // Much higher for click tracks
+        scalingFactor = 0.35; // Much higher for click tracks
       }
       
       let rawLevel = (average / 255) * scalingFactor;
+      
+      // Debug raw analyzer data occasionally
+      if (Math.random() < 0.002) {
+        console.log(`Audio Engine Debug - Track: ${trackName}, average: ${average.toFixed(2)}, scalingFactor: ${scalingFactor}, rawLevel: ${rawLevel.toFixed(4)}`);
+      }
       
       rawLevel = Math.max(0, Math.min(100, rawLevel));
       

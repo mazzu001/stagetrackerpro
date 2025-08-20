@@ -479,6 +479,11 @@ export default function TrackManager({
             const isSolo = track.isSolo ?? false;
             const level = audioLevels[track.id] || 0;
             
+            // Debug audio levels specifically for track manager
+            if (isPlaying && level > 0) {
+              console.log(`Track Manager VU: ${track.name} level=${level.toFixed(4)}`);
+            }
+            
             return (
               <Card key={track.id}>
                 <CardContent className="p-4">

@@ -101,7 +101,9 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
       const totalScrollDistance = (currentTime - 1) * scrollPixelsPerSecond;
       
       console.log('Setting scroll position to:', totalScrollDistance);
+      console.log('Container scroll before:', container.scrollTop, 'max:', container.scrollHeight - container.clientHeight);
       container.scrollTop = totalScrollDistance;
+      console.log('Container scroll after:', container.scrollTop);
     }
   }, [currentTime, hasTimestamps, plainLines.length, scrollSpeed, song?.duration]);
 
@@ -256,11 +258,11 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
             })}
           </div>
         ) : (
-          <div style={{ fontSize: `${fontSize}px`, paddingBottom: '80vh' }}>
+          <div style={{ fontSize: `${fontSize}px`, height: '300vh' }}>
             {plainLines.map((line: string, index: number) => (
               <div
                 key={index}
-                className="text-gray-300 leading-relaxed mb-4"
+                className="text-gray-300 leading-relaxed mb-8 py-4"
                 data-testid={`lyrics-line-${index}`}
                 id={`auto-scroll-line-${index}`}
               >

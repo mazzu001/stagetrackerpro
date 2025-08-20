@@ -674,7 +674,11 @@ export default function Performance({ userType }: PerformanceProps) {
             {allSongs.map((song) => (
               <div
                 key={song.id}
-                className="p-2 md:p-4 border-b border-gray-700 transition-colors touch-target bg-primary/20 border-l-4 border-l-primary cursor-pointer hover:bg-gray-700 pt-[8px] pb-[8px]"
+                className={`p-2 md:p-4 border-b border-gray-700 transition-colors touch-target cursor-pointer hover:bg-gray-700 pt-[8px] pb-[8px] ${
+                  selectedSongId === song.id
+                    ? 'bg-primary/20 border-l-4 border-l-primary'
+                    : 'bg-transparent border-l-4 border-l-transparent hover:border-l-gray-600'
+                }`}
                 onClick={() => !isPlaying && setSelectedSongId(song.id)}
                 data-testid={`song-item-${song.id}`}
               >

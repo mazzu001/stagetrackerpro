@@ -93,24 +93,16 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           console.log(`Line ${currentLineIndex}: lineTop=${lineTop}, containerHeight=${containerHeight}, currentScroll=${currentScrollTop}`);
           
           if (currentLineIndex >= 3) {
-            // Only start scrolling from line 3 onwards
-            // Check if current line is getting close to bottom of visible area
-            const lineBottom = lineTop + lineHeight;
-            const visibleBottom = currentScrollTop + containerHeight;
-            const bottomPadding = 60; // Keep this much space at bottom
+            // From line 3 onwards, center the highlighted line in the container
+            const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
+            const clampedScrollTop = Math.max(0, targetScrollTop);
             
-            if (lineBottom > (visibleBottom - bottomPadding)) {
-              // Scroll by exactly one line height to bring next line into view
-              const targetScrollTop = currentScrollTop + lineHeight;
-              console.log(`Line ${currentLineIndex}: Scrolling one line height from ${currentScrollTop} to ${targetScrollTop}`);
-              
-              container.scrollTo({
-                top: targetScrollTop,
-                behavior: 'smooth'
-              });
-            } else {
-              console.log(`Line ${currentLineIndex}: Line has enough space at bottom, no scroll needed`);
-            }
+            console.log(`Line ${currentLineIndex}: Centering line at ${lineTop}, scrolling to ${clampedScrollTop}`);
+            
+            container.scrollTo({
+              top: clampedScrollTop,
+              behavior: 'smooth'
+            });
           } else {
             console.log(`Line ${currentLineIndex}: Not scrolling (first 3 lines stay at top)`);
           }

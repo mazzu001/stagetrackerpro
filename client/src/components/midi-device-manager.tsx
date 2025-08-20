@@ -195,10 +195,17 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
     try {
       setIsScanning(true);
       
-      // First, try to get a device to trigger permission prompt
+      // Try a more specific MIDI device request first
       const device = await (navigator as any).bluetooth.requestDevice({
-        acceptAllDevices: true,
-        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] // MIDI Service
+        filters: [
+          { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] }, // MIDI Service UUID
+          { namePrefix: 'MIDI' },
+          { namePrefix: 'BLE-MIDI' },
+          { namePrefix: 'Yamaha' },
+          { namePrefix: 'Roland' },
+          { namePrefix: 'Korg' }
+        ],
+        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
       });
 
       toast({
@@ -217,17 +224,32 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
       }, 1000);
 
     } catch (error: any) {
-      if (error.name === 'NotFoundError') {
+      console.error('Bluetooth permission error:', error);
+      
+      if (error.message?.includes('permissions policy')) {
+        // Permissions policy is blocking Bluetooth
+        setBluetoothPermission('denied');
         toast({
-          title: "No Devices Found",
-          description: "Make sure your Bluetooth MIDI device is in pairing mode and try again.",
+          title: "Bluetooth Blocked by Browser Policy",
+          description: (
+            <div className="space-y-2">
+              <p>Your browser has blocked Bluetooth access for this site.</p>
+              <p className="text-xs">This usually happens in embedded browsers or strict security modes.</p>
+            </div>
+          ),
           variant: "destructive",
+          duration: 8000,
+        });
+      } else if (error.name === 'NotFoundError') {
+        toast({
+          title: "No MIDI Devices Found",
+          description: "Make sure your Bluetooth MIDI device is powered on and in pairing mode, then try again.",
         });
       } else if (error.name === 'NotAllowedError') {
         setBluetoothPermission('denied');
         toast({
           title: "Bluetooth Access Denied",
-          description: "To use Bluetooth MIDI devices, please allow Bluetooth access in your browser settings.",
+          description: "Bluetooth access was denied. Click 'Fix Bluetooth Access' for help enabling it.",
           variant: "destructive",
         });
       } else {
@@ -244,20 +266,44 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
 
   // Open browser settings for Bluetooth permissions
   const openBluetoothSettings = () => {
+    const isEmbedded = window.self !== window.top;
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobile = /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/.test(userAgent);
+    
     toast({
-      title: "Bluetooth Permissions",
+      title: "Enable Bluetooth Access",
       description: (
-        <div className="space-y-2">
-          <p>To enable Bluetooth MIDI:</p>
-          <ol className="list-decimal list-inside space-y-1 text-xs">
-            <li>Click the lock icon in your browser's address bar</li>
-            <li>Find "Bluetooth" in the permissions list</li>
-            <li>Change it from "Block" to "Allow"</li>
-            <li>Refresh this page and try again</li>
-          </ol>
+        <div className="space-y-3">
+          {isEmbedded ? (
+            <div>
+              <p className="font-medium text-yellow-600">You're in an embedded browser</p>
+              <p className="text-xs">Try opening this app in your main browser for full Bluetooth support.</p>
+            </div>
+          ) : isMobile ? (
+            <div>
+              <p>Mobile Browser Setup:</p>
+              <ol className="list-decimal list-inside space-y-1 text-xs">
+                <li>Open Chrome/Firefox directly (not in-app browser)</li>
+                <li>Go to browser Settings → Site permissions</li>
+                <li>Find this site and enable Bluetooth</li>
+                <li>Return here and try again</li>
+              </ol>
+            </div>
+          ) : (
+            <div>
+              <p>Desktop Browser Setup:</p>
+              <ol className="list-decimal list-inside space-y-1 text-xs">
+                <li>Click the lock/info icon in your address bar</li>
+                <li>Find "Bluetooth" in the permissions list</li>
+                <li>Change from "Block" to "Allow"</li>
+                <li>Refresh this page and try again</li>
+              </ol>
+            </div>
+          )}
+          <p className="text-xs italic">Alternative: Use USB MIDI devices which work without special permissions.</p>
         </div>
       ),
-      duration: 10000,
+      duration: 15000,
     });
   };
 
@@ -709,9 +755,9 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                 ) : (
                   <>
                     <li>• Click "Allow Bluetooth" to enable MIDI device discovery</li>
-                    <li>• Your browser will ask for permission to access Bluetooth</li>
-                    <li>• This is safe and only allows MIDI device communication</li>
-                    <li>• You can revoke this permission anytime in browser settings</li>
+                    <li>• Put your MIDI device in pairing mode first</li>
+                    <li>• Some browsers may block Bluetooth in embedded views</li>
+                    <li>• USB MIDI devices work without special permissions</li>
                   </>
                 )}
               </ul>
@@ -720,13 +766,13 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
             <div className="bg-green-50 dark:bg-green-950 p-4 rounded-md">
               <h4 className="font-medium mb-2 flex items-center gap-2">
                 <Zap className="w-4 h-4" />
-                USB MIDI Setup
+                USB MIDI Setup (Recommended)
               </h4>
               <ul className="text-sm space-y-1 text-gray-600 dark:text-gray-300">
                 <li>• Connect USB MIDI devices directly to computer</li>
-                <li>• Most modern devices work without drivers</li>
+                <li>• Works immediately without browser permissions</li>
+                <li>• More reliable than Bluetooth for live performance</li>
                 <li>• Use "Test" button to verify output functionality</li>
-                <li>• Check device power and cable connections</li>
               </ul>
             </div>
           </div>

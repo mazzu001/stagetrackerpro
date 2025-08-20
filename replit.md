@@ -48,6 +48,18 @@ Mobile optimization: **Mobile-first stage performance design** - optimized for l
 
 # Development History
 
+## RESTORE POINT 16 - LYRICS EDITOR MIDI INTEGRATION (August 20, 2025)
+### Complete MIDI Listening and Command Sending in Lyrics Editor
+- **MIDI LISTENING**: Real-time MIDI capture during lyrics editing with Listen/Stop button
+- **COMMAND FORMATTING**: Automatic formatting of captured MIDI into StageTracker Pro syntax
+- **CLICK-TO-INSERT**: Captured MIDI commands displayed in panel, clickable to insert into lyrics
+- **COMMAND SENDING**: Send Command button to test highlighted MIDI commands to connected devices
+- **BIDIRECTIONAL TESTING**: Full send/receive workflow for MIDI command validation during editing
+- **PROFESSIONAL UI**: Visual listening indicators, message counts, and device feedback
+- **MULTI-DEVICE SUPPORT**: Sends commands to all connected USB and Bluetooth MIDI devices
+- **SYNTAX SUPPORT**: Complete support for CC, NOTE, NOTEOFF, PC, PITCH command formats
+- **STATUS**: STABLE - Professional MIDI workflow for lyrics editing and live command testing
+
 ## RESTORE POINT 15 - BLUETOOTH MIDI CONNECTIVITY (August 20, 2025)
 ### Complete Bluetooth MIDI Device Integration
 - **BLUETOOTH DISCOVERY**: Web Bluetooth API integration for discovering nearby MIDI devices

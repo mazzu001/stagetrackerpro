@@ -50,6 +50,21 @@ export default function TrackManagerScreen() {
 
   const handleAddTracks = async () => {
     try {
+      // Check if we have storage permissions (Android specific)
+      try {
+        const testDir = FileSystem.documentDirectory;
+        if (!testDir) {
+          throw new Error('Document directory not available');
+        }
+        await FileSystem.getInfoAsync(testDir);
+      } catch (permissionError) {
+        Alert.alert(
+          'Storage Permission Required',
+          'App needs storage permission to import audio files. Please check app settings.'
+        );
+        return;
+      }
+
       const result = await DocumentPicker.getDocumentAsync({
         type: 'audio/*',
         multiple: true,
@@ -70,56 +85,165 @@ export default function TrackManagerScreen() {
       
       for (const asset of result.assets) {
         try {
-          // Create a permanent file path
-          const fileName = asset.name || `track_${Date.now()}.mp3`;
-          const permanentPath = `${FileSystem.documentDirectory}audio/${fileName}`;
-          
-          // Ensure audio directory exists
-          await FileSystem.makeDirectoryAsync(
-            `${FileSystem.documentDirectory}audio/`,
-            { intermediates: true }
-          );
+          // Validate asset
+          if (!asset || !asset.uri) {
+            console.warn('Invalid asset detected, skipping');
+            continue;
+          }
 
-          // Copy file to permanent location
-          await FileSystem.copyAsync({
-            from: asset.uri,
-            to: permanentPath,
-          });
+          // Create a safe filename for Android
+          const originalName = asset.name || `track_${Date.now()}.mp3`;
+          const safeFileName = originalName.replace(/[^a-zA-Z0-9._-]/g, '_'); // Replace special chars
+          const permanentPath = `${FileSystem.documentDirectory}audio/${safeFileName}`;
+          
+          // Check available storage space (Android specific)
+          try {
+            const dirInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory);
+            if (!dirInfo.exists) {
+              throw new Error('Document directory not accessible');
+            }
+          } catch (storageError) {
+            console.error('Storage access error:', storageError);
+            Alert.alert(
+              'Storage Error',
+              'Cannot access device storage. Please check app permissions.'
+            );
+            continue;
+          }
+          
+          // Ensure audio directory exists with proper error handling
+          try {
+            const audioDir = `${FileSystem.documentDirectory}audio/`;
+            const audioDirInfo = await FileSystem.getInfoAsync(audioDir);
+            if (!audioDirInfo.exists) {
+              await FileSystem.makeDirectoryAsync(audioDir, { intermediates: true });
+            }
+          } catch (dirError) {
+            console.error('Directory creation error:', dirError);
+            Alert.alert(
+              'Directory Error',
+              'Cannot create audio directory. Storage may be full.'
+            );
+            continue;
+          }
+
+          // Verify source file accessibility
+          try {
+            const sourceInfo = await FileSystem.getInfoAsync(asset.uri);
+            if (!sourceInfo.exists) {
+              throw new Error('Source file not accessible');
+            }
+          } catch (sourceError) {
+            console.error('Source file error:', sourceError);
+            Alert.alert(
+              'File Error',
+              `Cannot access selected file: ${originalName}`
+            );
+            continue;
+          }
+
+          // Copy file with timeout and retry logic
+          try {
+            await Promise.race([
+              FileSystem.copyAsync({
+                from: asset.uri,
+                to: permanentPath,
+              }),
+              new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Copy timeout')), 30000)
+              )
+            ]);
+          } catch (copyError) {
+            console.error('File copy error:', copyError);
+            Alert.alert(
+              'Copy Error',
+              `Failed to copy ${originalName}. File may be too large or storage full.`
+            );
+            continue;
+          }
+
+          // Verify the copied file
+          try {
+            const copiedInfo = await FileSystem.getInfoAsync(permanentPath);
+            if (!copiedInfo.exists || copiedInfo.size === 0) {
+              throw new Error('File copy verification failed');
+            }
+          } catch (verifyError) {
+            console.error('Copy verification error:', verifyError);
+            // Clean up partial file
+            try {
+              await FileSystem.deleteAsync(permanentPath, { idempotent: true });
+            } catch (cleanupError) {
+              console.warn('Cleanup error:', cleanupError);
+            }
+            Alert.alert(
+              'Verification Error',
+              `File copy incomplete for ${originalName}`
+            );
+            continue;
+          }
 
           // Extract track name from filename
-          const trackName = fileName.replace(/\.[^/.]+$/, ''); // Remove extension
+          const trackName = safeFileName.replace(/\.[^/.]+$/, ''); // Remove extension
 
-          // Add track to database
-          await addTrack({
-            songId,
-            name: trackName,
-            filePath: permanentPath,
-            volume: 0.8,
-            muted: false,
-            solo: false,
-            balance: 0,
-          });
+          // Add track to database with error handling
+          try {
+            await addTrack({
+              songId,
+              name: trackName,
+              filePath: permanentPath,
+              volume: 0.8,
+              muted: false,
+              solo: false,
+              balance: 0,
+            });
+            console.log(`Successfully added track: ${trackName}`);
+          } catch (dbError) {
+            console.error('Database error:', dbError);
+            // Clean up file if database insert fails
+            try {
+              await FileSystem.deleteAsync(permanentPath, { idempotent: true });
+            } catch (cleanupError) {
+              console.warn('File cleanup error:', cleanupError);
+            }
+            Alert.alert(
+              'Database Error',
+              `Failed to save track info for ${originalName}`
+            );
+            continue;
+          }
 
-          console.log(`Added track: ${trackName}`);
         } catch (error) {
-          console.error(`Failed to add track ${asset.name}:`, error);
+          console.error(`Critical error processing ${asset?.name || 'unknown file'}:`, error);
           Alert.alert(
-            'Upload Error',
-            `Failed to add track: ${asset.name}`
+            'Processing Error',
+            `Failed to process ${asset?.name || 'selected file'}: ${error.message || 'Unknown error'}`
           );
         }
       }
 
-      // Refresh data
-      loadData();
+      // Refresh data after processing all files
+      try {
+        loadData();
+      } catch (refreshError) {
+        console.error('Failed to refresh data:', refreshError);
+      }
       
-      Alert.alert(
-        'Success',
-        `Added ${result.assets.length} track(s) successfully`
-      );
+      // Show success message only if we actually processed some files
+      const successCount = result.assets.length;
+      if (successCount > 0) {
+        Alert.alert(
+          'Import Complete',
+          `Processed ${successCount} file(s). Check the track list for successfully imported tracks.`
+        );
+      }
     } catch (error) {
-      console.error('Failed to add tracks:', error);
-      Alert.alert('Error', 'Failed to add tracks');
+      console.error('Critical error in track import:', error);
+      const errorMessage = error.message || 'Unknown error occurred';
+      Alert.alert(
+        'Import Failed', 
+        `Track import failed: ${errorMessage}. Please try again or check device storage.`
+      );
     } finally {
       setIsUploading(false);
     }

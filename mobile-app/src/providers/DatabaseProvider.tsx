@@ -218,9 +218,19 @@ export default function DatabaseProvider({ children }: { children: React.ReactNo
     const songTracks = tracks.filter(t => t.songId === id);
     for (const track of songTracks) {
       try {
-        await FileSystem.deleteAsync(track.filePath, { idempotent: true });
+        // Verify file exists before attempting deletion
+        if (track.filePath) {
+          const fileInfo = await FileSystem.getInfoAsync(track.filePath);
+          if (fileInfo.exists) {
+            await FileSystem.deleteAsync(track.filePath, { idempotent: true });
+            console.log(`Deleted audio file: ${track.filePath}`);
+          } else {
+            console.warn(`Audio file already missing: ${track.filePath}`);
+          }
+        }
       } catch (error) {
         console.warn(`Failed to delete audio file: ${track.filePath}`, error);
+        // Continue with deletion even if file cleanup fails
       }
     }
 
@@ -279,16 +289,29 @@ export default function DatabaseProvider({ children }: { children: React.ReactNo
     if (!db) throw new Error('Database not initialized');
 
     const track = tracks.find(t => t.id === id);
-    if (track) {
+    if (track?.filePath) {
       try {
-        await FileSystem.deleteAsync(track.filePath, { idempotent: true });
+        // Check if file exists before attempting deletion
+        const fileInfo = await FileSystem.getInfoAsync(track.filePath);
+        if (fileInfo.exists) {
+          await FileSystem.deleteAsync(track.filePath, { idempotent: true });
+          console.log(`Successfully deleted audio file: ${track.filePath}`);
+        } else {
+          console.warn(`Audio file already missing: ${track.filePath}`);
+        }
       } catch (error) {
         console.warn(`Failed to delete audio file: ${track.filePath}`, error);
+        // Continue with database deletion even if file deletion fails
       }
     }
 
-    await db.runAsync('DELETE FROM tracks WHERE id = ?', [id]);
-    await refreshData();
+    try {
+      await db.runAsync('DELETE FROM tracks WHERE id = ?', [id]);
+      await refreshData();
+    } catch (dbError) {
+      console.error('Failed to delete track from database:', dbError);
+      throw new Error('Failed to delete track from database');
+    }
   };
 
   const getTracksBySong = (songId: string): Track[] => {

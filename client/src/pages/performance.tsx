@@ -53,7 +53,7 @@ export default function Performance({ userType }: PerformanceProps) {
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
-  const { midiAccess: midiSystemAccess, isConnected: midiConnected, deviceCount, sendMIDICommand } = useMIDISystem();
+  const { midiAccess: midiSystemAccess, isConnected: midiConnected, deviceCount, sendMIDICommand, scanForBluetoothDevices } = useMIDISystem();
   const { startSequence, stopSequence, processEvents } = useMIDISequencer();
 
   // Fullscreen functionality
@@ -1329,6 +1329,7 @@ Click "Timestamp" to insert current time`}
             isConnected={midiConnected}
             deviceCount={deviceCount}
             sendCommand={sendMIDICommand}
+            scanForBluetoothDevices={scanForBluetoothDevices}
           />
         </DialogContent>
       </Dialog>

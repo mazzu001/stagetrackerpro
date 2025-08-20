@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card } from "@/components/ui/card";
-import { Bluetooth, Music, CheckCircle, AlertCircle, Activity } from 'lucide-react';
+import { Bluetooth, Music, CheckCircle, AlertCircle, Activity, Search } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 interface MIDIDeviceManagerProps {
@@ -11,9 +11,10 @@ interface MIDIDeviceManagerProps {
   isConnected: boolean;
   deviceCount: number;
   sendCommand: (command: string) => boolean;
+  scanForBluetoothDevices?: () => Promise<void>;
 }
 
-export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCommand }: MIDIDeviceManagerProps) {
+export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCommand, scanForBluetoothDevices }: MIDIDeviceManagerProps) {
   const [testCommand, setTestCommand] = useState("CC:1:64:1");
   const [lastActivity, setLastActivity] = useState<string>("");
   const { toast } = useToast();
@@ -104,10 +105,23 @@ export function MIDIDeviceManager({ midiAccess, isConnected, deviceCount, sendCo
 
       {/* Device List */}
       <Card className="p-4">
-        <h3 className="font-semibold mb-3 flex items-center gap-2">
-          <Music className="w-4 h-4" />
-          Connected Devices
-        </h3>
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-semibold flex items-center gap-2">
+            <Music className="w-4 h-4" />
+            Connected Devices
+          </h3>
+          {scanForBluetoothDevices && (
+            <Button
+              onClick={scanForBluetoothDevices}
+              size="sm"
+              variant="outline"
+              className="flex items-center gap-1"
+            >
+              <Search className="w-3 h-3" />
+              Find Bluetooth
+            </Button>
+          )}
+        </div>
         
         <ScrollArea className="h-32">
           {devices.length > 0 ? (

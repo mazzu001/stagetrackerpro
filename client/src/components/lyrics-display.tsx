@@ -85,20 +85,23 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           const visibleTop = currentScrollTop;
           const visibleBottom = currentScrollTop + containerHeight;
           
-          // Only scroll if the line is completely out of view
-          const lineCompletelyAbove = lineBottom < visibleTop;
-          const lineCompletelyBelow = lineTop > visibleBottom;
+          // Check if line is approaching the center boundaries
+          const centerTop = visibleTop + containerHeight * 0.3; // 30% from top
+          const centerBottom = visibleTop + containerHeight * 0.7; // 70% from top
           
-          if (lineCompletelyAbove || lineCompletelyBelow) {
+          const lineAboveCenter = lineBottom < centerTop;
+          const lineBelowCenter = lineTop > centerBottom;
+          
+          if (lineAboveCenter || lineBelowCenter) {
             // Calculate one line height to scroll exactly one line at a time
             const lineHeight = currentLineElement.offsetHeight;
             let targetScrollTop = currentScrollTop;
             
-            if (lineCompletelyBelow) {
-              // Scroll down by exactly one line height
+            if (lineBelowCenter) {
+              // Scroll down by exactly one line height to keep line in center area
               targetScrollTop = currentScrollTop + lineHeight;
-            } else if (lineCompletelyAbove) {
-              // Scroll up by exactly one line height
+            } else if (lineAboveCenter) {
+              // Scroll up by exactly one line height to keep line in center area
               targetScrollTop = currentScrollTop - lineHeight;
             }
             

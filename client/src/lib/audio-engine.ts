@@ -286,6 +286,14 @@ export class AudioEngine {
   // Cache device detection to avoid repeated user agent parsing
   private deviceDetectionCache: { needsSamsungWorkaround: boolean; lastCheck: number } | null = null;
   
+  // Performance monitoring for debugging PC slowdown
+  private performanceMonitor = {
+    lastLogTime: 0,
+    callCount: 0,
+    totalTime: 0,
+    maxTime: 0
+  };
+  
   private detectSamsungDevice(): boolean {
     const now = performance.now();
     
@@ -306,13 +314,15 @@ export class AudioEngine {
     
     this.deviceDetectionCache = { needsSamsungWorkaround, lastCheck: now };
     
-    // Log detection result occasionally
-    if (Math.random() < 0.01) {
-      console.log('Samsung device detection result:', {
+    // Log detection result occasionally - temporarily more frequent for debugging PC issue
+    if (Math.random() < 0.1) {
+      console.log('Device detection result:', {
         userAgent: navigator.userAgent,
         needsSamsungWorkaround,
         isSamsungDevice,
-        isAndroid: userAgent.includes('android')
+        isAndroid: userAgent.includes('android'),
+        platform: navigator.platform,
+        vendor: navigator.vendor
       });
     }
     
@@ -320,11 +330,15 @@ export class AudioEngine {
   }
 
   getAudioLevels(): Record<string, number> {
+    const startTime = performance.now();
     const levels: Record<string, number> = {};
     const now = performance.now();
     
     // Use cached device detection for better performance
     const needsSamsungWorkaround = this.detectSamsungDevice();
+    
+    // Performance monitoring
+    this.performanceMonitor.callCount++;
     
     this.analyzerNodes.forEach((analyzer, trackId) => {
       const track = this.tracks.get(trackId);
@@ -400,7 +414,7 @@ export class AudioEngine {
       
       // Smooth the level changes
       const cached = this.levelCache.get(trackId);
-      if (cached && now - cached.lastUpdate < 50) { // Don't update too frequently
+      if (cached && now - cached.lastUpdate < 30) { // Update more frequently for smoother meters
         rawLevel = cached.level + (rawLevel - cached.level) * this.smoothingFactor;
       }
       
@@ -425,8 +439,8 @@ export class AudioEngine {
 
     const now = performance.now();
     
-    // Throttle updates for performance
-    if (now - this.masterLevelCache.lastUpdate < 33) { // ~30fps for master meters
+    // Throttle updates for performance - reduce to 60fps for smoother VU meters
+    if (now - this.masterLevelCache.lastUpdate < 16) { // ~60fps for master meters
       return { left: this.masterLevelCache.left, right: this.masterLevelCache.right };
     }
 
@@ -463,21 +477,16 @@ export class AudioEngine {
         console.log('Samsung tablet master levels - RMS:', rms, 'Buffer length:', bufferLength);
       }
     } else {
-      // Original frequency domain calculation for other devices
+      // Simplified frequency domain calculation for PC performance
       let sum = 0;
-      const startBin = Math.floor(bufferLength * 0.1);
-      const endBin = Math.floor(bufferLength * 0.8);
+      const sampleCount = Math.min(64, bufferLength); // Much smaller sample for speed
       
-      for (let i = startBin; i < endBin; i++) {
+      for (let i = 0; i < sampleCount; i++) {
         sum += dataArray[i];
       }
-      // Calculate RMS for master levels to match track calculation
-      let sum2 = 0;
-      for (let i = startBin; i < endBin; i++) {
-        const normalizedValue = dataArray[i] / 255;
-        sum2 += normalizedValue * normalizedValue;
-      }
-      rms = Math.sqrt(sum2 / (endBin - startBin));
+      
+      // Simple average instead of complex RMS calculation
+      rms = (sum / sampleCount) / 255;
     }
     
     let baseLevel = rms * 2.0; // Higher base scaling for master levels

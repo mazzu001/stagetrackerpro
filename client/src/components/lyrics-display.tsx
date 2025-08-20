@@ -73,7 +73,7 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
       const firstTimestamp = Math.min(...parsedLyrics.map(line => line.timestamp));
       const shouldStartScrolling = currentTime >= firstTimestamp;
       
-      if (shouldStartScrolling && currentLineIndex !== lastScrolledLine && currentLineIndex >= 2) {
+      if (shouldStartScrolling && currentLineIndex !== lastScrolledLine) {
         const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
         
         if (currentLineElement) {
@@ -81,13 +81,16 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           const lineTop = currentLineElement.offsetTop;
           const lineHeight = currentLineElement.offsetHeight;
           
-          // Always position the highlighted line exactly at the center of the text box
-          const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
-          
-          container.scrollTo({
-            top: Math.max(0, targetScrollTop),
-            behavior: 'smooth'
-          });
+          if (currentLineIndex >= 2) {
+            // For line 2 and beyond, center the highlighted line
+            const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
+            
+            container.scrollTo({
+              top: Math.max(0, targetScrollTop),
+              behavior: 'smooth'
+            });
+          }
+          // For lines 0 and 1, don't scroll (stay at top)
           
           setLastScrolledLine(currentLineIndex);
         }

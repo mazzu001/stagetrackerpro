@@ -143,6 +143,8 @@ export default function Performance({ userType }: PerformanceProps) {
     refreshSongs();
   }, [user?.email, selectedSongId]);
 
+
+
   // Add new song function
   const handleAddSongLocal = () => {
     if (!user?.email) return;
@@ -441,6 +443,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   <Crown className="w-4 h-4 mr-2" />
                   <span>Subscribe Now</span>
                 </DropdownMenuItem>
+
                 <DropdownMenuItem disabled className="flex items-center">
                   <User className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">

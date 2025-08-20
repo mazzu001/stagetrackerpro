@@ -102,11 +102,20 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
   // Auto-scroll for timestamped lyrics
   useEffect(() => {
     if (hasTimestamps && currentLineIndex >= 0 && containerRef.current) {
-      const currentElement = containerRef.current.querySelector(`[data-line="${currentLineIndex}"]`);
-      if (currentElement) {
-        currentElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'center'
+      const container = containerRef.current;
+      const currentElement = container.querySelector(`[data-line="${currentLineIndex}"]`);
+      if (currentElement && container) {
+        // Calculate the position to scroll to within the container
+        const containerRect = container.getBoundingClientRect();
+        const elementRect = currentElement.getBoundingClientRect();
+        const relativeTop = elementRect.top - containerRect.top;
+        const containerHeight = container.clientHeight;
+        const targetScrollTop = container.scrollTop + relativeTop - (containerHeight / 2) + (elementRect.height / 2);
+        
+        // Smooth scroll within the container only
+        container.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth'
         });
       }
     }
@@ -153,7 +162,8 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
-      position: 'relative'
+      position: 'relative',
+      contain: 'layout style paint'
     }}>
       {/* Header */}
       <div style={{ 
@@ -176,8 +186,12 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
           maxHeight: '440px',
           minHeight: '440px',
           overflowY: 'auto',
+          overflowX: 'hidden',
           padding: '24px',
-          backgroundColor: '#1f2937'
+          backgroundColor: '#1f2937',
+          position: 'relative',
+          contain: 'layout style paint',
+          scrollBehavior: 'smooth'
         }}
         data-testid="lyrics-container"
       >

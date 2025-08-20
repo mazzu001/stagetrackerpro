@@ -401,15 +401,12 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
           
           <div className="flex items-center space-x-2 md:space-x-4 flex-shrink-0">
-            {/* Subscription Status */}
+            {/* Subscription Status - Desktop only */}
             {userType === 'free' && (
-              <div className="flex items-center space-x-1 md:space-x-2 bg-gray-800 px-2 md:px-3 py-1 rounded-lg">
+              <div className="flex items-center space-x-1 md:space-x-2 bg-gray-800 px-2 md:px-3 py-1 rounded-lg mobile-hidden">
                 <Crown className="w-3 h-3 md:w-4 md:h-4 text-yellow-500" />
-                <span className="text-xs md:text-sm text-gray-300 mobile-hidden">
+                <span className="text-xs md:text-sm text-gray-300">
                   Free: {allSongs.length}/2 songs
-                </span>
-                <span className="text-xs text-gray-300 mobile-only">
-                  {allSongs.length}/2
                 </span>
                 <Button
                   size="sm"
@@ -417,15 +414,14 @@ export default function Performance({ userType }: PerformanceProps) {
                   className="text-xs px-1 md:px-2 py-1 h-6 btn-touch"
                   onClick={handleUpgrade}
                 >
-                  Up
+                  Upgrade
                 </Button>
               </div>
             )}
             {userType === 'paid' && (
-              <div className="flex items-center space-x-1 md:space-x-2 bg-green-900/30 px-2 md:px-3 py-1 rounded-lg">
+              <div className="flex items-center space-x-1 md:space-x-2 bg-green-900/30 px-2 md:px-3 py-1 rounded-lg mobile-hidden">
                 <Crown className="w-3 h-3 md:w-4 md:h-4 text-yellow-500" />
-                <span className="text-xs md:text-sm text-green-300 mobile-hidden">Premium</span>
-                <span className="text-xs text-green-300 mobile-only">Pro</span>
+                <span className="text-xs md:text-sm text-green-300">Premium</span>
               </div>
             )}
             <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
@@ -465,15 +461,49 @@ export default function Performance({ userType }: PerformanceProps) {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-64">
+                {/* Mobile subscription status */}
+                <div className="mobile-flex md:hidden">
+                  {userType === 'free' && (
+                    <>
+                      <DropdownMenuItem className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <Crown className="w-4 h-4 mr-2 text-yellow-500" />
+                          <span>Free Plan</span>
+                        </div>
+                        <span className="text-xs text-gray-400">{allSongs.length}/2 songs</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => setLocation('/subscribe')}
+                        className="flex items-center cursor-pointer text-yellow-500"
+                        data-testid="menu-upgrade-mobile"
+                      >
+                        <Crown className="w-4 h-4 mr-2" />
+                        <span>Upgrade to Premium</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                  {userType === 'paid' && (
+                    <>
+                      <DropdownMenuItem className="flex items-center">
+                        <Crown className="w-4 h-4 mr-2 text-yellow-500" />
+                        <span className="text-green-400">Premium Active</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                </div>
+                
+                {/* Desktop subscription link */}
                 <DropdownMenuItem 
                   onClick={() => setLocation('/subscribe')}
-                  className="flex items-center cursor-pointer"
+                  className="flex items-center cursor-pointer mobile-hidden"
                   data-testid="menu-subscribe"
                 >
                   <Crown className="w-4 h-4 mr-2" />
                   <span>Subscribe Now</span>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator className="mobile-hidden" />
                 <DropdownMenuItem 
                   onClick={() => downloadSampleZip('3AM')}
                   className="flex items-center cursor-pointer"

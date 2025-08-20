@@ -752,7 +752,7 @@ export default function Performance({ userType }: PerformanceProps) {
         {/* Right Content Area - Lyrics */}
         <div className="flex-1 flex flex-col min-h-0 md:flex-row">
           {/* Mobile: Lyrics above transport controls */}
-          <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 flex flex-col">
             <div className="p-2 md:p-4 border-b border-gray-700 bg-surface flex items-center justify-between mobile-hidden">
               <h2 className="text-sm md:text-lg font-semibold truncate mr-2">
                 {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
@@ -761,7 +761,7 @@ export default function Performance({ userType }: PerformanceProps) {
               {/* Lyrics Controls */}
               {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
-            <div className="overflow-y-auto p-2 md:p-4">
+            <div className="p-2 md:p-4">
               <LyricsDisplay
                 song={selectedSong}
                 currentTime={currentTime}

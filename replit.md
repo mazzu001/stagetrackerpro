@@ -42,6 +42,16 @@ This project is a live music performance application designed for professional s
 - All controls sync properly with lyrics component using localStorage and events
 - **Status**: Complete working application with optimal lyrics control layout
 
+### Working Build 4 (August 20, 2025)
+- All functionality from Working Build 3
+- **NEW**: Auto-scroll toggle functionality for non-timestamped lyrics
+- Auto-scroll can be paused/resumed without affecting other features
+- **NEW**: Alphabetical song sorting across all song lists and components
+- Songs now display in alphabetical order by title in both database and local storage
+- **FIXED**: Double scrollbar issue in lyrics section by removing parent overflow
+- **FIXED**: TypeScript errors in song selector and local storage components
+- **Status**: Complete application with enhanced lyrics controls and clean UI
+
 # User Preferences
 
 Preferred communication style: Simple, everyday language.

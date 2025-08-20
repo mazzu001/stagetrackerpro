@@ -477,12 +477,11 @@ export default function TrackManager({
             const currentBalance = localTrackValues[track.id]?.balance ?? track.balance ?? 0;
             const isMuted = track.isMuted ?? false;
             const isSolo = track.isSolo ?? false;
-            const level = audioLevels[track.id] || 0;
-            
-            // Debug audio levels specifically for track manager
-            if (isPlaying && level > 0) {
-              console.log(`Track Manager VU: ${track.name} level=${level.toFixed(4)}`);
-            }
+            const rawLevel = audioLevels[track.id] || 0;
+            // Apply the same amplification that makes stereo VU meters work perfectly
+            // Stereo VU meters get values 20-50, track VU meters get 0.04-0.12
+            // So we need to amplify by roughly 500x to match stereo meter levels
+            const level = rawLevel * 500;
             
             return (
               <Card key={track.id}>

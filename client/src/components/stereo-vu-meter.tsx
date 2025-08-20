@@ -26,18 +26,19 @@ export default function StereoVUMeter({
       return;
     }
 
-    // Master levels are already scaled appropriately, no amplification needed
-    const targetLevel = Math.max(0, Math.min(100, leftLevel));
+    // Apply amplification to make meters more reactive - master levels need boosting for visibility
+    const amplifiedLevel = leftLevel * 1.8; // Amplify for better visibility without going too hot
+    const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
     const animate = () => {
       setAnimatedLeftLevel(prev => {
         const diff = targetLevel - prev;
-        const step = diff * 0.8;
+        const step = diff * 0.9; // Faster response for more reactive meters
         return Math.abs(step) < 0.1 ? targetLevel : prev + step;
       });
     };
 
-    const interval = setInterval(animate, 8);
+    const interval = setInterval(animate, 6); // Faster update rate
     return () => clearInterval(interval);
   }, [leftLevel, isPlaying]);
 
@@ -49,18 +50,19 @@ export default function StereoVUMeter({
       return;
     }
 
-    // Master levels are already scaled appropriately, no amplification needed
-    const targetLevel = Math.max(0, Math.min(100, rightLevel));
+    // Apply amplification to make meters more reactive - master levels need boosting for visibility
+    const amplifiedLevel = rightLevel * 1.8; // Amplify for better visibility without going too hot
+    const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
     const animate = () => {
       setAnimatedRightLevel(prev => {
         const diff = targetLevel - prev;
-        const step = diff * 0.8;
+        const step = diff * 0.9; // Faster response for more reactive meters
         return Math.abs(step) < 0.1 ? targetLevel : prev + step;
       });
     };
 
-    const interval = setInterval(animate, 8);
+    const interval = setInterval(animate, 6); // Faster update rate
     return () => clearInterval(interval);
   }, [rightLevel, isPlaying]);
 
@@ -70,9 +72,9 @@ export default function StereoVUMeter({
       setLeftPeak(animatedLeftLevel);
     } else {
       const decay = () => {
-        setLeftPeak(prev => Math.max(animatedLeftLevel, prev - 2.0));
+        setLeftPeak(prev => Math.max(animatedLeftLevel, prev - 1.5)); // Faster decay for more dynamic peaks
       };
-      const interval = setInterval(decay, 20);
+      const interval = setInterval(decay, 15); // More frequent updates
       return () => clearInterval(interval);
     }
   }, [animatedLeftLevel, leftPeak]);
@@ -83,9 +85,9 @@ export default function StereoVUMeter({
       setRightPeak(animatedRightLevel);
     } else {
       const decay = () => {
-        setRightPeak(prev => Math.max(animatedRightLevel, prev - 2.0));
+        setRightPeak(prev => Math.max(animatedRightLevel, prev - 1.5)); // Faster decay for more dynamic peaks
       };
-      const interval = setInterval(decay, 20);
+      const interval = setInterval(decay, 15); // More frequent updates
       return () => clearInterval(interval);
     }
   }, [animatedRightLevel, rightPeak]);

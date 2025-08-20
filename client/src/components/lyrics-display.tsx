@@ -78,26 +78,16 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
         
         if (currentLineElement) {
           const containerHeight = container.clientHeight;
-          const currentScrollTop = container.scrollTop;
           const lineTop = currentLineElement.offsetTop;
           const lineHeight = currentLineElement.offsetHeight;
-          const lineCenterY = lineTop + (lineHeight / 2);
           
-          // Calculate the center of the visible text box
-          const textBoxCenterY = currentScrollTop + (containerHeight / 2);
+          // Always position the highlighted line exactly at the center of the text box
+          const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
           
-          // Check if the highlighted line has passed the center of the text box
-          const linePassedCenter = lineCenterY > textBoxCenterY;
-          
-          if (linePassedCenter) {
-            // Scroll to position this line exactly at the center of the text box
-            const targetScrollTop = lineTop - (containerHeight / 2) + (lineHeight / 2);
-            
-            container.scrollTo({
-              top: Math.max(0, targetScrollTop),
-              behavior: 'smooth'
-            });
-          }
+          container.scrollTo({
+            top: Math.max(0, targetScrollTop),
+            behavior: 'smooth'
+          });
           
           setLastScrolledLine(currentLineIndex);
         }

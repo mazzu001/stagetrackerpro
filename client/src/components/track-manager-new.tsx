@@ -24,6 +24,7 @@ interface TrackManagerProps {
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
+  isLoadingTracks?: boolean;
   onPlay?: () => void;
   onPause?: () => void;
 }
@@ -37,6 +38,7 @@ export default function TrackManager({
   onTrackBalanceChange,
   audioLevels = {},
   isPlaying = false,
+  isLoadingTracks = false,
   onPlay,
   onPause
 }: TrackManagerProps) {
@@ -391,7 +393,18 @@ export default function TrackManager({
   // For now, let's return a simple structure to test the core functionality
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 relative">
+      {/* Loading Overlay */}
+      {isLoadingTracks && (
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center rounded-lg">
+          <div className="bg-surface border border-gray-700 rounded-lg p-6 text-center">
+            <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-3"></div>
+            <h3 className="text-lg font-semibold mb-2">Loading Tracks...</h3>
+            <p className="text-sm text-gray-400">Please wait while audio tracks are being loaded.</p>
+            <p className="text-xs text-gray-500 mt-1">This may take longer on mobile devices.</p>
+          </div>
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold flex items-center gap-2">
           <Music className="h-5 w-5" />

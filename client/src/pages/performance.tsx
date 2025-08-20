@@ -412,6 +412,7 @@ export default function Performance({ userType }: PerformanceProps) {
                       onTrackBalanceChange={updateTrackBalance}
                       audioLevels={audioLevels}
                       isPlaying={isPlaying}
+                      isLoadingTracks={isLoadingTracks}
                       onPlay={play}
                       onPause={pause}
                     />
@@ -463,18 +464,6 @@ export default function Performance({ userType }: PerformanceProps) {
       </header>
 
 
-
-      {/* Loading Overlay */}
-      {isLoadingTracks && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-surface border border-gray-700 rounded-lg p-8 text-center">
-            <div className="animate-spin w-12 h-12 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-            <h3 className="text-xl font-semibold mb-2">Loading Tracks...</h3>
-            <p className="text-gray-400">Please wait while audio tracks are being loaded.</p>
-            <p className="text-sm text-gray-500 mt-2">This may take longer on mobile devices.</p>
-          </div>
-        </div>
-      )}
 
       {/* Main Content Area */}
       <div className="flex flex-1 min-h-0 overflow-hidden">

@@ -53,7 +53,7 @@ export default function Performance({ userType }: PerformanceProps) {
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
-  const { midiAccess: midiSystemAccess, isConnected: midiConnected, deviceCount, sendMIDICommand, scanForBluetoothDevices } = useMIDISystem();
+  const { devices, isScanning, scanForBluetoothDevices, sendMIDICommand } = useMIDISystem();
   const { startSequence, stopSequence, processEvents } = useMIDISequencer();
 
   // Fullscreen functionality
@@ -86,10 +86,7 @@ export default function Performance({ userType }: PerformanceProps) {
     };
   }, []);
 
-  // Set MIDI access state from the MIDI system
-  useEffect(() => {
-    setMidiAccess(midiSystemAccess);
-  }, [midiSystemAccess]);
+  // MIDI system is now handled by useMIDISystem hook directly
 
   // MIDI message listener for lyrics editor
   useEffect(() => {
@@ -1325,11 +1322,10 @@ Click "Timestamp" to insert current time`}
             <DialogTitle>MIDI Device Manager</DialogTitle>
           </DialogHeader>
           <MIDIDeviceManager
-            midiAccess={midiSystemAccess}
-            isConnected={midiConnected}
-            deviceCount={deviceCount}
-            sendCommand={sendMIDICommand}
+            devices={devices}
+            isScanning={isScanning}
             scanForBluetoothDevices={scanForBluetoothDevices}
+            sendMIDICommand={sendMIDICommand}
           />
         </DialogContent>
       </Dialog>

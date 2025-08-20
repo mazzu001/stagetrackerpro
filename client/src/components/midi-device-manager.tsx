@@ -60,14 +60,17 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
   const [receivedMessages, setReceivedMessages] = useState<{ device: string; message: string; timestamp: number }[]>([]);
   const { toast } = useToast();
 
-  // Initialize MIDI access with Bluetooth support
+  // Initialize MIDI access with enhanced Bluetooth support
   useEffect(() => {
     if (!isOpen) return;
 
     const initializeMIDI = async () => {
       try {
+        console.log('[MIDI MANAGER] Initializing MIDI access...');
+        
         if (!(navigator as any).requestMIDIAccess) {
           setMidiSupported(false);
+          console.error('[MIDI MANAGER] Web MIDI API not supported');
           toast({
             title: "MIDI Not Supported",
             description: "Your browser doesn't support Web MIDI API",
@@ -82,15 +85,43 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
         }
 
         setIsScanning(true);
-        // Request MIDI access with sysex for better Bluetooth device support
+        console.log('[MIDI MANAGER] Requesting MIDI access with Bluetooth support...');
+        
+        // Request MIDI access with options optimized for Bluetooth
         const access = await (navigator as any).requestMIDIAccess({ 
           sysex: false,
           software: true // Include software devices (important for Bluetooth)
         });
         setMidiAccess(access);
         
+        console.log('[MIDI MANAGER] MIDI access granted');
+        console.log('[MIDI MANAGER] Input devices found:', access.inputs.size);
+        console.log('[MIDI MANAGER] Output devices found:', access.outputs.size);
+        
+        // Log all detected devices
+        access.inputs.forEach((input: any) => {
+          console.log('[MIDI MANAGER] Input device:', {
+            id: input.id,
+            name: input.name,
+            manufacturer: input.manufacturer,
+            state: input.state,
+            connection: input.connection
+          });
+        });
+        
+        access.outputs.forEach((output: any) => {
+          console.log('[MIDI MANAGER] Output device:', {
+            id: output.id,
+            name: output.name,
+            manufacturer: output.manufacturer,
+            state: output.state,
+            connection: output.connection
+          });
+        });
+        
         // Listen for device changes
         access.onstatechange = () => {
+          console.log('[MIDI MANAGER] Device state changed, rescanning...');
           scanDevices(access);
         };
         
@@ -155,7 +186,22 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
 
     setDevices(deviceList);
     onDevicesChange?.(deviceList);
-    console.log('MIDI devices updated:', deviceList);
+    
+    console.log('[MIDI MANAGER] Device scan complete:', {
+      totalDevices: deviceList.length,
+      outputs: deviceList.filter(d => d.type === 'output').length,
+      inputs: deviceList.filter(d => d.type === 'input').length,
+      bluetoothDevices: deviceList.filter(d => d.isBluetooth).length,
+      connectedDevices: deviceList.filter(d => d.state === 'connected').length
+    });
+    
+    if (deviceList.length === 0) {
+      console.warn('[MIDI MANAGER] No MIDI devices detected. Bluetooth MIDI troubleshooting:');
+      console.warn('- Ensure Bluetooth MIDI device is paired with computer');
+      console.warn('- Try disconnecting and reconnecting the device');
+      console.warn('- Check if device appears in OS MIDI settings');
+      console.warn('- Refresh this page after device connection');
+    }
   };
 
   // Detect if a device is a Bluetooth MIDI device

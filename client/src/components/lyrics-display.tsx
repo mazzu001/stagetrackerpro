@@ -24,6 +24,26 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
     return saved ? parseFloat(saved) : 1.0;
   });
 
+  // Listen for font size changes from external controls
+  useEffect(() => {
+    const handleFontChange = () => {
+      const newSize = parseInt(localStorage.getItem('lyrics-font-size') || '18');
+      setFontSize(newSize);
+    };
+
+    const handleScrollChange = () => {
+      const newSpeed = parseFloat(localStorage.getItem('lyrics-scroll-speed') || '1.0');
+      setScrollSpeed(newSpeed);
+    };
+
+    window.addEventListener('lyrics-font-change', handleFontChange);
+    window.addEventListener('lyrics-scroll-change', handleScrollChange);
+    return () => {
+      window.removeEventListener('lyrics-font-change', handleFontChange);
+      window.removeEventListener('lyrics-scroll-change', handleScrollChange);
+    };
+  }, []);
+
   // Parse lyrics with timestamps
   const parseLyrics = (lyricsText: string): LyricsLine[] => {
     if (!lyricsText) return [];
@@ -136,78 +156,6 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
         justifyContent: 'space-between'
       }}>
         <h3 style={{ fontSize: '18px', fontWeight: '500', color: 'white' }}>{song.title} - Lyrics</h3>
-        
-        <div className="flex items-center space-x-2">
-          {/* Scroll Speed Controls for non-timestamped lyrics */}
-          {!hasTimestamps && plainLines.length > 0 && (
-            <div className="flex items-center space-x-1">
-              <Button
-                variant="secondary"
-                size="sm"
-                className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
-                title="Decrease Scroll Speed"
-                onClick={() => adjustScrollSpeed(-0.2)}
-                data-testid="button-decrease-scroll-speed"
-              >
-                <ChevronDown className="w-3 h-3" />
-              </Button>
-              <span className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300 min-w-[32px] text-center">
-                {scrollSpeed.toFixed(1)}x
-              </span>
-              <Button
-                variant="secondary"
-                size="sm"
-                className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
-                title="Increase Scroll Speed"
-                onClick={() => adjustScrollSpeed(0.2)}
-                data-testid="button-increase-scroll-speed"
-              >
-                <ChevronUp className="w-3 h-3" />
-              </Button>
-            </div>
-          )}
-
-          {/* Font Size Controls */}
-          <div className="flex items-center space-x-1">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
-              title="Decrease Font Size"
-              onClick={() => adjustFontSize(-2)}
-              data-testid="button-decrease-font"
-            >
-              <Minus className="w-3 h-3" />
-            </Button>
-            <span className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300 min-w-[32px] text-center">
-              {fontSize}
-            </span>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
-              title="Increase Font Size"
-              onClick={() => adjustFontSize(2)}
-              data-testid="button-increase-font"
-            >
-              <Plus className="w-3 h-3" />
-            </Button>
-          </div>
-
-          {/* Edit Button */}
-          {onEditLyrics && (
-            <Button
-              variant="secondary"
-              size="sm"
-              className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
-              title="Edit Lyrics"
-              onClick={onEditLyrics}
-              data-testid="button-edit-lyrics"
-            >
-              <Edit className="w-3 h-3" />
-            </Button>
-          )}
-        </div>
       </div>
 
       {/* Lyrics Container */}

@@ -3,6 +3,7 @@ import { useLocation } from "wouter";
 import CompactTransportControls from "@/components/compact-transport-controls";
 import AudioMixer from "@/components/audio-mixer";
 import { LyricsDisplay } from "@/components/lyrics-display";
+import { LyricsControls } from "@/components/lyrics-controls";
 import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
 import TrackManager from "@/components/track-manager-new";
@@ -752,6 +753,9 @@ export default function Performance({ userType }: PerformanceProps) {
               <h2 className="text-sm md:text-lg font-semibold truncate mr-2">
                 {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
               </h2>
+              
+              {/* Lyrics Controls */}
+              {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
             <div className="overflow-y-auto p-2 md:p-4">
               <LyricsDisplay

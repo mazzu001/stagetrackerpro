@@ -28,6 +28,41 @@ export function useMIDISequencer() {
   
   const { broadcastMIDIMessage, sendNoteOn, sendNoteOff, sendControlChange, sendProgramChange } = useMIDI();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [midiAccess, setMidiAccess] = useState<any>(null);
+
+  // Initialize direct MIDI access (same as manual Send Command)
+  useEffect(() => {
+    const initMIDI = async () => {
+      try {
+        if ((navigator as any).requestMIDIAccess) {
+          const access = await (navigator as any).requestMIDIAccess({ sysex: false });
+          setMidiAccess(access);
+          console.log('[MIDI SEQUENCER] Direct MIDI access initialized');
+        }
+      } catch (error) {
+        console.error('[MIDI SEQUENCER] Failed to initialize direct MIDI access:', error);
+      }
+    };
+    
+    initMIDI();
+  }, []);
+
+  // Initialize direct MIDI access (same as manual Send Command)
+  useEffect(() => {
+    const initMIDI = async () => {
+      try {
+        if ((navigator as any).requestMIDIAccess) {
+          const access = await (navigator as any).requestMIDIAccess({ sysex: false });
+          setMidiAccess(access);
+          console.log('[MIDI SEQUENCER] Direct MIDI access initialized');
+        }
+      } catch (error) {
+        console.error('[MIDI SEQUENCER] Failed to initialize direct MIDI access:', error);
+      }
+    };
+    
+    initMIDI();
+  }, []);
 
   // Parse MIDI commands from lyrics text
   const parseMIDICommands = useCallback((lyricsText: string): MIDICommand[] => {
@@ -126,49 +161,70 @@ export function useMIDISequencer() {
     return sortedCommands;
   }, []);
 
-  // Execute a MIDI command
+  // Execute a single MIDI command using direct MIDI access (same as manual Send Command)
   const executeMIDICommand = useCallback((command: MIDICommand) => {
     const channel = command.channel || 0;
     
     console.log(`[MIDI SEQUENCER] Executing command: ${command.type} at ${command.timestamp}s`);
+    console.log(`[MIDI SEQUENCER] AUTOMATED SEND - Using direct MIDI access like manual Send Command`);
     
+    if (!midiAccess || !midiAccess.outputs || midiAccess.outputs.size === 0) {
+      console.log('[MIDI SEQUENCER] No MIDI access or devices available for automated sending');
+      return;
+    }
+    
+    let midiData: number[] = [];
+    
+    // Convert command to MIDI data bytes (same logic as manual parseMIDICommand)
     try {
       switch (command.type) {
         case 'note_on':
           if (command.note !== undefined && command.velocity !== undefined) {
-            console.log(`[MIDI SEQUENCER] Sending Note On: note=${command.note}, vel=${command.velocity}, ch=${channel}`);
-            sendNoteOn(command.note, command.velocity, channel);
+            midiData = [0x90 | channel, command.note, command.velocity];
           }
           break;
           
         case 'note_off':
           if (command.note !== undefined) {
-            console.log(`[MIDI SEQUENCER] Sending Note Off: note=${command.note}, ch=${channel}`);
-            sendNoteOff(command.note, channel);
+            midiData = [0x80 | channel, command.note, 0];
           }
           break;
           
         case 'control_change':
           if (command.controller !== undefined && command.value !== undefined) {
-            console.log(`[MIDI SEQUENCER] Sending CC: controller=${command.controller}, value=${command.value}, ch=${channel}`);
-            sendControlChange(command.controller, command.value, channel);
+            midiData = [0xB0 | channel, command.controller, command.value];
           }
           break;
           
         case 'program_change':
           if (command.program !== undefined) {
-            console.log(`[MIDI SEQUENCER] Sending PC: program=${command.program}, ch=${channel}`);
-            console.log(`[MIDI SEQUENCER] This should send MIDI data: [${0xC0 | channel}, ${command.program}]`);
-            sendProgramChange(command.program, channel);
+            midiData = [0xC0 | channel, command.program];
           }
           break;
       }
       
-      console.log('[MIDI SEQUENCER] Successfully executed MIDI command:', command);
+      if (midiData.length > 0) {
+        let sentCount = 0;
+        console.log(`[MIDI SEQUENCER] Sending MIDI data directly: [${midiData.join(', ')}]`);
+        
+        // Send to all connected output devices (same as manual Send Command)
+        midiAccess.outputs.forEach((output: any) => {
+          if (output.state === 'connected') {
+            output.send(midiData);
+            sentCount++;
+            console.log(`[MIDI SEQUENCER] AUTOMATED: Sent to ${output.name}:`, midiData);
+          }
+        });
+        
+        console.log(`[MIDI SEQUENCER] AUTOMATED: Successfully sent to ${sentCount} devices`);
+      } else {
+        console.log('[MIDI SEQUENCER] No MIDI data generated for command:', command);
+      }
+      
     } catch (error) {
-      console.error('[MIDI SEQUENCER] Error executing MIDI command:', error, command);
+      console.error('[MIDI SEQUENCER] Error executing automated MIDI command:', error, command);
     }
-  }, [sendNoteOn, sendNoteOff, sendControlChange, sendProgramChange]);
+  }, [midiAccess]);
 
   // Start MIDI sequencing
   const startSequencer = useCallback((lyricsText: string) => {
@@ -226,9 +282,11 @@ export function useMIDISequencer() {
       console.log(`[MIDI SEQUENCER] Triggering ${commandsToTrigger.length} commands at time ${currentTime.toFixed(1)}s`);
       
       // Execute each command and log success
-      commandsToTrigger.forEach(command => {
-        console.log(`[MIDI SEQUENCER] About to execute:`, command);
+      commandsToTrigger.forEach((command, index) => {
+        console.log(`[MIDI SEQUENCER] About to execute command ${index}:`, command);
+        console.log(`[MIDI SEQUENCER] AUTOMATED SEND - This is different from manual send`);
         executeMIDICommand(command);
+        console.log(`[MIDI SEQUENCER] Completed automated execution of command ${index}`);
       });
       
       // Update last triggered index

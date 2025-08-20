@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AlignLeft, Type, ChevronUp, ChevronDown, Edit } from "lucide-react";
+import { AlignLeft, Type, Plus, Minus, ChevronUp, ChevronDown, Edit } from "lucide-react";
 import { parseLyricsWithMidi } from "@/lib/midi-parser";
 import type { SongWithTracks } from "@shared/schema";
 
@@ -18,6 +18,12 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
     const saved = localStorage.getItem('lyrics-scroll-speed');
     return saved ? parseFloat(saved) : 1.0;
   });
+  
+  const [fontSize, setFontSize] = useState(() => {
+    // Load font size from localStorage, default to 18px
+    const saved = localStorage.getItem('lyrics-font-size');
+    return saved ? parseInt(saved) : 18;
+  });
 
   const parsedLyrics = song?.lyrics ? parseLyricsWithMidi(song.lyrics) : [];
 
@@ -26,10 +32,22 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
     localStorage.setItem('lyrics-scroll-speed', scrollSpeed.toString());
   }, [scrollSpeed]);
 
+  // Save font size to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('lyrics-font-size', fontSize.toString());
+  }, [fontSize]);
+
   const adjustScrollSpeed = (delta: number) => {
     setScrollSpeed(prev => {
       const newSpeed = Math.max(0.1, Math.min(3.0, prev + delta));
       return Math.round(newSpeed * 10) / 10; // Round to 1 decimal place
+    });
+  };
+
+  const adjustFontSize = (delta: number) => {
+    setFontSize(prev => {
+      const newSize = Math.max(12, Math.min(36, prev + delta));
+      return newSize;
     });
   };
   
@@ -183,15 +201,31 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
             </div>
           )}
           
-          <Button
-            variant="secondary"
-            size="sm"
-            className="bg-gray-700 hover:bg-gray-600 p-2"
-            title="Font Size"
-            data-testid="button-font-size"
-          >
-            <Type className="w-4 h-4" />
-          </Button>
+          <div className="flex items-center space-x-1">
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
+              title="Decrease Font Size"
+              onClick={() => adjustFontSize(-1)}
+              data-testid="button-decrease-font"
+            >
+              <Minus className="w-3 h-3" />
+            </Button>
+            <span className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300 min-w-[32px] text-center">
+              {fontSize}
+            </span>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7"
+              title="Increase Font Size"
+              onClick={() => adjustFontSize(1)}
+              data-testid="button-increase-font"
+            >
+              <Plus className="w-3 h-3" />
+            </Button>
+          </div>
         </div>
       </div>
       
@@ -205,7 +239,7 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
             No lyrics available for this song
           </div>
         ) : (
-          <div className="space-y-4 text-lg leading-relaxed">
+          <div className="space-y-4 leading-relaxed" style={{ fontSize: `${fontSize}px` }}>
             {parsedLyrics.map((line, index) => {
               const isCurrentLine = hasRealTimestamps && index === currentLineIndex;
               const isUpcoming = hasRealTimestamps && line.timestamp > currentTime;

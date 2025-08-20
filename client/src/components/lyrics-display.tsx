@@ -178,10 +178,7 @@ export function LyricsDisplay({ song, currentTime, onEditLyrics }: LyricsDisplay
                   }`}
                   data-testid={`lyrics-line-${index}`}
                 >
-                  <div className="flex items-start space-x-3">
-                    <span className="text-xs text-gray-500 font-mono mt-1 min-w-[40px]">
-                      {Math.floor(line.timestamp / 60)}:{(line.timestamp % 60).toString().padStart(2, '0')}
-                    </span>
+                  <div className="flex items-start">
                     <span className="flex-1">{line.text}</span>
                   </div>
                 </div>

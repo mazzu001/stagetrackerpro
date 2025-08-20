@@ -75,16 +75,13 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
         const containerHeight = container.clientHeight;
         const currentScrollTop = container.scrollTop;
         const lineTop = currentLineElement.offsetTop;
-        const lineCenter = lineTop + (currentLineElement.offsetHeight / 2);
+        const lineBottom = lineTop + currentLineElement.offsetHeight;
         
-        // Calculate the center point of the visible area
-        const visibleCenter = currentScrollTop + (containerHeight / 2);
+        // Calculate the halfway mark of the text box from the top
+        const halfwayMark = currentScrollTop + (containerHeight / 2);
         
-        // Only scroll when the highlighted line is below the center mark AND
-        // the line is not already visible in the initial view (first few lines)
-        const isInitiallyVisible = lineTop < containerHeight;
-        
-        if (lineCenter > visibleCenter && !isInitiallyVisible) {
+        // Only scroll when the highlighted line goes below the halfway mark
+        if (lineBottom > halfwayMark) {
           // Scroll down by one line height to keep the highlighted line centered
           const nextScrollTop = currentScrollTop + (currentLineElement.offsetHeight + 16); // 16px for space-y-4
           const maxScrollTop = container.scrollHeight - containerHeight;

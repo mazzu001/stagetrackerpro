@@ -781,7 +781,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   <div className="flex flex-col">
                     <span>MIDI Devices</span>
                     <span className="text-xs text-gray-500">
-                      {midiConnected ? `${deviceCount} connected` : 'Not connected'}
+                      {devices.length > 0 ? `${devices.length} connected` : 'Not connected'}
                     </span>
                   </div>
                 </DropdownMenuItem>

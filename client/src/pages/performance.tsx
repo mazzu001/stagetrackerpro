@@ -219,6 +219,129 @@ export default function Performance({ userType }: PerformanceProps) {
     }
   };
 
+  // Send highlighted MIDI command to connected devices
+  const sendHighlightedMIDICommand = () => {
+    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = lyricsText.substring(start, end).trim();
+    
+    // Look for MIDI command pattern in selected text
+    const midiCommandMatch = selectedText.match(/\[\[([^\]]+)\]\]/);
+    if (!midiCommandMatch) {
+      toast({
+        title: "No MIDI Command Selected",
+        description: "Please highlight a MIDI command like [[CC:1:64:1]] to send",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const command = midiCommandMatch[1];
+    const parsedCommand = parseMIDICommand(command);
+    
+    if (!parsedCommand) {
+      toast({
+        title: "Invalid MIDI Command",
+        description: `Could not parse MIDI command: ${command}`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Send to all connected MIDI output devices
+    if (midiAccess && midiAccess.outputs.size > 0) {
+      let sentCount = 0;
+      midiAccess.outputs.forEach((output: any) => {
+        if (output.state === 'connected') {
+          output.send(parsedCommand.data);
+          sentCount++;
+          console.log(`Sent MIDI command to ${output.name}:`, parsedCommand.data);
+        }
+      });
+      
+      if (sentCount > 0) {
+        toast({
+          title: "MIDI Command Sent",
+          description: `Sent ${command} to ${sentCount} device(s)`,
+        });
+      } else {
+        toast({
+          title: "No Connected Devices",
+          description: "No MIDI output devices are connected",
+          variant: "destructive"
+        });
+      }
+    } else {
+      toast({
+        title: "MIDI Not Available",
+        description: "No MIDI access or devices available",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Parse MIDI command string into MIDI data bytes
+  const parseMIDICommand = (command: string): { data: number[]; description: string } | null => {
+    const parts = command.split(':');
+    const type = parts[0];
+
+    try {
+      switch (type) {
+        case 'CC': {
+          const controller = parseInt(parts[1]);
+          const value = parseInt(parts[2]);
+          const channel = parseInt(parts[3] || '1') - 1;
+          return {
+            data: [0xB0 | channel, controller, value],
+            description: `Control Change Ch${channel + 1} CC${controller} Val${value}`
+          };
+        }
+        case 'NOTE': {
+          const note = parseInt(parts[1]);
+          const velocity = parseInt(parts[2]);
+          const channel = parseInt(parts[3] || '1') - 1;
+          return {
+            data: [0x90 | channel, note, velocity],
+            description: `Note On Ch${channel + 1} Note${note} Vel${velocity}`
+          };
+        }
+        case 'NOTEOFF': {
+          const note = parseInt(parts[1]);
+          const channel = parseInt(parts[2] || '1') - 1;
+          return {
+            data: [0x80 | channel, note, 0],
+            description: `Note Off Ch${channel + 1} Note${note}`
+          };
+        }
+        case 'PC': {
+          const program = parseInt(parts[1]);
+          const channel = parseInt(parts[2] || '1') - 1;
+          return {
+            data: [0xC0 | channel, program],
+            description: `Program Change Ch${channel + 1} Program${program}`
+          };
+        }
+        case 'PITCH': {
+          const value = parseInt(parts[1]);
+          const channel = parseInt(parts[2] || '1') - 1;
+          const lsb = value & 0x7F;
+          const msb = (value >> 7) & 0x7F;
+          return {
+            data: [0xE0 | channel, lsb, msb],
+            description: `Pitch Bend Ch${channel + 1} Val${value}`
+          };
+        }
+        default:
+          return null;
+      }
+    } catch (error) {
+      return null;
+    }
+  };
+
   // Load songs from localStorage when component mounts or user changes
   useEffect(() => {
     if (user?.email) {
@@ -1220,6 +1343,16 @@ Click "Timestamp" to insert current time`}
 
           {/* Compact Action Buttons */}
           <div className="flex justify-end gap-2 pt-2 mt-2 border-t border-gray-700 flex-shrink-0">
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={sendHighlightedMIDICommand}
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              data-testid="button-send-midi-command"
+            >
+              <Activity className="w-3 h-3 mr-1" />
+              Send Command
+            </Button>
             <Button 
               variant="outline" 
               size="sm"

@@ -282,8 +282,6 @@ export class AudioEngine {
 
   private levelCache: Map<string, { level: number, lastUpdate: number }> = new Map();
   private smoothingFactor = 0.3; // Smoother level transitions
-  
-
 
   getAudioLevels(): Record<string, number> {
     const levels: Record<string, number> = {};
@@ -299,12 +297,13 @@ export class AudioEngine {
 
       const bufferLength = analyzer.frequencyBinCount;
       const dataArray = new Uint8Array(bufferLength);
+      analyzer.getByteFrequencyData(dataArray); // Use frequency data for more responsive VU meters
       
-      analyzer.getByteFrequencyData(dataArray);
-      
-      const sampleCount = Math.min(32, bufferLength);
+      // Extremely conservative VU meter calculation - start from scratch
       let sum = 0;
+      const sampleCount = Math.min(32, bufferLength); // Only sample a few bins
       
+      // Just take a simple average of the first few frequency bins
       for (let i = 0; i < sampleCount; i++) {
         sum += dataArray[i];
       }
@@ -354,7 +353,10 @@ export class AudioEngine {
       return { left: 0, right: 0 };
     }
     
-
+    // Debug logging
+    if (Math.random() < 0.01) { // Log occasionally to avoid spam
+      console.log('Getting master stereo levels - isPlaying:', this.isPlaying, 'analyzer exists:', !!this.masterAnalyzerNode);
+    }
 
     const now = performance.now();
     
@@ -365,10 +367,9 @@ export class AudioEngine {
 
     const bufferLength = this.masterAnalyzerNode.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
+    this.masterAnalyzerNode.getByteFrequencyData(dataArray); // Use frequency data
     
-    this.masterAnalyzerNode.getByteFrequencyData(dataArray);
-    
-    // Original frequency domain calculation
+    // Calculate average across mid-range frequencies for better visualization
     let sum = 0;
     const startBin = Math.floor(bufferLength * 0.1);
     const endBin = Math.floor(bufferLength * 0.8);
@@ -376,8 +377,7 @@ export class AudioEngine {
     for (let i = startBin; i < endBin; i++) {
       sum += dataArray[i];
     }
-    
-    // Calculate RMS for master levels
+    // Calculate RMS for master levels to match track calculation
     let sum2 = 0;
     for (let i = startBin; i < endBin; i++) {
       const normalizedValue = dataArray[i] / 255;
@@ -412,7 +412,10 @@ export class AudioEngine {
       lastUpdate: now
     };
     
-
+    // Debug logging
+    if (Math.random() < 0.01) { // Log occasionally
+      console.log('Master levels - left:', smoothedLeft.toFixed(3), 'right:', smoothedRight.toFixed(3), 'baseLevel:', baseLevel.toFixed(3));
+    }
     
     return { 
       left: smoothedLeft, 

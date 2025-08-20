@@ -788,165 +788,143 @@ export default function Performance({ userType }: PerformanceProps) {
           latency={latency}
         />
       </div>
-      {/* Edit Lyrics Dialog - Redesigned */}
+      {/* Edit Lyrics Dialog - Improved Original Layout */}
       <Dialog open={isEditLyricsOpen} onOpenChange={setIsEditLyricsOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
-          {/* Header Section */}
-          <DialogHeader className="border-b border-gray-200 dark:border-gray-700 pb-4">
-            <DialogTitle className="text-2xl font-bold text-center">
-              🎵 Edit Lyrics
+        <DialogContent className="sm:max-w-3xl max-w-[95vw] max-h-[85vh] overflow-y-auto">
+          <DialogHeader className="space-y-2">
+            <DialogTitle className="text-xl font-bold">
+              Edit Lyrics - {selectedSong?.title} by {selectedSong?.artist}
             </DialogTitle>
-            <div className="text-center text-gray-600 dark:text-gray-400">
-              {selectedSong?.title} by {selectedSong?.artist}
-            </div>
           </DialogHeader>
-
-          {/* Control Panel */}
-          <div className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 my-4">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              {/* Playback Controls */}
-              <div className="space-y-3">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Playback Controls</h4>
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={isPlaying ? pause : play}
-                    disabled={!selectedSong || !selectedSong.tracks || selectedSong.tracks.length === 0}
-                    data-testid="button-preview-playback"
-                    className="flex-1"
-                  >
-                    {isPlaying ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
-                    {isPlaying ? 'Pause Preview' : 'Preview Song'}
-                  </Button>
-                  <div className="text-xs text-gray-500 px-2">
-                    {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60).toString().padStart(2, '0')}
-                  </div>
-                </div>
-                
-                {/* Position Slider */}
-                {selectedSong && selectedSong.duration && (
-                  <div className="space-y-1">
-                    <div className="flex items-center justify-between text-xs text-gray-500">
-                      <span>0:00</span>
-                      <span className="font-medium">Playback Position</span>
-                      <span>{Math.floor(selectedSong.duration / 60)}:{Math.floor(selectedSong.duration % 60).toString().padStart(2, '0')}</span>
-                    </div>
-                    <div className="relative">
-                      <input
-                        type="range"
-                        min="0"
-                        max={selectedSong.duration || 100}
-                        step="0.1"
-                        value={currentTime}
-                        onChange={(e) => {
-                          const newTime = parseFloat(e.target.value);
-                          seek(newTime);
-                        }}
-                        className="w-full h-2 bg-gray-300 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
-                        data-testid="slider-song-position"
-                      />
-                      <div 
-                        className="absolute top-0 h-2 bg-blue-500 rounded-lg pointer-events-none"
-                        style={{ width: `${(currentTime / (selectedSong.duration || 1)) * 100}%` }}
-                      />
-                    </div>
-                  </div>
-                )}
+          
+          <div className="space-y-6 mt-6">
+            {/* Control Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
+              <div className="flex items-center space-x-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={isPlaying ? pause : play}
+                  disabled={!selectedSong || !selectedSong.tracks || selectedSong.tracks.length === 0}
+                  data-testid="button-preview-playback"
+                  className="h-9"
+                >
+                  {isPlaying ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
+                  {isPlaying ? 'Pause' : 'Preview'}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleInsertTimestamp}
+                  data-testid="button-insert-timestamp"
+                  className="h-9"
+                >
+                  <Clock className="w-4 h-4 mr-2" />
+                  Insert Timestamp
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSearchLyrics}
+                  disabled={!selectedSong}
+                  data-testid="button-search-lyrics"
+                  className="h-9"
+                >
+                  <Music className="w-4 h-4 mr-2" />
+                  Search Lyrics
+                </Button>
               </div>
-
-              {/* Editing Tools */}
-              <div className="space-y-3">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Editing Tools</h4>
-                <div className="grid grid-cols-2 gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleInsertTimestamp}
-                    data-testid="button-insert-timestamp"
-                    className="w-full"
-                  >
-                    <Clock className="w-4 h-4 mr-2" />
-                    Insert Timestamp
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleSearchLyrics}
-                    disabled={!selectedSong}
-                    data-testid="button-search-lyrics"
-                    className="w-full"
-                  >
-                    <Music className="w-4 h-4 mr-2" />
-                    Search Lyrics
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Lyrics Editor */}
-          <div className="flex-1 min-h-0 space-y-3">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="lyrics" className="text-lg font-semibold">Lyrics Content</Label>
-              <div className="text-xs text-gray-500 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
-                Characters: {lyricsText.length}
+              <div className="text-sm text-gray-500 font-mono">
+                {Math.floor(currentTime / 60)}:{Math.floor(currentTime % 60).toString().padStart(2, '0')} / {selectedSong?.duration ? `${Math.floor(selectedSong.duration / 60)}:${Math.floor(selectedSong.duration % 60).toString().padStart(2, '0')}` : '--:--'}
               </div>
             </div>
             
-            <Textarea
-              id="lyrics"
-              value={lyricsText}
-              onChange={(e) => setLyricsText(e.target.value)}
-              onPaste={handleLyricsPaste}
-              placeholder="Enter your song lyrics here...
+            {/* Position Slider */}
+            {selectedSong && selectedSong.duration && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs text-gray-500">
+                  <span>0:00</span>
+                  <span className="font-medium">Playback Position</span>
+                  <span>{Math.floor(selectedSong.duration / 60)}:{Math.floor(selectedSong.duration % 60).toString().padStart(2, '0')}</span>
+                </div>
+                <div className="relative">
+                  <input
+                    type="range"
+                    min="0"
+                    max={selectedSong.duration || 100}
+                    step="0.1"
+                    value={currentTime}
+                    onChange={(e) => {
+                      const newTime = parseFloat(e.target.value);
+                      seek(newTime);
+                    }}
+                    className="w-full h-2 bg-gray-300 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+                    data-testid="slider-song-position"
+                  />
+                  <div 
+                    className="absolute top-0 h-2 bg-primary rounded-lg pointer-events-none"
+                    style={{ width: `${(currentTime / (selectedSong.duration || 1)) * 100}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Lyrics Section */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="lyrics" className="text-base font-semibold">Lyrics</Label>
+                <span className="text-xs text-gray-500 px-2 py-1 bg-gray-100 dark:bg-gray-800 rounded">
+                  {lyricsText.length} characters
+                </span>
+              </div>
+              
+              <Textarea
+                id="lyrics"
+                value={lyricsText}
+                onChange={(e) => setLyricsText(e.target.value)}
+                onPaste={handleLyricsPaste}
+                placeholder="Enter song lyrics with timestamps and MIDI commands...
 
 Examples:
-[00:15] First line of the song
-[00:20] Second line continues here
-[[CC:1:64]] MIDI command for lighting change
-[00:30] Another verse begins..."
-              className="flex-1 min-h-[350px] font-mono text-sm leading-relaxed border-2 border-gray-200 dark:border-gray-700 rounded-lg resize-none focus:border-blue-500 transition-colors"
-              style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
-              spellCheck={false}
-              data-testid="textarea-lyrics"
-            />
-            
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-              <div className="flex items-start space-x-2">
-                <div className="w-4 h-4 bg-blue-500 rounded-full mt-0.5 flex-shrink-0"></div>
-                <div className="text-sm text-blue-800 dark:text-blue-200">
-                  <strong>Formatting Tips:</strong>
-                  <ul className="mt-1 space-y-1 list-disc list-inside ml-2">
-                    <li>Use <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">[MM:SS]</code> for timestamps (e.g., [01:23])</li>
-                    <li>Use <code className="bg-blue-100 dark:bg-blue-800 px-1 rounded">[[CC:channel:value]]</code> for MIDI commands</li>
-                    <li>Click "Insert Timestamp" to add current playback time</li>
-                  </ul>
+[00:15] First verse line
+[00:30] Second verse line
+[[CC:1:64]] MIDI lighting command"
+                className="min-h-[400px] font-mono text-sm leading-relaxed resize-none"
+                style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
+                spellCheck={false}
+                data-testid="textarea-lyrics"
+              />
+              
+              <div className="text-xs text-gray-500 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg">
+                <div className="font-medium mb-1">Formatting Guide:</div>
+                <div className="space-y-1">
+                  <div>• Use <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">[MM:SS]</code> for timestamps (e.g., [01:23])</div>
+                  <div>• Use <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">[[CC:channel:value]]</code> for MIDI commands</div>
+                  <div>• Click "Insert Timestamp" to add current playback time</div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-            <Button 
-              variant="outline" 
-              onClick={() => {
-                setIsEditLyricsOpen(false);
-                setLyricsText("");
-              }}
-              data-testid="button-cancel-lyrics"
-              className="px-6"
-            >
-              Cancel
-            </Button>
-            <Button 
-              onClick={handleSaveLyrics}
-              data-testid="button-save-lyrics"
-              className="px-8 bg-blue-600 hover:bg-blue-700"
-            >
-              Save Lyrics
-            </Button>
+            {/* Action Buttons */}
+            <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setIsEditLyricsOpen(false);
+                  setLyricsText("");
+                }}
+                data-testid="button-cancel-lyrics"
+              >
+                Cancel
+              </Button>
+              <Button 
+                onClick={handleSaveLyrics}
+                data-testid="button-save-lyrics"
+                className="bg-primary hover:bg-primary/90"
+              >
+                Save Lyrics
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

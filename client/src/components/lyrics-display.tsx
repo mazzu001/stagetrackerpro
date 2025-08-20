@@ -73,7 +73,7 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
       const firstTimestamp = Math.min(...parsedLyrics.map(line => line.timestamp));
       const shouldStartScrolling = currentTime >= firstTimestamp;
       
-      if (shouldStartScrolling && currentLineIndex !== lastScrolledLine) {
+      if (shouldStartScrolling && currentLineIndex !== lastScrolledLine && currentLineIndex >= 2) {
         const currentLineElement = container.querySelector(`[data-testid="lyrics-line-${currentLineIndex}"]`) as HTMLElement;
         
         if (currentLineElement) {
@@ -90,15 +90,16 @@ export default function LyricsDisplay({ song, currentTime, onEditLyrics }: Lyric
           const lineCompletelyBelow = lineTop > visibleBottom;
           
           if (lineCompletelyAbove || lineCompletelyBelow) {
-            // Gentle scroll to bring the line into view with minimal movement
-            let targetScrollTop;
+            // Calculate one line height to scroll exactly one line at a time
+            const lineHeight = currentLineElement.offsetHeight;
+            let targetScrollTop = currentScrollTop;
             
             if (lineCompletelyBelow) {
-              // Line is below view - scroll just enough to show it at the bottom
-              targetScrollTop = lineTop - containerHeight + currentLineElement.offsetHeight + 40;
+              // Scroll down by exactly one line height
+              targetScrollTop = currentScrollTop + lineHeight;
             } else if (lineCompletelyAbove) {
-              // Line is above view - scroll just enough to show it at the top
-              targetScrollTop = lineTop - 40;
+              // Scroll up by exactly one line height
+              targetScrollTop = currentScrollTop - lineHeight;
             }
             
             container.scrollTo({

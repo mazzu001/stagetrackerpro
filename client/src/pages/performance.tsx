@@ -46,6 +46,7 @@ export default function Performance({ userType }: PerformanceProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMIDIManagerOpen, setIsMIDIManagerOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
+  const [midiListenMode, setMidiListenMode] = useState<'auto' | 'manual'>('manual');
   const [lastMidiMessage, setLastMidiMessage] = useState<{ device: string; data: number[]; timestamp: number } | null>(null);
 
   const { toast } = useToast();
@@ -134,11 +135,15 @@ export default function Performance({ userType }: PerformanceProps) {
       const { device, data, timestamp } = event.detail;
       setLastMidiMessage({ device, data, timestamp });
       
-      // Auto-convert MIDI message to text command
-      const midiCommand = formatMidiMessageAsCommand(data);
-      if (midiCommand) {
-        // Insert the MIDI command at current cursor position
-        insertMidiCommandAtCursor(midiCommand);
+      // Only process meaningful MIDI messages (filter out noise)
+      if (shouldProcessMidiMessage(data)) {
+        const midiCommand = formatMidiMessageAsCommand(data);
+        if (midiCommand) {
+          // Auto mode: insert immediately, Manual mode: just show preview
+          if (midiListenMode === 'auto') {
+            insertMidiCommandAtCursor(midiCommand);
+          }
+        }
       }
     };
 
@@ -147,6 +152,43 @@ export default function Performance({ userType }: PerformanceProps) {
       window.removeEventListener('midiMessage', handleMidiMessage as EventListener);
     };
   }, [isMidiListening, isEditLyricsOpen]);
+
+  // Filter function to only process meaningful MIDI messages
+  const shouldProcessMidiMessage = (data: number[]): boolean => {
+    if (data.length < 2) return false;
+
+    const [status] = data;
+    const messageType = (status & 0xF0) >> 4;
+
+    // Only process these message types:
+    switch (messageType) {
+      case 0x9: // Note On - only if velocity > 0
+        return data.length >= 3 && data[2] > 0;
+      case 0x8: // Note Off
+        return data.length >= 2;
+      case 0xB: // Control Change - filter out continuous/noisy controllers
+        if (data.length >= 3) {
+          const controller = data[1];
+          // Filter out commonly noisy controllers
+          const noisyControllers = [
+            1,    // Mod wheel (continuous)
+            2,    // Breath controller (continuous)
+            7,    // Volume (often continuous)
+            10,   // Pan (often continuous)
+            11,   // Expression (continuous)
+            64,   // Sustain pedal (often rapid on/off)
+            123,  // All notes off
+            120,  // All sound off
+          ];
+          return !noisyControllers.includes(controller);
+        }
+        return false;
+      case 0xC: // Program Change
+        return data.length >= 2;
+      default:
+        return false;
+    }
+  };
 
   // Format MIDI data as text command
   const formatMidiMessageAsCommand = (data: number[]): string | null => {
@@ -218,16 +260,29 @@ export default function Performance({ userType }: PerformanceProps) {
     setIsMidiListening(!isMidiListening);
     if (!isMidiListening) {
       toast({
-        title: "MIDI Listening Active",
-        description: "Play MIDI notes or send CC messages to insert commands into lyrics",
+        title: `Smart MIDI Listening Active (${midiListenMode} mode)`,
+        description: midiListenMode === 'auto' 
+          ? "Commands will be inserted automatically"
+          : "Commands shown as preview - click 'Insert Last' to add",
         duration: 3000,
       });
     } else {
+      setLastMidiMessage(null); // Clear last message when stopping
       toast({
         title: "MIDI Listening Disabled",
         description: "MIDI input will no longer be captured",
         duration: 2000,
       });
+    }
+  };
+
+  // Insert the last received MIDI command manually
+  const insertLastMidiCommand = () => {
+    if (lastMidiMessage) {
+      const midiCommand = formatMidiMessageAsCommand(lastMidiMessage.data);
+      if (midiCommand) {
+        insertMidiCommandAtCursor(midiCommand);
+      }
     }
   };
 
@@ -1079,6 +1134,28 @@ export default function Performance({ userType }: PerformanceProps) {
                 <Bluetooth className="w-3 h-3 mr-1" />
                 {isMidiListening ? 'Stop Listen' : 'MIDI Listen'}
               </Button>
+              {isMidiListening && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setMidiListenMode(midiListenMode === 'auto' ? 'manual' : 'auto')}
+                  data-testid="button-midi-mode"
+                  className="h-8 px-2"
+                >
+                  {midiListenMode === 'auto' ? 'Auto' : 'Manual'}
+                </Button>
+              )}
+              {isMidiListening && midiListenMode === 'manual' && lastMidiMessage && (
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={insertLastMidiCommand}
+                  data-testid="button-insert-last-midi"
+                  className="h-8 px-3"
+                >
+                  Insert Last
+                </Button>
+              )}
               
               {/* Compact Position Slider */}
               {selectedSong && selectedSong.duration && (
@@ -1118,7 +1195,7 @@ export default function Performance({ userType }: PerformanceProps) {
                 )}
                 {lastMidiMessage && (
                   <div className="text-xs text-blue-600 font-mono">
-                    Last: {formatMidiMessageAsCommand(lastMidiMessage.data)}
+                    {midiListenMode === 'manual' ? 'Preview: ' : 'Last: '}{formatMidiMessageAsCommand(lastMidiMessage.data)}
                   </div>
                 )}
                 <div className="text-xs text-gray-400">
@@ -1142,7 +1219,9 @@ export default function Performance({ userType }: PerformanceProps) {
 [[PC:5]] Program change
 
 Click "Timestamp" to insert current time
-Click "MIDI Listen" then play your MIDI device to insert commands automatically`}
+Click "MIDI Listen" then play your MIDI device
+- Auto mode: Commands inserted immediately  
+- Manual mode: Preview commands, click "Insert Last" to add`}
               className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
               style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
               spellCheck={false}

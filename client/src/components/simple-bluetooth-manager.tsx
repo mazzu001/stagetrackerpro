@@ -447,11 +447,11 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[85vh]" data-testid="dialog-bluetooth-manager">
+      <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto" data-testid="dialog-bluetooth-manager">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Bluetooth className="w-5 h-5" />
-            Simple Bluetooth Device Manager
+            Bluetooth Device Manager
             <Badge variant="outline" className="ml-auto">
               {savedDevices.filter(d => d.connected).length} Connected
             </Badge>
@@ -484,48 +484,48 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
             </Button>
           </div>
 
-          {/* Two Column Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left Side: Discovered Devices */}
-            <div className="space-y-4">
-              <h3 className="font-medium text-lg">Discovered Devices</h3>
+          {/* Three Column Layout */}
+          <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 gap-4">
+            {/* Left: Discovered Devices */}
+            <div className="space-y-3">
+              <h3 className="font-medium text-base">Discovered Devices</h3>
               
-              <ScrollArea className="h-60 border rounded-md p-3">
+              <ScrollArea className="h-48 border rounded-md p-2">
                 {discoveredDevices.length === 0 ? (
-                  <div className="text-center text-gray-500 py-8 text-sm">
+                  <div className="text-center text-gray-500 py-6 text-sm">
                     No devices discovered<br />
-                    <span className="text-xs">Click "Find Devices" to scan for Bluetooth devices</span>
+                    <span className="text-xs">Click "Find Devices" to scan</span>
                   </div>
                 ) : (
                   <div className="space-y-2">
                     {discoveredDevices.map((device) => (
                       <div
                         key={device.id}
-                        className="flex items-center justify-between p-3 border rounded-md"
+                        className="flex flex-col p-2 border rounded-md text-sm"
                         data-testid={`discovered-device-${device.id}`}
                       >
-                        <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
                           <div className="flex items-center gap-2">
-                            <p className="font-medium truncate">{device.name}</p>
+                            <p className="font-medium truncate text-sm">{device.name}</p>
                             <div className={`w-2 h-2 rounded-full ${device.connected ? 'bg-green-500' : 'bg-gray-400'}`} />
                             {device.listening && (
-                              <Badge variant="secondary" className="text-xs">
-                                <Ear className="w-3 h-3 mr-1" />
-                                Listening
+                              <Badge variant="secondary" className="text-xs py-0">
+                                <Ear className="w-3 h-3" />
                               </Badge>
                             )}
                           </div>
-                          <p className="text-xs text-gray-500 truncate">{device.id}</p>
                         </div>
-                        <div className="flex items-center gap-2">
-                          {!device.connected ? (
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-gray-500 truncate flex-1 mr-2">{device.id}</p>
+                          <div className="flex items-center gap-1">
+                            {!device.connected ? (
                             <Button
                               size="sm"
                               variant="ghost"
                               onClick={() => connectToDevice(device)}
                               disabled={isConnecting === device.id}
                               data-testid={`button-connect-${device.id}`}
-                              className="h-8 px-2 text-xs"
+                              className="h-6 px-2 text-xs"
                             >
                               {isConnecting === device.id ? 'Connecting...' : 'Connect'}
                             </Button>
@@ -537,7 +537,7 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
                                 onClick={() => testDevice(device)}
                                 disabled={isTesting === device.id}
                                 data-testid={`button-test-${device.id}`}
-                                className="h-8 px-2 text-xs"
+                                className="h-6 px-2 text-xs"
                               >
                                 {isTesting === device.id ? 'Testing...' : 'Test'}
                               </Button>
@@ -546,32 +546,27 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
                                 variant="ghost"
                                 onClick={() => toggleListening(device)}
                                 data-testid={`button-listen-${device.id}`}
-                                className="h-8 px-2 text-xs"
+                                className="h-6 px-1 text-xs"
                               >
                                 {device.listening ? (
-                                  <>
-                                    <EarOff className="w-3 h-3 mr-1" />
-                                    Stop
-                                  </>
+                                  <EarOff className="w-3 h-3" />
                                 ) : (
-                                  <>
-                                    <Ear className="w-3 h-3 mr-1" />
-                                    Listen
-                                  </>
+                                  <Ear className="w-3 h-3" />
                                 )}
                               </Button>
                             </>
                           )}
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => saveDevice(device)}
-                            disabled={device.saved || savedDevices.some(d => d.id === device.id)}
-                            data-testid={`button-save-${device.id}`}
-                            className="h-8 px-2 text-xs"
-                          >
-                            Save
-                          </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => saveDevice(device)}
+                              disabled={device.saved || savedDevices.some(d => d.id === device.id)}
+                              data-testid={`button-save-${device.id}`}
+                              className="h-6 px-2 text-xs"
+                            >
+                              Save
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -580,71 +575,118 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
               </ScrollArea>
             </div>
 
-            {/* Right Side: Saved Devices */}
-            <div className="space-y-4">
-              <h3 className="font-medium text-lg">Saved Devices</h3>
+            {/* Center: Saved Devices */}
+            <div className="space-y-3">
+              <h3 className="font-medium text-base">Saved Devices</h3>
               
-              <ScrollArea className="h-60 border rounded-md p-3">
+              <ScrollArea className="h-48 border rounded-md p-2">
                 {savedDevices.length === 0 ? (
-                  <div className="text-center text-gray-500 py-8 text-sm">
+                  <div className="text-center text-gray-500 py-6 text-sm">
                     No saved devices<br />
-                    <span className="text-xs">Discover and save devices for quick access</span>
+                    <span className="text-xs">Save devices for quick access</span>
                   </div>
                 ) : (
                   <div className="space-y-2">
                     {savedDevices.map((device) => (
                       <div
                         key={device.id}
-                        className="flex items-center justify-between p-3 border rounded-md bg-blue-50 dark:bg-blue-950"
+                        className="flex flex-col p-2 border rounded-md bg-blue-50 dark:bg-blue-950 text-sm"
                         data-testid={`saved-device-${device.id}`}
                       >
-                        <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-1">
                           <div className="flex items-center gap-2">
-                            <p className="font-medium truncate text-gray-900 dark:text-white">{device.name}</p>
+                            <p className="font-medium truncate text-gray-900 dark:text-white text-sm">{device.name}</p>
                             <div className={`w-2 h-2 rounded-full ${device.connected ? 'bg-green-500' : 'bg-gray-400'}`} />
                             {device.listening && (
-                              <Badge variant="secondary" className="text-xs">
-                                <Ear className="w-3 h-3 mr-1" />
-                                Listening
+                              <Badge variant="secondary" className="text-xs py-0">
+                                <Ear className="w-3 h-3" />
                               </Badge>
                             )}
                           </div>
-                          <p className="text-xs text-gray-600 dark:text-gray-400">
-                            {device.connected ? 'Connected' : 'Saved - click to discover again'}
-                          </p>
                         </div>
-                        <div className="flex items-center gap-2">
-                          {device.connected && (
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-gray-600 dark:text-gray-400 flex-1 mr-2">
+                            {device.connected ? 'Connected' : 'Saved'}
+                          </p>
+                          <div className="flex items-center gap-1">
+                            {device.connected && (
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => toggleListening(device)}
+                                data-testid={`button-listen-${device.id}`}
+                                className="h-6 px-1 text-xs"
+                              >
+                                {device.listening ? (
+                                  <EarOff className="w-3 h-3" />
+                                ) : (
+                                  <Ear className="w-3 h-3" />
+                                )}
+                              </Button>
+                            )}
                             <Button
                               size="sm"
                               variant="ghost"
-                              onClick={() => toggleListening(device)}
-                              data-testid={`button-listen-${device.id}`}
-                              className="h-8 px-2 text-xs"
+                              onClick={() => removeSavedDevice(device.id)}
+                              data-testid={`button-remove-${device.id}`}
+                              className="h-6 px-1 text-xs text-red-600 hover:text-red-700"
                             >
-                              {device.listening ? (
-                                <>
-                                  <EarOff className="w-3 h-3 mr-1" />
-                                  Stop
-                                </>
-                              ) : (
-                                <>
-                                  <Ear className="w-3 h-3 mr-1" />
-                                  Listen
-                                </>
-                              )}
+                              <Trash2 className="w-3 h-3" />
                             </Button>
-                          )}
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => removeSavedDevice(device.id)}
-                            data-testid={`button-remove-${device.id}`}
-                            className="h-8 px-2 text-xs text-red-600 hover:text-red-700"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
+                          </div>
                         </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </ScrollArea>
+            </div>
+            
+            {/* Right: MIDI Message Log (Third Column) */}
+            <div className="space-y-3 xl:block lg:col-span-2 xl:col-span-1">
+              <div className="flex items-center justify-between">
+                <h3 className="font-medium text-base">MIDI Messages</h3>
+                <div className="flex items-center gap-2">
+                  {listeningDevice && (
+                    <Badge variant="secondary" className="text-xs">
+                      <Activity className="w-3 h-3 mr-1" />
+                      Live
+                    </Badge>
+                  )}
+                  {midiMessages.length > 0 && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={clearMIDIMessages}
+                      className="h-6 px-2 text-xs"
+                    >
+                      Clear
+                    </Button>
+                  )}
+                </div>
+              </div>
+              
+              <ScrollArea className="h-48 border rounded-md p-2 bg-gray-50 dark:bg-gray-900">
+                {midiMessages.length === 0 ? (
+                  <div className="text-center text-gray-500 py-6 text-sm">
+                    No MIDI messages<br />
+                    <span className="text-xs">Connect and listen to a device</span>
+                  </div>
+                ) : (
+                  <div className="space-y-1 text-xs font-mono">
+                    {midiMessages.slice(0, 20).map((message, index) => (
+                      <div key={index} className="flex flex-col gap-1 pb-1 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-gray-500 dark:text-gray-400 text-xs">
+                            {new Date(message.timestamp).toLocaleTimeString()}
+                          </span>
+                          <span className="text-blue-600 dark:text-blue-400 text-xs">
+                            [{message.deviceName}]
+                          </span>
+                        </div>
+                        <span className="text-gray-900 dark:text-gray-100 text-xs">
+                          {message.formatted}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -665,51 +707,8 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
             </div>
           )}
 
-          {/* MIDI Message Log */}
-          {midiMessages.length > 0 && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="font-medium text-lg">MIDI Messages</h3>
-                <div className="flex items-center gap-2">
-                  {listeningDevice && (
-                    <Badge variant="secondary" className="text-xs">
-                      <Activity className="w-3 h-3 mr-1" />
-                      Live
-                    </Badge>
-                  )}
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={clearMIDIMessages}
-                    className="h-8 px-2 text-xs"
-                  >
-                    Clear Log
-                  </Button>
-                </div>
-              </div>
-              
-              <ScrollArea className="h-40 border rounded-md p-3 bg-gray-50 dark:bg-gray-900">
-                <div className="space-y-1 text-xs font-mono">
-                  {midiMessages.map((message, index) => (
-                    <div key={index} className="flex items-start gap-2 pb-1 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
-                      <span className="text-gray-500 dark:text-gray-400 flex-shrink-0">
-                        {new Date(message.timestamp).toLocaleTimeString()}
-                      </span>
-                      <span className="text-blue-600 dark:text-blue-400 flex-shrink-0">
-                        [{message.deviceName}]
-                      </span>
-                      <span className="text-gray-900 dark:text-gray-100">
-                        {message.formatted}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </ScrollArea>
-            </div>
-          )}
-
           {/* Simple Instructions */}
-          <div className="p-4 border rounded-md bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+          <div className="p-3 border rounded-md bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
             <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
               How to Use
             </h4>

@@ -6,6 +6,7 @@ export interface IStorage {
   // User operations
   // (IMPORTANT) these user operations are mandatory for Replit Auth.
   getUser(id: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
   updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined>;
   updateUserSubscriptionStatus(id: string, status: string, endDate: number): Promise<User | undefined>;
@@ -76,6 +77,22 @@ export class DatabaseStorage implements IStorage {
       return undefined;
     }
     const [user] = await userDb.select().from(usersPg).where(eq(usersPg.id, id));
+    if (!user) return undefined;
+    
+    // Convert PostgreSQL user to SQLite user format
+    return {
+      ...user,
+      createdAt: user.createdAt?.toISOString() || null,
+      updatedAt: user.updatedAt?.toISOString() || null,
+    };
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    if (!userDb) {
+      console.error('Cloud database not available for user operations');
+      return undefined;
+    }
+    const [user] = await userDb.select().from(usersPg).where(eq(usersPg.email, email));
     if (!user) return undefined;
     
     // Convert PostgreSQL user to SQLite user format

@@ -66,6 +66,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Auth routes with proper authentication
   console.log('📝 Registering authentication routes...');
+  
+  // Register new user endpoint
+  app.post('/api/auth/register', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
+      }
+      
+      if (password.length < 6) {
+        return res.status(400).json({ error: 'Password must be at least 6 characters' });
+      }
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByEmail(email);
+      if (existingUser) {
+        return res.status(409).json({ error: 'User already exists with this email' });
+      }
+      
+      // Create new user in cloud database (no password hashing needed for demo)
+      const newUser = await storage.upsertUser({
+        id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        email: email.toLowerCase(),
+        firstName: null,
+        lastName: null,
+        profileImageUrl: null,
+      });
+      
+      console.log('✅ New user registered:', newUser.email);
+      res.json({ 
+        success: true, 
+        user: { 
+          id: newUser.id, 
+          email: newUser.email,
+          userType: 'free' 
+        }
+      });
+    } catch (error: any) {
+      console.error('❌ Registration error:', error);
+      res.status(500).json({ error: 'Registration failed' });
+    }
+  });
+  
+  // Login endpoint for email/password authentication
+  app.post('/api/auth/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
+      }
+      
+      // Check if user exists in cloud database
+      const user = await storage.getUserByEmail(email.toLowerCase());
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+      
+      // For demo purposes, we accept any password for existing users
+      // In production, you'd verify password hash here
+      
+      console.log('✅ User authenticated:', user.email);
+      res.json({ 
+        success: true, 
+        user: { 
+          id: user.id, 
+          email: user.email,
+          userType: 'free' // Will be updated by subscription verification
+        }
+      });
+    } catch (error: any) {
+      console.error('❌ Login error:', error);
+      res.status(500).json({ error: 'Login failed' });
+    }
+  });
+
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;

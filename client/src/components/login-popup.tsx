@@ -30,23 +30,51 @@ export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
     setError('');
     setIsLoading(true);
 
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    try {
+      // First check demo users for backward compatibility
+      const user = DEMO_USERS[email.toLowerCase() as keyof typeof DEMO_USERS];
+      if (user && user.password === password) {
+        console.log('✅ Demo user login successful:', email);
+        onLogin(user.type, email);
+        onClose();
+        setEmail('');
+        setPassword('');
+        setIsLoading(false);
+        return;
+      }
 
-    const user = DEMO_USERS[email.toLowerCase() as keyof typeof DEMO_USERS];
-    
-    if (!user || user.password !== password) {
-      setError('Invalid email or password');
+      // Try cloud database authentication
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.toLowerCase(),
+          password: password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(result.error || 'Invalid email or password');
+        setIsLoading(false);
+        return;
+      }
+
+      // Successful cloud login
+      console.log('✅ Cloud login successful:', result.user.email);
+      onLogin(result.user.userType, result.user.email);
+      onClose();
+      setEmail('');
+      setPassword('');
+    } catch (error: any) {
+      console.error('Login error:', error);
+      setError('Login failed. Please try again.');
+    } finally {
       setIsLoading(false);
-      return;
     }
-
-    // Successful login
-    onLogin(user.type, email);
-    onClose();
-    setEmail('');
-    setPassword('');
-    setIsLoading(false);
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -54,15 +82,38 @@ export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
     setError('');
     setIsLoading(true);
 
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    try {
+      const response = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.toLowerCase(),
+          password: password,
+        }),
+      });
 
-    // For demo purposes, new users get free accounts
-    onLogin('free', email);
-    onClose();
-    setEmail('');
-    setPassword('');
-    setIsLoading(false);
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(result.error || 'Registration failed');
+        setIsLoading(false);
+        return;
+      }
+
+      // Successful registration
+      console.log('✅ Registration successful:', result.user.email);
+      onLogin(result.user.userType, result.user.email);
+      onClose();
+      setEmail('');
+      setPassword('');
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      setError('Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const fillDemoCredentials = (type: 'paid') => {

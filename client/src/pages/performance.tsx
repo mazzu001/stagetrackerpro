@@ -301,6 +301,83 @@ export default function Performance({ userType }: PerformanceProps) {
     }
   };
 
+  // Send MIDI commands from lyrics text
+  const sendMidiFromLyrics = () => {
+    const midiCommands = lyricsText.match(/\[\[([^\]]+)\]\]/g) || [];
+    let sentCount = 0;
+    
+    midiCommands.forEach(command => {
+      const commandText = command.slice(2, -2); // Remove [[ and ]]
+      const midiData = parseMidiCommand(commandText);
+      
+      if (midiData && connectedOutputs.length > 0) {
+        // Send to first connected output device
+        const outputDevice = connectedOutputs[0];
+        try {
+          outputDevice.send(midiData);
+          sentCount++;
+        } catch (error) {
+          console.error('Failed to send MIDI command:', error);
+        }
+      }
+    });
+    
+    if (sentCount > 0) {
+      toast({
+        title: "MIDI Commands Sent",
+        description: `Sent ${sentCount} MIDI commands`,
+        duration: 2000,
+      });
+    } else {
+      toast({
+        title: "No MIDI Commands",
+        description: "No valid MIDI commands found or no output devices connected",
+        variant: "destructive",
+        duration: 3000,
+      });
+    }
+  };
+
+  // Parse MIDI command text to MIDI data array
+  const parseMidiCommand = (commandText: string): number[] | null => {
+    const parts = commandText.split(':');
+    const type = parts[0];
+    
+    switch (type) {
+      case 'CC': // Control Change
+        if (parts.length >= 4) {
+          const controller = parseInt(parts[1]);
+          const value = parseInt(parts[2]);
+          const channel = parseInt(parts[3]) - 1; // Convert to 0-based
+          return [0xB0 | channel, controller, value];
+        }
+        break;
+      case 'NOTE': // Note On
+        if (parts.length >= 4) {
+          const note = parseInt(parts[1]);
+          const velocity = parseInt(parts[2]);
+          const channel = parseInt(parts[3]) - 1;
+          return [0x90 | channel, note, velocity];
+        }
+        break;
+      case 'NOTEOFF': // Note Off
+        if (parts.length >= 3) {
+          const note = parseInt(parts[1]);
+          const channel = parseInt(parts[2]) - 1;
+          return [0x80 | channel, note, 0];
+        }
+        break;
+      case 'PC': // Program Change
+        if (parts.length >= 3) {
+          const program = parseInt(parts[1]);
+          const channel = parseInt(parts[2]) - 1;
+          return [0xC0 | channel, program];
+        }
+        break;
+    }
+    return null;
+  };
+
 
 
   const {
@@ -1220,26 +1297,37 @@ MIDI commands will be inserted directly into lyrics, one per line`}
           </div>
 
           {/* Compact Action Buttons */}
-          <div className="flex justify-end gap-2 pt-2 mt-2 border-t border-gray-700 flex-shrink-0">
+          <div className="flex justify-between gap-2 pt-2 mt-2 border-t border-gray-700 flex-shrink-0">
             <Button 
               variant="outline" 
               size="sm"
-              onClick={() => {
-                setIsEditLyricsOpen(false);
-                setLyricsText("");
-              }}
-              data-testid="button-cancel-lyrics"
+              onClick={sendMidiFromLyrics}
+              data-testid="button-send-midi"
+              disabled={connectedOutputs.length === 0}
             >
-              Cancel
+              Send MIDI
             </Button>
-            <Button 
-              size="sm"
-              onClick={handleSaveLyrics}
-              data-testid="button-save-lyrics"
-              className="bg-primary hover:bg-primary/90"
-            >
-              Save Lyrics
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => {
+                  setIsEditLyricsOpen(false);
+                  setLyricsText("");
+                }}
+                data-testid="button-cancel-lyrics"
+              >
+                Cancel
+              </Button>
+              <Button 
+                size="sm"
+                onClick={handleSaveLyrics}
+                data-testid="button-save-lyrics"
+                className="bg-primary hover:bg-primary/90"
+              >
+                Save Lyrics
+              </Button>
+            </div>
           </div>
         </DialogContent>
       </Dialog>

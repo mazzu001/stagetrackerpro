@@ -327,6 +327,16 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
       ]);
       
       console.log(`MIDI received from ${device.name}:`, message, data);
+      
+      // Broadcast MIDI message as custom event for lyrics editor to capture
+      const midiEvent = new CustomEvent('midiMessage', {
+        detail: {
+          device: device.name,
+          data: data,
+          timestamp: timestamp
+        }
+      });
+      window.dispatchEvent(midiEvent);
     };
   };
 

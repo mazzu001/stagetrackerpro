@@ -734,7 +734,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                       {outputDevices.map((device) => (
                         <div
                           key={device.id}
-                          className="flex items-center justify-between p-3 border rounded-md bg-green-50 dark:bg-green-950"
+                          className="flex items-center justify-between p-3 border rounded-md dark:bg-green-950 bg-[#0d1216]"
                           data-testid={`device-output-${device.id}`}
                         >
                           <div className="flex-1 min-w-0">

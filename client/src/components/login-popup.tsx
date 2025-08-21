@@ -15,6 +15,7 @@ interface LoginPopupProps {
 // Beta testing account for demo access
 const DEMO_USERS = {
   'paid@demo.com': { password: 'demo123', type: 'paid' as const },
+  'mazzu001@hotmail.com': { password: 'demo123', type: 'paid' as const },
 };
 
 export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {

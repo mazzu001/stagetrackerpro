@@ -23,6 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import { MIDIDeviceManager } from "@/components/midi-device-manager";
+import { SimpleBluetoothManager } from "@/components/simple-bluetooth-manager";
 import { useMIDI } from "@/hooks/useMIDI";
 import { useMIDISequencer } from "@/hooks/useMIDISequencer";
 
@@ -45,6 +46,7 @@ export default function Performance({ userType }: PerformanceProps) {
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMIDIManagerOpen, setIsMIDIManagerOpen] = useState(false);
+  const [isBluetoothManagerOpen, setIsBluetoothManagerOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
 
   const { toast } = useToast();
@@ -863,11 +865,24 @@ export default function Performance({ userType }: PerformanceProps) {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="mobile-hidden" />
                 <DropdownMenuItem 
+                  onClick={() => setIsBluetoothManagerOpen(true)}
+                  className="flex items-center cursor-pointer"
+                  data-testid="menu-bluetooth-devices"
+                >
+                  <Bluetooth className="w-4 h-4 mr-2" />
+                  <div className="flex flex-col">
+                    <span>Bluetooth Devices</span>
+                    <span className="text-xs text-gray-500">
+                      Simple device discovery & connection
+                    </span>
+                  </div>
+                </DropdownMenuItem>
+                <DropdownMenuItem 
                   onClick={() => setIsMIDIManagerOpen(true)}
                   className="flex items-center cursor-pointer"
                   data-testid="menu-midi-devices"
                 >
-                  <Bluetooth className="w-4 h-4 mr-2" />
+                  <Music className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
                     <span>MIDI Devices</span>
                     <span className="text-xs text-gray-500">
@@ -1399,6 +1414,19 @@ export default function Performance({ userType }: PerformanceProps) {
         onClose={() => setIsMIDIManagerOpen(false)}
         onDevicesChange={(devices) => {
           console.log('MIDI devices updated:', devices);
+        }}
+      />
+      
+      {/* Simple Bluetooth Manager */}
+      <SimpleBluetoothManager 
+        isOpen={isBluetoothManagerOpen}
+        onClose={() => setIsBluetoothManagerOpen(false)}
+        onDeviceSelected={(device) => {
+          console.log('Bluetooth device selected:', device);
+          toast({
+            title: "Device Selected",
+            description: `${device.name} is now available for use`,
+          });
         }}
       />
     </div>

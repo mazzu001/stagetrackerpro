@@ -1291,41 +1291,69 @@ export default function Performance({ userType }: PerformanceProps) {
                     <span className="text-xs text-green-600 font-medium">MIDI Listening</span>
                   </div>
                 )}
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-gray-400 hidden sm:block">
                   <code className="text-xs">[MM:SS]</code> timestamps • <code className="text-xs">[[CC:1:64]]</code> MIDI
                 </div>
               </div>
             </div>
             
-            {/* Lyrics Textarea - Reduced height to make room for examples */}
-            <Textarea
-              id="lyrics"
-              value={lyricsText}
-              onChange={(e) => setLyricsText(e.target.value)}
-              onPaste={handleLyricsPaste}
-              placeholder="Enter lyrics with timestamps and MIDI commands..."
-              className="font-mono text-sm leading-relaxed resize-none border-gray-600"
-              style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', height: '200px' }}
-              spellCheck={false}
-              data-testid="textarea-lyrics"
-            />
-            
-            {/* Syntax Examples */}
-            <div className="mt-3 p-3 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 bg-[#222324]">
-              <h4 className="text-xs font-semibold dark:text-gray-300 mb-2 text-[#b3bbc7]">Syntax Examples:</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-mono">
-                <div>
-                  <div className="dark:text-gray-400 mb-1 text-[#cfcfcf]">Timestamps:</div>
-                  <div className="text-blue-600 dark:text-blue-400">[00:15] Verse starts</div>
-                  <div className="text-blue-600 dark:text-blue-400">[01:30] Chorus begins</div>
+            {/* Desktop Layout: Textarea with examples below */}
+            <div className="hidden md:flex md:flex-col md:flex-1 md:min-h-0">
+              <Textarea
+                id="lyrics"
+                value={lyricsText}
+                onChange={(e) => setLyricsText(e.target.value)}
+                onPaste={handleLyricsPaste}
+                placeholder="Enter lyrics with timestamps and MIDI commands..."
+                className="font-mono text-sm leading-relaxed resize-none border-gray-600"
+                style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', height: '200px' }}
+                spellCheck={false}
+                data-testid="textarea-lyrics"
+              />
+              
+              {/* Syntax Examples - Desktop */}
+              <div className="mt-3 p-3 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 bg-[#222324]">
+                <h4 className="text-xs font-semibold dark:text-gray-300 mb-2 text-[#b3bbc7]">Syntax Examples:</h4>
+                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
+                  <div>
+                    <div className="dark:text-gray-400 mb-1 text-[#cfcfcf]">Timestamps:</div>
+                    <div className="text-blue-600 dark:text-blue-400">[00:15] Verse starts</div>
+                    <div className="text-blue-600 dark:text-blue-400">[01:30] Chorus begins</div>
+                  </div>
+                  <div>
+                    <div className="dark:text-gray-400 mb-1 text-[#c7c7c7]">MIDI Commands:</div>
+                    <div className="text-purple-600 dark:text-purple-400">[[CC:1:64:1]] Control change</div>
+                    <div className="text-purple-600 dark:text-purple-400">[[NOTE:60:127:1]] Note on</div>
+                    <div className="text-purple-600 dark:text-purple-400">[[PC:5:1]] Program change</div>
+                    <div className="text-purple-600 dark:text-purple-400">[[NOTEOFF:60:1]] Note off</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="dark:text-gray-400 mb-1 text-[#c7c7c7]">MIDI Commands:</div>
-                  <div className="text-purple-600 dark:text-purple-400">[[CC:1:64:1]] Control change</div>
-                  <div className="text-purple-600 dark:text-purple-400">[[NOTE:60:127:1]] Note on</div>
-                  <div className="text-purple-600 dark:text-purple-400">[[PC:5:1]] Program change</div>
-                  <div className="text-purple-600 dark:text-purple-400">[[NOTEOFF:60:1]] Note off</div>
-                </div>
+              </div>
+            </div>
+
+            {/* Mobile Layout: Textarea takes most space */}
+            <div className="md:hidden flex flex-col flex-1 min-h-0">
+              <Textarea
+                id="lyrics"
+                value={lyricsText}
+                onChange={(e) => setLyricsText(e.target.value)}
+                onPaste={handleLyricsPaste}
+                placeholder="Enter lyrics with timestamps and MIDI commands..."
+                className="font-mono text-sm leading-relaxed resize-none border-gray-600 flex-1"
+                style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
+                spellCheck={false}
+                data-testid="textarea-lyrics"
+              />
+            </div>
+          </div>
+
+          {/* Mobile Syntax Examples - Bottom */}
+          <div className="md:hidden mt-2 p-2 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 flex-shrink-0 bg-[#222324]">
+            <h4 className="text-xs font-semibold dark:text-gray-300 mb-2 text-[#b3bbc7]">Examples:</h4>
+            <div className="grid grid-cols-1 gap-1 text-xs font-mono">
+              <div className="flex gap-4">
+                <span className="text-blue-600 dark:text-blue-400">[00:15] Verse</span>
+                <span className="text-purple-600 dark:text-purple-400">[[CC:1:64:1]] Control</span>
               </div>
             </div>
           </div>

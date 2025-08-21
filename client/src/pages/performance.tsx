@@ -116,6 +116,32 @@ export default function Performance({ userType }: PerformanceProps) {
     }
   }, [selectedSongId, user?.email]);
 
+  // Refresh songs helper function
+  const refreshSongs = useCallback(() => {
+    if (user?.email) {
+      const songs = LocalSongStorage.getAllSongs(user.email);
+      // Sort songs alphabetically by title
+      const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
+      setAllSongs(sortedSongs);
+      
+      // Also refresh the currently selected song to pick up changes
+      if (selectedSongId) {
+        const updatedSong = LocalSongStorage.getSong(user.email, selectedSongId);
+        setSelectedSong(updatedSong || null);
+      }
+    }
+  }, [user?.email, selectedSongId]);
+
+  // Duration update callback to save to database when calculated from audio
+  const handleDurationUpdate = useCallback((songId: string, duration: number) => {
+    if (user?.email) {
+      console.log(`Updating song database with calculated duration: ${duration}s for song ID: ${songId}`);
+      LocalSongStorage.updateSong(user.email, songId, { duration });
+      // Refresh the songs list to show updated duration
+      refreshSongs();
+    }
+  }, [user?.email, refreshSongs]);
+
   const {
     isPlaying,
     currentTime,
@@ -136,7 +162,10 @@ export default function Performance({ userType }: PerformanceProps) {
     updateTrackSolo,
     updateMasterVolume,
     masterVolume
-  } = useAudioEngine(selectedSong as any);
+  } = useAudioEngine({ 
+    song: selectedSong as any, 
+    onDurationUpdated: handleDurationUpdate 
+  });
 
   useKeyboardShortcuts({
     onPlay: play,
@@ -179,21 +208,7 @@ export default function Performance({ userType }: PerformanceProps) {
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
-  // Refresh songs helper function
-  const refreshSongs = () => {
-    if (user?.email) {
-      const songs = LocalSongStorage.getAllSongs(user.email);
-      // Sort songs alphabetically by title
-      const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
-      setAllSongs(sortedSongs);
-      
-      // Also refresh the currently selected song to pick up track changes
-      if (selectedSongId) {
-        const updatedSong = LocalSongStorage.getSong(user.email, selectedSongId);
-        setSelectedSong(updatedSong || null);
-      }
-    }
-  };
+
 
   // Track update handler for when tracks are added/removed/modified
   const handleTrackUpdate = useCallback(() => {

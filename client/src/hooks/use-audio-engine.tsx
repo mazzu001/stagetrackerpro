@@ -2,7 +2,24 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { AudioEngine } from "@/lib/audio-engine";
 import type { SongWithTracks } from "@shared/schema";
 
-export function useAudioEngine(song?: SongWithTracks) {
+interface UseAudioEngineProps {
+  song?: SongWithTracks;
+  onDurationUpdated?: (songId: string, duration: number) => void;
+}
+
+export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProps) {
+  // Handle both old and new calling patterns for backwards compatibility
+  let song: SongWithTracks | undefined;
+  let onDurationUpdated: ((songId: string, duration: number) => void) | undefined;
+  
+  if (songOrProps && 'song' in songOrProps) {
+    // New calling pattern: useAudioEngine({ song, onDurationUpdated })
+    song = songOrProps.song;
+    onDurationUpdated = songOrProps.onDurationUpdated;
+  } else {
+    // Old calling pattern: useAudioEngine(song)
+    song = songOrProps as SongWithTracks | undefined;
+  }
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -27,6 +44,12 @@ export function useAudioEngine(song?: SongWithTracks) {
         audioEngineRef.current.onDurationUpdated = (newDuration: number) => {
           console.log(`Duration updated from audio buffers: ${newDuration}s`);
           setDuration(newDuration);
+          
+          // Save duration to database if callback provided and song is loaded
+          if (song && onDurationUpdated) {
+            console.log(`Saving updated duration ${newDuration}s to database for song: ${song.title}`);
+            onDurationUpdated(song.id, Math.round(newDuration));
+          }
         };
         
         await audioEngineRef.current.initialize();

@@ -1327,16 +1327,6 @@ export default function Performance({ userType }: PerformanceProps) {
                     <span className="text-xs text-green-600 font-medium">MIDI Listening</span>
                   </div>
                 )}
-                {lastMidiMessage && (
-                  <div className="text-xs text-blue-600 font-mono">
-                    {midiListenMode === 'manual' ? 'Preview: ' : 'Last: '}{formatMidiMessageAsCommand(lastMidiMessage.data)}
-                  </div>
-                )}
-                {capturedMidiMessages.length > 0 && (
-                  <div className="text-xs text-purple-600 font-medium">
-                    Captured: {capturedMidiMessages.length} messages
-                  </div>
-                )}
                 <div className="text-xs text-gray-400">
                   <code className="text-xs">[MM:SS]</code> timestamps • <code className="text-xs">[[CC:1:64]]</code> MIDI
                 </div>

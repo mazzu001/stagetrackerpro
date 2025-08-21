@@ -1163,12 +1163,8 @@ export default function Performance({ userType }: PerformanceProps) {
             </div>
             
             {/* Mobile Header with Controls */}
-            <div className="p-2 border-b border-gray-700 bg-surface flex items-center justify-between md:hidden flex-shrink-0">
-              <h2 className="text-sm font-semibold truncate mr-2 flex-1">
-                {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
-              </h2>
-              
-              {/* Mobile Lyrics Controls */}
+            <div className="p-2 border-b border-gray-700 bg-surface flex items-center justify-center md:hidden flex-shrink-0">
+              {/* Mobile Lyrics Controls - Full width for better accessibility */}
               {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
             

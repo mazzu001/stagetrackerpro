@@ -88,12 +88,26 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
     });
 
     access.outputs.forEach((output: any) => {
+      console.log('Found MIDI output device:', output.name, 'State:', output.state, 'Connection:', output.connection);
       outputs.push({
         id: output.id,
         name: output.name || 'Unknown Output',
         state: output.state,
         connection: output.connection
       });
+      
+      // Try to open output device if it's closed
+      if (output.state === 'closed') {
+        console.log('⚠️ Output device is closed, attempting to open:', output.name);
+        try {
+          output.open();
+          console.log('✅ Successfully opened output device:', output.name);
+        } catch (error) {
+          console.error('❌ Failed to open output device:', output.name, error);
+        }
+      } else {
+        console.log('✅ Output device already open:', output.name);
+      }
     });
 
     console.log('Found', inputs.length, 'inputs and', outputs.length, 'outputs');
@@ -130,6 +144,22 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
 
   const clearRecording = () => {
     setRecordedMessages([]);
+  };
+
+  const openOutputDevice = async (deviceId: string, deviceName: string) => {
+    if (!midiAccess) return;
+    
+    try {
+      const output = midiAccess.outputs.get(deviceId);
+      if (output) {
+        await output.open();
+        console.log('✅ Manually opened output device:', deviceName);
+        // Rescan to update state
+        scanDevices(midiAccess);
+      }
+    } catch (error) {
+      console.error('❌ Failed to manually open output device:', deviceName, error);
+    }
   };
 
   const testFullDuplex = async () => {
@@ -202,9 +232,22 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
             <ScrollArea className="h-32 border border-gray-700 rounded p-2">
               {outputDevices.map(device => (
                 <div key={device.id} className="mb-1 p-2 bg-gray-800 rounded">
-                  <div className="font-medium text-blue-300">{device.name}</div>
-                  <div className="text-xs text-gray-400">
-                    {device.state} | {device.connection}
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="font-medium text-blue-300">{device.name}</div>
+                      <div className="text-xs text-gray-400">
+                        {device.state} | {device.connection}
+                      </div>
+                    </div>
+                    {device.connection === 'closed' && (
+                      <Button
+                        size="sm"
+                        onClick={() => openOutputDevice(device.id, device.name)}
+                        className="h-6 text-xs"
+                      >
+                        Open
+                      </Button>
+                    )}
                   </div>
                 </div>
               ))}

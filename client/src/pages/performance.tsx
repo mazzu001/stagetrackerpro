@@ -1348,7 +1348,7 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
 
           {/* Mobile Syntax Examples - Bottom */}
-          <div className="md:hidden mt-2 p-2 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 flex-shrink-0 bg-[#222324]">
+          <div className="md:hidden p-2 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 flex-shrink-0 bg-[#222324]">
             <h4 className="text-xs font-semibold dark:text-gray-300 mb-2 text-[#b3bbc7]">Examples:</h4>
             <div className="grid grid-cols-1 gap-1 text-xs font-mono">
               <div className="flex gap-4">
@@ -1359,7 +1359,7 @@ export default function Performance({ userType }: PerformanceProps) {
           </div>
 
           {/* Compact Action Buttons */}
-          <div className="flex justify-between gap-2 pt-2 mt-2 border-t border-gray-700 flex-shrink-0">
+          <div className="flex justify-between gap-2 pt-2 border-t border-gray-700 flex-shrink-0">
             <Button 
               variant="outline" 
               size="sm"

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset to Trial</title>
+</head>
+<body>
+    <h2>Reset Account to Trial Status</h2>
+    <button onclick="resetToTrial()">Reset to Trial</button>
+    <div id="status"></div>
+
+    <script>
+        function resetToTrial() {
+            const userData = {
+                email: 'mazzu001@hotmail.com',
+                userType: 'free',
+                hasActiveSubscription: false,
+                username: 'mazzu001'
+            };
+            
+            // Update both storage keys
+            localStorage.setItem('lpp_local_user', JSON.stringify(userData));
+            localStorage.setItem('stagetracker_user', JSON.stringify(userData));
+            
+            // Trigger auth change event
+            window.dispatchEvent(new Event('auth-change'));
+            
+            document.getElementById('status').innerHTML = 'Account reset to trial status! You can now test the upgrade flow. <a href="/">Go to app</a>';
+        }
+    </script>
+</body>
+</html>

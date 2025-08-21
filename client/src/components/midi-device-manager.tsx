@@ -624,12 +624,12 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
           </div>
 
           {/* Three Column Layout */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 gap-6">
-            {/* Left Side: Bluetooth Devices */}
-            <div className="space-y-4">
-              <h3 className="font-medium text-lg">Bluetooth Devices</h3>
+          <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 gap-4">
+            {/* Left Side: Bluetooth Devices - Expanded */}
+            <div className="space-y-3">
+              <h3 className="font-medium text-base">Bluetooth Devices</h3>
               
-              <ScrollArea className="h-60 border rounded-md p-2">
+              <ScrollArea className="h-80 border rounded-md p-2">
                 {!bluetoothSupported ? (
                   <div className="text-center text-gray-500 py-8 text-sm">
                     Bluetooth not supported<br />
@@ -665,17 +665,17 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
               </ScrollArea>
             </div>
 
-            {/* Middle: MIDI Devices */}
-            <div className="space-y-4">
-              <h3 className="font-medium text-lg">MIDI Devices</h3>
+            {/* Middle: MIDI Devices - Moved up */}
+            <div className="space-y-2">
+              <h3 className="font-medium text-base">MIDI Devices</h3>
               
               {/* Input Devices */}
               <div className="space-y-2">
-                <h4 className="font-medium flex items-center gap-2 text-blue-600">
+                <h4 className="font-medium flex items-center gap-2 text-blue-600 text-sm">
                   <Activity className="w-4 h-4" />
                   Input Devices ({inputDevices.length})
                 </h4>
-                <ScrollArea className="h-40 border rounded-md p-2">
+                <ScrollArea className="h-32 border rounded-md p-2">
                   {inputDevices.length === 0 ? (
                     <div className="text-center text-gray-500 py-8 text-sm">
                       No input devices found<br />
@@ -719,11 +719,11 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
 
               {/* Output Devices */}
               <div className="space-y-2">
-                <h4 className="font-medium flex items-center gap-2 text-green-600">
+                <h4 className="font-medium flex items-center gap-2 text-green-600 text-sm">
                   <Music className="w-4 h-4" />
                   Output Devices ({outputDevices.length})
                 </h4>
-                <ScrollArea className="h-40 border rounded-md p-2">
+                <ScrollArea className="h-32 border rounded-md p-2">
                   {outputDevices.length === 0 ? (
                     <div className="text-center text-gray-500 py-8 text-sm">
                       No output devices found<br />
@@ -786,8 +786,8 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
             </div>
 
             {/* Right Side: Activity Monitor & Test Results */}
-            <div className="space-y-4">
-              <h3 className="font-medium text-lg">Activity & Testing</h3>
+            <div className="space-y-3">
+              <h3 className="font-medium text-base">Activity & Testing</h3>
               
               {/* Test Results */}
               {testResults && (
@@ -811,7 +811,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                   <Activity className="w-4 h-4" />
                   Recent Messages
                 </h4>
-                <ScrollArea className="h-60 border rounded-md p-3 bg-gray-50 dark:bg-gray-900">
+                <ScrollArea className="h-48 border rounded-md p-3 bg-gray-50 dark:bg-gray-900">
                   {receivedMessages.length === 0 ? (
                     <div className="text-center text-gray-500 py-8 text-sm">
                       No MIDI activity<br />

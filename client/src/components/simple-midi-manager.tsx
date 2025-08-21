@@ -53,7 +53,13 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
         connection: input.connection
       });
 
+      // Force open the input device if it's closed
+      if (input.connection === 'closed') {
+        input.open();
+      }
+
       input.onmidimessage = (event: any) => {
+        console.log('MIDI message received:', event.data);
         const data = Array.from(event.data as Uint8Array) as number[];
         const message = formatMIDIMessage(data);
         const newMessage: MIDIMessage = {
@@ -112,6 +118,16 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
     setRecordedMessages([]);
   };
 
+  const testMIDI = () => {
+    console.log('Testing MIDI - injecting test message');
+    const testMessage: MIDIMessage = {
+      device: 'Test Device',
+      message: 'Test Note ON Ch1 Note60 Vel127',
+      timestamp: Date.now()
+    };
+    setReceivedMessages(prev => [testMessage, ...prev.slice(0, 19)]);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -168,10 +184,18 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
             <Button 
               onClick={toggleListen} 
               variant={isListening ? "destructive" : "default"}
-              className="w-full flex items-center gap-2"
+              className="w-full flex items-center gap-2 mb-2"
             >
               {isListening ? <Square className="w-4 h-4" /> : <Play className="w-4 h-4" />}
               {isListening ? 'Stop Listen' : 'Start Listen'}
+            </Button>
+
+            <Button 
+              onClick={testMIDI} 
+              variant="outline"
+              className="w-full"
+            >
+              Test UI
             </Button>
             
             {recordedMessages.length > 0 && (

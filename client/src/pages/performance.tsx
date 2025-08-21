@@ -46,8 +46,9 @@ export default function Performance({ userType }: PerformanceProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMIDIManagerOpen, setIsMIDIManagerOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
-  const [midiListenMode, setMidiListenMode] = useState<'auto' | 'manual'>('manual');
+  const [midiListenMode, setMidiListenMode] = useState<'auto' | 'manual' | 'capture-all'>('manual');
   const [lastMidiMessage, setLastMidiMessage] = useState<{ device: string; data: number[]; timestamp: number } | null>(null);
+  const [capturedMidiMessages, setCapturedMidiMessages] = useState<{ device: string; data: number[]; timestamp: number }[]>([]);
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
@@ -135,12 +136,22 @@ export default function Performance({ userType }: PerformanceProps) {
       const { device, data, timestamp } = event.detail;
       setLastMidiMessage({ device, data, timestamp });
       
-      // Only process meaningful MIDI messages (filter out noise)
-      if (shouldProcessMidiMessage(data)) {
+      // Store all messages when listening
+      setCapturedMidiMessages(prev => [...prev, { device, data, timestamp }]);
+      
+      // Process MIDI messages based on mode
+      let shouldProcess = false;
+      if (midiListenMode === 'capture-all') {
+        shouldProcess = true; // Capture everything
+      } else {
+        shouldProcess = shouldProcessMidiMessage(data); // Filter for meaningful messages
+      }
+
+      if (shouldProcess) {
         const midiCommand = formatMidiMessageAsCommand(data);
         if (midiCommand) {
           // Auto mode: insert immediately, Manual mode: just show preview
-          if (midiListenMode === 'auto') {
+          if (midiListenMode === 'auto' || midiListenMode === 'capture-all') {
             insertMidiCommandAtCursor(midiCommand);
           }
         }
@@ -192,23 +203,51 @@ export default function Performance({ userType }: PerformanceProps) {
 
   // Format MIDI data as text command
   const formatMidiMessageAsCommand = (data: number[]): string | null => {
-    if (data.length < 2) return null;
+    if (data.length < 1) return null;
 
     const [status, ...params] = data;
+    
+    // Handle system messages (no channel)
+    if (status >= 0xF0) {
+      switch (status) {
+        case 0xF8: return `[[CLOCK]]`;
+        case 0xFA: return `[[START]]`;
+        case 0xFB: return `[[CONTINUE]]`;
+        case 0xFC: return `[[STOP]]`;
+        case 0xFE: return `[[ACTIVE_SENSE]]`;
+        case 0xFF: return `[[RESET]]`;
+        default: return `[[SYS:${status}]]`;
+      }
+    }
+
+    // Channel messages
     const messageType = (status & 0xF0) >> 4;
     const channel = (status & 0x0F) + 1; // Convert to 1-based channel
 
     switch (messageType) {
+      case 0x8: // Note Off
+        if (params.length >= 2) {
+          const [note, velocity] = params;
+          return `[[NOTEOFF:${note}:${velocity}:${channel}]]`;
+        } else if (params.length >= 1) {
+          const [note] = params;
+          return `[[NOTEOFF:${note}:0:${channel}]]`;
+        }
+        break;
       case 0x9: // Note On
         if (params.length >= 2) {
           const [note, velocity] = params;
+          // Note on with velocity 0 is actually note off
+          if (velocity === 0) {
+            return `[[NOTEOFF:${note}:0:${channel}]]`;
+          }
           return `[[NOTE:${note}:${velocity}:${channel}]]`;
         }
         break;
-      case 0x8: // Note Off
-        if (params.length >= 1) {
-          const [note] = params;
-          return `[[NOTEOFF:${note}:${channel}]]`;
+      case 0xA: // Polyphonic Key Pressure (Aftertouch)
+        if (params.length >= 2) {
+          const [note, pressure] = params;
+          return `[[AFTERTOUCH:${note}:${pressure}:${channel}]]`;
         }
         break;
       case 0xB: // Control Change
@@ -223,8 +262,21 @@ export default function Performance({ userType }: PerformanceProps) {
           return `[[PC:${program}:${channel}]]`;
         }
         break;
+      case 0xD: // Channel Pressure (Aftertouch)
+        if (params.length >= 1) {
+          const [pressure] = params;
+          return `[[PRESSURE:${pressure}:${channel}]]`;
+        }
+        break;
+      case 0xE: // Pitch Bend
+        if (params.length >= 2) {
+          const [lsb, msb] = params;
+          const pitchBend = (msb << 7) | lsb;
+          return `[[PITCHBEND:${pitchBend}:${channel}]]`;
+        }
+        break;
       default:
-        return null;
+        return `[[MIDI:${status}:${params.join(':')}]]`;
     }
     return null;
   };
@@ -259,18 +311,23 @@ export default function Performance({ userType }: PerformanceProps) {
   const toggleMidiListening = () => {
     setIsMidiListening(!isMidiListening);
     if (!isMidiListening) {
+      // Clear previous captures when starting new session
+      setCapturedMidiMessages([]);
+      const descriptions = {
+        auto: "Commands will be inserted automatically (filtered)",
+        manual: "Commands shown as preview - click 'Insert Last' to add",
+        'capture-all': "ALL MIDI messages will be captured and inserted"
+      };
       toast({
-        title: `Smart MIDI Listening Active (${midiListenMode} mode)`,
-        description: midiListenMode === 'auto' 
-          ? "Commands will be inserted automatically"
-          : "Commands shown as preview - click 'Insert Last' to add",
+        title: `MIDI Listening Active (${midiListenMode} mode)`,
+        description: descriptions[midiListenMode],
         duration: 3000,
       });
     } else {
       setLastMidiMessage(null); // Clear last message when stopping
       toast({
         title: "MIDI Listening Disabled",
-        description: "MIDI input will no longer be captured",
+        description: `Captured ${capturedMidiMessages.length} MIDI messages`,
         duration: 2000,
       });
     }
@@ -284,6 +341,43 @@ export default function Performance({ userType }: PerformanceProps) {
         insertMidiCommandAtCursor(midiCommand);
       }
     }
+  };
+
+  // Insert all captured MIDI messages
+  const insertAllCapturedMidi = () => {
+    if (capturedMidiMessages.length === 0) return;
+    
+    const commands = capturedMidiMessages
+      .map(msg => formatMidiMessageAsCommand(msg.data))
+      .filter(cmd => cmd !== null)
+      .join('\n');
+    
+    if (commands) {
+      const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const currentText = lyricsText;
+        
+        const newText = currentText.substring(0, start) + '\n' + commands + '\n' + currentText.substring(end);
+        setLyricsText(newText);
+        
+        // Position cursor after inserted content
+        setTimeout(() => {
+          textarea.focus();
+          textarea.setSelectionRange(start + commands.length + 2, start + commands.length + 2);
+        }, 0);
+      }
+    }
+    
+    toast({
+      title: "All MIDI Commands Inserted",
+      description: `Added ${capturedMidiMessages.length} MIDI commands to lyrics`,
+      duration: 3000,
+    });
+    
+    // Clear captured messages
+    setCapturedMidiMessages([]);
   };
 
   const {
@@ -1138,11 +1232,16 @@ export default function Performance({ userType }: PerformanceProps) {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setMidiListenMode(midiListenMode === 'auto' ? 'manual' : 'auto')}
+                  onClick={() => {
+                    const modes: ('auto' | 'manual' | 'capture-all')[] = ['manual', 'auto', 'capture-all'];
+                    const currentIndex = modes.indexOf(midiListenMode);
+                    const nextIndex = (currentIndex + 1) % modes.length;
+                    setMidiListenMode(modes[nextIndex]);
+                  }}
                   data-testid="button-midi-mode"
                   className="h-8 px-2"
                 >
-                  {midiListenMode === 'auto' ? 'Auto' : 'Manual'}
+                  {midiListenMode === 'auto' ? 'Auto' : midiListenMode === 'manual' ? 'Manual' : 'All'}
                 </Button>
               )}
               {isMidiListening && midiListenMode === 'manual' && lastMidiMessage && (
@@ -1155,6 +1254,28 @@ export default function Performance({ userType }: PerformanceProps) {
                 >
                   Insert Last
                 </Button>
+              )}
+              {!isMidiListening && capturedMidiMessages.length > 0 && (
+                <>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={insertAllCapturedMidi}
+                    data-testid="button-insert-all-midi"
+                    className="h-8 px-3"
+                  >
+                    Insert All ({capturedMidiMessages.length})
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCapturedMidiMessages([])}
+                    data-testid="button-clear-midi"
+                    className="h-8 px-2"
+                  >
+                    Clear
+                  </Button>
+                </>
               )}
               
               {/* Compact Position Slider */}
@@ -1198,6 +1319,11 @@ export default function Performance({ userType }: PerformanceProps) {
                     {midiListenMode === 'manual' ? 'Preview: ' : 'Last: '}{formatMidiMessageAsCommand(lastMidiMessage.data)}
                   </div>
                 )}
+                {capturedMidiMessages.length > 0 && (
+                  <div className="text-xs text-purple-600 font-medium">
+                    Captured: {capturedMidiMessages.length} messages
+                  </div>
+                )}
                 <div className="text-xs text-gray-400">
                   <code className="text-xs">[MM:SS]</code> timestamps • <code className="text-xs">[[CC:1:64]]</code> MIDI
                 </div>
@@ -1220,8 +1346,9 @@ export default function Performance({ userType }: PerformanceProps) {
 
 Click "Timestamp" to insert current time
 Click "MIDI Listen" then play your MIDI device
-- Auto mode: Commands inserted immediately  
-- Manual mode: Preview commands, click "Insert Last" to add`}
+- Auto mode: Filtered commands inserted immediately  
+- Manual mode: Preview commands, click "Insert Last" to add
+- All mode: Every MIDI message captured and inserted`}
               className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
               style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
               spellCheck={false}

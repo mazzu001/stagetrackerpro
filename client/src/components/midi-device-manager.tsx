@@ -458,12 +458,24 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
 
     // Set up temporary listener for test responses
     const testListener = (event: any) => {
+      const data = Array.from(event.data as Uint8Array) as number[];
+      console.log(`Test received MIDI from ${input?.name}:`, data);
       receivedCount++;
       setTestResults({ device: output.name || 'Unknown', sent: sentCount, received: receivedCount, timestamp: Date.now() });
     };
 
     if (input && input.state === 'connected') {
+      // Ensure input connection is open before setting up test listener
+      if (input.connection === 'closed') {
+        try {
+          (input as any).open?.();
+          console.log(`Opened input connection for test: ${input.name}`);
+        } catch (error) {
+          console.warn(`Failed to open input for test: ${input.name}:`, error);
+        }
+      }
       input.onmidimessage = testListener;
+      console.log(`Test listener set up for ${input.name} (connection: ${input.connection})`);
     }
 
     try {
@@ -512,6 +524,16 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
       if (input && input.state === 'connected') {
         const device = devices.find(d => d.id === input.id);
         if (device) {
+          console.log(`Restoring normal listener for ${device.name}`);
+          // Ensure connection is still open before restoring listener
+          if (input.connection === 'closed') {
+            try {
+              (input as any).open?.();
+              console.log(`Reopened input connection after test: ${input.name}`);
+            } catch (error) {
+              console.warn(`Failed to reopen input after test: ${input.name}:`, error);
+            }
+          }
           setupMIDIInputListener(input, device);
         }
       }

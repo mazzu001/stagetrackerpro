@@ -281,28 +281,61 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
     }
   };
 
-  // Request Bluetooth device pairing
+  // Request Bluetooth device pairing with broader filters
   const requestBluetoothDevice = async () => {
     if (!bluetoothSupported) return;
 
     try {
       setIsScanning(true);
+      console.log('Starting Bluetooth device discovery...');
+      
+      // Try broad discovery first - this should catch most devices
       const device = await (navigator as any).bluetooth.requestDevice({
         filters: [
-          { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] }, // MIDI Service
+          // MIDI-specific services
+          { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] }, // Standard MIDI Service
+          // Common MIDI device name patterns
           { namePrefix: 'MIDI' },
           { namePrefix: 'BLE-MIDI' },
           { namePrefix: 'Yamaha' },
           { namePrefix: 'Roland' },
-          { namePrefix: 'Korg' }
+          { namePrefix: 'Korg' },
+          { namePrefix: 'Matt' }, // For "Matts Pedal"
+          { namePrefix: 'Pedal' },
+          // Generic patterns that might catch other devices
+          { namePrefix: 'BT-' },
+          { namePrefix: 'Wireless' },
+          // Try to catch devices with "Pedal" in the name
+          { name: 'Matts Pedal' }
         ],
-        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
+        optionalServices: [
+          '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // MIDI
+          '0000180f-0000-1000-8000-00805f9b34fb', // Battery Service
+          '0000180a-0000-1000-8000-00805f9b34fb'  // Device Information
+        ]
       });
 
+      console.log('Found Bluetooth device:', device.name, device.id);
+      
       toast({
-        title: "Bluetooth Device Paired",
-        description: `Connected to ${device.name}. Refresh MIDI devices to see it.`,
+        title: "Bluetooth Device Found",
+        description: `Found ${device.name}. Attempting to connect...`,
       });
+
+      // Try to connect to the device
+      try {
+        await device.gatt?.connect();
+        toast({
+          title: "Bluetooth Device Connected",
+          description: `Connected to ${device.name}. Check MIDI devices section.`,
+        });
+      } catch (connectError) {
+        console.log('Connection failed, but device is paired:', connectError);
+        toast({
+          title: "Device Paired",
+          description: `${device.name} is now paired. It may appear in MIDI devices after refresh.`,
+        });
+      }
 
       // Refresh both Bluetooth and MIDI devices
       await scanBluetoothDevices();
@@ -310,13 +343,61 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
         scanDevices(midiAccess);
       }
     } catch (error: any) {
-      if (error.name !== 'NotFoundError') {
+      console.log('Bluetooth discovery error:', error);
+      if (error.name === 'NotFoundError') {
         toast({
-          title: "Bluetooth Pairing Failed",
-          description: error.message || "Failed to pair device",
+          title: "No Devices Found",
+          description: "Make sure your device is in pairing mode and try again.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Bluetooth Discovery Failed",
+          description: `${error.message}. Try: 1) Put device in pairing mode 2) Check Windows Bluetooth settings`,
           variant: "destructive",
         });
       }
+    } finally {
+      setIsScanning(false);
+    }
+  };
+
+  // Alternative method - try to discover without filters (more permissive)
+  const requestAnyBluetoothDevice = async () => {
+    if (!bluetoothSupported) return;
+
+    try {
+      setIsScanning(true);
+      console.log('Starting broad Bluetooth discovery...');
+      
+      const device = await (navigator as any).bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: [
+          '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // MIDI
+          '0000180f-0000-1000-8000-00805f9b34fb', // Battery
+          '0000180a-0000-1000-8000-00805f9b34fb'  // Device Info
+        ]
+      });
+
+      console.log('Found device with broad search:', device.name, device.id);
+      
+      toast({
+        title: "Device Found",
+        description: `Found ${device.name || 'Unknown Device'}. Checking for MIDI capability...`,
+      });
+
+      // Refresh devices
+      await scanBluetoothDevices();
+      if (midiAccess) {
+        scanDevices(midiAccess);
+      }
+    } catch (error: any) {
+      console.log('Broad discovery error:', error);
+      toast({
+        title: "Discovery Failed",
+        description: error.message || "Unable to discover devices",
+        variant: "destructive",
+      });
     } finally {
       setIsScanning(false);
     }
@@ -516,16 +597,28 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
               </Button>
               
               {bluetoothSupported && (
-                <Button
-                  onClick={requestBluetoothDevice}
-                  disabled={isScanning}
-                  size="sm"
-                  variant="default"
-                  data-testid="button-pair-bluetooth"
-                >
-                  <Bluetooth className="w-4 h-4 mr-2" />
-                  Pair Device
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={requestBluetoothDevice}
+                    disabled={isScanning}
+                    size="sm"
+                    variant="default"
+                    data-testid="button-pair-bluetooth"
+                  >
+                    <Bluetooth className="w-4 h-4 mr-2" />
+                    Pair MIDI
+                  </Button>
+                  <Button
+                    onClick={requestAnyBluetoothDevice}
+                    disabled={isScanning}
+                    size="sm"
+                    variant="outline"
+                    data-testid="button-pair-any-bluetooth"
+                  >
+                    <Bluetooth className="w-4 h-4 mr-2" />
+                    Find Any
+                  </Button>
+                </div>
               )}
             </div>
           </div>
@@ -752,19 +845,18 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
           </div>
 
           {/* Connection Instructions */}
-          {connectedDevices.length === 0 && (
-            <div className="p-4 border rounded-md bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-              <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
-                How to Connect MIDI Devices
-              </h4>
-              <div className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-                <p><strong>USB MIDI:</strong> Connect your device and click "Refresh" to scan</p>
-                <p><strong>Bluetooth MIDI:</strong> Click "Pair Device" to discover and connect new devices</p>
-                <p><strong>Virtual MIDI:</strong> Software instruments and DAWs will appear automatically</p>
-                <p><strong>Testing:</strong> Use "Test" for simple note sending or "Full Test" for duplex communication testing</p>
-              </div>
+          <div className="p-4 border rounded-md bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
+            <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
+              Connection Instructions
+            </h4>
+            <div className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+              <p><strong>USB MIDI:</strong> Connect your device and click "Refresh" to scan</p>
+              <p><strong>Bluetooth MIDI:</strong> Click "Pair MIDI" for standard MIDI devices, or "Find Any" for other Bluetooth devices</p>
+              <p><strong>For "Matts Pedal" type devices:</strong> First pair in Windows Bluetooth settings, then click "Find Any"</p>
+              <p><strong>Virtual MIDI:</strong> Software instruments and DAWs will appear automatically</p>
+              <p><strong>Testing:</strong> Use "Test" for simple note sending or "Full Test" for duplex communication testing</p>
             </div>
-          )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>

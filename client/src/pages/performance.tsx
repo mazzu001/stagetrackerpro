@@ -1297,28 +1297,37 @@ export default function Performance({ userType }: PerformanceProps) {
               </div>
             </div>
             
-            {/* Lyrics Textarea - Takes all remaining space */}
+            {/* Lyrics Textarea - Reduced height to make room for examples */}
             <Textarea
               id="lyrics"
               value={lyricsText}
               onChange={(e) => setLyricsText(e.target.value)}
               onPaste={handleLyricsPaste}
-              placeholder={`Enter lyrics with timestamps and MIDI commands:
-
-[00:15] First verse line
-[00:30] Second verse line  
-[[CC:1:64]] MIDI lighting command
-[[NOTE:60:127]] MIDI note on
-[[PC:5]] Program change
-
-Click "Timestamp" to insert current time
-Click "MIDI Listen" then play your MIDI device
-MIDI commands will be inserted directly into lyrics, one per line`}
-              className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
-              style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
+              placeholder="Enter lyrics with timestamps and MIDI commands..."
+              className="font-mono text-sm leading-relaxed resize-none border-gray-600"
+              style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', height: '200px' }}
               spellCheck={false}
               data-testid="textarea-lyrics"
             />
+            
+            {/* Syntax Examples */}
+            <div className="mt-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
+              <h4 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">Syntax Examples:</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-mono">
+                <div>
+                  <div className="text-gray-600 dark:text-gray-400 mb-1">Timestamps:</div>
+                  <div className="text-blue-600 dark:text-blue-400">[00:15] Verse starts</div>
+                  <div className="text-blue-600 dark:text-blue-400">[01:30] Chorus begins</div>
+                </div>
+                <div>
+                  <div className="text-gray-600 dark:text-gray-400 mb-1">MIDI Commands:</div>
+                  <div className="text-purple-600 dark:text-purple-400">[[CC:1:64:1]] Control change</div>
+                  <div className="text-purple-600 dark:text-purple-400">[[NOTE:60:127:1]] Note on</div>
+                  <div className="text-purple-600 dark:text-purple-400">[[PC:5:1]] Program change</div>
+                  <div className="text-purple-600 dark:text-purple-400">[[NOTEOFF:60:1]] Note off</div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Compact Action Buttons */}

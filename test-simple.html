@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test</title>
+</head>
+<body>
+  <h1>Simple Test Page</h1>
+  <p>If you can see this, the server is working.</p>
+  <script>
+    console.log('Simple test page loaded');
+    fetch('/api/health')
+      .then(res => res.json())
+      .then(data => console.log('Health check:', data))
+      .catch(err => console.error('Health check failed:', err));
+  </script>
+</body>
+</html>

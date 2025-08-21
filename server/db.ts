@@ -1,29 +1,30 @@
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
-import { drizzle as drizzleNeon } from 'drizzle-orm/neon-serverless';
-import { neon, neonConfig } from '@neondatabase/serverless';
-import ws from 'ws';
+import { drizzle as drizzlePg } from 'drizzle-orm/postgres-js';
+import postgres from 'postgres';
 import * as schema from "@shared/schema";
 import { users, sessions } from "@shared/schema";
 import fs from 'fs';
 import path from 'path';
 
-// Configure Neon for serverless environment
-neonConfig.webSocketConstructor = ws;
-
 // PostgreSQL connection for user authentication and subscriptions
-let cloudDb: ReturnType<typeof drizzleNeon> | null = null;
+let cloudDb: ReturnType<typeof drizzlePg> | null = null;
 try {
   if (process.env.DATABASE_URL) {
     console.log('🔗 Connecting to PostgreSQL database...');
-    const sql = neon(process.env.DATABASE_URL);
-    cloudDb = drizzleNeon(sql, { 
+    const sql = postgres(process.env.DATABASE_URL, { 
+      ssl: 'require',
+      max: 10,
+      idle_timeout: 20,
+      connect_timeout: 10,
+    });
+    cloudDb = drizzlePg(sql, { 
       schema: { 
         users: schema.usersPg, 
         sessions: schema.sessionsPg 
       }
     });
-    console.log('✅ Cloud PostgreSQL database initialized for user management');
+    console.log('✅ Standard PostgreSQL database initialized for user management');
     
     // Test the connection (wrapped in async function to avoid top-level await)
     Promise.resolve().then(async () => {

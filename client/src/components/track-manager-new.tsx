@@ -72,6 +72,40 @@ export default function TrackManager({
     }
   }, [song?.id, user?.email, onTrackUpdate]);
 
+  // Function to detect audio duration and update song
+  const detectAndUpdateSongDuration = async (audioFile: File, songId: string) => {
+    if (!user?.email) return;
+    
+    try {
+      // Create audio context for duration detection
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const arrayBuffer = await audioFile.arrayBuffer();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+      
+      const detectedDuration = Math.floor(audioBuffer.duration);
+      console.log(`Detected audio duration: ${detectedDuration}s from file: ${audioFile.name}`);
+      
+      // Get current song to check if we need to update duration
+      const currentSong = LocalSongStorage.getSong(user.email, songId);
+      if (currentSong) {
+        // Update song duration if this track is longer than current duration
+        if (detectedDuration > (currentSong.duration || 0)) {
+          console.log(`Updating song duration from ${currentSong.duration}s to ${detectedDuration}s`);
+          LocalSongStorage.updateSong(user.email, songId, { duration: detectedDuration });
+          
+          // Trigger UI refresh
+          onTrackUpdate?.();
+        }
+      }
+      
+      // Clean up audio context
+      audioContext.close();
+    } catch (error) {
+      console.warn('Failed to detect audio duration:', error);
+      // Continue without updating duration - not a critical error
+    }
+  };
+
   // Debounced volume update function
   const debouncedVolumeUpdate = useCallback((trackId: string, volume: number) => {
     // Clear existing timeout
@@ -187,6 +221,9 @@ export default function TrackManager({
         // Store the file in audio storage system
         const audioStorage = AudioFileStorage.getInstance();
         await audioStorage.storeAudioFile(newTrack.id, file, newTrack, song.title);
+        
+        // Detect and update song duration from the audio file
+        await detectAndUpdateSongDuration(file, song.id);
         
         console.log('Track added successfully:', newTrack);
         refetchTracks();

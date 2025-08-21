@@ -101,18 +101,7 @@ export default function Performance({ userType }: PerformanceProps) {
     loadSongs();
   }, [loadSongs]);
 
-  // Listen for song duration updates from audio engine
-  useEffect(() => {
-    const handleDurationUpdate = (event: CustomEvent) => {
-      console.log('Song duration updated, refreshing song list:', event.detail);
-      loadSongs(); // Refresh the song list to show updated duration
-    };
 
-    window.addEventListener('song-duration-updated', handleDurationUpdate as EventListener);
-    return () => {
-      window.removeEventListener('song-duration-updated', handleDurationUpdate as EventListener);
-    };
-  }, [loadSongs]);
 
   // Update selected song when selectedSongId changes
   useEffect(() => {
@@ -796,11 +785,7 @@ export default function Performance({ userType }: PerformanceProps) {
                 <div className="text-xs md:text-sm text-gray-400 truncate">{song.artist}</div>
                 <div className="flex items-center justify-between">
                   <div className="text-xs text-gray-500">
-                    {(() => {
-                      // Use the real-time duration from audio engine if this song is currently selected and loaded
-                      const displayDuration = (selectedSongId === song.id && duration > 0) ? Math.floor(duration) : song.duration;
-                      return displayDuration ? `${Math.floor(displayDuration / 60)}:${(displayDuration % 60).toString().padStart(2, '0')}` : 'No duration';
-                    })()}
+                    {song.duration ? `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}` : 'No duration'}
                   </div>
                   {selectedSongId === song.id && isPlaying && (
                     <StereoVUMeter

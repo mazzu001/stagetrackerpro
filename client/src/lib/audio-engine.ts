@@ -102,47 +102,13 @@ export class AudioEngine {
       });
       
       if (maxDuration > 0) {
-        const needsUpdate = Math.abs(maxDuration - this.currentSong.duration) > 1; // Allow 1 second tolerance
-        console.log(`Audio buffer duration: ${maxDuration}s, current song duration: ${this.currentSong.duration}s, needs update: ${needsUpdate}`);
-        
-        // Always update in-memory duration
+        // Always update in-memory duration for transport controls
         this.currentSong.duration = maxDuration;
         this.actualDuration = maxDuration; // Store the actual detected duration
         
-        if (needsUpdate) {
-          console.log(`Updating song duration from ${this.currentSong.duration}s to ${maxDuration}s based on audio buffer analysis`);
-          
-          // Update the song duration in local storage
-          try {
-            const user = JSON.parse(localStorage.getItem('stagetracker_user') || '{}');
-            console.log('Audio engine trying to update duration, user:', user);
-            
-            if (user.email) {
-              const updated = LocalSongStorage.updateSong(user.email, this.currentSong.id, { 
-                duration: Math.floor(maxDuration) 
-              });
-              if (updated) {
-                console.log(`Updated song duration in local storage: ${Math.floor(maxDuration)}s`);
-                
-                // Trigger UI refresh by dispatching a custom event
-                window.dispatchEvent(new CustomEvent('song-duration-updated', { 
-                  detail: { songId: this.currentSong.id, duration: Math.floor(maxDuration) } 
-                }));
-                console.log('Dispatched song-duration-updated event');
-              } else {
-                console.warn('Failed to update song in local storage - song not found');
-              }
-            } else {
-              console.warn('No user email found in localStorage for duration update');
-            }
-          } catch (error) {
-            console.warn('Failed to update song duration in storage:', error);
-          }
-          
-          // Trigger a callback to update the UI with the correct duration
-          if (this.onDurationUpdated) {
-            this.onDurationUpdated(maxDuration);
-          }
+        // Trigger a callback to update the UI with the correct duration
+        if (this.onDurationUpdated) {
+          this.onDurationUpdated(maxDuration);
         }
       }
     }

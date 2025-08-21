@@ -134,7 +134,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: { 
           id: user.id, 
           email: user.email,
-          userType: 'free' // Will be updated by subscription verification
+          userType: user.subscriptionStatus || 'free'
         }
       });
     } catch (error: any) {

@@ -10,15 +10,31 @@ import { Crown, Check, Music } from 'lucide-react';
 // Make sure to call `loadStripe` outside of a component's render to avoid
 // recreating the `Stripe` object on every render.
 if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
+  console.error('Missing VITE_STRIPE_PUBLIC_KEY environment variable');
   throw new Error('Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY');
 }
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+
+console.log('Loading Stripe with key starting with:', import.meta.env.VITE_STRIPE_PUBLIC_KEY.substring(0, 8));
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY).catch((error) => {
+  console.error('Failed to load Stripe:', error);
+  throw error;
+});
 
 const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Add error boundary for Stripe elements
+  if (!stripe || !elements) {
+    return (
+      <div className="text-center p-4">
+        <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2" />
+        <p className="text-sm text-gray-600">Loading payment form...</p>
+      </div>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,18 +45,20 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
       return;
     }
 
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      redirect: 'if_required',
-    });
-
-    if (error) {
-      toast({
-        title: "Payment Failed",
-        description: error.message,
-        variant: "destructive",
+    try {
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        redirect: 'if_required',
       });
-    } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+
+      if (error) {
+        console.error('Payment error:', error);
+        toast({
+          title: "Payment Failed",
+          description: error.message || 'Payment failed. Please try again.',
+          variant: "destructive",
+        });
+      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
       // Update local user type to paid and preserve login
       const storedUser = localStorage.getItem('lpp_local_user');
       if (storedUser) {
@@ -76,9 +94,21 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
         description: "Your subscription is now active. Enjoy unlimited songs!",
       });
       onSuccess();
-    } else {
-      // Payment is still processing or requires action
-      console.log('Payment status:', paymentIntent?.status);
+      } else {
+        // Payment is still processing or requires action
+        console.log('Payment status:', paymentIntent?.status);
+        toast({
+          title: "Payment Processing",
+          description: "Your payment is being processed. Please wait...",
+        });
+      }
+    } catch (error: any) {
+      console.error('Payment confirmation error:', error);
+      toast({
+        title: "Payment Error",
+        description: error.message || 'An unexpected error occurred. Please try again.',
+        variant: "destructive",
+      });
     }
     
     setIsLoading(false);
@@ -153,6 +183,7 @@ export default function Subscribe({ onClose }: { onClose: () => void }) {
         .catch((error) => {
           console.error('Error creating subscription:', error);
           setShowPayment(false);
+          setIsCreatingSubscription(false);
         })
         .finally(() => {
           setIsCreatingSubscription(false);

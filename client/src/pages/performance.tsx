@@ -798,7 +798,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   <div className="text-xs text-gray-500">
                     {(() => {
                       // Use the real-time duration from audio engine if this song is currently selected and loaded
-                      const displayDuration = (selectedSongId === song.id && duration > 0) ? duration : song.duration;
+                      const displayDuration = (selectedSongId === song.id && duration > 0) ? Math.floor(duration) : song.duration;
                       return displayDuration ? `${Math.floor(displayDuration / 60)}:${(displayDuration % 60).toString().padStart(2, '0')}` : 'No duration';
                     })()}
                   </div>

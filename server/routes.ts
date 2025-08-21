@@ -4,6 +4,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertSongSchema, insertTrackSchema } from "@shared/schema";
 import { setupAuth, isAuthenticated, requireSubscription } from "./replitAuth";
+import { subscriptionManager } from "./subscriptionManager";
 import Stripe from "stripe";
 import multer from "multer";
 import path from "path";
@@ -205,6 +206,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     res.json({received: true});
+  });
+
+  // Subscription verification endpoint
+  app.post('/api/verify-subscription', async (req, res) => {
+    try {
+      const { email } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ 
+          error: 'Email required',
+          message: 'Email address is required to verify subscription' 
+        });
+      }
+      
+      console.log('🔍 Verifying subscription for email:', email);
+      
+      const verificationResult = await subscriptionManager.verifySubscriptionStatus(email);
+      
+      res.json({
+        isPaid: verificationResult.isPaid,
+        userType: verificationResult.isPaid ? 'paid' : 'free',
+        subscriptionData: verificationResult.subscriptionData || null,
+        source: verificationResult.source
+      });
+      
+    } catch (error: any) {
+      console.error('❌ Error verifying subscription:', error);
+      res.status(500).json({ 
+        error: 'Verification failed',
+        message: 'Could not verify subscription status' 
+      });
+    }
   });
 
   // Stripe subscription routes

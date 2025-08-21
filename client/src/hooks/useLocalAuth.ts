@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { apiRequest } from '@/lib/queryClient';
 
 export type UserType = 'free' | 'paid';
 
@@ -6,10 +7,12 @@ interface LocalUser {
   email: string;
   userType: UserType;
   loginTime: number;
+  lastVerified?: number;
 }
 
 const STORAGE_KEY = 'lpp_local_user';
 const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+const VERIFICATION_INTERVAL = 4 * 60 * 60 * 1000; // 4 hours
 
 export function useLocalAuth() {
   const [user, setUser] = useState<LocalUser | null>(null);
@@ -17,7 +20,7 @@ export function useLocalAuth() {
 
   useEffect(() => {
     // Check for existing session on mount
-    const checkExistingSession = () => {
+    const checkExistingSession = async () => {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
@@ -25,7 +28,41 @@ export function useLocalAuth() {
           
           // Check if session is still valid (within 24 hours)
           if (Date.now() - userData.loginTime < SESSION_DURATION) {
-            setUser(userData);
+            // Check if we need to verify subscription status (every 4 hours)
+            const needsVerification = !userData.lastVerified || 
+              (Date.now() - userData.lastVerified) > VERIFICATION_INTERVAL;
+            
+            if (needsVerification && userData.email) {
+              try {
+                console.log('Verifying subscription status for:', userData.email);
+                const response = await apiRequest('POST', '/api/verify-subscription', {
+                  email: userData.email
+                });
+                
+                if (response.ok) {
+                  const verificationResult = await response.json();
+                  
+                  // Update user type if subscription status changed
+                  const updatedUserData = {
+                    ...userData,
+                    userType: verificationResult.userType as UserType,
+                    lastVerified: Date.now()
+                  };
+                  
+                  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
+                  setUser(updatedUserData);
+                } else {
+                  // Verification failed, but keep current session
+                  setUser(userData);
+                }
+              } catch (verificationError) {
+                console.error('Error verifying subscription:', verificationError);
+                // Keep current session even if verification fails
+                setUser(userData);
+              }
+            } else {
+              setUser(userData);
+            }
           } else {
             // Session expired, remove it
             localStorage.removeItem(STORAGE_KEY);
@@ -60,7 +97,8 @@ export function useLocalAuth() {
     const userData: LocalUser = {
       email,
       userType,
-      loginTime: Date.now()
+      loginTime: Date.now(),
+      lastVerified: Date.now()
     };
     
     localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));

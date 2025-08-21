@@ -1315,7 +1315,7 @@ export default function Performance({ userType }: PerformanceProps) {
               <h4 className="text-xs font-semibold dark:text-gray-300 mb-2 text-[#b3bbc7]">Syntax Examples:</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-mono">
                 <div>
-                  <div className="text-gray-600 dark:text-gray-400 mb-1">Timestamps:</div>
+                  <div className="dark:text-gray-400 mb-1 text-[#cfcfcf]">Timestamps:</div>
                   <div className="text-blue-600 dark:text-blue-400">[00:15] Verse starts</div>
                   <div className="text-blue-600 dark:text-blue-400">[01:30] Chorus begins</div>
                 </div>

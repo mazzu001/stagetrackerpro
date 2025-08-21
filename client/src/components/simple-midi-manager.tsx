@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Music, RefreshCw, Play, Square, Trash2 } from 'lucide-react';
+import { Music, RefreshCw, Play, Square, Trash2, Power } from 'lucide-react';
 
 interface MIDIMessage {
   device: string;
@@ -24,25 +24,58 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
   const [testResults, setTestResults] = useState<{sent: number, received: number} | null>(null);
   const [isListening, setIsListening] = useState(false);
   const [recordedMessages, setRecordedMessages] = useState<MIDIMessage[]>([]);
+  const [midiPolling, setMidiPolling] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      // Cleanup when closing
+      if (midiPolling) {
+        clearInterval(midiPolling);
+        setMidiPolling(null);
+      }
+      return;
+    }
 
     const initMIDI = async () => {
       try {
-        console.log('Requesting MIDI access...');
-        const access = await (navigator as any).requestMIDIAccess({ sysex: false });
+        console.log('Requesting MIDI access with sysex...');
+        const access = await (navigator as any).requestMIDIAccess({ sysex: true });
         console.log('MIDI access granted:', access);
         setMidiAccess(access);
         
-        scanDevices(access);
+        // Wait a moment for devices to be ready
+        setTimeout(() => {
+          scanDevices(access);
+        }, 100);
         
         access.onstatechange = () => {
           console.log('MIDI state changed, rescanning...');
-          scanDevices(access);
+          setTimeout(() => {
+            scanDevices(access);
+          }, 50);
         };
       } catch (error) {
         console.error('MIDI initialization failed:', error);
+        // Fallback without sysex
+        try {
+          console.log('Retrying without sysex...');
+          const access = await (navigator as any).requestMIDIAccess({ sysex: false });
+          console.log('MIDI access granted (no sysex):', access);
+          setMidiAccess(access);
+          
+          setTimeout(() => {
+            scanDevices(access);
+          }, 100);
+          
+          access.onstatechange = () => {
+            console.log('MIDI state changed, rescanning...');
+            setTimeout(() => {
+              scanDevices(access);
+            }, 50);
+          };
+        } catch (fallbackError) {
+          console.error('MIDI initialization completely failed:', fallbackError);
+        }
       }
     };
 
@@ -56,8 +89,20 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
 
     console.log('Available MIDI inputs:', access.inputs.size);
     
-    access.inputs.forEach((input: any) => {
-      console.log('Found MIDI input device:', input.name, 'State:', input.state);
+    access.inputs.forEach(async (input: any) => {
+      console.log('Found MIDI input device:', input.name, 'State:', input.state, 'Connection:', input.connection);
+      
+      // Force open the input device if it's closed
+      if (input.connection === 'closed') {
+        try {
+          console.log('🔓 Forcing input device open:', input.name);
+          await input.open();
+          console.log('✅ Input device opened:', input.name);
+        } catch (error) {
+          console.error('❌ Failed to open input device:', input.name, error);
+        }
+      }
+      
       inputs.push({
         id: input.id,
         name: input.name || 'Unknown Input',
@@ -68,8 +113,8 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
       // Clear any existing listener first
       input.onmidimessage = null;
       
-      // Set up fresh message listener with current state
-      input.onmidimessage = (event: any) => {
+      // Set up message listener with aggressive binding
+      const messageHandler = (event: any) => {
         console.log('🎹 MIDI MESSAGE RECEIVED from', input.name + ':', Array.from(event.data));
         
         // PLAY BEEP TO CONFIRM MIDI RECEIVED
@@ -81,8 +126,8 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
           oscillator.connect(gainNode);
           gainNode.connect(audioContext.destination);
           
-          oscillator.frequency.setValueAtTime(800, audioContext.currentTime); // 800Hz beep
-          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime); // Low volume
+          oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
           gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
           
           oscillator.start(audioContext.currentTime);
@@ -118,7 +163,16 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
         });
       };
       
-      console.log('✅ MIDI listener attached to:', input.name);
+      input.onmidimessage = messageHandler;
+      
+      // Also try addEventListener as backup
+      try {
+        input.addEventListener('midimessage', messageHandler);
+      } catch (e) {
+        console.warn('Could not add event listener to', input.name);
+      }
+      
+      console.log('✅ MIDI listener attached to:', input.name, 'with backup event listener');
     });
 
     access.outputs.forEach((output: any) => {
@@ -239,7 +293,7 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
     
     if (midiAccess) {
       midiAccess.inputs.forEach((input: any) => {
-        console.log('Input device:', input.name, 'State:', input.state, 'Has listener:', !!input.onmidimessage);
+        console.log('Input device:', input.name, 'State:', input.state, 'Connection:', input.connection, 'Has listener:', !!input.onmidimessage);
       });
     }
     
@@ -252,6 +306,77 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
     
     console.log('💉 Injecting test message into UI');
     setReceivedMessages(prev => [testMessage, ...prev.slice(0, 19)]);
+  };
+
+  const testMIDILoopback = async () => {
+    if (!midiAccess || inputDevices.length === 0 || outputDevices.length === 0) {
+      console.error('❌ Cannot test loopback - missing devices');
+      return;
+    }
+
+    console.log('🔄 Testing MIDI loopback...');
+    
+    // Get first available output
+    const outputDevice = midiAccess.outputs.get(outputDevices[0].id);
+    if (!outputDevice) {
+      console.error('❌ No output device available');
+      return;
+    }
+
+    // Send a test note on message
+    const testCommand = [0x90, 60, 127]; // Note on, Middle C, full velocity
+    console.log('📤 Sending test note for loopback:', testCommand);
+    
+    try {
+      outputDevice.send(testCommand);
+      console.log('✅ Test command sent successfully');
+      
+      // Send note off after delay
+      setTimeout(() => {
+        const noteOff = [0x80, 60, 0];
+        outputDevice.send(noteOff);
+        console.log('📤 Note off sent');
+      }, 100);
+      
+    } catch (error) {
+      console.error('❌ Failed to send test command:', error);
+    }
+  };
+
+  const reinitializeMIDI = () => {
+    console.log('🔄 Reinitializing MIDI system...');
+    setMidiAccess(null);
+    setInputDevices([]);
+    setOutputDevices([]);
+    setReceivedMessages([]);
+    setRecordedMessages([]);
+    
+    // Force a fresh initialization
+    setTimeout(() => {
+      const initMIDI = async () => {
+        try {
+          console.log('🔌 Requesting fresh MIDI access...');
+          const access = await (navigator as any).requestMIDIAccess({ sysex: true });
+          console.log('✅ Fresh MIDI access granted');
+          setMidiAccess(access);
+          
+          setTimeout(() => {
+            scanDevices(access);
+          }, 200);
+          
+          access.onstatechange = () => {
+            console.log('MIDI state changed, rescanning...');
+            setTimeout(() => {
+              scanDevices(access);
+            }, 100);
+          };
+        } catch (error) {
+          console.error('MIDI reinitialization failed:', error);
+        }
+      };
+      
+      initMIDI();
+    }, 100);
   };
 
   if (!isOpen) return null;
@@ -321,6 +446,15 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
             <h3 className="font-semibold text-yellow-400">Controls</h3>
             
             <Button 
+              onClick={reinitializeMIDI} 
+              className="w-full flex items-center gap-2 mb-2"
+              variant="destructive"
+            >
+              <Power className="w-4 h-4" />
+              Reset MIDI
+            </Button>
+            
+            <Button 
               onClick={toggleListen} 
               variant={isListening ? "destructive" : "default"}
               className="w-full flex items-center gap-2"
@@ -345,6 +479,10 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
 
             <Button onClick={testMIDIInput} className="w-full mb-1" variant="outline">
               Test Input
+            </Button>
+            
+            <Button onClick={testMIDILoopback} className="w-full mb-1" variant="secondary">
+              Test Loopback
             </Button>
             
             <Button onClick={testFullDuplex} className="w-full">

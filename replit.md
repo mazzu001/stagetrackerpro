@@ -97,6 +97,13 @@ Mobile optimization: **Mobile-first stage performance design** - optimized for l
 
 **STATUS**: PRODUCTION COMPLETE - Full-featured music performance application with robust subscription system, ready for live stage deployment
 
+#### RECENT FIX - DURATION CALCULATION (August 21, 2025)
+- **ISSUE RESOLVED**: Song duration showing default 3:00 instead of actual track length
+- **TECHNICAL SOLUTION**: Connected audio engine duration callback to local song database updates
+- **IMPLEMENTATION**: Modified useAudioEngine hook with callback pattern, automatic database persistence
+- **RESULT**: Accurate duration display (394s for Comfortably Numb, 229s for 3AM) from audio buffer analysis
+- **USER CONFIRMATION**: ✅ Verified working correctly by user testing
+
 ## RESTORE POINT 15 - BLUETOOTH MIDI CONNECTIVITY (August 20, 2025)
 ### Complete Bluetooth MIDI Device Integration
 - **BLUETOOTH DISCOVERY**: Web Bluetooth API integration for discovering nearby MIDI devices

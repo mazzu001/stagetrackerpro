@@ -278,34 +278,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log('Created new price:', price.id);
       }
 
-      // Create subscription with the price ID
-      const subscription = await stripe.subscriptions.create({
+      // Create a simple payment intent for the subscription
+      console.log('Creating payment intent for subscription');
+      
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: 499, // $4.99 in cents
+        currency: 'usd',
         customer: customer.id,
-        items: [{
-          price: priceId
-        }],
-        payment_behavior: 'default_incomplete',
-        payment_settings: {
-          save_default_payment_method: 'on_subscription'
-        },
-        expand: ['latest_invoice.payment_intent'],
-        metadata: { email: email }
+        payment_method_types: ['card'],
+        metadata: {
+          email: email,
+          subscription_amount: '499'
+        }
       });
 
-      console.log(`✅ Subscription created: ${subscription.id}`);
-      
-      // Get the payment intent from the subscription's latest invoice
-      const latestInvoice = subscription.latest_invoice as any;
-      const paymentIntent = latestInvoice?.payment_intent;
-      
-      console.log('Payment intent from subscription:', paymentIntent?.id, paymentIntent?.client_secret);
-      
-      if (!paymentIntent?.client_secret) {
-        throw new Error('Payment intent client secret not found in subscription');
-      }
+      console.log(`✅ Payment intent created: ${paymentIntent.id}`);
       
       res.json({
-        subscriptionId: subscription.id,
+        paymentIntentId: paymentIntent.id,
         clientSecret: paymentIntent.client_secret,
         customerId: customer.id
       });

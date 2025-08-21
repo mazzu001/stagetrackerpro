@@ -172,7 +172,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
             
             // Update subscription
-            (subscriptions as any)[subscription.customer] = subscriptionData;
+            (subscriptions as any)[subscription.customer as string] = subscriptionData;
             
             // Write back to file
             fs.writeFileSync(subscriptionsFile, JSON.stringify(subscriptions, null, 2));
@@ -263,7 +263,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
 
         const price = await stripe.prices.create({
-          id: priceId, // Use fixed ID
           currency: 'usd',
           unit_amount: 499, // $4.99 in cents
           recurring: {
@@ -271,6 +270,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           },
           product: product.id
         });
+        priceId = price.id;
         console.log('Created new price:', price.id);
       }
 
@@ -380,7 +380,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const subscriptions = JSON.parse(fs.readFileSync(subscriptionsFile, 'utf8'));
         
         // Find subscription by email
-        const userSubscription = Object.values(subscriptions).find((sub: any) => sub.email === email);
+        const userSubscription = Object.values(subscriptions).find((sub: any) => sub.email === email) as any;
         
         if (userSubscription && userSubscription.status === 'active') {
           return res.json({

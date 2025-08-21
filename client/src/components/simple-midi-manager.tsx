@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -24,18 +25,22 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
   const [isListening, setIsListening] = useState(false);
   const [recordedMessages, setRecordedMessages] = useState<MIDIMessage[]>([]);
 
-  // Initialize MIDI when dialog opens
   useEffect(() => {
     if (!isOpen) return;
 
     const initMIDI = async () => {
       try {
-        const access = await (navigator as any).requestMIDIAccess();
+        console.log('Requesting MIDI access...');
+        const access = await (navigator as any).requestMIDIAccess({ sysex: false });
+        console.log('MIDI access granted:', access);
         setMidiAccess(access);
+        
         scanDevices(access);
         
-        // Listen for device changes
-        access.onstatechange = () => scanDevices(access);
+        access.onstatechange = () => {
+          console.log('MIDI state changed, rescanning...');
+          scanDevices(access);
+        };
       } catch (error) {
         console.error('MIDI initialization failed:', error);
       }
@@ -44,13 +49,15 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
     initMIDI();
   }, [isOpen]);
 
-  // Scan and setup devices
   const scanDevices = (access: any) => {
+    console.log('SCANNING MIDI DEVICES...');
     const inputs: any[] = [];
     const outputs: any[] = [];
 
-    // Get input devices and set up listeners
+    console.log('Available MIDI inputs:', access.inputs.size);
+    
     access.inputs.forEach((input: any) => {
+      console.log('Found MIDI input device:', input.name, 'State:', input.state);
       inputs.push({
         id: input.id,
         name: input.name || 'Unknown Input',
@@ -58,8 +65,9 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
         connection: input.connection
       });
 
-      // Set up message listener for each input
+      // IMMEDIATELY set up message listener
       input.onmidimessage = (event: any) => {
+        console.log('🎹 MIDI MESSAGE RECEIVED:', event.data);
         const data = Array.from(event.data as Uint8Array) as number[];
         const message = formatMIDIMessage(data);
         const newMessage: MIDIMessage = {
@@ -68,17 +76,17 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
           timestamp: Date.now()
         };
         
-        setReceivedMessages(prev => [newMessage, ...prev.slice(0, 19)]); // Keep last 20
-        console.log('MIDI received:', message, data);
+        setReceivedMessages(prev => [newMessage, ...prev.slice(0, 19)]);
+        console.log('✅ MIDI message processed:', message);
         
-        // Record message if listening is active
         if (isListening) {
           setRecordedMessages(prev => [...prev, newMessage]);
         }
       };
+      
+      console.log('✅ MIDI listener attached to:', input.name);
     });
 
-    // Get output devices
     access.outputs.forEach((output: any) => {
       outputs.push({
         id: output.id,
@@ -88,11 +96,11 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
       });
     });
 
+    console.log('Found', inputs.length, 'inputs and', outputs.length, 'outputs');
     setInputDevices(inputs);
     setOutputDevices(outputs);
   };
 
-  // Format MIDI message for display
   const formatMIDIMessage = (data: number[]): string => {
     if (data.length === 0) return 'Empty';
     
@@ -109,24 +117,21 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
     }
   };
 
-  // Start/Stop listening function
   const toggleListen = () => {
     if (isListening) {
       setIsListening(false);
-      console.log('Stopped listening. Recorded', recordedMessages.length, 'messages');
+      console.log('🔴 Stopped listening. Recorded', recordedMessages.length, 'messages');
     } else {
-      setRecordedMessages([]); // Clear previous recording
+      setRecordedMessages([]);
       setIsListening(true);
-      console.log('Started listening for MIDI messages');
+      console.log('🟢 Started listening for MIDI messages');
     }
   };
 
-  // Clear recorded messages
   const clearRecording = () => {
     setRecordedMessages([]);
   };
 
-  // Test full duplex communication
   const testFullDuplex = async () => {
     if (!midiAccess || outputDevices.length === 0) return;
 
@@ -135,12 +140,8 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
 
     let sent = 0;
     let received = 0;
-    const startTime = Date.now();
-
-    // Track received messages during test
     const originalCount = receivedMessages.length;
 
-    // Send test sequence
     const testCommands = [
       [0x90, 60, 100], // Note on
       [0x80, 60, 0],   // Note off
@@ -158,51 +159,58 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
       }
     }
 
-    // Wait for responses
     setTimeout(() => {
       received = receivedMessages.length - originalCount;
       setTestResults({ sent, received });
     }, 500);
   };
 
+  if (!isOpen) return null;
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl h-[600px] bg-gray-900 text-white border-gray-700">
+      <DialogContent className="max-w-6xl max-h-[90vh] bg-gray-900 text-white overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
+          <DialogTitle className="flex items-center gap-2 text-white">
             <Music className="w-5 h-5" />
             Simple MIDI Manager
           </DialogTitle>
         </DialogHeader>
 
-        <div className="grid grid-cols-3 gap-4 h-full">
+        <div className="grid grid-cols-3 gap-4 text-sm">
           {/* Input Devices */}
           <div className="space-y-2">
-            <h3 className="font-semibold text-green-400">Input Devices</h3>
+            <h3 className="font-semibold text-green-400">Input Devices ({inputDevices.length})</h3>
             <ScrollArea className="h-32 border border-gray-700 rounded p-2">
               {inputDevices.map(device => (
-                <div key={device.id} className="text-sm mb-2 p-2 bg-gray-800 rounded">
-                  <div className="font-medium">{device.name}</div>
+                <div key={device.id} className="mb-1 p-2 bg-gray-800 rounded">
+                  <div className="font-medium text-green-300">{device.name}</div>
                   <div className="text-xs text-gray-400">
-                    {device.state} / {device.connection}
+                    {device.state} | {device.connection}
                   </div>
                 </div>
               ))}
+              {inputDevices.length === 0 && (
+                <div className="text-gray-500">No input devices found</div>
+              )}
             </ScrollArea>
           </div>
 
           {/* Output Devices */}
           <div className="space-y-2">
-            <h3 className="font-semibold text-blue-400">Output Devices</h3>
+            <h3 className="font-semibold text-blue-400">Output Devices ({outputDevices.length})</h3>
             <ScrollArea className="h-32 border border-gray-700 rounded p-2">
               {outputDevices.map(device => (
-                <div key={device.id} className="text-sm mb-2 p-2 bg-gray-800 rounded">
-                  <div className="font-medium">{device.name}</div>
+                <div key={device.id} className="mb-1 p-2 bg-gray-800 rounded">
+                  <div className="font-medium text-blue-300">{device.name}</div>
                   <div className="text-xs text-gray-400">
-                    {device.state} / {device.connection}
+                    {device.state} | {device.connection}
                   </div>
                 </div>
               ))}
+              {outputDevices.length === 0 && (
+                <div className="text-gray-500">No output devices found</div>
+              )}
             </ScrollArea>
           </div>
 
@@ -210,7 +218,6 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
           <div className="space-y-2">
             <h3 className="font-semibold text-yellow-400">Controls</h3>
             
-            {/* Listen Controls */}
             <Button 
               onClick={toggleListen} 
               variant={isListening ? "destructive" : "default"}
@@ -234,7 +241,6 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
               </div>
             )}
 
-            {/* Test Controls */}
             <Button onClick={testFullDuplex} className="w-full">
               Full Duplex Test
             </Button>
@@ -259,6 +265,9 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
                   <span className="text-white ml-2">{msg.message}</span>
                 </div>
               ))}
+              {receivedMessages.length === 0 && (
+                <div className="text-gray-500 text-xs">No messages received - try playing your keyboard</div>
+              )}
             </ScrollArea>
           </div>
 

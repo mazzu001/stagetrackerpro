@@ -771,7 +771,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                   <Activity className="w-4 h-4" />
                   Recent Messages
                 </h4>
-                <ScrollArea className="h-48 border rounded-md p-3 bg-gray-50 dark:bg-gray-900 pt-[8px] pb-[8px]">
+                <ScrollArea className="h-64 border rounded-md p-3 bg-gray-50 dark:bg-gray-900 pt-[8px] pb-[8px]">
                   {receivedMessages.length === 0 ? (
                     <div className="text-center text-gray-500 py-8 text-sm">
                       No MIDI activity<br />

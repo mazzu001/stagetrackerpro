@@ -1320,7 +1320,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   <div className="text-blue-600 dark:text-blue-400">[01:30] Chorus begins</div>
                 </div>
                 <div>
-                  <div className="text-gray-600 dark:text-gray-400 mb-1">MIDI Commands:</div>
+                  <div className="dark:text-gray-400 mb-1 text-[#c7c7c7]">MIDI Commands:</div>
                   <div className="text-purple-600 dark:text-purple-400">[[CC:1:64:1]] Control change</div>
                   <div className="text-purple-600 dark:text-purple-400">[[NOTE:60:127:1]] Note on</div>
                   <div className="text-purple-600 dark:text-purple-400">[[PC:5:1]] Program change</div>

@@ -285,69 +285,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
           price: priceId
         }],
         payment_behavior: 'default_incomplete',
+        payment_settings: {
+          save_default_payment_method: 'on_subscription'
+        },
         expand: ['latest_invoice.payment_intent'],
         metadata: { email: email }
       });
 
       console.log(`✅ Subscription created: ${subscription.id}`);
       
-      // Get the payment intent from the subscription
-      let paymentIntent: any = null;
+      // Get the payment intent from the subscription's latest invoice
+      const latestInvoice = subscription.latest_invoice as any;
+      const paymentIntent = latestInvoice?.payment_intent;
       
-      if (subscription.latest_invoice && typeof subscription.latest_invoice === 'object') {
-        paymentIntent = (subscription.latest_invoice as any).payment_intent;
-      }
-      
-      console.log('Initial payment intent:', paymentIntent?.id, paymentIntent?.client_secret);
-      
-      // If no payment intent exists, create one manually
-      if (!paymentIntent || !paymentIntent.client_secret) {
-        console.log('Creating manual payment intent...');
-        
-        if (subscription.latest_invoice && typeof subscription.latest_invoice === 'object') {
-          // Get the invoice first
-          const invoice = await stripe.invoices.retrieve((subscription.latest_invoice as any).id, {
-            expand: ['payment_intent']
-          });
-          
-          if (!(invoice as any).payment_intent) {
-            // Create a payment intent manually
-            const manualPaymentIntent = await stripe.paymentIntents.create({
-              amount: 499, // $4.99 in cents
-              currency: 'usd',
-              customer: customer.id,
-              metadata: { 
-                subscription_id: subscription.id,
-                email: email 
-              }
-            });
-            paymentIntent = manualPaymentIntent;
-          } else {
-            paymentIntent = (invoice as any).payment_intent;
-          }
-        } else {
-          // Create manual payment intent as fallback
-          const manualPaymentIntent = await stripe.paymentIntents.create({
-            amount: 499, // $4.99 in cents
-            currency: 'usd',
-            customer: customer.id,
-            metadata: { 
-              subscription_id: subscription.id,
-              email: email 
-            }
-          });
-          paymentIntent = manualPaymentIntent;
-        }
-      }
-      
-      console.log('Final payment intent:', paymentIntent?.id, paymentIntent?.client_secret);
+      console.log('Payment intent from subscription:', paymentIntent?.id, paymentIntent?.client_secret);
       
       if (!paymentIntent?.client_secret) {
-        console.error('Still no payment intent or client secret found');
-        return res.status(500).json({
-          error: 'Payment setup failed',
-          message: 'Unable to create payment intent'
-        });
+        throw new Error('Payment intent client secret not found in subscription');
       }
       
       res.json({

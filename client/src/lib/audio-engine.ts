@@ -109,6 +109,8 @@ export class AudioEngine {
         // Update the song duration in local storage
         try {
           const user = JSON.parse(localStorage.getItem('stagetracker_user') || '{}');
+          console.log('Audio engine trying to update duration, user:', user);
+          
           if (user.email) {
             const updated = LocalSongStorage.updateSong(user.email, this.currentSong.id, { 
               duration: Math.floor(maxDuration) 
@@ -120,7 +122,12 @@ export class AudioEngine {
               window.dispatchEvent(new CustomEvent('song-duration-updated', { 
                 detail: { songId: this.currentSong.id, duration: Math.floor(maxDuration) } 
               }));
+              console.log('Dispatched song-duration-updated event');
+            } else {
+              console.warn('Failed to update song in local storage - song not found');
             }
+          } else {
+            console.warn('No user email found in localStorage for duration update');
           }
         } catch (error) {
           console.warn('Failed to update song duration in storage:', error);

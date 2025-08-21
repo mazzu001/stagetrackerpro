@@ -47,13 +47,13 @@ const SimpleCardForm = ({ onSubmit, isLoading }: { onSubmit: (cardData: any) => 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium mb-2">Card Number</label>
+        <label className="block text-sm font-medium mb-2 text-gray-800">Card Number</label>
         <input
           type="text"
           value={cardNumber}
           onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
           placeholder="4242 4242 4242 4242"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 placeholder-gray-500"
           maxLength={19}
           required
         />
@@ -61,25 +61,25 @@ const SimpleCardForm = ({ onSubmit, isLoading }: { onSubmit: (cardData: any) => 
       
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-2">Expiry</label>
+          <label className="block text-sm font-medium mb-2 text-gray-800">Expiry</label>
           <input
             type="text"
             value={expiry}
             onChange={(e) => setExpiry(formatExpiry(e.target.value))}
             placeholder="MM/YY"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 placeholder-gray-500"
             maxLength={5}
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">CVC</label>
+          <label className="block text-sm font-medium mb-2 text-gray-800">CVC</label>
           <input
             type="text"
             value={cvc}
             onChange={(e) => setCvc(e.target.value.replace(/[^0-9]/g, ''))}
             placeholder="123"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 placeholder-gray-500"
             maxLength={4}
             required
           />
@@ -87,13 +87,13 @@ const SimpleCardForm = ({ onSubmit, isLoading }: { onSubmit: (cardData: any) => 
       </div>
       
       <div>
-        <label className="block text-sm font-medium mb-2">Cardholder Name</label>
+        <label className="block text-sm font-medium mb-2 text-gray-800">Cardholder Name</label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="John Doe"
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-gray-900 placeholder-gray-500"
           required
         />
       </div>

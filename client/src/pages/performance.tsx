@@ -1312,7 +1312,7 @@ export default function Performance({ userType }: PerformanceProps) {
             
             {/* Syntax Examples */}
             <div className="mt-3 p-3 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 bg-[#222324]">
-              <h4 className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">Syntax Examples:</h4>
+              <h4 className="text-xs font-semibold dark:text-gray-300 mb-2 text-[#b3bbc7]">Syntax Examples:</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs font-mono">
                 <div>
                   <div className="text-gray-600 dark:text-gray-400 mb-1">Timestamps:</div>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Music, RefreshCw } from 'lucide-react';
+import { Music, RefreshCw, Play, Square, Trash2 } from 'lucide-react';
 
 interface MIDIMessage {
   device: string;
@@ -21,6 +21,8 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
   const [outputDevices, setOutputDevices] = useState<any[]>([]);
   const [receivedMessages, setReceivedMessages] = useState<MIDIMessage[]>([]);
   const [testResults, setTestResults] = useState<{sent: number, received: number} | null>(null);
+  const [isListening, setIsListening] = useState(false);
+  const [recordedMessages, setRecordedMessages] = useState<MIDIMessage[]>([]);
 
   // Initialize MIDI when dialog opens
   useEffect(() => {
@@ -68,6 +70,11 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
         
         setReceivedMessages(prev => [newMessage, ...prev.slice(0, 19)]); // Keep last 20
         console.log('MIDI received:', message, data);
+        
+        // Record message if listening is active
+        if (isListening) {
+          setRecordedMessages(prev => [...prev, newMessage]);
+        }
       };
     });
 
@@ -100,6 +107,23 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
       case 0xC0: return `PC Ch${channel} Program${data1}`;
       default: return `Raw: ${data.map(b => b.toString(16)).join(' ')}`;
     }
+  };
+
+  // Start/Stop listening function
+  const toggleListen = () => {
+    if (isListening) {
+      setIsListening(false);
+      console.log('Stopped listening. Recorded', recordedMessages.length, 'messages');
+    } else {
+      setRecordedMessages([]); // Clear previous recording
+      setIsListening(true);
+      console.log('Started listening for MIDI messages');
+    }
+  };
+
+  // Clear recorded messages
+  const clearRecording = () => {
+    setRecordedMessages([]);
   };
 
   // Test full duplex communication
@@ -182,9 +206,35 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
             </ScrollArea>
           </div>
 
-          {/* Test Controls */}
+          {/* Listen & Test Controls */}
           <div className="space-y-2">
-            <h3 className="font-semibold text-yellow-400">Test</h3>
+            <h3 className="font-semibold text-yellow-400">Controls</h3>
+            
+            {/* Listen Controls */}
+            <Button 
+              onClick={toggleListen} 
+              variant={isListening ? "destructive" : "default"}
+              className="w-full flex items-center gap-2"
+            >
+              {isListening ? <Square className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+              {isListening ? 'Stop Listen' : 'Start Listen'}
+            </Button>
+            
+            {recordedMessages.length > 0 && (
+              <div className="text-sm bg-gray-800 p-2 rounded">
+                Recorded: {recordedMessages.length} messages
+                <Button 
+                  onClick={clearRecording} 
+                  size="sm" 
+                  variant="outline" 
+                  className="ml-2 h-6"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </Button>
+              </div>
+            )}
+
+            {/* Test Controls */}
             <Button onClick={testFullDuplex} className="w-full">
               Full Duplex Test
             </Button>
@@ -197,18 +247,39 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
           </div>
         </div>
 
-        {/* Received Messages */}
-        <div className="space-y-2">
-          <h3 className="font-semibold text-purple-400">Recent MIDI Messages</h3>
-          <ScrollArea className="h-40 border border-gray-700 rounded p-2">
-            {receivedMessages.map((msg, idx) => (
-              <div key={idx} className="text-xs mb-1 p-1 bg-gray-800 rounded">
-                <span className="text-gray-400">{new Date(msg.timestamp).toLocaleTimeString()}</span>
-                <span className="text-blue-300 ml-2">{msg.device}</span>
-                <span className="text-white ml-2">{msg.message}</span>
-              </div>
-            ))}
-          </ScrollArea>
+        <div className="grid grid-cols-2 gap-4">
+          {/* Live Messages */}
+          <div className="space-y-2">
+            <h3 className="font-semibold text-purple-400">Live Messages</h3>
+            <ScrollArea className="h-40 border border-gray-700 rounded p-2">
+              {receivedMessages.map((msg, idx) => (
+                <div key={idx} className="text-xs mb-1 p-1 bg-gray-800 rounded">
+                  <span className="text-gray-400">{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                  <span className="text-blue-300 ml-2">{msg.device}</span>
+                  <span className="text-white ml-2">{msg.message}</span>
+                </div>
+              ))}
+            </ScrollArea>
+          </div>
+
+          {/* Recorded Messages */}
+          <div className="space-y-2">
+            <h3 className="font-semibold text-red-400">
+              Recorded Messages {isListening && <span className="text-xs">(Recording...)</span>}
+            </h3>
+            <ScrollArea className="h-40 border border-gray-700 rounded p-2">
+              {recordedMessages.map((msg, idx) => (
+                <div key={idx} className="text-xs mb-1 p-1 bg-gray-800 rounded">
+                  <span className="text-gray-400">{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                  <span className="text-blue-300 ml-2">{msg.device}</span>
+                  <span className="text-white ml-2">{msg.message}</span>
+                </div>
+              ))}
+              {recordedMessages.length === 0 && !isListening && (
+                <div className="text-gray-500 text-xs">No recorded messages</div>
+              )}
+            </ScrollArea>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

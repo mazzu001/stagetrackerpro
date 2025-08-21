@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Bluetooth, Plus, Trash2, Play, Activity, CheckCircle, AlertCircle } from 'lucide-react';
+import { Bluetooth, Plus, Trash2, Play, Activity, CheckCircle, AlertCircle, Ear, EarOff } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 interface SimpleBluetoothDevice {
@@ -15,6 +15,14 @@ interface SimpleBluetoothDevice {
   device?: any; // BluetoothDevice
   characteristic?: any; // BluetoothRemoteGATTCharacteristic
   lastActivity?: number;
+  listening?: boolean;
+}
+
+interface MIDIMessage {
+  timestamp: number;
+  data: Uint8Array;
+  formatted: string;
+  deviceName: string;
 }
 
 interface SimpleBluetoothManagerProps {
@@ -31,6 +39,8 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
   const [isTesting, setIsTesting] = useState<string | null>(null);
   const [testResults, setTestResults] = useState<{ device: string; success: boolean; message: string } | null>(null);
   const [bluetoothSupported, setBluetoothSupported] = useState(false);
+  const [listeningDevice, setListeningDevice] = useState<string | null>(null);
+  const [midiMessages, setMidiMessages] = useState<MIDIMessage[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -82,6 +92,116 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
       title: "Device Removed",
       description: "Device has been removed from saved devices",
     });
+  };
+
+  // Format MIDI message for display
+  const formatMIDIMessage = (data: Uint8Array): string => {
+    const bytes = Array.from(data);
+    if (bytes.length === 0) return 'Empty message';
+    
+    const status = bytes[0];
+    const channel = (status & 0x0F) + 1;
+    const messageType = status & 0xF0;
+    
+    switch (messageType) {
+      case 0x80: // Note Off
+        return `Note Off: Note ${bytes[1]}, Channel ${channel}`;
+      case 0x90: // Note On
+        return `Note On: Note ${bytes[1]}, Velocity ${bytes[2]}, Channel ${channel}`;
+      case 0xB0: // Control Change
+        return `Control Change: CC${bytes[1]} = ${bytes[2]}, Channel ${channel}`;
+      case 0xC0: // Program Change
+        return `Program Change: Program ${bytes[1]}, Channel ${channel}`;
+      case 0xE0: // Pitch Bend
+        const pitchBend = (bytes[2] << 7) | bytes[1];
+        return `Pitch Bend: ${pitchBend}, Channel ${channel}`;
+      default:
+        return `MIDI: ${bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}`;
+    }
+  };
+
+  // Start/stop listening for MIDI messages
+  const toggleListening = async (deviceInfo: SimpleBluetoothDevice) => {
+    if (!deviceInfo.connected || !deviceInfo.characteristic) {
+      toast({
+        title: "Device Not Ready",
+        description: "Device must be connected to listen for messages",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      if (listeningDevice === deviceInfo.id) {
+        // Stop listening
+        if (deviceInfo.characteristic.removeEventListener) {
+          deviceInfo.characteristic.removeEventListener('characteristicvaluechanged', handleMIDIMessage);
+        }
+        setListeningDevice(null);
+        
+        // Update device state
+        setDiscoveredDevices(prev => prev.map(d => 
+          d.id === deviceInfo.id ? { ...d, listening: false } : d
+        ));
+        setSavedDevices(prev => prev.map(d => 
+          d.id === deviceInfo.id ? { ...d, listening: false } : d
+        ));
+
+        toast({
+          title: "Listening Stopped",
+          description: `Stopped listening to ${deviceInfo.name}`,
+        });
+      } else {
+        // Start listening
+        await deviceInfo.characteristic.startNotifications();
+        deviceInfo.characteristic.addEventListener('characteristicvaluechanged', (event: any) => {
+          handleMIDIMessage(event, deviceInfo.name);
+        });
+        
+        setListeningDevice(deviceInfo.id);
+        
+        // Update device state
+        setDiscoveredDevices(prev => prev.map(d => 
+          d.id === deviceInfo.id ? { ...d, listening: true } : d
+        ));
+        setSavedDevices(prev => prev.map(d => 
+          d.id === deviceInfo.id ? { ...d, listening: true } : d
+        ));
+
+        toast({
+          title: "Listening Started",
+          description: `Now listening to MIDI messages from ${deviceInfo.name}`,
+        });
+      }
+    } catch (error: any) {
+      console.log('Listening error:', error);
+      toast({
+        title: "Listening Error",
+        description: `Failed to toggle listening: ${error.message}`,
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Handle incoming MIDI messages
+  const handleMIDIMessage = (event: any, deviceName: string) => {
+    const data = new Uint8Array(event.target.value.buffer);
+    const formatted = formatMIDIMessage(data);
+    
+    const message: MIDIMessage = {
+      timestamp: Date.now(),
+      data,
+      formatted,
+      deviceName
+    };
+    
+    setMidiMessages(prev => [message, ...prev].slice(0, 50)); // Keep last 50 messages
+    console.log('MIDI message received:', formatted);
+  };
+
+  // Clear MIDI message log
+  const clearMIDIMessages = () => {
+    setMidiMessages([]);
   };
 
   // Discover all available Bluetooth devices
@@ -349,6 +469,12 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
                           <div className="flex items-center gap-2">
                             <p className="font-medium truncate">{device.name}</p>
                             <div className={`w-2 h-2 rounded-full ${device.connected ? 'bg-green-500' : 'bg-gray-400'}`} />
+                            {device.listening && (
+                              <Badge variant="secondary" className="text-xs">
+                                <Ear className="w-3 h-3 mr-1" />
+                                Listening
+                              </Badge>
+                            )}
                           </div>
                           <p className="text-xs text-gray-500 truncate">{device.id}</p>
                         </div>
@@ -365,16 +491,37 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
                               {isConnecting === device.id ? 'Connecting...' : 'Connect'}
                             </Button>
                           ) : (
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={() => testDevice(device)}
-                              disabled={isTesting === device.id}
-                              data-testid={`button-test-${device.id}`}
-                              className="h-8 px-2 text-xs"
-                            >
-                              {isTesting === device.id ? 'Testing...' : 'Test'}
-                            </Button>
+                            <>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => testDevice(device)}
+                                disabled={isTesting === device.id}
+                                data-testid={`button-test-${device.id}`}
+                                className="h-8 px-2 text-xs"
+                              >
+                                {isTesting === device.id ? 'Testing...' : 'Test'}
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={() => toggleListening(device)}
+                                data-testid={`button-listen-${device.id}`}
+                                className="h-8 px-2 text-xs"
+                              >
+                                {device.listening ? (
+                                  <>
+                                    <EarOff className="w-3 h-3 mr-1" />
+                                    Stop
+                                  </>
+                                ) : (
+                                  <>
+                                    <Ear className="w-3 h-3 mr-1" />
+                                    Listen
+                                  </>
+                                )}
+                              </Button>
+                            </>
                           )}
                           <Button
                             size="sm"
@@ -414,20 +561,47 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
                       >
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <p className="font-medium truncate">{device.name}</p>
+                            <p className="font-medium truncate text-gray-900 dark:text-white">{device.name}</p>
                             <div className={`w-2 h-2 rounded-full ${device.connected ? 'bg-green-500' : 'bg-gray-400'}`} />
+                            {device.listening && (
+                              <Badge variant="secondary" className="text-xs">
+                                <Ear className="w-3 h-3 mr-1" />
+                                Listening
+                              </Badge>
+                            )}
                           </div>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-gray-600 dark:text-gray-400">
                             {device.connected ? 'Connected' : 'Saved - click to discover again'}
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
+                          {device.connected && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => toggleListening(device)}
+                              data-testid={`button-listen-${device.id}`}
+                              className="h-8 px-2 text-xs"
+                            >
+                              {device.listening ? (
+                                <>
+                                  <EarOff className="w-3 h-3 mr-1" />
+                                  Stop
+                                </>
+                              ) : (
+                                <>
+                                  <Ear className="w-3 h-3 mr-1" />
+                                  Listen
+                                </>
+                              )}
+                            </Button>
+                          )}
                           <Button
                             size="sm"
                             variant="ghost"
                             onClick={() => removeSavedDevice(device.id)}
                             data-testid={`button-remove-${device.id}`}
-                            className="h-8 px-2 text-xs"
+                            className="h-8 px-2 text-xs text-red-600 hover:text-red-700"
                           >
                             <Trash2 className="w-3 h-3" />
                           </Button>
@@ -452,6 +626,49 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
             </div>
           )}
 
+          {/* MIDI Message Log */}
+          {midiMessages.length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="font-medium text-lg">MIDI Messages</h3>
+                <div className="flex items-center gap-2">
+                  {listeningDevice && (
+                    <Badge variant="secondary" className="text-xs">
+                      <Activity className="w-3 h-3 mr-1" />
+                      Live
+                    </Badge>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={clearMIDIMessages}
+                    className="h-8 px-2 text-xs"
+                  >
+                    Clear Log
+                  </Button>
+                </div>
+              </div>
+              
+              <ScrollArea className="h-40 border rounded-md p-3 bg-gray-50 dark:bg-gray-900">
+                <div className="space-y-1 text-xs font-mono">
+                  {midiMessages.map((message, index) => (
+                    <div key={index} className="flex items-start gap-2 pb-1 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                      <span className="text-gray-500 dark:text-gray-400 flex-shrink-0">
+                        {new Date(message.timestamp).toLocaleTimeString()}
+                      </span>
+                      <span className="text-blue-600 dark:text-blue-400 flex-shrink-0">
+                        [{message.deviceName}]
+                      </span>
+                      <span className="text-gray-900 dark:text-gray-100">
+                        {message.formatted}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
+          )}
+
           {/* Simple Instructions */}
           <div className="p-4 border rounded-md bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
             <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
@@ -462,7 +679,8 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
               <p><strong>2.</strong> Select your device from the browser popup (including "Matts Pedal")</p>
               <p><strong>3.</strong> Click "Connect" to establish connection</p>
               <p><strong>4.</strong> Click "Test" to verify communication</p>
-              <p><strong>5.</strong> Click "Save" to remember the device for future use</p>
+              <p><strong>5.</strong> Click "Listen" to monitor MIDI messages</p>
+              <p><strong>6.</strong> Click "Save" to remember the device for future use</p>
             </div>
           </div>
         </div>

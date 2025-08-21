@@ -804,19 +804,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
             </div>
           </div>
 
-          {/* Connection Instructions */}
-          <div className="p-4 border rounded-md bg-blue-50 dark:bg-blue-950 border-blue-200 dark:border-blue-800">
-            <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">
-              Connection Instructions
-            </h4>
-            <div className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-              <p><strong>USB MIDI:</strong> Connect your device and click "Refresh" to scan</p>
-              <p><strong>Bluetooth MIDI:</strong> Click "Pair MIDI" for standard MIDI devices, or "Find Any" for other Bluetooth devices</p>
-              <p><strong>For "Matts Pedal" type devices:</strong> First pair in Windows Bluetooth settings, then click "Find Any"</p>
-              <p><strong>Virtual MIDI:</strong> Software instruments and DAWs will appear automatically</p>
-              <p><strong>Testing:</strong> Use "Test" for simple note sending or "Full Test" for duplex communication testing</p>
-            </div>
-          </div>
+          
         </div>
       </DialogContent>
     </Dialog>

@@ -1,6 +1,7 @@
 import type { Express, Request } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
+import bcrypt from "bcrypt";
 import { storage } from "./storage";
 import { insertSongSchema, insertTrackSchema } from "@shared/schema";
 import { setupAuth, isAuthenticated, requireSubscription } from "./replitAuth";
@@ -86,13 +87,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(409).json({ error: 'User already exists with this email' });
       }
       
-      // Create new user in PostgreSQL cloud database
+      // Create new user in PostgreSQL cloud database with hashed password
+      const passwordHash = await bcrypt.hash(password, 10);
+      
       const newUser = await storage.upsertUser({
         id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         email: email.toLowerCase(),
         firstName: null,
         lastName: null,
         profileImageUrl: null,
+        passwordHash: passwordHash,
+        subscriptionStatus: 1, // 1 = free user
       });
       
       console.log('✅ New user registered in cloud database:', newUser.email);
@@ -101,7 +106,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: { 
           id: newUser.id, 
           email: newUser.email,
-          userType: 'free' 
+          userType: newUser.subscriptionStatus === 1 ? 'free' : 'premium'
         }
       });
     } catch (error: any) {
@@ -125,8 +130,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
       
-      // For demo purposes, we accept any password for existing users
-      // In production, you'd verify password hash here
+      // Verify password hash
+      const isValidPassword = await bcrypt.compare(password, user.passwordHash || '');
+      if (!isValidPassword) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
       
       console.log('✅ User authenticated from cloud database:', user.email);
       res.json({ 
@@ -134,7 +142,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: { 
           id: user.id, 
           email: user.email,
-          userType: user.subscriptionStatus || 'free'
+          userType: user.subscriptionStatus === 2 ? 'premium' : 'free'
         }
       });
     } catch (error: any) {

@@ -110,20 +110,20 @@ export class DatabaseStorage implements IStorage {
       .insert(usersPg)
       .values({
         ...userData,
-        subscriptionStatus: userData.subscriptionStatus || 'free', // Default to free
+        subscriptionStatus: userData.subscriptionStatus || 1, // Default to 1 (free)
         updatedAt: new Date(),
       })
       .onConflictDoUpdate({
         target: usersPg.id,
         set: {
           ...userData,
-          subscriptionStatus: userData.subscriptionStatus || 'free',
+          subscriptionStatus: userData.subscriptionStatus || 1,
           updatedAt: new Date(),
         },
       })
       .returning();
     
-    console.log('User upserted in cloud database:', user.id, user.email, user.subscriptionStatus);
+    console.log('User upserted in cloud database:', user.id, user.email, `subscription: ${user.subscriptionStatus}`);
     
     // Convert PostgreSQL user to SQLite user format
     return {

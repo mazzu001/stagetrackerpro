@@ -104,9 +104,10 @@ export const usersPg = pgTable("users", {
   firstName: pgText("first_name"),
   lastName: pgText("last_name"),
   profileImageUrl: pgText("profile_image_url"),
+  passwordHash: pgText("password_hash"),
   stripeCustomerId: pgText("stripe_customer_id"),
   stripeSubscriptionId: pgText("stripe_subscription_id"),
-  subscriptionStatus: pgText("subscription_status"), // active, canceled, incomplete, etc.
+  subscriptionStatus: pgInteger("subscription_status").default(1), // 1 = free, 2 = premium
   subscriptionEndDate: pgText("subscription_end_date"), // ISO datetime string
   songCount: pgInteger("song_count").default(0),
   createdAt: timestamp("created_at").defaultNow(),

@@ -129,7 +129,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
           
           // Update subscription
-          subscriptions[subscription.customer] = subscriptionData;
+          (subscriptions as any)[subscription.customer] = subscriptionData;
           
           // Write back to file
           fs.writeFileSync(subscriptionsFile, JSON.stringify(subscriptions, null, 2));
@@ -141,6 +141,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
       case 'invoice.payment_succeeded':
         console.log('Payment succeeded for subscription:', event.data.object.subscription);
+        
+        // Update subscription status to active on successful payment
+        const invoice = event.data.object;
+        if (invoice.subscription) {
+          try {
+            const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
+            const customer = await stripe.customers.retrieve(subscription.customer as string);
+            
+            const subscriptionData = {
+              subscriptionId: subscription.id,
+              customerId: subscription.customer,
+              email: (customer as any).email,
+              status: 'active',
+              updatedAt: new Date().toISOString()
+            };
+            
+            const subscriptionsFile = path.join(process.cwd(), 'data', 'subscriptions.json');
+            
+            // Create data directory if it doesn't exist
+            const dataDir = path.dirname(subscriptionsFile);
+            if (!fs.existsSync(dataDir)) {
+              fs.mkdirSync(dataDir, { recursive: true });
+            }
+            
+            // Read existing subscriptions
+            let subscriptions = {};
+            if (fs.existsSync(subscriptionsFile)) {
+              subscriptions = JSON.parse(fs.readFileSync(subscriptionsFile, 'utf8'));
+            }
+            
+            // Update subscription
+            (subscriptions as any)[subscription.customer] = subscriptionData;
+            
+            // Write back to file
+            fs.writeFileSync(subscriptionsFile, JSON.stringify(subscriptions, null, 2));
+            console.log('Subscription activated via payment webhook:', subscription.id);
+          } catch (error) {
+            console.error('Error processing payment success webhook:', error);
+          }
+        }
         break;
         
       case 'invoice.payment_failed':
@@ -169,34 +209,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       console.log('💰 Creating Stripe subscription for email:', email);
-
-      // Create Stripe customer
-      const customer = await stripe.customers.create({
+      
+      // Check if customer already exists to prevent duplicates
+      const existingCustomers = await stripe.customers.list({
         email: email,
-        name: email, // Use email as name for simplicity
-        metadata: { email: email }
+        limit: 1
       });
+      
+      if (existingCustomers.data.length > 0) {
+        const customer = existingCustomers.data[0];
+        
+        // Check if customer already has an active subscription
+        const subscriptions = await stripe.subscriptions.list({
+          customer: customer.id,
+          status: 'active'
+        });
+        
+        if (subscriptions.data.length > 0) {
+          return res.status(400).json({
+            error: 'Subscription exists',
+            message: 'You already have an active subscription'
+          });
+        }
+      }
 
-      // Create a product first
-      const product = await stripe.products.create({
-        name: 'StageTracker Pro Premium'
-      });
+      // Use existing customer or create new one
+      let customer;
+      if (existingCustomers.data.length > 0) {
+        customer = existingCustomers.data[0];
+        console.log('Using existing customer:', customer.id);
+      } else {
+        customer = await stripe.customers.create({
+          email: email,
+          name: email, // Use email as name for simplicity
+          metadata: { email: email }
+        });
+        console.log('Created new customer:', customer.id);
+      }
 
-      // Create a price for the product
-      const price = await stripe.prices.create({
-        currency: 'usd',
-        unit_amount: 499, // $4.99 in cents
-        recurring: {
-          interval: 'month'
-        },
-        product: product.id
-      });
+      // Use a fixed price ID to prevent creating duplicate products/prices
+      // In production, you would create these once in Stripe dashboard
+      let priceId = 'price_stagetracker_premium'; // Fixed price ID
+      
+      try {
+        // Try to retrieve existing price first
+        await stripe.prices.retrieve(priceId);
+        console.log('Using existing price:', priceId);
+      } catch (error) {
+        // Price doesn't exist, create product and price
+        const product = await stripe.products.create({
+          name: 'StageTracker Pro Premium',
+          metadata: { app: 'stagetracker' }
+        });
+
+        const price = await stripe.prices.create({
+          id: priceId, // Use fixed ID
+          currency: 'usd',
+          unit_amount: 499, // $4.99 in cents
+          recurring: {
+            interval: 'month'
+          },
+          product: product.id
+        });
+        console.log('Created new price:', price.id);
+      }
 
       // Create subscription with the price ID
       const subscription = await stripe.subscriptions.create({
         customer: customer.id,
         items: [{
-          price: price.id
+          price: priceId
         }],
         payment_behavior: 'default_incomplete',
         expand: ['latest_invoice.payment_intent'],
@@ -206,20 +288,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`✅ Subscription created: ${subscription.id}`);
       
       // Get the payment intent from the subscription
-      let paymentIntent = subscription.latest_invoice?.payment_intent;
+      let paymentIntent: any = null;
+      
+      if (subscription.latest_invoice && typeof subscription.latest_invoice === 'object') {
+        paymentIntent = (subscription.latest_invoice as any).payment_intent;
+      }
+      
       console.log('Initial payment intent:', paymentIntent?.id, paymentIntent?.client_secret);
       
       // If no payment intent exists, create one manually
       if (!paymentIntent || !paymentIntent.client_secret) {
         console.log('Creating manual payment intent...');
         
-        // Get the invoice first
-        const invoice = await stripe.invoices.retrieve(subscription.latest_invoice.id, {
-          expand: ['payment_intent']
-        });
-        
-        if (!invoice.payment_intent) {
-          // Create a payment intent manually
+        if (subscription.latest_invoice && typeof subscription.latest_invoice === 'object') {
+          // Get the invoice first
+          const invoice = await stripe.invoices.retrieve((subscription.latest_invoice as any).id, {
+            expand: ['payment_intent']
+          });
+          
+          if (!(invoice as any).payment_intent) {
+            // Create a payment intent manually
+            const manualPaymentIntent = await stripe.paymentIntents.create({
+              amount: 499, // $4.99 in cents
+              currency: 'usd',
+              customer: customer.id,
+              metadata: { 
+                subscription_id: subscription.id,
+                email: email 
+              }
+            });
+            paymentIntent = manualPaymentIntent;
+          } else {
+            paymentIntent = (invoice as any).payment_intent;
+          }
+        } else {
+          // Create manual payment intent as fallback
           const manualPaymentIntent = await stripe.paymentIntents.create({
             amount: 499, // $4.99 in cents
             currency: 'usd',
@@ -230,8 +333,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
             }
           });
           paymentIntent = manualPaymentIntent;
-        } else {
-          paymentIntent = invoice.payment_intent;
         }
       }
       

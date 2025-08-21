@@ -45,10 +45,30 @@ export function useSubscription() {
   });
 
   const createSubscription = useMutation({
-    mutationFn: async () => {
-      const response = await apiRequest('POST', '/api/create-subscription');
+    mutationFn: async (email: string) => {
+      // Check if user already has an active subscription first
+      const statusResponse = await fetch('/api/subscription-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      
+      if (statusResponse.ok) {
+        const status = await statusResponse.json();
+        if (status.hasActiveSubscription) {
+          throw new Error('You already have an active subscription');
+        }
+      }
+      
+      const response = await fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      
       if (!response.ok) {
-        throw new Error('Failed to create subscription');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to create subscription');
       }
       return response.json();
     },

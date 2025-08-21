@@ -41,16 +41,31 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
         variant: "destructive",
       });
     } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-      // Update local user type to paid
+      // Update local user type to paid and preserve login
       const storedUser = localStorage.getItem('lpp_local_user');
       if (storedUser) {
         try {
           const userData = JSON.parse(storedUser);
           userData.userType = 'paid';
+          userData.hasActiveSubscription = true; // Mark as having active subscription
           localStorage.setItem('lpp_local_user', JSON.stringify(userData));
+          
+          // Also preserve the login in stagetracker_user for compatibility
+          const stageTrackerUser = localStorage.getItem('stagetracker_user');
+          if (stageTrackerUser) {
+            const stagingData = JSON.parse(stageTrackerUser);
+            stagingData.userType = 'paid';
+            stagingData.hasActiveSubscription = true;
+            localStorage.setItem('stagetracker_user', JSON.stringify(stagingData));
+          }
           
           // Trigger auth change event to update the UI
           window.dispatchEvent(new Event('auth-change'));
+          
+          // Wait a moment to ensure auth state is updated
+          setTimeout(() => {
+            window.location.href = '/'; // Redirect to main app
+          }, 1000);
         } catch (error) {
           console.error('Error updating user type:', error);
         }
@@ -87,21 +102,29 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
 export default function Subscribe({ onClose }: { onClose: () => void }) {
   const [clientSecret, setClientSecret] = useState("");
   const [showPayment, setShowPayment] = useState(false);
+  const [isCreatingSubscription, setIsCreatingSubscription] = useState(false);
 
   useEffect(() => {
-    // Create subscription when payment form is shown
-    if (showPayment && !clientSecret) {
+    // Create subscription when payment form is shown (but only once)
+    if (showPayment && !clientSecret && !isCreatingSubscription) {
+      setIsCreatingSubscription(true);
       // Get user email from localStorage
       const storedUser = localStorage.getItem('lpp_local_user');
-      let userEmail = 'user@example.com'; // Default fallback
+      let userEmail = null;
       
       if (storedUser) {
         try {
           const userData = JSON.parse(storedUser);
-          userEmail = userData.email || 'user@example.com';
+          userEmail = userData.email;
         } catch (error) {
           console.error('Error parsing user data:', error);
         }
+      }
+      
+      if (!userEmail) {
+        console.error('No user email found for subscription');
+        setShowPayment(false);
+        return;
       }
       
       console.log('Creating subscription for:', userEmail);
@@ -113,7 +136,13 @@ export default function Subscribe({ onClose }: { onClose: () => void }) {
         },
         body: JSON.stringify({ email: userEmail }),
       })
-        .then((res) => res.json())
+        .then(async (res) => {
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.message || 'Failed to create subscription');
+          }
+          return data;
+        })
         .then((data) => {
           if (data.clientSecret) {
             setClientSecret(data.clientSecret);
@@ -123,9 +152,13 @@ export default function Subscribe({ onClose }: { onClose: () => void }) {
         })
         .catch((error) => {
           console.error('Error creating subscription:', error);
+          setShowPayment(false);
+        })
+        .finally(() => {
+          setIsCreatingSubscription(false);
         });
     }
-  }, [showPayment, clientSecret]);
+  }, [showPayment, clientSecret, isCreatingSubscription]);
 
   if (!showPayment) {
     return (

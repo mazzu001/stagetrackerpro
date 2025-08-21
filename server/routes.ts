@@ -13,6 +13,15 @@ import { promises as fsPromises } from "fs";
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
 }
+
+// Check if we're using test keys
+const isTestMode = process.env.STRIPE_SECRET_KEY.startsWith('sk_test_');
+console.log(`🔑 Stripe API Mode: ${isTestMode ? 'TEST MODE ✅' : 'LIVE MODE ⚠️'}`);
+
+if (!isTestMode) {
+  console.warn('⚠️ WARNING: Using live Stripe keys - test cards will be declined!');
+}
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Configure multer for file uploads
@@ -286,6 +295,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         currency: 'usd',
         customer: customer.id,
         payment_method_types: ['card'],
+        confirmation_method: 'manual',
+        confirm: false,
         metadata: {
           email: email,
           subscription_amount: '499'

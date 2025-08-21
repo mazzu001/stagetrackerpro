@@ -546,7 +546,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh]" data-testid="dialog-midi-manager">
+      <DialogContent className="max-w-6xl max-h-[90vh] sm:max-w-[95vw] w-full mx-2" data-testid="dialog-midi-manager">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Music className="w-5 h-5" />
@@ -559,8 +559,8 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
 
         <div className="space-y-4">
           {/* Status and Controls */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
               <div className="flex items-center gap-2">
                 {midiSupported ? (
                   <CheckCircle className="w-4 h-4 text-green-500" />
@@ -584,7 +584,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
               </div>
             </div>
             
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button
                 onClick={refreshDevices}
                 disabled={isScanning}
@@ -597,7 +597,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
               </Button>
               
               {bluetoothSupported && (
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   <Button
                     onClick={requestBluetoothDevice}
                     disabled={isScanning}
@@ -623,8 +623,8 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
             </div>
           </div>
 
-          {/* Two Column Layout */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 gap-4">
+          {/* Responsive Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
             {/* Left Side: MIDI Devices */}
             <div className="space-y-2">
               <h3 className="font-medium text-base">MIDI Devices</h3>
@@ -635,7 +635,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                   <Activity className="w-4 h-4" />
                   Input Devices ({inputDevices.length})
                 </h4>
-                <ScrollArea className="h-32 border rounded-md p-2">
+                <ScrollArea className="h-28 sm:h-32 border rounded-md p-1 sm:p-2">
                   {inputDevices.length === 0 ? (
                     <div className="text-center text-gray-500 py-8 text-sm">
                       No input devices found<br />
@@ -646,7 +646,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                       {inputDevices.map((device) => (
                         <div
                           key={device.id}
-                          className="flex items-center justify-between p-3 border rounded-md dark:bg-blue-950 bg-[#0d1216] mt-[4px] mb-[4px] ml-[0px] mr-[0px] pl-[12px] pr-[12px] pt-[5px] pb-[5px]"
+                          className="flex items-center justify-between p-2 sm:p-3 border rounded-md dark:bg-blue-950 bg-[#0d1216] mt-[2px] mb-[2px] ml-[0px] mr-[0px] pl-[8px] sm:pl-[12px] pr-[8px] sm:pr-[12px] pt-[3px] sm:pt-[5px] pb-[3px] sm:pb-[5px]"
                           data-testid={`device-input-${device.id}`}
                         >
                           <div className="flex-1 min-w-0">
@@ -683,7 +683,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                   <Music className="w-4 h-4" />
                   Output Devices ({outputDevices.length})
                 </h4>
-                <ScrollArea className="h-32 border rounded-md p-2">
+                <ScrollArea className="h-28 sm:h-32 border rounded-md p-1 sm:p-2">
                   {outputDevices.length === 0 ? (
                     <div className="text-center text-gray-500 py-8 text-sm">
                       No output devices found<br />
@@ -694,7 +694,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                       {outputDevices.map((device) => (
                         <div
                           key={device.id}
-                          className="flex items-center justify-between p-3 border rounded-md dark:bg-green-950 bg-[#0d1216] mt-[2px] mb-[2px] pt-[5px] pb-[5px]"
+                          className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-2 sm:p-3 border rounded-md dark:bg-green-950 bg-[#0d1216] mt-[2px] mb-[2px] pt-[3px] sm:pt-[5px] pb-[3px] sm:pb-[5px] gap-2 sm:gap-0"
                           data-testid={`device-output-${device.id}`}
                         >
                           <div className="flex-1 min-w-0">
@@ -710,14 +710,14 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                               {device.manufacturer}
                             </p>
                           </div>
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-1 w-full sm:w-auto">
                             <Button
                               size="sm"
                               variant="ghost"
                               onClick={() => testDevice(device.id)}
                               disabled={!device.enabled || testingDevice === device.id}
                               data-testid={`button-test-${device.id}`}
-                              className="h-8 px-2 text-xs"
+                              className="h-7 sm:h-8 px-1 sm:px-2 text-xs flex-1 sm:flex-none"
                             >
                               Test
                             </Button>
@@ -727,7 +727,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                               onClick={() => testDeviceFullDuplex(device.id)}
                               disabled={!device.enabled || testingDevice === device.id}
                               data-testid={`button-duplex-test-${device.id}`}
-                              className="h-8 px-2 text-xs"
+                              className="h-7 sm:h-8 px-1 sm:px-2 text-xs flex-1 sm:flex-none"
                             >
                               {testingDevice === device.id ? 'Testing...' : 'Full Test'}
                             </Button>
@@ -771,7 +771,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                   <Activity className="w-4 h-4" />
                   Recent Messages
                 </h4>
-                <ScrollArea className="h-64 border rounded-md p-3 bg-gray-50 dark:bg-gray-900 pt-[8px] pb-[8px]">
+                <ScrollArea className="h-48 sm:h-64 border rounded-md p-2 sm:p-3 bg-gray-50 dark:bg-gray-900 pt-[8px] pb-[8px]">
                   {receivedMessages.length === 0 ? (
                     <div className="text-center text-gray-500 py-8 text-sm">
                       No MIDI activity<br />

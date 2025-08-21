@@ -623,49 +623,9 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
             </div>
           </div>
 
-          {/* Three Column Layout */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 gap-4">
-            {/* Left Side: Bluetooth Devices - Expanded */}
-            <div className="space-y-3">
-              <h3 className="font-medium text-base">Bluetooth Devices</h3>
-              
-              <ScrollArea className="h-80 border rounded-md p-2 pt-[5px] pb-[5px] mt-[6px] mb-[6px] pl-[8px] pr-[8px]">
-                {!bluetoothSupported ? (
-                  <div className="text-center text-gray-500 py-8 text-sm">
-                    Bluetooth not supported<br />
-                    <span className="text-xs">Your browser doesn't support Bluetooth</span>
-                  </div>
-                ) : bluetoothDevices.length === 0 ? (
-                  <div className="text-center text-gray-500 py-8 text-sm">
-                    No Bluetooth devices found<br />
-                    <span className="text-xs">Click "Pair Device" to add MIDI devices</span>
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    {bluetoothDevices.map((device) => (
-                      <div
-                        key={device.id}
-                        className="flex items-center justify-between p-3 border rounded-md bg-blue-50 dark:bg-blue-950"
-                        data-testid={`bluetooth-device-${device.id}`}
-                      >
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            <Bluetooth className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                            <p className="font-medium truncate">{device.name}</p>
-                            <div className={`w-2 h-2 rounded-full ${device.connected ? 'bg-green-500' : 'bg-gray-400'}`} />
-                          </div>
-                          <p className="text-xs text-gray-500">
-                            {device.connected ? 'Connected' : 'Paired but disconnected'}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </ScrollArea>
-            </div>
-
-            {/* Middle: MIDI Devices - Moved up */}
+          {/* Two Column Layout */}
+          <div className="grid grid-cols-1 xl:grid-cols-2 lg:grid-cols-2 gap-4">
+            {/* Left Side: MIDI Devices */}
             <div className="space-y-2">
               <h3 className="font-medium text-base">MIDI Devices</h3>
               

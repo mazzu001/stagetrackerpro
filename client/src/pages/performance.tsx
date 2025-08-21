@@ -301,18 +301,43 @@ export default function Performance({ userType }: PerformanceProps) {
     }
   };
 
-  // Send MIDI commands from lyrics text
+  // Send MIDI command from current cursor line
   const sendMidiFromLyrics = () => {
-    const midiCommands = lyricsText.match(/\[\[([^\]]+)\]\]/g) || [];
+    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
+    if (!textarea) return;
+    
+    const cursorPosition = textarea.selectionStart;
+    const textBeforeCursor = lyricsText.substring(0, cursorPosition);
+    const textAfterCursor = lyricsText.substring(cursorPosition);
+    
+    // Find the start and end of the current line
+    const lineStart = textBeforeCursor.lastIndexOf('\n') + 1;
+    const lineEndIndex = textAfterCursor.indexOf('\n');
+    const lineEnd = lineEndIndex === -1 ? lyricsText.length : cursorPosition + lineEndIndex;
+    
+    const currentLine = lyricsText.substring(lineStart, lineEnd);
+    
+    // Find MIDI commands on current line
+    const midiCommands = currentLine.match(/\[\[([^\]]+)\]\]/g) || [];
     let sentCount = 0;
+    
+    if (connectedOutputs.length === 0) {
+      toast({
+        title: "No MIDI Output",
+        description: "No MIDI output devices connected",
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
     
     midiCommands.forEach(command => {
       const commandText = command.slice(2, -2); // Remove [[ and ]]
       const midiData = parseMidiCommand(commandText);
       
-      if (midiData && connectedOutputs.length > 0) {
+      if (midiData) {
         // Send to first connected output device
-        const outputDevice = connectedOutputs[0];
+        const outputDevice = connectedOutputs[0] as any;
         try {
           outputDevice.send(midiData);
           sentCount++;
@@ -324,14 +349,14 @@ export default function Performance({ userType }: PerformanceProps) {
     
     if (sentCount > 0) {
       toast({
-        title: "MIDI Commands Sent",
-        description: `Sent ${sentCount} MIDI commands`,
+        title: "MIDI Sent",
+        description: `Sent ${sentCount} command${sentCount > 1 ? 's' : ''} from current line`,
         duration: 2000,
       });
     } else {
       toast({
         title: "No MIDI Commands",
-        description: "No valid MIDI commands found or no output devices connected",
+        description: "No valid MIDI commands found on current line",
         variant: "destructive",
         duration: 3000,
       });

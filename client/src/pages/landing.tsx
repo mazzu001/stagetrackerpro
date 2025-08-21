@@ -77,6 +77,28 @@ export default function Landing() {
             <p className="text-xs text-gray-500 text-center">
               Local authentication • No internet required
             </p>
+            
+            {/* Quick restore button for testing */}
+            <Button
+              onClick={() => {
+                const userData = {
+                  email: 'mazzu001@hotmail.com',
+                  userType: 'free' as const,
+                  hasActiveSubscription: false,
+                  username: 'mazzu001',
+                  loginTime: Date.now()
+                };
+                localStorage.setItem('lpp_local_user', JSON.stringify(userData));
+                localStorage.setItem('stagetracker_user', JSON.stringify(userData));
+                window.dispatchEvent(new Event('auth-change'));
+                window.location.reload();
+              }}
+              variant="secondary"
+              className="w-full text-xs mt-4 bg-slate-700 hover:bg-slate-600"
+              data-testid="button-restore-account"
+            >
+              🔧 Restore Test Account (mazzu001@hotmail.com)
+            </Button>
           </CardContent>
         </Card>
 

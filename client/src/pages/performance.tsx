@@ -150,9 +150,9 @@ export default function Performance({ userType }: PerformanceProps) {
       if (shouldProcess) {
         const midiCommand = formatMidiMessageAsCommand(data);
         if (midiCommand) {
-          // Auto mode: insert immediately, Manual mode: just show preview
+          // Auto mode and capture-all mode: insert immediately, Manual mode: just show preview
           if (midiListenMode === 'auto' || midiListenMode === 'capture-all') {
-            insertMidiCommandAtCursor(midiCommand);
+            insertMidiCommandOnNewLine(midiCommand);
           }
         }
       }
@@ -299,12 +299,25 @@ export default function Performance({ userType }: PerformanceProps) {
       textarea.focus();
       textarea.setSelectionRange(start + command.length, start + command.length);
     }, 0);
+  };
 
-    toast({
-      title: "MIDI Command Added",
-      description: `Inserted: ${command}`,
-      duration: 2000,
-    });
+  // Insert MIDI command on a new line at the end of the text
+  const insertMidiCommandOnNewLine = (command: string) => {
+    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
+    if (!textarea) return;
+
+    const currentText = lyricsText;
+    const newLine = currentText.length > 0 && !currentText.endsWith('\n') ? '\n' : '';
+    const newText = currentText + newLine + command + '\n';
+    
+    setLyricsText(newText);
+    
+    // Scroll to bottom and position cursor at end
+    setTimeout(() => {
+      textarea.focus();
+      textarea.scrollTop = textarea.scrollHeight;
+      textarea.setSelectionRange(newText.length, newText.length);
+    }, 0);
   };
 
   // Toggle MIDI listening mode
@@ -314,9 +327,9 @@ export default function Performance({ userType }: PerformanceProps) {
       // Clear previous captures when starting new session
       setCapturedMidiMessages([]);
       const descriptions = {
-        auto: "Commands will be inserted automatically (filtered)",
+        auto: "Filtered commands inserted automatically on new lines",
         manual: "Commands shown as preview - click 'Insert Last' to add",
-        'capture-all': "ALL MIDI messages will be captured and inserted"
+        'capture-all': "ALL MIDI messages inserted in real-time, one per line"
       };
       toast({
         title: `MIDI Listening Active (${midiListenMode} mode)`,
@@ -1346,9 +1359,9 @@ export default function Performance({ userType }: PerformanceProps) {
 
 Click "Timestamp" to insert current time
 Click "MIDI Listen" then play your MIDI device
-- Auto mode: Filtered commands inserted immediately  
+- Auto mode: Filtered commands inserted on new lines  
 - Manual mode: Preview commands, click "Insert Last" to add
-- All mode: Every MIDI message captured and inserted`}
+- All mode: Every MIDI message inserted in real-time, one per line`}
               className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
               style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
               spellCheck={false}

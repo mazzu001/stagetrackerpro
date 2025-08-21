@@ -156,9 +156,10 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
       
       deviceList.push(device);
       
-      // Set up MIDI message listener for input devices - always set up if device exists
-      setupMIDIInputListener(input, device);
-      console.log(`Set up listener for ${device.name} (state: ${input.state}, connection: ${input.connection})`);
+      // Set up MIDI message listener for input devices
+      if (input.state === 'connected') {
+        setupMIDIInputListener(input, device);
+      }
     });
 
     setDevices(deviceList);
@@ -181,10 +182,9 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
 
   // Set up MIDI input message listener
   const setupMIDIInputListener = (input: MIDIInput, device: MIDIDeviceInfo) => {
-    console.log(`Setting up MIDI listener for ${device.name}`);
     input.onmidimessage = (event: any) => {
-      console.log(`Raw MIDI event received from ${device.name}`);
       const data = Array.from(event.data as Uint8Array) as number[];
+      const messageType = getMIDIMessageType(data[0] as number);
       const timestamp = Date.now();
       
       // Update device last activity
@@ -211,7 +211,6 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
       });
       window.dispatchEvent(midiEvent);
     };
-    console.log(`MIDI listener installed for ${device.name}`);
   };
 
   // Format MIDI message for display

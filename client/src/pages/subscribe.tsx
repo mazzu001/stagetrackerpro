@@ -15,10 +15,13 @@ if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
 }
 
 console.log('Loading Stripe with key starting with:', import.meta.env.VITE_STRIPE_PUBLIC_KEY.substring(0, 8));
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY).catch((error) => {
-  console.error('Failed to load Stripe:', error);
-  throw error;
+
+// Add global error handler for debugging
+window.addEventListener('error', (event) => {
+  console.error('Global error caught:', event.error, event.message, event.filename, event.lineno);
 });
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const stripe = useStripe();
@@ -322,7 +325,15 @@ export default function Subscribe({ onClose }: { onClose: () => void }) {
             </ul>
           </div>
           
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <Elements 
+            stripe={stripePromise} 
+            options={{ 
+              clientSecret,
+              appearance: {
+                theme: 'stripe'
+              }
+            }}
+          >
             <SubscribeForm onSuccess={onClose} />
           </Elements>
           

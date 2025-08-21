@@ -629,7 +629,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
             <div className="space-y-3">
               <h3 className="font-medium text-base">Bluetooth Devices</h3>
               
-              <ScrollArea className="h-80 border rounded-md p-2">
+              <ScrollArea className="h-80 border rounded-md p-2 pt-[5px] pb-[5px] mt-[6px] mb-[6px] pl-[8px] pr-[8px]">
                 {!bluetoothSupported ? (
                   <div className="text-center text-gray-500 py-8 text-sm">
                     Bluetooth not supported<br />

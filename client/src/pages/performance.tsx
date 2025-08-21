@@ -571,12 +571,17 @@ export default function Performance({ userType }: PerformanceProps) {
                 
                 {/* Desktop subscription link */}
                 <DropdownMenuItem 
-                  onClick={() => setLocation('/subscribe')}
-                  className="flex items-center cursor-pointer mobile-hidden"
+                  onClick={userType === 'paid' ? undefined : () => setLocation('/subscribe')}
+                  className={`flex items-center mobile-hidden ${
+                    userType === 'paid' 
+                      ? 'cursor-not-allowed text-gray-500 opacity-50' 
+                      : 'cursor-pointer'
+                  }`}
                   data-testid="menu-subscribe"
+                  disabled={userType === 'paid'}
                 >
-                  <Crown className="w-4 h-4 mr-2" />
-                  <span>Subscribe Now</span>
+                  <Crown className={`w-4 h-4 mr-2 ${userType === 'paid' ? 'text-gray-500' : ''}`} />
+                  <span>{userType === 'paid' ? 'Already Subscribed' : 'Subscribe Now'}</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="mobile-hidden" />
 

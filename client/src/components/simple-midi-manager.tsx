@@ -65,9 +65,12 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
         connection: input.connection
       });
 
-      // IMMEDIATELY set up message listener
+      // Clear any existing listener first
+      input.onmidimessage = null;
+      
+      // Set up fresh message listener with current state
       input.onmidimessage = (event: any) => {
-        console.log('🎹 MIDI MESSAGE RECEIVED:', event.data);
+        console.log('🎹 MIDI MESSAGE RECEIVED from', input.name + ':', Array.from(event.data));
         const data = Array.from(event.data as Uint8Array) as number[];
         const message = formatMIDIMessage(data);
         const newMessage: MIDIMessage = {
@@ -76,12 +79,21 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
           timestamp: Date.now()
         };
         
-        setReceivedMessages(prev => [newMessage, ...prev.slice(0, 19)]);
-        console.log('✅ MIDI message processed:', message);
+        console.log('📝 Adding message to UI:', message);
+        setReceivedMessages(prev => {
+          const updated = [newMessage, ...prev.slice(0, 19)];
+          console.log('📋 UI messages updated, total:', updated.length);
+          return updated;
+        });
         
-        if (isListening) {
-          setRecordedMessages(prev => [...prev, newMessage]);
-        }
+        // Also record if listening
+        setIsListening(current => {
+          if (current) {
+            console.log('📹 Recording message (listening active)');
+            setRecordedMessages(prev => [...prev, newMessage]);
+          }
+          return current;
+        });
       };
       
       console.log('✅ MIDI listener attached to:', input.name);
@@ -168,6 +180,8 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
     const output = midiAccess.outputs.get(outputDevices[0].id);
     if (!output) return;
 
+    console.log('🧪 Starting full duplex test with output:', outputDevices[0].name);
+    
     let sent = 0;
     let received = 0;
     const originalCount = receivedMessages.length;
@@ -181,18 +195,41 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
 
     for (const cmd of testCommands) {
       try {
+        console.log('📤 Sending MIDI command:', cmd);
         output.send(cmd);
         sent++;
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 200));
       } catch (error) {
-        console.error('Send failed:', error);
+        console.error('❌ Send failed:', error);
       }
     }
 
     setTimeout(() => {
       received = receivedMessages.length - originalCount;
+      console.log('📊 Test results: sent=' + sent + ', received=' + received);
       setTestResults({ sent, received });
-    }, 500);
+    }, 1000);
+  };
+
+  const testMIDIInput = () => {
+    console.log('🔍 Testing MIDI input directly...');
+    console.log('Available inputs:', midiAccess?.inputs.size);
+    
+    if (midiAccess) {
+      midiAccess.inputs.forEach((input: any) => {
+        console.log('Input device:', input.name, 'State:', input.state, 'Has listener:', !!input.onmidimessage);
+      });
+    }
+    
+    // Inject a test message directly
+    const testMessage: MIDIMessage = {
+      device: 'Test Device',
+      message: 'Test Message - ' + new Date().toLocaleTimeString(),
+      timestamp: Date.now()
+    };
+    
+    console.log('💉 Injecting test message into UI');
+    setReceivedMessages(prev => [testMessage, ...prev.slice(0, 19)]);
   };
 
   if (!isOpen) return null;
@@ -284,6 +321,10 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
               </div>
             )}
 
+            <Button onClick={testMIDIInput} className="w-full mb-1" variant="outline">
+              Test Input
+            </Button>
+            
             <Button onClick={testFullDuplex} className="w-full">
               Full Duplex Test
             </Button>

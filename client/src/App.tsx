@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Router } from "wouter";
 import Performance from "@/pages/performance";
-import Subscribe from "@/pages/subscribe-simple";
+import Subscribe from "@/pages/subscribe";
 import Landing from "@/pages/landing";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';

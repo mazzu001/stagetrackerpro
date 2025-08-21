@@ -16,18 +16,25 @@ if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
 
 console.log('Loading Stripe with key starting with:', import.meta.env.VITE_STRIPE_PUBLIC_KEY.substring(0, 8));
 
-// Add global error handler for debugging
-window.addEventListener('error', (event) => {
-  console.error('Global error caught:', event.error, event.message, event.filename, event.lineno);
+// Create a more robust Stripe promise with better error handling
+const stripePromise = Promise.resolve().then(async () => {
+  try {
+    console.log('Initializing Stripe...');
+    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+    console.log('Stripe initialized successfully');
+    return stripe;
+  } catch (error) {
+    console.error('Failed to initialize Stripe:', error);
+    throw error;
+  }
 });
-
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [stripeError, setStripeError] = useState<string | null>(null);
 
   // Add error boundary for Stripe elements
   if (!stripe || !elements) {
@@ -39,9 +46,26 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
     );
   }
 
+  if (stripeError) {
+    return (
+      <div className="text-center p-4 border border-red-200 bg-red-50 rounded">
+        <p className="text-red-700 text-sm">Payment form error: {stripeError}</p>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className="mt-2"
+          onClick={() => setStripeError(null)}
+        >
+          Retry
+        </Button>
+      </div>
+    );
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setStripeError(null);
 
     if (!stripe || !elements) {
       setIsLoading(false);
@@ -49,6 +73,16 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
     }
 
     try {
+      // First validate the elements
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        console.error('Elements validation failed:', submitError);
+        setStripeError(submitError.message || 'Payment form validation failed');
+        setIsLoading(false);
+        return;
+      }
+
+      // Confirm the payment
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         redirect: 'if_required',
@@ -61,45 +95,52 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
           description: error.message || 'Payment failed. Please try again.',
           variant: "destructive",
         });
-      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
-      // Update local user type to paid and preserve login
-      const storedUser = localStorage.getItem('lpp_local_user');
-      if (storedUser) {
-        try {
-          const userData = JSON.parse(storedUser);
-          userData.userType = 'paid';
-          userData.hasActiveSubscription = true; // Mark as having active subscription
-          localStorage.setItem('lpp_local_user', JSON.stringify(userData));
-          
-          // Also preserve the login in stagetracker_user for compatibility
-          const stageTrackerUser = localStorage.getItem('stagetracker_user');
-          if (stageTrackerUser) {
-            const stagingData = JSON.parse(stageTrackerUser);
-            stagingData.userType = 'paid';
-            stagingData.hasActiveSubscription = true;
-            localStorage.setItem('stagetracker_user', JSON.stringify(stagingData));
-          }
-          
-          // Trigger auth change event to update the UI
-          window.dispatchEvent(new Event('auth-change'));
-          
-          // Wait a moment to ensure auth state is updated
-          setTimeout(() => {
-            window.location.href = '/'; // Redirect to main app
-          }, 1000);
-        } catch (error) {
-          console.error('Error updating user type:', error);
-        }
+        setIsLoading(false);
+        return;
       }
-      
-      toast({
-        title: "Welcome to Premium!",
-        description: "Your subscription is now active. Enjoy unlimited songs!",
-      });
-      onSuccess();
-      } else {
-        // Payment is still processing or requires action
-        console.log('Payment status:', paymentIntent?.status);
+
+      if (paymentIntent && paymentIntent.status === 'succeeded') {
+        console.log('Payment succeeded! Updating user status...');
+        
+        // Update local user type to paid and preserve login
+        const storedUser = localStorage.getItem('lpp_local_user');
+        if (storedUser) {
+          try {
+            const userData = JSON.parse(storedUser);
+            userData.userType = 'paid';
+            userData.hasActiveSubscription = true;
+            localStorage.setItem('lpp_local_user', JSON.stringify(userData));
+            
+            // Also preserve the login in stagetracker_user for compatibility
+            const stageTrackerUser = localStorage.getItem('stagetracker_user');
+            if (stageTrackerUser) {
+              const stagingData = JSON.parse(stageTrackerUser);
+              stagingData.userType = 'paid';
+              stagingData.hasActiveSubscription = true;
+              localStorage.setItem('stagetracker_user', JSON.stringify(stagingData));
+            }
+            
+            // Trigger auth change event to update the UI
+            window.dispatchEvent(new Event('auth-change'));
+            
+            toast({
+              title: "Welcome to Premium!",
+              description: "Your subscription is now active. Enjoy unlimited songs!",
+            });
+            
+            // Wait a moment then redirect
+            setTimeout(() => {
+              onSuccess();
+              window.location.href = '/';
+            }, 2000);
+            
+          } catch (error) {
+            console.error('Error updating user type:', error);
+          }
+        }
+      } else if (paymentIntent) {
+        // Payment requires action or is processing
+        console.log('Payment status:', paymentIntent.status);
         toast({
           title: "Payment Processing",
           description: "Your payment is being processed. Please wait...",
@@ -107,11 +148,7 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
       }
     } catch (error: any) {
       console.error('Payment confirmation error:', error);
-      toast({
-        title: "Payment Error",
-        description: error.message || 'An unexpected error occurred. Please try again.',
-        variant: "destructive",
-      });
+      setStripeError(error.message || 'An unexpected error occurred');
     }
     
     setIsLoading(false);

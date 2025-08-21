@@ -26,12 +26,12 @@ export interface IStorage {
   updateTrack(id: string, track: Partial<InsertTrack>): Promise<Track | undefined>;
   deleteTrack(id: string): Promise<boolean>;
 
-  // MIDI Events
-  getMidiEvent(id: string): Promise<MidiEvent | undefined>;
-  getMidiEventsBySongId(songId: string): Promise<MidiEvent[]>;
-  createMidiEvent(midiEvent: InsertMidiEvent): Promise<MidiEvent>;
-  updateMidiEvent(id: string, midiEvent: Partial<InsertMidiEvent>): Promise<MidiEvent | undefined>;
-  deleteMidiEvent(id: string): Promise<boolean>;
+  // MIDI Events (removed but interface kept for compatibility)
+  // getMidiEvent(id: string): Promise<MidiEvent | undefined>;
+  // getMidiEventsBySongId(songId: string): Promise<MidiEvent[]>;
+  // createMidiEvent(midiEvent: InsertMidiEvent): Promise<MidiEvent>;
+  // updateMidiEvent(id: string, midiEvent: Partial<InsertMidiEvent>): Promise<MidiEvent | undefined>;
+  // deleteMidiEvent(id: string): Promise<boolean>;
 
   // Waveform caching
   saveWaveform(songId: string, waveformData: number[]): Promise<void>;
@@ -39,7 +39,7 @@ export interface IStorage {
 
   // Legacy methods for compatibility (no-op in database mode)
   getAllData(): any;
-  loadData(songs: Song[], tracks: Track[], midiEvents: MidiEvent[], waveforms?: Record<string, number[]>, users?: User[]): void;
+  loadData(songs: Song[], tracks: Track[], waveforms?: Record<string, number[]>, users?: User[]): void;
   setAutoSaveCallback(callback: () => void): void;
 }
 
@@ -57,12 +57,11 @@ export class DatabaseStorage implements IStorage {
       users: [],
       songs: [],
       tracks: [],
-      midiEvents: [],
       waveforms: {}
     };
   }
 
-  loadData(songData: Song[], trackData: Track[], midiEventData: MidiEvent[], waveforms?: Record<string, number[]>, userData?: User[]) {
+  loadData(songData: Song[], trackData: Track[], waveforms?: Record<string, number[]>, userData?: User[]) {
     console.log('loadData: Data is now stored in local SQLite database, ignoring localStorage');
   }
 
@@ -211,15 +210,13 @@ export class DatabaseStorage implements IStorage {
 
   async getAllSongs(userId?: string): Promise<SongWithTracks[]> {
     // Use a more efficient query by fetching everything in parallel, filtered by user
-    const [allSongs, allTracks, allMidiEvents] = await Promise.all([
+    const [allSongs, allTracks] = await Promise.all([
       userId ? localDb.select().from(songs).where(eq(songs.userId, userId)) : localDb.select().from(songs),
-      localDb.select().from(tracks),
-      localDb.select().from(midiEvents)
+      localDb.select().from(tracks)
     ]);
     
-    // Group tracks and MIDI events by song ID
+    // Group tracks by song ID
     const tracksBySong = new Map<string, typeof allTracks>();
-    const midiEventsBySong = new Map<string, typeof allMidiEvents>();
     
     allTracks.forEach(track => {
       if (!tracksBySong.has(track.songId)) {
@@ -228,18 +225,10 @@ export class DatabaseStorage implements IStorage {
       tracksBySong.get(track.songId)!.push(track);
     });
     
-    allMidiEvents.forEach(event => {
-      if (!midiEventsBySong.has(event.songId)) {
-        midiEventsBySong.set(event.songId, []);
-      }
-      midiEventsBySong.get(event.songId)!.push(event);
-    });
-    
     // Combine all data
     const songsWithTracks: SongWithTracks[] = allSongs.map(song => ({
       ...song,
       tracks: tracksBySong.get(song.id) || [],
-      midiEvents: midiEventsBySong.get(song.id) || [],
     }));
     
     return songsWithTracks;
@@ -313,12 +302,10 @@ export class DatabaseStorage implements IStorage {
     if (!song) return undefined;
 
     const songTracks = await localDb.select().from(tracks).where(eq(tracks.songId, id));
-    const songMidiEvents = await localDb.select().from(midiEvents).where(eq(midiEvents.songId, id));
 
     return {
       ...song,
       tracks: songTracks,
-      midiEvents: songMidiEvents,
     };
   }
 

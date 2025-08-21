@@ -13,7 +13,7 @@ try {
   if (process.env.DATABASE_URL) {
     console.log('🔗 Connecting to PostgreSQL database...');
     const sql = neon(process.env.DATABASE_URL);
-    cloudDb = drizzleNeon(sql as any, { 
+    cloudDb = drizzleNeon(sql, { 
       schema: { 
         users: schema.usersPg, 
         sessions: schema.sessionsPg 

@@ -22,8 +22,7 @@ import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, F
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
-import { SimpleMIDIManager } from "@/components/simple-midi-manager";
-import { SimpleBluetoothManager } from "@/components/simple-bluetooth-manager";
+import { MIDIDeviceManager } from "@/components/midi-device-manager";
 import { useMIDI } from "@/hooks/useMIDI";
 import { useMIDISequencer } from "@/hooks/useMIDISequencer";
 
@@ -46,8 +45,6 @@ export default function Performance({ userType }: PerformanceProps) {
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMIDIManagerOpen, setIsMIDIManagerOpen] = useState(false);
-  const [isBluetoothManagerOpen, setIsBluetoothManagerOpen] = useState(false);
-  const [isMidiListening, setIsMidiListening] = useState(false);
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
@@ -126,286 +123,6 @@ export default function Performance({ userType }: PerformanceProps) {
       stopSequencer();
     }
   }, [selectedSongId, user?.email, startSequencer, stopSequencer]);
-
-  // Listen for MIDI messages when in lyrics editor
-  useEffect(() => {
-    if (!isMidiListening || !isEditLyricsOpen) return;
-
-    const handleMidiMessage = (event: CustomEvent) => {
-      const { device, data, timestamp } = event.detail;
-      
-      // Always insert every MIDI message directly into lyrics
-      const midiCommand = formatMidiMessageAsCommand(data);
-      if (midiCommand) {
-        insertMidiCommandOnNewLine(midiCommand);
-      }
-    };
-
-    window.addEventListener('midiMessage', handleMidiMessage as EventListener);
-    return () => {
-      window.removeEventListener('midiMessage', handleMidiMessage as EventListener);
-    };
-  }, [isMidiListening, isEditLyricsOpen]);
-
-  // Filter function to only process meaningful MIDI messages
-  const shouldProcessMidiMessage = (data: number[]): boolean => {
-    if (data.length < 2) return false;
-
-    const [status] = data;
-    const messageType = (status & 0xF0) >> 4;
-
-    // Only process these message types:
-    switch (messageType) {
-      case 0x9: // Note On - only if velocity > 0
-        return data.length >= 3 && data[2] > 0;
-      case 0x8: // Note Off
-        return data.length >= 2;
-      case 0xB: // Control Change - filter out continuous/noisy controllers
-        if (data.length >= 3) {
-          const controller = data[1];
-          // Filter out commonly noisy controllers
-          const noisyControllers = [
-            1,    // Mod wheel (continuous)
-            2,    // Breath controller (continuous)
-            7,    // Volume (often continuous)
-            10,   // Pan (often continuous)
-            11,   // Expression (continuous)
-            64,   // Sustain pedal (often rapid on/off)
-            123,  // All notes off
-            120,  // All sound off
-          ];
-          return !noisyControllers.includes(controller);
-        }
-        return false;
-      case 0xC: // Program Change
-        return data.length >= 2;
-      default:
-        return false;
-    }
-  };
-
-  // Format MIDI data as text command
-  const formatMidiMessageAsCommand = (data: number[]): string | null => {
-    if (data.length < 1) return null;
-
-    const [status, ...params] = data;
-    
-    // Handle system messages (no channel)
-    if (status >= 0xF0) {
-      switch (status) {
-        case 0xF8: return `[[CLOCK]]`;
-        case 0xFA: return `[[START]]`;
-        case 0xFB: return `[[CONTINUE]]`;
-        case 0xFC: return `[[STOP]]`;
-        case 0xFE: return `[[ACTIVE_SENSE]]`;
-        case 0xFF: return `[[RESET]]`;
-        default: return `[[SYS:${status}]]`;
-      }
-    }
-
-    // Channel messages
-    const messageType = (status & 0xF0) >> 4;
-    const channel = (status & 0x0F) + 1; // Convert to 1-based channel
-
-    switch (messageType) {
-      case 0x8: // Note Off
-        if (params.length >= 2) {
-          const [note, velocity] = params;
-          return `[[NOTEOFF:${note}:${velocity}:${channel}]]`;
-        } else if (params.length >= 1) {
-          const [note] = params;
-          return `[[NOTEOFF:${note}:0:${channel}]]`;
-        }
-        break;
-      case 0x9: // Note On
-        if (params.length >= 2) {
-          const [note, velocity] = params;
-          // Note on with velocity 0 is actually note off
-          if (velocity === 0) {
-            return `[[NOTEOFF:${note}:0:${channel}]]`;
-          }
-          return `[[NOTE:${note}:${velocity}:${channel}]]`;
-        }
-        break;
-      case 0xA: // Polyphonic Key Pressure (Aftertouch)
-        if (params.length >= 2) {
-          const [note, pressure] = params;
-          return `[[AFTERTOUCH:${note}:${pressure}:${channel}]]`;
-        }
-        break;
-      case 0xB: // Control Change
-        if (params.length >= 2) {
-          const [controller, value] = params;
-          return `[[CC:${controller}:${value}:${channel}]]`;
-        }
-        break;
-      case 0xC: // Program Change
-        if (params.length >= 1) {
-          const [program] = params;
-          return `[[PC:${program}:${channel}]]`;
-        }
-        break;
-      case 0xD: // Channel Pressure (Aftertouch)
-        if (params.length >= 1) {
-          const [pressure] = params;
-          return `[[PRESSURE:${pressure}:${channel}]]`;
-        }
-        break;
-      case 0xE: // Pitch Bend
-        if (params.length >= 2) {
-          const [lsb, msb] = params;
-          const pitchBend = (msb << 7) | lsb;
-          return `[[PITCHBEND:${pitchBend}:${channel}]]`;
-        }
-        break;
-      default:
-        return `[[MIDI:${status}:${params.join(':')}]]`;
-    }
-    return null;
-  };
-
-
-
-  // Insert MIDI command on a new line at the end of the text
-  const insertMidiCommandOnNewLine = (command: string) => {
-    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
-    if (!textarea) return;
-
-    const currentText = lyricsText;
-    const newLine = currentText.length > 0 && !currentText.endsWith('\n') ? '\n' : '';
-    const newText = currentText + newLine + command + '\n';
-    
-    setLyricsText(newText);
-    
-    // Scroll to bottom and position cursor at end
-    setTimeout(() => {
-      textarea.focus();
-      textarea.scrollTop = textarea.scrollHeight;
-      textarea.setSelectionRange(newText.length, newText.length);
-    }, 0);
-  };
-
-  // Toggle MIDI listening
-  const toggleMidiListening = () => {
-    setIsMidiListening(!isMidiListening);
-    if (!isMidiListening) {
-      toast({
-        title: "MIDI Listening Active",
-        description: "MIDI commands will be inserted into lyrics",
-        duration: 2000,
-      });
-    } else {
-      toast({
-        title: "MIDI Listening Disabled",
-        description: "MIDI input stopped",
-        duration: 2000,
-      });
-    }
-  };
-
-  // Send MIDI command from current cursor line
-  const sendMidiFromLyrics = () => {
-    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
-    if (!textarea) return;
-    
-    const cursorPosition = textarea.selectionStart;
-    const textBeforeCursor = lyricsText.substring(0, cursorPosition);
-    const textAfterCursor = lyricsText.substring(cursorPosition);
-    
-    // Find the start and end of the current line
-    const lineStart = textBeforeCursor.lastIndexOf('\n') + 1;
-    const lineEndIndex = textAfterCursor.indexOf('\n');
-    const lineEnd = lineEndIndex === -1 ? lyricsText.length : cursorPosition + lineEndIndex;
-    
-    const currentLine = lyricsText.substring(lineStart, lineEnd);
-    
-    // Find MIDI commands on current line
-    const midiCommands = currentLine.match(/\[\[([^\]]+)\]\]/g) || [];
-    let sentCount = 0;
-    
-    if (connectedOutputs.length === 0) {
-      toast({
-        title: "No MIDI Output",
-        description: "No MIDI output devices connected",
-        variant: "destructive",
-        duration: 3000,
-      });
-      return;
-    }
-    
-    midiCommands.forEach(command => {
-      const commandText = command.slice(2, -2); // Remove [[ and ]]
-      const midiData = parseMidiCommand(commandText);
-      
-      if (midiData) {
-        // Send to first connected output device
-        const outputDevice = connectedOutputs[0] as any;
-        try {
-          outputDevice.send(midiData);
-          sentCount++;
-        } catch (error) {
-          console.error('Failed to send MIDI command:', error);
-        }
-      }
-    });
-    
-    if (sentCount > 0) {
-      toast({
-        title: "MIDI Sent",
-        description: `Sent ${sentCount} command${sentCount > 1 ? 's' : ''} from current line`,
-        duration: 2000,
-      });
-    } else {
-      toast({
-        title: "No MIDI Commands",
-        description: "No valid MIDI commands found on current line",
-        variant: "destructive",
-        duration: 3000,
-      });
-    }
-  };
-
-  // Parse MIDI command text to MIDI data array
-  const parseMidiCommand = (commandText: string): number[] | null => {
-    const parts = commandText.split(':');
-    const type = parts[0];
-    
-    switch (type) {
-      case 'CC': // Control Change
-        if (parts.length >= 4) {
-          const controller = parseInt(parts[1]);
-          const value = parseInt(parts[2]);
-          const channel = parseInt(parts[3]) - 1; // Convert to 0-based
-          return [0xB0 | channel, controller, value];
-        }
-        break;
-      case 'NOTE': // Note On
-        if (parts.length >= 4) {
-          const note = parseInt(parts[1]);
-          const velocity = parseInt(parts[2]);
-          const channel = parseInt(parts[3]) - 1;
-          return [0x90 | channel, note, velocity];
-        }
-        break;
-      case 'NOTEOFF': // Note Off
-        if (parts.length >= 3) {
-          const note = parseInt(parts[1]);
-          const channel = parseInt(parts[2]) - 1;
-          return [0x80 | channel, note, 0];
-        }
-        break;
-      case 'PC': // Program Change
-        if (parts.length >= 3) {
-          const program = parseInt(parts[1]);
-          const channel = parseInt(parts[2]) - 1;
-          return [0xC0 | channel, program];
-        }
-        break;
-    }
-    return null;
-  };
-
-
 
   const {
     isPlaying,
@@ -865,24 +582,11 @@ export default function Performance({ userType }: PerformanceProps) {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="mobile-hidden" />
                 <DropdownMenuItem 
-                  onClick={() => setIsBluetoothManagerOpen(true)}
-                  className="flex items-center cursor-pointer"
-                  data-testid="menu-bluetooth-devices"
-                >
-                  <Bluetooth className="w-4 h-4 mr-2" />
-                  <div className="flex flex-col">
-                    <span>Bluetooth Devices</span>
-                    <span className="text-xs text-gray-500">
-                      Simple device discovery & connection
-                    </span>
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem 
                   onClick={() => setIsMIDIManagerOpen(true)}
                   className="flex items-center cursor-pointer"
                   data-testid="menu-midi-devices"
                 >
-                  <Music className="w-4 h-4 mr-2" />
+                  <Bluetooth className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
                     <span>MIDI Devices</span>
                     <span className="text-xs text-gray-500">
@@ -1163,8 +867,12 @@ export default function Performance({ userType }: PerformanceProps) {
             </div>
             
             {/* Mobile Header with Controls */}
-            <div className="p-2 border-b border-gray-700 bg-surface flex items-center justify-center md:hidden flex-shrink-0">
-              {/* Mobile Lyrics Controls - Full width for better accessibility */}
+            <div className="p-2 border-b border-gray-700 bg-surface flex items-center justify-between md:hidden flex-shrink-0">
+              <h2 className="text-sm font-semibold truncate mr-2 flex-1">
+                {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
+              </h2>
+              
+              {/* Mobile Lyrics Controls */}
               {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
             
@@ -1253,18 +961,6 @@ export default function Performance({ userType }: PerformanceProps) {
                 <Music className="w-3 h-3 mr-1" />
                 Search
               </Button>
-              <Button
-                variant={isMidiListening ? "default" : "outline"}
-                size="sm"
-                onClick={toggleMidiListening}
-                disabled={!midiSupported || connectedInputs.length === 0}
-                data-testid="button-midi-listen"
-                className="h-8 px-3"
-              >
-                <Bluetooth className="w-3 h-3 mr-1" />
-                {isMidiListening ? 'Stop Listen' : 'MIDI Listen'}
-              </Button>
-
               
               {/* Compact Position Slider */}
               {selectedSong && selectedSong.duration && (
@@ -1296,130 +992,65 @@ export default function Performance({ userType }: PerformanceProps) {
                 <span className="text-xs text-gray-500">
                   {lyricsText.length} chars
                 </span>
-                {isMidiListening && (
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-xs text-green-600 font-medium">MIDI Listening</span>
-                  </div>
-                )}
-                <div className="text-xs text-gray-400 hidden sm:block">
+                <div className="text-xs text-gray-400">
                   <code className="text-xs">[MM:SS]</code> timestamps • <code className="text-xs">[[CC:1:64]]</code> MIDI
                 </div>
               </div>
             </div>
             
-            {/* Desktop Layout: Textarea with examples below */}
-            <div className="hidden md:flex md:flex-col md:flex-1 md:min-h-0">
-              <Textarea
-                id="lyrics"
-                value={lyricsText}
-                onChange={(e) => setLyricsText(e.target.value)}
-                onPaste={handleLyricsPaste}
-                placeholder="Enter lyrics with timestamps and MIDI commands..."
-                className="font-mono text-sm leading-relaxed resize-none border-gray-600"
-                style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', height: '200px' }}
-                spellCheck={false}
-                data-testid="textarea-lyrics"
-              />
-              
-              {/* Syntax Examples - Desktop */}
-              <div className="mt-3 p-3 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 bg-[#222324]">
-                <h4 className="text-xs font-semibold dark:text-gray-300 mb-2 text-[#b3bbc7]">Syntax Examples:</h4>
-                <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-                  <div>
-                    <div className="dark:text-gray-400 mb-1 text-[#cfcfcf]">Timestamps:</div>
-                    <div className="text-blue-600 dark:text-blue-400">[00:15] Verse starts</div>
-                    <div className="text-blue-600 dark:text-blue-400">[01:30] Chorus begins</div>
-                  </div>
-                  <div>
-                    <div className="dark:text-gray-400 mb-1 text-[#c7c7c7]">MIDI Commands:</div>
-                    <div className="text-purple-600 dark:text-purple-400">[[CC:1:64:1]] Control change</div>
-                    <div className="text-purple-600 dark:text-purple-400">[[NOTE:60:127:1]] Note on</div>
-                    <div className="text-purple-600 dark:text-purple-400">[[PC:5:1]] Program change</div>
-                    <div className="text-purple-600 dark:text-purple-400">[[NOTEOFF:60:1]] Note off</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Lyrics Textarea - Takes all remaining space */}
+            <Textarea
+              id="lyrics"
+              value={lyricsText}
+              onChange={(e) => setLyricsText(e.target.value)}
+              onPaste={handleLyricsPaste}
+              placeholder={`Enter lyrics with timestamps and MIDI commands:
 
-            {/* Mobile Layout: Textarea takes most space */}
-            <div className="md:hidden flex flex-col flex-1 min-h-0">
-              <Textarea
-                id="lyrics"
-                value={lyricsText}
-                onChange={(e) => setLyricsText(e.target.value)}
-                onPaste={handleLyricsPaste}
-                placeholder="Enter lyrics with timestamps and MIDI commands..."
-                className="font-mono text-sm leading-relaxed resize-none border-gray-600 flex-1"
-                style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
-                spellCheck={false}
-                data-testid="textarea-lyrics"
-              />
-            </div>
-          </div>
+[00:15] First verse line
+[00:30] Second verse line  
+[[CC:1:64]] MIDI lighting command
+[[NOTE:60:127]] MIDI note on
+[[PC:5]] Program change
 
-          {/* Mobile Syntax Examples - Bottom */}
-          <div className="md:hidden p-2 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700 flex-shrink-0 bg-[#222324]">
-            <h4 className="text-xs font-semibold dark:text-gray-300 mb-2 text-[#b3bbc7]">Examples:</h4>
-            <div className="grid grid-cols-1 gap-1 text-xs font-mono">
-              <div className="flex gap-4">
-                <span className="text-blue-600 dark:text-blue-400">[00:15] Verse</span>
-                <span className="text-purple-600 dark:text-purple-400">[[CC:1:64:1]] Control</span>
-              </div>
-            </div>
+Click "Timestamp" to insert current time`}
+              className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
+              style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
+              spellCheck={false}
+              data-testid="textarea-lyrics"
+            />
           </div>
 
           {/* Compact Action Buttons */}
-          <div className="flex justify-between gap-2 pt-2 border-t border-gray-700 flex-shrink-0">
+          <div className="flex justify-end gap-2 pt-2 mt-2 border-t border-gray-700 flex-shrink-0">
             <Button 
               variant="outline" 
               size="sm"
-              onClick={sendMidiFromLyrics}
-              data-testid="button-send-midi"
-              disabled={connectedOutputs.length === 0}
+              onClick={() => {
+                setIsEditLyricsOpen(false);
+                setLyricsText("");
+              }}
+              data-testid="button-cancel-lyrics"
             >
-              Send MIDI
+              Cancel
             </Button>
-            <div className="flex gap-2">
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={() => {
-                  setIsEditLyricsOpen(false);
-                  setLyricsText("");
-                }}
-                data-testid="button-cancel-lyrics"
-              >
-                Cancel
-              </Button>
-              <Button 
-                size="sm"
-                onClick={handleSaveLyrics}
-                data-testid="button-save-lyrics"
-                className="bg-primary hover:bg-primary/90"
-              >
-                Save Lyrics
-              </Button>
-            </div>
+            <Button 
+              size="sm"
+              onClick={handleSaveLyrics}
+              data-testid="button-save-lyrics"
+              className="bg-primary hover:bg-primary/90"
+            >
+              Save Lyrics
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
+
       {/* MIDI Device Manager */}
-      <SimpleMIDIManager 
+      <MIDIDeviceManager 
         isOpen={isMIDIManagerOpen}
         onClose={() => setIsMIDIManagerOpen(false)}
-      />
-      
-      {/* Simple Bluetooth Manager */}
-      <SimpleBluetoothManager 
-        isOpen={isBluetoothManagerOpen}
-        onClose={() => setIsBluetoothManagerOpen(false)}
-        onDeviceSelected={(device) => {
-          console.log('Bluetooth device selected:', device);
-          toast({
-            title: "Device Selected",
-            description: `${device.name} is now available for use`,
-          });
+        onDevicesChange={(devices) => {
+          console.log('MIDI devices updated:', devices);
         }}
       />
     </div>

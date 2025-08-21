@@ -44,75 +44,71 @@ export function LyricsControls({ onEditLyrics, song }: LyricsControlsProps) {
   };
 
   return (
-    <div className="flex items-center space-x-4">
-      {/* Group 1: Text Size Controls */}
+    <div className="flex items-center space-x-2">
+      {/* Auto-Scroll Toggle for non-timestamped lyrics */}
+      {!hasTimestamps && (
+        <button
+          className={`p-1 h-7 w-8 rounded text-white text-xs flex items-center justify-center ${
+            autoScrollEnabled ? 'bg-blue-600 hover:bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'
+          }`}
+          title="Toggle Auto-Scroll"
+          onClick={toggleAutoScroll}
+        >
+          {autoScrollEnabled ? '⏸' : '▶'}
+        </button>
+      )}
+
+      {/* Scroll Speed Controls for non-timestamped lyrics when auto-scroll is enabled */}
+      {!hasTimestamps && autoScrollEnabled && (
+        <div className="flex items-center space-x-1">
+          <button
+            className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7 rounded text-white text-xs flex items-center justify-center"
+            title="Slower Auto-Scroll (Longer Timer Intervals)"
+            onClick={() => adjustScrollSpeed(-0.1)}
+          >
+            ⬇
+          </button>
+          <span className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300 min-w-[40px] text-center">
+            {scrollSpeed.toFixed(1)}x
+          </span>
+          <button
+            className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7 rounded text-white text-xs flex items-center justify-center"
+            title="Faster Auto-Scroll (Shorter Timer Intervals)"
+            onClick={() => adjustScrollSpeed(0.1)}
+          >
+            ⬆
+          </button>
+        </div>
+      )}
+
+      {/* Font Size Controls */}
       <div className="flex items-center space-x-1">
         <button
-          className="bg-gray-700 hover:bg-gray-600 p-2 h-9 w-9 rounded text-white text-sm flex items-center justify-center font-medium"
+          className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7 rounded text-white text-xs flex items-center justify-center"
           title="Decrease Font Size"
           onClick={() => adjustFontSize(-2)}
         >
           A-
         </button>
-        <span className="text-sm px-3 py-2 rounded bg-gray-700 text-gray-300 min-w-[36px] text-center font-medium">
+        <span className="text-xs px-2 py-1 rounded bg-gray-700 text-gray-300 min-w-[32px] text-center">
           {fontSize}
         </span>
         <button
-          className="bg-gray-700 hover:bg-gray-600 p-2 h-9 w-9 rounded text-white text-sm flex items-center justify-center font-medium"
+          className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7 rounded text-white text-xs flex items-center justify-center"
           title="Increase Font Size"
           onClick={() => adjustFontSize(2)}
         >
           A+
         </button>
       </div>
-
-      {/* Group 2: Scroll Speed Controls (for non-timestamped lyrics) */}
-      {!hasTimestamps && (
-        <div className="flex items-center space-x-1">
-          <button
-            className={`p-2 h-9 w-10 rounded text-white text-sm flex items-center justify-center font-medium ${
-              autoScrollEnabled ? 'bg-blue-600 hover:bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'
-            }`}
-            title="Toggle Auto-Scroll"
-            onClick={toggleAutoScroll}
-          >
-            {autoScrollEnabled ? '⏸' : '▶'}
-          </button>
-          
-          {autoScrollEnabled && (
-            <>
-              <button
-                className="bg-gray-700 hover:bg-gray-600 p-2 h-9 w-9 rounded text-white text-sm flex items-center justify-center font-medium"
-                title="Slower Auto-Scroll"
-                onClick={() => adjustScrollSpeed(-0.1)}
-              >
-                ⬇
-              </button>
-              <span className="text-sm px-3 py-2 rounded bg-gray-700 text-gray-300 min-w-[44px] text-center font-medium">
-                {scrollSpeed.toFixed(1)}x
-              </span>
-              <button
-                className="bg-gray-700 hover:bg-gray-600 p-2 h-9 w-9 rounded text-white text-sm flex items-center justify-center font-medium"
-                title="Faster Auto-Scroll"
-                onClick={() => adjustScrollSpeed(0.1)}
-              >
-                ⬆
-              </button>
-            </>
-          )}
-        </div>
-      )}
       
-      {/* Group 3: Edit Controls */}
-      <div className="flex items-center">
-        <button
-          className="bg-gray-700 hover:bg-gray-600 p-2 h-9 w-9 rounded text-white text-sm flex items-center justify-center font-medium"
-          title="Edit Lyrics"
-          onClick={onEditLyrics}
-        >
-          ✎
-        </button>
-      </div>
+      <button
+        className="bg-gray-700 hover:bg-gray-600 p-1 h-7 w-7 rounded text-white text-xs flex items-center justify-center"
+        title="Edit Lyrics"
+        onClick={onEditLyrics}
+      >
+        ✎
+      </button>
     </div>
   );
 }

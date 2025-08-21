@@ -71,6 +71,28 @@ export function SimpleMIDIManager({ isOpen, onClose }: SimpleMIDIManagerProps) {
       // Set up fresh message listener with current state
       input.onmidimessage = (event: any) => {
         console.log('🎹 MIDI MESSAGE RECEIVED from', input.name + ':', Array.from(event.data));
+        
+        // PLAY BEEP TO CONFIRM MIDI RECEIVED
+        try {
+          const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+          
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+          
+          oscillator.frequency.setValueAtTime(800, audioContext.currentTime); // 800Hz beep
+          gainNode.gain.setValueAtTime(0.1, audioContext.currentTime); // Low volume
+          gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+          
+          oscillator.start(audioContext.currentTime);
+          oscillator.stop(audioContext.currentTime + 0.1);
+          
+          console.log('🔊 BEEP! MIDI received from', input.name);
+        } catch (error) {
+          console.warn('Could not play beep:', error);
+        }
+        
         const data = Array.from(event.data as Uint8Array) as number[];
         const message = formatMIDIMessage(data);
         const newMessage: MIDIMessage = {

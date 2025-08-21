@@ -1,5 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
+import { subscriptionMonitor } from "./subscription-monitor";
 import { setupVite, serveStatic, log } from "./vite";
 
 // Environment variable validation
@@ -114,6 +115,9 @@ app.use((req, res, next) => {
       console.log('🎉 Application started successfully!');
       log(`serving on port ${port}`);
       console.log(`🔗 Application available at: http://0.0.0.0:${port}`);
+      
+      // Start subscription monitoring
+      subscriptionMonitor.start();
     });
 
     // Handle server startup errors

@@ -1,6 +1,6 @@
 import { songs, tracks, users, usersPg, type Song, type InsertSong, type Track, type InsertTrack, type SongWithTracks, type User, type UpsertUser, type UserPg } from "@shared/schema";
 import { localDb, userDb } from "./db";
-import { eq, and } from "drizzle-orm";
+import { eq, and, isNotNull } from "drizzle-orm";
 
 export interface IStorage {
   // User operations
@@ -37,6 +37,10 @@ export interface IStorage {
   saveWaveform(songId: string, waveformData: number[]): Promise<void>;
   getWaveform(songId: string): Promise<number[] | null>;
 
+  // User subscription management
+  getAllUsersWithSubscriptions(): Promise<User[]>;
+  updateUserSubscription(userId: string, data: { subscriptionStatus: number; subscriptionEndDate: string | null }): Promise<void>;
+
   // Legacy methods for compatibility (no-op in database mode)
   getAllData(): any;
   loadData(songs: Song[], tracks: Track[], waveforms?: Record<string, number[]>, users?: User[]): void;
@@ -67,6 +71,47 @@ export class DatabaseStorage implements IStorage {
 
   setAutoSaveCallback(callback: () => void) {
     console.log('setAutoSaveCallback: Data auto-saves to local SQLite database');
+  }
+
+  async getAllUsersWithSubscriptions(): Promise<User[]> {
+    if (!userDb) {
+      console.error('Cloud database not available for user operations');
+      return [];
+    }
+    
+    try {
+      const users = await userDb.select().from(usersPg).where(isNotNull(usersPg.stripeSubscriptionId));
+      return users.map(user => ({
+        ...user,
+        createdAt: user.createdAt?.toISOString() || null,
+        updatedAt: user.updatedAt?.toISOString() || null,
+      }));
+    } catch (error) {
+      console.error('❌ Error fetching users with subscriptions:', error);
+      return [];
+    }
+  }
+
+  async updateUserSubscription(userId: string, data: { subscriptionStatus: number; subscriptionEndDate: string | null }): Promise<void> {
+    if (!userDb) {
+      throw new Error('Cloud database not available for user operations');
+    }
+    
+    try {
+      await userDb
+        .update(usersPg)
+        .set({
+          subscriptionStatus: data.subscriptionStatus,
+          subscriptionEndDate: data.subscriptionEndDate,
+          updatedAt: new Date(),
+        })
+        .where(eq(usersPg.id, userId));
+        
+      console.log(`✅ Updated subscription for user ${userId}: status=${data.subscriptionStatus}`);
+    } catch (error) {
+      console.error(`❌ Error updating subscription for user ${userId}:`, error);
+      throw error;
+    }
   }
 
   // User operations (use cloud PostgreSQL database)

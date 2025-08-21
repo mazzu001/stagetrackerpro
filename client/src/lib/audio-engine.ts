@@ -1,6 +1,7 @@
 import type { SongWithTracks, Track } from "@shared/schema";
 import { AudioFileStorage } from "./audio-file-storage";
 import { waveformGenerator } from "./waveform-generator";
+import { LocalSongStorage } from "./local-song-storage";
 
 export class AudioEngine {
   private audioContext: AudioContext | null = null;
@@ -105,15 +106,21 @@ export class AudioEngine {
         this.currentSong.duration = maxDuration;
         this.actualDuration = maxDuration; // Store the actual detected duration
         
-        // Update the song duration in local storage via API
+        // Update the song duration in local storage
         try {
-          const response = await fetch('/api/songs/' + this.currentSong.id, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ duration: Math.floor(maxDuration) })
-          });
-          if (response.ok) {
-            console.log(`Updated song duration in storage: ${Math.floor(maxDuration)}s`);
+          const user = JSON.parse(localStorage.getItem('stagetracker_user') || '{}');
+          if (user.email) {
+            const updated = LocalSongStorage.updateSong(user.email, this.currentSong.id, { 
+              duration: Math.floor(maxDuration) 
+            });
+            if (updated) {
+              console.log(`Updated song duration in local storage: ${Math.floor(maxDuration)}s`);
+              
+              // Trigger UI refresh by dispatching a custom event
+              window.dispatchEvent(new CustomEvent('song-duration-updated', { 
+                detail: { songId: this.currentSong.id, duration: Math.floor(maxDuration) } 
+              }));
+            }
           }
         } catch (error) {
           console.warn('Failed to update song duration in storage:', error);

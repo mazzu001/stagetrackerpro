@@ -82,7 +82,7 @@ export default function Performance({ userType }: PerformanceProps) {
   }, []);
 
   // Load songs from localStorage when component mounts or user changes
-  useEffect(() => {
+  const loadSongs = useCallback(() => {
     if (user?.email) {
       const songs = LocalSongStorage.getAllSongs(user.email);
       // Sort songs alphabetically by title
@@ -96,6 +96,23 @@ export default function Performance({ userType }: PerformanceProps) {
       }
     }
   }, [user?.email, selectedSongId]);
+
+  useEffect(() => {
+    loadSongs();
+  }, [loadSongs]);
+
+  // Listen for song duration updates from audio engine
+  useEffect(() => {
+    const handleDurationUpdate = (event: CustomEvent) => {
+      console.log('Song duration updated, refreshing song list:', event.detail);
+      loadSongs(); // Refresh the song list to show updated duration
+    };
+
+    window.addEventListener('song-duration-updated', handleDurationUpdate as EventListener);
+    return () => {
+      window.removeEventListener('song-duration-updated', handleDurationUpdate as EventListener);
+    };
+  }, [loadSongs]);
 
   // Update selected song when selectedSongId changes
   useEffect(() => {

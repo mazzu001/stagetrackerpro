@@ -1,11 +1,15 @@
 import Database from 'better-sqlite3';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import { drizzle as drizzleNeon } from 'drizzle-orm/neon-serverless';
-import { neon } from '@neondatabase/serverless';
+import { neon, neonConfig } from '@neondatabase/serverless';
+import ws from 'ws';
 import * as schema from "@shared/schema";
 import { users, sessions } from "@shared/schema";
 import fs from 'fs';
 import path from 'path';
+
+// Configure Neon for serverless environment
+neonConfig.webSocketConstructor = ws;
 
 // PostgreSQL connection for user authentication and subscriptions
 let cloudDb: ReturnType<typeof drizzleNeon> | null = null;

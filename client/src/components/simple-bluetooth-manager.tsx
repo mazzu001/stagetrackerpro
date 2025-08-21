@@ -219,24 +219,57 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
     setDiscoveredDevices([]);
 
     try {
-      console.log('Starting Bluetooth device discovery...');
+      console.log('Starting comprehensive Bluetooth device discovery...');
       
-      // Use acceptAllDevices to find any Bluetooth device
-      const device = await (navigator as any).bluetooth.requestDevice({
-        acceptAllDevices: true,
-        optionalServices: [
-          '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // MIDI Service
-          '0000180f-0000-1000-8000-00805f9b34fb', // Battery Service
-          '0000180a-0000-1000-8000-00805f9b34fb', // Device Information Service
-          '12345678-1234-1234-1234-123456789abc', // Generic custom service
-        ]
-      });
+      // Try multiple discovery approaches for maximum compatibility
+      let device;
+      
+      try {
+        // First attempt: Try with comprehensive service list including common MIDI and HID services
+        console.log('Attempting discovery with comprehensive service list...');
+        device = await (navigator as any).bluetooth.requestDevice({
+          acceptAllDevices: true,
+          optionalServices: [
+            // MIDI Services
+            '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // MIDI Service (official)
+            '7772e5db-3868-4112-a1a9-f2669d106bf3', // Alternative MIDI
+            
+            // HID Services (for pedals/controllers)
+            '00001812-0000-1000-8000-00805f9b34fb', // Human Interface Device
+            '0000180f-0000-1000-8000-00805f9b34fb', // Battery Service
+            '0000180a-0000-1000-8000-00805f9b34fb', // Device Information Service
+            
+            // Custom and proprietary services
+            '12345678-1234-1234-1234-123456789abc', // Generic custom
+            '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART Service
+            '0000ffe0-0000-1000-8000-00805f9b34fb', // Common custom service
+            '0000fff0-0000-1000-8000-00805f9b34fb', // Another custom service
+            
+            // Audio and multimedia services
+            '0000110b-0000-1000-8000-00805f9b34fb', // Audio Sink
+            '0000110a-0000-1000-8000-00805f9b34fb', // Audio Source
+            
+            // Generic services that might help discovery
+            '00001800-0000-1000-8000-00805f9b34fb', // Generic Access
+            '00001801-0000-1000-8000-00805f9b34fb', // Generic Attribute
+          ]
+        });
+        console.log('Comprehensive discovery successful!');
+      } catch (firstError) {
+        console.log('Comprehensive discovery failed, trying minimal approach...', firstError);
+        
+        // Second attempt: Minimal approach with just acceptAllDevices
+        device = await (navigator as any).bluetooth.requestDevice({
+          acceptAllDevices: true
+        });
+        console.log('Minimal discovery successful!');
+      }
 
-      console.log('Device discovered:', device.name, device.id);
+      console.log('Device discovered:', device.name || 'Unnamed Device', 'ID:', device.id);
 
       const newDevice: SimpleBluetoothDevice = {
         id: device.id,
-        name: device.name || 'Unknown Device',
+        name: device.name || 'Unnamed Device',
         connected: false,
         saved: false,
         device: device
@@ -250,18 +283,24 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
       });
 
     } catch (error: any) {
-      console.log('Discovery error:', error);
+      console.log('All discovery attempts failed:', error);
       
       if (error.name === 'NotFoundError') {
         toast({
           title: "No Device Selected",
-          description: "Please select a device from the list to continue",
+          description: "Please select a device from the browser's Bluetooth list. If 'Matts Pedal' doesn't appear, try pairing it first in Windows Settings.",
+          variant: "destructive",
+        });
+      } else if (error.name === 'NotAllowedError') {
+        toast({
+          title: "Permission Denied",
+          description: "Bluetooth access was denied. Please allow Bluetooth access and try again.",
           variant: "destructive",
         });
       } else {
         toast({
           title: "Discovery Failed", 
-          description: `Error: ${error.message}`,
+          description: `Error: ${error.message}. Try pairing 'Matts Pedal' in Windows Settings first.`,
           variant: "destructive",
         });
       }
@@ -676,11 +715,24 @@ export function SimpleBluetoothManager({ isOpen, onClose, onDeviceSelected }: Si
             </h4>
             <div className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
               <p><strong>1.</strong> Click "Find Devices" to scan for all Bluetooth devices</p>
-              <p><strong>2.</strong> Select your device from the browser popup (including "Matts Pedal")</p>
+              <p><strong>2.</strong> Select your device from the browser popup</p>
               <p><strong>3.</strong> Click "Connect" to establish connection</p>
               <p><strong>4.</strong> Click "Test" to verify communication</p>
               <p><strong>5.</strong> Click "Listen" to monitor MIDI messages</p>
               <p><strong>6.</strong> Click "Save" to remember the device for future use</p>
+            </div>
+            
+            <div className="mt-3 p-3 border border-yellow-300 dark:border-yellow-700 rounded bg-yellow-50 dark:bg-yellow-950">
+              <h5 className="font-medium text-yellow-800 dark:text-yellow-200 mb-1">
+                If "Matts Pedal" doesn't appear:
+              </h5>
+              <div className="text-xs text-yellow-700 dark:text-yellow-300 space-y-1">
+                <p><strong>1.</strong> Go to Windows Settings → Bluetooth & devices</p>
+                <p><strong>2.</strong> Make sure "Matts Pedal" is paired (not just discoverable)</p>
+                <p><strong>3.</strong> If it shows "Other Devices", try removing and re-pairing it</p>
+                <p><strong>4.</strong> Ensure the pedal is in pairing mode when scanning</p>
+                <p><strong>5.</strong> Try refreshing the browser page after pairing</p>
+              </div>
             </div>
           </div>
         </div>

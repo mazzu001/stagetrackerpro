@@ -24,7 +24,7 @@ import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 
 
-import { useMIDISequencer } from "@/hooks/useMIDISequencer";
+
 
 interface PerformanceProps {
   userType: UserType;
@@ -49,16 +49,7 @@ export default function Performance({ userType }: PerformanceProps) {
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
 
-  const { 
-    commands: midiCommands, 
-    isActive: isMIDISequencerActive, 
-    startSequencer, 
-    stopSequencer, 
-    updateSequencer, 
-    resetSequencer, 
-    getUpcomingCommands,
-    getCommandStats 
-  } = useMIDISequencer();
+
 
   // Fullscreen functionality
   const toggleFullscreen = useCallback(async () => {
@@ -112,17 +103,12 @@ export default function Performance({ userType }: PerformanceProps) {
       const song = LocalSongStorage.getSong(user.email, selectedSongId);
       setSelectedSong(song || null);
       
-      // Start MIDI sequencer with song lyrics if available
-      if (song && song.lyrics) {
-        startSequencer(song.lyrics);
-      } else {
-        stopSequencer();
-      }
+      // MIDI sequencer functionality removed
     } else {
       setSelectedSong(null);
-      stopSequencer();
+      // MIDI sequencer functionality removed
     }
-  }, [selectedSongId, user?.email, startSequencer, stopSequencer]);
+  }, [selectedSongId, user?.email]);
 
   const {
     isPlaying,
@@ -132,7 +118,7 @@ export default function Performance({ userType }: PerformanceProps) {
     masterStereoLevels,
     cpuUsage,
     isAudioEngineOnline,
-    isMidiConnected,
+
     isLoadingTracks,
     play,
     pause,
@@ -155,16 +141,12 @@ export default function Performance({ userType }: PerformanceProps) {
     isPlaying
   });
 
-  // Update MIDI sequencer with current playback time
-  useEffect(() => {
-    updateSequencer(currentTime, isPlaying);
-  }, [currentTime, isPlaying, updateSequencer]);
+  // MIDI sequencer functionality removed
 
-  // Handle seeking - reset MIDI sequencer position
+  // Handle seeking
   const handleSeek = useCallback((time: number) => {
     seek(time);
-    resetSequencer(time);
-  }, [seek, resetSequencer]);
+  }, [seek]);
 
   // Log tracks that need audio files when song changes
   useEffect(() => {
@@ -284,12 +266,7 @@ export default function Performance({ userType }: PerformanceProps) {
       refreshSongs();
       setIsEditLyricsOpen(false);
       
-      // Restart MIDI sequencer with updated lyrics
-      if (lyricsText) {
-        startSequencer(lyricsText);
-      } else {
-        stopSequencer();
-      }
+      // MIDI sequencer functionality removed
       
       toast({
         title: "Lyrics updated",
@@ -831,7 +808,7 @@ export default function Performance({ userType }: PerformanceProps) {
               currentTime={currentTime}
               duration={duration}
               progress={progress}
-              isMidiConnected={isMidiConnected}
+              isMidiConnected={false}
               onPlay={play}
               onPause={pause}
               onStop={stop}
@@ -882,7 +859,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   currentTime={currentTime}
                   duration={duration}
                   progress={progress}
-                  isMidiConnected={isMidiConnected}
+                  isMidiConnected={false}
                   onPlay={play}
                   onPause={pause}
                   onStop={stop}
@@ -897,7 +874,7 @@ export default function Performance({ userType }: PerformanceProps) {
       <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 mobile-hidden">
         <StatusBar
           isAudioEngineOnline={isAudioEngineOnline}
-          isMidiConnected={isMidiConnected}
+          isMidiConnected={false}
           latency={latency}
         />
       </div>
@@ -981,7 +958,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   {lyricsText.length} chars
                 </span>
                 <div className="text-xs text-gray-400">
-                  <code className="text-xs">[MM:SS]</code> timestamps • <code className="text-xs">[[CC:1:64]]</code> MIDI
+                  <code className="text-xs">[MM:SS]</code> timestamps
                 </div>
               </div>
             </div>
@@ -992,13 +969,10 @@ export default function Performance({ userType }: PerformanceProps) {
               value={lyricsText}
               onChange={(e) => setLyricsText(e.target.value)}
               onPaste={handleLyricsPaste}
-              placeholder={`Enter lyrics with timestamps and MIDI commands:
+              placeholder={`Enter lyrics with timestamps:
 
 [00:15] First verse line
 [00:30] Second verse line  
-[[CC:1:64]] MIDI lighting command
-[[NOTE:60:127]] MIDI note on
-[[PC:5]] Program change
 
 Click "Timestamp" to insert current time`}
               className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"

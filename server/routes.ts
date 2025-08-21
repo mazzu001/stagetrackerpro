@@ -2,7 +2,7 @@ import type { Express, Request } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertSongSchema, insertTrackSchema, insertMidiEventSchema } from "@shared/schema";
+import { insertSongSchema, insertTrackSchema } from "@shared/schema";
 import { setupAuth, isAuthenticated, requireSubscription } from "./replitAuth";
 import Stripe from "stripe";
 import multer from "multer";
@@ -607,33 +607,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // MIDI Events routes
-  app.get("/api/songs/:songId/midi-events", async (req, res) => {
-    try {
-      const events = await storage.getMidiEventsBySongId(req.params.songId);
-      res.json(events);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch MIDI events" });
-    }
-  });
-
-  app.post("/api/songs/:songId/midi-events", async (req, res) => {
-    try {
-      const eventData = {
-        ...req.body,
-        songId: req.params.songId
-      };
-      const validatedData = insertMidiEventSchema.parse(eventData);
-      const event = await storage.createMidiEvent(validatedData);
-      res.status(201).json(event);
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(400).json({ message: error.message });
-      } else {
-        res.status(500).json({ message: "Failed to create MIDI event" });
-      }
-    }
-  });
+  // MIDI routes have been completely removed
 
   // Legacy persistence routes (no-op - data is now in cloud database)
   app.post("/api/persistence/save", (req, res) => {
@@ -875,7 +849,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log('🗄️ Registering database storage routes...');
   console.log('🎵 Registering song management routes...');
   console.log('🎧 Registering track management routes...');
-  console.log('🎹 Registering MIDI event routes...');
+  // MIDI event routes removed
   console.log('📊 Registering waveform caching routes...');
   console.log('🔍 Registering lyrics search routes...');
   console.log('📁 Registering file registry routes...');

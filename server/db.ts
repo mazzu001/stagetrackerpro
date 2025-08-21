@@ -57,11 +57,10 @@ try {
   sqlite.pragma('journal_mode = WAL');
   console.log('✅ SQLite WAL mode enabled for better performance');
 
-  // Local database with songs, tracks, midiEvents only
+  // Local database with songs, tracks only (MIDI removed)
   const localSchema = { 
     songs: schema.songs, 
-    tracks: schema.tracks, 
-    midiEvents: schema.midiEvents 
+    tracks: schema.tracks
   };
 
   localDb = drizzle(sqlite, { schema: localSchema });

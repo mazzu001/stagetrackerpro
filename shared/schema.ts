@@ -12,7 +12,7 @@ export const songs = sqliteTable("songs", {
   duration: integer("duration").notNull(), // in seconds
   bpm: integer("bpm"),
   key: text("key"),
-  lyrics: text("lyrics"), // lyrics with timestamps and MIDI commands
+  lyrics: text("lyrics"), // lyrics with timestamps
   waveformData: text("waveform_data"), // JSON array of waveform amplitudes
   waveformGenerated: integer("waveform_generated", { mode: 'boolean' }).default(false),
   createdAt: text("created_at").default(sql`(datetime('now'))`),
@@ -34,16 +34,7 @@ export const tracks = sqliteTable("tracks", {
   isSolo: integer("is_solo", { mode: 'boolean' }).default(false),
 });
 
-export const midiEvents = sqliteTable("midi_events", {
-  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  songId: text("song_id").references(() => songs.id).notNull(),
-  timestamp: integer("timestamp").notNull(), // milliseconds
-  eventType: text("event_type").notNull(), // 'program_change', 'control_change', etc.
-  channel: integer("channel").default(1),
-  data1: integer("data1"),
-  data2: integer("data2"),
-  description: text("description"),
-});
+// MIDI events table removed - MIDI functionality disabled
 
 export const insertSongSchema = createInsertSchema(songs).omit({
   id: true,
@@ -54,9 +45,7 @@ export const insertTrackSchema = createInsertSchema(tracks).omit({
   id: true,
 });
 
-export const insertMidiEventSchema = createInsertSchema(midiEvents).omit({
-  id: true,
-});
+// MIDI event schema removed - MIDI functionality disabled
 
 export type InsertSong = z.infer<typeof insertSongSchema>;
 export type Song = typeof songs.$inferSelect;
@@ -64,12 +53,10 @@ export type Song = typeof songs.$inferSelect;
 export type InsertTrack = z.infer<typeof insertTrackSchema>;
 export type Track = typeof tracks.$inferSelect;
 
-export type InsertMidiEvent = z.infer<typeof insertMidiEventSchema>;
-export type MidiEvent = typeof midiEvents.$inferSelect;
+// MIDI event types removed - MIDI functionality disabled
 
 export type SongWithTracks = Song & {
   tracks: Track[];
-  midiEvents: MidiEvent[];
 };
 
 // User table for subscription tracking  

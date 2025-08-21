@@ -40,18 +40,7 @@ async function migrate() {
       )
     `);
 
-    await db.run(sql`
-      CREATE TABLE IF NOT EXISTS midi_events (
-        id TEXT PRIMARY KEY,
-        song_id TEXT NOT NULL REFERENCES songs(id),
-        timestamp INTEGER NOT NULL,
-        event_type TEXT NOT NULL,
-        channel INTEGER DEFAULT 1,
-        data1 INTEGER,
-        data2 INTEGER,
-        description TEXT
-      )
-    `);
+    // MIDI events table creation removed - MIDI functionality disabled
 
     await db.run(sql`
       CREATE TABLE IF NOT EXISTS sessions (

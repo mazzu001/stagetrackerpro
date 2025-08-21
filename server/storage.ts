@@ -1,4 +1,4 @@
-import { songs, tracks, midiEvents, users, usersPg, type Song, type InsertSong, type Track, type InsertTrack, type MidiEvent, type InsertMidiEvent, type SongWithTracks, type User, type UpsertUser, type UserPg } from "@shared/schema";
+import { songs, tracks, users, usersPg, type Song, type InsertSong, type Track, type InsertTrack, type SongWithTracks, type User, type UpsertUser, type UserPg } from "@shared/schema";
 import { localDb, userDb } from "./db";
 import { eq, and } from "drizzle-orm";
 
@@ -387,44 +387,7 @@ export class DatabaseStorage implements IStorage {
     return deleted;
   }
 
-  // MIDI Event operations (use local SQLite database)
-  async getMidiEvent(id: string): Promise<MidiEvent | undefined> {
-    const [event] = await localDb.select().from(midiEvents).where(eq(midiEvents.id, id));
-    return event || undefined;
-  }
-
-  async getMidiEventsBySongId(songId: string): Promise<MidiEvent[]> {
-    return await localDb.select().from(midiEvents).where(eq(midiEvents.songId, songId));
-  }
-
-  async createMidiEvent(midiEvent: InsertMidiEvent): Promise<MidiEvent> {
-    const [newEvent] = await localDb.insert(midiEvents).values(midiEvent).returning();
-    console.log('MIDI event created in local database:', newEvent.id, newEvent.eventType);
-    return newEvent;
-  }
-
-  async updateMidiEvent(id: string, midiEvent: Partial<InsertMidiEvent>): Promise<MidiEvent | undefined> {
-    const [updatedEvent] = await localDb
-      .update(midiEvents)
-      .set(midiEvent)
-      .where(eq(midiEvents.id, id))
-      .returning();
-    
-    if (updatedEvent) {
-      console.log('MIDI event updated in local database:', id, updatedEvent.eventType);
-    }
-    return updatedEvent || undefined;
-  }
-
-  async deleteMidiEvent(id: string): Promise<boolean> {
-    const result = await localDb.delete(midiEvents).where(eq(midiEvents.id, id));
-    const deleted = result.changes ? result.changes > 0 : false;
-    
-    if (deleted) {
-      console.log('MIDI event deleted from local database:', id);
-    }
-    return deleted;
-  }
+  // MIDI functionality has been completely removed
 
   // Waveform operations (store in song's waveformData field in local database)
   async saveWaveform(songId: string, waveformData: number[]): Promise<void> {

@@ -105,6 +105,20 @@ export class AudioEngine {
         this.currentSong.duration = maxDuration;
         this.actualDuration = maxDuration; // Store the actual detected duration
         
+        // Update the song duration in local storage via API
+        try {
+          const response = await fetch('/api/songs/' + this.currentSong.id, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ duration: Math.floor(maxDuration) })
+          });
+          if (response.ok) {
+            console.log(`Updated song duration in storage: ${Math.floor(maxDuration)}s`);
+          }
+        } catch (error) {
+          console.warn('Failed to update song duration in storage:', error);
+        }
+        
         // Trigger a callback to update the UI with the correct duration
         if (this.onDurationUpdated) {
           this.onDurationUpdated(maxDuration);
@@ -502,7 +516,14 @@ class TrackController {
       
       console.log(`Decoding audio data for ${this.track.name}, size: ${arrayBuffer.byteLength} bytes`);
       this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      
+      // Verify audio buffer integrity
+      const bufferSampleRate = this.audioBuffer.sampleRate;
+      const bufferLength = this.audioBuffer.length;
+      const expectedDuration = bufferLength / bufferSampleRate;
+      
       console.log(`Successfully decoded ${this.track.name}: ${this.audioBuffer.duration.toFixed(2)}s, ${this.audioBuffer.numberOfChannels} channels`);
+      console.log(`Buffer details - samples: ${bufferLength}, sampleRate: ${bufferSampleRate}, calculated duration: ${expectedDuration.toFixed(2)}s`);
     } catch (error) {
       console.error(`Failed to load audio for track ${this.track.name}:`, error);
       throw error; // Re-throw to prevent adding failed tracks
@@ -533,12 +554,11 @@ class TrackController {
         console.log(`Track ${this.track.name} source ended naturally at ${(new Date()).toLocaleTimeString()}`);
       });
       
+      // Start the audio source - this should play from safeOffset to the end of the buffer
       this.sourceNode.start(0, safeOffset);
       
-      // Debug logging for timing issues
-      if (offset >= 175 && offset <= 185) {
-        console.log(`Track ${this.track.name} play debug - offset: ${offset}, safeOffset: ${safeOffset}, bufferDuration: ${this.audioBuffer.duration}`);
-      }
+      // Add more detailed debug logging
+      console.log(`Track ${this.track.name} started - offset: ${safeOffset.toFixed(2)}s, bufferDuration: ${this.audioBuffer.duration.toFixed(2)}s, remaining: ${(this.audioBuffer.duration - safeOffset).toFixed(2)}s`);
     } catch (error) {
       console.warn(`Failed to start track ${this.track.name} at offset ${offset}:`, error);
     }
@@ -546,14 +566,28 @@ class TrackController {
 
   pause(): void {
     if (this.sourceNode) {
-      this.sourceNode.stop();
-      this.sourceNode.disconnect();
-      this.sourceNode = null;
+      try {
+        this.sourceNode.stop();
+        this.sourceNode.disconnect();
+        this.sourceNode = null;
+      } catch (error) {
+        console.warn(`Error pausing track ${this.track.name}:`, error);
+        this.sourceNode = null;
+      }
     }
   }
 
   stop(): void {
-    this.pause();
+    if (this.sourceNode) {
+      try {
+        this.sourceNode.stop();
+        this.sourceNode.disconnect();
+        this.sourceNode = null;
+      } catch (error) {
+        console.warn(`Error stopping track ${this.track.name}:`, error);
+        this.sourceNode = null;
+      }
+    }
   }
 
   setVolume(volume: number): void {

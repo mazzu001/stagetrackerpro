@@ -20,6 +20,15 @@ interface MIDIDeviceInfo {
   lastActivity?: number;
 }
 
+interface BluetoothDeviceInfo {
+  id: string;
+  name: string;
+  connected: boolean;
+  type: 'bluetooth';
+  rssi?: number;
+  services?: string[];
+}
+
 // Web MIDI API type definitions
 interface MIDIPort {
   id: string;
@@ -52,16 +61,27 @@ interface MIDIDeviceManagerProps {
 export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDeviceManagerProps) {
   const [midiAccess, setMidiAccess] = useState<MIDIAccess | null>(null);
   const [devices, setDevices] = useState<MIDIDeviceInfo[]>([]);
+  const [bluetoothDevices, setBluetoothDevices] = useState<BluetoothDeviceInfo[]>([]);
   const [isScanning, setIsScanning] = useState(false);
   const [midiSupported, setMidiSupported] = useState(true);
+  const [bluetoothSupported, setBluetoothSupported] = useState(false);
   const [receivedMessages, setReceivedMessages] = useState<{ device: string; message: string; timestamp: number }[]>([]);
+  const [testingDevice, setTestingDevice] = useState<string | null>(null);
+  const [testResults, setTestResults] = useState<{ device: string; sent: number; received: number; timestamp: number } | null>(null);
   const { toast } = useToast();
 
-  // Initialize MIDI access when dialog opens
+  // Initialize MIDI access and check Bluetooth when dialog opens
   useEffect(() => {
     if (!isOpen) return;
 
-    const initializeMIDI = async () => {
+    const initializeDevices = async () => {
+      // Check Bluetooth support
+      if ('bluetooth' in navigator) {
+        setBluetoothSupported(true);
+        await scanBluetoothDevices();
+      }
+
+      // Initialize MIDI
       try {
         if (!(navigator as any).requestMIDIAccess) {
           setMidiSupported(false);
@@ -98,7 +118,7 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
       }
     };
 
-    initializeMIDI();
+    initializeDevices();
   }, [isOpen, toast]);
 
   // Scan for available MIDI devices
@@ -239,16 +259,173 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
     ));
   };
 
-  // Refresh devices manually
-  const refreshDevices = () => {
-    if (midiAccess) {
-      setIsScanning(true);
-      scanDevices(midiAccess);
-      setTimeout(() => setIsScanning(false), 1000);
+  // Scan for Bluetooth devices
+  const scanBluetoothDevices = async () => {
+    if (!bluetoothSupported) return;
+
+    try {
+      // Get already paired devices
+      const pairedDevices = await (navigator as any).bluetooth.getDevices();
+      const bluetoothList: BluetoothDeviceInfo[] = pairedDevices.map((device: any) => ({
+        id: device.id,
+        name: device.name || 'Unknown Bluetooth Device',
+        connected: device.gatt?.connected || false,
+        type: 'bluetooth' as const,
+        services: []
+      }));
+
+      setBluetoothDevices(bluetoothList);
+      console.log('Bluetooth devices found:', bluetoothList);
+    } catch (error) {
+      console.log('Bluetooth scan failed:', error);
     }
   };
 
-  // Test MIDI device by sending a simple message
+  // Request Bluetooth device pairing
+  const requestBluetoothDevice = async () => {
+    if (!bluetoothSupported) return;
+
+    try {
+      setIsScanning(true);
+      const device = await (navigator as any).bluetooth.requestDevice({
+        filters: [
+          { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] }, // MIDI Service
+          { namePrefix: 'MIDI' },
+          { namePrefix: 'BLE-MIDI' },
+          { namePrefix: 'Yamaha' },
+          { namePrefix: 'Roland' },
+          { namePrefix: 'Korg' }
+        ],
+        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
+      });
+
+      toast({
+        title: "Bluetooth Device Paired",
+        description: `Connected to ${device.name}. Refresh MIDI devices to see it.`,
+      });
+
+      // Refresh both Bluetooth and MIDI devices
+      await scanBluetoothDevices();
+      if (midiAccess) {
+        scanDevices(midiAccess);
+      }
+    } catch (error: any) {
+      if (error.name !== 'NotFoundError') {
+        toast({
+          title: "Bluetooth Pairing Failed",
+          description: error.message || "Failed to pair device",
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setIsScanning(false);
+    }
+  };
+
+  // Refresh devices manually
+  const refreshDevices = async () => {
+    setIsScanning(true);
+    
+    // Refresh Bluetooth devices
+    if (bluetoothSupported) {
+      await scanBluetoothDevices();
+    }
+    
+    // Refresh MIDI devices
+    if (midiAccess) {
+      scanDevices(midiAccess);
+    }
+    
+    setTimeout(() => setIsScanning(false), 1000);
+  };
+
+  // Full duplex test - send commands and monitor responses
+  const testDeviceFullDuplex = async (deviceId: string) => {
+    if (!midiAccess || testingDevice) return;
+
+    const output = midiAccess.outputs.get(deviceId);
+    const input = Array.from(midiAccess.inputs.values()).find(inp => 
+      inp.name === output?.name || inp.manufacturer === output?.manufacturer
+    );
+
+    if (!output || output.state !== 'connected') {
+      toast({
+        title: "Output Device Not Ready",
+        description: "Device is not connected or available for sending",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setTestingDevice(deviceId);
+    let sentCount = 0;
+    let receivedCount = 0;
+    const testStartTime = Date.now();
+
+    // Set up temporary listener for test responses
+    const testListener = (event: any) => {
+      receivedCount++;
+      setTestResults({ device: output.name || 'Unknown', sent: sentCount, received: receivedCount, timestamp: Date.now() });
+    };
+
+    if (input && input.state === 'connected') {
+      input.onmidimessage = testListener;
+    }
+
+    try {
+      // Send comprehensive test sequence
+      const testSequence = [
+        // Note test
+        [0x90, 60, 127], // Note on C4
+        [0x80, 60, 0],   // Note off C4
+        [0x90, 64, 100], // Note on E4
+        [0x80, 64, 0],   // Note off E4
+        
+        // Control change test
+        [0xB0, 1, 64],   // Modulation wheel
+        [0xB0, 7, 100],  // Volume
+        [0xB0, 10, 64],  // Pan center
+        
+        // Program change test
+        [0xC0, 1],       // Program change to 1
+        [0xC0, 0],       // Program change back to 0
+      ];
+
+      for (let i = 0; i < testSequence.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, 100)); // Small delay between commands
+        output.send(testSequence[i]);
+        sentCount++;
+        setTestResults({ device: output.name || 'Unknown', sent: sentCount, received: receivedCount, timestamp: Date.now() });
+      }
+
+      // Wait a bit for any delayed responses
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      const testDuration = Date.now() - testStartTime;
+      toast({
+        title: "Full Duplex Test Complete",
+        description: `Sent: ${sentCount} commands, Received: ${receivedCount} responses (${testDuration}ms)`,
+      });
+
+    } catch (error) {
+      toast({
+        title: "Test Failed",
+        description: "Failed to complete full duplex test",
+        variant: "destructive",
+      });
+    } finally {
+      // Restore normal listener
+      if (input && input.state === 'connected') {
+        const device = devices.find(d => d.id === input.id);
+        if (device) {
+          setupMIDIInputListener(input, device);
+        }
+      }
+      setTestingDevice(null);
+    }
+  };
+
+  // Simple test - just send a note
   const testDevice = (deviceId: string) => {
     if (!midiAccess) return;
 
@@ -288,18 +465,15 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[85vh]" data-testid="dialog-midi-manager" aria-describedby="midi-manager-description">
+      <DialogContent className="max-w-6xl max-h-[90vh]" data-testid="dialog-midi-manager">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Music className="w-5 h-5" />
-            MIDI Devices
+            MIDI & Bluetooth Device Manager
             <Badge variant="outline" className="ml-auto">
-              {connectedDevices.length} Connected
+              {connectedDevices.length} MIDI Connected
             </Badge>
           </DialogTitle>
-          <div id="midi-manager-description" className="sr-only">
-            Manage MIDI devices for sending and receiving MIDI data during performance
-          </div>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -316,25 +490,91 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                   {midiSupported ? 'MIDI Supported' : 'MIDI Not Available'}
                 </span>
               </div>
+              
+              <div className="flex items-center gap-2">
+                {bluetoothSupported ? (
+                  <CheckCircle className="w-4 h-4 text-blue-500" />
+                ) : (
+                  <AlertCircle className="w-4 h-4 text-gray-400" />
+                )}
+                <span className="text-sm">
+                  {bluetoothSupported ? 'Bluetooth Ready' : 'Bluetooth Not Available'}
+                </span>
+              </div>
             </div>
             
-            <Button
-              onClick={refreshDevices}
-              disabled={isScanning || !midiSupported}
-              size="sm"
-              variant="outline"
-              data-testid="button-refresh-midi"
-            >
-              <RefreshCw className={`w-4 h-4 mr-2 ${isScanning ? 'animate-spin' : ''}`} />
-              {isScanning ? 'Scanning...' : 'Refresh'}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={refreshDevices}
+                disabled={isScanning}
+                size="sm"
+                variant="outline"
+                data-testid="button-refresh-devices"
+              >
+                <RefreshCw className={`w-4 h-4 mr-2 ${isScanning ? 'animate-spin' : ''}`} />
+                {isScanning ? 'Scanning...' : 'Refresh'}
+              </Button>
+              
+              {bluetoothSupported && (
+                <Button
+                  onClick={requestBluetoothDevice}
+                  disabled={isScanning}
+                  size="sm"
+                  variant="default"
+                  data-testid="button-pair-bluetooth"
+                >
+                  <Bluetooth className="w-4 h-4 mr-2" />
+                  Pair Device
+                </Button>
+              )}
+            </div>
           </div>
 
-          {/* Two Column Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left Side: Available Devices */}
+          {/* Three Column Layout */}
+          <div className="grid grid-cols-1 xl:grid-cols-3 lg:grid-cols-2 gap-6">
+            {/* Left Side: Bluetooth Devices */}
             <div className="space-y-4">
-              <h3 className="font-medium text-lg">Available MIDI Devices</h3>
+              <h3 className="font-medium text-lg">Bluetooth Devices</h3>
+              
+              <ScrollArea className="h-60 border rounded-md p-2">
+                {!bluetoothSupported ? (
+                  <div className="text-center text-gray-500 py-8 text-sm">
+                    Bluetooth not supported<br />
+                    <span className="text-xs">Your browser doesn't support Bluetooth</span>
+                  </div>
+                ) : bluetoothDevices.length === 0 ? (
+                  <div className="text-center text-gray-500 py-8 text-sm">
+                    No Bluetooth devices found<br />
+                    <span className="text-xs">Click "Pair Device" to add MIDI devices</span>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {bluetoothDevices.map((device) => (
+                      <div
+                        key={device.id}
+                        className="flex items-center justify-between p-3 border rounded-md bg-blue-50 dark:bg-blue-950"
+                        data-testid={`bluetooth-device-${device.id}`}
+                      >
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            <Bluetooth className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                            <p className="font-medium truncate">{device.name}</p>
+                            <div className={`w-2 h-2 rounded-full ${device.connected ? 'bg-green-500' : 'bg-gray-400'}`} />
+                          </div>
+                          <p className="text-xs text-gray-500">
+                            {device.connected ? 'Connected' : 'Paired but disconnected'}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </ScrollArea>
+            </div>
+
+            {/* Middle: MIDI Devices */}
+            <div className="space-y-4">
+              <h3 className="font-medium text-lg">MIDI Devices</h3>
               
               {/* Input Devices */}
               <div className="space-y-2">
@@ -417,16 +657,26 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                               {device.manufacturer}
                             </p>
                           </div>
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-1">
                             <Button
                               size="sm"
                               variant="ghost"
                               onClick={() => testDevice(device.id)}
-                              disabled={!device.enabled}
+                              disabled={!device.enabled || testingDevice === device.id}
                               data-testid={`button-test-${device.id}`}
                               className="h-8 px-2 text-xs"
                             >
                               Test
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => testDeviceFullDuplex(device.id)}
+                              disabled={!device.enabled || testingDevice === device.id}
+                              data-testid={`button-duplex-test-${device.id}`}
+                              className="h-8 px-2 text-xs"
+                            >
+                              {testingDevice === device.id ? 'Testing...' : 'Full Test'}
                             </Button>
                             <Switch
                               checked={device.enabled}
@@ -442,16 +692,33 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
               </div>
             </div>
 
-            {/* Right Side: Activity Monitor */}
+            {/* Right Side: Activity Monitor & Test Results */}
             <div className="space-y-4">
-              <h3 className="font-medium text-lg">MIDI Activity</h3>
+              <h3 className="font-medium text-lg">Activity & Testing</h3>
+              
+              {/* Test Results */}
+              {testResults && (
+                <div className="p-3 border rounded-md bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
+                  <h4 className="font-medium text-green-800 dark:text-green-200 mb-2">
+                    Last Test Results - {testResults.device}
+                  </h4>
+                  <div className="text-sm text-green-700 dark:text-green-300 space-y-1">
+                    <p><strong>Sent:</strong> {testResults.sent} commands</p>
+                    <p><strong>Received:</strong> {testResults.received} responses</p>
+                    <p><strong>Success Rate:</strong> {testResults.sent > 0 ? Math.round((testResults.received / testResults.sent) * 100) : 0}%</p>
+                    <p className="text-xs">
+                      {new Date(testResults.timestamp).toLocaleTimeString()}
+                    </p>
+                  </div>
+                </div>
+              )}
               
               <div className="space-y-2">
                 <h4 className="font-medium flex items-center gap-2">
                   <Activity className="w-4 h-4" />
                   Recent Messages
                 </h4>
-                <ScrollArea className="h-80 border rounded-md p-3 bg-gray-50 dark:bg-gray-900">
+                <ScrollArea className="h-60 border rounded-md p-3 bg-gray-50 dark:bg-gray-900">
                   {receivedMessages.length === 0 ? (
                     <div className="text-center text-gray-500 py-8 text-sm">
                       No MIDI activity<br />
@@ -491,9 +758,10 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
                 How to Connect MIDI Devices
               </h4>
               <div className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
-                <p><strong>USB MIDI:</strong> Connect your device and it will appear automatically</p>
-                <p><strong>Bluetooth MIDI:</strong> Pair the device in your system Bluetooth settings first, then refresh</p>
-                <p><strong>Virtual MIDI:</strong> Software instruments and DAWs will appear as available devices</p>
+                <p><strong>USB MIDI:</strong> Connect your device and click "Refresh" to scan</p>
+                <p><strong>Bluetooth MIDI:</strong> Click "Pair Device" to discover and connect new devices</p>
+                <p><strong>Virtual MIDI:</strong> Software instruments and DAWs will appear automatically</p>
+                <p><strong>Testing:</strong> Use "Test" for simple note sending or "Full Test" for duplex communication testing</p>
               </div>
             </div>
           )}

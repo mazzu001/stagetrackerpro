@@ -218,10 +218,13 @@ export class AudioEngine {
       
       // Use the actual duration from audio buffers, fallback to song duration
       const songDuration = this.actualDuration > 0 ? this.actualDuration : (this.currentSong?.duration || 0);
+      
+      // Debug logging to track duration issues
+      if (result > 180 && result % 30 < 1) { // Log every 30 seconds after 3 minutes
+        console.log(`Debug duration - currentTime: ${result.toFixed(2)}s, actualDuration: ${this.actualDuration}s, songDuration: ${this.currentSong?.duration}s, using: ${songDuration}s`);
+      }
+      
       const cappedResult = songDuration > 0 ? Math.min(result, songDuration) : result;
-
-
-
       return cappedResult;
     }
     return this.pausedTime;
@@ -524,6 +527,12 @@ class TrackController {
     try {
       // Ensure offset doesn't exceed buffer duration
       const safeOffset = Math.min(offset, this.audioBuffer.duration - 0.1);
+      
+      // Add event listener to debug when source ends
+      this.sourceNode.addEventListener('ended', () => {
+        console.log(`Track ${this.track.name} source ended naturally at ${(new Date()).toLocaleTimeString()}`);
+      });
+      
       this.sourceNode.start(0, safeOffset);
       
       // Debug logging for timing issues

@@ -22,7 +22,7 @@ import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, F
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
-import { MIDIDeviceManager } from "@/components/midi-device-manager";
+import { SimpleMIDIManager } from "@/components/simple-midi-manager";
 import { SimpleBluetoothManager } from "@/components/simple-bluetooth-manager";
 import { useMIDI } from "@/hooks/useMIDI";
 import { useMIDISequencer } from "@/hooks/useMIDISequencer";
@@ -1405,12 +1405,9 @@ export default function Performance({ userType }: PerformanceProps) {
         </DialogContent>
       </Dialog>
       {/* MIDI Device Manager */}
-      <MIDIDeviceManager 
+      <SimpleMIDIManager 
         isOpen={isMIDIManagerOpen}
         onClose={() => setIsMIDIManagerOpen(false)}
-        onDevicesChange={(devices) => {
-          console.log('MIDI devices updated:', devices);
-        }}
       />
       
       {/* Simple Bluetooth Manager */}

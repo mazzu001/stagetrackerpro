@@ -158,6 +158,14 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
       
       // Set up MIDI message listener for input devices
       if (input.state === 'connected') {
+        // Always try to open the connection if it's closed
+        if (input.connection === 'closed') {
+          try {
+            (input as any).open?.();
+          } catch (error) {
+            console.warn(`Failed to open MIDI input ${device.name}:`, error);
+          }
+        }
         setupMIDIInputListener(input, device);
       }
     });
@@ -182,6 +190,8 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
 
   // Set up MIDI input message listener
   const setupMIDIInputListener = (input: MIDIInput, device: MIDIDeviceInfo) => {
+    console.log(`Setting up MIDI listener for ${device.name} (state: ${input.state}, connection: ${input.connection})`);
+    
     input.onmidimessage = (event: any) => {
       const data = Array.from(event.data as Uint8Array) as number[];
       const messageType = getMIDIMessageType(data[0] as number);
@@ -211,6 +221,9 @@ export function MIDIDeviceManager({ isOpen, onClose, onDevicesChange }: MIDIDevi
       });
       window.dispatchEvent(midiEvent);
     };
+    
+    // Confirm listener is set up
+    console.log(`MIDI listener active for ${device.name}`);
   };
 
   // Format MIDI message for display

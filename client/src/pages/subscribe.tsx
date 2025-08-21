@@ -275,9 +275,22 @@ export default function Subscribe({ onClose }: { onClose: () => void }) {
           <Crown className="w-12 h-12 mx-auto mb-2 text-yellow-500" />
           <CardTitle>Complete Your Subscription</CardTitle>
           <p className="text-sm text-gray-600">Premium Plan - $4.99/month</p>
+          <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-700">
+            🧪 TEST MODE: Use card 4242 4242 4242 4242 - No real charges will be made
+          </div>
         </CardHeader>
         
         <CardContent>
+          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded text-sm">
+            <h4 className="font-medium text-green-800 mb-2">Test Credit Cards (No Real Charges):</h4>
+            <ul className="text-green-700 space-y-1 text-xs">
+              <li><strong>Success:</strong> 4242 4242 4242 4242</li>
+              <li><strong>Decline:</strong> 4000 0000 0000 0002</li>
+              <li><strong>3D Secure:</strong> 4000 0025 0000 3155</li>
+              <li>Use any future date for expiry and any 3-digit CVC</li>
+            </ul>
+          </div>
+          
           <Elements stripe={stripePromise} options={{ clientSecret }}>
             <SubscribeForm onSuccess={onClose} />
           </Elements>

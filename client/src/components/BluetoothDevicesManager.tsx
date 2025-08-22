@@ -721,7 +721,16 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
               }
               
               console.log(`🚨🚨🚨 DID YOUR WIDI JACK RECEIVE THE COMMAND? If NO, trying alternative formats...🚨🚨🚨`);
-              console.log(`📍 WIDI Jack should show activity when receiving MIDI data`);
+              console.log(`📍 WIDI Jack should BLINK when receiving data - if no blink, data not reaching device!`);
+              
+              // DETAILED CONNECTION DEBUG - Let's verify what we're actually connected to
+              console.log(`\n🔍 DETAILED CONNECTION DEBUG:`);
+              console.log(`Device name: "${exactReceiveChar.device?.name}"`);
+              console.log(`Device ID: "${exactReceiveChar.device?.id}"`);
+              console.log(`Service UUID: "${exactReceiveChar.service?.uuid}"`);
+              console.log(`Characteristic UUID: "${exactReceiveChar.characteristic?.uuid}"`);
+              console.log(`Characteristic properties:`, exactReceiveChar);
+              console.log(`Connection state: connected=${exactReceiveChar.device?.gatt?.connected}`);
               
               // Wait longer for WIDI Jack (they need sequential operations)
               await new Promise(resolve => setTimeout(resolve, 2000));

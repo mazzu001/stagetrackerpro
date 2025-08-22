@@ -684,14 +684,22 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
             console.log(`📤 WATCH YOUR PEDAL LIGHT - This should work!`);
             
             try {
-              const testPacket = new Uint8Array(midiBytes);
+              // Create BLE MIDI packet with timestamp header (same format as incoming data)
+              const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
+              const timestampHigh = 0x80 | ((timestamp >> 7) & 0x3F);
+              const timestampLow = 0x80 | (timestamp & 0x7F);
+              const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
+              
+              console.log(`📤 Sending BLE MIDI packet: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+              console.log(`📤 Raw MIDI data: [${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+              console.log(`📤 BLE timestamp header: [${timestampHigh.toString(16).padStart(2, '0')} ${timestampLow.toString(16).padStart(2, '0')}]`);
               
               if (exactReceiveChar.canWriteWithoutResponse) {
-                await exactReceiveChar.characteristic.writeValueWithoutResponse(testPacket);
-                console.log(`✅ writeValueWithoutResponse() on EXACT receive characteristic completed!`);
+                await exactReceiveChar.characteristic.writeValueWithoutResponse(blePacket);
+                console.log(`✅ writeValueWithoutResponse() with BLE MIDI format completed!`);
               } else if (exactReceiveChar.canWrite) {
-                await exactReceiveChar.characteristic.writeValue(testPacket);
-                console.log(`✅ writeValue() on EXACT receive characteristic completed!`);
+                await exactReceiveChar.characteristic.writeValue(blePacket);
+                console.log(`✅ writeValue() with BLE MIDI format completed!`);
               }
               
               console.log(`🚨🚨🚨 DID YOUR PEDAL LIGHT BLINK? This should be THE ONE! 🚨🚨🚨`);

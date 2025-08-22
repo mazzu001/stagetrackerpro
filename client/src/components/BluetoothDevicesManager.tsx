@@ -275,20 +275,18 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
           setConnectedDevices(updatedDevices.filter(d => d.connected));
           saveDevicesToStorage(updatedDevices);
           
+          // Add initial connection message
+          const connectionMessage: BluetoothMessage = {
+            timestamp: Date.now(),
+            deviceId: device.id,
+            deviceName: device.name,
+            data: 'Connection established - Setting up listeners...',
+            type: device.type as 'midi' | 'audio' | 'data'
+          };
+          setMessages(prev => [...prev.slice(-49), connectionMessage]);
+          
           // Set up message listening for connected device
           await setupDeviceListening(bluetoothDevice, device);
-          
-          // Add connection message for MIDI devices
-          if (device.type === 'midi') {
-            const message: BluetoothMessage = {
-              timestamp: Date.now(),
-              deviceId: device.id,
-              deviceName: device.name,
-              data: 'Connection established - MIDI ready, listening for input',
-              type: 'midi'
-            };
-            setMessages(prev => [...prev.slice(-49), message]);
-          }
           
           toast({
             title: "Device Connected",
@@ -355,6 +353,16 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
           setConnectedDevices(updatedDevices.filter(d => d.connected));
           saveDevicesToStorage(updatedDevices);
           
+          // Add initial connection message
+          const connectionMessage: BluetoothMessage = {
+            timestamp: Date.now(),
+            deviceId: device.id,
+            deviceName: device.name,
+            data: 'Device paired and connected - Setting up listeners...',
+            type: device.type as 'midi' | 'audio' | 'data'
+          };
+          setMessages(prev => [...prev.slice(-49), connectionMessage]);
+          
           // Set up message listening for connected device
           await setupDeviceListening(bluetoothDevice, device);
           
@@ -362,18 +370,6 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
             title: "Device Paired & Connected",
             description: `${device.name} is now paired and connected`,
           });
-          
-          // Add to messages for MIDI devices
-          if (device.type === 'midi') {
-            const message: BluetoothMessage = {
-              timestamp: Date.now(),
-              deviceId: device.id,
-              deviceName: device.name,
-              data: 'Device paired and connected - MIDI ready, listening for commands',
-              type: 'midi'
-            };
-            setMessages(prev => [...prev.slice(-49), message]);
-          }
         }
       } else {
         toast({
@@ -619,9 +615,28 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
 
   // Set up device listening for MIDI/audio messages
   const setupDeviceListening = async (bluetoothDevice: any, device: BluetoothDevice) => {
+    console.log('Setting up device listening for:', device.name);
+    
+    const debugMessage: BluetoothMessage = {
+      timestamp: Date.now(),
+      deviceId: device.id,
+      deviceName: device.name,
+      data: 'DEBUG: Starting listener setup...',
+      type: 'data'
+    };
+    setMessages(prev => [...prev.slice(-49), debugMessage]);
+    
     try {
       if (!bluetoothDevice.gatt?.connected) {
         console.log('Device not connected to GATT server');
+        const errorMsg: BluetoothMessage = {
+          timestamp: Date.now(),
+          deviceId: device.id,
+          deviceName: device.name,
+          data: 'ERROR: Device not connected to GATT server',
+          type: 'data'
+        };
+        setMessages(prev => [...prev.slice(-49), errorMsg]);
         return;
       }
 
@@ -669,49 +684,124 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
         } catch (midiError) {
           console.log('Standard MIDI service not available, trying generic approach');
           
+          const fallbackMsg: BluetoothMessage = {
+            timestamp: Date.now(),
+            deviceId: device.id,
+            deviceName: device.name,
+            data: 'MIDI service not found, trying generic characteristics...',
+            type: 'data'
+          };
+          setMessages(prev => [...prev.slice(-49), fallbackMsg]);
+          
           // Fall back to generic characteristic listening
           try {
             const services = await server.getPrimaryServices();
+            console.log(`Found ${services.length} services`);
+            
+            const serviceMsg: BluetoothMessage = {
+              timestamp: Date.now(),
+              deviceId: device.id,
+              deviceName: device.name,
+              data: `Found ${services.length} Bluetooth services, checking characteristics...`,
+              type: 'data'
+            };
+            setMessages(prev => [...prev.slice(-49), serviceMsg]);
+            
+            let totalCharacteristics = 0;
+            let notifyCharacteristics = 0;
+            
             for (const service of services) {
               const characteristics = await service.getCharacteristics();
+              totalCharacteristics += characteristics.length;
+              
               for (const characteristic of characteristics) {
-                if (characteristic.properties.notify) {
-                  await characteristic.startNotifications();
-                  characteristic.addEventListener('characteristicvaluechanged', (event: any) => {
-                    const value = event.target.value;
-                    const data = new Uint8Array(value.buffer);
+                console.log('Characteristic properties:', characteristic.properties);
+                
+                if (characteristic.properties.notify || characteristic.properties.indicate) {
+                  try {
+                    await characteristic.startNotifications();
+                    notifyCharacteristics++;
                     
-                    const message: BluetoothMessage = {
-                      timestamp: Date.now(),
-                      deviceId: device.id,
-                      deviceName: device.name,
-                      data: `Data: [${Array.from(data).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
-                      type: 'data'
-                    };
+                    console.log('Started notifications for characteristic:', characteristic.uuid);
                     
-                    console.log('Bluetooth data received:', message);
-                    setMessages(prev => [...prev.slice(-49), message]);
-                  });
+                    characteristic.addEventListener('characteristicvaluechanged', (event: any) => {
+                      const value = event.target.value;
+                      const data = new Uint8Array(value.buffer);
+                      
+                      const message: BluetoothMessage = {
+                        timestamp: Date.now(),
+                        deviceId: device.id,
+                        deviceName: device.name,
+                        data: `Input: [${Array.from(data).map(b => b.toString(16).padStart(2, '0')).join(' ')}] (${characteristic.uuid})`,
+                        type: 'data'
+                      };
+                      
+                      console.log('Bluetooth data received:', message);
+                      setMessages(prev => [...prev.slice(-49), message]);
+                    });
+                  } catch (charError) {
+                    console.log('Could not start notifications for characteristic:', charError);
+                  }
                 }
               }
             }
+            
+            const summaryMsg: BluetoothMessage = {
+              timestamp: Date.now(),
+              deviceId: device.id,
+              deviceName: device.name,
+              data: `Setup complete: ${totalCharacteristics} total characteristics, ${notifyCharacteristics} with notifications enabled`,
+              type: 'data'
+            };
+            setMessages(prev => [...prev.slice(-49), summaryMsg]);
+            
           } catch (genericError) {
             console.error('Could not set up generic listening:', genericError);
+            
+            const errorMsg: BluetoothMessage = {
+              timestamp: Date.now(),
+              deviceId: device.id,
+              deviceName: device.name,
+              data: `ERROR: Could not set up listeners: ${genericError}`,
+              type: 'data'
+            };
+            setMessages(prev => [...prev.slice(-49), errorMsg]);
           }
         }
       } else {
         // For non-MIDI devices, try to listen to any available characteristics
+        console.log('Setting up non-MIDI device listening');
+        
+        const nonMidiMsg: BluetoothMessage = {
+          timestamp: Date.now(),
+          deviceId: device.id,
+          deviceName: device.name,
+          data: 'Setting up non-MIDI device listeners...',
+          type: 'data'
+        };
+        setMessages(prev => [...prev.slice(-49), nonMidiMsg]);
+        
         try {
           const services = await server.getPrimaryServices();
           let listenersSetup = 0;
+          let totalCharacteristics = 0;
+          
+          console.log(`Found ${services.length} services for non-MIDI device`);
           
           for (const service of services) {
+            console.log('Service UUID:', service.uuid);
             const characteristics = await service.getCharacteristics();
+            totalCharacteristics += characteristics.length;
+            
             for (const characteristic of characteristics) {
+              console.log('Characteristic UUID:', characteristic.uuid, 'Properties:', characteristic.properties);
+              
               if (characteristic.properties.notify || characteristic.properties.indicate) {
                 try {
                   await characteristic.startNotifications();
                   listenersSetup++;
+                  
+                  console.log('Started notifications for characteristic:', characteristic.uuid);
                   
                   characteristic.addEventListener('characteristicvaluechanged', (event: any) => {
                     const value = event.target.value;
@@ -721,7 +811,7 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
                       timestamp: Date.now(),
                       deviceId: device.id,
                       deviceName: device.name,
-                      data: `Input: [${Array.from(data).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+                      data: `Input: [${Array.from(data).map(b => b.toString(16).padStart(2, '0')).join(' ')}] from ${characteristic.uuid}`,
                       type: device.type as 'audio' | 'midi' | 'data'
                     };
                     
@@ -735,20 +825,37 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
             }
           }
           
-          if (listenersSetup > 0) {
-            console.log(`Set up ${listenersSetup} notification listeners for ${device.name}`);
-            
-            const statusMessage: BluetoothMessage = {
+          const statusMessage: BluetoothMessage = {
+            timestamp: Date.now(),
+            deviceId: device.id,
+            deviceName: device.name,
+            data: `Setup complete: ${totalCharacteristics} characteristics found, ${listenersSetup} with notifications enabled. Try using your device now.`,
+            type: 'data'
+          };
+          setMessages(prev => [...prev.slice(-49), statusMessage]);
+          
+          if (listenersSetup === 0) {
+            const noListenersMsg: BluetoothMessage = {
               timestamp: Date.now(),
               deviceId: device.id,
               deviceName: device.name,
-              data: `Listening on ${listenersSetup} channel(s) - send commands from your device`,
+              data: 'WARNING: No notification characteristics found. Device may not support input monitoring.',
               type: 'data'
             };
-            setMessages(prev => [...prev.slice(-49), statusMessage]);
+            setMessages(prev => [...prev.slice(-49), noListenersMsg]);
           }
+          
         } catch (serviceError) {
           console.error('Could not enumerate services:', serviceError);
+          
+          const errorMsg: BluetoothMessage = {
+            timestamp: Date.now(),
+            deviceId: device.id,
+            deviceName: device.name,
+            data: `ERROR: Could not enumerate services: ${serviceError}`,
+            type: 'data'
+          };
+          setMessages(prev => [...prev.slice(-49), errorMsg]);
         }
       }
       
@@ -778,11 +885,23 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
         timestamp: Date.now(),
         deviceId: device.id,
         deviceName: device.name,
-        data: `Error setting up listeners: ${error}`,
+        data: `CRITICAL ERROR: Failed to set up listeners: ${error}`,
         type: 'data'
       };
       setMessages(prev => [...prev.slice(-49), errorMessage]);
     }
+    
+    // Add a test message to confirm the message system is working
+    setTimeout(() => {
+      const testMessage: BluetoothMessage = {
+        timestamp: Date.now(),
+        deviceId: device.id,
+        deviceName: device.name,
+        data: 'TEST: Message system is working. Waiting for device input...',
+        type: 'data'
+      };
+      setMessages(prev => [...prev.slice(-49), testMessage]);
+    }, 1000);
   };
 
   // Remove a device from the list

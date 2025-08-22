@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,26 +13,27 @@ import {
   Search, 
   Wifi, 
   WifiOff, 
-  Music, 
+  Plus, 
+  X, 
   Trash2, 
-  AlertCircle, 
-  Send,
-  Volume2,
-  RotateCcw
+  Music, 
+  Volume2, 
+  Scan, 
+  Zap, 
+  ArrowRight, 
+  MoreVertical, 
+  Activity 
 } from 'lucide-react';
-import { formatMIDIMessage, getMIDIMessageType } from '@/utils/midiFormatter';
 
-// Types
 interface BluetoothDevice {
   id: string;
   name: string;
-  type: 'midi' | 'bluetooth' | 'unknown';
   connected: boolean;
   paired: boolean;
+  type: 'midi' | 'bluetooth';
+  address?: string;
   rssi?: number;
-  deviceClass: string;
-  services: string[];
-  lastSeen: number;
+  services?: string[];
 }
 
 interface BluetoothMessage {
@@ -111,246 +114,174 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     }
   };
 
-  // Check Bluetooth state periodically
-  useEffect(() => {
-    if (!hasBluetoothSupport) return;
-
-    const checkState = async () => {
-      try {
-        const available = await (navigator as any).bluetooth.getAvailability();
-        setBluetoothState(available ? 'poweredOn' : 'poweredOff');
-      } catch (error) {
-        setBluetoothState('error');
-      }
-    };
-
-    const interval = setInterval(checkState, 5000);
-    return () => clearInterval(interval);
-  }, [hasBluetoothSupport]);
-
-  // Auto-refresh device last seen times
-  useEffect(() => {
-    if (devices.length === 0) return;
-
-    const interval = setInterval(() => {
-      setDevices(prev => prev.map(device => ({ ...device })));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [devices.length]);
-
-  // Determine if device is a MIDI device
-  const determineDeviceType = (device: any): 'midi' | 'bluetooth' | 'unknown' => {
-    const name = device.name?.toLowerCase() || '';
-    
-    // Check for MIDI-specific keywords
-    if (name.includes('midi') || name.includes('keyboard') || name.includes('controller') ||
-        name.includes('yamaha') || name.includes('korg') || name.includes('roland') ||
-        name.includes('akai') || name.includes('novation') || name.includes('arturia') ||
-        name.includes('m-audio') || name.includes('behringer') || name.includes('moog') ||
-        name.includes('sequential') || name.includes('dave smith') || name.includes('elektron') ||
-        name.includes('pedal') || name.includes('footswitch')) {
-      return 'midi';
+  // Get Bluetooth state color
+  const getBluetoothStateColor = () => {
+    switch (bluetoothState) {
+      case 'poweredOn':
+        return 'text-green-600 dark:text-green-400';
+      case 'poweredOff':
+        return 'text-yellow-600 dark:text-yellow-400';
+      case 'unavailable':
+        return 'text-red-600 dark:text-red-400';
+      case 'notSupported':
+        return 'text-gray-600 dark:text-gray-400';
+      default:
+        return 'text-gray-600 dark:text-gray-400';
     }
-    
-    // If it has a name and doesn't match MIDI keywords, it's a generic Bluetooth device
-    if (name && name.trim() !== '') {
-      return 'bluetooth';
-    }
-    
-    return 'unknown';
   };
 
-  // Scan for devices
-  const handleScanDevices = async () => {
-    if (!hasBluetoothSupport || bluetoothState !== 'poweredOn') {
+  // Get Bluetooth state icon
+  const getBluetoothStateIcon = () => {
+    switch (bluetoothState) {
+      case 'poweredOn':
+        return <Bluetooth className="h-4 w-4 text-blue-600" />;
+      case 'poweredOff':
+        return <WifiOff className="h-4 w-4 text-yellow-600" />;
+      case 'unavailable':
+        return <X className="h-4 w-4 text-red-600" />;
+      case 'notSupported':
+        return <X className="h-4 w-4 text-gray-600" />;
+      default:
+        return <Bluetooth className="h-4 w-4 text-gray-600" />;
+    }
+  };
+
+  // Check if device might be MIDI-related based on name and manufacturer
+  const isMIDIDevice = (name: string): 'midi' | 'bluetooth' => {
+    const lowerName = name.toLowerCase();
+    const midiKeywords = [
+      'midi', 'piano', 'keyboard', 'synth', 'drum', 'guitar', 'bass',
+      'roland', 'yamaha', 'korg', 'novation', 'akai', 'moog', 'arturia',
+      'behringer', 'boss', 'tc electronic', 'line 6', 'fractal', 'kemper',
+      'pedal', 'footswitch', 'controller', 'daw', 'sequencer'
+    ];
+    
+    return midiKeywords.some(keyword => lowerName.includes(keyword)) ? 'midi' : 'bluetooth';
+  };
+
+  // Quick scan for easily discoverable devices
+  const handleQuickScan = async () => {
+    if (!hasBluetoothSupport) {
       toast({
-        title: "Bluetooth Unavailable",
-        description: "Bluetooth is not available or not powered on.",
+        title: "Bluetooth Not Supported",
+        description: "Your browser doesn't support Bluetooth",
         variant: "destructive",
       });
       return;
     }
 
     setIsScanning(true);
-    const discoveredDevices: BluetoothDevice[] = [];
-
     try {
-      if (hasBluetoothSupport && bluetoothState === 'poweredOn') {
-        // Try to scan for devices with different service filters
-        const serviceFilters = [
-          // MIDI devices - primary focus
-          { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] }, // MIDI Service
-          
-          // MIDI over BLE characteristics
-          { services: ['7772e5db-3868-4112-a1a9-f2669d106bf3'] }, // MIDI Data I/O
-          
-          // Generic discoverable devices (filtered for MIDI devices only)
-          { acceptAllDevices: true }
-        ];
+      const bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: [
+          '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // BLE MIDI
+          '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART
+          '0000fff0-0000-1000-8000-00805f9b34fb'  // Generic MIDI
+        ]
+      });
 
-        for (const filter of serviceFilters) {
-          try {
-            const device = await (navigator as any).bluetooth.requestDevice(filter);
-            
-            if (device && !discoveredDevices.some(d => d.id === device.id)) {
-              const deviceType = determineDeviceType(device);
-              
-              // Add all discovered devices (MIDI, bluetooth, and unknown)
-              let deviceClass = 'Bluetooth Device';
-              if (deviceType === 'midi') {
-                deviceClass = 'MIDI Controller';
-              } else if (deviceType === 'bluetooth') {
-                deviceClass = 'Bluetooth Device';
-              } else {
-                deviceClass = 'Unknown Device';
-              }
-              
-              const newDevice: BluetoothDevice = {
-                id: device.id,
-                name: device.name || 'Unknown Device',
-                type: deviceType,
-                connected: false,
-                paired: false,
-                rssi: -50, // Web Bluetooth doesn't provide RSSI during scan
-                deviceClass: deviceClass,
-                services: [], // Services will be populated when connected
-                lastSeen: Date.now()
-              };
-              
-              discoveredDevices.push(newDevice);
-            }
-          } catch (filterError) {
-            console.log('Service filter failed:', filterError);
-            continue;
-          }
-        }
+      const deviceType = isMIDIDevice(bluetoothDevice.name || 'Unknown');
+      const newDevice: BluetoothDevice = {
+        id: bluetoothDevice.id || `bt_${Date.now()}`,
+        name: bluetoothDevice.name || 'Unknown Device',
+        connected: false,
+        paired: true,
+        type: deviceType,
+        address: bluetoothDevice.id || undefined
+      };
 
-        if (discoveredDevices.length > 0) {
-          setDevices(prev => {
-            const updated = [...prev];
-            discoveredDevices.forEach(newDevice => {
-              if (!updated.some(d => d.id === newDevice.id)) {
-                updated.push(newDevice);
-              }
-            });
-            
-            // Sort devices: MIDI devices first, then Bluetooth devices, then unknown
-            const sorted = updated.sort((a, b) => {
-              if (a.type === 'midi' && b.type !== 'midi') return -1;
-              if (a.type !== 'midi' && b.type === 'midi') return 1;
-              if (a.type === 'bluetooth' && b.type === 'unknown') return -1;
-              if (a.type === 'unknown' && b.type === 'bluetooth') return 1;
-              return a.name.localeCompare(b.name);
-            });
-            
-            saveDevicesToStorage(sorted);
-            return sorted;
-          });
-          
-          const midiCount = discoveredDevices.filter(d => d.type === 'midi').length;
-          const bluetoothCount = discoveredDevices.filter(d => d.type === 'bluetooth').length;
-          
-          toast({
-            title: "Bluetooth Scan Complete",
-            description: `Found ${midiCount} MIDI device(s) and ${bluetoothCount} other Bluetooth device(s)`,
-          });
-        } else {
-          toast({
-            title: "Bluetooth Scan Complete",
-            description: "No Bluetooth devices found. Make sure devices are in pairing mode.",
-          });
-        }
+      // Check if device already exists
+      const existingDevice = devices.find(d => d.id === newDevice.id || d.name === newDevice.name);
+      if (existingDevice) {
+        toast({
+          title: "Device Already Added",
+          description: `${newDevice.name} is already in your device list`,
+          variant: "default",
+        });
+      } else {
+        const updatedDevices = [...devices, newDevice];
+        setDevices(updatedDevices);
+        saveDevicesToStorage(updatedDevices);
+
+        toast({
+          title: "Device Added",
+          description: `Added ${newDevice.name} to device list`,
+        });
       }
     } catch (error) {
-      console.error('Error scanning for devices:', error);
-      toast({
-        title: "Scan Failed",
-        description: `Failed to scan for MIDI devices: ${error}`,
-        variant: "destructive",
-      });
+      if (error instanceof Error && error.name !== 'NotFoundError') {
+        toast({
+          title: "Scan Failed",
+          description: `Quick scan failed: ${error.message}`,
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsScanning(false);
     }
   };
 
-  // Deep scan with extended timeout
+  // Deep scan with multiple attempts
   const handleDeepScan = async () => {
-    if (!hasBluetoothSupport || bluetoothState !== 'poweredOn') {
+    if (!hasBluetoothSupport) {
       toast({
-        title: "Bluetooth Unavailable",
-        description: "Bluetooth is not available or not powered on.",
+        title: "Bluetooth Not Supported",
+        description: "Your browser doesn't support Bluetooth",
         variant: "destructive",
       });
       return;
     }
 
     setIsScanning(true);
-    
     try {
-      toast({
-        title: "Deep Bluetooth Scan Started",
-        description: "Performing aggressive scan for all Bluetooth devices...",
-      });
+      // Try multiple scan approaches
+      const services = [
+        '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // BLE MIDI
+        '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART  
+        '0000fff0-0000-1000-8000-00805f9b34fb', // Generic MIDI
+        '0000180a-0000-1000-8000-00805f9b34fb', // Device Information
+        '0000180f-0000-1000-8000-00805f9b34fb'  // Battery Service
+      ];
 
-      // Multiple scan attempts with different strategies
       for (let attempt = 1; attempt <= 3; attempt++) {
-        console.log(`Deep scan attempt ${attempt}`);
-        
         try {
-          const device = await (navigator as any).bluetooth.requestDevice({
-            acceptAllDevices: true,
-            optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700', '7772e5db-3868-4112-a1a9-f2669d106bf3']
-          });
+          console.log(`Deep scan attempt ${attempt}/3`);
           
-          if (device) {
-            const deviceType = determineDeviceType(device);
-            
-            if (!devices.some(d => d.id === device.id)) {
-              // Add all devices during deep scan
-              let deviceClass = 'Bluetooth Device';
-              if (deviceType === 'midi') {
-                deviceClass = 'MIDI Controller';
-              } else if (deviceType === 'bluetooth') {
-                deviceClass = 'Bluetooth Device';
-              } else {
-                deviceClass = 'Unknown Device';
-              }
-              
+          for (const service of services) {
+            try {
+              const bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
+                filters: [{ services: [service] }],
+                optionalServices: services
+              });
+
+              const deviceType = isMIDIDevice(bluetoothDevice.name || 'Unknown');
               const newDevice: BluetoothDevice = {
-                id: device.id,
-                name: device.name || `Device ${attempt}`,
-                type: deviceType,
+                id: bluetoothDevice.id || `bt_${Date.now()}_${attempt}`,
+                name: bluetoothDevice.name || `Unknown Device ${attempt}`,
                 connected: false,
-                paired: false,
-                rssi: -40,
-                deviceClass: deviceClass,
-                services: [],
-                lastSeen: Date.now()
+                paired: true,
+                type: deviceType,
+                address: bluetoothDevice.id || undefined
               };
-              
-              setDevices(prev => {
-                const updated = [...prev, newDevice];
-                
-                // Sort devices: MIDI devices first, then Bluetooth devices, then unknown
-                const sorted = updated.sort((a, b) => {
-                  if (a.type === 'midi' && b.type !== 'midi') return -1;
-                  if (a.type !== 'midi' && b.type === 'midi') return 1;
-                  if (a.type === 'bluetooth' && b.type === 'unknown') return -1;
-                  if (a.type === 'unknown' && b.type === 'bluetooth') return 1;
-                  return a.name.localeCompare(b.name);
+
+              // Check if device already exists
+              if (!devices.find(d => d.id === newDevice.id || d.name === newDevice.name)) {
+                setDevices(prev => {
+                  const updated = [...prev, newDevice];
+                  saveDevicesToStorage(updated);
+                  return updated;
                 });
-                
-                saveDevicesToStorage(sorted);
-                return sorted;
-              });
-              
-              const deviceTypeLabel = deviceType === 'midi' ? 'MIDI device' : 'Bluetooth device';
-              toast({
-                title: "Device Found",
-                description: `Found: ${newDevice.name} (${deviceTypeLabel})`,
-              });
-              break;
+
+                const deviceTypeLabel = deviceType === 'midi' ? 'MIDI device' : 'Bluetooth device';
+                toast({
+                  title: "Device Found",
+                  description: `Found: ${newDevice.name} (${deviceTypeLabel})`,
+                });
+                break;
+              }
+            } catch (attemptError) {
+              console.log(`Scan attempt ${attempt} failed:`, attemptError);
             }
           }
         } catch (attemptError) {
@@ -450,166 +381,50 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     setMessages(prev => [...prev.slice(-49), debugMessage]);
     
     try {
-      if (!bluetoothDevice.gatt?.connected) {
-        console.log('Device not connected to GATT server');
-        const errorMsg: BluetoothMessage = {
-          timestamp: Date.now(),
-          deviceId: device.id,
-          deviceName: device.name,
-          data: 'ERROR: Device not connected to GATT server',
-          type: 'midi'
-        };
-        setMessages(prev => [...prev.slice(-49), errorMsg]);
-        return;
-      }
-
+      // Get MIDI service
       const server = bluetoothDevice.gatt;
+      const midiService = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
       
-      // Try to connect to MIDI service
-      try {
-        // Try standard MIDI service UUID
-        const midiService = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
-        const midiCharacteristic = await midiService.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
+      // Get MIDI I/O characteristic
+      const midiCharacteristic = await midiService.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
+      
+      // Set up notification listener for incoming MIDI data
+      await midiCharacteristic.startNotifications();
+      
+      midiCharacteristic.addEventListener('characteristicvaluechanged', (event: any) => {
+        const value = event.target.value;
+        const data = new Uint8Array(value.buffer);
         
-        // Start notifications for MIDI data
-        await midiCharacteristic.startNotifications();
+        // Flash green light for incoming data
+        setIncomingDataActive(true);
+        setTimeout(() => setIncomingDataActive(false), 300);
         
-        midiCharacteristic.addEventListener('characteristicvaluechanged', (event: any) => {
-          const value = event.target.value;
-          const midiData = new Uint8Array(value.buffer);
-          
-          // Parse MIDI message
-          let messageType = 'Unknown';
-          if (midiData.length >= 2) {
-            const status = midiData[0];
-            if ((status & 0xF0) === 0x90) messageType = 'Note On';
-            else if ((status & 0xF0) === 0x80) messageType = 'Note Off';
-            else if ((status & 0xF0) === 0xB0) messageType = 'Control Change';
-            else if ((status & 0xF0) === 0xC0) messageType = 'Program Change';
-            else if ((status & 0xF0) === 0xE0) messageType = 'Pitch Bend';
-          }
-          
-          const message: BluetoothMessage = {
-            timestamp: Date.now(),
-            deviceId: device.id,
-            deviceName: device.name,
-            data: `${messageType}: ${formatMIDIMessage(Array.from(midiData))}`,
-            type: 'midi'
-          };
-          
-          console.log('MIDI message received:', message);
-          setMessages(prev => [...prev.slice(-49), message]);
-          
-          // Flash green light for incoming MIDI data
-          setIncomingDataActive(true);
-          setTimeout(() => setIncomingDataActive(false), 300);
-        });
+        // Parse BLE MIDI data (skip timestamp header bytes)
+        const midiData = Array.from(data).slice(2); // Remove BLE MIDI timestamp header
         
-        console.log('MIDI characteristic notifications started successfully');
-        
-        const successMessage: BluetoothMessage = {
+        // Create readable message
+        const message: BluetoothMessage = {
           timestamp: Date.now(),
           deviceId: device.id,
           deviceName: device.name,
-          data: 'MIDI listening activated - MIDI messages will appear here',
+          data: `Received: [${midiData.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
           type: 'midi'
         };
-        setMessages(prev => [...prev.slice(-49), successMessage]);
         
-      } catch (midiError) {
-        console.error('Standard MIDI service not available, trying fallback:', midiError);
-        
-        const fallbackMessage: BluetoothMessage = {
-          timestamp: Date.now(),
-          deviceId: device.id,
-          deviceName: device.name,
-          data: 'Standard MIDI service not found, scanning all characteristics...',
-          type: 'midi'
-        };
-        setMessages(prev => [...prev.slice(-49), fallbackMessage]);
-        
-        // Fallback: scan all services and characteristics for any that support notifications
-        try {
-          const services = await server.getPrimaryServices();
-          let notifyCharacteristics = 0;
-          let totalCharacteristics = 0;
-          
-          console.log(`Found ${services.length} services to scan`);
-          
-          for (const service of services) {
-            console.log('Scanning service:', service.uuid);
-            const characteristics = await service.getCharacteristics();
-            totalCharacteristics += characteristics.length;
-            
-            for (const characteristic of characteristics) {
-              console.log('Characteristic:', characteristic.uuid, 'Properties:', characteristic.properties);
-              
-              if (characteristic.properties.notify || characteristic.properties.indicate) {
-                try {
-                  await characteristic.startNotifications();
-                  notifyCharacteristics++;
-                  
-                  console.log('Started notifications for:', characteristic.uuid);
-                  
-                  characteristic.addEventListener('characteristicvaluechanged', (event: any) => {
-                    const value = event.target.value;
-                    const data = new Uint8Array(value.buffer);
-                    
-                    // Parse as MIDI data
-                    let messageType = 'MIDI Data';
-                    if (data.length >= 2) {
-                      const status = data[0];
-                      if ((status & 0xF0) === 0x90) messageType = 'Note On';
-                      else if ((status & 0xF0) === 0x80) messageType = 'Note Off';
-                      else if ((status & 0xF0) === 0xB0) messageType = 'Control Change';
-                      else if ((status & 0xF0) === 0xC0) messageType = 'Program Change';
-                      else if ((status & 0xF0) === 0xE0) messageType = 'Pitch Bend';
-                    }
-                    
-                    const message: BluetoothMessage = {
-                      timestamp: Date.now(),
-                      deviceId: device.id,
-                      deviceName: device.name,
-                      data: `${messageType}: [${Array.from(data).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
-                      type: 'midi'
-                    };
-                    
-                    console.log('MIDI data received from fallback:', message);
-                    setMessages(prev => [...prev.slice(-49), message]);
-                    
-                    // Flash green light for incoming MIDI data
-                    setIncomingDataActive(true);
-                    setTimeout(() => setIncomingDataActive(false), 300);
-                  });
-                } catch (charError) {
-                  console.log('Could not start notifications for characteristic:', charError);
-                }
-              }
-            }
-          }
-          
-          const summaryMsg: BluetoothMessage = {
-            timestamp: Date.now(),
-            deviceId: device.id,
-            deviceName: device.name,
-            data: `Setup complete: ${totalCharacteristics} total characteristics, ${notifyCharacteristics} with notifications enabled`,
-            type: 'midi'
-          };
-          setMessages(prev => [...prev.slice(-49), summaryMsg]);
-          
-        } catch (genericError) {
-          console.error('Could not set up generic listening:', genericError);
-          
-          const errorMsg: BluetoothMessage = {
-            timestamp: Date.now(),
-            deviceId: device.id,
-            deviceName: device.name,
-            data: `ERROR: Could not set up listeners: ${genericError}`,
-            type: 'midi'
-          };
-          setMessages(prev => [...prev.slice(-49), errorMsg]);
-        }
-      }
+        setMessages(prev => [...prev.slice(-49), message]);
+        console.log('Received MIDI data from', device.name, ':', midiData);
+      });
+      
+      console.log('MIDI characteristic notifications started successfully');
+      
+      const successMessage: BluetoothMessage = {
+        timestamp: Date.now(),
+        deviceId: device.id,
+        deviceName: device.name,
+        data: 'MIDI listener setup complete - ready to receive data',
+        type: 'midi'
+      };
+      setMessages(prev => [...prev.slice(-49), successMessage]);
       
       // Add disconnect listener
       bluetoothDevice.addEventListener('gattserverdisconnected', () => {
@@ -703,12 +518,12 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     });
   };
 
-  // Send command to device
+  // Send command to device - SIMPLIFIED VERSION FOR TESTING
   const handleSendCommand = async (device: BluetoothDevice, command: string) => {
     try {
       console.log(`🎹 Sending command to ${device.name}:`, command);
       
-      // Parse the MIDI command locally (don't use server endpoint for Bluetooth)
+      // Parse the MIDI command locally
       const parsed = parseMIDICommand(command);
       if (!parsed) {
         throw new Error('Invalid MIDI command format. Use [[PC:12:1]], [[CC:7:64:1]], or [[NOTE:60:127:1]]');
@@ -732,169 +547,75 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         }
       }
       
-      // Send MIDI data via Bluetooth GATT with multiple fallback approaches
+      // TEST ALL WRITABLE CHARACTERISTICS
       try {
         const server = bluetoothDevice.gatt;
-        console.log(`🔍 Getting MIDI service from ${device.name}...`);
+        console.log(`🔍 TESTING ALL WRITABLE CHARACTERISTICS FOR ${device.name}...`);
         
-        // Try multiple service UUIDs for different device types
-        let midiService;
-        let midiCharacteristic;
+        const services = await server.getPrimaryServices();
+        const writableCharacteristics = [];
         
-        const serviceUUIDs = [
-          '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // Standard BLE MIDI
-          '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART
-          '0000fff0-0000-1000-8000-00805f9b34fb'  // Generic MIDI
-        ];
-        
-        const charUUIDs = [
-          '7772e5db-3868-4112-a1a9-f2669d106bf3', // Standard BLE MIDI I/O
-          '6e400002-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART TX
-          '0000fff1-0000-1000-8000-00805f9b34fb'  // Generic MIDI write
-        ];
-        
-        for (let i = 0; i < serviceUUIDs.length; i++) {
+        // Find all writable characteristics
+        for (const service of services) {
           try {
-            console.log(`🔍 Trying service UUID: ${serviceUUIDs[i]}`);
-            midiService = await server.getPrimaryService(serviceUUIDs[i]);
-            console.log(`✅ Found MIDI service: ${serviceUUIDs[i]}`);
-            
-            console.log(`🔍 Trying characteristic UUID: ${charUUIDs[i]}`);
-            midiCharacteristic = await midiService.getCharacteristic(charUUIDs[i]);
-            console.log(`✅ Found MIDI characteristic: ${charUUIDs[i]}`);
-            break;
-          } catch (serviceError: any) {
-            console.log(`❌ Service/Characteristic ${i} not found:`, serviceError?.message || serviceError);
-            continue;
-          }
-        }
-        
-        if (!midiService || !midiCharacteristic) {
-          // List available services for debugging
-          console.log(`🔍 DETAILED BLUETOOTH ANALYSIS for ${device.name}:`);
-          console.log(`🔍 ================================================================`);
-          const services = await server.getPrimaryServices();
-          
-          for (const service of services) {
-            console.log(`\n📋 SERVICE: ${service.uuid}`);
-            console.log(`  🔹 Service UUID: ${service.uuid}`);
-            console.log(`  🔹 Is Primary: ${service.isPrimary}`);
-            
-            try {
-              const characteristics = await service.getCharacteristics();
-              console.log(`  📝 Found ${characteristics.length} characteristics:`);
-              
-              for (let j = 0; j < characteristics.length; j++) {
-                const char = characteristics[j];
-                console.log(`\n    📝 CHARACTERISTIC ${j + 1}:`);
-                console.log(`      🔸 UUID: ${char.uuid}`);
-                console.log(`      🔸 Properties:`, char.properties);
-                
-                // Analyze properties in detail
-                const props = char.properties;
-                console.log(`      🔸 Can Read: ${props.read ? '✅' : '❌'}`);
-                console.log(`      🔸 Can Write: ${props.write ? '✅' : '❌'}`);
-                console.log(`      🔸 Can Write Without Response: ${props.writeWithoutResponse ? '✅' : '❌'}`);
-                console.log(`      🔸 Can Notify: ${props.notify ? '✅' : '❌'}`);
-                console.log(`      🔸 Can Indicate: ${props.indicate ? '✅' : '❌'}`);
-                
-                // Determine the likely purpose
-                if (props.write || props.writeWithoutResponse) {
-                  console.log(`      🎯 PURPOSE: LIKELY FOR SENDING MIDI TO DEVICE (INPUT)`);
-                }
-                if (props.notify || props.indicate) {
-                  console.log(`      🎯 PURPOSE: LIKELY FOR RECEIVING MIDI FROM DEVICE (OUTPUT)`);
-                }
-                if (props.read) {
-                  console.log(`      🎯 PURPOSE: READABLE (CONFIG/STATUS)`);
-                }
-                
-                // Try to read descriptor information if available
-                try {
-                  const descriptors = await char.getDescriptors();
-                  if (descriptors.length > 0) {
-                    console.log(`      🔸 Descriptors: ${descriptors.length} found`);
-                    for (const desc of descriptors) {
-                      console.log(`        📄 Descriptor UUID: ${desc.uuid}`);
-                    }
-                  }
-                } catch (descError: any) {
-                  console.log(`      📄 No descriptors or access denied`);
-                }
+            const characteristics = await service.getCharacteristics();
+            for (const char of characteristics) {
+              if (char.properties.write || char.properties.writeWithoutResponse) {
+                writableCharacteristics.push({
+                  service: service.uuid,
+                  char: char.uuid,
+                  characteristic: char,
+                  canWrite: char.properties.write,
+                  canWriteWithoutResponse: char.properties.writeWithoutResponse
+                });
+                console.log(`🎯 WRITABLE CHARACTERISTIC: ${service.uuid} → ${char.uuid}`);
               }
-            } catch (charError: any) {
-              console.log(`    ❌ Could not read characteristics: ${charError?.message || charError}`);
             }
+          } catch (charError: any) {
+            console.log(`❌ Could not read characteristics from service ${service.uuid}`);
           }
-          
-          console.log(`\n🔍 ================================================================`);
-          console.log(`\n💡 DEBUGGING SUMMARY:`);
-          console.log(`💡 - Look for characteristics with 'Can Write: ✅' for sending MIDI`);
-          console.log(`💡 - Look for characteristics with 'Can Notify: ✅' for receiving MIDI`);
-          console.log(`💡 - Standard BLE MIDI uses service: 03b80e5a-ede8-4b33-a751-6ce34ec4c700`);
-          console.log(`💡 - Standard BLE MIDI uses char: 7772e5db-3868-4112-a1a9-f2669d106bf3`);
-          console.log(`\n`);
-          
-          throw new Error('No compatible MIDI service/characteristic found on device');
         }
         
-        // Format MIDI data for Bluetooth MIDI (with timestamp header)
-        const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
-        const timestampHigh = 0x80 | ((timestamp >> 7) & 0x3F);
-        const timestampLow = 0x80 | (timestamp & 0x7F);
+        if (writableCharacteristics.length === 0) {
+          throw new Error('No writable characteristics found on device');
+        }
         
-        // Create BLE MIDI packet: [timestampHigh, timestampLow, ...midiData]
-        const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
-        console.log(`📤 Sending BLE MIDI packet:`, Array.from(blePacket));
-        console.log(`🔍 Characteristic UUID: ${midiCharacteristic.uuid}`);
-        console.log(`🔍 Characteristic Properties:`, midiCharacteristic.properties);
+        console.log(`🎯 Found ${writableCharacteristics.length} writable characteristics - testing each one...`);
         
-        // Try different write methods
-        console.log(`📤 Attempting writeValue() method...`);
-        try {
-          await midiCharacteristic.writeValue(blePacket);
-          console.log(`✅ writeValue() completed successfully`);
-        } catch (writeError: any) {
-          console.log(`❌ writeValue() failed:`, writeError?.message);
+        // Test each writable characteristic
+        for (let i = 0; i < writableCharacteristics.length; i++) {
+          const testChar = writableCharacteristics[i];
+          console.log(`\n🧪 TEST ${i + 1}/${writableCharacteristics.length}:`);
+          console.log(`🔍 Service: ${testChar.service}`);
+          console.log(`🔍 Characteristic: ${testChar.char}`);
+          console.log(`📤 WATCH YOUR PEDAL LIGHT - Testing write to this characteristic...`);
           
-          // Try writeValueWithoutResponse if writeValue failed
-          if (midiCharacteristic.properties.writeWithoutResponse) {
-            console.log(`📤 Trying writeValueWithoutResponse() method...`);
-            try {
-              await midiCharacteristic.writeValueWithoutResponse(blePacket);
-              console.log(`✅ writeValueWithoutResponse() completed successfully`);
-            } catch (writeWithoutResponseError: any) {
-              console.log(`❌ writeValueWithoutResponse() failed:`, writeWithoutResponseError?.message);
-              throw writeError; // Re-throw original error
+          try {
+            // Test with raw MIDI data
+            const testPacket = new Uint8Array(midiBytes);
+            
+            if (testChar.canWriteWithoutResponse) {
+              await testChar.characteristic.writeValueWithoutResponse(testPacket);
+              console.log(`✅ writeValueWithoutResponse() test completed`);
+            } else if (testChar.canWrite) {
+              await testChar.characteristic.writeValue(testPacket);
+              console.log(`✅ writeValue() test completed`);
             }
-          } else {
-            throw writeError; // Re-throw original error
+            
+            console.log(`🚨 DID YOUR PEDAL LIGHT BLINK? If YES, this is the correct characteristic!`);
+            console.log(`⏳ Waiting 2 seconds before next test...`);
+            
+            // Wait 2 seconds between tests
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+          } catch (testError: any) {
+            console.log(`❌ Test failed for ${testChar.char}: ${testError?.message || testError}`);
           }
         }
         
-        // Also try sending just raw MIDI data without BLE timestamp headers
-        console.log(`📤 Also trying RAW MIDI data without BLE headers...`);
-        const rawMidiPacket = new Uint8Array(midiBytes);
-        console.log(`📤 Sending RAW MIDI packet:`, Array.from(rawMidiPacket));
+        console.log(`\n🎯 All tests completed. Which test made your pedal light blink?`);
         
-        try {
-          if (midiCharacteristic.properties.writeWithoutResponse) {
-            await midiCharacteristic.writeValueWithoutResponse(rawMidiPacket);
-            console.log(`✅ RAW MIDI writeValueWithoutResponse() completed`);
-          } else {
-            await midiCharacteristic.writeValue(rawMidiPacket);
-            console.log(`✅ RAW MIDI writeValue() completed`);
-          }
-        } catch (rawError: any) {
-          console.log(`❌ RAW MIDI write failed:`, rawError?.message);
-          // Don't throw - we already tried the main method above
-        }
-        
-        console.log(`🚨 CHECK YOUR PEDAL'S INDICATOR LIGHT NOW!`);
-        console.log(`🚨 If the light didn't blink, the data didn't reach your pedal`);
-        console.log(`✅ GATT write operations completed (but check pedal indicator!)`);
-        
-        // Flash blue light for outgoing data
+        // Flash blue light for outgoing data attempt
         setOutgoingDataActive(true);
         setTimeout(() => setOutgoingDataActive(false), 300);
         
@@ -902,19 +623,19 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
           timestamp: Date.now(),
           deviceId: device.id,
           deviceName: device.name,
-          data: `Sent: ${parsed.formatted} → [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+          data: `Tested ${writableCharacteristics.length} characteristics with: ${parsed.formatted}`,
           type: 'midi'
         };
         setMessages(prev => [...prev.slice(-49), message]);
         
         toast({
-          title: "Command Sent",
-          description: `Sent "${command}" to ${device.name}`,
+          title: "Characteristic Tests Completed",
+          description: `Tested ${writableCharacteristics.length} characteristics - check console for results`,
         });
         
       } catch (gattError: any) {
-        console.error('🚨 GATT write error:', gattError);
-        throw new Error(`Failed to send MIDI data via Bluetooth: ${gattError?.message || gattError}`);
+        console.error('🚨 GATT error:', gattError);
+        throw new Error(`Failed to access device characteristics: ${gattError?.message || gattError}`);
       }
       
     } catch (error: any) {
@@ -963,302 +684,288 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       case 'bluetooth':
         return 'text-blue-600 dark:text-blue-400';
       default:
-        return 'text-gray-600 dark:text-gray-400'; // Gray for unknown devices
+        return 'text-gray-600 dark:text-gray-400';
     }
-  };
-
-  // Format timestamp
-  const formatTimestamp = (timestamp: number) => {
-    return new Date(timestamp).toLocaleTimeString();
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl h-[85vh] flex flex-col" data-testid="modal-bluetooth-devices">
-        <DialogHeader className="pb-4">
-          <DialogTitle className="flex items-center gap-3">
-            <Bluetooth className="h-6 w-6 text-blue-500" />
-            <span className="text-xl font-semibold">Bluetooth MIDI Devices</span>
-            <Badge variant={hasBluetoothSupport ? "default" : "secondary"} className="ml-2">
-              {hasBluetoothSupport ? bluetoothState : "Not Supported"}
-            </Badge>
-            
-            {/* Data Flow Indicators */}
-            <div className="flex items-center gap-2 ml-4">
-              <div className="flex items-center gap-1">
-                <div 
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    incomingDataActive 
-                      ? 'bg-green-500 shadow-lg shadow-green-500/50 animate-pulse' 
-                      : 'bg-green-200 dark:bg-green-800'
-                  }`}
-                  title="Incoming Data"
-                />
-                <span className="text-xs text-muted-foreground">IN</span>
+      <DialogContent className="max-w-4xl h-[80vh]">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2 text-black dark:text-white">
+            <Bluetooth className="h-5 w-5" />
+            Bluetooth MIDI Devices
+            <div className="flex items-center gap-2 ml-auto">
+              <div className={`flex items-center gap-1 ${getBluetoothStateColor()}`}>
+                {getBluetoothStateIcon()}
+                <span className="text-sm">
+                  {bluetoothState === 'poweredOn' && 'Ready'}
+                  {bluetoothState === 'poweredOff' && 'Bluetooth Off'}
+                  {bluetoothState === 'unavailable' && 'Unavailable'}
+                  {bluetoothState === 'notSupported' && 'Not Supported'}
+                  {bluetoothState === 'unknown' && 'Checking...'}
+                </span>
               </div>
               <div className="flex items-center gap-1">
-                <div 
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    outgoingDataActive 
-                      ? 'bg-blue-500 shadow-lg shadow-blue-500/50 animate-pulse' 
-                      : 'bg-blue-200 dark:bg-blue-800'
-                  }`}
-                  title="Outgoing Data"
-                />
-                <span className="text-xs text-muted-foreground">OUT</span>
+                {incomingDataActive && (
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                )}
+                {outgoingDataActive && (
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                )}
+                {!incomingDataActive && !outgoingDataActive && (
+                  <div className="w-2 h-2 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
+                )}
               </div>
             </div>
           </DialogTitle>
         </DialogHeader>
 
-        {!hasBluetoothSupport && (
-          <Card className="mb-4 border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-2 text-yellow-700 dark:text-yellow-300">
-                <AlertCircle className="h-4 w-4" />
-                <span className="text-sm font-medium">
-                  Web Bluetooth API not supported in this browser. MIDI device connectivity unavailable.
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        <Tabs value={selectedTab} onValueChange={(value: any) => setSelectedTab(value)} className="flex-1">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="devices" className="flex items-center gap-2">
+              <Bluetooth className="h-4 w-4" />
+              Devices ({devices.length})
+            </TabsTrigger>
+            <TabsTrigger value="messages" className="flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Messages ({messages.length})
+            </TabsTrigger>
+            <TabsTrigger value="commands" className="flex items-center gap-2">
+              <Zap className="h-4 w-4" />
+              Send MIDI Commands
+            </TabsTrigger>
+          </TabsList>
 
-        {/* Tab Navigation */}
-        <div className="flex gap-2 mb-4">
-          <Button
-            variant={selectedTab === 'devices' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setSelectedTab('devices')}
-            className="flex-1"
-          >
-            <Bluetooth className="h-4 w-4 mr-2" />
-            Devices
-          </Button>
-          <Button
-            variant={selectedTab === 'messages' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setSelectedTab('messages')}
-            className="flex-1"
-          >
-            <Music className="h-4 w-4 mr-2" />
-            MIDI Messages
-          </Button>
-          <Button
-            variant={selectedTab === 'commands' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setSelectedTab('commands')}
-            className="flex-1"
-          >
-            <Send className="h-4 w-4 mr-2" />
-            Commands
-          </Button>
-        </div>
-
-        {/* Devices Tab */}
-        {selectedTab === 'devices' && (
-          <div className="flex-1 flex flex-col gap-4">
-            {/* Scan Controls */}
-            <div className="flex gap-2">
-              <Button 
-                onClick={handleScanDevices}
-                disabled={isScanning || !hasBluetoothSupport || bluetoothState !== 'poweredOn'}
-                className="flex-1"
-                data-testid="button-scan-devices"
-              >
-                <Search className="h-4 w-4 mr-2" />
-                {isScanning ? 'Scanning...' : 'Quick Scan'}
-              </Button>
-              <Button 
+          <TabsContent value="devices" className="flex-1 space-y-4">
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={handleQuickScan}
+                disabled={!hasBluetoothSupport || isScanning}
                 variant="outline"
+                size="sm"
+                data-testid="button-quick-scan"
+              >
+                {isScanning ? (
+                  <>
+                    <div className="animate-spin w-4 h-4 border-2 border-primary border-t-transparent rounded-full" />
+                    Scanning...
+                  </>
+                ) : (
+                  <>
+                    <Search className="h-4 w-4" />
+                    Quick Scan
+                  </>
+                )}
+              </Button>
+              
+              <Button
                 onClick={handleDeepScan}
-                disabled={isScanning || !hasBluetoothSupport || bluetoothState !== 'poweredOn'}
-                className="flex-1"
+                disabled={!hasBluetoothSupport || isScanning}
+                variant="outline"
+                size="sm"
                 data-testid="button-deep-scan"
               >
-                <RotateCcw className="h-4 w-4 mr-2" />
-                {isScanning ? 'Scanning...' : 'Deep Scan'}
+                {isScanning ? (
+                  <>
+                    <div className="animate-spin w-4 h-4 border-2 border-primary border-t-transparent rounded-full" />
+                    Deep Scanning...
+                  </>
+                ) : (
+                  <>
+                    <Scan className="h-4 w-4" />
+                    Deep Scan
+                  </>
+                )}
               </Button>
+
+              {!hasBluetoothSupport && (
+                <Badge variant="destructive">
+                  <X className="h-3 w-3 mr-1" />
+                  Bluetooth Not Supported
+                </Badge>
+              )}
             </div>
 
-            {/* Device List */}
-            <ScrollArea className="flex-1">
-              <div className="space-y-3">
+            <ScrollArea className="h-[400px]">
+              <div className="space-y-2">
                 {devices.length === 0 ? (
-                  <Card className="p-8 text-center">
-                    <Bluetooth className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                    <h3 className="text-lg font-medium text-muted-foreground mb-2">No Bluetooth Devices Found</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Click "Quick Scan" or "Deep Scan" to discover Bluetooth devices
-                    </p>
-                  </Card>
+                  <div className="text-center text-gray-500 dark:text-gray-400 py-8">
+                    <Bluetooth className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p>No Bluetooth devices found</p>
+                    <p className="text-sm">Use Quick Scan or Deep Scan to discover devices</p>
+                  </div>
                 ) : (
-                  devices.map((device) => (
-                    <Card key={device.id} className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className={getDeviceColor(device.type)}>
-                            {getDeviceIcon(device.type)}
-                          </div>
-                          <div>
-                            <h3 className="font-medium">{device.name}</h3>
-                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <span>{device.deviceClass}</span>
-                              {device.connected ? (
-                                <Badge variant="default" className="bg-green-500">
-                                  <Wifi className="h-3 w-3 mr-1" />
-                                  Connected
+                  devices
+                    .sort((a, b) => {
+                      // Sort MIDI devices first, then by connection status, then by name
+                      if (a.type === 'midi' && b.type !== 'midi') return -1;
+                      if (a.type !== 'midi' && b.type === 'midi') return 1;
+                      if (a.connected && !b.connected) return -1;
+                      if (!a.connected && b.connected) return 1;
+                      return a.name.localeCompare(b.name);
+                    })
+                    .map((device) => (
+                      <Card key={device.id} className="p-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className={`p-2 rounded-full bg-gray-100 dark:bg-gray-800 ${getDeviceColor(device.type)}`}>
+                              {getDeviceIcon(device.type)}
+                            </div>
+                            <div>
+                              <h3 className="font-medium text-sm">{device.name}</h3>
+                              <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                                <Badge variant={device.type === 'midi' ? 'default' : 'secondary'} className="text-xs">
+                                  {device.type === 'midi' ? 'MIDI' : 'Bluetooth'}
                                 </Badge>
-                              ) : (
-                                <Badge variant="secondary">
-                                  <WifiOff className="h-3 w-3 mr-1" />
-                                  Disconnected
+                                <Badge variant={device.connected ? 'default' : 'outline'} className="text-xs">
+                                  {device.connected ? 'Connected' : 'Disconnected'}
                                 </Badge>
-                              )}
-                              {device.rssi && (
-                                <span>RSSI: {device.rssi}dBm</span>
-                              )}
+                                {device.paired && (
+                                  <Badge variant="outline" className="text-xs">
+                                    Paired
+                                  </Badge>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {device.connected ? (
+                          <div className="flex items-center gap-1">
+                            {device.connected ? (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleDisconnectDevice(device)}
+                                data-testid={`button-disconnect-${device.id}`}
+                              >
+                                <WifiOff className="h-4 w-4" />
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleConnectDevice(device)}
+                                data-testid={`button-connect-${device.id}`}
+                              >
+                                <Wifi className="h-4 w-4" />
+                              </Button>
+                            )}
                             <Button
-                              variant="outline"
+                              variant="ghost"
                               size="sm"
-                              onClick={() => handleDisconnectDevice(device)}
-                              data-testid={`button-disconnect-${device.id}`}
+                              onClick={() => handleRemoveDevice(device)}
+                              data-testid={`button-remove-${device.id}`}
                             >
-                              <WifiOff className="h-4 w-4 mr-2" />
-                              Disconnect
+                              <Trash2 className="h-4 w-4" />
                             </Button>
-                          ) : (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleConnectDevice(device)}
-                              disabled={!hasBluetoothSupport}
-                              data-testid={`button-connect-${device.id}`}
-                            >
-                              <Wifi className="h-4 w-4 mr-2" />
-                              Connect
-                            </Button>
-                          )}
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleRemoveDevice(device)}
-                            data-testid={`button-remove-${device.id}`}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                          </div>
                         </div>
-                      </div>
-                    </Card>
-                  ))
+                      </Card>
+                    ))
                 )}
               </div>
             </ScrollArea>
-          </div>
-        )}
+          </TabsContent>
 
-        {/* Messages Tab */}
-        {selectedTab === 'messages' && (
-          <div className="flex-1 flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold">MIDI Messages</h3>
+          <TabsContent value="messages" className="flex-1 space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-medium text-black dark:text-white">MIDI Messages</h3>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleClearMessages}
                 data-testid="button-clear-messages"
               >
-                Clear
+                <Trash2 className="h-4 w-4" />
+                Clear Messages
               </Button>
             </div>
-            
-            <ScrollArea className="flex-1 border rounded p-4">
-              <div className="space-y-2">
-                {messages.length === 0 ? (
-                  <div className="text-center text-muted-foreground py-8">
-                    <Music className="h-8 w-8 mx-auto mb-2" />
-                    <p>No MIDI messages yet</p>
-                    <p className="text-sm">Connect a MIDI device and start playing to see messages here</p>
-                  </div>
-                ) : (
-                  messages.map((message, index) => (
-                    <div key={index} className="flex gap-2 text-sm font-mono border-b pb-2">
-                      <span className="text-muted-foreground text-xs w-20 flex-shrink-0">
-                        {formatTimestamp(message.timestamp)}
-                      </span>
-                      <span className="text-blue-600 dark:text-blue-400 w-32 flex-shrink-0 truncate">
-                        {message.deviceName}
-                      </span>
-                      <span className="flex-1">{message.data}</span>
-                    </div>
-                  ))
-                )}
-              </div>
-            </ScrollArea>
-          </div>
-        )}
 
-        {/* Commands Tab */}
-        {selectedTab === 'commands' && (
-          <div className="flex-1 flex flex-col gap-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Send MIDI Commands</h3>
-            
-            {connectedDevices.length === 0 ? (
-              <Card className="p-8 text-center">
-                <Send className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <h3 className="text-lg font-medium text-muted-foreground mb-2">No Connected Devices</h3>
-                <p className="text-sm text-muted-foreground">
-                  Connect to a MIDI device to send commands
-                </p>
-              </Card>
-            ) : (
-              <div className="space-y-4">
-                {connectedDevices.map((device) => (
-                  <Card key={device.id} className="p-4">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className={getDeviceColor(device.type)}>
-                        {getDeviceIcon(device.type)}
+            <ScrollArea className="h-[400px] border rounded-md p-4 bg-gray-50 dark:bg-gray-900 font-mono text-sm">
+              {messages.length === 0 ? (
+                <div className="text-center text-gray-500 dark:text-gray-400 py-8">
+                  <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p>No MIDI messages yet</p>
+                  <p className="text-sm">Connect a MIDI device and start playing to see messages here</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {messages.map((message, index) => (
+                    <div key={index} className="text-xs">
+                      <div className="text-gray-500 dark:text-gray-400">
+                        {new Date(message.timestamp).toLocaleTimeString()}
                       </div>
-                      <h4 className="font-medium">{device.name}</h4>
-                      <Badge variant="default" className="bg-green-500">Connected</Badge>
+                      <div className="font-semibold text-blue-600 dark:text-blue-400">
+                        {message.deviceName}
+                      </div>
+                      <div className="text-gray-900 dark:text-gray-100">
+                        {message.data}
+                      </div>
                     </div>
-                    
-                    <div className="flex gap-2">
-                      <input
-                        type="text"
-                        value={commandInput}
-                        onChange={(e) => setCommandInput(e.target.value)}
-                        placeholder="Enter MIDI command (e.g., [[PC:12:1]], [[CC:7:64:1]], [[NOTE:60:127:1]])"
-                        className="flex-1 px-3 py-2 border rounded text-sm text-black dark:text-white"
-                        data-testid={`input-command-${device.id}`}
-                      />
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          if (commandInput.trim()) {
-                            handleSendCommand(device, commandInput);
-                            setCommandInput('');
-                          }
-                        }}
-                        disabled={!commandInput.trim()}
-                        data-testid={`button-send-command-${device.id}`}
-                      >
-                        <Send className="h-4 w-4 mr-2" />
-                        Send
-                      </Button>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+                  ))}
+                </div>
+              )}
+            </ScrollArea>
+          </TabsContent>
+
+          <TabsContent value="commands" className="flex-1 space-y-4">
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium text-black dark:text-white">Send MIDI Commands</h3>
+              
+              {connectedDevices.length === 0 ? (
+                <div className="text-center text-gray-500 dark:text-gray-400 py-8">
+                  <Zap className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p>No connected MIDI devices</p>
+                  <p className="text-sm">
+                    Connect to a MIDI device to send commands
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {connectedDevices.map((device) => (
+                    <Card key={device.id} className="p-4">
+                      <CardHeader className="p-0 pb-3">
+                        <CardTitle className="text-sm flex items-center gap-2">
+                          {getDeviceIcon(device.type)}
+                          {device.name}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-0">
+                        <div className="flex gap-2">
+                          <Input
+                            type="text"
+                            value={commandInput}
+                            onChange={(e) => setCommandInput(e.target.value)}
+                            placeholder="Enter MIDI command (e.g., [[PC:12:1]], [[CC:7:64:1]], [[NOTE:60:127:1]])"
+                            className="flex-1 px-3 py-2 border rounded text-sm text-black dark:text-white"
+                            data-testid={`input-command-${device.id}`}
+                          />
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleSendCommand(device, commandInput)}
+                            disabled={!commandInput.trim()}
+                            data-testid={`button-send-${device.id}`}
+                          >
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                          Example formats: [[PC:1:1]] (Program Change), [[CC:7:127:1]] (Control Change), [[NOTE:60:127:1]] (Note On)
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        <div className="flex justify-end gap-3 pt-4 border-t">
+          <Button variant="outline" onClick={onClose} data-testid="button-close-bluetooth">
+            Close
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );

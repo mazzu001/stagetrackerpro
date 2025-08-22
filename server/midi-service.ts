@@ -268,6 +268,13 @@ export class MIDIService {
 
   public parseMIDICommand(command: string): number[] | null {
     try {
+      // Handle new format: [[PC:12:1]], [[CC:7:64:1]], [[NOTE:60:127:1]]
+      const bracketMatch = command.match(/\[\[([A-Z]+):(\d+)(?::(\d+))?(?::(\d+))?\]\]/);
+      if (bracketMatch) {
+        const formatParse = this.parseBracketMIDICommand(bracketMatch);
+        if (formatParse) return formatParse;
+      }
+
       // Handle hex format: "90 40 7F" or "0x90 0x40 0x7F"
       if (command.includes(' ')) {
         return command.split(' ')
@@ -294,6 +301,86 @@ export class MIDIService {
       console.error('❌ Failed to parse MIDI command:', error);
       return null;
     }
+  }
+
+  private parseBracketMIDICommand(match: RegExpMatchArray): number[] | null {
+    const [, type, param1, param2, param3] = match;
+    const channel = param3 ? Math.max(1, Math.min(16, parseInt(param3))) - 1 : 0; // Convert 1-16 to 0-15
+    
+    switch (type.toUpperCase()) {
+      case 'PC': // Program Change [[PC:12:1]]
+        const program = parseInt(param1);
+        if (program >= 0 && program <= 127) {
+          return [0xC0 + channel, program];
+        }
+        break;
+        
+      case 'CC': // Control Change [[CC:7:64:1]]
+        const controller = parseInt(param1);
+        const value = parseInt(param2 || '0');
+        if (controller >= 0 && controller <= 127 && value >= 0 && value <= 127) {
+          return [0xB0 + channel, controller, value];
+        }
+        break;
+        
+      case 'NOTE': // Note On [[NOTE:60:127:1]]
+        const note = parseInt(param1);
+        const velocity = parseInt(param2 || '127');
+        if (note >= 0 && note <= 127 && velocity >= 0 && velocity <= 127) {
+          return [0x90 + channel, note, velocity];
+        }
+        break;
+        
+      case 'NOTEOFF': // Note Off [[NOTEOFF:60:64:1]]
+        const noteOff = parseInt(param1);
+        const velocityOff = parseInt(param2 || '64');
+        if (noteOff >= 0 && noteOff <= 127 && velocityOff >= 0 && velocityOff <= 127) {
+          return [0x80 + channel, noteOff, velocityOff];
+        }
+        break;
+    }
+    
+    return null;
+  }
+
+  public formatMIDIMessage(data: number[]): string {
+    if (!data || data.length === 0) return 'Unknown MIDI';
+    
+    const status = data[0];
+    const channel = (status & 0x0F) + 1; // Convert 0-15 to 1-16
+    const messageType = status & 0xF0;
+    
+    switch (messageType) {
+      case 0x90: // Note On
+        if (data.length >= 3) {
+          return `[[NOTE:${data[1]}:${data[2]}:${channel}]]`;
+        }
+        break;
+      case 0x80: // Note Off  
+        if (data.length >= 3) {
+          return `[[NOTEOFF:${data[1]}:${data[2]}:${channel}]]`;
+        }
+        break;
+      case 0xB0: // Control Change
+        if (data.length >= 3) {
+          return `[[CC:${data[1]}:${data[2]}:${channel}]]`;
+        }
+        break;
+      case 0xC0: // Program Change
+        if (data.length >= 2) {
+          return `[[PC:${data[1]}:${channel}]]`;
+        }
+        break;
+      case 0xE0: // Pitch Bend
+        if (data.length >= 3) {
+          const value = (data[2] << 7) | data[1];
+          return `[[PITCHBEND:${value}:${channel}]]`;
+        }
+        break;
+    }
+    
+    // Fallback to hex format
+    return data.map(byte => byte.toString(16).padStart(2, '0').toUpperCase()).join(' ');
   }
 
   private parseSimpleMIDICommand(command: string): number[] | null {

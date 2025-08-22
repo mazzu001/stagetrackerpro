@@ -1011,7 +1011,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                         type="text"
                         value={commandInput}
                         onChange={(e) => setCommandInput(e.target.value)}
-                        placeholder="Enter MIDI command (e.g., Note On, CC, etc.)"
+                        placeholder="Enter MIDI command (e.g., [[PC:12:1]], [[CC:7:64:1]], [[NOTE:60:127:1]])"
                         className="flex-1 px-3 py-2 border rounded text-sm"
                         data-testid={`input-command-${device.id}`}
                       />

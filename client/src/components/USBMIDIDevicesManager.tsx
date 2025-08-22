@@ -541,7 +541,7 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
                       <Input
                         value={midiCommand}
                         onChange={(e) => setMidiCommand(e.target.value)}
-                        placeholder="e.g., '90 40 7F' (hex format)"
+                        placeholder="e.g., [[PC:12:1]], [[CC:7:64:1]], [[NOTE:60:127:1]]"
                         className="font-mono text-sm"
                         data-testid="input-usb-midi-command"
                       />
@@ -561,9 +561,10 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
                 <div className="space-y-2">
                   <p className="text-xs font-medium text-muted-foreground">USB MIDI Command Examples:</p>
                   <div className="text-xs text-muted-foreground space-y-1 bg-muted/50 p-3 rounded">
-                    <div>• Note On: <code className="bg-background px-1 rounded">90 3C 7F</code> (Middle C, velocity 127)</div>
-                    <div>• Note Off: <code className="bg-background px-1 rounded">80 3C 00</code> (Middle C, velocity 0)</div>
-                    <div>• Control Change: <code className="bg-background px-1 rounded">B0 07 7F</code> (Volume, max)</div>
+                    <div>• Program Change: <code className="bg-background px-1 rounded">[[PC:12:1]]</code> (Program 12, Channel 1)</div>
+                    <div>• Control Change: <code className="bg-background px-1 rounded">[[CC:7:64:1]]</code> (Volume, Channel 1)</div>
+                    <div>• Note On: <code className="bg-background px-1 rounded">[[NOTE:60:127:1]]</code> (Middle C, Channel 1)</div>
+                    <div>• Legacy: <code className="bg-background px-1 rounded">90 3C 7F</code> (Hex format still supported)</div>
                   </div>
                 </div>
               </CardContent>

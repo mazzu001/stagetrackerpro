@@ -397,7 +397,7 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
                       <Input
                         value={midiCommand}
                         onChange={(e) => setMidiCommand(e.target.value)}
-                        placeholder="e.g., '90 40 7F' or 'note on C4 127'"
+                        placeholder="e.g., [[PC:12:1]], [[CC:7:64:1]], [[NOTE:60:127:1]]"
                         className="font-mono text-sm"
                         data-testid="input-midi-command"
                       />
@@ -417,9 +417,10 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
                 <div className="space-y-2">
                   <p className="text-xs font-medium text-muted-foreground">Command Formats:</p>
                   <div className="text-xs text-muted-foreground space-y-1 bg-muted/50 p-3 rounded">
-                    <div>• Hex: <code className="bg-background px-1 rounded">90 40 7F</code></div>
-                    <div>• Simple: <code className="bg-background px-1 rounded">note on C4 127</code></div>
-                    <div>• CC: <code className="bg-background px-1 rounded">cc 1 127</code></div>
+                    <div>• Program Change: <code className="bg-background px-1 rounded">[[PC:12:1]]</code></div>
+                    <div>• Control Change: <code className="bg-background px-1 rounded">[[CC:7:64:1]]</code></div>
+                    <div>• Note On: <code className="bg-background px-1 rounded">[[NOTE:60:127:1]]</code></div>
+                    <div>• Legacy: <code className="bg-background px-1 rounded">90 40 7F</code> or <code className="bg-background px-1 rounded">note on C4 127</code></div>
                   </div>
                 </div>
               </CardContent>

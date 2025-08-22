@@ -1266,7 +1266,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         res.json({ 
           success: true, 
           message: `Sent MIDI message to ${deviceId}`,
-          parsedData: midiData 
+          parsedData: midiData,
+          formattedCommand: midiService.formatMIDIMessage(midiData)
         });
       } else {
         res.status(400).json({ error: `Failed to send MIDI message to ${deviceId}` });

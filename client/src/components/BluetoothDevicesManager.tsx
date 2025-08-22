@@ -846,10 +846,53 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         // Create BLE MIDI packet: [timestampHigh, timestampLow, ...midiData]
         const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
         console.log(`📤 Sending BLE MIDI packet:`, Array.from(blePacket));
+        console.log(`🔍 Characteristic UUID: ${midiCharacteristic.uuid}`);
+        console.log(`🔍 Characteristic Properties:`, midiCharacteristic.properties);
         
-        // Try to write the data
-        await midiCharacteristic.writeValue(blePacket);
-        console.log(`✅ Successfully sent MIDI command to ${device.name}`);
+        // Try different write methods
+        console.log(`📤 Attempting writeValue() method...`);
+        try {
+          await midiCharacteristic.writeValue(blePacket);
+          console.log(`✅ writeValue() completed successfully`);
+        } catch (writeError: any) {
+          console.log(`❌ writeValue() failed:`, writeError?.message);
+          
+          // Try writeValueWithoutResponse if writeValue failed
+          if (midiCharacteristic.properties.writeWithoutResponse) {
+            console.log(`📤 Trying writeValueWithoutResponse() method...`);
+            try {
+              await midiCharacteristic.writeValueWithoutResponse(blePacket);
+              console.log(`✅ writeValueWithoutResponse() completed successfully`);
+            } catch (writeWithoutResponseError: any) {
+              console.log(`❌ writeValueWithoutResponse() failed:`, writeWithoutResponseError?.message);
+              throw writeError; // Re-throw original error
+            }
+          } else {
+            throw writeError; // Re-throw original error
+          }
+        }
+        
+        // Also try sending just raw MIDI data without BLE timestamp headers
+        console.log(`📤 Also trying RAW MIDI data without BLE headers...`);
+        const rawMidiPacket = new Uint8Array(midiBytes);
+        console.log(`📤 Sending RAW MIDI packet:`, Array.from(rawMidiPacket));
+        
+        try {
+          if (midiCharacteristic.properties.writeWithoutResponse) {
+            await midiCharacteristic.writeValueWithoutResponse(rawMidiPacket);
+            console.log(`✅ RAW MIDI writeValueWithoutResponse() completed`);
+          } else {
+            await midiCharacteristic.writeValue(rawMidiPacket);
+            console.log(`✅ RAW MIDI writeValue() completed`);
+          }
+        } catch (rawError: any) {
+          console.log(`❌ RAW MIDI write failed:`, rawError?.message);
+          // Don't throw - we already tried the main method above
+        }
+        
+        console.log(`🚨 CHECK YOUR PEDAL'S INDICATOR LIGHT NOW!`);
+        console.log(`🚨 If the light didn't blink, the data didn't reach your pedal`);
+        console.log(`✅ GATT write operations completed (but check pedal indicator!)`);
         
         // Flash blue light for outgoing data
         setOutgoingDataActive(true);

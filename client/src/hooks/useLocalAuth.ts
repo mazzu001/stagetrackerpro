@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { apiRequest } from '@/lib/queryClient';
 
-export type UserType = 'free' | 'paid';
+export type UserType = 'free' | 'paid' | 'premium' | 'professional';
 
 interface LocalUser {
   email: string;

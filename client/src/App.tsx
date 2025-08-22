@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Router } from "wouter";
 import Performance from "@/pages/performance";
 import Subscribe from "@/pages/subscribe";
+import SubscribeFixed from "@/pages/subscribe-fixed";
 import SubscribeSimple from "@/pages/subscribe-simple";
 import SubscribeDebug from "@/pages/subscribe-debug";
 import SubscribeElementsTest from "@/pages/subscribe-elements-test";
@@ -103,7 +104,8 @@ function AppContent() {
       ) : (
         <Router>
           <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
-          <Route path="/subscribe" component={SubscribeElementsTest} />
+          <Route path="/subscribe" component={SubscribeFixed} />
+          <Route path="/subscribe-test-elements" component={SubscribeElementsTest} />
           <Route path="/subscribe-debug" component={SubscribeDebug} />
           <Route path="/subscribe-simple" component={SubscribeSimple} />
           <Route path="/subscribe-old" component={Subscribe} />

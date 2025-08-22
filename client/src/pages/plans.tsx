@@ -6,18 +6,12 @@ import { Check, Crown, Zap, Star, Music, BarChart3, Headphones, Cloud, MessageSq
 import { useLocation } from 'wouter';
 
 export default function Plans() {
-  const { user, upgrade } = useLocalAuth();
+  const { user } = useLocalAuth();
   const [, setLocation] = useLocation();
 
   const handleSubscribe = (plan: string) => {
-    if (plan === 'premium') {
-      upgrade();
-      setLocation('/');
-    } else if (plan === 'professional') {
-      // Handle professional subscription
-      upgrade();
-      setLocation('/');
-    }
+    // Redirect to proper Stripe subscription flow
+    setLocation('/subscribe');
   };
 
   return (

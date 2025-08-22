@@ -605,28 +605,7 @@ export default function Performance({ userType }: PerformanceProps) {
                   )}
                   <span>{isFullscreen ? 'Exit Full Screen' : 'Full Screen'}</span>
                 </DropdownMenuItem>
-                {/* Beta tester download links - only show for paid@demo.com */}
-                {user?.email === 'paid@demo.com' && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem 
-                      onClick={() => downloadSampleZip('3AM')}
-                      className="flex items-center cursor-pointer"
-                      data-testid="menu-download-3am"
-                    >
-                      <FileAudio className="w-4 h-4 mr-2" />
-                      <span>Download 3AM - Matchbox 20</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => downloadSampleZip('ComfortablyNumb')}
-                      className="flex items-center cursor-pointer"
-                      data-testid="menu-download-comfortably-numb"
-                    >
-                      <FileAudio className="w-4 h-4 mr-2" />
-                      <span>Download Comfortably Numb - Pink Floyd</span>
-                    </DropdownMenuItem>
-                  </>
-                )}
+
                 <DropdownMenuSeparator />
                 <DropdownMenuItem disabled className="flex items-center">
                   <User className="w-4 h-4 mr-2" />

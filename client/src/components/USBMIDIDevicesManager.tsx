@@ -543,7 +543,7 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
                         value={midiCommand}
                         onChange={(e) => setMidiCommand(e.target.value)}
                         placeholder="e.g., [[PC:12:1]], [[CC:7:64:1]], [[NOTE:60:127:1]]"
-                        className="font-mono text-sm"
+                        className="font-mono text-sm text-black dark:text-white"
                         data-testid="input-usb-midi-command"
                       />
                       <Button 

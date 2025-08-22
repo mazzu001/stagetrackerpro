@@ -173,6 +173,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch user" });
     }
   });
+  // Debug endpoint to force localStorage clear
+  app.post('/api/debug/clear-cache', (req, res) => {
+    res.json({ 
+      success: true, 
+      message: 'Cache clear command sent',
+      script: `
+        localStorage.removeItem('lpp_local_user');
+        console.log('🗑️ Authentication cache cleared');
+        window.location.reload();
+      `
+    });
+  });
+
   console.log('✅ Authentication routes registered');
 
   // Sample ZIP file download routes

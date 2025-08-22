@@ -17,6 +17,7 @@ import {
   Volume2,
   RotateCcw
 } from 'lucide-react';
+import { formatMIDIMessage, getMIDIMessageType } from '@/utils/midiFormatter';
 
 // Types
 interface BluetoothDevice {
@@ -482,7 +483,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
             timestamp: Date.now(),
             deviceId: device.id,
             deviceName: device.name,
-            data: `${messageType}: [${Array.from(midiData).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+            data: `${messageType}: ${formatMIDIMessage(Array.from(midiData))}`,
             type: 'midi'
           };
           

@@ -21,6 +21,7 @@ import {
   AlertCircle,
   CheckCircle
 } from 'lucide-react';
+import { formatMIDIMessage as formatMIDIData } from '@/utils/midiFormatter';
 
 interface USBMIDIDevice {
   id: string;
@@ -278,8 +279,8 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
   // Format MIDI message for display
   const formatMIDIMessage = (message: USBMIDIMessage) => {
     const timestamp = new Date(message.timestamp).toLocaleTimeString();
-    const dataHex = Array.from(message.data).map(b => b.toString(16).padStart(2, '0')).join(' ');
-    return `[${timestamp}] ${message.deviceName}: ${dataHex}`;
+    const formattedData = formatMIDIData(Array.from(message.data));
+    return `[${timestamp}] ${message.deviceName}: ${formattedData}`;
   };
 
   // Clear messages

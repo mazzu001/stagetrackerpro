@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useMIDIWebSocket, type MIDIMessage } from '@/hooks/useMIDIWebSocket';
 import { apiRequest } from '@/lib/queryClient';
 import { Music, Wifi, WifiOff, Send, Trash2, Volume2, VolumeX } from 'lucide-react';
+import { formatMIDIMessage } from '@/utils/midiFormatter';
 
 export interface MIDIDevice {
   id: string;
@@ -162,10 +163,10 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
   };
 
   // Format MIDI message for display
-  const formatMIDIMessage = (message: MIDIMessage) => {
+  const formatMIDIMessageDisplay = (message: MIDIMessage) => {
     const time = new Date(message.timestamp).toLocaleTimeString();
-    const dataStr = message.rawData.map(d => d.toString(16).padStart(2, '0')).join(' ');
-    return `${time} | ${message.deviceName} | Ch${message.channel} | ${message.command} | [${dataStr}]`;
+    const formattedData = formatMIDIMessage(message.rawData);
+    return `${time} | ${message.deviceName} | Ch${message.channel} | ${message.command} | ${formattedData}`;
   };
 
   // Initialize component
@@ -355,7 +356,7 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
                           className="p-3 bg-muted rounded-lg border-l-4 border-primary font-mono text-xs break-all"
                           data-testid={`midi-message-${index}`}
                         >
-                          {formatMIDIMessage(message)}
+                          {formatMIDIMessageDisplay(message)}
                         </div>
                       ))
                     )}

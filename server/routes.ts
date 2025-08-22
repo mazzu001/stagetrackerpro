@@ -97,7 +97,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         lastName: null,
         profileImageUrl: null,
         passwordHash: passwordHash,
-        subscriptionStatus: 1, // 1 = free user
+        subscriptionStatus: 1 as any, // 1 = free user
       });
       
       console.log('✅ New user registered in cloud database:', newUser.email);
@@ -106,7 +106,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: { 
           id: newUser.id, 
           email: newUser.email,
-          userType: newUser.subscriptionStatus === 1 ? 'free' : (newUser.subscriptionStatus === 2 ? 'premium' : 'professional')
+          userType: (newUser.subscriptionStatus as number) === 1 ? 'free' : ((newUser.subscriptionStatus as number) === 2 ? 'paid' : 'professional')
         }
       });
     } catch (error: any) {
@@ -142,7 +142,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: { 
           id: user.id, 
           email: user.email,
-          userType: user.subscriptionStatus === 1 ? 'free' : (user.subscriptionStatus === 2 ? 'premium' : 'professional')
+          userType: (user.subscriptionStatus as number) === 1 ? 'free' : ((user.subscriptionStatus as number) === 2 ? 'paid' : 'professional')
         }
       });
     } catch (error: any) {

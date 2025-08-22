@@ -83,9 +83,10 @@ export class DatabaseStorage implements IStorage {
       const users = await userDb.select().from(usersPg).where(isNotNull(usersPg.stripeSubscriptionId));
       return users.map(user => ({
         ...user,
+        subscriptionStatus: String(user.subscriptionStatus),
         createdAt: user.createdAt?.toISOString() || null,
         updatedAt: user.updatedAt?.toISOString() || null,
-      }));
+      }) as any);
     } catch (error) {
       console.error('❌ Error fetching users with subscriptions:', error);
       return [];
@@ -126,9 +127,10 @@ export class DatabaseStorage implements IStorage {
     // Convert PostgreSQL user to SQLite user format
     return {
       ...user,
+      subscriptionStatus: String(user.subscriptionStatus),
       createdAt: user.createdAt?.toISOString() || null,
       updatedAt: user.updatedAt?.toISOString() || null,
-    };
+    } as any;
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
@@ -155,14 +157,14 @@ export class DatabaseStorage implements IStorage {
       .insert(usersPg)
       .values({
         ...userData,
-        subscriptionStatus: userData.subscriptionStatus || 1, // Default to 1 (free)
+        subscriptionStatus: (userData.subscriptionStatus as any) || 1, // Default to 1 (free)
         updatedAt: new Date(),
       })
       .onConflictDoUpdate({
         target: usersPg.id,
         set: {
           ...userData,
-          subscriptionStatus: userData.subscriptionStatus || 1,
+          subscriptionStatus: (userData.subscriptionStatus as any) || 1,
           updatedAt: new Date(),
         },
       })
@@ -321,11 +323,10 @@ export class DatabaseStorage implements IStorage {
 
       console.log('Deleting song from local database:', id, existingSong[0].title);
 
-      // Delete associated tracks (including audio data) and MIDI events first
+      // Delete associated tracks (including audio data)
       const tracksResult = await localDb.delete(tracks).where(eq(tracks.songId, id));
-      const midiResult = await localDb.delete(midiEvents).where(eq(midiEvents.songId, id));
       
-      console.log(`Deleted ${tracksResult.changes || 0} tracks and ${midiResult.changes || 0} MIDI events for song: ${id}`);
+      console.log(`Deleted ${tracksResult.changes || 0} tracks for song: ${id}`);
       
       // Delete the song itself
       const result = await localDb.delete(songs).where(whereClause);

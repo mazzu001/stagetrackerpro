@@ -144,9 +144,10 @@ export class DatabaseStorage implements IStorage {
     // Convert PostgreSQL user to SQLite user format
     return {
       ...user,
+      subscriptionStatus: String(user.subscriptionStatus),
       createdAt: user.createdAt?.toISOString() || null,
       updatedAt: user.updatedAt?.toISOString() || null,
-    };
+    } as any;
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
@@ -175,9 +176,10 @@ export class DatabaseStorage implements IStorage {
     // Convert PostgreSQL user to SQLite user format
     return {
       ...user,
+      subscriptionStatus: String(user.subscriptionStatus),
       createdAt: user.createdAt?.toISOString() || null,
       updatedAt: user.updatedAt?.toISOString() || null,
-    };
+    } as any;
   }
 
   async updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined> {
@@ -190,7 +192,7 @@ export class DatabaseStorage implements IStorage {
       .set({
         stripeCustomerId,
         stripeSubscriptionId,
-        subscriptionStatus: 'active',
+        subscriptionStatus: 2 as any, // 2 = premium active
         updatedAt: new Date(),
       })
       .where(eq(usersPg.id, id))

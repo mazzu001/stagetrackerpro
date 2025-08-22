@@ -96,9 +96,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         firstName: null,
         lastName: null,
         profileImageUrl: null,
-        passwordHash: passwordHash,
         subscriptionStatus: 1 as any, // 1 = free user
-      });
+      } as any);
       
       console.log('✅ New user registered in cloud database:', newUser.email);
       res.json({ 
@@ -106,7 +105,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: { 
           id: newUser.id, 
           email: newUser.email,
-          userType: (newUser.subscriptionStatus as number) === 1 ? 'free' : ((newUser.subscriptionStatus as number) === 2 ? 'paid' : 'professional')
+          userType: (newUser.subscriptionStatus as any as number) === 1 ? 'free' : ((newUser.subscriptionStatus as any as number) === 2 ? 'paid' : 'professional')
         }
       });
     } catch (error: any) {
@@ -131,7 +130,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Verify password hash
-      const isValidPassword = await bcrypt.compare(password, user.passwordHash || '');
+      const isValidPassword = await bcrypt.compare(password, (user as any).passwordHash || '');
       if (!isValidPassword) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
@@ -142,7 +141,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: { 
           id: user.id, 
           email: user.email,
-          userType: (user.subscriptionStatus as number) === 1 ? 'free' : ((user.subscriptionStatus as number) === 2 ? 'paid' : 'professional')
+          userType: (user.subscriptionStatus as any as number) === 1 ? 'free' : ((user.subscriptionStatus as any as number) === 2 ? 'paid' : 'professional')
         }
       });
     } catch (error: any) {

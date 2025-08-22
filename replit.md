@@ -95,7 +95,10 @@ Mobile optimization: **Mobile-first stage performance design** - optimized for l
 - **CREDIT CARD PROCESSING**: Professional payment form with proper text contrast
 - **SUBSCRIPTION VERIFICATION**: 3-layer verification (localStorage → server files → Stripe API)
 - **CROSS-DEVICE CONSISTENCY**: Email-based subscription status across all devices
-- **DEMO ACCOUNTS**: mazzu001@hotmail.com/demo123 and paid@demo.com/demo123 configured
+- **DEMO ACCOUNTS**: 
+  - Free: mazzu001@hotmail.com/demo123 (2-song limit)
+  - Premium: paid@demo.com/demo123 (unlimited songs)  
+  - Professional: professional@demo.com/demo123 (unlimited songs + MIDI)
 - **BUSINESS MODEL**: $4.99/month with 2-song free tier, unlimited premium access
 
 #### AUTHENTICATION ARCHITECTURE

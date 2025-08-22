@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
+import { Elements, PaymentElement } from '@stripe/react-stripe-js';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
@@ -12,11 +12,22 @@ function TestComponent() {
   return <div>Elements component loaded successfully!</div>;
 }
 
+function PaymentTestComponent() {
+  console.log('🔄 PaymentElement about to render...');
+  return (
+    <div>
+      <p>Testing PaymentElement:</p>
+      <PaymentElement />
+    </div>
+  );
+}
+
 export default function SubscribeElementsTest() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [clientSecret, setClientSecret] = useState('');
   const [showElements, setShowElements] = useState(false);
+  const [showPaymentElement, setShowPaymentElement] = useState(false);
 
   const createClientSecret = async () => {
     try {
@@ -82,6 +93,22 @@ export default function SubscribeElementsTest() {
     console.log('✅ Elements component render triggered');
   };
 
+  const testPaymentElementRender = () => {
+    console.log('🔄 Testing PaymentElement component render...');
+    if (!showElements || !clientSecret) {
+      toast({
+        title: "Error",
+        description: "Need Elements component first",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    console.log('🔄 About to render PaymentElement...');
+    setShowPaymentElement(true);
+    console.log('✅ PaymentElement render triggered');
+  };
+
   return (
     <div className="max-w-md mx-auto p-6">
       <Card>
@@ -111,9 +138,26 @@ export default function SubscribeElementsTest() {
           
           {showElements && clientSecret && (
             <div className="border p-4 rounded">
-              <p className="mb-2">Testing Elements component:</p>
+              <p className="mb-2">✅ Elements component working:</p>
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <TestComponent />
+              </Elements>
+            </div>
+          )}
+
+          <Button 
+            onClick={testPaymentElementRender} 
+            className="w-full" 
+            disabled={!showElements}
+          >
+            Step 3: Render PaymentElement
+          </Button>
+
+          {showPaymentElement && showElements && clientSecret && (
+            <div className="border p-4 rounded border-red-200">
+              <p className="mb-2">Testing PaymentElement (this might cause the error):</p>
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <PaymentTestComponent />
               </Elements>
             </div>
           )}

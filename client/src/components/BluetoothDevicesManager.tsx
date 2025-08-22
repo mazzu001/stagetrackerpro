@@ -56,6 +56,8 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   const [bluetoothState, setBluetoothState] = useState<string>('unknown');
   const [incomingDataActive, setIncomingDataActive] = useState(false);
   const [outgoingDataActive, setOutgoingDataActive] = useState(false);
+  // Store Bluetooth device connections for sending commands
+  const [deviceConnections, setDeviceConnections] = useState<Map<string, any>>(new Map());
   const { toast } = useToast();
 
   // Check Bluetooth availability
@@ -394,6 +396,13 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       
       console.log('Connected to GATT server');
 
+      // Store the Bluetooth device connection for sending commands
+      setDeviceConnections(prev => {
+        const newConnections = new Map(prev);
+        newConnections.set(device.id, bluetoothDevice);
+        return newConnections;
+      });
+
       // Update device status
       setDevices(prev => prev.map(d => 
         d.id === device.id ? { ...d, connected: true, paired: true } : d
@@ -649,6 +658,13 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   // Disconnect device
   const handleDisconnectDevice = async (device: BluetoothDevice) => {
     try {
+      // Remove device connection
+      setDeviceConnections(prev => {
+        const newConnections = new Map(prev);
+        newConnections.delete(device.id);
+        return newConnections;
+      });
+
       // Update device status
       setDevices(prev => prev.map(d => 
         d.id === device.id ? { ...d, connected: false } : d
@@ -691,27 +707,68 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     try {
       console.log(`Sending command to ${device.name}:`, command);
       
-      // Flash blue light for outgoing data
-      setOutgoingDataActive(true);
-      setTimeout(() => setOutgoingDataActive(false), 300);
-      
-      const message: BluetoothMessage = {
-        timestamp: Date.now(),
-        deviceId: device.id,
-        deviceName: device.name,
-        data: `Sent: ${command}`,
-        type: 'midi'
-      };
-      setMessages(prev => [...prev.slice(-49), message]);
-      
-      toast({
-        title: "Command Sent",
-        description: `Sent "${command}" to ${device.name}`,
+      // Parse the MIDI command using server endpoint
+      const response = await fetch('/api/midi/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deviceId: device.id, command: command.trim() })
       });
-    } catch (error) {
+      
+      if (!response.ok) {
+        throw new Error('Failed to parse MIDI command');
+      }
+      
+      const result = await response.json();
+      const midiBytes = result.parsedData;
+      
+      if (!midiBytes) {
+        throw new Error('Invalid MIDI command format');
+      }
+      
+      // Get the stored Bluetooth connection
+      const bluetoothDevice = deviceConnections.get(device.id);
+      if (!bluetoothDevice || !bluetoothDevice.gatt?.connected) {
+        throw new Error('Device not connected or connection lost');
+      }
+      
+      // Send MIDI data via Bluetooth GATT
+      try {
+        const server = bluetoothDevice.gatt;
+        const midiService = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
+        const midiCharacteristic = await midiService.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
+        
+        // Convert to Uint8Array and send
+        const midiData = new Uint8Array(midiBytes);
+        await midiCharacteristic.writeValue(midiData);
+        
+        // Flash blue light for outgoing data
+        setOutgoingDataActive(true);
+        setTimeout(() => setOutgoingDataActive(false), 300);
+        
+        const message: BluetoothMessage = {
+          timestamp: Date.now(),
+          deviceId: device.id,
+          deviceName: device.name,
+          data: `Sent: ${result.formattedCommand || command}`,
+          type: 'midi'
+        };
+        setMessages(prev => [...prev.slice(-49), message]);
+        
+        toast({
+          title: "Command Sent",
+          description: `Sent "${command}" to ${device.name}`,
+        });
+        
+      } catch (gattError) {
+        console.error('GATT write error:', gattError);
+        throw new Error('Failed to send MIDI data via Bluetooth');
+      }
+      
+    } catch (error: any) {
+      console.error('Error sending MIDI command:', error);
       toast({
         title: "Command Failed",
-        description: `Failed to send command: ${error}`,
+        description: error.message || `Failed to send command to ${device.name}`,
         variant: "destructive",
       });
     }

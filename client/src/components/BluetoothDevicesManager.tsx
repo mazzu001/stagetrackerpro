@@ -984,7 +984,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         {/* Commands Tab */}
         {selectedTab === 'commands' && (
           <div className="flex-1 flex flex-col gap-4">
-            <h3 className="text-lg font-semibold">Send MIDI Commands</h3>
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Send MIDI Commands</h3>
             
             {connectedDevices.length === 0 ? (
               <Card className="p-8 text-center">

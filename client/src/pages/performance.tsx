@@ -652,7 +652,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   <User className="w-4 h-4 mr-2" />
                   <div className="flex flex-col">
                     <span className="text-sm">{user?.email || 'Test User'}</span>
-                    <span className="text-xs text-gray-500">{userType === 'paid' ? 'Premium User' : 'Free User'}</span>
+                    <span className="text-xs text-gray-500">
+                      {userType === 'free' && 'Free User'}
+                      {(userType === 'paid' || userType === 'premium') && 'Premium User'}
+                      {userType === 'professional' && 'Professional User'}
+                    </span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />

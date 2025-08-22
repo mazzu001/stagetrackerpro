@@ -6,11 +6,13 @@ import { storage } from "./storage";
 import { insertSongSchema, insertTrackSchema } from "@shared/schema";
 import { setupAuth, isAuthenticated, requireSubscription } from "./replitAuth";
 import { subscriptionManager } from "./subscriptionManager";
+import { midiService, type MIDIDevice, type MIDIMessage } from "./midi-service";
 import Stripe from "stripe";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { promises as fsPromises } from "fs";
+import { WebSocketServer, WebSocket } from 'ws';
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
@@ -1121,14 +1123,221 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log('🗄️ Registering database storage routes...');
   console.log('🎵 Registering song management routes...');
   console.log('🎧 Registering track management routes...');
-  // MIDI event routes removed
   console.log('📊 Registering waveform caching routes...');
   console.log('🔍 Registering lyrics search routes...');
   console.log('📁 Registering file registry routes...');
+
+  // MIDI routes for Professional users
+  console.log('🎹 Registering MIDI management routes...');
+
+  // MIDI devices scan
+  app.get('/api/midi/devices', isAuthenticated, requireSubscription, async (req: any, res) => {
+    try {
+      const user = await storage.getUser(req.user.claims.sub);
+      
+      // Check for Professional subscription (tier 3)
+      if (parseInt(user?.subscriptionStatus as any) !== 3) {
+        return res.status(403).json({ 
+          error: 'professional_required',
+          message: 'Professional subscription required for MIDI features' 
+        });
+      }
+
+      const devices = midiService.scanDevices();
+      res.json(devices);
+    } catch (error: any) {
+      console.error('MIDI devices scan error:', error);
+      res.status(500).json({ 
+        error: 'midi_scan_failed',
+        message: 'Failed to scan MIDI devices' 
+      });
+    }
+  });
+
+  // Connect MIDI device
+  app.post('/api/midi/connect', isAuthenticated, requireSubscription, async (req: any, res) => {
+    try {
+      const user = await storage.getUser(req.user.claims.sub);
+      
+      if (parseInt(user?.subscriptionStatus as any) !== 3) {
+        return res.status(403).json({ 
+          error: 'professional_required',
+          message: 'Professional subscription required for MIDI features' 
+        });
+      }
+
+      const { deviceId, type, channel } = req.body;
+      
+      if (!deviceId || !type) {
+        return res.status(400).json({ error: 'Device ID and type are required' });
+      }
+
+      let success = false;
+      if (type === 'input') {
+        success = midiService.connectInputDevice(deviceId, channel);
+      } else if (type === 'output') {
+        success = midiService.connectOutputDevice(deviceId, channel);
+      }
+
+      if (success) {
+        res.json({ success: true, message: `Connected ${type} device: ${deviceId}` });
+      } else {
+        res.status(400).json({ error: `Failed to connect ${type} device: ${deviceId}` });
+      }
+    } catch (error: any) {
+      console.error('MIDI connect error:', error);
+      res.status(500).json({ 
+        error: 'midi_connect_failed',
+        message: 'Failed to connect MIDI device' 
+      });
+    }
+  });
+
+  // Disconnect MIDI device
+  app.post('/api/midi/disconnect', isAuthenticated, requireSubscription, async (req: any, res) => {
+    try {
+      const user = await storage.getUser(req.user.claims.sub);
+      
+      if (parseInt(user?.subscriptionStatus as any) !== 3) {
+        return res.status(403).json({ 
+          error: 'professional_required',
+          message: 'Professional subscription required for MIDI features' 
+        });
+      }
+
+      const { deviceId, type } = req.body;
+      
+      if (!deviceId || !type) {
+        return res.status(400).json({ error: 'Device ID and type are required' });
+      }
+
+      let success = false;
+      if (type === 'input') {
+        success = midiService.disconnectInputDevice(deviceId);
+      } else if (type === 'output') {
+        success = midiService.disconnectOutputDevice(deviceId);
+      }
+
+      if (success) {
+        res.json({ success: true, message: `Disconnected ${type} device: ${deviceId}` });
+      } else {
+        res.status(400).json({ error: `Failed to disconnect ${type} device: ${deviceId}` });
+      }
+    } catch (error: any) {
+      console.error('MIDI disconnect error:', error);
+      res.status(500).json({ 
+        error: 'midi_disconnect_failed',
+        message: 'Failed to disconnect MIDI device' 
+      });
+    }
+  });
+
+  // Send MIDI message
+  app.post('/api/midi/send', isAuthenticated, requireSubscription, async (req: any, res) => {
+    try {
+      const user = await storage.getUser(req.user.claims.sub);
+      
+      if (parseInt(user?.subscriptionStatus as any) !== 3) {
+        return res.status(403).json({ 
+          error: 'professional_required',
+          message: 'Professional subscription required for MIDI features' 
+        });
+      }
+
+      const { deviceId, command } = req.body;
+      
+      if (!deviceId || !command) {
+        return res.status(400).json({ error: 'Device ID and command are required' });
+      }
+
+      // Parse MIDI command
+      const midiData = midiService.parseMIDICommand(command);
+      if (!midiData) {
+        return res.status(400).json({ error: 'Invalid MIDI command format' });
+      }
+
+      const success = midiService.sendMIDIMessage(deviceId, midiData);
+      
+      if (success) {
+        res.json({ 
+          success: true, 
+          message: `Sent MIDI message to ${deviceId}`,
+          parsedData: midiData 
+        });
+      } else {
+        res.status(400).json({ error: `Failed to send MIDI message to ${deviceId}` });
+      }
+    } catch (error: any) {
+      console.error('MIDI send error:', error);
+      res.status(500).json({ 
+        error: 'midi_send_failed',
+        message: 'Failed to send MIDI message' 
+      });
+    }
+  });
+
+  // Get connected devices
+  app.get('/api/midi/connected', isAuthenticated, requireSubscription, async (req: any, res) => {
+    try {
+      const user = await storage.getUser(req.user.claims.sub);
+      
+      if (parseInt(user?.subscriptionStatus as any) !== 3) {
+        return res.status(403).json({ 
+          error: 'professional_required',
+          message: 'Professional subscription required for MIDI features' 
+        });
+      }
+
+      const connectedDevices = midiService.getConnectedDevices();
+      res.json(connectedDevices);
+    } catch (error: any) {
+      console.error('MIDI connected devices error:', error);
+      res.status(500).json({ 
+        error: 'midi_connected_failed',
+        message: 'Failed to get connected MIDI devices' 
+      });
+    }
+  });
+
+  console.log('✅ MIDI management routes registered');
   
   console.log('🌐 Creating HTTP server...');
   const httpServer = createServer(app);
   console.log('✅ HTTP server created successfully');
+
+  // Set up WebSocket server for MIDI message streaming
+  const wss = new WebSocketServer({ server: httpServer, path: '/api/midi/stream' });
+  
+  wss.on('connection', (ws: WebSocket, req: any) => {
+    console.log('🎹 MIDI WebSocket client connected');
+    
+    // Create MIDI message listener for this client
+    const messageListener = (message: MIDIMessage) => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({
+          type: 'midi_message',
+          data: message
+        }));
+      }
+    };
+
+    // Add listener to MIDI service
+    midiService.addMessageListener(messageListener);
+
+    // Handle client disconnect
+    ws.on('close', () => {
+      console.log('🎹 MIDI WebSocket client disconnected');
+      midiService.removeMessageListener(messageListener);
+    });
+
+    // Send connection confirmation
+    ws.send(JSON.stringify({
+      type: 'connection_established',
+      message: 'MIDI message streaming connected'
+    }));
+  });
+
+  console.log('🎹 MIDI WebSocket server initialized on /api/midi/stream');
   console.log('🎯 Route registration completed successfully');
   
   return httpServer;

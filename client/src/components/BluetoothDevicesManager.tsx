@@ -81,252 +81,228 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
         try {
           const availability = await navigator.bluetooth.getAvailability();
           setBluetoothState(availability ? 'poweredOn' : 'poweredOff');
-          
-          // Load mock devices for development
-          loadMockDevices();
         } catch (error) {
           console.error('Bluetooth access error:', error);
           setBluetoothState('unauthorized');
-          loadMockDevices();
         }
       } else {
         setHasBluetoothSupport(false);
-        // Load mock devices for development
-        loadMockDevices();
+        setBluetoothState('unavailable');
       }
+      
+      // Load any previously paired devices from localStorage
+      loadStoredDevices();
     };
 
     checkBluetoothSupport();
   }, []);
 
-  // Load mock devices for development
-  const loadMockDevices = () => {
-    const mockDevices: BluetoothDevice[] = [
-      {
-        id: 'bt_audio_1',
-        name: 'Sony WH-1000XM4',
-        type: 'audio',
-        connected: false,
-        paired: true,
-        rssi: -45,
-        batteryLevel: 78,
-        deviceClass: 'Audio/Video',
-        services: ['AudioSink', 'AVRCP', 'A2DP'],
-        lastSeen: Date.now() - 300000, // 5 minutes ago
-        manufacturer: 'Sony',
-        model: 'WH-1000XM4'
-      },
-      {
-        id: 'bt_midi_1',
-        name: 'Yamaha MD-BT01',
-        type: 'midi',
-        connected: false,
-        paired: true,
-        rssi: -52,
-        deviceClass: 'Peripheral',
-        services: ['MIDI', 'DUN'],
-        lastSeen: Date.now() - 120000, // 2 minutes ago
-        manufacturer: 'Yamaha',
-        model: 'MD-BT01'
-      },
-      {
-        id: 'bt_audio_2',
-        name: 'AirPods Pro',
-        type: 'audio',
-        connected: true,
-        paired: true,
-        rssi: -38,
-        batteryLevel: 92,
-        deviceClass: 'Audio/Video',
-        services: ['AudioSink', 'AVRCP', 'HFP'],
-        lastSeen: Date.now(),
-        manufacturer: 'Apple',
-        model: 'AirPods Pro'
-      },
-      {
-        id: 'bt_midi_2',
-        name: 'KORG microKEY Air',
-        type: 'midi',
-        connected: false,
-        paired: false,
-        rssi: -67,
-        deviceClass: 'Peripheral',
-        services: ['MIDI', 'HID'],
-        lastSeen: Date.now() - 600000, // 10 minutes ago
-        manufacturer: 'KORG',
-        model: 'microKEY Air'
-      },
-      {
-        id: 'bt_unknown_1',
-        name: 'Unknown Device',
-        type: 'unknown',
-        connected: false,
-        paired: false,
-        rssi: -89,
-        deviceClass: 'Miscellaneous',
-        services: ['Generic'],
-        lastSeen: Date.now() - 900000, // 15 minutes ago
+  // Load stored paired devices from localStorage
+  const loadStoredDevices = () => {
+    try {
+      const storedDevices = localStorage.getItem('bluetoothPairedDevices');
+      if (storedDevices) {
+        const parsedDevices = JSON.parse(storedDevices) as BluetoothDevice[];
+        setDevices(parsedDevices);
+        setConnectedDevices(parsedDevices.filter(d => d.connected));
       }
-    ];
-    
-    setDevices(mockDevices);
-    setConnectedDevices(mockDevices.filter(d => d.connected));
+    } catch (error) {
+      console.error('Error loading stored Bluetooth devices:', error);
+    }
   };
 
-  // Aggressive Bluetooth device scanning
+  // Save devices to localStorage
+  const saveDevicesToStorage = (deviceList: BluetoothDevice[]) => {
+    try {
+      localStorage.setItem('bluetoothPairedDevices', JSON.stringify(deviceList));
+    } catch (error) {
+      console.error('Error saving Bluetooth devices:', error);
+    }
+  };
+
+  // Real Bluetooth device scanning using Web Bluetooth API
   const handleScanDevices = async () => {
     setIsScanning(true);
     setScanProgress(0);
     
-    // More aggressive scanning progress (longer duration)
     const progressInterval = setInterval(() => {
       setScanProgress(prev => {
         if (prev >= 100) {
           clearInterval(progressInterval);
           return 100;
         }
-        return prev + 2; // Slower progress for longer scan
+        return prev + 12.5; // 8 steps to complete
       });
-    }, 150);
+    }, 1000);
 
     try {
       if (hasBluetoothSupport && bluetoothState === 'poweredOn') {
-        // Aggressive Web Bluetooth scanning with multiple service filters
-        const scanPromises = [];
-        
-        // Scan for different device types with specific service UUIDs
+        // Try to scan for devices with different service filters
         const serviceFilters = [
           // Audio devices
-          { services: ['audio_sink'] },
           { services: ['0000110b-0000-1000-8000-00805f9b34fb'] }, // Audio Sink
           { services: ['0000110a-0000-1000-8000-00805f9b34fb'] }, // Audio Source
-          { services: ['0000110c-0000-1000-8000-00805f9b34fb'] }, // Remote Control
           { services: ['0000110d-0000-1000-8000-00805f9b34fb'] }, // Advanced Audio
-          { services: ['0000110e-0000-1000-8000-00805f9b34fb'] }, // A/V Remote Control
           
           // MIDI devices
           { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] }, // MIDI Service
-          { services: ['7772e5db-3868-4112-a1a9-f2669d106bf3'] }, // MIDI Data I/O
           
-          // HID devices (keyboards, controllers)
+          // HID devices
           { services: ['00001812-0000-1000-8000-00805f9b34fb'] }, // Human Interface Device
           
-          // Generic services
-          { services: ['generic_access'] },
-          { services: ['device_information'] },
-          
-          // No filter for discoverable devices
+          // Generic discoverable devices
           { acceptAllDevices: true }
         ];
 
-        for (const filter of serviceFilters) {
-          scanPromises.push(
-            navigator.bluetooth.requestDevice(filter).catch(() => null)
-          );
-        }
-
-        // Wait longer for thorough scanning
-        await new Promise(resolve => setTimeout(resolve, 8000));
+        const discoveredDevices: BluetoothDevice[] = [];
         
-        toast({
-          title: "Aggressive Scan Complete",
-          description: `Performed comprehensive scan for all Bluetooth device types`,
-        });
-      } else {
-        // Enhanced mock scanning with more realistic device discovery
-        const discoveryStages = [
-          { delay: 1000, devices: ['Sony WF-1000XM4', 'Beats Studio3'] },
-          { delay: 2500, devices: ['Roland GO:MIXER PRO', 'Yamaha UD-BT01'] },
-          { delay: 4000, devices: ['Apple Magic Keyboard', 'Logitech MX Master 3'] },
-          { delay: 6000, devices: ['Audio-Technica ATH-M50xBT', 'Shure MOTIV MV88+'] },
-          { delay: 7500, devices: ['Unknown BLE Device', 'Generic Audio Device'] }
-        ];
-
-        discoveryStages.forEach(({ delay, devices: stageDevices }) => {
-          setTimeout(() => {
-            stageDevices.forEach((deviceName, index) => {
-              const deviceTypes = ['audio', 'midi', 'hid'] as const;
-              const manufacturers = ['Sony', 'Apple', 'Samsung', 'Yamaha', 'Roland', 'Shure', 'Audio-Technica', 'Logitech'];
-              
+        for (const filter of serviceFilters) {
+          try {
+            const device = await navigator.bluetooth.requestDevice(filter);
+            
+            if (device && !discoveredDevices.some(d => d.id === device.id)) {
+              const deviceType = determineDeviceType(device);
               const newDevice: BluetoothDevice = {
-                id: `bt_discovered_${Date.now()}_${index}`,
-                name: deviceName,
-                type: deviceTypes[Math.floor(Math.random() * deviceTypes.length)],
+                id: device.id,
+                name: device.name || 'Unknown Device',
+                type: deviceType,
                 connected: false,
                 paired: false,
-                rssi: -30 - Math.floor(Math.random() * 60), // Random signal strength
-                batteryLevel: Math.floor(Math.random() * 100),
-                deviceClass: 'Audio/Video',
-                services: ['AudioSink', 'AVRCP'],
-                lastSeen: Date.now(),
-                manufacturer: manufacturers[Math.floor(Math.random() * manufacturers.length)]
+                rssi: -50, // Web Bluetooth doesn't provide RSSI during scan
+                deviceClass: deviceType === 'audio' ? 'Audio/Video' : 
+                            deviceType === 'midi' ? 'Peripheral' : 'Unknown',
+                services: [], // Services will be populated when connected
+                lastSeen: Date.now()
               };
               
-              setDevices(prev => {
-                // Avoid duplicates
-                if (prev.some(d => d.name === deviceName)) return prev;
-                return [...prev, newDevice];
-              });
+              discoveredDevices.push(newDevice);
+            }
+          } catch (error) {
+            // User cancelled or device not found with this filter
+            continue;
+          }
+        }
+
+        if (discoveredDevices.length > 0) {
+          setDevices(prev => {
+            const updated = [...prev];
+            discoveredDevices.forEach(newDevice => {
+              if (!updated.some(d => d.id === newDevice.id)) {
+                updated.push(newDevice);
+              }
             });
-          }, delay);
-        });
-        
-        setTimeout(() => {
-          toast({
-            title: "Aggressive Scan Complete",
-            description: "Enhanced discovery found additional Bluetooth devices",
-            variant: "default",
+            saveDevicesToStorage(updated);
+            return updated;
           });
-        }, 8000);
+          
+          toast({
+            title: "Scan Complete",
+            description: `Found ${discoveredDevices.length} new Bluetooth device(s)`,
+          });
+        } else {
+          toast({
+            title: "Scan Complete",
+            description: "No new Bluetooth devices found. Try enabling discoverable mode on your device.",
+          });
+        }
+      } else {
+        toast({
+          title: "Bluetooth Unavailable",
+          description: "Bluetooth is not available or not enabled. Please enable Bluetooth and grant permissions.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       toast({
         title: "Scan Failed",
-        description: "Bluetooth permissions required for device discovery. Enable Bluetooth permissions in browser settings.",
+        description: "Bluetooth scan failed. Please ensure Bluetooth is enabled and grant browser permissions.",
         variant: "destructive",
       });
     } finally {
       setTimeout(() => {
         setIsScanning(false);
         setScanProgress(0);
-      }, 8500);
+      }, 1000);
     }
   };
 
-  // Connect to device
+  // Determine device type from Bluetooth device
+  const determineDeviceType = (device: any): 'audio' | 'midi' | 'hid' | 'unknown' => {
+    const name = device.name?.toLowerCase() || '';
+    
+    if (name.includes('audio') || name.includes('headphone') || name.includes('speaker') || 
+        name.includes('airpods') || name.includes('beats') || name.includes('sony')) {
+      return 'audio';
+    }
+    
+    if (name.includes('midi') || name.includes('keyboard') || name.includes('controller') ||
+        name.includes('yamaha') || name.includes('korg') || name.includes('roland')) {
+      return 'midi';
+    }
+    
+    if (name.includes('mouse') || name.includes('keyboard') || name.includes('controller')) {
+      return 'hid';
+    }
+    
+    return 'unknown';
+  };
+
+  // Connect to device using Web Bluetooth API
   const handleConnectDevice = async (device: BluetoothDevice) => {
     try {
       if (hasBluetoothSupport && bluetoothState === 'poweredOn') {
-        // Real Bluetooth connection would go here
-        // For now, simulate connection
+        // Request the specific device
+        const bluetoothDevice = await navigator.bluetooth.requestDevice({
+          filters: [{ name: device.name }],
+          optionalServices: ['generic_access', 'device_information', 'battery_service']
+        });
+        
+        // Connect to GATT server
+        const server = await bluetoothDevice.gatt?.connect();
+        
+        if (server) {
+          // Update device state
+          const updatedDevices = devices.map(d => 
+            d.id === device.id ? { 
+              ...d, 
+              connected: true, 
+              paired: true, 
+              lastSeen: Date.now() 
+            } : d
+          );
+          
+          setDevices(updatedDevices);
+          setConnectedDevices(updatedDevices.filter(d => d.connected));
+          saveDevicesToStorage(updatedDevices);
+          
+          // Add connection message for MIDI devices
+          if (device.type === 'midi') {
+            const message: BluetoothMessage = {
+              timestamp: Date.now(),
+              deviceId: device.id,
+              deviceName: device.name,
+              data: 'Connection established - MIDI ready',
+              type: 'midi'
+            };
+            setMessages(prev => [...prev.slice(-49), message]);
+          }
+          
+          toast({
+            title: "Device Connected",
+            description: `${device.name} is now connected`,
+          });
+        }
+      } else {
+        toast({
+          title: "Bluetooth Unavailable",
+          description: "Bluetooth is not available for connection",
+          variant: "destructive",
+        });
       }
-      
-      // Update device state
-      setDevices(prev => prev.map(d => 
-        d.id === device.id ? { ...d, connected: true, paired: true, lastSeen: Date.now() } : d
-      ));
-      setConnectedDevices(prev => [...prev.filter(d => d.id !== device.id), { ...device, connected: true }]);
-      
-      // Simulate receiving messages for MIDI devices
-      if (device.type === 'midi') {
-        const message: BluetoothMessage = {
-          timestamp: Date.now(),
-          deviceId: device.id,
-          deviceName: device.name,
-          data: 'Connection established - MIDI ready',
-          type: 'midi'
-        };
-        setMessages(prev => [...prev.slice(-49), message]);
-      }
-      
-      toast({
-        title: "Device Connected",
-        description: `${device.name} is now connected`,
-      });
     } catch (error) {
       toast({
         title: "Connection Failed",
-        description: `Unable to connect to ${device.name}`,
+        description: `Unable to connect to ${device.name}. Make sure device is nearby and discoverable.`,
         variant: "destructive",
       });
     }
@@ -334,10 +310,13 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
 
   // Disconnect from device
   const handleDisconnectDevice = (device: BluetoothDevice) => {
-    setDevices(prev => prev.map(d => 
+    const updatedDevices = devices.map(d => 
       d.id === device.id ? { ...d, connected: false } : d
-    ));
-    setConnectedDevices(prev => prev.filter(d => d.id !== device.id));
+    );
+    
+    setDevices(updatedDevices);
+    setConnectedDevices(updatedDevices.filter(d => d.connected));
+    saveDevicesToStorage(updatedDevices);
     
     toast({
       title: "Device Disconnected",
@@ -345,21 +324,62 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
     });
   };
 
-  // Pair device
+  // Pair device using Web Bluetooth API
   const handlePairDevice = async (device: BluetoothDevice) => {
     try {
-      setDevices(prev => prev.map(d => 
-        d.id === device.id ? { ...d, paired: true } : d
-      ));
-      
-      toast({
-        title: "Device Paired",
-        description: `${device.name} has been paired successfully`,
-      });
+      if (hasBluetoothSupport && bluetoothState === 'poweredOn') {
+        // Re-request the device to establish pairing
+        const bluetoothDevice = await navigator.bluetooth.requestDevice({
+          filters: [{ name: device.name }],
+          optionalServices: ['generic_access', 'device_information']
+        });
+        
+        // Connect to GATT server to establish pairing
+        const server = await bluetoothDevice.gatt?.connect();
+        
+        if (server) {
+          // Update device as paired and connected
+          const updatedDevices = devices.map(d => 
+            d.id === device.id ? { 
+              ...d, 
+              paired: true, 
+              connected: true,
+              lastSeen: Date.now()
+            } : d
+          );
+          
+          setDevices(updatedDevices);
+          setConnectedDevices(updatedDevices.filter(d => d.connected));
+          saveDevicesToStorage(updatedDevices);
+          
+          toast({
+            title: "Device Paired & Connected",
+            description: `${device.name} is now paired and connected`,
+          });
+          
+          // Add to messages for MIDI devices
+          if (device.type === 'midi') {
+            const message: BluetoothMessage = {
+              timestamp: Date.now(),
+              deviceId: device.id,
+              deviceName: device.name,
+              data: 'Device paired and connected - MIDI ready',
+              type: 'midi'
+            };
+            setMessages(prev => [...prev.slice(-49), message]);
+          }
+        }
+      } else {
+        toast({
+          title: "Bluetooth Unavailable",
+          description: "Bluetooth is not available for pairing",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       toast({
         title: "Pairing Failed",
-        description: `Unable to pair with ${device.name}`,
+        description: `Unable to pair with ${device.name}. Device may not be discoverable.`,
         variant: "destructive",
       });
     }
@@ -456,13 +476,11 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
           description: "Maximum sensitivity scan completed. All discoverable devices found.",
         });
       } else {
-        // Extended mock discovery simulation
-        await performExtendedMockScan();
-        
+        // If Bluetooth not supported, just show message
         toast({
-          title: "Deep Scan Complete",
-          description: "Extended discovery found all available devices in range",
-          variant: "default",
+          title: "Bluetooth Not Supported",
+          description: "Web Bluetooth API is not available in this browser",
+          variant: "destructive",
         });
       }
     } catch (error) {
@@ -522,70 +540,17 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
     }
   };
 
-  // Extended mock scanning with realistic progressive discovery
-  const performExtendedMockScan = async () => {
-    const extendedDeviceList = [
-      // Professional audio equipment
-      { name: 'Focusrite Scarlett Solo', type: 'audio', manufacturer: 'Focusrite' },
-      { name: 'PreSonus AudioBox USB', type: 'audio', manufacturer: 'PreSonus' },
-      { name: 'Behringer UMC202HD', type: 'audio', manufacturer: 'Behringer' },
-      
-      // MIDI controllers and keyboards
-      { name: 'Akai MPK Mini MK3', type: 'midi', manufacturer: 'Akai' },
-      { name: 'Novation Launchkey Mini', type: 'midi', manufacturer: 'Novation' },
-      { name: 'Arturia MiniLab MkII', type: 'midi', manufacturer: 'Arturia' },
-      { name: 'M-Audio Oxygen Pro 49', type: 'midi', manufacturer: 'M-Audio' },
-      
-      // Gaming and HID devices
-      { name: 'Xbox Wireless Controller', type: 'hid', manufacturer: 'Microsoft' },
-      { name: 'DualSense Wireless Controller', type: 'hid', manufacturer: 'Sony' },
-      { name: 'Logitech G915 Keyboard', type: 'hid', manufacturer: 'Logitech' },
-      
-      // High-end audio devices
-      { name: 'Sennheiser Momentum 4', type: 'audio', manufacturer: 'Sennheiser' },
-      { name: 'Bose QuietComfort 45', type: 'audio', manufacturer: 'Bose' },
-      { name: 'Audio-Technica ATH-M50xBT2', type: 'audio', manufacturer: 'Audio-Technica' },
-      
-      // Studio monitors and speakers
-      { name: 'JBL LSR305P MkII', type: 'audio', manufacturer: 'JBL' },
-      { name: 'Yamaha HS5 Powered Studio Monitor', type: 'audio', manufacturer: 'Yamaha' },
-      
-      // Generic/Unknown devices (common in real scans)
-      { name: 'Unknown BLE Device #1', type: 'unknown', manufacturer: 'Unknown' },
-      { name: 'Generic Audio Interface', type: 'audio', manufacturer: 'Generic' },
-      { name: 'BT MIDI Device', type: 'midi', manufacturer: 'Unknown' },
-      { name: 'Wireless Input Device', type: 'hid', manufacturer: 'Generic' },
-    ];
-
-    // Progressive discovery over extended time
-    for (let i = 0; i < extendedDeviceList.length; i++) {
-      setTimeout(() => {
-        const deviceInfo = extendedDeviceList[i];
-        const newDevice: BluetoothDevice = {
-          id: `bt_deep_${Date.now()}_${i}`,
-          name: deviceInfo.name,
-          type: deviceInfo.type as 'audio' | 'midi' | 'hid' | 'unknown',
-          connected: false,
-          paired: false,
-          rssi: -35 - Math.floor(Math.random() * 50), // Varied signal strength
-          batteryLevel: deviceInfo.type === 'audio' ? Math.floor(Math.random() * 100) : undefined,
-          deviceClass: deviceInfo.type === 'audio' ? 'Audio/Video' : 
-                      deviceInfo.type === 'midi' ? 'Peripheral' : 
-                      deviceInfo.type === 'hid' ? 'Peripheral' : 'Miscellaneous',
-          services: deviceInfo.type === 'audio' ? ['AudioSink', 'AVRCP'] :
-                   deviceInfo.type === 'midi' ? ['MIDI', 'DUN'] :
-                   deviceInfo.type === 'hid' ? ['HID'] : ['Generic'],
-          lastSeen: Date.now(),
-          manufacturer: deviceInfo.manufacturer
-        };
-        
-        setDevices(prev => {
-          // Avoid duplicates
-          if (prev.some(d => d.name === deviceInfo.name)) return prev;
-          return [...prev, newDevice];
-        });
-      }, i * 800); // Stagger discovery every 800ms
-    }
+  // Remove a device from the list
+  const handleRemoveDevice = (device: BluetoothDevice) => {
+    const updatedDevices = devices.filter(d => d.id !== device.id);
+    setDevices(updatedDevices);
+    setConnectedDevices(updatedDevices.filter(d => d.connected));
+    saveDevicesToStorage(updatedDevices);
+    
+    toast({
+      title: "Device Removed",
+      description: `${device.name} has been removed from the list`,
+    });
   };
 
   // Clear messages
@@ -809,25 +774,34 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
                                       Pair
                                     </Button>
                                   )}
+                                  {device.paired && (
+                                    <Button
+                                      size="sm"
+                                      variant={device.connected ? "destructive" : "default"}
+                                      onClick={() => device.connected ? 
+                                        handleDisconnectDevice(device) : handleConnectDevice(device)}
+                                      data-testid={`button-${device.connected ? 'disconnect' : 'connect'}-${device.id}`}
+                                    >
+                                      {device.connected ? (
+                                        <>
+                                          <WifiOff className="h-3 w-3 mr-1" />
+                                          Disconnect
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Wifi className="h-3 w-3 mr-1" />
+                                          Connect
+                                        </>
+                                      )}
+                                    </Button>
+                                  )}
                                   <Button
                                     size="sm"
-                                    variant={device.connected ? "destructive" : "default"}
-                                    onClick={() => device.connected ? 
-                                      handleDisconnectDevice(device) : handleConnectDevice(device)}
-                                    data-testid={`button-${device.connected ? 'disconnect' : 'connect'}-${device.id}`}
-                                    disabled={!device.paired && !device.connected}
+                                    variant="ghost"
+                                    onClick={() => handleRemoveDevice(device)}
+                                    data-testid={`button-remove-${device.id}`}
                                   >
-                                    {device.connected ? (
-                                      <>
-                                        <WifiOff className="h-3 w-3 mr-1" />
-                                        Disconnect
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Wifi className="h-3 w-3 mr-1" />
-                                        Connect
-                                      </>
-                                    )}
+                                    <Trash2 className="h-3 w-3" />
                                   </Button>
                                 </div>
                               </div>

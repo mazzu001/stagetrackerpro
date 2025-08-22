@@ -98,8 +98,8 @@ export class SubscriptionMonitor {
     try {
       // Calculate subscription end date
       let endDate = null;
-      if (subscription && subscription.current_period_end) {
-        endDate = new Date(subscription.current_period_end * 1000).toISOString();
+      if (subscription && (subscription as any).current_period_end) {
+        endDate = new Date((subscription as any).current_period_end * 1000).toISOString();
       }
 
       // Update user in database

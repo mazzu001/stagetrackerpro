@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,18 @@ import { useToast } from '@/hooks/use-toast';
 import { Crown, Star, Check, ArrowLeft } from 'lucide-react';
 import { useLocation } from 'wouter';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY!);
+// Initialize Stripe safely with error handling
+const initializeStripe = async () => {
+  try {
+    if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
+      throw new Error('Missing Stripe public key');
+    }
+    return await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+  } catch (error) {
+    console.error('❌ Failed to initialize Stripe:', error);
+    return null;
+  }
+};
 
 interface PlanOption {
   id: string;
@@ -58,6 +69,8 @@ const CheckoutForm = ({ plan, clientSecret }: { plan: PlanOption; clientSecret: 
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
   const [, setLocation] = useLocation();
+
+  console.log('🔧 CheckoutForm render - stripe available:', !!stripe, 'elements available:', !!elements);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -137,7 +150,34 @@ const CheckoutForm = ({ plan, clientSecret }: { plan: PlanOption; clientSecret: 
 const PaymentPage = ({ plan, onBack }: { plan: PlanOption; onBack: () => void }) => {
   const [clientSecret, setClientSecret] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
+  const [stripeInstance, setStripeInstance] = useState<any>(null);
   const { toast } = useToast();
+
+  // Initialize Stripe instance safely
+  useEffect(() => {
+    const setupStripe = async () => {
+      try {
+        console.log('🔄 Initializing Stripe instance...');
+        const stripe = await initializeStripe();
+        if (stripe) {
+          console.log('✅ Stripe initialized successfully');
+          setStripeInstance(stripe);
+        } else {
+          throw new Error('Failed to initialize Stripe');
+        }
+      } catch (error) {
+        console.error('❌ Stripe initialization error:', error);
+        toast({
+          title: "Payment System Error",
+          description: "Failed to initialize payment system",
+          variant: "destructive",
+        });
+        onBack();
+      }
+    };
+
+    setupStripe();
+  }, [toast, onBack]);
 
   React.useEffect(() => {
     const createSubscription = async () => {
@@ -256,12 +296,24 @@ const PaymentPage = ({ plan, onBack }: { plan: PlanOption; onBack: () => void })
         </CardHeader>
         
         <CardContent>
-          {/* Add error boundary around Elements */}
-          <div>
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
+          {stripeInstance ? (
+            <Elements 
+              stripe={stripeInstance} 
+              options={{ 
+                clientSecret,
+                appearance: {
+                  theme: 'stripe',
+                }
+              }}
+            >
               <CheckoutForm plan={plan} clientSecret={clientSecret} />
             </Elements>
-          </div>
+          ) : (
+            <div className="text-center p-4">
+              <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2" />
+              <p className="text-sm text-gray-600">Initializing payment system...</p>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

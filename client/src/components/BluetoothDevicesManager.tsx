@@ -22,7 +22,7 @@ import {
 interface BluetoothDevice {
   id: string;
   name: string;
-  type: 'midi' | 'unknown';
+  type: 'midi' | 'bluetooth' | 'unknown';
   connected: boolean;
   paired: boolean;
   rssi?: number;
@@ -136,7 +136,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   }, [devices.length]);
 
   // Determine if device is a MIDI device
-  const determineDeviceType = (device: any): 'midi' | 'unknown' => {
+  const determineDeviceType = (device: any): 'midi' | 'bluetooth' | 'unknown' => {
     const name = device.name?.toLowerCase() || '';
     
     // Check for MIDI-specific keywords
@@ -144,8 +144,14 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         name.includes('yamaha') || name.includes('korg') || name.includes('roland') ||
         name.includes('akai') || name.includes('novation') || name.includes('arturia') ||
         name.includes('m-audio') || name.includes('behringer') || name.includes('moog') ||
-        name.includes('sequential') || name.includes('dave smith') || name.includes('elektron')) {
+        name.includes('sequential') || name.includes('dave smith') || name.includes('elektron') ||
+        name.includes('pedal') || name.includes('footswitch')) {
       return 'midi';
+    }
+    
+    // If it has a name and doesn't match MIDI keywords, it's a generic Bluetooth device
+    if (name && name.trim() !== '') {
+      return 'bluetooth';
     }
     
     return 'unknown';
@@ -186,22 +192,29 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
             if (device && !discoveredDevices.some(d => d.id === device.id)) {
               const deviceType = determineDeviceType(device);
               
-              // Only add MIDI devices
+              // Add all discovered devices (MIDI, bluetooth, and unknown)
+              let deviceClass = 'Bluetooth Device';
               if (deviceType === 'midi') {
-                const newDevice: BluetoothDevice = {
-                  id: device.id,
-                  name: device.name || 'Unknown MIDI Device',
-                  type: deviceType,
-                  connected: false,
-                  paired: false,
-                  rssi: -50, // Web Bluetooth doesn't provide RSSI during scan
-                  deviceClass: 'MIDI Controller',
-                  services: [], // Services will be populated when connected
-                  lastSeen: Date.now()
-                };
-                
-                discoveredDevices.push(newDevice);
+                deviceClass = 'MIDI Controller';
+              } else if (deviceType === 'bluetooth') {
+                deviceClass = 'Bluetooth Device';
+              } else {
+                deviceClass = 'Unknown Device';
               }
+              
+              const newDevice: BluetoothDevice = {
+                id: device.id,
+                name: device.name || 'Unknown Device',
+                type: deviceType,
+                connected: false,
+                paired: false,
+                rssi: -50, // Web Bluetooth doesn't provide RSSI during scan
+                deviceClass: deviceClass,
+                services: [], // Services will be populated when connected
+                lastSeen: Date.now()
+              };
+              
+              discoveredDevices.push(newDevice);
             }
           } catch (filterError) {
             console.log('Service filter failed:', filterError);
@@ -217,18 +230,31 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                 updated.push(newDevice);
               }
             });
-            saveDevicesToStorage(updated);
-            return updated;
+            
+            // Sort devices: MIDI devices first, then Bluetooth devices, then unknown
+            const sorted = updated.sort((a, b) => {
+              if (a.type === 'midi' && b.type !== 'midi') return -1;
+              if (a.type !== 'midi' && b.type === 'midi') return 1;
+              if (a.type === 'bluetooth' && b.type === 'unknown') return -1;
+              if (a.type === 'unknown' && b.type === 'bluetooth') return 1;
+              return a.name.localeCompare(b.name);
+            });
+            
+            saveDevicesToStorage(sorted);
+            return sorted;
           });
           
+          const midiCount = discoveredDevices.filter(d => d.type === 'midi').length;
+          const bluetoothCount = discoveredDevices.filter(d => d.type === 'bluetooth').length;
+          
           toast({
-            title: "MIDI Scan Complete",
-            description: `Found ${discoveredDevices.length} new MIDI device(s)`,
+            title: "Bluetooth Scan Complete",
+            description: `Found ${midiCount} MIDI device(s) and ${bluetoothCount} other Bluetooth device(s)`,
           });
         } else {
           toast({
-            title: "MIDI Scan Complete",
-            description: "No MIDI devices found. Make sure your MIDI device is in pairing mode.",
+            title: "Bluetooth Scan Complete",
+            description: "No Bluetooth devices found. Make sure devices are in pairing mode.",
           });
         }
       }
@@ -259,8 +285,8 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     
     try {
       toast({
-        title: "Deep MIDI Scan Started",
-        description: "Performing aggressive scan for MIDI devices...",
+        title: "Deep Bluetooth Scan Started",
+        description: "Performing aggressive scan for all Bluetooth devices...",
       });
 
       // Multiple scan attempts with different strategies
@@ -276,28 +302,49 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
           if (device) {
             const deviceType = determineDeviceType(device);
             
-            if (deviceType === 'midi' && !devices.some(d => d.id === device.id)) {
+            if (!devices.some(d => d.id === device.id)) {
+              // Add all devices during deep scan
+              let deviceClass = 'Bluetooth Device';
+              if (deviceType === 'midi') {
+                deviceClass = 'MIDI Controller';
+              } else if (deviceType === 'bluetooth') {
+                deviceClass = 'Bluetooth Device';
+              } else {
+                deviceClass = 'Unknown Device';
+              }
+              
               const newDevice: BluetoothDevice = {
                 id: device.id,
-                name: device.name || `MIDI Device ${attempt}`,
+                name: device.name || `Device ${attempt}`,
                 type: deviceType,
                 connected: false,
                 paired: false,
                 rssi: -40,
-                deviceClass: 'MIDI Controller',
+                deviceClass: deviceClass,
                 services: [],
                 lastSeen: Date.now()
               };
               
               setDevices(prev => {
                 const updated = [...prev, newDevice];
-                saveDevicesToStorage(updated);
-                return updated;
+                
+                // Sort devices: MIDI devices first, then Bluetooth devices, then unknown
+                const sorted = updated.sort((a, b) => {
+                  if (a.type === 'midi' && b.type !== 'midi') return -1;
+                  if (a.type !== 'midi' && b.type === 'midi') return 1;
+                  if (a.type === 'bluetooth' && b.type === 'unknown') return -1;
+                  if (a.type === 'unknown' && b.type === 'bluetooth') return 1;
+                  return a.name.localeCompare(b.name);
+                });
+                
+                saveDevicesToStorage(sorted);
+                return sorted;
               });
               
+              const deviceTypeLabel = deviceType === 'midi' ? 'MIDI device' : 'Bluetooth device';
               toast({
-                title: "MIDI Device Found",
-                description: `Found: ${newDevice.name}`,
+                title: "Device Found",
+                description: `Found: ${newDevice.name} (${deviceTypeLabel})`,
               });
               break;
             }
@@ -676,12 +723,26 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
 
   // Get device type icon (MIDI devices only)
   const getDeviceIcon = (type: string) => {
-    return <Music className="h-4 w-4" />;
+    switch (type) {
+      case 'midi':
+        return <Music className="h-4 w-4" />;
+      case 'bluetooth':
+        return <Bluetooth className="h-4 w-4" />;
+      default:
+        return null; // No icon for unknown devices
+    }
   };
 
   // Get device type color (MIDI devices only)
   const getDeviceColor = (type: string) => {
-    return 'text-purple-600 dark:text-purple-400';
+    switch (type) {
+      case 'midi':
+        return 'text-purple-600 dark:text-purple-400';
+      case 'bluetooth':
+        return 'text-blue-600 dark:text-blue-400';
+      default:
+        return 'text-gray-600 dark:text-gray-400'; // Gray for unknown devices
+    }
   };
 
   // Format timestamp
@@ -803,10 +864,10 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
               <div className="space-y-3">
                 {devices.length === 0 ? (
                   <Card className="p-8 text-center">
-                    <Music className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                    <h3 className="text-lg font-medium text-muted-foreground mb-2">No MIDI Devices Found</h3>
+                    <Bluetooth className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                    <h3 className="text-lg font-medium text-muted-foreground mb-2">No Bluetooth Devices Found</h3>
                     <p className="text-sm text-muted-foreground">
-                      Click "Quick Scan" or "Deep Scan" to discover MIDI devices
+                      Click "Quick Scan" or "Deep Scan" to discover Bluetooth devices
                     </p>
                   </Card>
                 ) : (

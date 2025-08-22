@@ -24,7 +24,7 @@ import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import { MIDIDevicesManager } from "@/components/MIDIDevicesManager";
 import { USBMIDIDevicesManager } from "@/components/USBMIDIDevicesManager";
-import { BluetoothDevicesManager } from "@/components/BluetoothDevicesManager";
+import BluetoothDevicesManager from "@/components/BluetoothDevicesManager";
 
 
 

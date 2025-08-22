@@ -49,6 +49,7 @@ export default function SubscribeRedirect() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState<string | null>(null);
+  const [checkoutUrl, setCheckoutUrl] = useState<string | null>(null);
 
   const handleSubscribe = async (plan: PlanOption) => {
     setIsProcessing(plan.id);
@@ -94,10 +95,22 @@ export default function SubscribeRedirect() {
 
       if (response.ok && data.url) {
         console.log('✅ Redirecting to Stripe Checkout:', data.url);
-        // Add a small delay to show processing state
-        setTimeout(() => {
+        setCheckoutUrl(data.url);
+        
+        // Try immediate redirect first
+        try {
           window.location.href = data.url;
-        }, 500);
+        } catch (error) {
+          console.error('Direct redirect failed, trying window.open:', error);
+          // Fallback: open in same window
+          try {
+            window.open(data.url, '_self');
+          } catch (error2) {
+            console.error('Window.open also failed:', error2);
+            // Keep the manual button as final fallback
+            setIsProcessing(null);
+          }
+        }
       } else {
         throw new Error(data.message || 'Failed to create checkout session');
       }
@@ -108,7 +121,6 @@ export default function SubscribeRedirect() {
         description: error.message || 'Failed to start subscription process',
         variant: "destructive",
       });
-    } finally {
       setIsProcessing(null);
     }
   };
@@ -180,6 +192,21 @@ export default function SubscribeRedirect() {
           );
         })}
       </div>
+
+      {checkoutUrl && (
+        <div className="text-center mt-8 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <p className="text-sm text-gray-600 mb-4">
+            If you weren't redirected automatically, click the button below:
+          </p>
+          <Button 
+            onClick={() => window.location.href = checkoutUrl}
+            className="mb-4"
+            data-testid="button-manual-redirect"
+          >
+            Continue to Payment
+          </Button>
+        </div>
+      )}
 
       <div className="text-center mt-8">
         <Button variant="ghost" onClick={() => setLocation('/')} data-testid="button-back-home">

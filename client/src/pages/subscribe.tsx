@@ -142,8 +142,11 @@ const PaymentPage = ({ plan, onBack }: { plan: PlanOption; onBack: () => void })
   React.useEffect(() => {
     const createSubscription = async () => {
       try {
+        console.log('🔄 PaymentPage useEffect - Creating subscription for plan:', plan.id);
+        
         const storedUser = localStorage.getItem('lpp_local_user');
         if (!storedUser) {
+          console.error('❌ No stored user found');
           toast({
             title: "Authentication Required",
             description: "Please sign in to subscribe.",
@@ -169,15 +172,22 @@ const PaymentPage = ({ plan, onBack }: { plan: PlanOption; onBack: () => void })
         });
 
         const data = await response.json();
+        console.log('📊 Subscription API response:', { ok: response.ok, status: response.status, data });
 
         if (!response.ok) {
           throw new Error(data.message || 'Failed to create subscription');
         }
 
-        console.log('✅ Subscription created successfully');
+        if (!data.clientSecret) {
+          console.error('❌ No clientSecret in response:', data);
+          throw new Error('No client secret returned from server');
+        }
+
+        console.log('✅ Subscription created successfully, setting clientSecret');
         setClientSecret(data.clientSecret);
       } catch (error: any) {
         console.error('❌ Subscription creation failed:', error);
+        console.error('Error stack:', error.stack);
         toast({
           title: "Subscription Error",
           description: error.message || 'Failed to start subscription process',
@@ -225,6 +235,8 @@ const PaymentPage = ({ plan, onBack }: { plan: PlanOption; onBack: () => void })
     );
   }
 
+  console.log('🔧 PaymentPage render - clientSecret available:', !!clientSecret);
+
   return (
     <div className="max-w-md mx-auto p-6">
       <div className="mb-6">
@@ -244,9 +256,12 @@ const PaymentPage = ({ plan, onBack }: { plan: PlanOption; onBack: () => void })
         </CardHeader>
         
         <CardContent>
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <CheckoutForm plan={plan} clientSecret={clientSecret} />
-          </Elements>
+          {/* Add error boundary around Elements */}
+          <div>
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <CheckoutForm plan={plan} clientSecret={clientSecret} />
+            </Elements>
+          </div>
         </CardContent>
       </Card>
     </div>

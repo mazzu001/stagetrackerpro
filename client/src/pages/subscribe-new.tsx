@@ -208,7 +208,9 @@ export default function SubscribeNew({ onClose }: { onClose: () => void }) {
       return;
     }
 
-    setSelectedTier(tier);
+    // Clear previous state to force fresh Elements component
+    setSelectedTier(null);
+    setClientSecret("");
     setIsCreatingSubscription(true);
 
     try {
@@ -225,6 +227,8 @@ export default function SubscribeNew({ onClose }: { onClose: () => void }) {
 
       const userData = JSON.parse(storedUser);
       const userEmail = userData.email;
+
+      console.log('🔄 Creating subscription for:', { email: userEmail, tier: tier.id });
 
       const response = await fetch('/api/create-subscription', {
         method: 'POST',
@@ -244,19 +248,24 @@ export default function SubscribeNew({ onClose }: { onClose: () => void }) {
         throw new Error(data.message || 'Failed to create subscription');
       }
 
+      console.log('✅ Subscription created, client secret:', data.clientSecret ? 'received' : 'missing');
+
       if (data.clientSecret) {
+        // Set tier first, then clientSecret to trigger fresh Elements mount
+        setSelectedTier(tier);
         setClientSecret(data.clientSecret);
       } else {
         throw new Error('No client secret returned');
       }
     } catch (error: any) {
-      console.error('Error creating subscription:', error);
+      console.error('❌ Error creating subscription:', error);
       toast({
         title: "Subscription Error",
         description: error.message || 'Failed to start subscription process',
         variant: "destructive",
       });
       setSelectedTier(null);
+      setClientSecret("");
     } finally {
       setIsCreatingSubscription(false);
     }
@@ -281,7 +290,11 @@ export default function SubscribeNew({ onClose }: { onClose: () => void }) {
           </CardHeader>
           
           <CardContent>
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
+            <Elements 
+              key={clientSecret} 
+              stripe={stripePromise} 
+              options={{ clientSecret }}
+            >
               <PaymentForm tier={selectedTier} onSuccess={onClose} />
             </Elements>
           </CardContent>

@@ -724,20 +724,10 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
               console.log(`🚨🚨🚨 DID YOUR WIDI JACK RECEIVE THE COMMAND? If NO, trying alternative formats...🚨🚨🚨`);
               console.log(`📍 WIDI Jack should BLINK when receiving data - if no blink, data not reaching device!`);
               
-              // DETAILED CONNECTION DEBUG - Let's verify what we're actually connected to
-              console.log(`\n🔍 DETAILED CONNECTION DEBUG:`);
-              console.log(`Device name: "${connectedDevice?.name}"`);
-              console.log(`Device ID: "${connectedDevice?.id}"`);
-              console.log(`Service UUID: "${exactReceiveChar.service?.uuid}"`);
-              console.log(`Characteristic UUID: "${exactReceiveChar.characteristic?.uuid}"`);
-              console.log(`Characteristic properties:`, exactReceiveChar);
-              console.log(`Connection state: connected=${connectedDevice?.gatt?.connected}`);
-              
-              // CHECK IF NOTIFICATIONS ARE ENABLED (required for most BLE MIDI devices)
+              // Enable notifications (required for most BLE MIDI devices)
               try {
-                console.log(`🔔 Checking if notifications are enabled...`);
-                const isNotifying = await exactReceiveChar.characteristic.startNotifications();
-                console.log(`✅ Notifications enabled successfully:`, isNotifying);
+                await exactReceiveChar.characteristic.startNotifications();
+                console.log(`✅ Notifications enabled for BLE MIDI device`);
               } catch (notifError) {
                 console.log(`⚠️ Could not enable notifications:`, notifError);
               }

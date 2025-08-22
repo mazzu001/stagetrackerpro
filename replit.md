@@ -13,6 +13,16 @@ This project is a professional live music performance application built for stag
 - ✅ **UI consistency**: All MIDI input fields updated with new format examples
 - ✅ **Message formatting**: Incoming MIDI data displayed in readable bracket format
 
+## WIDI Jack Bluetooth MIDI Investigation (August 2025)
+**Device Setup**: TC-Helicon VoiceLive 3 + WIDI Jack Bluetooth adapter
+**Key Findings**:
+- ✅ **Bluetooth connection working**: Successfully connects to WIDI Jack (appears as "Matts Pedal")
+- ✅ **BLE MIDI format implemented**: Proper 13-bit timestamp headers for BLE MIDI packets
+- ✅ **writeValueWithResponse() required**: Most BLE devices need response acknowledgment
+- ⚠️ **Device compatibility**: WIDI Jack requires very specific BLE MIDI format compliance
+- 📋 **Troubleshooting steps completed**: Timestamp format, notification enabling, multiple data formats tested
+**Status**: Ready for testing with alternative Bluetooth MIDI devices
+
 ## Bluetooth Device Management Overhaul
 - ✅ **All-device scanning**: Shows all Bluetooth devices, not just MIDI devices
 - ✅ **Visual categorization**: Music icons for MIDI devices, Bluetooth icons for others

@@ -720,10 +720,14 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                 console.log(`✅ writeValueWithoutResponse() with BLE MIDI format completed!`);
               }
               
-              console.log(`🚨🚨🚨 DID YOUR PEDAL LIGHT BLINK? If NO, trying alternative formats...🚨🚨🚨`);
+              console.log(`🚨🚨🚨 DID YOUR WIDI JACK RECEIVE THE COMMAND? If NO, trying alternative formats...🚨🚨🚨`);
+              console.log(`📍 WIDI Jack should show activity when receiving MIDI data`);
+              
+              // Wait longer for WIDI Jack (they need sequential operations)
+              await new Promise(resolve => setTimeout(resolve, 2000));
               
               // Try alternative formats if the standard one didn't work
-              console.log(`\n🔄 TRYING ALTERNATIVE DATA FORMATS ON SAME CHARACTERISTIC...`);
+              console.log(`\n🔄 TRYING ALTERNATIVE DATA FORMATS FOR WIDI JACK...`);
               
               // Format 1: Raw MIDI data (no BLE headers)
               console.log(`📤 FORMAT 1: Raw MIDI data (no BLE timestamp)`);
@@ -737,8 +741,8 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                 await exactReceiveChar.characteristic.writeValueWithoutResponse(rawPacket);
                 console.log(`✅ writeValueWithoutResponse() on raw data completed!`);
               }
-              console.log(`🚨 DID PEDAL LIGHT BLINK WITH RAW FORMAT + RESPONSE?`);
-              await new Promise(resolve => setTimeout(resolve, 1000));
+              console.log(`🚨 DID WIDI JACK RECEIVE RAW FORMAT?`);
+              await new Promise(resolve => setTimeout(resolve, 2000)); // Longer delay for WIDI Jack
               
               // Format 2: Different BLE MIDI timestamp format with response
               console.log(`📤 FORMAT 2: Alternative BLE MIDI timestamp WITH RESPONSE`);
@@ -751,8 +755,8 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                 await exactReceiveChar.characteristic.writeValueWithoutResponse(altBlePacket);
                 console.log(`✅ writeValueWithoutResponse() on fixed timestamp completed!`);
               }
-              console.log(`🚨 DID PEDAL LIGHT BLINK WITH FIXED TIMESTAMP + RESPONSE?`);
-              await new Promise(resolve => setTimeout(resolve, 1000));
+              console.log(`🚨 DID WIDI JACK RECEIVE FIXED TIMESTAMP?`);
+              await new Promise(resolve => setTimeout(resolve, 2000)); // Longer delay for WIDI Jack
               
               // Format 3: Try a Note On command with response
               console.log(`📤 FORMAT 3: Note On command WITH RESPONSE`);
@@ -766,8 +770,8 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                 await exactReceiveChar.characteristic.writeValueWithoutResponse(noteOnBlePacket);
                 console.log(`✅ writeValueWithoutResponse() on Note On completed!`);
               }
-              console.log(`🚨 DID PEDAL LIGHT BLINK WITH NOTE ON + RESPONSE?`);
-              await new Promise(resolve => setTimeout(resolve, 1000));
+              console.log(`🚨 DID WIDI JACK RECEIVE NOTE ON COMMAND?`);
+              await new Promise(resolve => setTimeout(resolve, 2000)); // Longer delay for WIDI Jack
               
               // Format 4: Try raw Note On with response
               console.log(`📤 FORMAT 4: Raw Note On WITH RESPONSE`);
@@ -780,9 +784,9 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                 await exactReceiveChar.characteristic.writeValueWithoutResponse(rawNoteOnPacket);
                 console.log(`✅ writeValueWithoutResponse() on raw Note On completed!`);
               }
-              console.log(`🚨 DID PEDAL LIGHT BLINK WITH RAW NOTE ON?`);
+              console.log(`🚨 DID WIDI JACK RECEIVE RAW NOTE ON?`);
               
-              console.log(`\n🎯 ALTERNATIVE FORMAT TESTS COMPLETE - Did ANY of them make the light blink?`);
+              console.log(`\n🎯 WIDI JACK FORMAT TESTS COMPLETE - Did any commands reach your VoiceLive 3?`);
               
               setOutgoingDataActive(true);
               setTimeout(() => setOutgoingDataActive(false), 300);

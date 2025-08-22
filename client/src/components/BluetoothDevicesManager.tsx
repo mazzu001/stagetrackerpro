@@ -632,28 +632,45 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         const services = await server.getPrimaryServices();
         const writableCharacteristics = [];
         
-        // Find all writable characteristics
+        // Find ALL characteristics (not just writable ones) and try each one
+        console.log(`🔍 ANALYZING ALL CHARACTERISTICS (including non-writable ones):`);
+        
         for (const service of services) {
           try {
             const characteristics = await service.getCharacteristics();
+            console.log(`\n📋 SERVICE ${service.uuid} has ${characteristics.length} characteristics:`);
+            
             for (const char of characteristics) {
-              if (char.properties.write || char.properties.writeWithoutResponse) {
-                const isFromReceiveService = receiveInfo && service.uuid === receiveInfo.serviceUuid;
-                const isSameAsReceiveChar = receiveInfo && char.uuid === receiveInfo.charUuid;
-                
+              const isFromReceiveService = receiveInfo && service.uuid === receiveInfo.serviceUuid;
+              const isSameAsReceiveChar = receiveInfo && char.uuid === receiveInfo.charUuid;
+              
+              console.log(`  📝 Characteristic: ${char.uuid}`);
+              console.log(`    Properties: read:${char.properties.read} write:${char.properties.write} writeWithoutResponse:${char.properties.writeWithoutResponse} notify:${char.properties.notify}`);
+              
+              // Add ALL characteristics that might potentially work for input
+              const couldBeInput = char.properties.write || 
+                                  char.properties.writeWithoutResponse || 
+                                  (!isSameAsReceiveChar && isFromReceiveService); // Different char in same service
+              
+              if (couldBeInput) {
                 writableCharacteristics.push({
                   service: service.uuid,
                   char: char.uuid,
                   characteristic: char,
                   canWrite: char.properties.write,
                   canWriteWithoutResponse: char.properties.writeWithoutResponse,
-                  priority: isFromReceiveService ? (isSameAsReceiveChar ? 1 : 2) : 3 // Same char = priority 1, same service = priority 2, other = priority 3
+                  priority: isFromReceiveService ? (isSameAsReceiveChar ? 1 : 2) : 3,
+                  reason: char.properties.write ? 'CAN_WRITE' : 
+                         char.properties.writeWithoutResponse ? 'CAN_WRITE_WITHOUT_RESPONSE' :
+                         'SAME_SERVICE_AS_RECEIVER'
                 });
                 
                 const priorityLabel = isFromReceiveService 
                   ? (isSameAsReceiveChar ? ' 🌟 SAME AS RECEIVE CHAR!' : ' ⭐ SAME SERVICE AS RECEIVER')
                   : '';
-                console.log(`🎯 WRITABLE CHARACTERISTIC: ${service.uuid} → ${char.uuid}${priorityLabel}`);
+                console.log(`    🎯 POTENTIAL INPUT: ${service.uuid} → ${char.uuid}${priorityLabel} (${char.properties.write ? 'write' : ''}${char.properties.writeWithoutResponse ? 'writeWithoutResponse' : ''})`);
+              } else {
+                console.log(`    ❌ Not suitable for input: ${service.uuid} → ${char.uuid}`);
               }
             }
           } catch (charError: any) {
@@ -702,27 +719,64 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                 console.log(`✅ writeValue() with BLE MIDI format completed!`);
               }
               
-              console.log(`🚨🚨🚨 DID YOUR PEDAL LIGHT BLINK? This should be THE ONE! 🚨🚨🚨`);
+              console.log(`🚨🚨🚨 DID YOUR PEDAL LIGHT BLINK? If NO, trying alternative formats...🚨🚨🚨`);
               
-              // If this works, we can stop here
+              // Try alternative formats if the standard one didn't work
+              console.log(`\n🔄 TRYING ALTERNATIVE DATA FORMATS ON SAME CHARACTERISTIC...`);
+              
+              // Format 1: Raw MIDI data (no BLE headers)
+              console.log(`📤 FORMAT 1: Raw MIDI data (no BLE timestamp)`);
+              const rawPacket = new Uint8Array(midiBytes);
+              console.log(`📤 Sending: [${Array.from(rawPacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+              await exactReceiveChar.characteristic.writeValueWithoutResponse(rawPacket);
+              console.log(`🚨 DID PEDAL LIGHT BLINK WITH RAW FORMAT?`);
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              
+              // Format 2: Different BLE MIDI timestamp format
+              console.log(`📤 FORMAT 2: Alternative BLE MIDI timestamp`);
+              const altBlePacket = new Uint8Array([0x80, 0x80, ...midiBytes]); // Fixed timestamp
+              console.log(`📤 Sending: [${Array.from(altBlePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+              await exactReceiveChar.characteristic.writeValueWithoutResponse(altBlePacket);
+              console.log(`🚨 DID PEDAL LIGHT BLINK WITH FIXED TIMESTAMP?`);
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              
+              // Format 3: Try a Note On command (might be more responsive)
+              console.log(`📤 FORMAT 3: Note On command (might be more responsive)`);
+              const noteOnBytes = [0x90, 0x40, 0x7F]; // Note On, middle C, velocity 127
+              const noteOnBlePacket = new Uint8Array([timestampHigh, timestampLow, ...noteOnBytes]);
+              console.log(`📤 Sending Note On: [${Array.from(noteOnBlePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+              await exactReceiveChar.characteristic.writeValueWithoutResponse(noteOnBlePacket);
+              console.log(`🚨 DID PEDAL LIGHT BLINK WITH NOTE ON?`);
+              await new Promise(resolve => setTimeout(resolve, 1000));
+              
+              // Format 4: Try raw Note On
+              console.log(`📤 FORMAT 4: Raw Note On (no timestamp)`);
+              const rawNoteOnPacket = new Uint8Array(noteOnBytes);
+              console.log(`📤 Sending raw Note On: [${Array.from(rawNoteOnPacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+              await exactReceiveChar.characteristic.writeValueWithoutResponse(rawNoteOnPacket);
+              console.log(`🚨 DID PEDAL LIGHT BLINK WITH RAW NOTE ON?`);
+              
+              console.log(`\n🎯 ALTERNATIVE FORMAT TESTS COMPLETE - Did ANY of them make the light blink?`);
+              
               setOutgoingDataActive(true);
               setTimeout(() => setOutgoingDataActive(false), 300);
               
-              const successMessage: BluetoothMessage = {
+              const testMessage: BluetoothMessage = {
                 timestamp: Date.now(),
                 deviceId: device.id,
                 deviceName: device.name,
-                data: `SUCCESS: Sent ${parsed.formatted} using exact receive characteristic!`,
+                data: `TESTED 4 formats on exact receive characteristic - check if any worked!`,
                 type: 'midi'
               };
-              setMessages(prev => [...prev.slice(-49), successMessage]);
+              setMessages(prev => [...prev.slice(-49), testMessage]);
               
               toast({
-                title: "MIDI Command Sent!",
-                description: `Used exact receive characteristic - check if your pedal responded!`,
+                title: "Multiple Format Test Complete!",
+                description: `Tried 4 different data formats - did any make the light blink?`,
               });
               
-              return; // Success! No need to test other characteristics
+              // Continue to test other characteristics if none of the formats worked
+              console.log(`\n🔄 If no formats worked, will test other characteristics...`);
               
             } catch (directError: any) {
               console.log(`❌ Direct test on exact receive characteristic failed: ${directError?.message}`);

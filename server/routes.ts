@@ -333,6 +333,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log('🔍 Verifying subscription for email:', email);
       
+      // First check database for subscription status
+      const user = await storage.getUserByEmail(email);
+      
+      if (user && user.subscriptionStatus) {
+        const status = parseInt(user.subscriptionStatus as any);
+        console.log('🔍 Database subscription status:', status);
+        
+        let userType = 'free';
+        let isPaid = false;
+        
+        switch (status) {
+          case 1:
+            userType = 'free';
+            isPaid = false;
+            break;
+          case 2:
+            userType = 'paid';
+            isPaid = true;
+            break;
+          case 3:
+            userType = 'professional';
+            isPaid = true;
+            break;
+          default:
+            userType = 'free';
+            isPaid = false;
+        }
+        
+        console.log('🔍 Final userType:', userType);
+        
+        return res.json({
+          isPaid: isPaid,
+          userType: userType,
+          subscriptionData: { status: status },
+          source: 'database'
+        });
+      }
+      
+      // Fallback to subscription manager if no database record
       const verificationResult = await subscriptionManager.verifySubscriptionStatus(email);
       
       res.json({

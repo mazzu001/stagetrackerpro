@@ -702,9 +702,10 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
             
             try {
               // Create BLE MIDI packet with timestamp header (same format as incoming data)
-              const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
-              const timestampHigh = 0x80 | ((timestamp >> 7) & 0x3F);
-              const timestampLow = 0x80 | (timestamp & 0x7F);
+              // WIDI Jack exact BLE MIDI format - 13-bit timestamp properly split
+              const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp (0-8191ms)
+              const timestampHigh = 0x80 | (timestamp >> 7);     // Header: upper 6 bits (no extra mask needed)
+              const timestampLow = 0x80 | (timestamp & 0x7F);    // Timestamp: lower 7 bits
               const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
               
               console.log(`📤 Sending BLE MIDI packet: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);

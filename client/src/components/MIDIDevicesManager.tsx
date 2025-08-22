@@ -193,218 +193,241 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-7xl max-h-[95vh] overflow-hidden" data-testid="modal-midi-devices">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Music className="h-5 w-5" />
-            MIDI Devices Manager - NEW LAYOUT
-            <Badge variant={isStreamConnected ? "default" : "secondary"}>
+      <DialogContent className="max-w-6xl h-[85vh] flex flex-col" data-testid="modal-midi-devices">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="flex items-center gap-3">
+            <Music className="h-6 w-6 text-primary" />
+            <span className="text-xl font-semibold">MIDI Devices Manager</span>
+            <Badge variant={isStreamConnected ? "default" : "secondary"} className="ml-2">
               {isStreamConnected ? "Live" : "Offline"}
             </Badge>
           </DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col h-[75vh] gap-4">
-          {/* Top Row: Available Devices and Live MIDI Messages */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[50vh]">
-            {/* Left Panel: Available Devices */}
-            <Card>
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Available Devices</CardTitle>
+        <div className="flex-1 grid grid-cols-3 gap-6 min-h-0">
+          {/* Left Column: Available Devices */}
+          <Card className="flex flex-col">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base font-medium">Available Devices</CardTitle>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={scanDevices}
+                  disabled={isLoading}
+                  data-testid="button-scan-devices"
+                >
+                  {isLoading ? "Scanning..." : "Refresh"}
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="flex-1 p-4">
+              <ScrollArea className="h-full">
+                <div className="space-y-4">
+                  {/* Input Devices */}
+                  <div>
+                    <h4 className="text-sm font-medium mb-3 flex items-center gap-2 text-green-600 dark:text-green-400">
+                      <Volume2 className="h-4 w-4" />
+                      Input Devices ({availableDevices.inputs.length})
+                    </h4>
+                    <div className="space-y-2">
+                      {availableDevices.inputs.length === 0 ? (
+                        <div className="text-center py-4 text-muted-foreground text-sm border-2 border-dashed rounded-lg">
+                          No input devices found
+                        </div>
+                      ) : (
+                        availableDevices.inputs.map((device) => (
+                          <div key={device.id} className="border rounded-lg p-3 bg-card hover:bg-accent transition-colors">
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">{device.name}</p>
+                                <p className="text-xs text-muted-foreground">Port {device.portIndex}</p>
+                              </div>
+                              <Button
+                                size="sm"
+                                variant={device.isConnected ? "destructive" : "default"}
+                                onClick={() => device.isConnected ? disconnectDevice(device) : connectDevice(device)}
+                                data-testid={`button-${device.isConnected ? 'disconnect' : 'connect'}-input-${device.id}`}
+                                className="ml-2 shrink-0"
+                              >
+                                {device.isConnected ? (
+                                  <>
+                                    <WifiOff className="h-3 w-3 mr-1" />
+                                    Disconnect
+                                  </>
+                                ) : (
+                                  <>
+                                    <Wifi className="h-3 w-3 mr-1" />
+                                    Connect
+                                  </>
+                                )}
+                              </Button>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+
+                  <Separator />
+
+                  {/* Output Devices */}
+                  <div>
+                    <h4 className="text-sm font-medium mb-3 flex items-center gap-2 text-blue-600 dark:text-blue-400">
+                      <VolumeX className="h-4 w-4" />
+                      Output Devices ({availableDevices.outputs.length})
+                    </h4>
+                    <div className="space-y-2">
+                      {availableDevices.outputs.length === 0 ? (
+                        <div className="text-center py-4 text-muted-foreground text-sm border-2 border-dashed rounded-lg">
+                          No output devices found
+                        </div>
+                      ) : (
+                        availableDevices.outputs.map((device) => (
+                          <div key={device.id} className="border rounded-lg p-3 bg-card hover:bg-accent transition-colors">
+                            <div className="flex items-center justify-between">
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">{device.name}</p>
+                                <p className="text-xs text-muted-foreground">Port {device.portIndex}</p>
+                              </div>
+                              <Button
+                                size="sm"
+                                variant={device.isConnected ? "destructive" : "default"}
+                                onClick={() => device.isConnected ? disconnectDevice(device) : connectDevice(device)}
+                                data-testid={`button-${device.isConnected ? 'disconnect' : 'connect'}-output-${device.id}`}
+                                className="ml-2 shrink-0"
+                              >
+                                {device.isConnected ? (
+                                  <>
+                                    <WifiOff className="h-3 w-3 mr-1" />
+                                    Disconnect
+                                  </>
+                                ) : (
+                                  <>
+                                    <Wifi className="h-3 w-3 mr-1" />
+                                    Connect
+                                  </>
+                                )}
+                              </Button>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+
+          {/* Middle Column: Live MIDI Messages */}
+          <Card className="flex flex-col">
+            <CardHeader className="pb-4">
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base font-medium">Live MIDI Messages</CardTitle>
+                <div className="flex items-center gap-2">
+                  <Badge variant={connectionError ? "destructive" : "default"} className="text-xs">
+                    {connectionError || `${midiMessages.length} messages`}
+                  </Badge>
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    onClick={scanDevices}
-                    disabled={isLoading}
-                    data-testid="button-scan-devices"
+                    onClick={clearMessages}
+                    data-testid="button-clear-messages"
                   >
-                    {isLoading ? "Scanning..." : "Scan"}
+                    <Trash2 className="h-3 w-3 mr-1" />
+                    Clear
                   </Button>
                 </div>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <ScrollArea className="h-[30vh]">
-                <div>
-                  <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
-                    <Volume2 className="h-4 w-4" />
-                    Input Devices ({availableDevices.inputs.length})
-                  </h4>
-                  <div className="space-y-2">
-                    {availableDevices.inputs.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">No input devices found</p>
-                    ) : (
-                      availableDevices.inputs.map((device) => (
-                        <div key={device.id} className="flex items-center justify-between p-2 border rounded">
-                          <div>
-                            <p className="text-sm font-medium">{device.name}</p>
-                            <p className="text-xs text-muted-foreground">Port {device.portIndex}</p>
-                          </div>
-                          <Button
-                            size="sm"
-                            variant={device.isConnected ? "destructive" : "default"}
-                            onClick={() => device.isConnected ? disconnectDevice(device) : connectDevice(device)}
-                            data-testid={`button-${device.isConnected ? 'disconnect' : 'connect'}-input-${device.id}`}
-                          >
-                            {device.isConnected ? (
-                              <>
-                                <WifiOff className="h-4 w-4 mr-1" />
-                                Disconnect
-                              </>
-                            ) : (
-                              <>
-                                <Wifi className="h-4 w-4 mr-1" />
-                                Connect
-                              </>
-                            )}
-                          </Button>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-
-                <Separator />
-
-                <div>
-                  <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
-                    <VolumeX className="h-4 w-4" />
-                    Output Devices ({availableDevices.outputs.length})
-                  </h4>
-                  <div className="space-y-2">
-                    {availableDevices.outputs.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">No output devices found</p>
-                    ) : (
-                      availableDevices.outputs.map((device) => (
-                        <div key={device.id} className="flex items-center justify-between p-2 border rounded">
-                          <div>
-                            <p className="text-sm font-medium">{device.name}</p>
-                            <p className="text-xs text-muted-foreground">Port {device.portIndex}</p>
-                          </div>
-                          <Button
-                            size="sm"
-                            variant={device.isConnected ? "destructive" : "default"}
-                            onClick={() => device.isConnected ? disconnectDevice(device) : connectDevice(device)}
-                            data-testid={`button-${device.isConnected ? 'disconnect' : 'connect'}-output-${device.id}`}
-                          >
-                            {device.isConnected ? (
-                              <>
-                                <WifiOff className="h-4 w-4 mr-1" />
-                                Disconnect
-                              </>
-                            ) : (
-                              <>
-                                <Wifi className="h-4 w-4 mr-1" />
-                                Connect
-                              </>
-                            )}
-                          </Button>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </div>
-                </ScrollArea>
-              </CardContent>
-            </Card>
-
-            {/* Right Panel: Live MIDI Messages */}
-            <Card>
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Live MIDI Messages</CardTitle>
-                  <div className="flex gap-2">
-                    <Badge variant={connectionError ? "destructive" : "default"}>
-                      {connectionError || `${midiMessages.length} messages`}
-                    </Badge>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={clearMessages}
-                      data-testid="button-clear-messages"
-                    >
-                      <Trash2 className="h-4 w-4 mr-1" />
-                      Clear
-                    </Button>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <ScrollArea className="h-[30vh]">
-                  <div className="space-y-1 font-mono text-xs">
-                    {midiMessages.length === 0 ? (
-                      <p className="text-muted-foreground text-center py-8">
+              </div>
+            </CardHeader>
+            <CardContent className="flex-1 p-4">
+              <ScrollArea className="h-full">
+                <div className="space-y-2">
+                  {midiMessages.length === 0 ? (
+                    <div className="text-center py-8 text-muted-foreground border-2 border-dashed rounded-lg">
+                      <Music className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm">
                         {isStreamConnected ? "Waiting for MIDI messages..." : "Connect to stream to see messages"}
                       </p>
-                    ) : (
-                      midiMessages.slice().reverse().map((message, index) => (
-                        <div 
-                          key={`${message.timestamp}-${index}`} 
-                          className="p-2 bg-muted rounded border-l-2 border-primary"
-                          data-testid={`midi-message-${index}`}
-                        >
-                          {formatMIDIMessage(message)}
-                        </div>
-                      ))
-                    )}
-                  </div>
-                </ScrollArea>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Bottom Row: MIDI Command Sender */}
-          <Card className="h-[20vh] bg-blue-50 dark:bg-blue-950 border-2 border-blue-200 dark:border-blue-800">
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg">Send MIDI Command</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium">Output Device:</label>
-                  <select 
-                    value={selectedOutputDevice} 
-                    onChange={(e) => setSelectedOutputDevice(e.target.value)}
-                    className="w-full mt-1 p-2 border rounded"
-                    data-testid="select-output-device"
-                  >
-                    <option value="">Select output device...</option>
-                    {connectedDevices.outputs.map(device => (
-                      <option key={device.id} value={device.id}>
-                        {device.name}
-                      </option>
-                    ))}
-                  </select>
+                    </div>
+                  ) : (
+                    midiMessages.slice().reverse().map((message, index) => (
+                      <div 
+                        key={`${message.timestamp}-${index}`} 
+                        className="p-3 bg-muted rounded-lg border-l-4 border-primary font-mono text-xs break-all"
+                        data-testid={`midi-message-${index}`}
+                      >
+                        {formatMIDIMessage(message)}
+                      </div>
+                    ))
+                  )}
                 </div>
-                <div>
-                  <label className="text-sm font-medium">MIDI Command:</label>
-                  <div className="flex gap-2 mt-1">
-                    <Input
-                      value={midiCommand}
-                      onChange={(e) => setMidiCommand(e.target.value)}
-                      placeholder="e.g., '90 40 7F' or 'note on C4 127'"
-                      className="flex-1"
-                      data-testid="input-midi-command"
-                    />
-                    <Button 
-                      onClick={sendMIDIMessage}
-                      disabled={!selectedOutputDevice || !midiCommand.trim()}
-                      data-testid="button-send-midi"
-                    >
-                      <Send className="h-4 w-4 mr-1" />
-                      Send
-                    </Button>
-                  </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+
+          {/* Right Column: Send MIDI Command */}
+          <Card className="flex flex-col bg-gradient-to-br from-primary/5 to-secondary/5 border-primary/20">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-base font-medium flex items-center gap-2">
+                <Send className="h-4 w-4" />
+                Send MIDI Command
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1 p-4 space-y-4">
+              <div>
+                <label className="text-sm font-medium block mb-2">Output Device</label>
+                <select 
+                  value={selectedOutputDevice} 
+                  onChange={(e) => setSelectedOutputDevice(e.target.value)}
+                  className="w-full p-3 border rounded-lg bg-background text-sm"
+                  data-testid="select-output-device"
+                >
+                  <option value="">Select output device...</option>
+                  {connectedDevices.outputs.map(device => (
+                    <option key={device.id} value={device.id}>
+                      {device.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium block mb-2">MIDI Command</label>
+                <div className="space-y-2">
+                  <Input
+                    value={midiCommand}
+                    onChange={(e) => setMidiCommand(e.target.value)}
+                    placeholder="e.g., '90 40 7F' or 'note on C4 127'"
+                    className="font-mono text-sm"
+                    data-testid="input-midi-command"
+                  />
+                  <Button 
+                    onClick={sendMIDIMessage}
+                    disabled={!selectedOutputDevice || !midiCommand.trim()}
+                    className="w-full"
+                    data-testid="button-send-midi"
+                  >
+                    <Send className="h-4 w-4 mr-2" />
+                    Send Command
+                  </Button>
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground">
-                Formats: Hex (90 40 7F), Simple (note on C4 127), CC (cc 1 127)
-              </p>
+              
+              <div className="space-y-2">
+                <p className="text-xs font-medium text-muted-foreground">Command Formats:</p>
+                <div className="text-xs text-muted-foreground space-y-1 bg-muted/50 p-3 rounded">
+                  <div>• Hex: <code className="bg-background px-1 rounded">90 40 7F</code></div>
+                  <div>• Simple: <code className="bg-background px-1 rounded">note on C4 127</code></div>
+                  <div>• CC: <code className="bg-background px-1 rounded">cc 1 127</code></div>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </div>
 
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end gap-3 pt-4 border-t">
           <Button variant="outline" onClick={onClose} data-testid="button-close-midi">
             Close
           </Button>

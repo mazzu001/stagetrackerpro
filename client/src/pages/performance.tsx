@@ -558,7 +558,7 @@ export default function Performance({ userType }: PerformanceProps) {
                       <DropdownMenuSeparator />
                     </>
                   )}
-                  {userType === 'paid' && (
+                  {(userType === 'paid' || userType === 'premium') && (
                     <>
                       <DropdownMenuItem className="flex items-center">
                         <Crown className="w-4 h-4 mr-2 text-yellow-500" />
@@ -567,21 +567,30 @@ export default function Performance({ userType }: PerformanceProps) {
                       <DropdownMenuSeparator />
                     </>
                   )}
+                  {userType === 'professional' && (
+                    <>
+                      <DropdownMenuItem className="flex items-center">
+                        <Crown className="w-4 h-4 mr-2 text-purple-500" />
+                        <span className="text-purple-400">Professional Active</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
                 </div>
                 
                 {/* Desktop subscription link */}
                 <DropdownMenuItem 
-                  onClick={userType === 'paid' ? undefined : () => setLocation('/subscribe')}
+                  onClick={(userType === 'paid' || userType === 'premium' || userType === 'professional') ? undefined : () => setLocation('/subscribe')}
                   className={`flex items-center mobile-hidden ${
-                    userType === 'paid' 
+                    (userType === 'paid' || userType === 'premium' || userType === 'professional')
                       ? 'cursor-not-allowed text-gray-500 opacity-50' 
                       : 'cursor-pointer'
                   }`}
                   data-testid="menu-subscribe"
-                  disabled={userType === 'paid'}
+                  disabled={userType === 'paid' || userType === 'premium' || userType === 'professional'}
                 >
-                  <Crown className={`w-4 h-4 mr-2 ${userType === 'paid' ? 'text-gray-500' : ''}`} />
-                  <span>{userType === 'paid' ? 'Already Subscribed' : 'Subscribe Now'}</span>
+                  <Crown className={`w-4 h-4 mr-2 ${(userType === 'paid' || userType === 'premium' || userType === 'professional') ? 'text-gray-500' : ''}`} />
+                  <span>{(userType === 'paid' || userType === 'premium' || userType === 'professional') ? 'Already Subscribed' : 'View Plans'}</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="mobile-hidden" />
 

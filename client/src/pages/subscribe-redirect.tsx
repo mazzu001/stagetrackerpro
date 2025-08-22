@@ -52,6 +52,7 @@ export default function SubscribeRedirect() {
 
   const handleSubscribe = async (plan: PlanOption) => {
     setIsProcessing(plan.id);
+    console.log(`🔄 Starting subscription process for plan: ${plan.id}`);
 
     try {
       const storedUser = localStorage.getItem('lpp_local_user');
@@ -66,27 +67,37 @@ export default function SubscribeRedirect() {
       }
 
       const userData = JSON.parse(storedUser);
+      console.log(`📧 Creating checkout for email: ${userData.email}`);
 
       // Create Stripe Checkout Session instead of using Elements
+      const requestData = {
+        email: userData.email,
+        tier: plan.id,
+        priceAmount: plan.id === 'premium' ? 499 : 1499, // cents
+        successUrl: `${window.location.origin}/?payment=success`,
+        cancelUrl: `${window.location.origin}/subscribe`
+      };
+      
+      console.log('📤 Sending checkout request:', requestData);
+
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email: userData.email,
-          tier: plan.id,
-          priceAmount: plan.id === 'premium' ? 499 : 1499, // cents
-          successUrl: `${window.location.origin}/?payment=success`,
-          cancelUrl: `${window.location.origin}/subscribe`
-        }),
+        body: JSON.stringify(requestData),
       });
 
+      console.log('📥 Checkout response status:', response.status);
       const data = await response.json();
+      console.log('📋 Checkout response data:', data);
 
       if (response.ok && data.url) {
-        // Redirect to Stripe Checkout
-        window.location.href = data.url;
+        console.log('✅ Redirecting to Stripe Checkout:', data.url);
+        // Add a small delay to show processing state
+        setTimeout(() => {
+          window.location.href = data.url;
+        }, 500);
       } else {
         throw new Error(data.message || 'Failed to create checkout session');
       }

@@ -725,12 +725,21 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
               
               // DETAILED CONNECTION DEBUG - Let's verify what we're actually connected to
               console.log(`\n🔍 DETAILED CONNECTION DEBUG:`);
-              console.log(`Device name: "${exactReceiveChar.device?.name}"`);
-              console.log(`Device ID: "${exactReceiveChar.device?.id}"`);
+              console.log(`Device name: "${connectedDevice?.name}"`);
+              console.log(`Device ID: "${connectedDevice?.id}"`);
               console.log(`Service UUID: "${exactReceiveChar.service?.uuid}"`);
               console.log(`Characteristic UUID: "${exactReceiveChar.characteristic?.uuid}"`);
               console.log(`Characteristic properties:`, exactReceiveChar);
-              console.log(`Connection state: connected=${exactReceiveChar.device?.gatt?.connected}`);
+              console.log(`Connection state: connected=${connectedDevice?.gatt?.connected}`);
+              
+              // CHECK IF NOTIFICATIONS ARE ENABLED (required for most BLE MIDI devices)
+              try {
+                console.log(`🔔 Checking if notifications are enabled...`);
+                const isNotifying = await exactReceiveChar.characteristic.startNotifications();
+                console.log(`✅ Notifications enabled successfully:`, isNotifying);
+              } catch (notifError) {
+                console.log(`⚠️ Could not enable notifications:`, notifError);
+              }
               
               // Wait longer for WIDI Jack (they need sequential operations)
               await new Promise(resolve => setTimeout(resolve, 2000));

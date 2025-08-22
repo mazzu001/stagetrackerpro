@@ -67,9 +67,7 @@ export function WaveformVisualizer({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const rect = canvas.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
+    const { width, height } = canvas;
     const duration = song.duration || 240;
     
     // Clear canvas
@@ -180,54 +178,6 @@ export function WaveformVisualizer({
     }
   };
 
-  // Handle canvas resize to fill available space
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const resizeCanvas = () => {
-      const container = canvas.parentElement;
-      if (!container) return;
-
-      const rect = container.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
-      
-      // Set canvas size to fill container
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      
-      // Scale canvas context for high DPI displays
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        ctx.scale(dpr, dpr);
-      }
-      
-      // Set CSS size to actual container size
-      canvas.style.width = rect.width + 'px';
-      canvas.style.height = rect.height + 'px';
-    };
-
-    // Initial resize
-    resizeCanvas();
-
-    // Listen for window resize
-    window.addEventListener('resize', resizeCanvas);
-    
-    // Also listen for container size changes using ResizeObserver if available
-    let resizeObserver: ResizeObserver | undefined;
-    if (window.ResizeObserver) {
-      resizeObserver = new ResizeObserver(resizeCanvas);
-      resizeObserver.observe(canvas.parentElement!);
-    }
-
-    return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      if (resizeObserver) {
-        resizeObserver.disconnect();
-      }
-    };
-  }, []);
-
   useEffect(() => {
     const animate = () => {
       draw();
@@ -263,11 +213,13 @@ export function WaveformVisualizer({
   }
 
   return (
-    <div className={`bg-slate-900/80 overflow-hidden border border-gray-600 rounded w-full h-[68px] mt-[-10px] mb-[-10px] pt-[4px] pb-[4px] ${className}`}>
+    <div className="bg-slate-900/80 overflow-hidden border border-gray-600 rounded w-full h-[68px] mt-[-10px] mb-[-10px] pt-[4px] pb-[4px]">
       <canvas
         ref={canvasRef}
-        className="w-full h-full block"
-        style={{ display: 'block' }}
+        width={400}
+        height={60}
+        className="w-full h-full"
+        style={{ display: 'block', height: '60px' }}
       />
     </div>
   );

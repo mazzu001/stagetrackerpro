@@ -706,7 +706,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   // Send command to device
   const handleSendCommand = async (device: BluetoothDevice, command: string) => {
     try {
-      console.log(`Sending command to ${device.name}:`, command);
+      console.log(`🎹 Sending command to ${device.name}:`, command);
       
       // Parse the MIDI command locally (don't use server endpoint for Bluetooth)
       const parsed = parseMIDICommand(command);
@@ -715,22 +715,90 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       }
       
       const midiBytes = parsed.bytes;
+      console.log(`🎵 Parsed MIDI bytes:`, midiBytes);
       
       // Get the stored Bluetooth connection
       const bluetoothDevice = deviceConnections.get(device.id);
-      if (!bluetoothDevice || !bluetoothDevice.gatt?.connected) {
-        throw new Error('Device not connected or connection lost');
+      if (!bluetoothDevice) {
+        throw new Error('Device connection not found. Try reconnecting the device.');
       }
       
-      // Send MIDI data via Bluetooth GATT
+      if (!bluetoothDevice.gatt?.connected) {
+        console.log(`🔄 Attempting to reconnect to ${device.name}...`);
+        try {
+          await bluetoothDevice.gatt.connect();
+        } catch (reconnectError) {
+          throw new Error('Device not connected and reconnection failed');
+        }
+      }
+      
+      // Send MIDI data via Bluetooth GATT with multiple fallback approaches
       try {
         const server = bluetoothDevice.gatt;
-        const midiService = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
-        const midiCharacteristic = await midiService.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
+        console.log(`🔍 Getting MIDI service from ${device.name}...`);
         
-        // Convert to Uint8Array and send
-        const midiData = new Uint8Array(midiBytes);
-        await midiCharacteristic.writeValue(midiData);
+        // Try multiple service UUIDs for different device types
+        let midiService;
+        let midiCharacteristic;
+        
+        const serviceUUIDs = [
+          '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // Standard BLE MIDI
+          '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART
+          '0000fff0-0000-1000-8000-00805f9b34fb'  // Generic MIDI
+        ];
+        
+        const charUUIDs = [
+          '7772e5db-3868-4112-a1a9-f2669d106bf3', // Standard BLE MIDI I/O
+          '6e400002-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART TX
+          '0000fff1-0000-1000-8000-00805f9b34fb'  // Generic MIDI write
+        ];
+        
+        for (let i = 0; i < serviceUUIDs.length; i++) {
+          try {
+            console.log(`🔍 Trying service UUID: ${serviceUUIDs[i]}`);
+            midiService = await server.getPrimaryService(serviceUUIDs[i]);
+            console.log(`✅ Found MIDI service: ${serviceUUIDs[i]}`);
+            
+            console.log(`🔍 Trying characteristic UUID: ${charUUIDs[i]}`);
+            midiCharacteristic = await midiService.getCharacteristic(charUUIDs[i]);
+            console.log(`✅ Found MIDI characteristic: ${charUUIDs[i]}`);
+            break;
+          } catch (serviceError) {
+            console.log(`❌ Service/Characteristic ${i} not found:`, serviceError.message);
+            continue;
+          }
+        }
+        
+        if (!midiService || !midiCharacteristic) {
+          // List available services for debugging
+          console.log(`🔍 Listing all available services for ${device.name}:`);
+          const services = await server.getPrimaryServices();
+          for (const service of services) {
+            console.log(`  📋 Available service: ${service.uuid}`);
+            try {
+              const characteristics = await service.getCharacteristics();
+              for (const char of characteristics) {
+                console.log(`    📝 Available characteristic: ${char.uuid} (properties: ${JSON.stringify(char.properties)})`);
+              }
+            } catch (charError) {
+              console.log(`    ❌ Could not read characteristics: ${charError.message}`);
+            }
+          }
+          throw new Error('No compatible MIDI service/characteristic found on device');
+        }
+        
+        // Format MIDI data for Bluetooth MIDI (with timestamp header)
+        const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
+        const timestampHigh = 0x80 | ((timestamp >> 7) & 0x3F);
+        const timestampLow = 0x80 | (timestamp & 0x7F);
+        
+        // Create BLE MIDI packet: [timestampHigh, timestampLow, ...midiData]
+        const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
+        console.log(`📤 Sending BLE MIDI packet:`, Array.from(blePacket));
+        
+        // Try to write the data
+        await midiCharacteristic.writeValue(blePacket);
+        console.log(`✅ Successfully sent MIDI command to ${device.name}`);
         
         // Flash blue light for outgoing data
         setOutgoingDataActive(true);
@@ -740,7 +808,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
           timestamp: Date.now(),
           deviceId: device.id,
           deviceName: device.name,
-          data: `Sent: ${parsed.formatted}`,
+          data: `Sent: ${parsed.formatted} → [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
           type: 'midi'
         };
         setMessages(prev => [...prev.slice(-49), message]);
@@ -751,12 +819,23 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         });
         
       } catch (gattError) {
-        console.error('GATT write error:', gattError);
-        throw new Error('Failed to send MIDI data via Bluetooth');
+        console.error('🚨 GATT write error:', gattError);
+        throw new Error(`Failed to send MIDI data via Bluetooth: ${gattError.message}`);
       }
       
     } catch (error: any) {
-      console.error('Error sending MIDI command:', error);
+      console.error('🚨 Error sending MIDI command:', error);
+      
+      // Add detailed error message to logs
+      const errorMessage: BluetoothMessage = {
+        timestamp: Date.now(),
+        deviceId: device.id,
+        deviceName: device.name,
+        data: `ERROR: ${error.message}`,
+        type: 'midi'
+      };
+      setMessages(prev => [...prev.slice(-49), errorMessage]);
+      
       toast({
         title: "Command Failed",
         description: error.message || `Failed to send command to ${device.name}`,

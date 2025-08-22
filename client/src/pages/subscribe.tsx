@@ -1,157 +1,122 @@
-import { useStripe, Elements, PaymentElement, useElements } from '@stripe/react-stripe-js';
+import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
-import { useEffect, useState } from 'react';
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Crown, Check, Music } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
+import { Crown, Star, Check, ArrowLeft } from 'lucide-react';
+import { useLocation } from 'wouter';
 
-// Make sure to call `loadStripe` outside of a component's render to avoid
-// recreating the `Stripe` object on every render.
-if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
-  console.error('Missing VITE_STRIPE_PUBLIC_KEY environment variable');
-  throw new Error('Missing required Stripe key: VITE_STRIPE_PUBLIC_KEY');
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY!);
+
+interface PlanOption {
+  id: string;
+  name: string;
+  price: string;
+  priceId: string;
+  features: string[];
+  icon: React.ComponentType<any>;
+  popular?: boolean;
 }
 
-console.log('Loading Stripe with key starting with:', import.meta.env.VITE_STRIPE_PUBLIC_KEY.substring(0, 8));
-
-// Create a more robust Stripe promise with better error handling
-const stripePromise = Promise.resolve().then(async () => {
-  try {
-    console.log('Initializing Stripe...');
-    const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-    console.log('Stripe initialized successfully');
-    return stripe;
-  } catch (error) {
-    console.error('Failed to initialize Stripe:', error);
-    throw error;
+const plans: PlanOption[] = [
+  {
+    id: 'premium',
+    name: 'Premium',
+    price: '$4.99',
+    priceId: 'price_premium_placeholder',
+    features: [
+      'Unlimited songs',
+      'Advanced lyrics with timestamps', 
+      'Waveform visualization',
+      'Fullscreen performance mode'
+    ],
+    icon: Crown,
+    popular: true
+  },
+  {
+    id: 'professional',
+    name: 'Professional', 
+    price: '$14.99',
+    priceId: 'price_professional_placeholder',
+    features: [
+      'All Premium features',
+      'MIDI integration (Coming Soon)',
+      'Bluetooth MIDI connectivity (Coming Soon)', 
+      'Advanced performance tools (Coming Soon)',
+      'Professional stage features (Coming Soon)',
+      'Priority support'
+    ],
+    icon: Star
   }
-});
+];
 
-const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
+const CheckoutForm = ({ plan, clientSecret }: { plan: PlanOption; clientSecret: string }) => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
-  const [stripeError, setStripeError] = useState<string | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [, setLocation] = useLocation();
 
-  // Add error boundary for Stripe elements
-  if (!stripe || !elements) {
-    return (
-      <div className="text-center p-4">
-        <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2" />
-        <p className="text-sm text-gray-600">Loading payment form...</p>
-      </div>
-    );
-  }
-
-  if (stripeError) {
-    return (
-      <div className="text-center p-4 border border-red-200 bg-red-50 rounded">
-        <p className="text-red-700 text-sm">Payment form error: {stripeError}</p>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="mt-2"
-          onClick={() => setStripeError(null)}
-        >
-          Retry
-        </Button>
-      </div>
-    );
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setStripeError(null);
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
 
     if (!stripe || !elements) {
-      setIsLoading(false);
       return;
     }
 
-    try {
-      // First validate the elements
-      const { error: submitError } = await elements.submit();
-      if (submitError) {
-        console.error('Elements validation failed:', submitError);
-        setStripeError(submitError.message || 'Payment form validation failed');
-        setIsLoading(false);
-        return;
-      }
+    setIsProcessing(true);
 
-      // Confirm the payment
+    console.log('🔄 Processing payment for plan:', plan.name);
+
+    try {
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         redirect: 'if_required',
       });
 
       if (error) {
-        console.error('Payment error:', error);
+        console.error('❌ Payment failed:', error.message);
         toast({
           title: "Payment Failed",
-          description: error.message || 'Payment failed. Please try again.',
+          description: error.message,
           variant: "destructive",
         });
-        setIsLoading(false);
-        return;
-      }
-
-      if (paymentIntent && paymentIntent.status === 'succeeded') {
-        console.log('Payment succeeded! Updating user status...');
+      } else if (paymentIntent?.status === 'succeeded') {
+        console.log('✅ Payment succeeded');
         
-        // Update local user type to paid and preserve login
+        // Update user subscription status
         const storedUser = localStorage.getItem('lpp_local_user');
         if (storedUser) {
-          try {
-            const userData = JSON.parse(storedUser);
-            userData.userType = 'paid';
-            userData.hasActiveSubscription = true;
-            localStorage.setItem('lpp_local_user', JSON.stringify(userData));
-            
-            // Also preserve the login in stagetracker_user for compatibility
-            const stageTrackerUser = localStorage.getItem('stagetracker_user');
-            if (stageTrackerUser) {
-              const stagingData = JSON.parse(stageTrackerUser);
-              stagingData.userType = 'paid';
-              stagingData.hasActiveSubscription = true;
-              localStorage.setItem('stagetracker_user', JSON.stringify(stagingData));
-            }
-            
-            // Trigger auth change event to update the UI
-            window.dispatchEvent(new Event('auth-change'));
-            
-            toast({
-              title: "Welcome to Premium!",
-              description: "Your subscription is now active. Enjoy unlimited songs!",
-            });
-            
-            // Wait a moment then redirect
-            setTimeout(() => {
-              onSuccess();
-              window.location.href = '/';
-            }, 2000);
-            
-          } catch (error) {
-            console.error('Error updating user type:', error);
-          }
+          const userData = JSON.parse(storedUser);
+          userData.userType = plan.id === 'premium' ? 'paid' : 'professional';
+          userData.hasActiveSubscription = true;
+          userData.subscriptionTier = plan.id;
+          localStorage.setItem('lpp_local_user', JSON.stringify(userData));
+          window.dispatchEvent(new Event('auth-change'));
         }
-      } else if (paymentIntent) {
-        // Payment requires action or is processing
-        console.log('Payment status:', paymentIntent.status);
+
         toast({
-          title: "Payment Processing",
-          description: "Your payment is being processed. Please wait...",
+          title: `Welcome to ${plan.name}!`,
+          description: `Your ${plan.name} subscription is now active!`,
         });
+
+        // Redirect to home page
+        setTimeout(() => {
+          setLocation('/');
+        }, 2000);
       }
     } catch (error: any) {
-      console.error('Payment confirmation error:', error);
-      setStripeError(error.message || 'An unexpected error occurred');
+      console.error('❌ Payment error:', error);
+      toast({
+        title: "Payment Error", 
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
     }
-    
-    setIsLoading(false);
+
+    setIsProcessing(false);
   };
 
   return (
@@ -159,163 +124,82 @@ const SubscribeForm = ({ onSuccess }: { onSuccess: () => void }) => {
       <PaymentElement />
       <Button 
         type="submit" 
-        disabled={!stripe || isLoading} 
+        disabled={!stripe || isProcessing} 
         className="w-full"
-        data-testid="button-subscribe"
+        data-testid={`button-pay-${plan.id}`}
       >
-        {isLoading ? 'Processing...' : 'Subscribe to Premium - $4.99/month'}
+        {isProcessing ? 'Processing...' : `Pay ${plan.price}/month`}
       </Button>
     </form>
   );
 };
 
-export default function Subscribe({ onClose }: { onClose: () => void }) {
-  const [clientSecret, setClientSecret] = useState("");
-  const [showPayment, setShowPayment] = useState(false);
-  const [isCreatingSubscription, setIsCreatingSubscription] = useState(false);
+const PaymentPage = ({ plan, onBack }: { plan: PlanOption; onBack: () => void }) => {
+  const [clientSecret, setClientSecret] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
-  useEffect(() => {
-    // Create subscription when payment form is shown (but only once)
-    if (showPayment && !clientSecret && !isCreatingSubscription) {
-      setIsCreatingSubscription(true);
-      // Get user email from localStorage
-      const storedUser = localStorage.getItem('lpp_local_user');
-      let userEmail = null;
-      
-      if (storedUser) {
-        try {
-          const userData = JSON.parse(storedUser);
-          userEmail = userData.email;
-        } catch (error) {
-          console.error('Error parsing user data:', error);
+  React.useEffect(() => {
+    const createSubscription = async () => {
+      try {
+        const storedUser = localStorage.getItem('lpp_local_user');
+        if (!storedUser) {
+          toast({
+            title: "Authentication Required",
+            description: "Please sign in to subscribe.",
+            variant: "destructive",
+          });
+          onBack();
+          return;
         }
-      }
-      
-      if (!userEmail) {
-        console.error('No user email found for subscription');
-        setShowPayment(false);
-        return;
-      }
-      
-      console.log('Creating subscription for:', userEmail);
-      
-      fetch('/api/create-subscription', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: userEmail }),
-      })
-        .then(async (res) => {
-          const data = await res.json();
-          if (!res.ok) {
-            throw new Error(data.message || 'Failed to create subscription');
-          }
-          return data;
-        })
-        .then((data) => {
-          if (data.clientSecret) {
-            setClientSecret(data.clientSecret);
-          } else {
-            console.error('No client secret returned:', data);
-          }
-        })
-        .catch((error) => {
-          console.error('Error creating subscription:', error);
-          setShowPayment(false);
-          setIsCreatingSubscription(false);
-        })
-        .finally(() => {
-          setIsCreatingSubscription(false);
+
+        const userData = JSON.parse(storedUser);
+        console.log('🔄 Creating subscription for:', userData.email);
+
+        const response = await fetch('/api/create-subscription', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: userData.email,
+            tier: plan.id,
+            priceId: plan.priceId
+          }),
         });
-    }
-  }, [showPayment, clientSecret, isCreatingSubscription]);
 
-  if (!showPayment) {
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Failed to create subscription');
+        }
+
+        console.log('✅ Subscription created successfully');
+        setClientSecret(data.clientSecret);
+      } catch (error: any) {
+        console.error('❌ Subscription creation failed:', error);
+        toast({
+          title: "Subscription Error",
+          description: error.message || 'Failed to start subscription process',
+          variant: "destructive",
+        });
+        onBack();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    createSubscription();
+  }, [plan.id, plan.priceId, toast, onBack]);
+
+  if (isLoading) {
     return (
-      <div className="max-w-2xl mx-auto p-6">
+      <div className="max-w-md mx-auto p-6">
         <Card>
-          <CardHeader className="text-center">
-            <div className="mx-auto w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mb-4">
-              <Crown className="w-8 h-8 text-white" />
-            </div>
-            <CardTitle className="text-2xl">Upgrade to Premium</CardTitle>
-            <p className="text-gray-600">Unlock unlimited songs and advanced features</p>
-          </CardHeader>
-          
-          <CardContent className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Free Plan */}
-              <div className="border rounded-lg p-4">
-                <h3 className="font-semibold mb-2">Free Plan</h3>
-                <p className="text-2xl font-bold mb-4">$0<span className="text-sm font-normal">/month</span></p>
-                <ul className="space-y-2 mb-4">
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    <span>Up to 2 songs</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    <span>Basic audio controls</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    <span>Lyrics display</span>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Premium Plan */}
-              <div className="border-2 border-orange-500 rounded-lg p-4 relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                    Recommended
-                  </span>
-                </div>
-                <h3 className="font-semibold mb-2">Premium Plan</h3>
-                <p className="text-2xl font-bold mb-4">$4.99<span className="text-sm font-normal">/month</span></p>
-                <ul className="space-y-2 mb-4">
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    <span>Unlimited songs</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    <span>Up to 6 tracks per song</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    <span>Advanced audio mixing</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    <span>MIDI integration</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    <span>Priority support</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="text-center space-y-4">
-              <Button
-                onClick={() => setShowPayment(true)}
-                className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white px-8 py-3"
-                data-testid="button-show-payment"
-              >
-                <Crown className="w-4 h-4 mr-2" />
-                Upgrade to Premium
-              </Button>
-              
-              <Button
-                variant="ghost"
-                onClick={onClose}
-                data-testid="button-cancel"
-              >
-                Continue with Free Plan
-              </Button>
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
+              <p className="text-gray-600">Setting up your subscription...</p>
             </div>
           </CardContent>
         </Card>
@@ -329,9 +213,11 @@ export default function Subscribe({ onClose }: { onClose: () => void }) {
         <Card>
           <CardContent className="pt-6">
             <div className="text-center">
-              <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
-              <h3 className="text-lg font-semibold mb-2">Setting up your subscription...</h3>
-              <p className="text-sm text-gray-600">Please wait while we prepare your payment.</p>
+              <p className="text-red-600 mb-4">Failed to initialize payment</p>
+              <Button onClick={onBack} variant="outline">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Plans
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -341,49 +227,102 @@ export default function Subscribe({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="max-w-md mx-auto p-6">
+      <div className="mb-6">
+        <Button variant="ghost" onClick={onBack} data-testid="button-back-to-plans">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Plans
+        </Button>
+      </div>
+
       <Card>
         <CardHeader className="text-center">
-          <Crown className="w-12 h-12 mx-auto mb-2 text-yellow-500" />
-          <CardTitle>Complete Your Subscription</CardTitle>
-          <p className="text-sm text-gray-600">Premium Plan - $4.99/month</p>
-          <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-700">
-            🧪 TEST MODE: Use card 4242 4242 4242 4242 - No real charges will be made
+          <div className="mx-auto w-16 h-16 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mb-4">
+            <plan.icon className="w-8 h-8 text-white" />
           </div>
+          <CardTitle>Subscribe to {plan.name}</CardTitle>
+          <p className="text-gray-600">{plan.price}/month</p>
         </CardHeader>
         
         <CardContent>
-          <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded text-sm">
-            <h4 className="font-medium text-green-800 mb-2">Test Credit Cards (No Real Charges):</h4>
-            <ul className="text-green-700 space-y-1 text-xs">
-              <li><strong>Success:</strong> 4242 4242 4242 4242</li>
-              <li><strong>Decline:</strong> 4000 0000 0000 0002</li>
-              <li><strong>3D Secure:</strong> 4000 0025 0000 3155</li>
-              <li>Use any future date for expiry and any 3-digit CVC</li>
-            </ul>
-          </div>
-          
-          <Elements 
-            stripe={stripePromise} 
-            options={{ 
-              clientSecret,
-              appearance: {
-                theme: 'stripe'
-              }
-            }}
-          >
-            <SubscribeForm onSuccess={onClose} />
+          <Elements stripe={stripePromise} options={{ clientSecret }}>
+            <CheckoutForm plan={plan} clientSecret={clientSecret} />
           </Elements>
-          
-          <Button
-            variant="ghost"
-            onClick={() => setShowPayment(false)}
-            className="w-full mt-4"
-            data-testid="button-back"
-          >
-            Back to Plans
-          </Button>
         </CardContent>
       </Card>
+    </div>
+  );
+};
+
+export default function Subscribe() {
+  const [selectedPlan, setSelectedPlan] = useState<PlanOption | null>(null);
+  const [, setLocation] = useLocation();
+
+  if (selectedPlan) {
+    return <PaymentPage plan={selectedPlan} onBack={() => setSelectedPlan(null)} />;
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-bold mb-2">Choose Your Plan</h1>
+        <p className="text-gray-600">Upgrade to unlock unlimited songs and advanced features</p>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+        {plans.map((plan) => {
+          const Icon = plan.icon;
+          
+          return (
+            <Card 
+              key={plan.id} 
+              className={`relative cursor-pointer transition-all hover:shadow-lg ${
+                plan.popular ? 'ring-2 ring-yellow-400' : ''
+              }`}
+              onClick={() => setSelectedPlan(plan)}
+              data-testid={`card-plan-${plan.id}`}
+            >
+              {plan.popular && (
+                <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-black">
+                  Most Popular
+                </Badge>
+              )}
+              
+              <CardHeader className="text-center pb-4">
+                <div className="mx-auto w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mb-3">
+                  <Icon className="w-6 h-6 text-white" />
+                </div>
+                <CardTitle className="text-xl">{plan.name}</CardTitle>
+                <div className="text-2xl font-bold text-primary">{plan.price}<span className="text-sm text-gray-500">/month</span></div>
+              </CardHeader>
+              
+              <CardContent>
+                <ul className="space-y-2 mb-6">
+                  {plan.features.map((feature, index) => (
+                    <li key={index} className="flex items-center text-sm">
+                      <Check className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                
+                <Button 
+                  className="w-full" 
+                  variant={plan.popular ? "default" : "outline"}
+                  data-testid={`button-select-${plan.id}`}
+                >
+                  Select {plan.name}
+                </Button>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+
+      <div className="text-center mt-8">
+        <Button variant="ghost" onClick={() => setLocation('/')} data-testid="button-back-home">
+          Back to Home
+        </Button>
+      </div>
     </div>
   );
 }

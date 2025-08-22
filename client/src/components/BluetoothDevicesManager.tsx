@@ -711,12 +711,13 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
               console.log(`📤 Raw MIDI data: [${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
               console.log(`📤 BLE timestamp header: [${timestampHigh.toString(16).padStart(2, '0')} ${timestampLow.toString(16).padStart(2, '0')}]`);
               
-              if (exactReceiveChar.canWriteWithoutResponse) {
+              // USE WRITE WITH RESPONSE FIRST (this fixes the most common issue!)
+              if (exactReceiveChar.canWrite) {
+                await exactReceiveChar.characteristic.writeValueWithResponse(blePacket);
+                console.log(`✅ writeValueWithResponse() with BLE MIDI format completed!`);
+              } else if (exactReceiveChar.canWriteWithoutResponse) {
                 await exactReceiveChar.characteristic.writeValueWithoutResponse(blePacket);
                 console.log(`✅ writeValueWithoutResponse() with BLE MIDI format completed!`);
-              } else if (exactReceiveChar.canWrite) {
-                await exactReceiveChar.characteristic.writeValue(blePacket);
-                console.log(`✅ writeValue() with BLE MIDI format completed!`);
               }
               
               console.log(`🚨🚨🚨 DID YOUR PEDAL LIGHT BLINK? If NO, trying alternative formats...🚨🚨🚨`);
@@ -728,32 +729,57 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
               console.log(`📤 FORMAT 1: Raw MIDI data (no BLE timestamp)`);
               const rawPacket = new Uint8Array(midiBytes);
               console.log(`📤 Sending: [${Array.from(rawPacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              await exactReceiveChar.characteristic.writeValueWithoutResponse(rawPacket);
-              console.log(`🚨 DID PEDAL LIGHT BLINK WITH RAW FORMAT?`);
+              // Try writeValueWithResponse for raw data too
+              if (exactReceiveChar.canWrite) {
+                await exactReceiveChar.characteristic.writeValueWithResponse(rawPacket);
+                console.log(`✅ writeValueWithResponse() on raw data completed!`);
+              } else {
+                await exactReceiveChar.characteristic.writeValueWithoutResponse(rawPacket);
+                console.log(`✅ writeValueWithoutResponse() on raw data completed!`);
+              }
+              console.log(`🚨 DID PEDAL LIGHT BLINK WITH RAW FORMAT + RESPONSE?`);
               await new Promise(resolve => setTimeout(resolve, 1000));
               
-              // Format 2: Different BLE MIDI timestamp format
-              console.log(`📤 FORMAT 2: Alternative BLE MIDI timestamp`);
+              // Format 2: Different BLE MIDI timestamp format with response
+              console.log(`📤 FORMAT 2: Alternative BLE MIDI timestamp WITH RESPONSE`);
               const altBlePacket = new Uint8Array([0x80, 0x80, ...midiBytes]); // Fixed timestamp
               console.log(`📤 Sending: [${Array.from(altBlePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              await exactReceiveChar.characteristic.writeValueWithoutResponse(altBlePacket);
-              console.log(`🚨 DID PEDAL LIGHT BLINK WITH FIXED TIMESTAMP?`);
+              if (exactReceiveChar.canWrite) {
+                await exactReceiveChar.characteristic.writeValueWithResponse(altBlePacket);
+                console.log(`✅ writeValueWithResponse() on fixed timestamp completed!`);
+              } else {
+                await exactReceiveChar.characteristic.writeValueWithoutResponse(altBlePacket);
+                console.log(`✅ writeValueWithoutResponse() on fixed timestamp completed!`);
+              }
+              console.log(`🚨 DID PEDAL LIGHT BLINK WITH FIXED TIMESTAMP + RESPONSE?`);
               await new Promise(resolve => setTimeout(resolve, 1000));
               
-              // Format 3: Try a Note On command (might be more responsive)
-              console.log(`📤 FORMAT 3: Note On command (might be more responsive)`);
+              // Format 3: Try a Note On command with response
+              console.log(`📤 FORMAT 3: Note On command WITH RESPONSE`);
               const noteOnBytes = [0x90, 0x40, 0x7F]; // Note On, middle C, velocity 127
               const noteOnBlePacket = new Uint8Array([timestampHigh, timestampLow, ...noteOnBytes]);
               console.log(`📤 Sending Note On: [${Array.from(noteOnBlePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              await exactReceiveChar.characteristic.writeValueWithoutResponse(noteOnBlePacket);
-              console.log(`🚨 DID PEDAL LIGHT BLINK WITH NOTE ON?`);
+              if (exactReceiveChar.canWrite) {
+                await exactReceiveChar.characteristic.writeValueWithResponse(noteOnBlePacket);
+                console.log(`✅ writeValueWithResponse() on Note On completed!`);
+              } else {
+                await exactReceiveChar.characteristic.writeValueWithoutResponse(noteOnBlePacket);
+                console.log(`✅ writeValueWithoutResponse() on Note On completed!`);
+              }
+              console.log(`🚨 DID PEDAL LIGHT BLINK WITH NOTE ON + RESPONSE?`);
               await new Promise(resolve => setTimeout(resolve, 1000));
               
-              // Format 4: Try raw Note On
-              console.log(`📤 FORMAT 4: Raw Note On (no timestamp)`);
+              // Format 4: Try raw Note On with response
+              console.log(`📤 FORMAT 4: Raw Note On WITH RESPONSE`);
               const rawNoteOnPacket = new Uint8Array(noteOnBytes);
               console.log(`📤 Sending raw Note On: [${Array.from(rawNoteOnPacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              await exactReceiveChar.characteristic.writeValueWithoutResponse(rawNoteOnPacket);
+              if (exactReceiveChar.canWrite) {
+                await exactReceiveChar.characteristic.writeValueWithResponse(rawNoteOnPacket);
+                console.log(`✅ writeValueWithResponse() on raw Note On completed!`);
+              } else {
+                await exactReceiveChar.characteristic.writeValueWithoutResponse(rawNoteOnPacket);
+                console.log(`✅ writeValueWithoutResponse() on raw Note On completed!`);
+              }
               console.log(`🚨 DID PEDAL LIGHT BLINK WITH RAW NOTE ON?`);
               
               console.log(`\n🎯 ALTERNATIVE FORMAT TESTS COMPLETE - Did ANY of them make the light blink?`);

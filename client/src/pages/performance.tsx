@@ -18,11 +18,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Cable, Usb, Bluetooth } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
-import { MIDIDevicesManager } from "@/components/MIDIDevicesManager";
 import { USBMIDIDevicesManager } from "@/components/USBMIDIDevicesManager";
 import BluetoothDevicesManager from "@/components/BluetoothDevicesManager";
 
@@ -48,7 +47,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isMIDIDevicesOpen, setIsMIDIDevicesOpen] = useState(false);
   const [isUSBMIDIOpen, setIsUSBMIDIOpen] = useState(false);
   const [isBluetoothDevicesOpen, setIsBluetoothDevicesOpen] = useState(false);
 
@@ -632,14 +630,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 {userType === 'professional' && (
                   <>
                     <DropdownMenuItem 
-                      onClick={() => setIsMIDIDevicesOpen(true)}
-                      className="flex items-center cursor-pointer"
-                      data-testid="menu-midi-devices"
-                    >
-                      <Cable className="w-4 h-4 mr-2" />
-                      <span>MIDI Devices</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem 
                       onClick={() => setIsUSBMIDIOpen(true)}
                       className="flex items-center cursor-pointer"
                       data-testid="menu-usb-midi"
@@ -1088,12 +1078,6 @@ Click "Timestamp" to insert current time`}
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* MIDI Devices Manager Modal */}
-      <MIDIDevicesManager 
-        isOpen={isMIDIDevicesOpen} 
-        onClose={() => setIsMIDIDevicesOpen(false)} 
-      />
 
       {/* USB MIDI Devices Manager Modal */}
       <USBMIDIDevicesManager 

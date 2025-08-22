@@ -381,12 +381,72 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     setMessages(prev => [...prev.slice(-49), debugMessage]);
     
     try {
-      // Get MIDI service
+      // DISCOVER ALL SERVICES AND CHARACTERISTICS THAT WORK FOR RECEIVING
       const server = bluetoothDevice.gatt;
-      const midiService = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
+      console.log(`🔍 ANALYZING ALL SERVICES FOR RECEIVING FROM ${device.name}...`);
       
-      // Get MIDI I/O characteristic
-      const midiCharacteristic = await midiService.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
+      const services = await server.getPrimaryServices();
+      let foundReceiveChar = null;
+      let foundReceiveService = null;
+      
+      // Try to find ANY characteristic that can notify (receive data from device)
+      for (const service of services) {
+        console.log(`🔍 Checking service: ${service.uuid}`);
+        try {
+          const characteristics = await service.getCharacteristics();
+          for (const char of characteristics) {
+            console.log(`  📝 Characteristic: ${char.uuid}`);
+            console.log(`    Properties:`, char.properties);
+            
+            if (char.properties.notify || char.properties.indicate) {
+              console.log(`  🎯 FOUND NOTIFICATION CHARACTERISTIC: ${service.uuid} → ${char.uuid}`);
+              
+              try {
+                // Try to start notifications on this characteristic
+                await char.startNotifications();
+                foundReceiveChar = char;
+                foundReceiveService = service;
+                
+                console.log(`✅ SUCCESSFULLY STARTED NOTIFICATIONS ON: ${service.uuid} → ${char.uuid}`);
+                console.log(`🔑 THIS IS THE CHARACTERISTIC YOUR PEDAL USES FOR OUTPUT!`);
+                
+                // Store this information for later use in sending
+                const receiveInfo = {
+                  serviceUuid: service.uuid,
+                  charUuid: char.uuid,
+                  service: service,
+                  characteristic: char
+                };
+                
+                // Store in device connections for reference during sending
+                setDeviceConnections(prev => {
+                  const newConnections = new Map(prev);
+                  const existingDevice = newConnections.get(device.id);
+                  newConnections.set(device.id, {
+                    ...existingDevice,
+                    receiveInfo: receiveInfo
+                  });
+                  return newConnections;
+                });
+                
+                break; // Found a working notification characteristic
+              } catch (notifyError: any) {
+                console.log(`❌ Failed to start notifications on ${char.uuid}: ${notifyError?.message}`);
+              }
+            }
+          }
+          if (foundReceiveChar) break; // Exit service loop if we found a working characteristic
+        } catch (charError: any) {
+          console.log(`❌ Could not read characteristics from service ${service.uuid}`);
+        }
+      }
+      
+      if (!foundReceiveChar || !foundReceiveService) {
+        throw new Error('No notification characteristics found');
+      }
+      
+      const midiService = foundReceiveService;
+      const midiCharacteristic = foundReceiveChar;
       
       // Set up notification listener for incoming MIDI data
       await midiCharacteristic.startNotifications();
@@ -547,7 +607,19 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         }
       }
       
-      // TEST ALL WRITABLE CHARACTERISTICS
+      // FIRST CHECK IF WE HAVE RECEIVE INFO TO GUIDE US
+      const deviceConnection = deviceConnections.get(device.id);
+      let receiveInfo = null;
+      
+      if (deviceConnection && deviceConnection.receiveInfo) {
+        receiveInfo = deviceConnection.receiveInfo;
+        console.log(`🔑 USING RECEIVE INFO TO GUIDE SENDING:`);
+        console.log(`🔑 Pedal receives FROM us using service: ${receiveInfo.serviceUuid}`);
+        console.log(`🔑 Pedal sends TO us using characteristic: ${receiveInfo.charUuid}`);
+        console.log(`🔑 Looking for INPUT characteristic in same service...`);
+      }
+      
+      // TEST ALL WRITABLE CHARACTERISTICS (prioritizing same service as receiver)
       try {
         const server = bluetoothDevice.gatt;
         console.log(`🔍 TESTING ALL WRITABLE CHARACTERISTICS FOR ${device.name}...`);
@@ -561,14 +633,22 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
             const characteristics = await service.getCharacteristics();
             for (const char of characteristics) {
               if (char.properties.write || char.properties.writeWithoutResponse) {
+                const isFromReceiveService = receiveInfo && service.uuid === receiveInfo.serviceUuid;
+                const isSameAsReceiveChar = receiveInfo && char.uuid === receiveInfo.charUuid;
+                
                 writableCharacteristics.push({
                   service: service.uuid,
                   char: char.uuid,
                   characteristic: char,
                   canWrite: char.properties.write,
-                  canWriteWithoutResponse: char.properties.writeWithoutResponse
+                  canWriteWithoutResponse: char.properties.writeWithoutResponse,
+                  priority: isFromReceiveService ? (isSameAsReceiveChar ? 1 : 2) : 3 // Same char = priority 1, same service = priority 2, other = priority 3
                 });
-                console.log(`🎯 WRITABLE CHARACTERISTIC: ${service.uuid} → ${char.uuid}`);
+                
+                const priorityLabel = isFromReceiveService 
+                  ? (isSameAsReceiveChar ? ' 🌟 SAME AS RECEIVE CHAR!' : ' ⭐ SAME SERVICE AS RECEIVER')
+                  : '';
+                console.log(`🎯 WRITABLE CHARACTERISTIC: ${service.uuid} → ${char.uuid}${priorityLabel}`);
               }
             }
           } catch (charError: any) {
@@ -580,7 +660,10 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
           throw new Error('No writable characteristics found on device');
         }
         
-        console.log(`🎯 Found ${writableCharacteristics.length} writable characteristics - testing each one...`);
+        // Sort by priority (same char first, then same service, then others)
+        writableCharacteristics.sort((a, b) => a.priority - b.priority);
+        
+        console.log(`🎯 Found ${writableCharacteristics.length} writable characteristics - testing each one (prioritized by receive info)...`);
         
         // Test each writable characteristic
         for (let i = 0; i < writableCharacteristics.length; i++) {

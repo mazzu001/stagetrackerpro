@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
+import { parseMIDICommand } from '@/utils/midiFormatter';
 import { 
   Bluetooth, 
   Search, 
@@ -707,23 +708,13 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     try {
       console.log(`Sending command to ${device.name}:`, command);
       
-      // Parse the MIDI command using server endpoint
-      const response = await fetch('/api/midi/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deviceId: device.id, command: command.trim() })
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to parse MIDI command');
+      // Parse the MIDI command locally (don't use server endpoint for Bluetooth)
+      const parsed = parseMIDICommand(command);
+      if (!parsed) {
+        throw new Error('Invalid MIDI command format. Use [[PC:12:1]], [[CC:7:64:1]], or [[NOTE:60:127:1]]');
       }
       
-      const result = await response.json();
-      const midiBytes = result.parsedData;
-      
-      if (!midiBytes) {
-        throw new Error('Invalid MIDI command format');
-      }
+      const midiBytes = parsed.bytes;
       
       // Get the stored Bluetooth connection
       const bluetoothDevice = deviceConnections.get(device.id);
@@ -749,7 +740,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
           timestamp: Date.now(),
           deviceId: device.id,
           deviceName: device.name,
-          data: `Sent: ${result.formattedCommand || command}`,
+          data: `Sent: ${parsed.formatted}`,
           type: 'midi'
         };
         setMessages(prev => [...prev.slice(-49), message]);

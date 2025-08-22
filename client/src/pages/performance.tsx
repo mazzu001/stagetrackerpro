@@ -31,7 +31,7 @@ interface PerformanceProps {
   userType: UserType;
 }
 
-export default function Performance({ userType }: PerformanceProps) {
+export default function Performance({ userType: propUserType }: PerformanceProps) {
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [, setLocation] = useLocation();
   const [latency, setLatency] = useState(2.1);
@@ -50,6 +50,9 @@ export default function Performance({ userType }: PerformanceProps) {
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
+  
+  // Use userType from authenticated user, fallback to prop
+  const userType = user?.userType || propUserType;
 
   // Check for payment success on page load
   useEffect(() => {

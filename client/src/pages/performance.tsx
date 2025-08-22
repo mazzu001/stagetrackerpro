@@ -49,6 +49,31 @@ export default function Performance({ userType }: PerformanceProps) {
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
 
+  // Check for payment success on page load
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('payment') === 'success') {
+      // Update user status to paid
+      const storedUser = localStorage.getItem('lpp_local_user');
+      if (storedUser) {
+        const userData = JSON.parse(storedUser);
+        userData.userType = 'paid';
+        userData.hasActiveSubscription = true;
+        userData.subscriptionTier = 'premium';
+        localStorage.setItem('lpp_local_user', JSON.stringify(userData));
+        window.dispatchEvent(new Event('auth-change'));
+        
+        toast({
+          title: "🎉 Welcome to Premium!",
+          description: "Your subscription is now active. Enjoy unlimited songs!",
+        });
+
+        // Clean up URL
+        window.history.replaceState({}, '', '/');
+      }
+    }
+  }, [toast]);
+
 
 
   // Fullscreen functionality

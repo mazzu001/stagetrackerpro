@@ -83,18 +83,26 @@ const PaymentForm = ({ tier, onSuccess }: { tier: SubscriptionTier, onSuccess: (
     e.preventDefault();
     setIsLoading(true);
 
+    console.log('🔄 Starting payment submission for tier:', tier.id);
+
     if (!stripe || !elements) {
+      console.error('❌ Stripe or elements not available');
       setIsLoading(false);
       return;
     }
 
     try {
+      console.log('🔄 Confirming payment with Stripe...');
+      
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         redirect: 'if_required',
       });
 
+      console.log('📊 Payment confirmation result:', { error: error?.message, status: paymentIntent?.status });
+
       if (error) {
+        console.error('❌ Payment error:', error);
         toast({
           title: "Payment Failed",
           description: error.message || 'Payment failed. Please try again.',
@@ -105,35 +113,55 @@ const PaymentForm = ({ tier, onSuccess }: { tier: SubscriptionTier, onSuccess: (
       }
 
       if (paymentIntent && paymentIntent.status === 'succeeded') {
-        const subscriptionStatus = tier.id === 'premium' ? 2 : 3; // 2 = premium, 3 = professional
+        console.log('✅ Payment succeeded, updating user data...');
         
-        // Update local user data
-        const storedUser = localStorage.getItem('lpp_local_user');
-        if (storedUser) {
-          const userData = JSON.parse(storedUser);
-          userData.userType = tier.id === 'premium' ? 'paid' : 'professional';
-          userData.hasActiveSubscription = true;
-          userData.subscriptionTier = tier.id;
-          localStorage.setItem('lpp_local_user', JSON.stringify(userData));
-          
-          window.dispatchEvent(new Event('auth-change'));
+        try {
+          // Update local user data
+          const storedUser = localStorage.getItem('lpp_local_user');
+          if (storedUser) {
+            const userData = JSON.parse(storedUser);
+            userData.userType = tier.id === 'premium' ? 'paid' : 'professional';
+            userData.hasActiveSubscription = true;
+            userData.subscriptionTier = tier.id;
+            localStorage.setItem('lpp_local_user', JSON.stringify(userData));
+            
+            console.log('✅ Updated user data:', userData);
+            window.dispatchEvent(new Event('auth-change'));
+          }
+
+          toast({
+            title: `Welcome to ${tier.name}!`,
+            description: `Your ${tier.name} subscription is now active!`,
+          });
+
+          console.log('🔄 Redirecting to home page...');
+          setTimeout(() => {
+            try {
+              onSuccess();
+              // Use location instead of direct window manipulation
+              window.location.replace('/');
+            } catch (redirectError) {
+              console.error('❌ Redirect error:', redirectError);
+              // Fallback: try different redirect method
+              window.location.assign('/');
+            }
+          }, 2000);
+        } catch (storageError) {
+          console.error('❌ Error updating localStorage:', storageError);
+          throw storageError;
         }
-
-        toast({
-          title: `Welcome to ${tier.name}!`,
-          description: `Your ${tier.name} subscription is now active!`,
-        });
-
-        setTimeout(() => {
-          onSuccess();
-          window.location.href = '/';
-        }, 2000);
       }
     } catch (error: any) {
-      console.error('Payment error:', error);
+      console.error('❌ Caught payment error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+      
       toast({
         title: "Payment Error",
-        description: error.message || 'An unexpected error occurred',
+        description: `Error: ${error.message || 'An unexpected error occurred'}`,
         variant: "destructive",
       });
     }

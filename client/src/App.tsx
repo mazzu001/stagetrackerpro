@@ -8,6 +8,7 @@ import Performance from "@/pages/performance";
 import Subscribe from "@/pages/subscribe";
 import SubscribeSimple from "@/pages/subscribe-simple";
 import SubscribeDebug from "@/pages/subscribe-debug";
+import SubscribeElementsTest from "@/pages/subscribe-elements-test";
 import SubscribeTest from "@/pages/subscribe-test";
 import Plans from "@/pages/plans";
 import Landing from "@/pages/landing";
@@ -102,7 +103,8 @@ function AppContent() {
       ) : (
         <Router>
           <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
-          <Route path="/subscribe" component={SubscribeDebug} />
+          <Route path="/subscribe" component={SubscribeElementsTest} />
+          <Route path="/subscribe-debug" component={SubscribeDebug} />
           <Route path="/subscribe-simple" component={SubscribeSimple} />
           <Route path="/subscribe-old" component={Subscribe} />
           <Route path="/subscribe-test" component={SubscribeTest} />

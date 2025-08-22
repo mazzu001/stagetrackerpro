@@ -763,27 +763,78 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
             midiCharacteristic = await midiService.getCharacteristic(charUUIDs[i]);
             console.log(`✅ Found MIDI characteristic: ${charUUIDs[i]}`);
             break;
-          } catch (serviceError) {
-            console.log(`❌ Service/Characteristic ${i} not found:`, serviceError.message);
+          } catch (serviceError: any) {
+            console.log(`❌ Service/Characteristic ${i} not found:`, serviceError?.message || serviceError);
             continue;
           }
         }
         
         if (!midiService || !midiCharacteristic) {
           // List available services for debugging
-          console.log(`🔍 Listing all available services for ${device.name}:`);
+          console.log(`🔍 DETAILED BLUETOOTH ANALYSIS for ${device.name}:`);
+          console.log(`🔍 ================================================================`);
           const services = await server.getPrimaryServices();
+          
           for (const service of services) {
-            console.log(`  📋 Available service: ${service.uuid}`);
+            console.log(`\n📋 SERVICE: ${service.uuid}`);
+            console.log(`  🔹 Service UUID: ${service.uuid}`);
+            console.log(`  🔹 Is Primary: ${service.isPrimary}`);
+            
             try {
               const characteristics = await service.getCharacteristics();
-              for (const char of characteristics) {
-                console.log(`    📝 Available characteristic: ${char.uuid} (properties: ${JSON.stringify(char.properties)})`);
+              console.log(`  📝 Found ${characteristics.length} characteristics:`);
+              
+              for (let j = 0; j < characteristics.length; j++) {
+                const char = characteristics[j];
+                console.log(`\n    📝 CHARACTERISTIC ${j + 1}:`);
+                console.log(`      🔸 UUID: ${char.uuid}`);
+                console.log(`      🔸 Properties:`, char.properties);
+                
+                // Analyze properties in detail
+                const props = char.properties;
+                console.log(`      🔸 Can Read: ${props.read ? '✅' : '❌'}`);
+                console.log(`      🔸 Can Write: ${props.write ? '✅' : '❌'}`);
+                console.log(`      🔸 Can Write Without Response: ${props.writeWithoutResponse ? '✅' : '❌'}`);
+                console.log(`      🔸 Can Notify: ${props.notify ? '✅' : '❌'}`);
+                console.log(`      🔸 Can Indicate: ${props.indicate ? '✅' : '❌'}`);
+                
+                // Determine the likely purpose
+                if (props.write || props.writeWithoutResponse) {
+                  console.log(`      🎯 PURPOSE: LIKELY FOR SENDING MIDI TO DEVICE (INPUT)`);
+                }
+                if (props.notify || props.indicate) {
+                  console.log(`      🎯 PURPOSE: LIKELY FOR RECEIVING MIDI FROM DEVICE (OUTPUT)`);
+                }
+                if (props.read) {
+                  console.log(`      🎯 PURPOSE: READABLE (CONFIG/STATUS)`);
+                }
+                
+                // Try to read descriptor information if available
+                try {
+                  const descriptors = await char.getDescriptors();
+                  if (descriptors.length > 0) {
+                    console.log(`      🔸 Descriptors: ${descriptors.length} found`);
+                    for (const desc of descriptors) {
+                      console.log(`        📄 Descriptor UUID: ${desc.uuid}`);
+                    }
+                  }
+                } catch (descError: any) {
+                  console.log(`      📄 No descriptors or access denied`);
+                }
               }
-            } catch (charError) {
-              console.log(`    ❌ Could not read characteristics: ${charError.message}`);
+            } catch (charError: any) {
+              console.log(`    ❌ Could not read characteristics: ${charError?.message || charError}`);
             }
           }
+          
+          console.log(`\n🔍 ================================================================`);
+          console.log(`\n💡 DEBUGGING SUMMARY:`);
+          console.log(`💡 - Look for characteristics with 'Can Write: ✅' for sending MIDI`);
+          console.log(`💡 - Look for characteristics with 'Can Notify: ✅' for receiving MIDI`);
+          console.log(`💡 - Standard BLE MIDI uses service: 03b80e5a-ede8-4b33-a751-6ce34ec4c700`);
+          console.log(`💡 - Standard BLE MIDI uses char: 7772e5db-3868-4112-a1a9-f2669d106bf3`);
+          console.log(`\n`);
+          
           throw new Error('No compatible MIDI service/characteristic found on device');
         }
         
@@ -818,9 +869,9 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
           description: `Sent "${command}" to ${device.name}`,
         });
         
-      } catch (gattError) {
+      } catch (gattError: any) {
         console.error('🚨 GATT write error:', gattError);
-        throw new Error(`Failed to send MIDI data via Bluetooth: ${gattError.message}`);
+        throw new Error(`Failed to send MIDI data via Bluetooth: ${gattError?.message || gattError}`);
       }
       
     } catch (error: any) {

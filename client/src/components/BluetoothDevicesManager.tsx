@@ -70,6 +70,8 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
   const [hasBluetoothSupport, setHasBluetoothSupport] = useState(false);
   const [bluetoothState, setBluetoothState] = useState<'unavailable' | 'poweredOff' | 'poweredOn' | 'unauthorized'>('unavailable');
   const [selectedTab, setSelectedTab] = useState<'devices' | 'messages' | 'commands'>('devices');
+  const [incomingDataActive, setIncomingDataActive] = useState(false);
+  const [outgoingDataActive, setOutgoingDataActive] = useState(false);
   
   const { toast } = useToast();
 
@@ -439,6 +441,10 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
             
             setMessages(prev => [...prev.slice(-49), message]);
             
+            // Flash blue light for outgoing MIDI data
+            setOutgoingDataActive(true);
+            setTimeout(() => setOutgoingDataActive(false), 300);
+            
           } catch (midiError) {
             throw new Error('MIDI service not available');
           }
@@ -470,6 +476,10 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
           };
           
           setMessages(prev => [...prev.slice(-49), message]);
+          
+          // Flash blue light for outgoing data
+          setOutgoingDataActive(true);
+          setTimeout(() => setOutgoingDataActive(false), 300);
         }
         
         toast({
@@ -677,6 +687,10 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
             
             console.log('MIDI message received:', message);
             setMessages(prev => [...prev.slice(-49), message]);
+            
+            // Flash green light for incoming MIDI data
+            setIncomingDataActive(true);
+            setTimeout(() => setIncomingDataActive(false), 300);
           });
           
           console.log('MIDI notifications started for', device.name);
@@ -738,6 +752,10 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
                       
                       console.log('Bluetooth data received:', message);
                       setMessages(prev => [...prev.slice(-49), message]);
+                      
+                      // Flash green light for incoming data
+                      setIncomingDataActive(true);
+                      setTimeout(() => setIncomingDataActive(false), 300);
                     });
                   } catch (charError) {
                     console.log('Could not start notifications for characteristic:', charError);
@@ -817,6 +835,10 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
                     
                     console.log('Bluetooth input received:', message);
                     setMessages(prev => [...prev.slice(-49), message]);
+                    
+                    // Flash green light for incoming data
+                    setIncomingDataActive(true);
+                    setTimeout(() => setIncomingDataActive(false), 300);
                   });
                 } catch (charError) {
                   console.log('Could not start notifications for characteristic:', charError);
@@ -950,6 +972,32 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
             <Badge variant={hasBluetoothSupport ? "default" : "secondary"} className="ml-2">
               {hasBluetoothSupport ? bluetoothState : "Not Supported"}
             </Badge>
+            
+            {/* Data Flow Indicators */}
+            <div className="flex items-center gap-2 ml-4">
+              <div className="flex items-center gap-1">
+                <div 
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    incomingDataActive 
+                      ? 'bg-green-500 shadow-lg shadow-green-500/50 animate-pulse' 
+                      : 'bg-green-200 dark:bg-green-800'
+                  }`}
+                  title="Incoming Data"
+                />
+                <span className="text-xs text-muted-foreground">IN</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div 
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    outgoingDataActive 
+                      ? 'bg-blue-500 shadow-lg shadow-blue-500/50 animate-pulse' 
+                      : 'bg-blue-200 dark:bg-blue-800'
+                  }`}
+                  title="Outgoing Data"
+                />
+                <span className="text-xs text-muted-foreground">OUT</span>
+              </div>
+            </div>
           </DialogTitle>
         </DialogHeader>
 

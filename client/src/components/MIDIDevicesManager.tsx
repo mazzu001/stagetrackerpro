@@ -197,7 +197,7 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Music className="h-5 w-5" />
-            MIDI Devices Manager
+            MIDI Devices Manager - NEW LAYOUT
             <Badge variant={isStreamConnected ? "default" : "secondary"}>
               {isStreamConnected ? "Live" : "Offline"}
             </Badge>

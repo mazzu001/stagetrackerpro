@@ -204,10 +204,10 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
           </DialogTitle>
         </DialogHeader>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[70vh]">
-          {/* Left Panel: Device Management */}
-          <div className="space-y-4">
-            {/* Available Devices */}
+        <div className="flex flex-col h-[70vh] gap-4">
+          {/* Top Row: Available Devices and Live MIDI Messages */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[48vh]">
+            {/* Left Panel: Available Devices */}
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
@@ -224,6 +224,7 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
+                <ScrollArea className="h-[35vh]">
                 <div>
                   <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                     <Volume2 className="h-4 w-4" />
@@ -303,15 +304,62 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
                     )}
                   </div>
                 </div>
+                </ScrollArea>
               </CardContent>
             </Card>
 
-            {/* MIDI Command Sender */}
+            {/* Right Panel: Live MIDI Messages */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-lg">Send MIDI Command</CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">Live MIDI Messages</CardTitle>
+                  <div className="flex gap-2">
+                    <Badge variant={connectionError ? "destructive" : "default"}>
+                      {connectionError || `${midiMessages.length} messages`}
+                    </Badge>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={clearMessages}
+                      data-testid="button-clear-messages"
+                    >
+                      <Trash2 className="h-4 w-4 mr-1" />
+                      Clear
+                    </Button>
+                  </div>
+                </div>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent>
+                <ScrollArea className="h-[35vh]">
+                  <div className="space-y-1 font-mono text-xs">
+                    {midiMessages.length === 0 ? (
+                      <p className="text-muted-foreground text-center py-8">
+                        {isStreamConnected ? "Waiting for MIDI messages..." : "Connect to stream to see messages"}
+                      </p>
+                    ) : (
+                      midiMessages.slice().reverse().map((message, index) => (
+                        <div 
+                          key={`${message.timestamp}-${index}`} 
+                          className="p-2 bg-muted rounded border-l-2 border-primary"
+                          data-testid={`midi-message-${index}`}
+                        >
+                          {formatMIDIMessage(message)}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Bottom Row: MIDI Command Sender */}
+          <Card className="h-[18vh]">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg">Send MIDI Command</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium">Output Device:</label>
                   <select 
@@ -347,55 +395,11 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
                       Send
                     </Button>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">
-                    Formats: Hex (90 40 7F), Simple (note on C4 127), CC (cc 1 127)
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right Panel: Live MIDI Messages */}
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-lg">Live MIDI Messages</CardTitle>
-                <div className="flex gap-2">
-                  <Badge variant={connectionError ? "destructive" : "default"}>
-                    {connectionError || `${midiMessages.length} messages`}
-                  </Badge>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={clearMessages}
-                    data-testid="button-clear-messages"
-                  >
-                    <Trash2 className="h-4 w-4 mr-1" />
-                    Clear
-                  </Button>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <ScrollArea className="h-96">
-                <div className="space-y-1 font-mono text-xs">
-                  {midiMessages.length === 0 ? (
-                    <p className="text-muted-foreground text-center py-8">
-                      {isStreamConnected ? "Waiting for MIDI messages..." : "Connect to stream to see messages"}
-                    </p>
-                  ) : (
-                    midiMessages.slice().reverse().map((message, index) => (
-                      <div 
-                        key={`${message.timestamp}-${index}`} 
-                        className="p-2 bg-muted rounded border-l-2 border-primary"
-                        data-testid={`midi-message-${index}`}
-                      >
-                        {formatMIDIMessage(message)}
-                      </div>
-                    ))
-                  )}
-                </div>
-              </ScrollArea>
+              <p className="text-xs text-muted-foreground">
+                Formats: Hex (90 40 7F), Simple (note on C4 127), CC (cc 1 127)
+              </p>
             </CardContent>
           </Card>
         </div>

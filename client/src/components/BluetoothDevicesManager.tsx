@@ -275,13 +275,16 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
           setConnectedDevices(updatedDevices.filter(d => d.connected));
           saveDevicesToStorage(updatedDevices);
           
+          // Set up message listening for connected device
+          await setupDeviceListening(bluetoothDevice, device);
+          
           // Add connection message for MIDI devices
           if (device.type === 'midi') {
             const message: BluetoothMessage = {
               timestamp: Date.now(),
               deviceId: device.id,
               deviceName: device.name,
-              data: 'Connection established - MIDI ready',
+              data: 'Connection established - MIDI ready, listening for input',
               type: 'midi'
             };
             setMessages(prev => [...prev.slice(-49), message]);
@@ -289,7 +292,7 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
           
           toast({
             title: "Device Connected",
-            description: `${device.name} is now connected`,
+            description: `${device.name} is now connected and listening for commands`,
           });
         }
       } else {
@@ -352,6 +355,9 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
           setConnectedDevices(updatedDevices.filter(d => d.connected));
           saveDevicesToStorage(updatedDevices);
           
+          // Set up message listening for connected device
+          await setupDeviceListening(bluetoothDevice, device);
+          
           toast({
             title: "Device Paired & Connected",
             description: `${device.name} is now paired and connected`,
@@ -363,7 +369,7 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
               timestamp: Date.now(),
               deviceId: device.id,
               deviceName: device.name,
-              data: 'Device paired and connected - MIDI ready',
+              data: 'Device paired and connected - MIDI ready, listening for commands',
               type: 'midi'
             };
             setMessages(prev => [...prev.slice(-49), message]);
@@ -385,7 +391,7 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
     }
   };
 
-  // Send command
+  // Send command to Bluetooth device
   const handleSendCommand = async () => {
     if (!selectedDevice || !command.trim()) return;
 
@@ -393,25 +399,96 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
     if (!device) return;
 
     try {
-      const message: BluetoothMessage = {
-        timestamp: Date.now(),
-        deviceId: device.id,
-        deviceName: device.name,
-        data: `Sent: ${command}`,
-        type: device.type as 'midi' | 'audio' | 'data'
-      };
-      
-      setMessages(prev => [...prev.slice(-49), message]);
-      
-      toast({
-        title: "Command Sent",
-        description: `Command sent to ${device.name}`,
+      // Try to find the connected Bluetooth device and send command
+      const bluetoothDevice = await navigator.bluetooth.requestDevice({
+        filters: [{ name: device.name }],
+        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700', 'generic_access', 'device_information']
       });
-      setCommand('');
+      
+      if (bluetoothDevice.gatt?.connected) {
+        const server = bluetoothDevice.gatt;
+        
+        // Try to send to MIDI service if it's a MIDI device
+        if (device.type === 'midi') {
+          try {
+            const midiService = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
+            const midiCharacteristic = await midiService.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
+            
+            // Convert command to MIDI bytes (simple note on/off for testing)
+            let midiBytes: Uint8Array;
+            if (command.toLowerCase().includes('note on')) {
+              midiBytes = new Uint8Array([0x90, 0x3C, 0x7F]); // Note On, Middle C, velocity 127
+            } else if (command.toLowerCase().includes('note off')) {
+              midiBytes = new Uint8Array([0x80, 0x3C, 0x00]); // Note Off, Middle C
+            } else {
+              // Convert hex string to bytes
+              const hexValues = command.match(/[0-9a-fA-F]{2}/g);
+              if (hexValues) {
+                midiBytes = new Uint8Array(hexValues.map(hex => parseInt(hex, 16)));
+              } else {
+                // Default test message
+                midiBytes = new Uint8Array([0x90, 0x3C, 0x7F]);
+              }
+            }
+            
+            await midiCharacteristic.writeValue(midiBytes);
+            
+            const message: BluetoothMessage = {
+              timestamp: Date.now(),
+              deviceId: device.id,
+              deviceName: device.name,
+              data: `Sent MIDI: [${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}] (${command})`,
+              type: 'midi'
+            };
+            
+            setMessages(prev => [...prev.slice(-49), message]);
+            
+          } catch (midiError) {
+            throw new Error('MIDI service not available');
+          }
+        } else {
+          // For non-MIDI devices, try to send to any writable characteristic
+          const services = await server.getPrimaryServices();
+          let sent = false;
+          
+          for (const service of services) {
+            const characteristics = await service.getCharacteristics();
+            for (const characteristic of characteristics) {
+              if (characteristic.properties.write || characteristic.properties.writeWithoutResponse) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(command);
+                await characteristic.writeValue(data);
+                sent = true;
+                break;
+              }
+            }
+            if (sent) break;
+          }
+          
+          const message: BluetoothMessage = {
+            timestamp: Date.now(),
+            deviceId: device.id,
+            deviceName: device.name,
+            data: `Sent: ${command}`,
+            type: device.type as 'midi' | 'audio' | 'data'
+          };
+          
+          setMessages(prev => [...prev.slice(-49), message]);
+        }
+        
+        toast({
+          title: "Command Sent",
+          description: `Command sent to ${device.name}`,
+        });
+        setCommand('');
+      } else {
+        throw new Error('Device not connected');
+      }
     } catch (error) {
+      console.error('Send command error:', error);
       toast({
         title: "Send Failed",
-        description: "Unable to send command",
+        description: `Unable to send command: ${error}`,
         variant: "destructive",
       });
     }
@@ -537,6 +614,174 @@ export function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesMan
         // Continue scanning even if specific service fails
       }
       await new Promise(resolve => setTimeout(resolve, 200));
+    }
+  };
+
+  // Set up device listening for MIDI/audio messages
+  const setupDeviceListening = async (bluetoothDevice: any, device: BluetoothDevice) => {
+    try {
+      if (!bluetoothDevice.gatt?.connected) {
+        console.log('Device not connected to GATT server');
+        return;
+      }
+
+      const server = bluetoothDevice.gatt;
+      
+      // For MIDI devices, try to connect to MIDI service
+      if (device.type === 'midi') {
+        try {
+          // Try standard MIDI service UUID
+          const midiService = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
+          const midiCharacteristic = await midiService.getCharacteristic('7772e5db-3868-4112-a1a9-f2669d106bf3');
+          
+          // Start notifications for MIDI data
+          await midiCharacteristic.startNotifications();
+          
+          midiCharacteristic.addEventListener('characteristicvaluechanged', (event: any) => {
+            const value = event.target.value;
+            const midiData = new Uint8Array(value.buffer);
+            
+            // Parse MIDI message
+            let messageType = 'Unknown';
+            if (midiData.length >= 2) {
+              const status = midiData[0];
+              if ((status & 0xF0) === 0x90) messageType = 'Note On';
+              else if ((status & 0xF0) === 0x80) messageType = 'Note Off';
+              else if ((status & 0xF0) === 0xB0) messageType = 'Control Change';
+              else if ((status & 0xF0) === 0xC0) messageType = 'Program Change';
+              else if ((status & 0xF0) === 0xE0) messageType = 'Pitch Bend';
+            }
+            
+            const message: BluetoothMessage = {
+              timestamp: Date.now(),
+              deviceId: device.id,
+              deviceName: device.name,
+              data: `${messageType}: [${Array.from(midiData).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+              type: 'midi'
+            };
+            
+            console.log('MIDI message received:', message);
+            setMessages(prev => [...prev.slice(-49), message]);
+          });
+          
+          console.log('MIDI notifications started for', device.name);
+          
+        } catch (midiError) {
+          console.log('Standard MIDI service not available, trying generic approach');
+          
+          // Fall back to generic characteristic listening
+          try {
+            const services = await server.getPrimaryServices();
+            for (const service of services) {
+              const characteristics = await service.getCharacteristics();
+              for (const characteristic of characteristics) {
+                if (characteristic.properties.notify) {
+                  await characteristic.startNotifications();
+                  characteristic.addEventListener('characteristicvaluechanged', (event: any) => {
+                    const value = event.target.value;
+                    const data = new Uint8Array(value.buffer);
+                    
+                    const message: BluetoothMessage = {
+                      timestamp: Date.now(),
+                      deviceId: device.id,
+                      deviceName: device.name,
+                      data: `Data: [${Array.from(data).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+                      type: 'data'
+                    };
+                    
+                    console.log('Bluetooth data received:', message);
+                    setMessages(prev => [...prev.slice(-49), message]);
+                  });
+                }
+              }
+            }
+          } catch (genericError) {
+            console.error('Could not set up generic listening:', genericError);
+          }
+        }
+      } else {
+        // For non-MIDI devices, try to listen to any available characteristics
+        try {
+          const services = await server.getPrimaryServices();
+          let listenersSetup = 0;
+          
+          for (const service of services) {
+            const characteristics = await service.getCharacteristics();
+            for (const characteristic of characteristics) {
+              if (characteristic.properties.notify || characteristic.properties.indicate) {
+                try {
+                  await characteristic.startNotifications();
+                  listenersSetup++;
+                  
+                  characteristic.addEventListener('characteristicvaluechanged', (event: any) => {
+                    const value = event.target.value;
+                    const data = new Uint8Array(value.buffer);
+                    
+                    const message: BluetoothMessage = {
+                      timestamp: Date.now(),
+                      deviceId: device.id,
+                      deviceName: device.name,
+                      data: `Input: [${Array.from(data).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+                      type: device.type as 'audio' | 'midi' | 'data'
+                    };
+                    
+                    console.log('Bluetooth input received:', message);
+                    setMessages(prev => [...prev.slice(-49), message]);
+                  });
+                } catch (charError) {
+                  console.log('Could not start notifications for characteristic:', charError);
+                }
+              }
+            }
+          }
+          
+          if (listenersSetup > 0) {
+            console.log(`Set up ${listenersSetup} notification listeners for ${device.name}`);
+            
+            const statusMessage: BluetoothMessage = {
+              timestamp: Date.now(),
+              deviceId: device.id,
+              deviceName: device.name,
+              data: `Listening on ${listenersSetup} channel(s) - send commands from your device`,
+              type: 'data'
+            };
+            setMessages(prev => [...prev.slice(-49), statusMessage]);
+          }
+        } catch (serviceError) {
+          console.error('Could not enumerate services:', serviceError);
+        }
+      }
+      
+      // Add disconnect listener
+      bluetoothDevice.addEventListener('gattserverdisconnected', () => {
+        console.log('Device disconnected:', device.name);
+        const disconnectMessage: BluetoothMessage = {
+          timestamp: Date.now(),
+          deviceId: device.id,
+          deviceName: device.name,
+          data: 'Device disconnected',
+          type: device.type as 'audio' | 'midi' | 'data'
+        };
+        setMessages(prev => [...prev.slice(-49), disconnectMessage]);
+        
+        // Update device status
+        setDevices(prev => prev.map(d => 
+          d.id === device.id ? { ...d, connected: false } : d
+        ));
+        setConnectedDevices(prev => prev.filter(d => d.id !== device.id));
+      });
+      
+    } catch (error) {
+      console.error('Error setting up device listening:', error);
+      
+      const errorMessage: BluetoothMessage = {
+        timestamp: Date.now(),
+        deviceId: device.id,
+        deviceName: device.name,
+        data: `Error setting up listeners: ${error}`,
+        type: 'data'
+      };
+      setMessages(prev => [...prev.slice(-49), errorMessage]);
     }
   };
 

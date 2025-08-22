@@ -193,7 +193,7 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[90vh] overflow-hidden" data-testid="modal-midi-devices">
+      <DialogContent className="max-w-7xl max-h-[95vh] overflow-hidden" data-testid="modal-midi-devices">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Music className="h-5 w-5" />
@@ -204,9 +204,9 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
           </DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col h-[70vh] gap-4">
+        <div className="flex flex-col h-[75vh] gap-4">
           {/* Top Row: Available Devices and Live MIDI Messages */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[48vh]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[50vh]">
             {/* Left Panel: Available Devices */}
             <Card>
               <CardHeader className="pb-3">
@@ -224,7 +224,7 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
                 </div>
               </CardHeader>
               <CardContent className="space-y-3">
-                <ScrollArea className="h-[35vh]">
+                <ScrollArea className="h-[30vh]">
                 <div>
                   <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
                     <Volume2 className="h-4 w-4" />
@@ -330,7 +330,7 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
                 </div>
               </CardHeader>
               <CardContent>
-                <ScrollArea className="h-[35vh]">
+                <ScrollArea className="h-[30vh]">
                   <div className="space-y-1 font-mono text-xs">
                     {midiMessages.length === 0 ? (
                       <p className="text-muted-foreground text-center py-8">
@@ -354,7 +354,7 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
           </div>
 
           {/* Bottom Row: MIDI Command Sender */}
-          <Card className="h-[18vh]">
+          <Card className="h-[20vh] bg-blue-50 dark:bg-blue-950 border-2 border-blue-200 dark:border-blue-800">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg">Send MIDI Command</CardTitle>
             </CardHeader>
@@ -404,7 +404,7 @@ export function MIDIDevicesManager({ isOpen, onClose }: MIDIDevicesManagerProps)
           </Card>
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-4">
           <Button variant="outline" onClick={onClose} data-testid="button-close-midi">
             Close
           </Button>

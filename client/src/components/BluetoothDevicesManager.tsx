@@ -331,7 +331,10 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       // Store the Bluetooth device connection for sending commands
       setDeviceConnections(prev => {
         const newConnections = new Map(prev);
-        newConnections.set(device.id, bluetoothDevice);
+        newConnections.set(device.id, {
+          bluetoothDevice: bluetoothDevice,
+          gattServer: server
+        });
         return newConnections;
       });
 
@@ -421,7 +424,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                 // Store in device connections for reference during sending
                 setDeviceConnections(prev => {
                   const newConnections = new Map(prev);
-                  const existingDevice = newConnections.get(device.id);
+                  const existingDevice = newConnections.get(device.id) || {};
                   newConnections.set(device.id, {
                     ...existingDevice,
                     receiveInfo: receiveInfo
@@ -593,26 +596,28 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       console.log(`🎵 Parsed MIDI bytes:`, midiBytes);
       
       // Get the stored Bluetooth connection
-      const bluetoothDevice = deviceConnections.get(device.id);
-      if (!bluetoothDevice) {
+      const connectionInfo = deviceConnections.get(device.id);
+      if (!connectionInfo || !connectionInfo.bluetoothDevice) {
         throw new Error('Device connection not found. Try reconnecting the device.');
       }
+      
+      const bluetoothDevice = connectionInfo.bluetoothDevice;
       
       if (!bluetoothDevice.gatt?.connected) {
         console.log(`🔄 Attempting to reconnect to ${device.name}...`);
         try {
           await bluetoothDevice.gatt.connect();
         } catch (reconnectError) {
+          console.error('Reconnection failed:', reconnectError);
           throw new Error('Device not connected and reconnection failed');
         }
       }
       
-      // FIRST CHECK IF WE HAVE RECEIVE INFO TO GUIDE US
-      const deviceConnection = deviceConnections.get(device.id);
+      // FIRST CHECK IF WE HAVE RECEIVE INFO TO GUIDE US  
       let receiveInfo = null;
       
-      if (deviceConnection && deviceConnection.receiveInfo) {
-        receiveInfo = deviceConnection.receiveInfo;
+      if (connectionInfo && connectionInfo.receiveInfo) {
+        receiveInfo = connectionInfo.receiveInfo;
         console.log(`🔑 USING RECEIVE INFO TO GUIDE SENDING:`);
         console.log(`🔑 Pedal receives FROM us using service: ${receiveInfo.serviceUuid}`);
         console.log(`🔑 Pedal sends TO us using characteristic: ${receiveInfo.charUuid}`);
@@ -664,6 +669,60 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         writableCharacteristics.sort((a, b) => a.priority - b.priority);
         
         console.log(`🎯 Found ${writableCharacteristics.length} writable characteristics - testing each one (prioritized by receive info)...`);
+        
+        // SPECIAL CASE: If we found the exact receive characteristic and it's writable, test it first
+        if (receiveInfo) {
+          const exactReceiveChar = writableCharacteristics.find(wc => 
+            wc.service === receiveInfo.serviceUuid && 
+            wc.char === receiveInfo.charUuid
+          );
+          
+          if (exactReceiveChar) {
+            console.log(`\n🌟 SPECIAL TEST: Using EXACT same characteristic that receives data from your pedal!`);
+            console.log(`🌟 Service: ${receiveInfo.serviceUuid}`);
+            console.log(`🌟 Characteristic: ${receiveInfo.charUuid}`);
+            console.log(`📤 WATCH YOUR PEDAL LIGHT - This should work!`);
+            
+            try {
+              const testPacket = new Uint8Array(midiBytes);
+              
+              if (exactReceiveChar.canWriteWithoutResponse) {
+                await exactReceiveChar.characteristic.writeValueWithoutResponse(testPacket);
+                console.log(`✅ writeValueWithoutResponse() on EXACT receive characteristic completed!`);
+              } else if (exactReceiveChar.canWrite) {
+                await exactReceiveChar.characteristic.writeValue(testPacket);
+                console.log(`✅ writeValue() on EXACT receive characteristic completed!`);
+              }
+              
+              console.log(`🚨🚨🚨 DID YOUR PEDAL LIGHT BLINK? This should be THE ONE! 🚨🚨🚨`);
+              
+              // If this works, we can stop here
+              setOutgoingDataActive(true);
+              setTimeout(() => setOutgoingDataActive(false), 300);
+              
+              const successMessage: BluetoothMessage = {
+                timestamp: Date.now(),
+                deviceId: device.id,
+                deviceName: device.name,
+                data: `SUCCESS: Sent ${parsed.formatted} using exact receive characteristic!`,
+                type: 'midi'
+              };
+              setMessages(prev => [...prev.slice(-49), successMessage]);
+              
+              toast({
+                title: "MIDI Command Sent!",
+                description: `Used exact receive characteristic - check if your pedal responded!`,
+              });
+              
+              return; // Success! No need to test other characteristics
+              
+            } catch (directError: any) {
+              console.log(`❌ Direct test on exact receive characteristic failed: ${directError?.message}`);
+            }
+          }
+        }
+        
+        console.log(`\n🔄 Testing all writable characteristics as fallback...`);
         
         // Test each writable characteristic
         for (let i = 0; i < writableCharacteristics.length; i++) {

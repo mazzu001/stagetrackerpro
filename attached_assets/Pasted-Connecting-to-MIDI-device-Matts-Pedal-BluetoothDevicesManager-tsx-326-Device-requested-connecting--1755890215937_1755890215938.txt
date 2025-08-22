@@ -1,0 +1,26 @@
+Connecting to MIDI device: Matts Pedal
+BluetoothDevicesManager.tsx:326 Device requested, connecting to GATT server...
+BluetoothDevicesManager.tsx:329 Connected to GATT server
+BluetoothDevicesManager.tsx:372 Setting up MIDI device listening for: Matts Pedal
+BluetoothDevicesManager.tsx:386 🔍 ANALYZING ALL SERVICES FOR RECEIVING FROM Matts Pedal...
+BluetoothDevicesManager.tsx:394 🔍 Checking service: 03b80e5a-ede8-4b33-a751-6ce34ec4c700
+BluetoothDevicesManager.tsx:398   📝 Characteristic: 7772e5db-3868-4112-a1a9-f2669d106bf3
+BluetoothDevicesManager.tsx:399     Properties: BluetoothCharacteristicProperties {broadcast: false, read: true, writeWithoutResponse: true, write: false, notify: true, …}
+BluetoothDevicesManager.tsx:402   🎯 FOUND NOTIFICATION CHARACTERISTIC: 03b80e5a-ede8-4b33-a751-6ce34ec4c700 → 7772e5db-3868-4112-a1a9-f2669d106bf3
+BluetoothDevicesManager.tsx:410 ✅ SUCCESSFULLY STARTED NOTIFICATIONS ON: 03b80e5a-ede8-4b33-a751-6ce34ec4c700 → 7772e5db-3868-4112-a1a9-f2669d106bf3
+BluetoothDevicesManager.tsx:411 🔑 THIS IS THE CHARACTERISTIC YOUR PEDAL USES FOR OUTPUT!
+BluetoothDevicesManager.tsx:478 MIDI characteristic notifications started successfully
+BluetoothDevicesManager.tsx:584 🎹 Sending command to Matts Pedal: [[PC:1:1]]
+BluetoothDevicesManager.tsx:593 🎵 Parsed MIDI bytes: (2) [192, 1]
+BluetoothDevicesManager.tsx:602 🔄 Attempting to reconnect to Matts Pedal...
+BluetoothDevicesManager.tsx:725  🚨 Error sending MIDI command: Error: Device not connected and reconnection failed
+    at handleSendCommand (BluetoothDevicesManager.tsx:606:17)
+    at onClick (BluetoothDevicesManager.tsx:1028:44)
+    at HTMLUnknownElement.callCallback2 (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+    at invokeGuardedCallback (react-dom.development.js:4277:31)
+    at invokeGuardedCallbackAndCatchFirstError (react-dom.development.js:4291:25)
+    at executeDispatch (react-dom.development.js:9041:3)
+    at processDispatchQueueItemsInOrder (react-dom.development.js:9073:7)
+    at processDispatchQueue (react-dom.development.js:9086:5)
+    at dispatchEventsForPlugins (react-dom.development.js:9097:3)

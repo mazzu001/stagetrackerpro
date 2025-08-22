@@ -105,7 +105,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: { 
           id: newUser.id, 
           email: newUser.email,
-          userType: (newUser.subscriptionStatus as any as number) === 1 ? 'free' : ((newUser.subscriptionStatus as any as number) === 2 ? 'paid' : 'professional')
+          userType: (parseInt(newUser.subscriptionStatus as any) === 1) ? 'free' : 
+                   (parseInt(newUser.subscriptionStatus as any) === 2) ? 'paid' : 'professional'
         }
       });
     } catch (error: any) {
@@ -136,12 +137,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       console.log('✅ User authenticated from cloud database:', user.email);
+      console.log('🔍 DEBUG - subscriptionStatus:', user.subscriptionStatus, 'type:', typeof user.subscriptionStatus);
+      console.log('🔍 DEBUG - parseInt result:', parseInt(user.subscriptionStatus as any));
+      
+      const subStatus = parseInt(user.subscriptionStatus as any);
+      let userType = 'professional'; // default
+      if (subStatus === 1) userType = 'free';
+      else if (subStatus === 2) userType = 'paid';
+      else if (subStatus === 3) userType = 'professional';
+      
+      console.log('🔍 DEBUG - Final userType:', userType);
+      
       res.json({ 
         success: true, 
         user: { 
           id: user.id, 
           email: user.email,
-          userType: (user.subscriptionStatus as any as number) === 1 ? 'free' : ((user.subscriptionStatus as any as number) === 2 ? 'paid' : 'professional')
+          userType: userType
         }
       });
     } catch (error: any) {

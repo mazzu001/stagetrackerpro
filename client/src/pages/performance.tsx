@@ -578,19 +578,18 @@ export default function Performance({ userType }: PerformanceProps) {
                   )}
                 </div>
                 
-                {/* Desktop subscription link */}
+                {/* Desktop subscription link - Always show upgrade for levels 1 & 2 */}
                 <DropdownMenuItem 
-                  onClick={(userType === 'paid' || userType === 'premium' || userType === 'professional') ? undefined : () => setLocation('/subscribe')}
-                  className={`flex items-center mobile-hidden ${
-                    (userType === 'paid' || userType === 'premium' || userType === 'professional')
-                      ? 'cursor-not-allowed text-gray-500 opacity-50' 
-                      : 'cursor-pointer'
-                  }`}
+                  onClick={() => setLocation('/subscribe-new')}
+                  className="flex items-center mobile-hidden cursor-pointer"
                   data-testid="menu-subscribe"
-                  disabled={userType === 'paid' || userType === 'premium' || userType === 'professional'}
                 >
-                  <Crown className={`w-4 h-4 mr-2 ${(userType === 'paid' || userType === 'premium' || userType === 'professional') ? 'text-gray-500' : ''}`} />
-                  <span>{(userType === 'paid' || userType === 'premium' || userType === 'professional') ? 'Already Subscribed' : 'View Plans'}</span>
+                  <Crown className="w-4 h-4 mr-2 text-yellow-500" />
+                  <span>
+                    {userType === 'free' && 'View Plans'}
+                    {(userType === 'paid' || userType === 'premium') && 'Upgrade to Professional'}
+                    {userType === 'professional' && 'Manage Subscription'}
+                  </span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="mobile-hidden" />
 

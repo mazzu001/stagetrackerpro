@@ -461,6 +461,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Create Stripe Checkout Session (redirect-based payment)
+  app.post('/api/create-checkout-session', async (req, res) => {
+    try {
+      const { email, tier, priceAmount, successUrl, cancelUrl } = req.body;
+      
+      if (!email || !tier || !priceAmount) {
+        return res.status(400).json({ error: 'Missing required fields' });
+      }
+
+      console.log(`💳 Creating Stripe Checkout Session for: ${email}, tier: ${tier}, amount: ${priceAmount}`);
+
+      // Find or create customer
+      let customer;
+      const existingCustomers = await stripe.customers.list({ email, limit: 1 });
+      
+      if (existingCustomers.data.length > 0) {
+        customer = existingCustomers.data[0];
+        console.log('Using existing customer:', customer.id);
+      } else {
+        customer = await stripe.customers.create({
+          email,
+          name: email,
+          metadata: { email }
+        });
+        console.log('Created new customer:', customer.id);
+      }
+
+      // Create checkout session
+      const session = await stripe.checkout.sessions.create({
+        customer: customer.id,
+        payment_method_types: ['card'],
+        line_items: [
+          {
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: `StageTracker Pro - ${tier.charAt(0).toUpperCase() + tier.slice(1)}`,
+                description: `${tier === 'premium' ? '$4.99' : '$14.99'}/month subscription`,
+              },
+              unit_amount: priceAmount,
+              recurring: {
+                interval: 'month',
+              },
+            },
+            quantity: 1,
+          },
+        ],
+        mode: 'subscription',
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+        metadata: {
+          email,
+          tier
+        }
+      });
+
+      console.log(`✅ Checkout session created: ${session.id}`);
+      
+      res.json({
+        url: session.url
+      });
+    } catch (error: any) {
+      console.error('Checkout session creation error:', error);
+      res.status(500).json({ 
+        error: 'Failed to create checkout session',
+        message: error.message 
+      });
+    }
+  });
+
   // Check subscription status via webhook data
   app.post('/api/subscription-status', async (req, res) => {
     try {

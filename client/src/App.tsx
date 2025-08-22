@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Router } from "wouter";
 import Performance from "@/pages/performance";
 import Subscribe from "@/pages/subscribe-new";
+import Plans from "@/pages/plans";
 import Landing from "@/pages/landing";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
@@ -99,6 +100,7 @@ function AppContent() {
         <Router>
           <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
           <Route path="/subscribe" component={() => <Subscribe onClose={() => window.history.back()} />} />
+          <Route path="/plans" component={Plans} />
         </Router>
       )}
       <Toaster />

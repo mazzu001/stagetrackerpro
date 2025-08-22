@@ -580,7 +580,7 @@ export default function Performance({ userType }: PerformanceProps) {
                 
                 {/* Desktop subscription link - Always show upgrade for levels 1 & 2 */}
                 <DropdownMenuItem 
-                  onClick={() => setLocation('/subscribe-new')}
+                  onClick={() => setLocation('/plans')}
                   className="flex items-center mobile-hidden cursor-pointer"
                   data-testid="menu-subscribe"
                 >

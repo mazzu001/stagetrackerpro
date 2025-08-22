@@ -12,11 +12,11 @@ export default function Plans() {
   const handleSubscribe = (plan: string) => {
     if (plan === 'premium') {
       upgrade();
-      setLocation('/performance');
+      setLocation('/');
     } else if (plan === 'professional') {
       // Handle professional subscription
       upgrade();
-      setLocation('/performance');
+      setLocation('/');
     }
   };
 
@@ -268,7 +268,7 @@ export default function Plans() {
               Start Your Premium Journey
             </Button>
             <div className="flex justify-center">
-              <Button variant="ghost" onClick={() => setLocation('/performance')} className="text-gray-400 hover:text-white">
+              <Button variant="ghost" onClick={() => setLocation('/')} className="text-gray-400 hover:text-white">
                 ← Back to Performance
               </Button>
             </div>

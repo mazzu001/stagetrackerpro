@@ -67,10 +67,24 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   // MIDI command execution function for the sequencer
   const executeMIDICommand = useCallback(async (commandText: string): Promise<boolean> => {
     try {
-      // Find a connected USB MIDI output device
-      const outputDevice = connectedUSBMIDIDevices.find(device => device.type === 'output');
+      // Get the selected output device from localStorage (same as manual send)
+      const selectedDeviceId = localStorage.getItem('usb_midi_selected_output_device');
+      let outputDevice = null;
+      
+      if (selectedDeviceId) {
+        // Use the specifically selected device
+        outputDevice = connectedUSBMIDIDevices.find(device => 
+          device.type === 'output' && device.id === selectedDeviceId
+        );
+      }
+      
+      // If no selected device or device not found, fall back to first available
       if (!outputDevice) {
-        console.warn('⚠️ No connected USB MIDI output device for sequencer');
+        outputDevice = connectedUSBMIDIDevices.find(device => device.type === 'output');
+      }
+      
+      if (!outputDevice) {
+        console.warn('⚠️ No USB MIDI output device available for sequencer. Please connect and select a device in USB MIDI Settings.');
         return false;
       }
 

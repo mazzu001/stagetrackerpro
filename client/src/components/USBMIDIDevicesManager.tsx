@@ -68,8 +68,9 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
   
   const { toast } = useToast();
 
-  // Storage key for connected devices
+  // Storage keys
   const CONNECTED_DEVICES_STORAGE_KEY = 'usb_midi_connected_devices';
+  const SELECTED_OUTPUT_DEVICE_KEY = 'usb_midi_selected_output_device';
 
   // Save connected devices to localStorage
   const saveConnectedDevices = useCallback((devices: USBMIDIDevice[]) => {
@@ -851,7 +852,17 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
                     <label className="text-sm font-medium block mb-2">USB Output Device</label>
                     <select 
                       value={selectedOutputDevice} 
-                      onChange={(e) => setSelectedOutputDevice(e.target.value)}
+                      onChange={(e) => {
+                        const deviceId = e.target.value;
+                        setSelectedOutputDevice(deviceId);
+                        // Save selected device to localStorage for sequencer
+                        if (deviceId) {
+                          localStorage.setItem(SELECTED_OUTPUT_DEVICE_KEY, deviceId);
+                          console.log(`💾 Saved selected USB output device: ${deviceId}`);
+                        } else {
+                          localStorage.removeItem(SELECTED_OUTPUT_DEVICE_KEY);
+                        }
+                      }}
                       className="w-full p-3 border rounded-lg bg-background text-sm"
                       data-testid="select-usb-output-device"
                     >

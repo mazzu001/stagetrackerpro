@@ -58,18 +58,24 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isBluetoothDevicesOpen, setIsBluetoothDevicesOpen] = useState(false);
   const [connectedUSBMIDIDevices, setConnectedUSBMIDIDevices] = useState<any[]>([]);
   const [isMidiConnected, setIsMidiConnected] = useState(false);
+  const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
   
   // Check initial MIDI connection status on startup
   useEffect(() => {
     const selectedDeviceId = localStorage.getItem('usb_midi_selected_output_device');
     if (selectedDeviceId && connectedUSBMIDIDevices.length > 0) {
-      const hasConnectedOutputDevice = connectedUSBMIDIDevices.some(device => 
-        device.id === selectedDeviceId && device.type === 'output' && device.state === 'connected'
+      const selectedDevice = connectedUSBMIDIDevices.find(device => 
+        device.id === selectedDeviceId && device.type === 'output'
       );
-      setIsMidiConnected(hasConnectedOutputDevice);
       
-      if (hasConnectedOutputDevice) {
-        console.log('✅ Initial MIDI connection status: Connected');
+      if (selectedDevice) {
+        const isConnected = selectedDevice.state === 'connected';
+        setIsMidiConnected(isConnected);
+        setSelectedMidiDeviceName(selectedDevice.name);
+        
+        if (isConnected) {
+          console.log(`✅ Initial MIDI connection status: Connected to ${selectedDevice.name}`);
+        }
       }
     }
   }, [connectedUSBMIDIDevices]);
@@ -1231,6 +1237,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         <StatusBar
           isAudioEngineOnline={isAudioEngineOnline}
           isMidiConnected={isMidiConnected}
+          midiDeviceName={selectedMidiDeviceName}
           latency={latency}
         />
       </div>
@@ -1536,13 +1543,20 @@ Click "Timestamp" to insert current time`}
           
           // Check if we have a selected output device that's connected
           const selectedDeviceId = localStorage.getItem('usb_midi_selected_output_device');
-          const hasConnectedOutputDevice = selectedDeviceId && 
-            devices.some(device => device.id === selectedDeviceId && device.type === 'output' && device.state === 'connected');
+          const selectedDevice = selectedDeviceId && 
+            devices.find(device => device.id === selectedDeviceId && device.type === 'output');
           
-          setIsMidiConnected(!!hasConnectedOutputDevice);
-          
-          if (hasConnectedOutputDevice) {
-            console.log('✅ MIDI connection established - updating status to Connected');
+          if (selectedDevice) {
+            const isConnected = selectedDevice.state === 'connected';
+            setIsMidiConnected(isConnected);
+            setSelectedMidiDeviceName(selectedDevice.name);
+            
+            if (isConnected) {
+              console.log(`✅ MIDI connection established - updating status to Connected (${selectedDevice.name})`);
+            }
+          } else {
+            setIsMidiConnected(false);
+            setSelectedMidiDeviceName('');
           }
         }}
       />

@@ -1,12 +1,14 @@
 interface StatusBarProps {
   isAudioEngineOnline: boolean;
   isMidiConnected: boolean;
+  midiDeviceName?: string;
   latency: number;
 }
 
 export default function StatusBar({ 
   isAudioEngineOnline, 
   isMidiConnected, 
+  midiDeviceName,
   latency 
 }: StatusBarProps) {
   return (
@@ -26,6 +28,9 @@ export default function StatusBar({
             <span className="text-sm">
               MIDI: <span className={isMidiConnected ? 'text-green-500' : 'text-gray-400'}>
                 {isMidiConnected ? 'Connected' : 'Disconnected'}
+                {midiDeviceName && (
+                  <span className="text-gray-400 ml-1">({midiDeviceName})</span>
+                )}
               </span>
             </span>
           </div>

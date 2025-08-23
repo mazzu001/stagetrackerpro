@@ -21,7 +21,7 @@ import {
   AlertCircle,
   CheckCircle
 } from 'lucide-react';
-import { formatMIDIMessage as formatMIDIData } from '@/utils/midiFormatter';
+import { formatMIDIMessage as formatMIDIData, parseMIDICommand } from '@/utils/midiFormatter';
 
 interface USBMIDIDevice {
   id: string;
@@ -223,19 +223,52 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
     try {
       if (hasWebMIDISupport) {
         const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+        
         if (device.type === 'input') {
           const input = midiAccess.inputs.get(device.id);
           if (input) {
+            console.log(`🔌 Setting up USB MIDI input listener for: ${device.name}`);
+            
+            // Set up incoming message handler
             input.onmidimessage = (message: any) => {
+              const midiData = message.data || new Uint8Array();
+              console.log(`📥 USB MIDI Received from ${device.name}: [${Array.from(midiData as Uint8Array).map((b) => b.toString(16).padStart(2, '0')).join(' ')}]`);
+              
               const newMessage: USBMIDIMessage = {
                 timestamp: Date.now(),
                 deviceId: device.id,
                 deviceName: device.name,
-                data: message.data || new Uint8Array(),
-                type: 'note'
+                data: midiData,
+                type: 'received'
               };
               setMessages(prev => [...prev.slice(-49), newMessage]);
             };
+            
+            // Handle device state changes
+            input.onstatechange = (event: any) => {
+              console.log(`🔄 USB MIDI Input state change for ${device.name}:`, event.port.state);
+              if (event.port.state === 'disconnected') {
+                handleDisconnectDevice(device);
+              }
+            };
+          } else {
+            throw new Error(`Input device ${device.id} not found`);
+          }
+        } else {
+          // For output devices, just verify they exist
+          const output = midiAccess.outputs.get(device.id);
+          if (output) {
+            console.log(`🔌 USB MIDI output device ready: ${device.name}`);
+            
+            // Handle device state changes
+            output.onstatechange = (event: any) => {
+              console.log(`🔄 USB MIDI Output state change for ${device.name}:`, event.port.state);
+              if (event.port.state === 'disconnected') {
+                handleDisconnectDevice(device);
+              }
+            };
+          } else {
+            throw new Error(`Output device ${device.id} not found`);
           }
         }
       }
@@ -248,12 +281,13 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
       
       toast({
         title: "Device Connected",
-        description: `${device.name} is now connected`,
+        description: `${device.name} is now connected and monitoring ${device.type === 'input' ? 'incoming' : 'outgoing'} MIDI`,
       });
     } catch (error) {
+      console.error('USB MIDI Connection Error:', error);
       toast({
         title: "Connection Failed",
-        description: `Unable to connect to ${device.name}`,
+        description: `Unable to connect to ${device.name}: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     }
@@ -261,6 +295,29 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
 
   // Disconnect from device
   const handleDisconnectDevice = (device: USBMIDIDevice) => {
+    try {
+      if (hasWebMIDISupport) {
+        const midiAccess = navigator.requestMIDIAccess({ sysex: false }).then(access => {
+          if (device.type === 'input') {
+            const input = access.inputs.get(device.id);
+            if (input) {
+              input.onmidimessage = null;
+              input.onstatechange = null;
+              console.log(`🔌 USB MIDI input listener removed for: ${device.name}`);
+            }
+          } else {
+            const output = access.outputs.get(device.id);
+            if (output) {
+              output.onstatechange = null;
+              console.log(`🔌 USB MIDI output listener removed for: ${device.name}`);
+            }
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error disconnecting USB MIDI device:', error);
+    }
+    
     setDevices(prev => prev.map(d => 
       d.id === device.id ? { ...d, state: 'disconnected' } : d
     ));
@@ -282,21 +339,51 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
         const output = midiAccess.outputs.get(selectedOutputDevice);
         
         if (output) {
-          // Parse command (simple hex format for now)
-          const bytes = midiCommand.split(' ').map(b => parseInt(b, 16));
-          output.send(bytes);
+          // Parse MIDI command using proper parser (supports [[PC:12:1]], hex, and text formats)
+          const parseResult = parseMIDICommand(midiCommand);
+          
+          if (parseResult && parseResult.bytes.length > 0) {
+            console.log(`📤 USB MIDI Sending: ${midiCommand} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+            output.send(parseResult.bytes);
+            
+            // Add sent message to the message log
+            const sentMessage: USBMIDIMessage = {
+              timestamp: Date.now(),
+              deviceId: selectedOutputDevice,
+              deviceName: connectedDevices.find(d => d.id === selectedOutputDevice)?.name || 'Unknown Device',
+              data: new Uint8Array(parseResult.bytes),
+              type: 'sent'
+            };
+            setMessages(prev => [...prev.slice(-49), sentMessage]);
+            
+            toast({
+              title: "Message Sent",
+              description: `${parseResult.formatted} sent to ${sentMessage.deviceName}`,
+            });
+          } else {
+            toast({
+              title: "Invalid MIDI Command",
+              description: "Please use format: [[PC:12:1]], [[CC:7:64:1]], or hex bytes",
+              variant: "destructive",
+            });
+            return;
+          }
+        } else {
+          toast({
+            title: "Device Not Found",
+            description: "Selected output device is not available",
+            variant: "destructive",
+          });
+          return;
         }
       }
       
-      toast({
-        title: "Message Sent",
-        description: `MIDI command sent to device`,
-      });
       setMidiCommand('');
     } catch (error) {
+      console.error('USB MIDI Send Error:', error);
       toast({
         title: "Send Failed",
-        description: "Unable to send MIDI message",
+        description: `Unable to send MIDI message: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     }
@@ -580,9 +667,20 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
                       messages.slice().reverse().map((message, index) => (
                         <div 
                           key={`${message.timestamp}-${index}`} 
-                          className="p-3 bg-muted rounded-lg border-l-4 border-blue-500 font-mono text-xs break-all"
+                          className={`p-3 bg-muted rounded-lg border-l-4 font-mono text-xs break-all ${
+                            message.type === 'sent' ? 'border-green-500' : 
+                            message.type === 'received' ? 'border-blue-500' : 'border-gray-500'
+                          }`}
                           data-testid={`usb-midi-message-${index}`}
                         >
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className={`text-xs font-semibold ${
+                              message.type === 'sent' ? 'text-green-600' : 
+                              message.type === 'received' ? 'text-blue-600' : 'text-gray-600'
+                            }`}>
+                              {message.type === 'sent' ? '📤 SENT' : message.type === 'received' ? '📥 RECEIVED' : '📨 MESSAGE'}
+                            </span>
+                          </div>
                           {formatMIDIMessage(message)}
                         </div>
                       ))

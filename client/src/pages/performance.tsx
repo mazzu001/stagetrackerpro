@@ -213,25 +213,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           if (parseResult && parseResult.bytes.length > 0) {
             console.log(`📤 Lyrics Auto MIDI Sending: ${command} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
             output.send(parseResult.bytes);
-            
-            toast({
-              title: "Lyrics MIDI Sent",
-              description: `${parseResult.formatted} sent to ${selectedMidiDeviceName}`,
-            });
+            // Silent execution - no toast notification during performance
           } else {
-            toast({
-              title: "Invalid MIDI Command",
-              description: "Please use format: [[PC:12:1]], [[CC:7:64:1]], or hex bytes",
-              variant: "destructive",
-            });
+            console.warn(`⚠️ Invalid MIDI command from lyrics: ${command}`);
             return;
           }
         } else {
-          toast({
-            title: "Device Not Found",
-            description: "Selected output device is not available",
-            variant: "destructive",
-          });
+          console.warn(`⚠️ MIDI output device not found for lyrics command: ${command}`);
           return;
         }
       }
@@ -240,11 +228,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       setTimeout(() => setFooterMidiCommand(''), 100);
     } catch (error) {
       console.error('Lyrics MIDI Send Error:', error);
-      toast({
-        title: "Send Failed",
-        description: `Unable to send MIDI message: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        variant: "destructive",
-      });
+      // Silent error handling - no toast notification during performance
     }
   }, [selectedMidiDeviceName, toast]);
 

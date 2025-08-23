@@ -53,6 +53,15 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
   const [isScanning, setIsScanning] = useState(false);
   const [messages, setMessages] = useState<USBMIDIMessage[]>([]);
   const [selectedOutputDevice, setSelectedOutputDevice] = useState<string>('');
+  
+  // Load saved selected output device on startup
+  useEffect(() => {
+    const savedDevice = localStorage.getItem(SELECTED_OUTPUT_DEVICE_KEY);
+    if (savedDevice) {
+      setSelectedOutputDevice(savedDevice);
+      console.log(`📱 Restored selected USB output device from storage: ${savedDevice}`);
+    }
+  }, []);
   const [midiCommand, setMidiCommand] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [hasWebMIDISupport, setHasWebMIDISupport] = useState(false);
@@ -313,6 +322,25 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
     // Auto-reconnect previously connected devices after a short delay
     setTimeout(() => {
       autoReconnectDevices(midiAccess, deviceList);
+      
+      // Auto-select previously selected output device if it's available
+      const savedDeviceId = localStorage.getItem(SELECTED_OUTPUT_DEVICE_KEY);
+      if (savedDeviceId) {
+        const availableDevice = deviceList.find(device => 
+          device.id === savedDeviceId && device.type === 'output'
+        );
+        if (availableDevice) {
+          setSelectedOutputDevice(savedDeviceId);
+          console.log(`🔄 Auto-selected output device: ${availableDevice.name}`);
+          
+          // Notify parent about connection status
+          if (onConnectedDevicesChange) {
+            onConnectedDevicesChange(deviceList.filter(d => d.state === 'connected'));
+          }
+        } else {
+          console.log(`⚠️ Previously selected output device not available: ${savedDeviceId}`);
+        }
+      }
     }, 500);
   }, [autoReconnectDevices]);
 

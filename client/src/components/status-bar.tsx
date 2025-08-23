@@ -22,9 +22,9 @@ export default function StatusBar({
             </span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className={`w-3 h-3 rounded-full ${isMidiConnected ? 'bg-secondary' : 'bg-gray-500'}`} />
+            <div className={`w-3 h-3 rounded-full ${isMidiConnected ? 'bg-green-500' : 'bg-gray-500'}`} />
             <span className="text-sm">
-              MIDI: <span className={isMidiConnected ? 'text-secondary' : 'text-gray-400'}>
+              MIDI: <span className={isMidiConnected ? 'text-green-500' : 'text-gray-400'}>
                 {isMidiConnected ? 'Connected' : 'Disconnected'}
               </span>
             </span>

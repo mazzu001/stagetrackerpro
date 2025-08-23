@@ -189,21 +189,28 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Load songs from localStorage when component mounts or user changes
   const loadSongs = useCallback(() => {
+    console.log(`🔍 Loading songs for user: ${user?.email}`);
     if (user?.email) {
       const songs = LocalSongStorage.getAllSongs(user.email);
+      console.log(`🎵 Found ${songs.length} songs in storage:`, songs);
       // Sort songs alphabetically by title
       const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
       setAllSongs(sortedSongs);
+      console.log(`✅ Set ${sortedSongs.length} songs in state`);
       
       // If we had a selected song, try to restore it
       if (selectedSongId) {
         const song = LocalSongStorage.getSong(user.email, selectedSongId);
         setSelectedSong(song || null);
+        console.log(`🔍 Restored selected song: ${song?.title || 'not found'}`);
       }
+    } else {
+      console.log(`⚠️ No user email, cannot load songs`);
     }
   }, [user?.email, selectedSongId]);
 
   useEffect(() => {
+    console.log(`🔄 loadSongs useEffect triggered`);
     loadSongs();
   }, [loadSongs]);
 

@@ -67,6 +67,154 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
   
   const { toast } = useToast();
 
+  // Storage key for connected devices
+  const CONNECTED_DEVICES_STORAGE_KEY = 'usb_midi_connected_devices';
+
+  // Save connected devices to localStorage
+  const saveConnectedDevices = useCallback((devices: USBMIDIDevice[]) => {
+    try {
+      const deviceData = devices.map(device => ({
+        id: device.id,
+        name: device.name,
+        manufacturer: device.manufacturer,
+        type: device.type,
+        version: device.version
+      }));
+      localStorage.setItem(CONNECTED_DEVICES_STORAGE_KEY, JSON.stringify(deviceData));
+      console.log(`💾 Saved ${devices.length} connected USB MIDI devices to storage`);
+    } catch (error) {
+      console.error('Failed to save connected devices:', error);
+    }
+  }, []);
+
+  // Load connected devices from localStorage
+  const loadStoredConnectedDevices = useCallback((): USBMIDIDevice[] => {
+    try {
+      const stored = localStorage.getItem(CONNECTED_DEVICES_STORAGE_KEY);
+      if (stored) {
+        const deviceData = JSON.parse(stored);
+        console.log(`📂 Loaded ${deviceData.length} previously connected USB MIDI devices from storage`);
+        return deviceData.map((device: any) => ({
+          ...device,
+          state: 'disconnected' as const // Will be updated when reconnecting
+        }));
+      }
+    } catch (error) {
+      console.error('Failed to load stored connected devices:', error);
+    }
+    return [];
+  }, []);
+
+  // Auto-reconnect previously connected devices
+  const autoReconnectDevices = useCallback(async (midiAccess: any, availableDevices: USBMIDIDevice[]) => {
+    const storedDevices = loadStoredConnectedDevices();
+    if (storedDevices.length === 0) return;
+
+    console.log(`🔄 Attempting to auto-reconnect ${storedDevices.length} previously connected devices...`);
+    
+    for (const storedDevice of storedDevices) {
+      // Find matching device in currently available devices
+      const availableDevice = availableDevices.find(device => 
+        device.id === storedDevice.id && device.name === storedDevice.name
+      );
+      
+      if (availableDevice && availableDevice.state === 'connected') {
+        console.log(`🔗 Auto-reconnecting ${availableDevice.name} (${availableDevice.type})`);
+        try {
+          await connectToDevice(availableDevice, midiAccess);
+          toast({
+            title: "Device Auto-Connected",
+            description: `${availableDevice.name} reconnected automatically`,
+            duration: 3000,
+          });
+        } catch (error) {
+          console.error(`Failed to auto-reconnect ${availableDevice.name}:`, error);
+        }
+      } else {
+        console.log(`⚠️ Previously connected device not available: ${storedDevice.name}`);
+      }
+    }
+  }, [loadStoredConnectedDevices, toast]);
+
+  // Connect to device (updated to use midiAccess parameter)
+  const connectToDevice = async (device: USBMIDIDevice, midiAccess?: any) => {
+    console.log(`🔗 Attempting to connect to ${device.name} (${device.type})...`);
+    
+    try {
+      if (!midiAccess) {
+        if (!hasWebMIDISupport) {
+          throw new Error('Web MIDI API not supported');
+        }
+        midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+      }
+
+      if (device.type === 'input') {
+        const input = midiAccess.inputs.get(device.id);
+        if (input) {
+          console.log(`🔌 USB MIDI input device ready: ${device.name}`);
+          
+          input.onmidimessage = (event: any) => {
+            const message: USBMIDIMessage = {
+              timestamp: Date.now(),
+              deviceId: device.id,
+              deviceName: device.name,
+              data: event.data,
+              type: 'received'
+            };
+            
+            console.log(`📥 USB MIDI Received from ${device.name}:`, Array.from(event.data).map((b: number) => `0x${b.toString(16).padStart(2, '0')}`).join(' '));
+            setMessages(prev => [...prev.slice(-19), message]);
+          };
+          
+          input.onstatechange = (event: any) => {
+            console.log(`🔄 USB MIDI Input state change for ${device.name}:`, event.port.state);
+            if (event.port.state === 'disconnected') {
+              handleDisconnectDevice(device);
+            }
+          };
+        } else {
+          throw new Error(`Input device ${device.id} not found`);
+        }
+      } else {
+        const output = midiAccess.outputs.get(device.id);
+        if (output) {
+          console.log(`🔌 USB MIDI output device ready: ${device.name}`);
+          
+          output.onstatechange = (event: any) => {
+            console.log(`🔄 USB MIDI Output state change for ${device.name}:`, event.port.state);
+            if (event.port.state === 'disconnected') {
+              handleDisconnectDevice(device);
+            }
+          };
+        } else {
+          throw new Error(`Output device ${device.id} not found`);
+        }
+      }
+      
+      // Update device state
+      setDevices(prev => prev.map(d => 
+        d.id === device.id ? { ...d, state: 'connected' } : d
+      ));
+      setConnectedDevices(prev => {
+        const updated = [...prev.filter(d => d.id !== device.id), { ...device, state: 'connected' as const }];
+        saveConnectedDevices(updated); // Save to localStorage
+        return updated;
+      });
+      
+      toast({
+        title: "Device Connected",
+        description: `${device.name} is now connected and monitoring ${device.type === 'input' ? 'incoming' : 'outgoing'} MIDI`,
+      });
+    } catch (error) {
+      console.error('USB MIDI Connection Error:', error);
+      toast({
+        title: "Connection Failed",
+        description: `Unable to connect to ${device.name}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
+  };
+
   // Check Web MIDI API support
   useEffect(() => {
     const checkWebMIDISupport = async () => {
@@ -153,7 +301,12 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
     if (deviceList.length === 0) {
       console.log('⚠️ No MIDI devices found. Make sure devices are connected and drivers are installed.');
     }
-  }, []);
+    
+    // Auto-reconnect previously connected devices after a short delay
+    setTimeout(() => {
+      autoReconnectDevices(midiAccess, deviceList);
+    }, 500);
+  }, [autoReconnectDevices]);
 
   // Scan for USB MIDI devices
   const handleScanDevices = async () => {
@@ -267,77 +420,7 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
 
   // Connect to device
   const handleConnectDevice = async (device: USBMIDIDevice) => {
-    try {
-      if (hasWebMIDISupport) {
-        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
-        
-        if (device.type === 'input') {
-          const input = midiAccess.inputs.get(device.id);
-          if (input) {
-            console.log(`🔌 Setting up USB MIDI input listener for: ${device.name}`);
-            
-            // Set up incoming message handler
-            input.onmidimessage = (message: any) => {
-              const midiData = message.data || new Uint8Array();
-              console.log(`📥 USB MIDI Received from ${device.name}: [${Array.from(midiData as Uint8Array).map((b) => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              
-              const newMessage: USBMIDIMessage = {
-                timestamp: Date.now(),
-                deviceId: device.id,
-                deviceName: device.name,
-                data: midiData,
-                type: 'received'
-              };
-              setMessages(prev => [...prev.slice(-49), newMessage]);
-            };
-            
-            // Handle device state changes
-            input.onstatechange = (event: any) => {
-              console.log(`🔄 USB MIDI Input state change for ${device.name}:`, event.port.state);
-              if (event.port.state === 'disconnected') {
-                handleDisconnectDevice(device);
-              }
-            };
-          } else {
-            throw new Error(`Input device ${device.id} not found`);
-          }
-        } else {
-          // For output devices, just verify they exist
-          const output = midiAccess.outputs.get(device.id);
-          if (output) {
-            console.log(`🔌 USB MIDI output device ready: ${device.name}`);
-            
-            // Handle device state changes
-            output.onstatechange = (event: any) => {
-              console.log(`🔄 USB MIDI Output state change for ${device.name}:`, event.port.state);
-              if (event.port.state === 'disconnected') {
-                handleDisconnectDevice(device);
-              }
-            };
-          } else {
-            throw new Error(`Output device ${device.id} not found`);
-          }
-        }
-      }
-      
-      // Update device state
-      setDevices(prev => prev.map(d => 
-        d.id === device.id ? { ...d, state: 'connected' } : d
-      ));
-      setConnectedDevices(prev => [...prev, { ...device, state: 'connected' }]);
-      
-      toast({
-        title: "Device Connected",
-        description: `${device.name} is now connected and monitoring ${device.type === 'input' ? 'incoming' : 'outgoing'} MIDI`,
-      });
-    } catch (error) {
-      console.error('USB MIDI Connection Error:', error);
-      toast({
-        title: "Connection Failed",
-        description: `Unable to connect to ${device.name}: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        variant: "destructive",
-      });
-    }
+    await connectToDevice(device);
   };
 
   // Disconnect from device
@@ -368,7 +451,11 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
     setDevices(prev => prev.map(d => 
       d.id === device.id ? { ...d, state: 'disconnected' } : d
     ));
-    setConnectedDevices(prev => prev.filter(d => d.id !== device.id));
+    setConnectedDevices(prev => {
+      const updated = prev.filter(d => d.id !== device.id);
+      saveConnectedDevices(updated); // Update localStorage
+      return updated;
+    });
     
     toast({
       title: "Device Disconnected",

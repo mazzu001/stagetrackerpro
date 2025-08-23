@@ -3,13 +3,15 @@ interface StatusBarProps {
   isMidiConnected: boolean;
   midiDeviceName?: string;
   latency: number;
+  midiCommandSent?: boolean;
 }
 
 export default function StatusBar({ 
   isAudioEngineOnline, 
   isMidiConnected, 
   midiDeviceName,
-  latency 
+  latency,
+  midiCommandSent = false
 }: StatusBarProps) {
   return (
     <div className="bg-surface rounded-xl p-4 border border-gray-700" data-testid="status-bar">
@@ -24,9 +26,15 @@ export default function StatusBar({
             </span>
           </div>
           <div className="flex items-center space-x-2">
-            <div className={`w-3 h-3 rounded-full ${isMidiConnected ? 'bg-green-500' : 'bg-gray-500'}`} />
+            <div className={`w-3 h-3 rounded-full transition-colors duration-150 ${
+              midiCommandSent ? 'bg-blue-500' : 
+              isMidiConnected ? 'bg-green-500' : 'bg-gray-500'
+            }`} />
             <span className="text-sm">
-              MIDI: <span className={isMidiConnected ? 'text-green-500' : 'text-gray-400'}>
+              MIDI: <span className={
+                midiCommandSent ? 'text-blue-500' :
+                isMidiConnected ? 'text-green-500' : 'text-gray-400'
+              }>
                 {isMidiConnected ? 'Connected' : 'Disconnected'}
                 {midiDeviceName && (
                   <span className="text-gray-400 ml-1">({midiDeviceName})</span>

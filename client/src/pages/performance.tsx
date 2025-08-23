@@ -60,6 +60,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isMidiConnected, setIsMidiConnected] = useState(false);
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
   const [footerMidiCommand, setFooterMidiCommand] = useState('');
+  const [midiCommandSent, setMidiCommandSent] = useState(false);
   
   // Check initial MIDI connection status on startup
   useEffect(() => {
@@ -141,6 +142,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   }, [connectedUSBMIDIDevices]);
 
+  // Trigger blue blink effect for MIDI status light
+  const triggerMidiBlink = useCallback(() => {
+    setMidiCommandSent(true);
+    setTimeout(() => {
+      setMidiCommandSent(false);
+    }, 300); // Blink for 300ms
+  }, []);
+
   // Manual MIDI send function (exact copy from USB MIDI devices page)
   const handleFooterSendMessage = async () => {
     const selectedOutputDevice = localStorage.getItem('usb_midi_selected_output_device');
@@ -158,6 +167,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           if (parseResult && parseResult.bytes.length > 0) {
             console.log(`📤 Footer MIDI Sending: ${footerMidiCommand} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
             output.send(parseResult.bytes);
+            triggerMidiBlink(); // Blue blink for visual confirmation
             
             toast({
               title: "Message Sent",
@@ -213,6 +223,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           if (parseResult && parseResult.bytes.length > 0) {
             console.log(`📤 Lyrics Auto MIDI Sending: ${command} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
             output.send(parseResult.bytes);
+            triggerMidiBlink(); // Blue blink for visual confirmation
             // Silent execution - no toast notification during performance
           } else {
             console.warn(`⚠️ Invalid MIDI command from lyrics: ${command}`);
@@ -1353,6 +1364,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             isMidiConnected={isMidiConnected}
             midiDeviceName={selectedMidiDeviceName}
             latency={latency}
+            midiCommandSent={midiCommandSent}
           />
           
           {/* Manual MIDI Send - Exact copy from USB MIDI devices page */}

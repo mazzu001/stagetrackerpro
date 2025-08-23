@@ -18,12 +18,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth, Zap, X, Target } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import { USBMIDIDevicesManager } from "@/components/USBMIDIDevicesManager";
 import BluetoothDevicesManager from "@/components/BluetoothDevicesManager";
+import type { MIDICommand } from '@/hooks/useMIDISequencer';
+import { parseMIDICommand } from '@/utils/midiFormatter';
 
 
 
@@ -44,6 +47,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isEditLyricsOpen, setIsEditLyricsOpen] = useState(false);
   const [lyricsText, setLyricsText] = useState("");
   const [isDeleteSongOpen, setIsDeleteSongOpen] = useState(false);
+  const [currentLyricsTab, setCurrentLyricsTab] = useState("lyrics");
+  const [midiCommands, setMidiCommands] = useState<MIDICommand[]>([]);
+  const [currentMidiCommand, setCurrentMidiCommand] = useState("");
   const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -317,15 +323,16 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     if (!user?.email || !selectedSongId) return;
     
     try {
-      LocalSongStorage.updateSong(user.email, selectedSongId, { lyrics: lyricsText });
+      LocalSongStorage.updateSong(user.email, selectedSongId, { 
+        lyrics: lyricsText,
+        midiCommands: midiCommands as any 
+      });
       refreshSongs();
       setIsEditLyricsOpen(false);
       
-      // MIDI sequencer functionality removed
-      
       toast({
         title: "Lyrics updated",
-        description: "Song lyrics have been saved."
+        description: `Song lyrics${midiCommands.length > 0 ? ' and MIDI commands' : ''} have been saved.`
       });
     } catch (error) {
       toast({
@@ -334,6 +341,95 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         variant: "destructive"
       });
     }
+  };
+
+  // Add MIDI command at current timestamp
+  const handleAddMidiCommand = () => {
+    if (!currentMidiCommand.trim()) return;
+
+    const parseResult = parseMIDICommand(currentMidiCommand);
+    if (!parseResult || !parseResult.bytes || parseResult.bytes.length === 0) {
+      toast({
+        title: "Invalid MIDI Command",
+        description: "Please use format: [[PC:12:1]], [[CC:7:64:1]], or [[NOTE:60:127:1]]",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Determine command type based on first byte
+    const firstByte = parseResult.bytes[0];
+    const command = firstByte & 0xF0;
+    let type: MIDICommand['type'];
+    let commandData: Partial<MIDICommand> = {};
+
+    switch (command) {
+      case 0x90: // Note On
+        type = 'note_on';
+        commandData = {
+          note: parseResult.bytes[1],
+          velocity: parseResult.bytes[2],
+          channel: (firstByte & 0x0F)
+        };
+        break;
+      case 0x80: // Note Off
+        type = 'note_off';
+        commandData = {
+          note: parseResult.bytes[1],
+          velocity: parseResult.bytes[2],
+          channel: (firstByte & 0x0F)
+        };
+        break;
+      case 0xB0: // Control Change
+        type = 'control_change';
+        commandData = {
+          controller: parseResult.bytes[1],
+          value: parseResult.bytes[2],
+          channel: (firstByte & 0x0F)
+        };
+        break;
+      case 0xC0: // Program Change
+        type = 'program_change';
+        commandData = {
+          program: parseResult.bytes[1],
+          channel: (firstByte & 0x0F)
+        };
+        break;
+      default:
+        toast({
+          title: "Unsupported Command",
+          description: "Only PC, CC, NOTE, and NOTEOFF commands are supported",
+          variant: "destructive",
+        });
+        return;
+    }
+
+    const newCommand: MIDICommand = {
+      timestamp: currentTime,
+      type,
+      description: currentMidiCommand,
+      ...commandData
+    };
+
+    setMidiCommands(prev => [...prev, newCommand].sort((a, b) => a.timestamp - b.timestamp));
+    setCurrentMidiCommand("");
+    
+    toast({
+      title: "MIDI Command Added",
+      description: `${parseResult.formatted} added at ${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}`,
+    });
+  };
+
+  // Remove MIDI command
+  const handleRemoveMidiCommand = (index: number) => {
+    setMidiCommands(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // Format timestamp for display
+  const formatTimestamp = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   // Delete song function
@@ -396,6 +492,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const handleEditLyrics = () => {
     if (selectedSong) {
       setLyricsText(selectedSong.lyrics || "");
+      setMidiCommands((selectedSong as any).midiCommands || []);
+      setCurrentLyricsTab("lyrics"); // Always default to lyrics tab
       setIsEditLyricsOpen(true);
     }
   };
@@ -950,7 +1048,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           latency={latency}
         />
       </div>
-      {/* Edit Lyrics Dialog - Space-Optimized Layout */}
+      {/* Edit Lyrics Dialog - Tabbed Layout */}
       <Dialog open={isEditLyricsOpen} onOpenChange={setIsEditLyricsOpen}>
         <DialogContent className="max-w-[95vw] max-h-[95vh] w-full h-full flex flex-col p-3">
           {/* Compact Header with Controls */}
@@ -977,27 +1075,58 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 {isPlaying ? <Pause className="w-3 h-3 mr-1" /> : <Play className="w-3 h-3 mr-1" />}
                 {isPlaying ? 'Pause' : 'Play'}
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleInsertTimestamp}
-                data-testid="button-insert-timestamp"
-                className="h-8 px-3"
-              >
-                <Clock className="w-3 h-3 mr-1" />
-                Timestamp
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleSearchLyrics}
-                disabled={!selectedSong}
-                data-testid="button-search-lyrics"
-                className="h-8 px-3"
-              >
-                <Music className="w-3 h-3 mr-1" />
-                Search
-              </Button>
+              {currentLyricsTab === "lyrics" && (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleInsertTimestamp}
+                    data-testid="button-insert-timestamp"
+                    className="h-8 px-3"
+                  >
+                    <Clock className="w-3 h-3 mr-1" />
+                    Timestamp
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleSearchLyrics}
+                    disabled={!selectedSong}
+                    data-testid="button-search-lyrics"
+                    className="h-8 px-3"
+                  >
+                    <Music className="w-3 h-3 mr-1" />
+                    Search
+                  </Button>
+                </>
+              )}
+              {currentLyricsTab === "midi" && userType === 'professional' && (
+                <div className="flex items-center gap-2">
+                  <Input
+                    placeholder="[[PC:12:1]] or [[CC:7:64:1]]"
+                    value={currentMidiCommand}
+                    onChange={(e) => setCurrentMidiCommand(e.target.value)}
+                    className="h-8 w-48 text-sm font-mono"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddMidiCommand();
+                      }
+                    }}
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleAddMidiCommand}
+                    disabled={!currentMidiCommand.trim()}
+                    data-testid="button-add-midi-command"
+                    className="h-8 px-3"
+                  >
+                    <Target className="w-3 h-3 mr-1" />
+                    Add at {formatTimestamp(currentTime)}
+                  </Button>
+                </div>
+              )}
               
               {/* Compact Position Slider */}
               {selectedSong && selectedSong.duration && (
@@ -1020,38 +1149,123 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             </div>
           </div>
 
-          {/* Main Content Area */}
+          {/* Tabbed Content */}
           <div className="flex-1 flex flex-col min-h-0">
-            {/* Lyrics Header Row */}
-            <div className="flex items-center justify-between mb-2 flex-shrink-0">
-              <Label htmlFor="lyrics" className="text-sm font-semibold">Lyrics</Label>
-              <div className="flex items-center gap-3">
-                <span className="text-xs text-gray-500">
-                  {lyricsText.length} chars
-                </span>
-                <div className="text-xs text-gray-400">
-                  <code className="text-xs">[MM:SS]</code> timestamps
+            <Tabs value={currentLyricsTab} onValueChange={setCurrentLyricsTab} className="flex-1 flex flex-col">
+              <TabsList className="grid w-full grid-cols-2 bg-gray-800 mb-3">
+                <TabsTrigger value="lyrics" className="data-[state=active]:bg-primary">
+                  <Music className="w-4 h-4 mr-2" />
+                  Lyrics
+                </TabsTrigger>
+                {userType === 'professional' && (
+                  <TabsTrigger value="midi" className="data-[state=active]:bg-primary">
+                    <Zap className="w-4 h-4 mr-2" />
+                    MIDI Commands
+                  </TabsTrigger>
+                )}
+              </TabsList>
+
+              <TabsContent value="lyrics" className="flex-1 flex flex-col min-h-0 mt-0">
+                <div className="flex items-center justify-between mb-2 flex-shrink-0">
+                  <Label htmlFor="lyrics" className="text-sm font-semibold">Lyrics</Label>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs text-gray-500">
+                      {lyricsText.length} chars
+                    </span>
+                    <div className="text-xs text-gray-400">
+                      <code className="text-xs">[MM:SS]</code> timestamps
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            
-            {/* Lyrics Textarea - Takes all remaining space */}
-            <Textarea
-              id="lyrics"
-              value={lyricsText}
-              onChange={(e) => setLyricsText(e.target.value)}
-              onPaste={handleLyricsPaste}
-              placeholder={`Enter lyrics with timestamps:
+                
+                <Textarea
+                  id="lyrics"
+                  value={lyricsText}
+                  onChange={(e) => setLyricsText(e.target.value)}
+                  onPaste={handleLyricsPaste}
+                  placeholder={`Enter lyrics with timestamps:
 
 [00:15] First verse line
 [00:30] Second verse line  
 
 Click "Timestamp" to insert current time`}
-              className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
-              style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
-              spellCheck={false}
-              data-testid="textarea-lyrics"
-            />
+                  className="flex-1 font-mono text-sm leading-relaxed resize-none border-gray-600"
+                  style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
+                  spellCheck={false}
+                  data-testid="textarea-lyrics"
+                />
+              </TabsContent>
+
+              {userType === 'professional' && (
+                <TabsContent value="midi" className="flex-1 flex flex-col min-h-0 mt-0">
+                  <div className="flex items-center justify-between mb-2 flex-shrink-0">
+                    <Label className="text-sm font-semibold">MIDI Commands</Label>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs text-gray-500">
+                        {midiCommands.length} commands
+                      </span>
+                      <div className="text-xs text-gray-400">
+                        Professional feature
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {midiCommands.length > 0 ? (
+                    <div className="flex-1 border border-gray-600 rounded-md overflow-hidden">
+                      <div className="bg-gray-800 px-3 py-2 border-b border-gray-600">
+                        <div className="grid grid-cols-4 gap-4 text-xs font-semibold text-gray-300">
+                          <span>Time</span>
+                          <span>Command</span>
+                          <span>Details</span>
+                          <span>Action</span>
+                        </div>
+                      </div>
+                      <div className="flex-1 overflow-y-auto max-h-[300px]">
+                        {midiCommands.map((cmd, index) => (
+                          <div key={index} className="px-3 py-2 border-b border-gray-700 last:border-b-0 hover:bg-gray-700/50">
+                            <div className="grid grid-cols-4 gap-4 items-center text-sm">
+                              <span className="font-mono text-primary">
+                                {formatTimestamp(cmd.timestamp)}
+                              </span>
+                              <span className="font-mono text-blue-400">
+                                {cmd.description}
+                              </span>
+                              <span className="text-gray-400 text-xs">
+                                {cmd.type === 'program_change' && `Program ${cmd.program} Ch${(cmd.channel || 0) + 1}`}
+                                {cmd.type === 'control_change' && `CC${cmd.controller} = ${cmd.value} Ch${(cmd.channel || 0) + 1}`}
+                                {cmd.type === 'note_on' && `Note ${cmd.note} Vel ${cmd.velocity} Ch${(cmd.channel || 0) + 1}`}
+                                {cmd.type === 'note_off' && `Note ${cmd.note} Ch${(cmd.channel || 0) + 1}`}
+                              </span>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleRemoveMidiCommand(index)}
+                                className="h-6 w-6 p-0 hover:bg-red-600/20 hover:text-red-400"
+                              >
+                                <X className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex-1 border border-gray-600 rounded-md flex items-center justify-center">
+                      <div className="text-center text-gray-400">
+                        <Zap className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                        <p className="text-sm">No MIDI commands yet</p>
+                        <p className="text-xs mt-1">
+                          Use the input above to add timestamped MIDI commands
+                        </p>
+                        <p className="text-xs mt-2 font-mono text-blue-400">
+                          Examples: [[PC:12:1]], [[CC:7:64:1]], [[NOTE:60:127:1]]
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </TabsContent>
+              )}
+            </Tabs>
           </div>
 
           {/* Compact Action Buttons */}
@@ -1062,6 +1276,8 @@ Click "Timestamp" to insert current time`}
               onClick={() => {
                 setIsEditLyricsOpen(false);
                 setLyricsText("");
+                setMidiCommands([]);
+                setCurrentMidiCommand("");
               }}
               data-testid="button-cancel-lyrics"
             >
@@ -1073,7 +1289,7 @@ Click "Timestamp" to insert current time`}
               data-testid="button-save-lyrics"
               className="bg-primary hover:bg-primary/90"
             >
-              Save Lyrics
+              Save {currentLyricsTab === "midi" && userType === 'professional' ? "Lyrics & MIDI" : "Lyrics"}
             </Button>
           </div>
         </DialogContent>

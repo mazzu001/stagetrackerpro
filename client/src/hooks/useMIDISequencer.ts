@@ -176,15 +176,32 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
 
   // Update sequencer with new playback time
   const updateSequencer = useCallback((playbackTimeMs: number) => {
-    if (!isActive) return;
+    if (!isActive) {
+      console.log(`⏸️ Sequencer not active, ignoring update at ${playbackTimeMs}ms`);
+      return;
+    }
     
+    console.log(`⏱️ Sequencer update: ${playbackTimeMs}ms, ${commandsRef.current.length} commands loaded`);
     setCurrentPlaybackTime(playbackTimeMs);
+    
+    // Check for commands to trigger
+    const currentCommands = commandsRef.current;
+    for (let i = lastTriggeredIndex + 1; i < currentCommands.length; i++) {
+      const command = currentCommands[i];
+      if (command.timestamp <= playbackTimeMs) {
+        console.log(`🎯 Triggering MIDI command at ${playbackTimeMs}ms: ${command.originalText}`);
+        executeMIDICommand(command);
+        setLastTriggeredIndex(i);
+      } else {
+        break; // Commands are sorted by timestamp
+      }
+    }
     
     // Handle seek backwards - reset triggered commands
     if (playbackTimeMs < currentPlaybackTime) {
       let newLastTriggered = -1;
-      for (let i = 0; i < commandsRef.current.length; i++) {
-        if (commandsRef.current[i].timestamp <= playbackTimeMs) {
+      for (let i = 0; i < currentCommands.length; i++) {
+        if (currentCommands[i].timestamp <= playbackTimeMs) {
           newLastTriggered = i;
         } else {
           break;
@@ -192,7 +209,7 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
       }
       setLastTriggeredIndex(newLastTriggered);
     }
-  }, [isActive, currentPlaybackTime]);
+  }, [isActive, currentPlaybackTime, lastTriggeredIndex, executeMIDICommand]);
 
   // Reset sequencer
   const resetSequencer = useCallback(() => {
@@ -226,9 +243,11 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
 
   // Set commands from external source
   const setMIDICommands = useCallback((lyricsText: string) => {
+    console.log(`🎼 Parsing MIDI commands from lyrics:`, lyricsText);
     const parsedCommands = parseMIDICommands(lyricsText);
     setCommands(parsedCommands);
-    console.log(`🎹 Loaded ${parsedCommands.length} MIDI commands from lyrics`);
+    commandsRef.current = parsedCommands; // Critical: Update the ref too!
+    console.log(`🎹 Loaded ${parsedCommands.length} MIDI commands from lyrics:`, parsedCommands);
   }, [parseMIDICommands]);
 
   // Cleanup on unmount

@@ -30,6 +30,7 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
   // Update commands ref when commands change
   useEffect(() => {
     commandsRef.current = commands;
+    console.log(`🔄 Commands ref updated: ${commands.length} commands`, commands);
   }, [commands]);
 
   // Parse MIDI commands from lyrics text
@@ -267,9 +268,13 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
   const setMIDICommands = useCallback((lyricsText: string) => {
     console.log(`🎼 Parsing MIDI commands from lyrics:`, lyricsText);
     const parsedCommands = parseMIDICommands(lyricsText);
+    console.log(`🎹 Parsed ${parsedCommands.length} commands:`, parsedCommands);
+    
     setCommands(parsedCommands);
-    commandsRef.current = parsedCommands; // Critical: Update the ref too!
-    console.log(`🎹 Loaded ${parsedCommands.length} MIDI commands from lyrics:`, parsedCommands);
+    commandsRef.current = parsedCommands;
+    
+    console.log(`✅ Commands set - State: ${parsedCommands.length}, Ref: ${commandsRef.current.length}`);
+    console.log(`🎹 Final loaded MIDI commands:`, commandsRef.current);
   }, [parseMIDICommands]);
 
   // Cleanup on unmount

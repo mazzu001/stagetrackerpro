@@ -138,6 +138,9 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
   useEffect(() => {
     if (!song?.lyrics || !onMidiCommand) return;
     
+    console.log(`📋 Analyzing lyrics for song: ${song.title}`);
+    console.log(`📋 Lyrics content:`, song.lyrics);
+    
     // Parse all lines with timestamps from lyrics
     const lines = song.lyrics.split('\n');
     const timestampedLines: Array<{timestamp: number, line: string, originalLine: string}> = [];
@@ -153,6 +156,8 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         const seconds = parseInt(timestampMatch[2]);
         const timestamp = minutes * 60 + seconds;
         
+        console.log(`⏰ Found timestamped line: [${minutes}:${String(seconds).padStart(2, '0')}] at ${timestamp}s -> "${trimmed}"`);
+        
         timestampedLines.push({
           timestamp,
           line: trimmed,
@@ -160,6 +165,8 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         });
       }
     }
+    
+    console.log(`📋 Total timestamped lines found: ${timestampedLines.length}`);
     
     // Read through each timestamped line according to current playback time
     for (const { timestamp, line, originalLine } of timestampedLines) {

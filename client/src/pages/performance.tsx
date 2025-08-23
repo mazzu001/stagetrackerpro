@@ -417,14 +417,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     try {
       LocalSongStorage.updateSong(user.email, selectedSongId, { 
         lyrics: lyricsText,
-        midiCommands: midiCommands as any 
+        // midiCommands: midiCommands as any 
       });
       refreshSongs();
       setIsEditLyricsOpen(false);
       
       toast({
         title: "Lyrics updated",
-        description: `Song lyrics${midiCommands.length > 0 ? ' and MIDI commands' : ''} have been saved.`
+        description: `Song lyrics have been saved.`
       });
     } catch (error) {
       toast({
@@ -455,9 +455,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Start editing a MIDI command
   const handleEditCommand = (index: number) => {
-    const command = midiCommands[index];
+    // const command = midiCommands[index];
     setEditingCommandIndex(index);
-    setEditingCommandText(command.description || '[[PC:1:1]]');
+    setEditingCommandText('[[PC:1:1]]');
   };
 
   // Save edited MIDI command
@@ -522,7 +522,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     const updatedCommand: MIDICommand = {
-      ...midiCommands[editingCommandIndex],
+      // ...midiCommands[editingCommandIndex],
       type,
       description: editingCommandText,
       ...commandData
@@ -621,7 +621,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const handleEditLyrics = () => {
     if (selectedSong) {
       setLyricsText(selectedSong.lyrics || "");
-      setMidiCommands((selectedSong as any).midiCommands || []);
+      // setMidiCommands((selectedSong as any).midiCommands || []);
       setCurrentLyricsTab("lyrics"); // Always default to lyrics tab
       setIsEditLyricsOpen(true);
     }
@@ -1316,7 +1316,7 @@ Click "Timestamp" to insert current time`}
                     <Label className="text-sm font-semibold">MIDI Commands</Label>
                     <div className="flex items-center gap-3">
                       <span className="text-xs text-gray-500">
-                        {midiCommands.length} commands
+                        0 commands
                       </span>
                       <div className="text-xs text-gray-400">
                         Professional feature
@@ -1324,7 +1324,7 @@ Click "Timestamp" to insert current time`}
                     </div>
                   </div>
                   
-                  {midiCommands.length > 0 ? (
+                  {false ? (
                     <div className="flex-1 border border-gray-600 rounded-md overflow-hidden">
                       <div className="bg-gray-800 px-3 py-2 border-b border-gray-600">
                         <div className="grid grid-cols-4 gap-4 text-xs font-semibold text-gray-300">
@@ -1335,7 +1335,7 @@ Click "Timestamp" to insert current time`}
                         </div>
                       </div>
                       <div className="flex-1 overflow-y-auto max-h-[300px]">
-                        {midiCommands.map((cmd, index) => (
+                        {[].map((cmd, index) => (
                           <div key={index} className="px-3 py-2 border-b border-gray-700 last:border-b-0 hover:bg-gray-700/50">
                             {editingCommandIndex === index ? (
                               <div className="grid grid-cols-4 gap-4 items-center text-sm">

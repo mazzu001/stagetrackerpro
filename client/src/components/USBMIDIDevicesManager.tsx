@@ -70,20 +70,41 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
   // Check Web MIDI API support
   useEffect(() => {
     const checkWebMIDISupport = async () => {
+      console.log('🔍 Checking Web MIDI API support...');
+      console.log('Navigator available:', typeof navigator !== 'undefined');
+      console.log('requestMIDIAccess available:', 'requestMIDIAccess' in navigator);
+      
       if (typeof navigator !== 'undefined' && 'requestMIDIAccess' in navigator) {
+        console.log('✅ Web MIDI API is supported');
         setHasWebMIDISupport(true);
         try {
+          console.log('🔐 Requesting MIDI access...');
           const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+          console.log('✅ MIDI access granted:', midiAccess);
+          console.log('Available inputs:', midiAccess.inputs.size);
+          console.log('Available outputs:', midiAccess.outputs.size);
+          
           setPermissionStatus('granted');
           loadMIDIDevices(midiAccess);
         } catch (error) {
-          console.error('MIDI access denied:', error);
+          console.error('❌ MIDI access denied:', error);
           setPermissionStatus('denied');
+          toast({
+            title: "MIDI Access Denied",
+            description: "Please allow MIDI device access in your browser settings",
+            variant: "destructive",
+          });
         }
       } else {
+        console.log('❌ Web MIDI API not supported in this browser');
         setHasWebMIDISupport(false);
         // No devices available without Web MIDI API support
         setDevices([]);
+        toast({
+          title: "Web MIDI Not Supported",
+          description: "This browser doesn't support Web MIDI API. Try Chrome or Edge.",
+          variant: "destructive",
+        });
       }
     };
 
@@ -92,10 +113,13 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
 
   // Load MIDI devices from Web MIDI API
   const loadMIDIDevices = useCallback((midiAccess: any) => {
+    console.log('🔍 Loading MIDI devices from API...');
     const deviceList: USBMIDIDevice[] = [];
     
+    console.log('📥 Processing input devices...');
     // Input devices
     midiAccess.inputs.forEach((input: any, id: string) => {
+      console.log(`Found input device: ${input.name} (${input.manufacturer}) - State: ${input.state}`);
       deviceList.push({
         id,
         name: input.name || `USB Input ${id}`,
@@ -107,8 +131,10 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
       });
     });
 
+    console.log('📤 Processing output devices...');
     // Output devices
     midiAccess.outputs.forEach((output: any, id: string) => {
+      console.log(`Found output device: ${output.name} (${output.manufacturer}) - State: ${output.state}`);
       deviceList.push({
         id,
         name: output.name || `USB Output ${id}`,
@@ -120,17 +146,25 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
       });
     });
 
+    console.log(`✅ Loaded ${deviceList.length} total devices (${deviceList.filter(d => d.type === 'input').length} inputs, ${deviceList.filter(d => d.type === 'output').length} outputs)`);
     setDevices(deviceList);
     setConnectedDevices(deviceList.filter(d => d.state === 'connected'));
+    
+    if (deviceList.length === 0) {
+      console.log('⚠️ No MIDI devices found. Make sure devices are connected and drivers are installed.');
+    }
   }, []);
 
   // Scan for USB MIDI devices
   const handleScanDevices = async () => {
+    console.log('🔍 Starting USB MIDI device scan...');
     setIsScanning(true);
     
     try {
       if (hasWebMIDISupport) {
+        console.log('🔐 Requesting fresh MIDI access for scan...');
         const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+        console.log('✅ Got MIDI access for scan:', midiAccess);
         
         // Clear existing devices first
         setDevices([]);
@@ -139,8 +173,10 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
         // Load fresh device list
         const deviceList: USBMIDIDevice[] = [];
         
+        console.log(`📥 Scanning ${midiAccess.inputs.size} input devices...`);
         // Input devices
         midiAccess.inputs.forEach((input: any, id: string) => {
+          console.log(`Input: ${input.name} | Manufacturer: ${input.manufacturer} | State: ${input.state} | ID: ${id}`);
           deviceList.push({
             id,
             name: input.name || `USB Input ${id}`,
@@ -152,8 +188,10 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
           });
         });
 
+        console.log(`📤 Scanning ${midiAccess.outputs.size} output devices...`);
         // Output devices
         midiAccess.outputs.forEach((output: any, id: string) => {
+          console.log(`Output: ${output.name} | Manufacturer: ${output.manufacturer} | State: ${output.state} | ID: ${id}`);
           deviceList.push({
             id,
             name: output.name || `USB Output ${id}`,
@@ -183,10 +221,18 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
           devices: deviceList
         });
         
+        console.log(`📊 Scan complete: ${deviceList.length} devices found (${inputCount} inputs, ${outputCount} outputs, ${connectedCount} connected)`);
+        
         if (deviceList.length === 0) {
+          console.log('⚠️ No MIDI devices detected. Possible causes:');
+          console.log('  - No MIDI devices are physically connected');
+          console.log('  - MIDI device drivers are not installed');
+          console.log('  - Devices are not recognized by the operating system');
+          console.log('  - Browser does not have MIDI permissions');
+          
           toast({
             title: "No USB MIDI Devices Found",
-            description: "No USB MIDI devices are currently connected to your system",
+            description: "Check that devices are connected and drivers are installed",
             variant: "default",
           });
         } else {
@@ -200,7 +246,7 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
           });
         }
       } else {
-        // No Web MIDI API support
+        console.log('❌ Cannot scan - Web MIDI API not supported');
         toast({
           title: "Web MIDI Not Supported",
           description: "Web MIDI API not available in this browser",
@@ -208,9 +254,10 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
         });
       }
     } catch (error) {
+      console.error('❌ Scan failed:', error);
       toast({
         title: "Scan Failed",
-        description: "Unable to access USB MIDI devices. Check permissions.",
+        description: `Unable to access USB MIDI devices: ${error instanceof Error ? error.message : 'Unknown error'}`,
         variant: "destructive",
       });
     } finally {

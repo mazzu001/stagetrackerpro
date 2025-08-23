@@ -258,6 +258,31 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     onDurationUpdated: handleDurationUpdate 
   });
 
+  // Enhanced seek handler that also updates MIDI sequencer
+  const handleSeek = useCallback((time: number) => {
+    seek(time);
+    if (isPlaying) {
+      console.log(`🎯 Seeking MIDI sequencer to ${time * 1000}ms`);
+      midiSequencer.updateSequencer(time * 1000);
+    }
+  }, [seek, isPlaying, midiSequencer.updateSequencer]);
+
+  // Enhanced play function that starts sequencer
+  const handlePlay = useCallback(() => {
+    play();
+  }, [play]);
+
+  // Enhanced pause function that stops sequencer
+  const handlePause = useCallback(() => {
+    pause();
+  }, [pause]);
+
+  // Enhanced stop function that resets sequencer
+  const handleStop = useCallback(() => {
+    stop();
+    midiSequencer.resetSequencer();
+  }, [stop, midiSequencer.resetSequencer]);
+
   useKeyboardShortcuts({
     onPlay: handlePlay,
     onPause: handlePause,
@@ -289,31 +314,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   useEffect(() => {
     midiSequencer.resetSequencer();
   }, [selectedSongId, midiSequencer.resetSequencer]);
-
-  // Enhanced seek handler that also updates MIDI sequencer
-  const handleSeek = useCallback((time: number) => {
-    seek(time);
-    if (isPlaying) {
-      console.log(`🎯 Seeking MIDI sequencer to ${time * 1000}ms`);
-      midiSequencer.updateSequencer(time * 1000);
-    }
-  }, [seek, isPlaying, midiSequencer.updateSequencer]);
-
-  // Enhanced play function that starts sequencer
-  const handlePlay = useCallback(() => {
-    play();
-  }, [play]);
-
-  // Enhanced pause function that stops sequencer
-  const handlePause = useCallback(() => {
-    pause();
-  }, [pause]);
-
-  // Enhanced stop function that resets sequencer
-  const handleStop = useCallback(() => {
-    stop();
-    midiSequencer.resetSequencer();
-  }, [stop, midiSequencer.resetSequencer]);
 
   // Log tracks that need audio files when song changes
   useEffect(() => {

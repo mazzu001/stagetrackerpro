@@ -74,45 +74,8 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
         }
       } else {
         setHasWebMIDISupport(false);
-        // Add mock devices for development
-        setDevices([
-          {
-            id: 'usb_input_1',
-            name: 'USB MIDI Keyboard Controller',
-            manufacturer: 'Roland',
-            type: 'input',
-            state: 'disconnected',
-            portIndex: 1,
-            version: '1.0'
-          },
-          {
-            id: 'usb_input_2',
-            name: 'USB MIDI Pad Controller',
-            manufacturer: 'Akai',
-            type: 'input',
-            state: 'disconnected',
-            portIndex: 2,
-            version: '2.1'
-          },
-          {
-            id: 'usb_output_1',
-            name: 'USB MIDI Sound Module',
-            manufacturer: 'Yamaha',
-            type: 'output',
-            state: 'disconnected',
-            portIndex: 1,
-            version: '3.0'
-          },
-          {
-            id: 'usb_output_2',
-            name: 'USB MIDI Interface',
-            manufacturer: 'M-Audio',
-            type: 'output',
-            state: 'disconnected',
-            portIndex: 2,
-            version: '1.5'
-          }
-        ]);
+        // No devices available without Web MIDI API support
+        setDevices([]);
       }
     };
 
@@ -166,14 +129,12 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
           description: `Found ${devices.length} USB MIDI devices`,
         });
       } else {
-        // Simulate scan for development
-        setTimeout(() => {
-          toast({
-            title: "Development Mode",
-            description: "Using mock USB MIDI devices for testing",
-            variant: "default",
-          });
-        }, 1000);
+        // No Web MIDI API support
+        toast({
+          title: "Web MIDI Not Supported",
+          description: "Web MIDI API not available in this browser",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       toast({
@@ -313,7 +274,7 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
               <div className="flex items-center gap-2 text-yellow-700 dark:text-yellow-300">
                 <AlertCircle className="h-4 w-4" />
                 <span className="text-sm font-medium">
-                  Web MIDI API not supported in this browser. Using mock devices for development.
+                  Web MIDI API not supported in this browser. USB MIDI devices require a compatible browser.
                 </span>
               </div>
             </CardContent>

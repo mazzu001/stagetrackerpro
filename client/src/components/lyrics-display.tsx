@@ -198,11 +198,17 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
     setProcessedTimestamps(new Set());
   }, [song?.id]);
 
-  // Reset MIDI tracking when playback stops
+  // Reset MIDI tracking and scroll position when playback stops
   useEffect(() => {
     if (!isPlaying) {
       console.log(`⏹️ Resetting processed timestamps - Playback stopped`);
       setProcessedTimestamps(new Set());
+      
+      // Scroll lyrics back to top when stopped
+      if (containerRef.current) {
+        containerRef.current.scrollTop = 0;
+        console.log(`⏫ Scrolled lyrics back to top - Playback stopped`);
+      }
     }
   }, [isPlaying]);
 

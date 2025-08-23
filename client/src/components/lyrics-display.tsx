@@ -131,77 +131,45 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   }) : -1;
 
-  // Extract MIDI commands from raw lyrics and automatically send them
+  // Simple MIDI command auto-send based on timestamp
   useEffect(() => {
-    if (!hasTimestamps || currentLineIndex < 0 || !song?.lyrics) return;
+    if (!song?.lyrics) return;
     
-    // Get the raw lyrics line (not the cleaned display text)
+    // Check each line for timestamp match
     const lines = song.lyrics.split('\n');
-    let currentRawLine = '';
-    
-    // Find the raw line that corresponds to the current display line
-    let displayLineCount = 0;
     for (const line of lines) {
       const trimmed = line.trim();
       if (!trimmed) continue;
       
+      // Look for [mm:ss] [[MIDI_COMMAND]] pattern
       const timestampMatch = trimmed.match(/^\[(\d{1,2}):(\d{2})\]/);
       if (timestampMatch) {
         const minutes = parseInt(timestampMatch[1]);
         const seconds = parseInt(timestampMatch[2]);
         const timestamp = minutes * 60 + seconds;
         
-        if (displayLineCount === currentLineIndex) {
-          currentRawLine = trimmed;
-          break;
-        }
-        
-        // Only count lines that will be displayed (have text after removing brackets)
-        let testText = trimmed.substring(timestampMatch[0].length).trim();
-        while (testText.includes('[')) {
-          testText = testText.replace(/\[([^\[\]]*)\]/g, '');
-        }
-        if (testText.trim()) {
-          displayLineCount++;
-        }
-      }
-    }
-    
-    // Extract MIDI commands from the current raw line
-    if (currentRawLine) {
-      const midiCommands = currentRawLine.match(/\[\[([^\]]+)\]\]/g);
-      if (midiCommands && midiCommands.length > 0) {
-        // Take the first MIDI command found
-        const midiCommand = midiCommands[0];
-        console.log(`🎵 Auto-detected MIDI command from lyrics: ${midiCommand}`);
-        
-        // Find and populate the manual MIDI send field
-        const midiInput = document.querySelector('[data-testid="input-usb-midi-command"]') as HTMLInputElement;
-        const sendButton = document.querySelector('[data-testid="button-send-usb-midi"]') as HTMLButtonElement;
-        
-        if (midiInput && sendButton) {
-          console.log(`🤖 Auto-filling MIDI command: ${midiCommand}`);
-          
-          // Set the input value and trigger change event
-          midiInput.value = midiCommand;
-          midiInput.dispatchEvent(new Event('input', { bubbles: true }));
-          midiInput.dispatchEvent(new Event('change', { bubbles: true }));
-          
-          // Small delay then click send button if it's enabled
-          setTimeout(() => {
-            if (!sendButton.disabled) {
-              console.log(`🚀 Auto-sending MIDI command: ${midiCommand}`);
+        // If current time matches this timestamp (within 0.5 seconds)
+        if (Math.abs(currentTime - timestamp) <= 0.5) {
+          // Look for MIDI command in this line
+          const midiMatch = trimmed.match(/\[\[([^\]]+)\]\]/);
+          if (midiMatch) {
+            const midiCommand = midiMatch[0]; // Full [[PC:12:1]] format
+            console.log(`🎵 Found MIDI command at ${timestamp}s: ${midiCommand}`);
+            
+            // Find the manual MIDI input and send button
+            const midiInput = document.querySelector('[data-testid="input-usb-midi-command"]') as HTMLInputElement;
+            const sendButton = document.querySelector('[data-testid="button-send-usb-midi"]') as HTMLButtonElement;
+            
+            if (midiInput && sendButton) {
+              console.log(`🚀 Sending MIDI command: ${midiCommand}`);
+              midiInput.value = midiCommand;
               sendButton.click();
-            } else {
-              console.warn(`⚠️ Send button is disabled, cannot auto-send: ${midiCommand}`);
             }
-          }, 100);
-        } else {
-          console.warn('⚠️ Could not find MIDI input field or send button');
+          }
         }
       }
     }
-  }, [currentLineIndex, hasTimestamps, song?.lyrics]);
+  }, [currentTime, song?.lyrics]);
 
   // Auto-scroll for timestamped lyrics
   useEffect(() => {

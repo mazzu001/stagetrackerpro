@@ -56,6 +56,14 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
   const [searchTerm, setSearchTerm] = useState('');
   const [hasWebMIDISupport, setHasWebMIDISupport] = useState(false);
   const [permissionStatus, setPermissionStatus] = useState<'unknown' | 'granted' | 'denied'>('unknown');
+  const [lastScanResults, setLastScanResults] = useState<{
+    timestamp: number;
+    deviceCount: number;
+    inputCount: number;
+    outputCount: number;
+    connectedCount: number;
+    devices: USBMIDIDevice[];
+  } | null>(null);
   
   const { toast } = useToast();
 
@@ -123,11 +131,74 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
     try {
       if (hasWebMIDISupport) {
         const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
-        loadMIDIDevices(midiAccess);
-        toast({
-          title: "Scan Complete",
-          description: `Found ${devices.length} USB MIDI devices`,
+        
+        // Clear existing devices first
+        setDevices([]);
+        setConnectedDevices([]);
+        
+        // Load fresh device list
+        const deviceList: USBMIDIDevice[] = [];
+        
+        // Input devices
+        midiAccess.inputs.forEach((input: any, id: string) => {
+          deviceList.push({
+            id,
+            name: input.name || `USB Input ${id}`,
+            manufacturer: input.manufacturer || 'Unknown',
+            type: 'input',
+            state: input.state === 'connected' ? 'connected' : 'disconnected',
+            portIndex: deviceList.filter(d => d.type === 'input').length + 1,
+            version: input.version || '1.0'
+          });
         });
+
+        // Output devices
+        midiAccess.outputs.forEach((output: any, id: string) => {
+          deviceList.push({
+            id,
+            name: output.name || `USB Output ${id}`,
+            manufacturer: output.manufacturer || 'Unknown',
+            type: 'output',
+            state: output.state === 'connected' ? 'connected' : 'disconnected',
+            portIndex: deviceList.filter(d => d.type === 'output').length + 1,
+            version: output.version || '1.0'
+          });
+        });
+
+        setDevices(deviceList);
+        setConnectedDevices(deviceList.filter(d => d.state === 'connected'));
+        
+        // Show detailed scan results
+        const inputCount = deviceList.filter(d => d.type === 'input').length;
+        const outputCount = deviceList.filter(d => d.type === 'output').length;
+        const connectedCount = deviceList.filter(d => d.state === 'connected').length;
+        
+        // Store scan results for display
+        setLastScanResults({
+          timestamp: Date.now(),
+          deviceCount: deviceList.length,
+          inputCount,
+          outputCount,
+          connectedCount,
+          devices: deviceList
+        });
+        
+        if (deviceList.length === 0) {
+          toast({
+            title: "No USB MIDI Devices Found",
+            description: "No USB MIDI devices are currently connected to your system",
+            variant: "default",
+          });
+        } else {
+          // Show device names in the toast
+          const deviceNames = deviceList.slice(0, 3).map(d => `• ${d.name}`).join('\n');
+          const moreDevices = deviceList.length > 3 ? `\n• ...and ${deviceList.length - 3} more` : '';
+          
+          toast({
+            title: `Found ${deviceList.length} USB MIDI Device${deviceList.length !== 1 ? 's' : ''}`,
+            description: `${inputCount} input, ${outputCount} output (${connectedCount} connected)\n\nDevices found:\n${deviceNames}${moreDevices}`,
+          });
+        }
       } else {
         // No Web MIDI API support
         toast({
@@ -312,6 +383,57 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
                   </div>
                 </div>
               </CardHeader>
+              
+              {/* Scan Results Summary */}
+              {lastScanResults && (
+                <CardContent className="pt-0 pb-4">
+                  <div className="bg-muted/50 rounded-lg p-3 border-l-4 border-blue-500">
+                    <div className="flex items-center justify-between mb-2">
+                      <h5 className="text-sm font-medium text-blue-700 dark:text-blue-300">Latest Scan Results</h5>
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(lastScanResults.timestamp).toLocaleTimeString()}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                      <div className="text-center">
+                        <div className="font-semibold text-lg">{lastScanResults.deviceCount}</div>
+                        <div className="text-muted-foreground">Total Devices</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-semibold text-lg text-green-600">{lastScanResults.inputCount}</div>
+                        <div className="text-muted-foreground">Input Devices</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-semibold text-lg text-blue-600">{lastScanResults.outputCount}</div>
+                        <div className="text-muted-foreground">Output Devices</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="font-semibold text-lg text-orange-600">{lastScanResults.connectedCount}</div>
+                        <div className="text-muted-foreground">Connected</div>
+                      </div>
+                    </div>
+                    {lastScanResults.deviceCount > 0 && (
+                      <div className="mt-3 pt-3 border-t border-muted-foreground/20">
+                        <p className="text-xs font-medium text-muted-foreground mb-2">Detected USB MIDI Devices:</p>
+                        <div className="space-y-1">
+                          {lastScanResults.devices.slice(0, 4).map((device, index) => (
+                            <div key={device.id} className="flex items-center gap-2 text-xs">
+                              <div className={`w-2 h-2 rounded-full ${device.state === 'connected' ? 'bg-green-500' : 'bg-gray-400'}`} />
+                              <span className="font-mono">{device.name}</span>
+                              <span className="text-muted-foreground">({device.type})</span>
+                            </div>
+                          ))}
+                          {lastScanResults.devices.length > 4 && (
+                            <div className="text-xs text-muted-foreground font-medium">
+                              ...and {lastScanResults.devices.length - 4} more devices
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              )}
               <CardContent>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   {/* Input Devices */}

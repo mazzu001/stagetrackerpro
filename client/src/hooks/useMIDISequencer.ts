@@ -36,21 +36,30 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
   const parseMIDICommands = useCallback((lyricsText: string): MIDICommand[] => {
     const lines = lyricsText.split('\n');
     const parsedCommands: MIDICommand[] = [];
+    console.log(`🔍 Parsing lyrics with ${lines.length} lines:`, lines);
 
-    lines.forEach(line => {
+    lines.forEach((line, lineIndex) => {
+      console.log(`📝 Processing line ${lineIndex}: "${line}"`);
+      
       // Look for MIDI commands in bracket format: [[PC:12:1]] or with timestamps: [00:30] [[PC:12:1]]
       const timestampMatch = line.match(/\[(\d{1,2}):(\d{2})\]/);
       const midiMatches = line.match(/\[\[([^\]]+)\]\]/g);
+      
+      console.log(`⏰ Timestamp match:`, timestampMatch);
+      console.log(`🎵 MIDI matches:`, midiMatches);
 
       if (timestampMatch && midiMatches) {
         const minutes = parseInt(timestampMatch[1]);
         const seconds = parseInt(timestampMatch[2]);
         const timestamp = (minutes * 60 + seconds) * 1000; // Convert to milliseconds
+        console.log(`⏱️ Parsed timestamp: ${timestampMatch[0]} → ${timestamp}ms`);
 
         midiMatches.forEach(midiMatch => {
           const commandText = midiMatch.slice(2, -2); // Remove [[ ]]
+          console.log(`🎯 Processing MIDI command: "${commandText}"`);
           try {
             const midiResult = parseMIDICommand(commandText);
+            console.log(`🔧 Parse result:`, midiResult);
             if (midiResult && midiResult.bytes.length > 0) {
               const midiBytes = midiResult.bytes;
               // Convert MIDI bytes to MIDICommand structure
@@ -78,15 +87,21 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
                   break;
               }
 
+              console.log(`✅ Created MIDI command:`, command);
               parsedCommands.push(command);
+            } else {
+              console.warn(`⚠️ Failed to parse MIDI command bytes: ${commandText}`);
             }
           } catch (error) {
-            console.warn(`Failed to parse MIDI command: ${commandText}`, error);
+            console.warn(`❌ Error parsing MIDI command: ${commandText}`, error);
           }
         });
+      } else {
+        console.log(`⚠️ Line has no valid timestamp + MIDI command combination`);
       }
     });
 
+    console.log(`🎼 Final parsed commands (${parsedCommands.length}):`, parsedCommands);
     return parsedCommands.sort((a, b) => a.timestamp - b.timestamp);
   }, []);
 

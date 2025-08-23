@@ -192,41 +192,60 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
-  // Auto-send MIDI command from lyrics - copies to manual send input and triggers send button
-  const handleLyricsMidiCommand = useCallback((command: string) => {
-    console.log(`🎼 Received MIDI command from lyrics: ${command}`);
+  // Auto-send MIDI command from timestamped lyrics - uses EXACT same code as footer send button
+  const handleLyricsMidiCommand = useCallback(async (command: string) => {
+    console.log(`🎼 Processing MIDI command from timestamped lyrics: ${command}`);
     setFooterMidiCommand(command);
     
-    // Execute the send directly
-    const sendCommand = async () => {
-      const selectedOutputDevice = localStorage.getItem('usb_midi_selected_output_device');
-      if (!selectedOutputDevice || !command.trim()) return;
+    // EXACT SAME CODE AS FOOTER SEND BUTTON - handleFooterSendMessage
+    const selectedOutputDevice = localStorage.getItem('usb_midi_selected_output_device');
+    if (!selectedOutputDevice || !command.trim()) return;
 
-      try {
-        if (navigator.requestMIDIAccess) {
-          const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
-          const output = midiAccess.outputs.get(selectedOutputDevice);
+    try {
+      if (navigator.requestMIDIAccess) {
+        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+        const output = midiAccess.outputs.get(selectedOutputDevice);
+        
+        if (output) {
+          // Parse MIDI command using proper parser (supports [[PC:12:1]], hex, and text formats)
+          const parseResult = parseMIDICommand(command);
           
-          if (output) {
-            const parseResult = parseMIDICommand(command);
+          if (parseResult && parseResult.bytes.length > 0) {
+            console.log(`📤 Lyrics Auto MIDI Sending: ${command} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+            output.send(parseResult.bytes);
             
-            if (parseResult && parseResult.bytes.length > 0) {
-              console.log(`📤 Auto MIDI Sending: ${command} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              output.send(parseResult.bytes);
-              
-              toast({
-                title: "Auto MIDI Sent",
-                description: `${parseResult.formatted} sent to ${selectedMidiDeviceName}`,
-              });
-            }
+            toast({
+              title: "Lyrics MIDI Sent",
+              description: `${parseResult.formatted} sent to ${selectedMidiDeviceName}`,
+            });
+          } else {
+            toast({
+              title: "Invalid MIDI Command",
+              description: "Please use format: [[PC:12:1]], [[CC:7:64:1]], or hex bytes",
+              variant: "destructive",
+            });
+            return;
           }
+        } else {
+          toast({
+            title: "Device Not Found",
+            description: "Selected output device is not available",
+            variant: "destructive",
+          });
+          return;
         }
-      } catch (error) {
-        console.error('Auto MIDI Send Error:', error);
       }
-    };
-    
-    sendCommand();
+      
+      // Clear the input after successful send
+      setTimeout(() => setFooterMidiCommand(''), 100);
+    } catch (error) {
+      console.error('Lyrics MIDI Send Error:', error);
+      toast({
+        title: "Send Failed",
+        description: `Unable to send MIDI message: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
   }, [selectedMidiDeviceName, toast]);
 
   // Initialize MIDI sequencer
@@ -568,15 +587,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     
     try {
       LocalSongStorage.updateSong(user.email, selectedSongId, { 
-        lyrics: lyricsText,
-        midiCommands: midiCommands as any 
+        lyrics: lyricsText
       });
       refreshSongs();
       setIsEditLyricsOpen(false);
       
       toast({
         title: "Lyrics updated",
-        description: `Song lyrics${midiCommands.length > 0 ? ' and MIDI commands' : ''} have been saved.`
+        description: "Song lyrics have been saved."
       });
     } catch (error) {
       toast({

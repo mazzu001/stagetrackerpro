@@ -132,45 +132,61 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   }) : -1;
 
-  // Auto-send MIDI commands from lyrics at their timestamps
-  const [lastMidiTime, setLastMidiTime] = useState(-1);
+  // Auto-send MIDI commands from timestamped lyrics - reads every line according to timestamps
+  const [processedTimestamps, setProcessedTimestamps] = useState(new Set<number>());
   
   useEffect(() => {
     if (!song?.lyrics || !onMidiCommand) return;
     
-    // Check each line for timestamp match
+    // Parse all lines with timestamps from lyrics
     const lines = song.lyrics.split('\n');
+    const timestampedLines: Array<{timestamp: number, line: string, originalLine: string}> = [];
+    
     for (const line of lines) {
       const trimmed = line.trim();
       if (!trimmed) continue;
       
-      // Look for [mm:ss] [[MIDI_COMMAND]] pattern
+      // Look for timestamp pattern [mm:ss] at start of line
       const timestampMatch = trimmed.match(/^\[(\d{1,2}):(\d{2})\]/);
       if (timestampMatch) {
         const minutes = parseInt(timestampMatch[1]);
         const seconds = parseInt(timestampMatch[2]);
         const timestamp = minutes * 60 + seconds;
         
-        // If current time matches this timestamp (within 0.5 seconds) and we haven't already sent it
-        if (Math.abs(currentTime - timestamp) <= 0.5 && lastMidiTime !== timestamp) {
-          // Look for MIDI command in this line
-          const midiMatch = trimmed.match(/\[\[([^\]]+)\]\]/);
-          if (midiMatch) {
-            const midiCommand = midiMatch[0]; // Full [[PC:12:1]] format
-            console.log(`🎵 Auto-sending MIDI command from lyrics at ${timestamp}s: ${midiCommand}`);
-            
-            // Call the callback to send the command via footer functionality
-            onMidiCommand(midiCommand);
-            setLastMidiTime(timestamp);
-          }
-        }
+        timestampedLines.push({
+          timestamp,
+          line: trimmed,
+          originalLine: line
+        });
       }
     }
-  }, [currentTime, song?.lyrics, onMidiCommand, lastMidiTime]);
+    
+    // Read through each timestamped line according to current playback time
+    for (const { timestamp, line, originalLine } of timestampedLines) {
+      // If current time matches this timestamp (within 0.5 seconds) and we haven't processed it yet
+      if (Math.abs(currentTime - timestamp) <= 0.5 && !processedTimestamps.has(timestamp)) {
+        console.log(`📖 Reading timestamped line at ${timestamp}s: "${line}"`);
+        
+        // Look for any MIDI commands in this timestamped line
+        const midiMatches = line.match(/\[\[([^\]]+)\]\]/g);
+        if (midiMatches) {
+          for (const midiCommand of midiMatches) {
+            console.log(`🎵 Found MIDI command in timestamped line: ${midiCommand}`);
+            
+            // Use the exact footer send button functionality with this MIDI command
+            onMidiCommand(midiCommand);
+          }
+        }
+        
+        // Mark this timestamp as processed
+        setProcessedTimestamps(prev => new Set(Array.from(prev).concat(timestamp)));
+      }
+    }
+  }, [currentTime, song?.lyrics, onMidiCommand, processedTimestamps]);
   
   // Reset MIDI tracking when song changes
   useEffect(() => {
-    setLastMidiTime(-1);
+    setProcessedTimestamps(new Set());
   }, [song?.id]);
 
   // Auto-scroll for timestamped lyrics

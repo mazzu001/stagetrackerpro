@@ -13,9 +13,10 @@ interface LyricsDisplayProps {
   duration: number;
   onEditLyrics?: () => void;
   onMidiCommand?: (command: string) => void;
+  isPlaying: boolean;
 }
 
-export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMidiCommand }: LyricsDisplayProps) {
+export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMidiCommand, isPlaying }: LyricsDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');
@@ -193,8 +194,25 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
   
   // Reset MIDI tracking when song changes
   useEffect(() => {
+    console.log(`🔄 Resetting processed timestamps - Song changed to: ${song?.title || 'none'}`);
     setProcessedTimestamps(new Set());
   }, [song?.id]);
+
+  // Reset MIDI tracking when playback stops
+  useEffect(() => {
+    if (!isPlaying) {
+      console.log(`⏹️ Resetting processed timestamps - Playback stopped`);
+      setProcessedTimestamps(new Set());
+    }
+  }, [isPlaying]);
+
+  // Reset MIDI tracking when seeking back to beginning
+  useEffect(() => {
+    if (currentTime <= 1) { // Reset when at or near the beginning (within 1 second)
+      console.log(`⏮️ Resetting processed timestamps - Playback at beginning (${currentTime}s)`);
+      setProcessedTimestamps(new Set());
+    }
+  }, [currentTime]);
 
   // Auto-scroll for timestamped lyrics
   useEffect(() => {

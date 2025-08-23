@@ -1318,6 +1318,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 duration={duration}
                 onEditLyrics={selectedSong ? handleEditLyrics : undefined}
                 onMidiCommand={handleLyricsMidiCommand}
+                isPlaying={isPlaying}
               />
             </div>
             

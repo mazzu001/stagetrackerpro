@@ -49,7 +49,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isDeleteSongOpen, setIsDeleteSongOpen] = useState(false);
   const [currentLyricsTab, setCurrentLyricsTab] = useState("lyrics");
   const [midiCommands, setMidiCommands] = useState<MIDICommand[]>([]);
-  const [currentMidiCommand, setCurrentMidiCommand] = useState("");
+  const [editingCommandIndex, setEditingCommandIndex] = useState<number | null>(null);
+  const [editingCommandText, setEditingCommandText] = useState("");
   const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -343,11 +344,36 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
-  // Add MIDI command at current timestamp
+  // Add generic MIDI command at current timestamp
   const handleAddMidiCommand = () => {
-    if (!currentMidiCommand.trim()) return;
+    const newCommand: MIDICommand = {
+      timestamp: currentTime,
+      type: 'program_change',
+      description: '[[PC:1:1]]',
+      program: 1,
+      channel: 0
+    };
 
-    const parseResult = parseMIDICommand(currentMidiCommand);
+    setMidiCommands(prev => [...prev, newCommand].sort((a, b) => a.timestamp - b.timestamp));
+    
+    toast({
+      title: "MIDI Command Added",
+      description: `Command added at ${formatTimestamp(currentTime)} - click to edit`,
+    });
+  };
+
+  // Start editing a MIDI command
+  const handleEditCommand = (index: number) => {
+    const command = midiCommands[index];
+    setEditingCommandIndex(index);
+    setEditingCommandText(command.description || '[[PC:1:1]]');
+  };
+
+  // Save edited MIDI command
+  const handleSaveEditedCommand = () => {
+    if (editingCommandIndex === null) return;
+
+    const parseResult = parseMIDICommand(editingCommandText);
     if (!parseResult || !parseResult.bytes || parseResult.bytes.length === 0) {
       toast({
         title: "Invalid MIDI Command",
@@ -404,20 +430,32 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         return;
     }
 
-    const newCommand: MIDICommand = {
-      timestamp: currentTime,
+    const updatedCommand: MIDICommand = {
+      ...midiCommands[editingCommandIndex],
       type,
-      description: currentMidiCommand,
+      description: editingCommandText,
       ...commandData
     };
 
-    setMidiCommands(prev => [...prev, newCommand].sort((a, b) => a.timestamp - b.timestamp));
-    setCurrentMidiCommand("");
+    setMidiCommands(prev => {
+      const updated = [...prev];
+      updated[editingCommandIndex] = updatedCommand;
+      return updated.sort((a, b) => a.timestamp - b.timestamp);
+    });
+
+    setEditingCommandIndex(null);
+    setEditingCommandText("");
     
     toast({
-      title: "MIDI Command Added",
-      description: `${parseResult.formatted} added at ${Math.floor(currentTime / 60)}:${Math.floor(currentTime % 60).toString().padStart(2, '0')}`,
+      title: "Command Updated",
+      description: `${parseResult.formatted} saved`,
     });
+  };
+
+  // Cancel editing
+  const handleCancelEdit = () => {
+    setEditingCommandIndex(null);
+    setEditingCommandText("");
   };
 
   // Remove MIDI command
@@ -1101,31 +1139,16 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 </>
               )}
               {currentLyricsTab === "midi" && userType === 'professional' && (
-                <div className="flex items-center gap-2">
-                  <Input
-                    placeholder="[[PC:12:1]] or [[CC:7:64:1]]"
-                    value={currentMidiCommand}
-                    onChange={(e) => setCurrentMidiCommand(e.target.value)}
-                    className="h-8 w-48 text-sm font-mono"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault();
-                        handleAddMidiCommand();
-                      }
-                    }}
-                  />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleAddMidiCommand}
-                    disabled={!currentMidiCommand.trim()}
-                    data-testid="button-add-midi-command"
-                    className="h-8 px-3"
-                  >
-                    <Target className="w-3 h-3 mr-1" />
-                    Add at {formatTimestamp(currentTime)}
-                  </Button>
-                </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleAddMidiCommand}
+                  data-testid="button-add-midi-command"
+                  className="h-8 px-3 bg-primary/10 hover:bg-primary/20 border-primary/30"
+                >
+                  <Target className="w-3 h-3 mr-1" />
+                  Add Command at {formatTimestamp(currentTime)}
+                </Button>
               )}
               
               {/* Compact Position Slider */}
@@ -1217,34 +1240,94 @@ Click "Timestamp" to insert current time`}
                           <span>Time</span>
                           <span>Command</span>
                           <span>Details</span>
-                          <span>Action</span>
+                          <span>Actions</span>
                         </div>
                       </div>
                       <div className="flex-1 overflow-y-auto max-h-[300px]">
                         {midiCommands.map((cmd, index) => (
                           <div key={index} className="px-3 py-2 border-b border-gray-700 last:border-b-0 hover:bg-gray-700/50">
-                            <div className="grid grid-cols-4 gap-4 items-center text-sm">
-                              <span className="font-mono text-primary">
-                                {formatTimestamp(cmd.timestamp)}
-                              </span>
-                              <span className="font-mono text-blue-400">
-                                {cmd.description}
-                              </span>
-                              <span className="text-gray-400 text-xs">
-                                {cmd.type === 'program_change' && `Program ${cmd.program} Ch${(cmd.channel || 0) + 1}`}
-                                {cmd.type === 'control_change' && `CC${cmd.controller} = ${cmd.value} Ch${(cmd.channel || 0) + 1}`}
-                                {cmd.type === 'note_on' && `Note ${cmd.note} Vel ${cmd.velocity} Ch${(cmd.channel || 0) + 1}`}
-                                {cmd.type === 'note_off' && `Note ${cmd.note} Ch${(cmd.channel || 0) + 1}`}
-                              </span>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => handleRemoveMidiCommand(index)}
-                                className="h-6 w-6 p-0 hover:bg-red-600/20 hover:text-red-400"
-                              >
-                                <X className="w-3 h-3" />
-                              </Button>
-                            </div>
+                            {editingCommandIndex === index ? (
+                              <div className="grid grid-cols-4 gap-4 items-center text-sm">
+                                <span className="font-mono text-primary">
+                                  {formatTimestamp(cmd.timestamp)}
+                                </span>
+                                <Input
+                                  value={editingCommandText}
+                                  onChange={(e) => setEditingCommandText(e.target.value)}
+                                  className="h-6 text-xs font-mono"
+                                  placeholder="[[PC:12:1]]"
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      e.preventDefault();
+                                      handleSaveEditedCommand();
+                                    } else if (e.key === 'Escape') {
+                                      e.preventDefault();
+                                      handleCancelEdit();
+                                    }
+                                  }}
+                                />
+                                <span className="text-gray-400 text-xs">
+                                  Press Enter to save, Esc to cancel
+                                </span>
+                                <div className="flex gap-1">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={handleSaveEditedCommand}
+                                    className="h-6 w-6 p-0 hover:bg-green-600/20 hover:text-green-400"
+                                  >
+                                    ✓
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={handleCancelEdit}
+                                    className="h-6 w-6 p-0 hover:bg-gray-600/20"
+                                  >
+                                    ✕
+                                  </Button>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="grid grid-cols-4 gap-4 items-center text-sm">
+                                <span className="font-mono text-primary">
+                                  {formatTimestamp(cmd.timestamp)}
+                                </span>
+                                <span 
+                                  className="font-mono text-blue-400 cursor-pointer hover:text-blue-300" 
+                                  onClick={() => handleEditCommand(index)}
+                                  title="Click to edit"
+                                >
+                                  {cmd.description}
+                                </span>
+                                <span className="text-gray-400 text-xs">
+                                  {cmd.type === 'program_change' && `Program ${cmd.program} Ch${(cmd.channel || 0) + 1}`}
+                                  {cmd.type === 'control_change' && `CC${cmd.controller} = ${cmd.value} Ch${(cmd.channel || 0) + 1}`}
+                                  {cmd.type === 'note_on' && `Note ${cmd.note} Vel ${cmd.velocity} Ch${(cmd.channel || 0) + 1}`}
+                                  {cmd.type === 'note_off' && `Note ${cmd.note} Ch${(cmd.channel || 0) + 1}`}
+                                </span>
+                                <div className="flex gap-1">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleEditCommand(index)}
+                                    className="h-6 w-6 p-0 hover:bg-blue-600/20 hover:text-blue-400"
+                                    title="Edit command"
+                                  >
+                                    <Edit className="w-3 h-3" />
+                                  </Button>
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => handleRemoveMidiCommand(index)}
+                                    className="h-6 w-6 p-0 hover:bg-red-600/20 hover:text-red-400"
+                                    title="Delete command"
+                                  >
+                                    <X className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
@@ -1255,10 +1338,10 @@ Click "Timestamp" to insert current time`}
                         <Zap className="w-8 h-8 mx-auto mb-2 opacity-50" />
                         <p className="text-sm">No MIDI commands yet</p>
                         <p className="text-xs mt-1">
-                          Use the input above to add timestamped MIDI commands
+                          Click "Add Command" to create a timestamped MIDI command
                         </p>
                         <p className="text-xs mt-2 font-mono text-blue-400">
-                          Examples: [[PC:12:1]], [[CC:7:64:1]], [[NOTE:60:127:1]]
+                          Commands are added at current playback time and can be edited afterwards
                         </p>
                       </div>
                     </div>
@@ -1277,7 +1360,8 @@ Click "Timestamp" to insert current time`}
                 setIsEditLyricsOpen(false);
                 setLyricsText("");
                 setMidiCommands([]);
-                setCurrentMidiCommand("");
+                setEditingCommandIndex(null);
+                setEditingCommandText("");
               }}
               data-testid="button-cancel-lyrics"
             >

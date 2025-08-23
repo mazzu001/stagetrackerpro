@@ -44,9 +44,10 @@ interface USBMIDIMessage {
 interface USBMIDIDevicesManagerProps {
   isOpen: boolean;
   onClose: () => void;
+  onConnectedDevicesChange?: (devices: USBMIDIDevice[]) => void;
 }
 
-export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManagerProps) {
+export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChange }: USBMIDIDevicesManagerProps) {
   const [devices, setDevices] = useState<USBMIDIDevice[]>([]);
   const [connectedDevices, setConnectedDevices] = useState<USBMIDIDevice[]>([]);
   const [isScanning, setIsScanning] = useState(false);
@@ -162,7 +163,7 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
               type: 'received'
             };
             
-            console.log(`📥 USB MIDI Received from ${device.name}:`, Array.from(event.data).map((b: number) => `0x${b.toString(16).padStart(2, '0')}`).join(' '));
+            console.log(`📥 USB MIDI Received from ${device.name}:`, Array.from(event.data as ArrayLike<number>).map((b: number) => `0x${b.toString(16).padStart(2, '0')}`).join(' '));
             setMessages(prev => [...prev.slice(-19), message]);
           };
           
@@ -198,6 +199,12 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
       setConnectedDevices(prev => {
         const updated = [...prev.filter(d => d.id !== device.id), { ...device, state: 'connected' as const }];
         saveConnectedDevices(updated); // Save to localStorage
+        
+        // Notify parent component of device changes
+        if (onConnectedDevicesChange) {
+          onConnectedDevicesChange(updated);
+        }
+        
         return updated;
       });
       
@@ -454,6 +461,12 @@ export function USBMIDIDevicesManager({ isOpen, onClose }: USBMIDIDevicesManager
     setConnectedDevices(prev => {
       const updated = prev.filter(d => d.id !== device.id);
       saveConnectedDevices(updated); // Update localStorage
+      
+      // Notify parent component of device changes
+      if (onConnectedDevicesChange) {
+        onConnectedDevicesChange(updated);
+      }
+      
       return updated;
     });
     

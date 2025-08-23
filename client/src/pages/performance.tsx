@@ -12,6 +12,7 @@ import { WaveformVisualizer } from "@/components/waveform-visualizer";
 
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
+import { useMIDISequencer, type MIDICommand } from '@/hooks/useMIDISequencer';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -25,7 +26,6 @@ import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import { USBMIDIDevicesManager } from "@/components/USBMIDIDevicesManager";
 import BluetoothDevicesManager from "@/components/BluetoothDevicesManager";
-import type { MIDICommand } from '@/hooks/useMIDISequencer';
 import { parseMIDICommand } from '@/utils/midiFormatter';
 
 
@@ -56,14 +56,58 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isUSBMIDIOpen, setIsUSBMIDIOpen] = useState(false);
   const [isBluetoothDevicesOpen, setIsBluetoothDevicesOpen] = useState(false);
-
-
+  const [connectedUSBMIDIDevices, setConnectedUSBMIDIDevices] = useState<any[]>([]);
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
   
   // Use userType from authenticated user, fallback to prop
   const userType = user?.userType || propUserType;
+
+  // MIDI command execution function for the sequencer
+  const executeMIDICommand = useCallback(async (commandText: string): Promise<boolean> => {
+    try {
+      // Find a connected USB MIDI output device
+      const outputDevice = connectedUSBMIDIDevices.find(device => device.type === 'output');
+      if (!outputDevice) {
+        console.warn('⚠️ No connected USB MIDI output device for sequencer');
+        return false;
+      }
+
+      // Get Web MIDI access
+      if (!navigator.requestMIDIAccess) {
+        console.warn('⚠️ Web MIDI API not available');
+        return false;
+      }
+
+      const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+      const output = midiAccess.outputs.get(outputDevice.id);
+      
+      if (!output) {
+        console.warn(`⚠️ USB MIDI output device ${outputDevice.id} not found`);
+        return false;
+      }
+
+      // Parse and send the MIDI command
+      const parseResult = parseMIDICommand(commandText);
+      if (parseResult && parseResult.bytes.length > 0) {
+        console.log(`🎹 Sequencer sending to ${outputDevice.name}: ${commandText} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+        output.send(parseResult.bytes);
+        return true;
+      } else {
+        console.warn(`⚠️ Failed to parse MIDI command: ${commandText}`);
+        return false;
+      }
+    } catch (error) {
+      console.error('❌ Error executing MIDI command from sequencer:', error);
+      return false;
+    }
+  }, [connectedUSBMIDIDevices]);
+
+  // Initialize MIDI sequencer
+  const midiSequencer = useMIDISequencer({
+    onExecuteCommand: executeMIDICommand
+  });
 
   // Check for payment success on page load
   useEffect(() => {
@@ -150,12 +194,18 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       const song = LocalSongStorage.getSong(user.email, selectedSongId);
       setSelectedSong(song || null);
       
-      // MIDI sequencer functionality removed
+      // Load MIDI commands into sequencer when song changes
+      if (song && song.lyrics) {
+        console.log(`🎹 Loading MIDI commands for song: ${song.title}`);
+        midiSequencer.setMIDICommands(song.lyrics);
+      } else {
+        midiSequencer.setMIDICommands(''); // Clear commands if no song or lyrics
+      }
     } else {
       setSelectedSong(null);
-      // MIDI sequencer functionality removed
+      midiSequencer.setMIDICommands(''); // Clear commands when no song selected
     }
-  }, [selectedSongId, user?.email]);
+  }, [selectedSongId, user?.email, midiSequencer.setMIDICommands]);
 
   // Refresh songs helper function
   const refreshSongs = useCallback(() => {
@@ -209,20 +259,61 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   });
 
   useKeyboardShortcuts({
-    onPlay: play,
-    onPause: pause,
-    onStop: stop,
-    onTogglePlayback: isPlaying ? pause : play,
+    onPlay: handlePlay,
+    onPause: handlePause,
+    onStop: handleStop,
+    onTogglePlayback: isPlaying ? handlePause : handlePlay,
     onTrackMute: updateTrackMute,
     isPlaying
   });
 
-  // MIDI sequencer functionality removed
+  // Connect MIDI sequencer to audio playback
+  useEffect(() => {
+    if (isPlaying) {
+      console.log(`🎵 Starting MIDI sequencer with audio at ${currentTime * 1000}ms`);
+      midiSequencer.startSequencer(currentTime * 1000);
+    } else {
+      console.log('🛑 Stopping MIDI sequencer with audio');
+      midiSequencer.stopSequencer();
+    }
+  }, [isPlaying, midiSequencer.startSequencer, midiSequencer.stopSequencer]);
 
-  // Handle seeking
+  // Update MIDI sequencer with current playback time
+  useEffect(() => {
+    if (isPlaying) {
+      midiSequencer.updateSequencer(currentTime * 1000);
+    }
+  }, [currentTime, isPlaying, midiSequencer.updateSequencer]);
+
+  // Reset MIDI sequencer when song changes
+  useEffect(() => {
+    midiSequencer.resetSequencer();
+  }, [selectedSongId, midiSequencer.resetSequencer]);
+
+  // Enhanced seek handler that also updates MIDI sequencer
   const handleSeek = useCallback((time: number) => {
     seek(time);
-  }, [seek]);
+    if (isPlaying) {
+      console.log(`🎯 Seeking MIDI sequencer to ${time * 1000}ms`);
+      midiSequencer.updateSequencer(time * 1000);
+    }
+  }, [seek, isPlaying, midiSequencer.updateSequencer]);
+
+  // Enhanced play function that starts sequencer
+  const handlePlay = useCallback(() => {
+    play();
+  }, [play]);
+
+  // Enhanced pause function that stops sequencer
+  const handlePause = useCallback(() => {
+    pause();
+  }, [pause]);
+
+  // Enhanced stop function that resets sequencer
+  const handleStop = useCallback(() => {
+    stop();
+    midiSequencer.resetSequencer();
+  }, [stop, midiSequencer.resetSequencer]);
 
   // Log tracks that need audio files when song changes
   useEffect(() => {
@@ -1068,9 +1159,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   duration={duration}
                   progress={progress}
                   isMidiConnected={false}
-                  onPlay={play}
-                  onPause={pause}
-                  onStop={stop}
+                  onPlay={handlePlay}
+                  onPause={handlePause}
+                  onStop={handleStop}
                   onSeek={handleSeek}
                 />
               </div>
@@ -1382,7 +1473,8 @@ Click "Timestamp" to insert current time`}
       {/* USB MIDI Devices Manager Modal */}
       <USBMIDIDevicesManager 
         isOpen={isUSBMIDIOpen} 
-        onClose={() => setIsUSBMIDIOpen(false)} 
+        onClose={() => setIsUSBMIDIOpen(false)}
+        onConnectedDevicesChange={setConnectedUSBMIDIDevices}
       />
 
       {/* Bluetooth Devices Manager Modal */}

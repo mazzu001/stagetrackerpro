@@ -1,0 +1,1462 @@
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=IO8gTEJKhc4Y' failed: Error during WebSocket handshake: Unexpected response code: 400
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) 
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ No stored audio file references found
+ 🔄 Checking fresh subscription status for: professional@demo.com
+ Browser file system already initialized - auto-initializing
+ Browser file system initialized successfully
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+ ✅ Fresh subscription status: professional
+ 🔍 Checking Web MIDI API support...
+ Navigator available: true
+ requestMIDIAccess available: true
+ ✅ Web MIDI API is supported
+ 🔐 Requesting MIDI access...
+ 🔄 Checking fresh subscription status for: professional@demo.com
+ 🔍 Connected USB MIDI devices for sequencer: Array(0)
+ 📤 Available output devices for sequencer: Array(0)
+ 🎼 Parsing MIDI commands from lyrics: 
+ 🔍 Parsing lyrics with 1 lines: Array(1)
+ 📝 Processing line 0: ""
+ ⏰ Timestamp match: null
+ 🎵 MIDI matches: null
+ ⚠️ Line has no valid timestamp + MIDI command combination
+ 🎼 Final parsed commands (0): Array(0)
+ 🎹 Loaded 0 MIDI commands from lyrics: Array(0)
+  The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.
+initialize @ audio-engine.ts:31
+ 🛑 Stopping MIDI sequencer with audio
+ 🛑 Stopping MIDI sequencer
+ 🛑 Stopping MIDI sequencer
+ ✅ MIDI access granted: MIDIAccess
+ Available inputs: 1
+ Available outputs: 1
+ 🔍 Loading MIDI devices from API...
+ 📥 Processing input devices...
+ Found input device: MidiPort () - State: connected
+ 📤 Processing output devices...
+ Found output device: MidiPort () - State: connected
+ ✅ Loaded 2 total devices (1 inputs, 1 outputs)
+ ✅ Fresh subscription status: professional
+ 🎼 Parsing MIDI commands from lyrics: 
+ 🔍 Parsing lyrics with 1 lines: Array(1)
+ 📝 Processing line 0: ""
+ ⏰ Timestamp match: null
+ 🎵 MIDI matches: null
+ ⚠️ Line has no valid timestamp + MIDI command combination
+ 🎼 Final parsed commands (0): Array(0)
+ 🎹 Loaded 0 MIDI commands from lyrics: Array(0)
+ 📂 Loaded 2 previously connected USB MIDI devices from storage
+ 🔄 Attempting to auto-reconnect 2 previously connected devices...
+ 🔗 Auto-reconnecting MidiPort (input)
+USBMIDIDevicesManager.tsx:143 🔗 Attempting to connect to MidiPort (input)...
+USBMIDIDevicesManager.tsx:156 🔌 USB MIDI input device ready: MidiPort
+USBMIDIDevicesManager.tsx:124 🔗 Auto-reconnecting MidiPort (output)
+USBMIDIDevicesManager.tsx:143 🔗 Attempting to connect to MidiPort (output)...
+USBMIDIDevicesManager.tsx:183 🔌 USB MIDI output device ready: MidiPort
+USBMIDIDevicesManager.tsx:172 🔄 USB MIDI Input state change for MidiPort: connected
+USBMIDIDevicesManager.tsx:86 💾 Saved 2 connected USB MIDI devices to storage
+react-dom.development.js:86  Warning: Cannot update a component (`Performance`) while rendering a different component (`USBMIDIDevicesManager`). To locate the bad setState() call inside `USBMIDIDevicesManager`, follow the stack trace as described in https://reactjs.org/link/setstate-in-render
+    at USBMIDIDevicesManager (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/components/USBMIDIDevicesManager.tsx:41:41)
+    at div
+    at Performance (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/pages/performance.tsx:44:49)
+    at component
+    at Route (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=800a8f4c:323:16)
+    at Router (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=800a8f4c:291:17)
+    at Provider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-MNSHGHEV.js?v=800a8f4c:43:15)
+    at TooltipProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=800a8f4c:65:5)
+    at AppContent (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?v=a7FBd7mIPRid-gJ_xLpyU:39:47)
+    at QueryClientProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=800a8f4c:2805:3)
+    at App
+printWarning @ react-dom.development.js:86
+USBMIDIDevicesManager.tsx:86 💾 Saved 2 connected USB MIDI devices to storage
+performance.tsx:128 🔍 Connected USB MIDI devices for sequencer: Array(2)
+performance.tsx:130 📤 Available output devices for sequencer: Array(1)
+performance.tsx:322 🛑 Stopping MIDI sequencer with audio
+useMIDISequencer.ts:184 🛑 Stopping MIDI sequencer
+performance.tsx:220 🎹 Loading MIDI commands for song: 3 AM
+useMIDISequencer.ts:261 🎼 Parsing MIDI commands from lyrics: [00:05] [[PC:12:1]]
+useMIDISequencer.ts:39 🔍 Parsing lyrics with 1 lines: Array(1)
+useMIDISequencer.ts:42 📝 Processing line 0: "[00:05] [[PC:12:1]]"
+useMIDISequencer.ts:48 ⏰ Timestamp match: Array(3)
+useMIDISequencer.ts:49 🎵 MIDI matches: Array(1)
+useMIDISequencer.ts:55 ⏱️ Parsed timestamp: [00:05] → 5000ms
+useMIDISequencer.ts:59 🎯 Processing MIDI command: "PC:12:1"
+useMIDISequencer.ts:62 🔧 Parse result: null
+useMIDISequencer.ts:93  ⚠️ Failed to parse MIDI command bytes: PC:12:1
+(anonymous) @ useMIDISequencer.ts:93
+useMIDISequencer.ts:104 🎼 Final parsed commands (0): Array(0)
+useMIDISequencer.ts:265 🎹 Loaded 0 MIDI commands from lyrics: Array(0)
+useMIDISequencer.ts:184 🛑 Stopping MIDI sequencer
+waveform-visualizer.tsx:37 Loading cached waveform for "3 AM" (400 data points)
+use-audio-engine.tsx:78 Loading song: "3 AM" with 6 tracks
+audio-engine.ts:61 Loading song "3 AM" with 6 tracks
+audio-engine.ts:66 Starting load for track: 3AM - Backups (a9254d35-564a-4c28-a000-c06e02db706b)
+audio-engine.ts:66 Starting load for track: 3AM - Bass (33482fba-ef52-4761-a917-d4287853c5aa)
+audio-engine.ts:66 Starting load for track: 3AM - Click (d4d1abfd-8094-4552-ac75-775de2c5d2ba)
+audio-engine.ts:66 Starting load for track: 3AM - Drums (008544ca-1680-45a7-8421-1f334dc598a1)
+audio-engine.ts:66 Starting load for track: 3AM - Guitars (090b3265-73de-46e5-8e89-3396a2638ad8)
+audio-engine.ts:66 Starting load for track: 3AM - Organ (85398f3e-80f1-4f4b-b56a-2c23d61ecf3c)
+performance.tsx:349 6 tracks need audio files in song: 3 AM
+audio-file-storage.ts:79 Got audio URL from browser storage for track: a9254d35-564a-4c28-a000-c06e02db706b
+audio-engine.ts:490 Loading track: 3AM - Backups from local file storage
+audio-file-storage.ts:79 Got audio URL from browser storage for track: 33482fba-ef52-4761-a917-d4287853c5aa
+audio-engine.ts:490 Loading track: 3AM - Bass from local file storage
+audio-file-storage.ts:79 Got audio URL from browser storage for track: d4d1abfd-8094-4552-ac75-775de2c5d2ba
+audio-engine.ts:490 Loading track: 3AM - Click from local file storage
+audio-file-storage.ts:79 Got audio URL from browser storage for track: 008544ca-1680-45a7-8421-1f334dc598a1
+audio-engine.ts:490 Loading track: 3AM - Drums from local file storage
+audio-file-storage.ts:79 Got audio URL from browser storage for track: 090b3265-73de-46e5-8e89-3396a2638ad8
+audio-engine.ts:490 Loading track: 3AM - Guitars from local file storage
+audio-file-storage.ts:79 Got audio URL from browser storage for track: 85398f3e-80f1-4f4b-b56a-2c23d61ecf3c
+audio-engine.ts:490 Loading track: 3AM - Organ from local file storage
+audio-engine.ts:504 Decoding audio data for 3AM - Bass, size: 9154836 bytes
+audio-engine.ts:504 Decoding audio data for 3AM - Click, size: 9154836 bytes
+audio-engine.ts:504 Decoding audio data for 3AM - Drums, size: 9154836 bytes
+audio-engine.ts:504 Decoding audio data for 3AM - Guitars, size: 9154836 bytes
+audio-engine.ts:504 Decoding audio data for 3AM - Organ, size: 9154836 bytes
+audio-engine.ts:504 Decoding audio data for 3AM - Backups, size: 9154836 bytes
+audio-engine.ts:512 Successfully decoded 3AM - Click: 229.07s, 2 channels
+audio-engine.ts:513 Buffer details - samples: 10995252, sampleRate: 48000, calculated duration: 229.07s
+audio-engine.ts:82 Successfully loaded track: 3AM - Click
+audio-engine.ts:512 Successfully decoded 3AM - Organ: 229.07s, 2 channels
+audio-engine.ts:513 Buffer details - samples: 10995252, sampleRate: 48000, calculated duration: 229.07s
+audio-engine.ts:82 Successfully loaded track: 3AM - Organ
+audio-engine.ts:512 Successfully decoded 3AM - Backups: 229.07s, 2 channels
+audio-engine.ts:513 Buffer details - samples: 10995252, sampleRate: 48000, calculated duration: 229.07s
+audio-engine.ts:82 Successfully loaded track: 3AM - Backups
+audio-engine.ts:512 Successfully decoded 3AM - Bass: 229.07s, 2 channels
+audio-engine.ts:513 Buffer details - samples: 10995252, sampleRate: 48000, calculated duration: 229.07s
+audio-engine.ts:82 Successfully loaded track: 3AM - Bass
+audio-engine.ts:512 Successfully decoded 3AM - Guitars: 229.07s, 2 channels
+audio-engine.ts:513 Buffer details - samples: 10995252, sampleRate: 48000, calculated duration: 229.07s
+audio-engine.ts:82 Successfully loaded track: 3AM - Guitars
+audio-engine.ts:512 Successfully decoded 3AM - Drums: 229.07s, 2 channels
+audio-engine.ts:513 Buffer details - samples: 10995252, sampleRate: 48000, calculated duration: 229.07s
+audio-engine.ts:82 Successfully loaded track: 3AM - Drums
+audio-engine.ts:92 Loaded 6 out of 6 tracks successfully
+use-audio-engine.tsx:45 Duration updated from audio buffers: 229.06775s
+audio-engine.ts:118 Starting automatic waveform generation for "3 AM"...
+waveform-generator.ts:65 Using cached waveform for "3 AM" (400 data points)
+audio-engine.ts:129 Finished loading song: "3 AM"
+audio-engine.ts:121 Waveform auto-generated for "3 AM" (400 data points)
+use-audio-engine.tsx:81 Finished loading song: "3 AM"
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+USBMIDIDevicesManager.tsx:861 💾 Saved selected USB output device: output-1
+audio-engine.ts:157 Audio context suspended, resuming...
+audio-engine.ts:159 Audio context resumed, state: running
+audio-engine.ts:165 Starting playback: 6 tracks loaded, starting at 0s
+audio-engine.ts:548 Track 3AM - Click started - offset: 0.00s, bufferDuration: 229.07s, remaining: 229.07s
+audio-engine.ts:173 Started track: d4d1abfd-8094-4552-ac75-775de2c5d2ba
+audio-engine.ts:548 Track 3AM - Organ started - offset: 0.00s, bufferDuration: 229.07s, remaining: 229.07s
+audio-engine.ts:173 Started track: 85398f3e-80f1-4f4b-b56a-2c23d61ecf3c
+audio-engine.ts:548 Track 3AM - Backups started - offset: 0.00s, bufferDuration: 229.07s, remaining: 229.07s
+audio-engine.ts:173 Started track: a9254d35-564a-4c28-a000-c06e02db706b
+audio-engine.ts:548 Track 3AM - Bass started - offset: 0.00s, bufferDuration: 229.07s, remaining: 229.07s
+audio-engine.ts:173 Started track: 33482fba-ef52-4761-a917-d4287853c5aa
+audio-engine.ts:548 Track 3AM - Guitars started - offset: 0.00s, bufferDuration: 229.07s, remaining: 229.07s
+audio-engine.ts:173 Started track: 090b3265-73de-46e5-8e89-3396a2638ad8
+audio-engine.ts:548 Track 3AM - Drums started - offset: 0.00s, bufferDuration: 229.07s, remaining: 229.07s
+audio-engine.ts:173 Started track: 008544ca-1680-45a7-8421-1f334dc598a1
+audio-engine.ts:179 Successfully started 6 out of 6 tracks
+performance.tsx:319 🎵 Starting MIDI sequencer with audio at 0ms
+useMIDISequencer.ts:141 🎵 Starting MIDI sequencer at 0ms
+useMIDISequencer.ts:195 ⏸️ Sequencer not active, ignoring update at 0ms
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 0ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 26.666666666666668ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 26.666666666666668ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 45.33333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 45.33333333333333ms, 0 commands loaded
+audio-engine.ts:362 Getting master stereo levels - isPlaying: true analyzer exists: true
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 55.99999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 55.99999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 74.66666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 74.66666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 85.33333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 85.33333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 106.66666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 106.66666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 125.33333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 125.33333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 125.33333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 125.33333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 136ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 136ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 154.66666666666669ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 154.66666666666669ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 176.00000000000003ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 176.00000000000003ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 186.66666666666669ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 186.66666666666669ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 205.33333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 205.33333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 226.66666666666669ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 226.66666666666669ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 226.66666666666669ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 226.66666666666669ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 234.66666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 234.66666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 255.99999999999994ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 255.99999999999994ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 274.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 274.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 285.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 285.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 306.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 306.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 325.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 325.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 325.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 325.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 346.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 346.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 354.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 354.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 376ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 376ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 386.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 386.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 405.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 405.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 426.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 426.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 426.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 426.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 434.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 434.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 455.99999999999994ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 455.99999999999994ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 474.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 474.66666666666663ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 485.33333333333326ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 485.33333333333326ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 506.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 506.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 525.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 525.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 525.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 525.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 546.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 546.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 554.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 554.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 576.0000000000001ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 576.0000000000001ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 586.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 586.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 605.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 605.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 626.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 626.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 626.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 626.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 634.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 634.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 656ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 656ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 674.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 674.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 696.0000000000001ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 696.0000000000001ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 706.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 706.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 725.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 725.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 725.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 725.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 746.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 746.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 754.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 754.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 776ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 776ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 786.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 786.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 805.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 805.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 826.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 826.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 826.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 826.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 845.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 845.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 856ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 856ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 874.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 874.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 885.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 885.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 906.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 906.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 925.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 925.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 925.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 925.3333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 946.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 946.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 954.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 954.6666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 976ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 976ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 994.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 994.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1005.3333333333331ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1005.3333333333331ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1026.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1026.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1026.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1026.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1034.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1034.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1055.9999999999998ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1055.9999999999998ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1074.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1074.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1085.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1085.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1106.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1106.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1125.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1125.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1125.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1125.3333333333333ms, 0 commands loaded
+audio-engine.ts:362 Getting master stereo levels - isPlaying: true analyzer exists: true
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1146.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1146.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1154.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1154.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1176ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1176ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1194.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1194.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1205.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1205.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1226.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1226.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1226.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1226.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1234.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1234.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1256ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1256ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1274.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1274.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1295.9999999999998ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1295.9999999999998ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1306.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1306.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1306.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1306.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1325.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1325.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1346.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1346.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1354.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1354.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1376ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1376ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1394.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1394.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1405.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1405.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1426.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1426.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1426.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1426.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1445.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1445.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1456ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1456ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1474.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1474.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1506.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1506.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1506.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1506.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1525.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1525.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1546.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1546.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1554.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1554.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1575.9999999999998ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1575.9999999999998ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1594.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1594.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1605.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1605.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1605.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1605.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1626.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1626.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1645.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1645.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1656ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1656ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1674.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1674.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1706.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1706.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1706.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1706.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1725.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1725.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1746.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1746.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1754.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1754.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1776ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1776ms, 0 commands loaded
+audio-engine.ts:362 Getting master stereo levels - isPlaying: true analyzer exists: true
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1794.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1794.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1805.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1805.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1826.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1826.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1845.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1845.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1855.9999999999998ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1855.9999999999998ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1874.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1874.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1896ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1896ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1906.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1906.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1925.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1925.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1925.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1925.3333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1946.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1946.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1954.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1954.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1976ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1976ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1994.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 1994.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2005.3333333333337ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2005.3333333333337ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2026.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2026.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2026.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2026.6666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2045.3333333333337ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2045.3333333333337ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2056ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2056ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2074.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2074.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2106.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2106.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2125.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2125.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2125.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2125.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2146.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2146.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2154.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2154.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2176ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2176ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2205.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2205.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2245.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2245.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2256ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2256ms, 0 commands loaded
+audio-engine.ts:362 Getting master stereo levels - isPlaying: true analyzer exists: true
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2274.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2274.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2296.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2296.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2306.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2306.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2306.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2306.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2325.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2325.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2346.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2346.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2354.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2354.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2376.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2376.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2394.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2394.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2405.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2405.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2405.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2405.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2434.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2434.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2445.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2445.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2456ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2456ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2474.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2474.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2506.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2506.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2506.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2506.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2525.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2525.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2546.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2546.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2554.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2554.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2576ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2576ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2594.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2594.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2605.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2605.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2626.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2626.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2626.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2626.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2645.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2645.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2666.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2666.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2674.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2674.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2706.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2706.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2706.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2706.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2725.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2725.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2746.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2746.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2754.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2754.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2776.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2776.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2794.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2794.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2805.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2805.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2805.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2805.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2826.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2826.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2845.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2845.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2856.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2856.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2874.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2874.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2896.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2896.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2906.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2906.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2906.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2906.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2925.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2925.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2946.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2946.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2954.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2954.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2976ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2976ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2994.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 2994.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3005.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3005.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3026.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3026.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3045.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3045.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3066.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3066.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3074.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3074.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3114.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3114.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3125.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3125.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3125.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3125.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3146.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3146.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3165.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3165.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3176ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3176ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3216ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3216ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3245.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3245.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3256ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3256ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3274.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3274.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3296.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3296.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3314.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3314.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3325.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3325.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3325.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3325.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3346.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3346.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3365.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3365.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3376.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3376.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3394.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3394.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3408.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3408.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3426.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3426.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3426.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3426.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3445.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3445.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3466.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3466.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3474.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3474.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3514.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3514.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3525.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3525.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3525.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3525.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3546.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3546.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3565.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3565.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3576ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3576ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3594.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3594.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3626.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3626.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3626.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3626.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3645.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3645.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3666.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3666.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3674.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3674.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3714.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3714.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3725.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3725.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3725.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3725.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3746.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3746.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3765.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3765.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3776.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3776.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3794.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3794.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3816.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3816.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3826.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3826.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3826.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3826.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3845.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3845.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3866.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3866.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3874.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3874.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3896.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3896.0000000000005ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3914.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3914.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3925.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3925.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3925.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3925.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3946.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3946.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3965.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3965.3333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3976ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3976ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3994.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 3994.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4026.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4026.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4026.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4026.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4045.3333333333326ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4045.3333333333326ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4066.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4066.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4074.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4074.6666666666665ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4125.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4125.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4125.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4125.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4146.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4146.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4165.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4165.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4175.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4175.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4215.999999999999ms, 0 commands loaded
+audio-engine.ts:421 Master levels - left: 0.961 right: 2.912 baseLevel: 0.000
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4245.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4245.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4266.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4266.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4274.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4274.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4295.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4295.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4325.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4325.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4325.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4325.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4346.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4346.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4365.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4365.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4375.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4375.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4394.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4394.666666666667ms, 0 commands loaded
+audio-engine.ts:362 Getting master stereo levels - isPlaying: true analyzer exists: true
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4434.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4434.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4445.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4445.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4466.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4466.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4474.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4474.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4536ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4536ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4546.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4546.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4565.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4565.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4576ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4576ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4594.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4594.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4626.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4626.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4645.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4645.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4666.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4666.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4674.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4674.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4725.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4725.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4725.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4725.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4746.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4746.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4765.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4765.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4776ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4776ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4794.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4794.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4826.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4826.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4845.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4845.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4866.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4866.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4874.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4874.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4896ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4896ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4925.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4925.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4946.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4946.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4965.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4965.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4976ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4976ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4994.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 4994.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5026.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5026.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5026.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5026.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5045.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5045.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5066.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5066.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5074.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5074.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5125.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5125.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5146.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5146.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5165.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5165.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5175.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5175.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5226.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5245.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5245.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5266.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5266.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5274.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5274.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5295.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5295.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5325.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5325.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5346.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5346.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5365.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5365.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5375.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5375.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5394.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5394.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5426.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5426.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5445.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5445.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5466.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5466.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5474.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5474.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5536ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5536ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5546.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5546.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5565.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5565.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5578.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5578.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5594.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5594.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5626.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5626.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5645.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5645.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5666.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5666.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5685.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5685.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5725.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5725.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5746.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5746.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5765.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5765.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5786.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5786.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5794.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5794.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5834.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5834.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5845.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5845.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5866.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5866.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5885.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5885.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5896ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5896ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5936ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5936ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5946.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5946.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5965.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5965.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5986.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5986.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5994.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 5994.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6034.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6034.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6045.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6045.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6066.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6066.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6085.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6085.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6136ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6136ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6146.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6146.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6165.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6165.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6186.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6186.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6234.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6234.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6245.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6245.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6266.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6266.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6285.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6285.333333333333ms, 0 commands loaded
+audio-engine.ts:362 Getting master stereo levels - isPlaying: true analyzer exists: true
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6295.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6295.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6335.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6335.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6346.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6346.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6365.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6365.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6386.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6386.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6394.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6394.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6434.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6434.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6445.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6445.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6466.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6466.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6485.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6485.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6536ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6536ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6546.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6546.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6565.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6565.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6586.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6586.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6594.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6594.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6634.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6634.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6645.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6645.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6666.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6666.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6685.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6685.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6736ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6736ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6746.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6746.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6765.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6765.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6786.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6786.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6794.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6794.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6834.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6834.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6845.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6845.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6866.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6866.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6885.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6885.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6896ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6896ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6936ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6936ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6946.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6946.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6965.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6965.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6986.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6986.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6994.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 6994.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7034.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7034.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7045.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7045.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7066.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7066.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7085.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7085.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7096ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7114.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7136ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7136ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7146.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7146.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7165.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7165.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7186.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7186.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7194.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7215.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7234.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7234.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7245.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7245.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7266.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7266.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7285.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7285.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7301.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7301.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7314.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7335.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7335.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7346.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7346.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7365.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7365.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7386.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7386.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7405.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7405.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7415.999999999999ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7434.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7434.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7445.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7445.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7466.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7466.666666666667ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7485.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7485.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7496ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7514.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7536ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7536ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7546.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7546.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7565.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7565.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7586.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7586.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7594.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7594.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7616ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7634.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7634.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7645.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7645.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7666.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7666.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7685.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7685.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7696ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7714.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7746.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7746.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7765.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7765.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7786.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7786.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7805.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7805.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7816ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7834.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7834.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7856ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7856ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7866.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7866.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7885.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7885.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7896ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7896ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7914.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7936ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7936ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7946.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7946.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7965.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7965.333333333333ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7986.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 7986.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 8005.333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 8005.333333333335ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 8016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 8016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 8016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 8016ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 8034.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 8034.666666666666ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 8045.333333333334ms, 0 commands loaded
+useMIDISequencer.ts:199 ⏱️ Sequencer update: 8045.333333333334ms, 0 commands loaded
+performance.tsx:322 🛑 Stopping MIDI sequencer with audio
+useMIDISequencer.ts:184 🛑 Stopping MIDI sequencer
+audio-engine.ts:541 Track 3AM - Drums source ended naturally at 3:40:18 PM
+audio-engine.ts:541 Track 3AM - Backups source ended naturally at 3:40:18 PM
+audio-engine.ts:541 Track 3AM - Bass source ended naturally at 3:40:18 PM
+audio-engine.ts:541 Track 3AM - Click source ended naturally at 3:40:18 PM
+audio-engine.ts:541 Track 3AM - Organ source ended naturally at 3:40:18 PM
+audio-engine.ts:541 Track 3AM - Guitars source ended naturally at 3:40:18 PM

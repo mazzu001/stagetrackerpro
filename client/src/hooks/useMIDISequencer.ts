@@ -196,33 +196,40 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
       return;
     }
     
-    console.log(`⏱️ Sequencer update: ${playbackTimeMs}ms, ${commandsRef.current.length} commands loaded`);
-    setCurrentPlaybackTime(playbackTimeMs);
+    console.log(`⏱️ Sequencer update: ${playbackTimeMs}ms, ${commandsRef.current.length} commands loaded, lastTriggered: ${lastTriggeredIndex}`);
     
-    // Check for commands to trigger
-    const currentCommands = commandsRef.current;
-    for (let i = lastTriggeredIndex + 1; i < currentCommands.length; i++) {
-      const command = currentCommands[i];
-      if (command.timestamp <= playbackTimeMs) {
-        console.log(`🎯 Triggering MIDI command at ${playbackTimeMs}ms: ${command.originalText}`);
-        executeMIDICommand(command);
-        setLastTriggeredIndex(i);
-      } else {
-        break; // Commands are sorted by timestamp
-      }
-    }
-    
-    // Handle seek backwards - reset triggered commands
+    // Handle seek backwards - reset triggered commands first
     if (playbackTimeMs < currentPlaybackTime) {
       let newLastTriggered = -1;
-      for (let i = 0; i < currentCommands.length; i++) {
-        if (currentCommands[i].timestamp <= playbackTimeMs) {
+      for (let i = 0; i < commandsRef.current.length; i++) {
+        if (commandsRef.current[i].timestamp <= playbackTimeMs) {
           newLastTriggered = i;
         } else {
           break;
         }
       }
+      console.log(`🔄 Seek backward detected, resetting lastTriggeredIndex from ${lastTriggeredIndex} to ${newLastTriggered}`);
       setLastTriggeredIndex(newLastTriggered);
+    }
+    
+    setCurrentPlaybackTime(playbackTimeMs);
+    
+    // Check for commands to trigger
+    const currentCommands = commandsRef.current;
+    console.log(`🔍 Checking commands to trigger: commands=${currentCommands.length}, lastTriggered=${lastTriggeredIndex}`);
+    
+    for (let i = lastTriggeredIndex + 1; i < currentCommands.length; i++) {
+      const command = currentCommands[i];
+      console.log(`🔍 Checking command ${i}: timestamp=${command.timestamp}ms vs playback=${playbackTimeMs}ms`);
+      if (command.timestamp <= playbackTimeMs) {
+        console.log(`🎯 Triggering MIDI command at ${playbackTimeMs}ms: ${command.originalText}`);
+        executeMIDICommand(command);
+        setLastTriggeredIndex(i);
+        console.log(`✅ Updated lastTriggeredIndex to ${i}`);
+      } else {
+        console.log(`⏭️ Command ${i} not ready yet (${command.timestamp}ms > ${playbackTimeMs}ms)`);
+        break; // Commands are sorted by timestamp
+      }
     }
   }, [isActive, currentPlaybackTime, lastTriggeredIndex, executeMIDICommand]);
 

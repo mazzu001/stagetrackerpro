@@ -12,9 +12,10 @@ interface LyricsDisplayProps {
   currentTime: number;
   duration: number;
   onEditLyrics?: () => void;
+  onMidiCommand?: (command: string) => void;
 }
 
-export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: LyricsDisplayProps) {
+export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMidiCommand }: LyricsDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');
@@ -131,9 +132,11 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   }) : -1;
 
-  // Simple MIDI command auto-send based on timestamp
+  // Auto-send MIDI commands from lyrics at their timestamps
+  const [lastMidiTime, setLastMidiTime] = useState(-1);
+  
   useEffect(() => {
-    if (!song?.lyrics) return;
+    if (!song?.lyrics || !onMidiCommand) return;
     
     // Check each line for timestamp match
     const lines = song.lyrics.split('\n');
@@ -148,28 +151,27 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics }: Lyr
         const seconds = parseInt(timestampMatch[2]);
         const timestamp = minutes * 60 + seconds;
         
-        // If current time matches this timestamp (within 0.5 seconds)
-        if (Math.abs(currentTime - timestamp) <= 0.5) {
+        // If current time matches this timestamp (within 0.5 seconds) and we haven't already sent it
+        if (Math.abs(currentTime - timestamp) <= 0.5 && lastMidiTime !== timestamp) {
           // Look for MIDI command in this line
           const midiMatch = trimmed.match(/\[\[([^\]]+)\]\]/);
           if (midiMatch) {
             const midiCommand = midiMatch[0]; // Full [[PC:12:1]] format
-            console.log(`🎵 Found MIDI command at ${timestamp}s: ${midiCommand}`);
+            console.log(`🎵 Auto-sending MIDI command from lyrics at ${timestamp}s: ${midiCommand}`);
             
-            // Find the manual MIDI input and send button
-            const midiInput = document.querySelector('[data-testid="input-usb-midi-command"]') as HTMLInputElement;
-            const sendButton = document.querySelector('[data-testid="button-send-usb-midi"]') as HTMLButtonElement;
-            
-            if (midiInput && sendButton) {
-              console.log(`🚀 Sending MIDI command: ${midiCommand}`);
-              midiInput.value = midiCommand;
-              sendButton.click();
-            }
+            // Call the callback to send the command via footer functionality
+            onMidiCommand(midiCommand);
+            setLastMidiTime(timestamp);
           }
         }
       }
     }
-  }, [currentTime, song?.lyrics]);
+  }, [currentTime, song?.lyrics, onMidiCommand, lastMidiTime]);
+  
+  // Reset MIDI tracking when song changes
+  useEffect(() => {
+    setLastMidiTime(-1);
+  }, [song?.id]);
 
   // Auto-scroll for timestamped lyrics
   useEffect(() => {

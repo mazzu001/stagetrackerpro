@@ -192,6 +192,43 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
+  // Auto-send MIDI command from lyrics - copies to manual send input and triggers send button
+  const handleLyricsMidiCommand = useCallback((command: string) => {
+    console.log(`🎼 Received MIDI command from lyrics: ${command}`);
+    setFooterMidiCommand(command);
+    
+    // Execute the send directly
+    const sendCommand = async () => {
+      const selectedOutputDevice = localStorage.getItem('usb_midi_selected_output_device');
+      if (!selectedOutputDevice || !command.trim()) return;
+
+      try {
+        if (navigator.requestMIDIAccess) {
+          const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+          const output = midiAccess.outputs.get(selectedOutputDevice);
+          
+          if (output) {
+            const parseResult = parseMIDICommand(command);
+            
+            if (parseResult && parseResult.bytes.length > 0) {
+              console.log(`📤 Auto MIDI Sending: ${command} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+              output.send(parseResult.bytes);
+              
+              toast({
+                title: "Auto MIDI Sent",
+                description: `${parseResult.formatted} sent to ${selectedMidiDeviceName}`,
+              });
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Auto MIDI Send Error:', error);
+      }
+    };
+    
+    sendCommand();
+  }, [selectedMidiDeviceName, toast]);
+
   // Initialize MIDI sequencer
   const midiSequencer = useMIDISequencer({
     onExecuteCommand: executeMIDICommand
@@ -1262,6 +1299,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 currentTime={currentTime}
                 duration={duration}
                 onEditLyrics={selectedSong ? handleEditLyrics : undefined}
+                onMidiCommand={handleLyricsMidiCommand}
               />
             </div>
             

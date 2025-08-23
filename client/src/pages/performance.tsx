@@ -209,8 +209,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
 
 
+  // Debug: Monitor song selection state
+  useEffect(() => {
+    console.log(`🔍 Song selection state changed - selectedSongId: ${selectedSongId}, user?.email: ${user?.email}`);
+  }, [selectedSongId, user?.email]);
+
   // Update selected song when selectedSongId changes
   useEffect(() => {
+    console.log(`🔍 Song loading useEffect triggered - selectedSongId: ${selectedSongId}, user?.email: ${user?.email}`);
     if (selectedSongId && user?.email) {
       const song = LocalSongStorage.getSong(user.email, selectedSongId);
       setSelectedSong(song || null);

@@ -1,0 +1,1170 @@
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=IO8gTEJKhc4Y' failed: Error during WebSocket handshake: Unexpected response code: 400
+setupWebSocket @ client:536
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+  The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.
+initialize @ audio-engine.ts:31
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6680ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6690.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6690.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6712ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6730.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6730.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6741.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6741.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6760ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6760ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6781.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6781.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6800ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6800ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6810.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6810.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6810.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6810.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6832ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6832ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6840ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6840ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6861.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6861.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6880ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6880ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6890.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6890.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6912ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6912ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6912ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6912ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6930.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6930.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6941.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6941.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6960ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6960ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6981.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6981.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6992ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 6992ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7010.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7010.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7032ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7032ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7040ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7040ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7061.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7061.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7080ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7080ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7090.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7090.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7112ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7112ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7112ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7112ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7130.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7130.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7141.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7141.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7160ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7160ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7181.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7181.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7192ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7192ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7210.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7210.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7210.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7210.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7232ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7232ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7240ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7240ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7261.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7261.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7280ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7280ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7301.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7301.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7312ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7312ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7312ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7312ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7330.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7330.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7341.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7341.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7360ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7360ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7381.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7381.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7392ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7392ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7410.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7410.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7410.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7410.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7432ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7432ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7440ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7440ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7461.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7461.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7480ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7480ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7501.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7501.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7512ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7512ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7512ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7512ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7530.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7530.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7552ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7552ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7560ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7560ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7581.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7581.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7600ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7600ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7610.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7610.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7610.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7610.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7632ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7632ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7650.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7650.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7661.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7661.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7680ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7680ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7690.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7690.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7712ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7730.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7730.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7752ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7752ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7760ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7760ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7781.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7781.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7800ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7800ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7810.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7810.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7810.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7810.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7832ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7832ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7850.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7850.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7861.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7861.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7880ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7880ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7901.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7901.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7912ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7912ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7912ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7912ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7930.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7930.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7952ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7952ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7960ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7960ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7981.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 7981.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8000ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8000ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8010.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8010.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8010.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8010.666666666667ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8032ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8032ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8050.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8050.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8061.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8061.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8080ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8080ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8101.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8101.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8112ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8112ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8112ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8112ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8130.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8130.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8151.999999999999ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8151.999999999999ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8160ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8160ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8181.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8181.333333333333ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8200ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8200ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8210.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8210.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8210.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8210.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8232ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8232ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8250.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8250.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8261.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8261.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8280ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8280ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8301.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8301.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8312ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8312ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8312ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8312ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8330.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8330.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8352ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8352ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8360ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8360ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8381.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8381.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8400ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8400ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8410.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8410.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8410.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8410.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8432ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8432ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8450.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8450.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8461.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8461.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8480ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8480ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8501.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8501.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8512ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8512ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8512ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8512ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8530.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8530.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8552ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8552ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8560ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8560ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8581.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8581.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8600ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8600ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8600ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8600ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8610.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8610.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8632ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8632ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ Getting master stereo levels - isPlaying: true analyzer exists: true
+ ⏱️ Sequencer update: 8650.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8650.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8661.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8661.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8680ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8680ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8701.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8701.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8712ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8730.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8730.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8752ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8752ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8760ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8760ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8781.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8781.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8800ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8800ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8810.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8810.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8810.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8810.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8832ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8832ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8850.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8850.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8861.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8861.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8880ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8880ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8901.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8901.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8912ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8912ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8912ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8912ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8930.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8930.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8952ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8952ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8960ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8960ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8981.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 8981.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9000ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9000ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9000ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9000ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9021.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9021.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9032ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9032ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9050.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9050.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9061.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9061.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9080ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9080ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9101.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9101.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9112ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9112ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9112ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9112ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9130.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9130.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9152ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9152ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9160ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9160ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9181.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9181.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9200ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9200ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9210.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9210.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9210.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9210.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9232ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9232ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9250.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9250.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ Getting master stereo levels - isPlaying: true analyzer exists: true
+ ⏱️ Sequencer update: 9261.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9261.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9280ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9280ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9301.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9301.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9314.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9314.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9314.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9314.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9330.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9330.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9352ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9352ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9360ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9360ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9381.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9381.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9400ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9400ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9410.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9410.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9410.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9410.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9432ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9432ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9450.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9450.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9461.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9461.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9480ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9480ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9501.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9501.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9512ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9512ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9512ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9512ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9530.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9530.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9552ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9552ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9560ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9560ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9581.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9581.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9600ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9600ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9621.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9621.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9621.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9621.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9632ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9632ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9650.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9650.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9672ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9672ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9680ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9680ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9701.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9701.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9712ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9712ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9730.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9730.666666666666ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9752ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9752ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9770.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9770.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9781.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9781.333333333332ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9800ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9800ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9821.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9821.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9821.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9821.333333333334ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9832ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9832ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+ ⏱️ Sequencer update: 9850.666666666668ms, 0 commands loaded, lastTriggered: -1
+ 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9850.666666666668ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9872ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9872ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9880ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9880ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9901.333333333334ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9901.333333333334ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9920ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9920ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9920ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:212 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9920ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9930.666666666668ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9930.666666666668ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9952ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9952ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9960ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9960ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9981.333333333334ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 9981.333333333334ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10000ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10000ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10021.333333333332ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10021.333333333332ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10021.333333333332ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:212 🔄 Seek backward detected, resetting lastTriggeredIndex from -1 to -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10021.333333333332ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10032ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10032ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10050.666666666666ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10050.666666666666ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+audio-engine.ts:362 Getting master stereo levels - isPlaying: true analyzer exists: true
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10072ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10072ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10080ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10080ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10101.333333333332ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+useMIDISequencer.ts:200 ⏱️ Sequencer update: 10101.333333333332ms, 0 commands loaded, lastTriggered: -1
+useMIDISequencer.ts:220 🔍 Checking commands to trigger: commands=0, lastTriggered=-1
+performance.tsx:329 🛑 Stopping MIDI sequencer with audio
+useMIDISequencer.ts:185 🛑 Stopping MIDI sequencer
+audio-engine.ts:541 Track 3AM - Drums source ended naturally at 3:51:51 PM
+audio-engine.ts:541 Track 3AM - Click source ended naturally at 3:51:51 PM
+audio-engine.ts:541 Track 3AM - Backups source ended naturally at 3:51:51 PM
+audio-engine.ts:541 Track 3AM - Guitars source ended naturally at 3:51:51 PM
+audio-engine.ts:541 Track 3AM - Bass source ended naturally at 3:51:51 PM
+audio-engine.ts:541 Track 3AM - Organ source ended naturally at 3:51:51 PM

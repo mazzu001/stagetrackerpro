@@ -50,8 +50,9 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
         midiMatches.forEach(midiMatch => {
           const commandText = midiMatch.slice(2, -2); // Remove [[ ]]
           try {
-            const midiBytes = parseMIDICommand(commandText);
-            if (midiBytes && midiBytes.length > 0) {
+            const midiResult = parseMIDICommand(commandText);
+            if (midiResult && midiResult.bytes.length > 0) {
+              const midiBytes = midiResult.bytes;
               // Convert MIDI bytes to MIDICommand structure
               const command: MIDICommand = {
                 timestamp,

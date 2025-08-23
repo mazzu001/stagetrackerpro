@@ -109,6 +109,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     onExecuteCommand: executeMIDICommand
   });
 
+  // Debug: Log connected USB MIDI devices for sequencer
+  useEffect(() => {
+    console.log(`🔍 Connected USB MIDI devices for sequencer:`, connectedUSBMIDIDevices);
+    const outputDevices = connectedUSBMIDIDevices.filter(d => d.type === 'output');
+    console.log(`📤 Available output devices for sequencer:`, outputDevices);
+  }, [connectedUSBMIDIDevices]);
+
   // Check for payment success on page load
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);

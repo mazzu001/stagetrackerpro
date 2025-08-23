@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth, Zap, X, Target } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth, Zap, X, Target, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -59,6 +59,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [connectedUSBMIDIDevices, setConnectedUSBMIDIDevices] = useState<any[]>([]);
   const [isMidiConnected, setIsMidiConnected] = useState(false);
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
+  const [footerMidiCommand, setFooterMidiCommand] = useState('');
   
   // Check initial MIDI connection status on startup
   useEffect(() => {
@@ -139,6 +140,57 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       return false;
     }
   }, [connectedUSBMIDIDevices]);
+
+  // Manual MIDI send function (exact copy from USB MIDI devices page)
+  const handleFooterSendMessage = async () => {
+    const selectedOutputDevice = localStorage.getItem('usb_midi_selected_output_device');
+    if (!selectedOutputDevice || !footerMidiCommand.trim()) return;
+
+    try {
+      if (navigator.requestMIDIAccess) {
+        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+        const output = midiAccess.outputs.get(selectedOutputDevice);
+        
+        if (output) {
+          // Parse MIDI command using proper parser (supports [[PC:12:1]], hex, and text formats)
+          const parseResult = parseMIDICommand(footerMidiCommand);
+          
+          if (parseResult && parseResult.bytes.length > 0) {
+            console.log(`📤 Footer MIDI Sending: ${footerMidiCommand} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+            output.send(parseResult.bytes);
+            
+            toast({
+              title: "Message Sent",
+              description: `${parseResult.formatted} sent to ${selectedMidiDeviceName}`,
+            });
+          } else {
+            toast({
+              title: "Invalid MIDI Command",
+              description: "Please use format: [[PC:12:1]], [[CC:7:64:1]], or hex bytes",
+              variant: "destructive",
+            });
+            return;
+          }
+        } else {
+          toast({
+            title: "Device Not Found",
+            description: "Selected output device is not available",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+      
+      setFooterMidiCommand('');
+    } catch (error) {
+      console.error('Footer MIDI Send Error:', error);
+      toast({
+        title: "Send Failed",
+        description: `Unable to send MIDI message: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        variant: "destructive",
+      });
+    }
+  };
 
   // Initialize MIDI sequencer
   const midiSequencer = useMIDISequencer({
@@ -1215,7 +1267,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             
             {/* Mobile only: Transport controls at bottom - ALWAYS VISIBLE */}
             <div className="p-3 border-t border-gray-700 bg-surface flex-shrink-0 md:hidden">
-              <div className="w-full">
+              <div className="w-full space-y-2">
                 <CompactTransportControls
                   isPlaying={isPlaying}
                   currentTime={currentTime}
@@ -1227,19 +1279,61 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   onStop={handleStop}
                   onSeek={handleSeek}
                 />
+                
+                {/* Mobile Manual MIDI Send */}
+                <div className="flex items-center gap-2 pt-2 border-t border-gray-700">
+                  <Input
+                    value={footerMidiCommand}
+                    onChange={(e) => setFooterMidiCommand(e.target.value)}
+                    placeholder="[[PC:12:1]], [[CC:7:64:1]]"
+                    className="font-mono text-sm flex-1"
+                    data-testid="input-mobile-midi-command"
+                  />
+                  <Button 
+                    onClick={handleFooterSendMessage}
+                    disabled={!isMidiConnected || !footerMidiCommand.trim()}
+                    data-testid="button-send-mobile-midi"
+                    size="sm"
+                  >
+                    <Send className="h-4 w-4 mr-1" />
+                    Send
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {/* Status Bar - Desktop only */}
+      {/* Status Bar & Manual MIDI Send - Desktop only */}
       <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 mobile-hidden">
-        <StatusBar
-          isAudioEngineOnline={isAudioEngineOnline}
-          isMidiConnected={isMidiConnected}
-          midiDeviceName={selectedMidiDeviceName}
-          latency={latency}
-        />
+        <div className="flex items-center justify-between gap-4">
+          <StatusBar
+            isAudioEngineOnline={isAudioEngineOnline}
+            isMidiConnected={isMidiConnected}
+            midiDeviceName={selectedMidiDeviceName}
+            latency={latency}
+          />
+          
+          {/* Manual MIDI Send - Exact copy from USB MIDI devices page */}
+          <div className="flex items-center gap-2 border-l border-gray-700 pl-4">
+            <Input
+              value={footerMidiCommand}
+              onChange={(e) => setFooterMidiCommand(e.target.value)}
+              placeholder="e.g., [[PC:12:1]], [[CC:7:64:1]]"
+              className="font-mono text-sm w-64"
+              data-testid="input-footer-midi-command"
+            />
+            <Button 
+              onClick={handleFooterSendMessage}
+              disabled={!isMidiConnected || !footerMidiCommand.trim()}
+              data-testid="button-send-footer-midi"
+              size="sm"
+            >
+              <Send className="h-4 w-4 mr-1" />
+              Send
+            </Button>
+          </div>
+        </div>
       </div>
       {/* Edit Lyrics Dialog - Tabbed Layout */}
       <Dialog open={isEditLyricsOpen} onOpenChange={setIsEditLyricsOpen}>

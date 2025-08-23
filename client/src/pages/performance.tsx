@@ -216,10 +216,17 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       setSelectedSong(song || null);
       
       // Load MIDI commands into sequencer when song changes
+      console.log(`🔍 Checking song for MIDI commands:`, song);
+      console.log(`🔍 Song lyrics field:`, song?.lyrics);
+      console.log(`🔍 Song lyrics type:`, typeof song?.lyrics);
+      console.log(`🔍 Song lyrics length:`, song?.lyrics?.length);
+      
       if (song && song.lyrics) {
         console.log(`🎹 Loading MIDI commands for song: ${song.title}`);
+        console.log(`🎼 Lyrics content:`, song.lyrics);
         midiSequencer.setMIDICommands(song.lyrics);
       } else {
+        console.log(`⚠️ No lyrics found - song: ${!!song}, lyrics: ${!!song?.lyrics}`);
         midiSequencer.setMIDICommands(''); // Clear commands if no song or lyrics
       }
     } else {

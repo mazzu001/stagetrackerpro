@@ -876,6 +876,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                   // Parse received data (might be BLE MIDI format)
                   const receivedData = Array.from(data);
                   console.log('📥 Received raw data:', receivedData);
+                  console.log('🎯 Current learning state:', isLearning);
                   
                   // Extract MIDI bytes from BLE MIDI format (remove timestamp headers)
                   let midiBytes = receivedData;
@@ -887,15 +888,21 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                   }
                   
                   // Check if we're in learn mode and this is a Control Change message
+                  console.log('🔍 Checking learning conditions:', {
+                    isLearning,
+                    midiBytes,
+                    bytesLength: midiBytes.length
+                  });
+                  
                   if (isLearning && midiBytes.length >= 3) {
                     const status = midiBytes[0];
                     const command = status & 0xF0;
                     
-                    console.log('🎯 Learning mode - checking MIDI:', {
-                      status: status.toString(16),
-                      command: command.toString(16),
+                    console.log('🎯 Learning mode ACTIVE - checking MIDI:', {
+                      status: '0x' + status.toString(16).padStart(2, '0'),
+                      command: '0x' + command.toString(16).padStart(2, '0'),
                       isControlChange: command === 0xB0,
-                      bytes: midiBytes
+                      bytes: midiBytes.map(b => '0x' + b.toString(16).padStart(2, '0'))
                     });
                     
                     if (command === 0xB0) { // Control Change
@@ -909,18 +916,23 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                         deviceName: device.name
                       };
                       
+                      console.log('🎯 SETTING LEARNED DATA:', newLearnedData);
                       setLearnedMidiData(newLearnedData);
                       setIsLearning(false);
                       
-                      console.log('🎯 MIDI LEARNED!', newLearnedData);
+                      console.log('🎯 MIDI LEARNED SUCCESSFULLY!', newLearnedData);
                       
                       toast({
                         title: "MIDI Learned!",
                         description: `Controller ${controller} on Channel ${channel} from ${device.name}`,
                       });
                     } else {
-                      console.log('⚠️ Not a Control Change message - try moving a knob, fader, or mod wheel');
+                      console.log('⚠️ Not a Control Change message (need 0xB0) - try moving a knob, fader, or mod wheel');
                     }
+                  } else if (isLearning) {
+                    console.log('⚠️ Learning mode ON but insufficient MIDI data length:', midiBytes.length);
+                  } else {
+                    console.log('💤 Learning mode OFF - ignoring MIDI data');
                   }
                   
                   // Translate to bracket format
@@ -1400,7 +1412,11 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                             <Button
                               variant={isLearning ? "destructive" : "outline"}
                               size="sm"
-                              onClick={() => setIsLearning(!isLearning)}
+                              onClick={() => {
+                                const newLearningState = !isLearning;
+                                console.log('🎯 Learning button clicked - new state:', newLearningState);
+                                setIsLearning(newLearningState);
+                              }}
                               className="flex items-center gap-1"
                               data-testid={`button-learn-${device.id}`}
                             >

@@ -340,41 +340,78 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   const sendMIDIToCharacteristic = async (characteristic: any, midiBytes: number[], device: BluetoothDevice) => {
     console.log(`📤 Sending MIDI to ${device.name} via ${characteristic.char}`);
     console.log(`🎵 Raw MIDI: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+    
+    // Decode the MIDI command for better debugging
+    if (midiBytes.length >= 2) {
+      const status = midiBytes[0];
+      const channel = (status & 0x0F) + 1; // Convert to 1-based channel
+      const command = status & 0xF0;
+      
+      if (command === 0xC0) {
+        console.log(`🎼 Decoded: Program Change ${midiBytes[1]} on Channel ${channel}`);
+        console.log(`🔄 Will also try Program ${midiBytes[1] - 1} (1-based numbering)`);
+      } else if (command === 0xB0) {
+        console.log(`🎛️ Decoded: Control Change ${midiBytes[1]}=${midiBytes[2]} on Channel ${channel}`);
+      } else if (command === 0x90) {
+        console.log(`🎹 Decoded: Note On ${midiBytes[1]} velocity ${midiBytes[2]} on Channel ${channel}`);
+      }
+    }
+    
     console.log(`🔧 Characteristic properties:`, {
       write: characteristic.canWrite,
       writeWithoutResponse: characteristic.canWriteWithoutResponse,
       uuid: characteristic.char
     });
     
-    // Try multiple packet formats for maximum compatibility
+    // Try multiple packet formats AND MIDI data variations for maximum compatibility
     const packetFormats = [];
     
-    // 1. Standard BLE MIDI format (most common)
+    // Create alternative MIDI data with different program number bases
+    const altMidiBytes = [...midiBytes];
+    
+    // For Program Change: some devices expect 1-based programs instead of 0-based
+    if (midiBytes.length >= 2 && (midiBytes[0] & 0xF0) === 0xC0) {
+      // This is a Program Change - try 1-based version too
+      if (midiBytes[1] > 0) {
+        altMidiBytes[1] = midiBytes[1] - 1;  // Convert to 1-based
+      }
+    }
+    
+    // 1. Raw MIDI (no BLE wrapper) - Often works better for WIDI devices
+    packetFormats.push({
+      name: 'Raw MIDI (0-based)',
+      data: new Uint8Array(midiBytes)
+    });
+    
+    // 2. Raw MIDI with alternative program numbering
+    if (altMidiBytes[1] !== midiBytes[1]) {
+      packetFormats.push({
+        name: 'Raw MIDI (1-based)',
+        data: new Uint8Array(altMidiBytes)
+      });
+    }
+    
+    // 3. Standard BLE MIDI format 
     const timestamp = Date.now() & 0x1FFF;
     const timestampHigh = 0x80 | (timestamp >> 7);
     const timestampLow = 0x80 | (timestamp & 0x7F);
     packetFormats.push({
-      name: 'BLE MIDI Standard',
+      name: 'BLE MIDI Standard (0-based)',
       data: new Uint8Array([timestampHigh, timestampLow, ...midiBytes])
     });
     
-    // 2. Raw MIDI (no timestamp headers) - Often works better for simple devices
-    packetFormats.push({
-      name: 'Raw MIDI',
-      data: new Uint8Array(midiBytes)
-    });
+    // 4. BLE MIDI with alternative program numbering
+    if (altMidiBytes[1] !== midiBytes[1]) {
+      packetFormats.push({
+        name: 'BLE MIDI Standard (1-based)',
+        data: new Uint8Array([timestampHigh, timestampLow, ...altMidiBytes])
+      });
+    }
     
-    // 3. Simple timestamped format (alternative)
+    // 5. Simple BLE MIDI format (fixed timestamps)
     packetFormats.push({
-      name: 'Simple Timestamp',
+      name: 'BLE MIDI Simple',
       data: new Uint8Array([0x80, 0x80, ...midiBytes])
-    });
-    
-    // 4. Alternative BLE MIDI format
-    const altTimestamp = (Date.now() & 0x7F) | 0x80;
-    packetFormats.push({
-      name: 'Alt BLE MIDI',
-      data: new Uint8Array([0x80, altTimestamp, ...midiBytes])
     });
     
     // Try each format until one works

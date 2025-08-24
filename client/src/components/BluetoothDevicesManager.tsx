@@ -391,16 +391,26 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         console.log(`  - Value: ${midiBytes[2]} (0x${midiBytes[2].toString(16).padStart(2, '0')})`);
         console.log(`  - Channel: ${channel}`);
         
-        // Common TC-Helicon VoiceLive 3 controllers for reference
-        const commonControllers = {
+        // Common MIDI controllers for reference (Behringer MOTOR 61 and general MIDI)
+        const commonControllers: { [key: number]: string } = {
+          1: 'Modulation Wheel',
+          2: 'Breath Controller',
+          4: 'Foot Controller',
+          5: 'Portamento Time',
           7: 'Volume',
-          10: 'Pan', 
+          8: 'Balance',
+          10: 'Pan',
           11: 'Expression',
-          1: 'Modulation',
           64: 'Sustain Pedal',
-          21: 'Unknown/Custom (CC21)',
-          22: 'Unknown/Custom (CC22)',
-          23: 'Unknown/Custom (CC23)'
+          65: 'Portamento On/Off',
+          66: 'Sostenuto',
+          67: 'Soft Pedal',
+          71: 'Filter Resonance',
+          72: 'Release Time',
+          73: 'Attack Time',
+          74: 'Filter Cutoff',
+          91: 'Reverb Level',
+          93: 'Chorus Level'
         };
         const controllerName = commonControllers[midiBytes[1]] || `Custom Controller ${midiBytes[1]}`;
         console.log(`  - Function: ${controllerName}`);

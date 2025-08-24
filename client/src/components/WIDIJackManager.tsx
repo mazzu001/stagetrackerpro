@@ -172,7 +172,7 @@ export default function WIDIJackManager({ isOpen, onClose }: WIDIJackManagerProp
     }
   };
 
-  // Connect to WIDI Jack device
+  // Connect to WIDI Jack device (using comprehensive discovery like the working BluetoothDevicesManager)
   const connectToWIDI = async (device: WIDIDevice) => {
     setIsConnecting(true);
     console.log(`🔗 Connecting to WIDI device: ${device.name}`);
@@ -182,42 +182,46 @@ export default function WIDIJackManager({ isOpen, onClose }: WIDIJackManagerProp
       const server = await device.bluetoothDevice.gatt.connect();
       console.log('✅ GATT server connected');
 
-      // Get the MIDI service
-      const midiService = await server.getPrimaryService(WIDI_MIDI_SERVICE_UUID);
-      console.log('✅ MIDI service found');
+      // Find working characteristic using comprehensive discovery
+      const workingChar = await findWorkingCharacteristic(server, device.name);
+      if (!workingChar) {
+        throw new Error('No working MIDI characteristic found');
+      }
 
-      // Get the MIDI Data I/O characteristic
-      const midiCharacteristic = await midiService.getCharacteristic(WIDI_MIDI_CHARACTERISTIC_UUID);
-      console.log('✅ MIDI characteristic found');
+      // Start notifications for receiving MIDI data if possible
+      try {
+        if (workingChar.properties.notify) {
+          await workingChar.startNotifications();
+          console.log('✅ MIDI notifications started');
 
-      // Start notifications for receiving MIDI data
-      await midiCharacteristic.startNotifications();
-      console.log('✅ MIDI notifications started');
-
-      // Listen for incoming MIDI data
-      midiCharacteristic.addEventListener('characteristicvaluechanged', (event: any) => {
-        const value = event.target.value;
-        const data = new Uint8Array(value.buffer);
-        
-        // Parse BLE MIDI format (skip timestamp headers)
-        const midiData = Array.from(data).slice(2); // Skip BLE MIDI headers
-        
-        console.log('📨 Received MIDI from WIDI:', midiData);
-        
-        const message: MIDIMessage = {
-          timestamp: Date.now(),
-          direction: 'received',
-          data: `[${midiData.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
-          command: 'Received from TC-Helicon'
-        };
-        
-        setMessages(prev => [...prev.slice(-49), message]);
-      });
+          // Listen for incoming MIDI data
+          workingChar.addEventListener('characteristicvaluechanged', (event: any) => {
+            const value = event.target.value;
+            const data = new Uint8Array(value.buffer);
+            
+            // Parse BLE MIDI format (skip timestamp headers if present)
+            const midiData = Array.from(data).slice(data.length > 3 ? 2 : 0);
+            
+            console.log('📨 Received MIDI from WIDI:', midiData);
+            
+            const message: MIDIMessage = {
+              timestamp: Date.now(),
+              direction: 'received',
+              data: `[${midiData.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+              command: 'Received from TC-Helicon'
+            };
+            
+            setMessages(prev => [...prev.slice(-49), message]);
+          });
+        }
+      } catch (notifyError) {
+        console.log('⚠️ Notifications not available, but connection established');
+      }
 
       // Update device status
       const updatedDevices = widiDevices.map(d => 
         d.id === device.id 
-          ? { ...d, connected: true, server, characteristic: midiCharacteristic }
+          ? { ...d, connected: true, server, characteristic: workingChar }
           : d
       );
       setWidiDevices(updatedDevices);
@@ -239,6 +243,79 @@ export default function WIDIJackManager({ isOpen, onClose }: WIDIJackManagerProp
       });
     } finally {
       setIsConnecting(false);
+    }
+  };
+
+  // Comprehensive characteristic discovery (copied from working BluetoothDevicesManager)
+  const findWorkingCharacteristic = async (server: any, deviceName: string) => {
+    console.log(`🔍 Finding working characteristic for ${deviceName}...`);
+    
+    try {
+      const services = await server.getPrimaryServices();
+      
+      // Try BLE MIDI service first (most reliable for MIDI devices)
+      try {
+        const bleMidiServiceUuid = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
+        const midiService = await server.getPrimaryService(bleMidiServiceUuid);
+        console.log(`🎵 Found BLE MIDI service`);
+        
+        const midiCharacteristics = await midiService.getCharacteristics();
+        for (const char of midiCharacteristics) {
+          const canWrite = char.properties.writeWithoutResponse || char.properties.write;
+          if (canWrite) {
+            console.log(`📤 Testing BLE MIDI characteristic: ${char.uuid}`);
+            try {
+              // Test with a simple program change command
+              const testMidi = new Uint8Array([0x80, 0x80, 0xC0, 0x01]); // PC 1
+              if (char.properties.write) {
+                await char.writeValueWithResponse(testMidi);
+              } else {
+                await char.writeValueWithoutResponse(testMidi);
+              }
+              console.log(`✅ Found working BLE MIDI characteristic: ${char.uuid}`);
+              return char;
+            } catch (error) {
+              console.log(`⚠️ BLE MIDI characteristic ${char.uuid} failed: ${error}`);
+            }
+          }
+        }
+      } catch (error) {
+        console.log(`⚠️ No BLE MIDI service available, trying all services`);
+      }
+      
+      // If BLE MIDI service didn't work, try all other services
+      for (const service of services) {
+        try {
+          const characteristics = await service.getCharacteristics();
+          for (const char of characteristics) {
+            const canWrite = char.properties.writeWithoutResponse || char.properties.write;
+            if (canWrite) {
+              console.log(`📤 Testing characteristic: ${char.uuid} in service ${service.uuid}`);
+              try {
+                // Test with a simple program change command
+                const testMidi = new Uint8Array([0x80, 0x80, 0xC0, 0x01]); // PC 1
+                if (char.properties.write) {
+                  await char.writeValueWithResponse(testMidi);
+                } else {
+                  await char.writeValueWithoutResponse(testMidi);
+                }
+                console.log(`✅ Found working characteristic: ${char.uuid}`);
+                return char;
+              } catch (error) {
+                console.log(`⚠️ Characteristic ${char.uuid} failed: ${error}`);
+              }
+            }
+          }
+        } catch (error) {
+          console.log(`⚠️ Error accessing service ${service.uuid}: ${error}`);
+        }
+      }
+      
+      console.error(`❌ No working characteristics found for ${deviceName}`);
+      return null;
+    } catch (error) {
+      console.error(`❌ Error discovering characteristics: ${error}`);
+      return null;
     }
   };
 
@@ -267,7 +344,7 @@ export default function WIDIJackManager({ isOpen, onClose }: WIDIJackManagerProp
     }
   };
 
-  // Send MIDI command to WIDI Jack (to TC-Helicon VoiceLive 3)
+  // Send MIDI command to WIDI Jack (using same method as working BluetoothDevicesManager)
   const sendToWIDI = async (device: WIDIDevice, command: string) => {
     if (!device.connected || !device.characteristic) {
       toast({
@@ -290,32 +367,64 @@ export default function WIDIJackManager({ isOpen, onClose }: WIDIJackManagerProp
       const midiBytes = parsed.bytes;
       console.log(`🎵 MIDI bytes: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
 
-      // Create BLE MIDI packet with timestamp (WIDI Jack format)
-      const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
-      const timestampHigh = 0x80 | (timestamp >> 7);     // Header byte
-      const timestampLow = 0x80 | (timestamp & 0x7F);    // Timestamp byte
-      const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
+      // Try both BLE MIDI format and raw MIDI bytes (like the working BluetoothDevicesManager)
+      let success = false;
+      
+      // First try BLE MIDI format
+      try {
+        const timestamp = Date.now() & 0x1FFF;
+        const timestampHigh = 0x80 | (timestamp >> 7);
+        const timestampLow = 0x80 | (timestamp & 0x7F);
+        const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
+        
+        console.log(`📦 Trying BLE MIDI format: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+        
+        if (device.characteristic.properties.write) {
+          await device.characteristic.writeValueWithResponse(blePacket);
+        } else {
+          await device.characteristic.writeValueWithoutResponse(blePacket);
+        }
+        
+        success = true;
+        console.log('✅ BLE MIDI format worked!');
+      } catch (bleError) {
+        console.log('⚠️ BLE MIDI format failed, trying raw MIDI...');
+        
+        // Try raw MIDI bytes
+        try {
+          const rawPacket = new Uint8Array(midiBytes);
+          console.log(`📦 Trying raw MIDI: [${Array.from(rawPacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+          
+          if (device.characteristic.properties.write) {
+            await device.characteristic.writeValueWithResponse(rawPacket);
+          } else {
+            await device.characteristic.writeValueWithoutResponse(rawPacket);
+          }
+          
+          success = true;
+          console.log('✅ Raw MIDI format worked!');
+        } catch (rawError) {
+          throw new Error(`Both BLE MIDI and raw MIDI failed: ${bleError.message}, ${rawError.message}`);
+        }
+      }
 
-      console.log(`📦 BLE MIDI packet: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+      if (success) {
+        console.log('✅ Command sent to TC-Helicon via WIDI Jack!');
 
-      // Send to WIDI Jack using writeValueWithResponse (required for WIDI Jack compatibility)
-      await device.characteristic.writeValueWithResponse(blePacket);
+        // Log the sent message
+        const message: MIDIMessage = {
+          timestamp: Date.now(),
+          direction: 'sent',
+          data: `[${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+          command: `${parsed.formatted} → TC-Helicon`
+        };
+        setMessages(prev => [...prev.slice(-49), message]);
 
-      console.log('✅ Command sent to TC-Helicon via WIDI Jack!');
-
-      // Log the sent message
-      const message: MIDIMessage = {
-        timestamp: Date.now(),
-        direction: 'sent',
-        data: `[${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
-        command: `${parsed.formatted} → TC-Helicon`
-      };
-      setMessages(prev => [...prev.slice(-49), message]);
-
-      toast({
-        title: "MIDI Sent",
-        description: `Sent ${parsed.formatted} to TC-Helicon VoiceLive 3`,
-      });
+        toast({
+          title: "MIDI Sent",
+          description: `Sent ${parsed.formatted} to TC-Helicon VoiceLive 3`,
+        });
+      }
 
     } catch (error: any) {
       console.error('❌ WIDI send error:', error);

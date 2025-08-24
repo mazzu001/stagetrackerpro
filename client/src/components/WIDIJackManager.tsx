@@ -124,7 +124,9 @@ export default function WIDIJackManager({ isOpen, onClose }: WIDIJackManagerProp
         filters: [
           { services: [WIDI_MIDI_SERVICE_UUID] },
           { name: 'WIDI' },
-          { namePrefix: 'WIDI' }
+          { namePrefix: 'WIDI' },
+          { name: 'Matts Pedal' },
+          { namePrefix: 'Matts' }
         ],
         optionalServices: [WIDI_MIDI_SERVICE_UUID]
       });
@@ -296,8 +298,8 @@ export default function WIDIJackManager({ isOpen, onClose }: WIDIJackManagerProp
 
       console.log(`📦 BLE MIDI packet: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
 
-      // Send to WIDI Jack using writeValueWithoutResponse (faster for real-time)
-      await device.characteristic.writeValueWithoutResponse(blePacket);
+      // Send to WIDI Jack using writeValueWithResponse (required for WIDI Jack compatibility)
+      await device.characteristic.writeValueWithResponse(blePacket);
 
       console.log('✅ Command sent to TC-Helicon via WIDI Jack!');
 

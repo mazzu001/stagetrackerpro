@@ -176,28 +176,34 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     return midiKeywords.some(keyword => lowerName.includes(keyword)) ? 'midi' : 'bluetooth';
   };
 
-  // Send MIDI data to a specific characteristic - SIMPLIFIED FOR WIDI JACK
+  // Send MIDI data to a specific characteristic - WIDI JACK COMPATIBLE
   const sendMIDIToCharacteristic = async (characteristic: any, midiBytes: number[], device: BluetoothDevice) => {
-    console.log(`📤 Sending MIDI to ${device.name}: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+    console.log(`📤 Sending MIDI to ${device.name} via ${characteristic.char}`);
+    console.log(`🎵 Raw MIDI: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
     
-    // Create proper BLE MIDI packet (this was working before)
-    const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp 
-    const timestampHigh = 0x80 | (timestamp >> 7);     // Header with upper 6 bits
-    const timestampLow = 0x80 | (timestamp & 0x7F);    // Lower 7 bits
+    // WIDI Jack specific BLE MIDI format
+    const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
+    const timestampHigh = 0x80 | (timestamp >> 7);     // Header byte
+    const timestampLow = 0x80 | (timestamp & 0x7F);    // Timestamp byte
     const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
     
     console.log(`📤 BLE MIDI packet: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+    console.log(`🎯 Packet breakdown: Header=${timestampHigh.toString(16)} Time=${timestampLow.toString(16)} MIDI=[${midiBytes.map(b => b.toString(16)).join(' ')}]`);
     
-    // Send using writeValueWithResponse (WIDI Jack requirement)
+    // Always use writeValueWithResponse for WIDI Jack (critical requirement)
     if (characteristic.canWrite) {
+      console.log(`📤 Sending via writeValueWithResponse to ${characteristic.char}...`);
       await characteristic.characteristic.writeValueWithResponse(blePacket);
-      console.log(`✅ Sent via writeValueWithResponse`);
+      console.log(`✅ writeValueWithResponse completed - WIDI Jack should blink now!`);
     } else if (characteristic.canWriteWithoutResponse) {
+      console.log(`📤 Sending via writeValueWithoutResponse to ${characteristic.char}...`);
       await characteristic.characteristic.writeValueWithoutResponse(blePacket);
-      console.log(`✅ Sent via writeValueWithoutResponse`);
+      console.log(`✅ writeValueWithoutResponse completed - check WIDI Jack for activity!`);
     } else {
-      throw new Error('Characteristic has no write capability');
+      throw new Error(`Characteristic ${characteristic.char} has no write capability`);
     }
+    
+    console.log(`🚨 Command sent to WIDI Jack - did it blink or change settings?`);
   };
 
   // Discover and test characteristics (only when needed)
@@ -222,17 +228,33 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       console.log(`⚠️ No BLE MIDI service found, checking all services`);
     }
     
-    // If we found MIDI service, prioritize its characteristics
+    // If we found MIDI service, find the I/O characteristic (0x7772)
     if (midiService) {
       try {
         const midiCharacteristics = await midiService.getCharacteristics();
         console.log(`🎼 BLE MIDI service has ${midiCharacteristics.length} characteristics`);
         
+        // Look specifically for the BLE MIDI I/O characteristic
+        const midiIOCharUuid = '7772e5db-3868-4112-a1a9-f2669d106bf3';
+        let foundMidiIO = false;
+        
         for (const char of midiCharacteristics) {
           console.log(`  📝 Characteristic: ${char.uuid}`);
           console.log(`    Properties: write:${char.properties.write} writeWithoutResponse:${char.properties.writeWithoutResponse} notify:${char.properties.notify}`);
           
-          if (char.properties.write || char.properties.writeWithoutResponse) {
+          // Prioritize the official BLE MIDI I/O characteristic
+          if (char.uuid.toLowerCase() === midiIOCharUuid.toLowerCase()) {
+            console.log(`🎯 Found official BLE MIDI I/O characteristic!`);
+            writableCharacteristics.push({
+              service: midiService.uuid,
+              char: char.uuid,
+              characteristic: char,
+              canWrite: char.properties.write,
+              canWriteWithoutResponse: char.properties.writeWithoutResponse,
+              priority: 0 // Highest priority for official MIDI I/O
+            });
+            foundMidiIO = true;
+          } else if (char.properties.write || char.properties.writeWithoutResponse) {
             writableCharacteristics.push({
               service: midiService.uuid,
               char: char.uuid,
@@ -242,6 +264,10 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
               priority: 1 // High priority for MIDI service
             });
           }
+        }
+        
+        if (foundMidiIO) {
+          console.log(`✅ Using official BLE MIDI I/O characteristic for sending`);
         }
       } catch (charError) {
         console.log(`❌ Could not read MIDI service characteristics`);

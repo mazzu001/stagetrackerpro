@@ -1403,6 +1403,37 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                           Example formats: [[PC:1:1]] (Program Change), [[CC:7:127:1]] (Control Change), [[NOTE:60:127:1]] (Note On)
                         </div>
                         
+                        {/* SIMPLE WORKING SLIDER */}
+                        <div className="mt-4 p-4 border-2 border-green-500 rounded bg-green-50 dark:bg-green-900/20">
+                          <h4 className="text-sm font-bold text-green-800 dark:text-green-200 mb-3">
+                            🎛️ MIDI Controller Slider (CC7 Volume)
+                          </h4>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium min-w-[20px]">0</span>
+                            <Slider
+                              value={sliderValue}
+                              onValueChange={(value) => {
+                                console.log('🎛️ Volume slider moved to:', value[0]);
+                                setSliderValue(value);
+                                // Send CC7 (Volume) command
+                                const command = `[[CC:7:${value[0]}:1]]`;
+                                console.log('📤 Sending volume command:', command);
+                                handleSendCommand(device, command);
+                              }}
+                              max={127}
+                              step={1}
+                              className="flex-1 h-6"
+                            />
+                            <span className="text-sm font-medium min-w-[30px]">127</span>
+                          </div>
+                          <div className="text-center text-sm font-medium mt-2">
+                            Volume: {sliderValue[0]}
+                          </div>
+                          <div className="text-xs text-green-700 dark:text-green-300 mt-1 text-center">
+                            This slider sends CC7 (Volume) on Channel 1
+                          </div>
+                        </div>
+                        
                         {/* MIDI Learn Slider */}
                         <div className="mt-4 p-3 border-2 border-blue-200 dark:border-blue-700 rounded bg-blue-50 dark:bg-blue-900/20">
                           <div className="flex items-center justify-between mb-3">

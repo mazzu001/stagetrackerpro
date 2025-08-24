@@ -340,6 +340,11 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   const sendMIDIToCharacteristic = async (characteristic: any, midiBytes: number[], device: BluetoothDevice) => {
     console.log(`📤 Sending MIDI to ${device.name} via ${characteristic.char}`);
     console.log(`🎵 Raw MIDI: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+    console.log(`🔧 Characteristic properties:`, {
+      write: characteristic.canWrite,
+      writeWithoutResponse: characteristic.canWriteWithoutResponse,
+      uuid: characteristic.char
+    });
     
     // Try multiple packet formats for maximum compatibility
     const packetFormats = [];
@@ -353,7 +358,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       data: new Uint8Array([timestampHigh, timestampLow, ...midiBytes])
     });
     
-    // 2. Raw MIDI (no timestamp headers)
+    // 2. Raw MIDI (no timestamp headers) - Often works better for simple devices
     packetFormats.push({
       name: 'Raw MIDI',
       data: new Uint8Array(midiBytes)
@@ -374,30 +379,38 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     
     // Try each format until one works
     for (const format of packetFormats) {
-      try {
-        console.log(`📦 Trying ${format.name}: [${Array.from(format.data).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-        
-        // Try writeValueWithResponse first (most reliable)
-        if (characteristic.canWrite) {
-          console.log(`📤 Using writeValueWithResponse...`);
-          await characteristic.characteristic.writeValueWithResponse(format.data);
-          console.log(`✅ ${format.name} worked with writeValueWithResponse!`);
+      console.log(`📦 Trying ${format.name}: [${Array.from(format.data).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+      
+      // Try both write methods for each format
+      const writeMethods = [];
+      
+      if (characteristic.canWrite) {
+        writeMethods.push({
+          name: 'writeValueWithResponse',
+          method: () => characteristic.characteristic.writeValueWithResponse(format.data)
+        });
+      }
+      
+      if (characteristic.canWriteWithoutResponse) {
+        writeMethods.push({
+          name: 'writeValueWithoutResponse', 
+          method: () => characteristic.characteristic.writeValueWithoutResponse(format.data)
+        });
+      }
+      
+      for (const writeMethod of writeMethods) {
+        try {
+          console.log(`📤 Using ${writeMethod.name} with ${format.name}...`);
+          await writeMethod.method();
+          console.log(`✅ SUCCESS: ${format.name} worked with ${writeMethod.name}!`);
           return;
-        } 
-        // Fallback to writeValueWithoutResponse
-        else if (characteristic.canWriteWithoutResponse) {
-          console.log(`📤 Using writeValueWithoutResponse...`);
-          await characteristic.characteristic.writeValueWithoutResponse(format.data);
-          console.log(`✅ ${format.name} worked with writeValueWithoutResponse!`);
-          return;
+        } catch (error) {
+          console.log(`⚠️ ${format.name} with ${writeMethod.name} failed:`, error);
         }
-      } catch (error) {
-        console.log(`⚠️ ${format.name} failed: ${error}`);
-        continue;
       }
     }
     
-    throw new Error(`All packet formats failed for ${device.name}`);
+    throw new Error(`All packet formats and write methods failed for ${device.name}`);
   };
 
 

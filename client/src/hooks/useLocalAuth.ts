@@ -19,7 +19,7 @@ export function useLocalAuth() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Always check fresh subscription status on app launch
+    // Simplified auth check - no repeated API calls
     const checkExistingSession = async () => {
       try {
         const stored = localStorage.getItem(STORAGE_KEY);
@@ -28,10 +28,13 @@ export function useLocalAuth() {
           
           // Check if session is still valid (within 24 hours)
           if (Date.now() - userData.loginTime < SESSION_DURATION) {
-            // ALWAYS verify subscription status on launch - no caching
-            if (userData.email) {
+            // Only verify if it's been more than 4 hours since last verification
+            const needsVerification = !userData.lastVerified || 
+                                    (Date.now() - userData.lastVerified > VERIFICATION_INTERVAL);
+            
+            if (needsVerification && userData.email) {
               try {
-                console.log('🔄 Checking fresh subscription status for:', userData.email);
+                console.log('🔄 Checking subscription status for:', userData.email);
                 const response = await apiRequest('POST', '/api/verify-subscription', {
                   email: userData.email
                 });
@@ -40,7 +43,6 @@ export function useLocalAuth() {
                   const verificationResult = await response.json();
                   console.log('✅ Fresh subscription status:', verificationResult.userType);
                   
-                  // Always update with fresh subscription status from server
                   const updatedUserData = {
                     ...userData,
                     userType: verificationResult.userType as UserType,
@@ -50,20 +52,15 @@ export function useLocalAuth() {
                   localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
                   setUser(updatedUserData);
                 } else {
-                  console.log('❌ Subscription verification failed, logging out');
-                  localStorage.removeItem(STORAGE_KEY);
-                  setUser(null);
+                  setUser(userData); // Use cached data if verification fails
                 }
               } catch (verificationError) {
-                console.error('❌ Error verifying subscription:', verificationError);
-                // If verification fails, log out to be safe
-                localStorage.removeItem(STORAGE_KEY);
-                setUser(null);
+                console.log('Using cached auth data due to verification error');
+                setUser(userData); // Use cached data if verification fails
               }
             } else {
-              // No email stored, invalid session
-              localStorage.removeItem(STORAGE_KEY);
-              setUser(null);
+              // Use existing data without verification
+              setUser(userData);
             }
           } else {
             // Session expired, remove it

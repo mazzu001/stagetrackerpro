@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
-import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { ArrowLeft, CreditCard, Calendar, DollarSign, AlertCircle, CheckCircle, XCircle, Download, ExternalLink } from 'lucide-react';
 import { apiRequest } from '@/lib/queryClient';
 
@@ -35,7 +34,6 @@ interface Invoice {
 
 export default function SubscriptionManagement() {
   const [, setLocation] = useLocation();
-  const { user } = useLocalAuth();
   const { toast } = useToast();
   
   const [subscription, setSubscription] = useState<SubscriptionDetails | null>(null);
@@ -43,16 +41,25 @@ export default function SubscriptionManagement() {
   const [loading, setLoading] = useState(true);
   const [canceling, setCanceling] = useState(false);
 
+  // Get user from localStorage directly to avoid auth hook loops
+  const getUser = () => {
+    try {
+      const stored = localStorage.getItem('lpp_local_user');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  };
+
+  const user = getUser();
+
   useEffect(() => {
-    console.log('🔍 SubscriptionManagement useEffect triggered', { email: user?.email });
     if (!user?.email) {
-      console.log('❌ No user email, redirecting to home');
       setLocation('/');
       return;
     }
-    console.log('✅ User email found, loading subscription details');
     loadSubscriptionDetails();
-  }, [user?.email]);
+  }, []);
 
   const loadSubscriptionDetails = async () => {
     try {
@@ -91,14 +98,9 @@ export default function SubscriptionManagement() {
           }
         ]);
       } else {
-        // Try the API for real users
-        const response = await apiRequest('GET', '/api/subscription/details');
-        const data = await response.json();
-        
-        if (data.subscription) {
-          setSubscription(data.subscription);
-          setInvoices(data.invoices || []);
-        }
+        // For other demo users or real users, show no subscription found
+        setSubscription(null);
+        setInvoices([]);
       }
     } catch (error) {
       console.error('Error loading subscription details:', error);

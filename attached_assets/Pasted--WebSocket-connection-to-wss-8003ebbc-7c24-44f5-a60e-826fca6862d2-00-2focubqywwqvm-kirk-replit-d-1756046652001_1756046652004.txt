@@ -1,0 +1,1669 @@
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=i81e59ObhVdS' failed: Error during WebSocket handshake: Unexpected response code: 400
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) 
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+audio-file-storage.ts:168 No stored audio file references found
+useLocalAuth.ts:34 🔄 Checking fresh subscription status for: professional@demo.com
+App.tsx:58 Browser file system already initialized - auto-initializing
+browser-file-system.ts:80 Browser file system initialized successfully
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+useLocalAuth.ts:41 ✅ Fresh subscription status: professional
+lyrics-display.tsx:197 🔄 Resetting processed timestamps - Song changed to: none
+lyrics-display.tsx:204 ⏹️ Resetting processed timestamps - Playback stopped
+lyrics-display.tsx:218 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+useLocalAuth.ts:34 🔄 Checking fresh subscription status for: professional@demo.com
+USBMIDIDevicesManager.tsx:85 📱 Restored selected USB output device from storage: output-1
+USBMIDIDevicesManager.tsx:255 🔍 Checking Web MIDI API support...
+USBMIDIDevicesManager.tsx:256 Navigator available: true
+USBMIDIDevicesManager.tsx:257 requestMIDIAccess available: true
+USBMIDIDevicesManager.tsx:260 ✅ Web MIDI API is supported
+USBMIDIDevicesManager.tsx:263 🔐 Requesting MIDI access...
+useLocalAuth.ts:34 🔄 Checking fresh subscription status for: professional@demo.com
+useLocalAuth.ts:34 🔄 Checking fresh subscription status for: professional@demo.com
+useMIDISequencer.ts:33 🔄 Commands ref updated: 0 commands Array(0)
+performance.tsx:245 🔍 Connected USB MIDI devices for sequencer: Array(0)
+performance.tsx:247 📤 Available output devices for sequencer: Array(0)
+performance.tsx:330 🔄 loadSongs useEffect triggered
+performance.tsx:309 🔍 Loading songs for user: undefined
+performance.tsx:325 ⚠️ No user email, cannot load songs
+performance.tsx:338 🔍 Song selection state changed - selectedSongId: null, user?.email: undefined
+performance.tsx:343 🔍 Song loading useEffect triggered - selectedSongId: null, user?.email: undefined
+useMIDISequencer.ts:269 🎼 Parsing MIDI commands from lyrics: 
+useMIDISequencer.ts:40 🔍 Parsing lyrics with 1 lines: Array(1)
+useMIDISequencer.ts:43 📝 Processing line 0: ""
+useMIDISequencer.ts:49 ⏰ Timestamp match: null
+useMIDISequencer.ts:50 🎵 MIDI matches: null
+useMIDISequencer.ts:101 ⚠️ Line has no valid timestamp + MIDI command combination
+useMIDISequencer.ts:105 🎼 Final parsed commands (0): Array(0)
+useMIDISequencer.ts:271 🎹 Parsed 0 commands: Array(0)
+useMIDISequencer.ts:276 ✅ Commands set - State: 0, Ref: 0
+useMIDISequencer.ts:277 🎹 Final loaded MIDI commands: Array(0)
+audio-engine.ts:36  The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.
+initialize @ audio-engine.ts:36
+performance.tsx:459 🛑 Stopping MIDI sequencer with audio
+useMIDISequencer.ts:185 🛑 Stopping MIDI sequencer
+useMIDISequencer.ts:185 🛑 Stopping MIDI sequencer
+useMIDISequencer.ts:33 🔄 Commands ref updated: 0 commands Array(0)
+USBMIDIDevicesManager.tsx:265 ✅ MIDI access granted: MIDIAccess
+USBMIDIDevicesManager.tsx:266 Available inputs: 0
+USBMIDIDevicesManager.tsx:267 Available outputs: 0
+USBMIDIDevicesManager.tsx:298 🔍 Loading MIDI devices from API...
+USBMIDIDevicesManager.tsx:301 📥 Processing input devices...
+USBMIDIDevicesManager.tsx:316 📤 Processing output devices...
+USBMIDIDevicesManager.tsx:331 ✅ Loaded 0 total devices (0 inputs, 0 outputs)
+USBMIDIDevicesManager.tsx:336 ⚠️ No MIDI devices found. Make sure devices are connected and drivers are installed.
+useLocalAuth.ts:41 ✅ Fresh subscription status: professional
+useLocalAuth.ts:41 ✅ Fresh subscription status: professional
+performance.tsx:330 🔄 loadSongs useEffect triggered
+performance.tsx:309 🔍 Loading songs for user: professional@demo.com
+performance.tsx:312 🎵 Found 1 songs in storage: Array(1)
+performance.tsx:316 ✅ Set 1 songs in state
+performance.tsx:338 🔍 Song selection state changed - selectedSongId: null, user?.email: professional@demo.com
+performance.tsx:343 🔍 Song loading useEffect triggered - selectedSongId: null, user?.email: professional@demo.com
+useMIDISequencer.ts:269 🎼 Parsing MIDI commands from lyrics: 
+useMIDISequencer.ts:40 🔍 Parsing lyrics with 1 lines: Array(1)
+useMIDISequencer.ts:43 📝 Processing line 0: ""
+useMIDISequencer.ts:49 ⏰ Timestamp match: null
+useMIDISequencer.ts:50 🎵 MIDI matches: null
+useMIDISequencer.ts:101 ⚠️ Line has no valid timestamp + MIDI command combination
+useMIDISequencer.ts:105 🎼 Final parsed commands (0): Array(0)
+useMIDISequencer.ts:271 🎹 Parsed 0 commands: Array(0)
+useMIDISequencer.ts:276 ✅ Commands set - State: 0, Ref: 0
+useMIDISequencer.ts:277 🎹 Final loaded MIDI commands: Array(0)
+useMIDISequencer.ts:33 🔄 Commands ref updated: 0 commands Array(0)
+USBMIDIDevicesManager.tsx:124 📂 Loaded 2 previously connected USB MIDI devices from storage
+USBMIDIDevicesManager.tsx:141 🔄 Attempting to auto-reconnect 2 previously connected devices...
+USBMIDIDevicesManager.tsx:162 ⚠️ Previously connected device not available: MidiPort
+USBMIDIDevicesManager.tsx:162 ⚠️ Previously connected device not available: MidiPort
+USBMIDIDevicesManager.tsx:358 ⚠️ Previously selected output device not available: output-1
+useLocalAuth.ts:41 ✅ Fresh subscription status: professional
+BluetoothDevicesManager.tsx:129 🔄 Auto-reconnecting to 1 previously connected devices...
+BluetoothDevicesManager.tsx:133 🔄 Attempting auto-reconnect to Matts Pedal...
+BluetoothDevicesManager.tsx:711 🔄 Auto-reconnecting to Matts Pedal...
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+BluetoothDevicesManager.tsx:720 ⚠️ Matts Pedal not found in paired devices
+BluetoothDevicesManager.tsx:764 🔗 Connecting to Matts Pedal...
+BluetoothDevicesManager.tsx:775 🔗 Connecting to GATT server...
+BluetoothDevicesManager.tsx:778 🔍 Getting primary services...
+BluetoothDevicesManager.tsx:781 ✅ Connected to Matts Pedal with 1 services
+BluetoothDevicesManager.tsx:829 🎵 Setting up MIDI notifications for Matts Pedal...
+BluetoothDevicesManager.tsx:841 📋 Service 03b80e5a-ede8-4b33-a751-6ce34ec4c700 has 1 characteristics
+BluetoothDevicesManager.tsx:845 🔔 Found notification characteristic: 7772e5db-3868-4112-a1a9-f2669d106bf3
+BluetoothDevicesManager.tsx:966 ✅ MIDI notifications setup complete
+BluetoothDevicesManager.tsx:1417 🎯 Learning button clicked - new state: true
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 147, 177, 21, 1]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 1]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:1:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 154, 177, 21, 2]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 2]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:2:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 163, 177, 21, 3]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 3]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:3:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 179, 177, 21, 4]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 4]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:4:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 182, 177, 21, 5]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 5]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:5:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 192, 177, 21, 6]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 6]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:6:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 205, 177, 21, 7]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 7]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:7:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 208, 177, 21, 8]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 8]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:8:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 218, 177, 21, 10]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 10]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:10:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 234, 177, 21, 12]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 12]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:12:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [186, 243, 177, 21, 13]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 13]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:13:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 128, 177, 21, 15]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 15]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:15:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 138, 177, 21, 16]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 16]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:16:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 151, 177, 21, 18]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 18]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:18:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 157, 177, 21, 19]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 19]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:19:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 163, 177, 21, 20]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 20]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:20:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 177, 177, 21, 22]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 22]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:22:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 189, 177, 21, 23]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 23]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:23:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 192, 177, 21, 24]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 24]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:24:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 199, 177, 21, 25]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 25]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:25:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 205, 177, 21, 26]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 26]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:26:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 214, 177, 21, 28]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 28]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:28:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 227, 177, 21, 30]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 30]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:30:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 240, 177, 21, 32]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 32]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:32:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [187, 250, 177, 21, 33]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 33]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:33:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 128, 177, 21, 34]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 34]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:34:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 134, 177, 21, 35]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 35]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:35:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 141, 177, 21, 36]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 36]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:36:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 150, 177, 21, 38]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 38]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:38:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 163, 177, 21, 40]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 40]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:40:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 176, 177, 21, 41]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 41]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:41:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 179, 177, 21, 42]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 42]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:42:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 186, 177, 21, 43]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 43]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:43:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 192, 177, 21, 44]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 44]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:44:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 199, 177, 21, 45]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 45]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:45:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 202, 177, 21, 46]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 46]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:46:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 208, 177, 21, 47]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 47]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:47:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 214, 177, 21, 48]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 48]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:48:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 227, 177, 21, 50]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 50]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:50:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 240, 177, 21, 52]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 52]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:52:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [188, 250, 177, 21, 53]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 53]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:53:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 131, 177, 21, 55]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 55]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:55:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 144, 177, 21, 56]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 56]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:56:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 147, 177, 21, 57]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 57]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:57:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 161, 177, 21, 59]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 59]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:59:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 170, 177, 21, 60]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 60]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:60:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 182, 177, 21, 62]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 62]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:62:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 198, 177, 21, 63]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 63]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:63:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 205, 177, 21, 65]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 65]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:65:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 218, 177, 21, 66]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 66]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:66:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 227, 177, 21, 67]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 67]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:67:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 237, 177, 21, 68]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 68]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:68:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [189, 246, 177, 21, 69]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 69]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:69:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 134, 177, 21, 70]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 70]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:70:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 141, 177, 21, 71]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 71]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:71:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 150, 177, 21, 72]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 72]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:72:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 163, 177, 21, 74]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 74]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:74:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 176, 177, 21, 75]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 75]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:75:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 186, 177, 21, 76]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 76]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:76:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 202, 177, 21, 77]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 77]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:77:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 208, 177, 21, 78]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 78]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:78:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 218, 177, 21, 79]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 79]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:79:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 234, 177, 21, 80]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 80]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:80:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 240, 177, 21, 81]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 81]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:81:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [190, 250, 177, 21, 82]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 82]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:82:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 128, 177, 21, 83]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 83]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:83:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 138, 177, 21, 84]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 84]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:84:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 154, 177, 21, 85]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 85]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:85:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 160, 177, 21, 86]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 86]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:86:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 170, 177, 21, 87]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 87]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:87:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 186, 177, 21, 88]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 88]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:88:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 195, 177, 21, 89]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 89]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:89:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 205, 177, 21, 90]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 90]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:90:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 211, 177, 21, 92]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 92]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:92:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 224, 177, 21, 93]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 93]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:93:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 234, 177, 21, 94]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 94]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:94:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [191, 243, 177, 21, 95]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 95]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:95:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 131, 177, 21, 96]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 96]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:96:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 141, 177, 21, 97]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 97]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:97:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 150, 177, 21, 98]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 98]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:98:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 157, 177, 21, 99]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 99]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:99:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 167, 177, 21, 100]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 100]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:100:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 176, 177, 21, 101]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 101]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:101:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 186, 177, 21, 102]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 102]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:102:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 192, 177, 21, 103]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 103]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:103:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 202, 177, 21, 104]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 104]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:104:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 214, 177, 21, 105]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 105]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:105:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 224, 177, 21, 106]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 106]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:106:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 234, 177, 21, 107]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 107]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:107:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 237, 177, 21, 108]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 108]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:108:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [128, 246, 177, 21, 109]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 109]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:109:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 129, 177, 21, 111]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 111]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:111:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 141, 177, 21, 112]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 112]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:112:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 154, 177, 21, 113]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 113]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:113:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 163, 177, 21, 114]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 114]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:114:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 166, 177, 21, 115]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 115]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:115:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 176, 177, 21, 116]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 116]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:116:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 186, 177, 21, 117]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 117]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:117:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 195, 177, 21, 118]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 118]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:118:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 198, 177, 21, 119]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 119]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:119:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 208, 177, 21, 120]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 120]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:120:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 218, 177, 21, 121]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 121]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:121:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 227, 177, 21, 122]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 122]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:122:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 237, 177, 21, 123]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 123]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:123:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [129, 246, 177, 21, 124]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 124]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:124:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [130, 128, 177, 21, 125]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 125]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:125:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [130, 141, 177, 21, 126]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 126]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:126:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [130, 147, 177, 21, 127]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 127]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:127:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [136, 250, 177, 21, 126]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 126]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:126:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 131, 177, 21, 125]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 125]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:125:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 144, 177, 21, 124]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 124]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:124:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 157, 177, 21, 123]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 123]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:123:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 167, 177, 21, 122]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 122]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:122:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 179, 177, 21, 121]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 121]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:121:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 189, 177, 21, 120]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 120]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:120:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 199, 177, 21, 119]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 119]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:119:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 208, 177, 21, 118]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 118]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:118:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 215, 177, 21, 117]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 117]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:117:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 221, 177, 21, 116]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 116]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:116:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 227, 177, 21, 115]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 115]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:115:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 237, 177, 21, 114]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 114]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:114:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 243, 177, 21, 113]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 113]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:113:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [137, 250, 177, 21, 112]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 112]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:112:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 128, 177, 21, 111]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 111]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:111:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 138, 177, 21, 110]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 110]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:110:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 144, 177, 21, 109]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 109]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:109:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 147, 177, 21, 108]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 108]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:108:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 154, 177, 21, 107]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 107]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:107:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 160, 177, 21, 106]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 106]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:106:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 167, 177, 21, 105]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 105]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:105:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 173, 177, 21, 104]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 104]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:104:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 179, 177, 21, 103]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 103]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:103:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 186, 177, 21, 102]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 102]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:102:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 195, 177, 21, 101]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 101]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:101:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 202, 177, 21, 100]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 100]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:100:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 205, 177, 21, 99]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 99]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:99:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 211, 177, 21, 98]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 98]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:98:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 218, 177, 21, 97]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 97]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:97:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 224, 177, 21, 96]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 96]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:96:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 231, 177, 21, 95]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 95]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:95:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 237, 177, 21, 94]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 94]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:94:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 243, 177, 21, 93]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 93]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:93:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [138, 250, 177, 21, 92]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 92]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:92:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 128, 177, 21, 91]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 91]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:91:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 135, 177, 21, 90]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 90]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:90:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 141, 177, 21, 89]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 89]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:89:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 147, 177, 21, 88]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 88]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:88:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 154, 177, 21, 87]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 87]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:87:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 160, 177, 21, 86]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 86]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:86:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 167, 177, 21, 85]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 85]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:85:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 173, 177, 21, 84]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 84]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:84:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 179, 177, 21, 83]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 83]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:83:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 186, 177, 21, 82]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 82]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:82:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 189, 177, 21, 81]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 81]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:81:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 195, 177, 21, 80]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 80]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:80:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 202, 177, 21, 79]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 79]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:79:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 208, 177, 21, 78]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 78]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:78:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 215, 177, 21, 77]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 77]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:77:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 221, 177, 21, 76]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 76]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:76:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 227, 177, 21, 75]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 75]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:75:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 237, 177, 21, 74]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 74]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:74:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 243, 177, 21, 73]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 73]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:73:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 247, 177, 21, 72]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 72]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:72:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [139, 253, 177, 21, 71]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 71]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:71:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 131, 177, 21, 70]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 70]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:70:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 138, 177, 21, 69]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 69]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:69:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 144, 177, 21, 68]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 68]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:68:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 154, 177, 21, 67]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 67]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:67:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 160, 177, 21, 66]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 66]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:66:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 167, 177, 21, 65]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 65]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:65:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 173, 177, 21, 64]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 64]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:64:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 179, 177, 21, 63]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 63]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:63:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 186, 177, 21, 62]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 62]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:62:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 192, 177, 21, 61]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 61]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:61:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 199, 177, 21, 60]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 60]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:60:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 205, 177, 21, 59]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 59]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:59:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 211, 177, 21, 58]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 58]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:58:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 218, 177, 21, 57]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 57]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:57:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 224, 177, 21, 56]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 56]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:56:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [140, 234, 177, 21, 55]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 55]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:55:2]]
+ 📥 Received raw data: (5) [140, 240, 177, 21, 54]
+ 🎯 Current learning state: false
+ 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 54]
+ 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+ 💤 Learning mode OFF - ignoring MIDI data
+ 🎼 Translated to bracket format: [[CC:21:54:2]]
+ 📥 Received raw data: (5) [140, 247, 177, 21, 53]
+ 🎯 Current learning state: false
+ 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 53]
+ 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+ 💤 Learning mode OFF - ignoring MIDI data
+ 🎼 Translated to bracket format: [[CC:21:53:2]]
+ 📥 Received raw data: (5) [140, 253, 177, 21, 52]
+ 🎯 Current learning state: false
+ 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 52]
+ 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+ 💤 Learning mode OFF - ignoring MIDI data
+ 🎼 Translated to bracket format: [[CC:21:52:2]]
+ 📥 Received raw data: (5) [141, 132, 177, 21, 51]
+ 🎯 Current learning state: false
+ 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 51]
+ 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+ 💤 Learning mode OFF - ignoring MIDI data
+ 🎼 Translated to bracket format: [[CC:21:51:2]]
+ 📥 Received raw data: (5) [141, 138, 177, 21, 50]
+ 🎯 Current learning state: false
+ 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 50]
+ 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+ 💤 Learning mode OFF - ignoring MIDI data
+ 🎼 Translated to bracket format: [[CC:21:50:2]]
+ 📥 Received raw data: (5) [141, 144, 177, 21, 49]
+ 🎯 Current learning state: false
+ 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 49]
+ 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+ 💤 Learning mode OFF - ignoring MIDI data
+ 🎼 Translated to bracket format: [[CC:21:49:2]]
+ 📥 Received raw data: (5) [141, 151, 177, 21, 48]
+ 🎯 Current learning state: false
+ 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 48]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:48:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 160, 177, 21, 47]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 47]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:47:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 167, 177, 21, 46]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 46]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:46:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 173, 177, 21, 45]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 45]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:45:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 179, 177, 21, 44]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 44]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:44:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 186, 177, 21, 43]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 43]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:43:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 192, 177, 21, 42]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 42]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:42:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 199, 177, 21, 41]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 41]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:41:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 208, 177, 21, 40]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 40]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:40:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 215, 177, 21, 39]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 39]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:39:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 224, 177, 21, 38]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 38]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:38:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 231, 177, 21, 37]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 37]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:37:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 240, 177, 21, 36]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 36]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:36:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [141, 243, 177, 21, 35]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 35]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:35:2]]
+ 📥 Received raw data: (5) [141, 250, 177, 21, 34]
+ 🎯 Current learning state: false
+ 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 34]
+ 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+ 💤 Learning mode OFF - ignoring MIDI data
+ 🎼 Translated to bracket format: [[CC:21:34:2]]
+ 📥 Received raw data: (5) [142, 131, 177, 21, 33]
+ 🎯 Current learning state: false
+ 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 33]
+ 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+ 💤 Learning mode OFF - ignoring MIDI data
+ 🎼 Translated to bracket format: [[CC:21:33:2]]
+ 📥 Received raw data: (5) [142, 141, 177, 21, 32]
+ 🎯 Current learning state: false
+ 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 32]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:32:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 147, 177, 21, 31]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 31]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:31:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 157, 177, 21, 30]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 30]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:30:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 167, 177, 21, 29]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 29]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:29:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 176, 177, 21, 28]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 28]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:28:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 186, 177, 21, 27]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 27]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:27:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 195, 177, 21, 26]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 26]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:26:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 205, 177, 21, 25]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 25]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:25:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 215, 177, 21, 24]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 24]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:24:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 228, 177, 21, 23]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 23]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:23:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 237, 177, 21, 22]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 22]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:22:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [142, 250, 177, 21, 21]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 21]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:21:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 135, 177, 21, 20]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 20]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:20:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 144, 177, 21, 19]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 19]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:19:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 157, 177, 21, 18]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 18]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:18:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 167, 177, 21, 17]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 17]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:17:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 173, 177, 21, 16]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 16]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:16:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 186, 177, 21, 15]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 15]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:15:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 199, 177, 21, 14]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 14]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:14:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 208, 177, 21, 13]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 13]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:13:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 221, 177, 21, 12]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 12]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:12:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 231, 177, 21, 11]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 11]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:11:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 243, 177, 21, 10]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 10]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:10:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [143, 253, 177, 21, 9]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 9]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:9:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [144, 135, 177, 21, 8]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 8]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:8:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [144, 144, 177, 21, 7]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 7]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:7:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [144, 154, 177, 21, 6]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 6]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:6:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [144, 163, 177, 21, 5]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 5]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:5:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [144, 176, 177, 21, 4]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 4]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:4:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [144, 186, 177, 21, 3]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 3]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:3:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [144, 195, 177, 21, 2]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 2]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:2:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [144, 205, 177, 21, 1]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 1]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:1:2]]
+BluetoothDevicesManager.tsx:878 📥 Received raw data: (5) [144, 218, 177, 21, 0]
+BluetoothDevicesManager.tsx:879 🎯 Current learning state: false
+BluetoothDevicesManager.tsx:887 📋 Extracted MIDI bytes from BLE format: (3) [177, 21, 0]
+BluetoothDevicesManager.tsx:891 🔍 Checking learning conditions: {isLearning: false, midiBytes: Array(3), bytesLength: 3}
+BluetoothDevicesManager.tsx:935 💤 Learning mode OFF - ignoring MIDI data
+BluetoothDevicesManager.tsx:940 🎼 Translated to bracket format: [[CC:21:0:2]]

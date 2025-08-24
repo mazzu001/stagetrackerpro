@@ -1414,8 +1414,13 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                               size="sm"
                               onClick={() => {
                                 const newLearningState = !isLearning;
-                                console.log('🎯 Learning button clicked - new state:', newLearningState);
+                                console.log('🎯 Learning button clicked - old state:', isLearning, 'new state:', newLearningState);
                                 setIsLearning(newLearningState);
+                                
+                                // Force re-render debugging
+                                setTimeout(() => {
+                                  console.log('🎯 Learning state after timeout:', isLearning);
+                                }, 100);
                               }}
                               className="flex items-center gap-1"
                               data-testid={`button-learn-${device.id}`}
@@ -1428,6 +1433,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                           {isLearning && (
                             <div className="mb-3 p-2 bg-blue-100 dark:bg-blue-900 rounded text-sm text-blue-800 dark:text-blue-200">
                               🎯 Learning mode active - Move any controller on your MIDI device...
+                              <div className="text-xs mt-1">State check: {isLearning ? 'TRUE' : 'FALSE'}</div>
                             </div>
                           )}
                           
@@ -1482,6 +1488,26 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                           {/* Debug info */}
                           <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
                             Debug: Learning={isLearning ? 'ON' : 'OFF'} | Learned={learnedMidiData ? `CC${learnedMidiData.controller}` : 'None'}
+                          </div>
+                          
+                          {/* TEST SLIDER - Always visible for debugging */}
+                          <div className="mt-4 p-2 border border-red-300 rounded bg-red-50 dark:bg-red-900/20">
+                            <div className="text-xs text-red-700 dark:text-red-300 mb-2">TEST SLIDER (Always Visible)</div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs">0</span>
+                              <Slider
+                                value={sliderValue}
+                                onValueChange={(value) => {
+                                  console.log('🧪 TEST SLIDER moved to:', value[0]);
+                                  setSliderValue(value);
+                                }}
+                                max={127}
+                                step={1}
+                                className="flex-1 h-6"
+                              />
+                              <span className="text-xs">127</span>
+                            </div>
+                            <div className="text-center text-xs mt-1">Value: {sliderValue[0]}</div>
                           </div>
                         </div>
                       </CardContent>

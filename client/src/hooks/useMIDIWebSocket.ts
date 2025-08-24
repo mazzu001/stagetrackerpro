@@ -33,8 +33,6 @@ export function useMIDIWebSocket() {
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
       const wsUrl = `${protocol}//${window.location.host}/api/midi/stream`;
       
-      console.log('🎹 Connecting to MIDI WebSocket:', wsUrl);
-      
       const ws = new WebSocket(wsUrl);
       wsRef.current = ws;
 

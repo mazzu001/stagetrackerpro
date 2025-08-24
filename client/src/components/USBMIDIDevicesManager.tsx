@@ -249,57 +249,27 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
     }
   };
 
-  // Check Web MIDI API support
+  // Check Web MIDI API support - deferred to avoid blocking startup
   useEffect(() => {
     const checkWebMIDISupport = async () => {
-      console.log('🔍 Checking Web MIDI API support...');
-      console.log('Navigator available:', typeof navigator !== 'undefined');
-      console.log('requestMIDIAccess available:', 'requestMIDIAccess' in navigator);
-      
       if (typeof navigator !== 'undefined' && 'requestMIDIAccess' in navigator) {
-        console.log('✅ Web MIDI API is supported');
         setHasWebMIDISupport(true);
         try {
-          console.log('🔐 Requesting MIDI access...');
           const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
-          console.log('✅ MIDI access granted:', midiAccess);
-          console.log('Available inputs:', midiAccess.inputs.size);
-          console.log('Available outputs:', midiAccess.outputs.size);
-          
-          // Enhanced device logging for debugging
-          console.log('📋 All available MIDI devices:');
-          midiAccess.inputs.forEach((input: any, id: string) => {
-            console.log(`  📥 Input: ${input.name || 'Unnamed'} (ID: ${id}) - State: ${input.state}`);
-          });
-          midiAccess.outputs.forEach((output: any, id: string) => {
-            console.log(`  📤 Output: ${output.name || 'Unnamed'} (ID: ${id}) - State: ${output.state}`);
-          });
-          
           setPermissionStatus('granted');
           loadMIDIDevices(midiAccess);
         } catch (error) {
-          console.error('❌ MIDI access denied:', error);
           setPermissionStatus('denied');
-          toast({
-            title: "MIDI Access Denied",
-            description: "Please allow MIDI device access in your browser settings. Try refreshing the page.",
-            variant: "destructive",
-          });
         }
       } else {
-        console.log('❌ Web MIDI API not supported in this browser');
         setHasWebMIDISupport(false);
-        // No devices available without Web MIDI API support
         setDevices([]);
-        toast({
-          title: "Web MIDI Not Supported",
-          description: "This browser doesn't support Web MIDI API. Try Chrome or Edge.",
-          variant: "destructive",
-        });
       }
     };
 
-    checkWebMIDISupport();
+    // Defer MIDI initialization to not block startup
+    const timer = setTimeout(checkWebMIDISupport, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
   // Load MIDI devices from Web MIDI API

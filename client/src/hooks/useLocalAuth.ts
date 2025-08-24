@@ -28,36 +28,36 @@ export function useLocalAuth() {
           
           // Check if session is still valid (within 24 hours)
           if (Date.now() - userData.loginTime < SESSION_DURATION) {
-            // Only verify if it's been more than 4 hours since last verification
+            // Only verify if it's been more than 8 hours since last verification
             const needsVerification = !userData.lastVerified || 
-                                    (Date.now() - userData.lastVerified > VERIFICATION_INTERVAL);
+                                    (Date.now() - userData.lastVerified > (8 * 60 * 60 * 1000));
             
             if (needsVerification && userData.email) {
-              try {
-                console.log('🔄 Checking subscription status for:', userData.email);
-                const response = await apiRequest('POST', '/api/verify-subscription', {
-                  email: userData.email
-                });
-                
-                if (response.ok) {
-                  const verificationResult = await response.json();
-                  console.log('✅ Fresh subscription status:', verificationResult.userType);
+              // Use cached data immediately, verify in background
+              setUser(userData);
+              
+              // Background verification
+              setTimeout(async () => {
+                try {
+                  const response = await apiRequest('POST', '/api/verify-subscription', {
+                    email: userData.email
+                  });
                   
-                  const updatedUserData = {
-                    ...userData,
-                    userType: verificationResult.userType as UserType,
-                    lastVerified: Date.now()
-                  };
-                  
-                  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
-                  setUser(updatedUserData);
-                } else {
-                  setUser(userData); // Use cached data if verification fails
+                  if (response.ok) {
+                    const verificationResult = await response.json();
+                    const updatedUserData = {
+                      ...userData,
+                      userType: verificationResult.userType as UserType,
+                      lastVerified: Date.now()
+                    };
+                    
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
+                    setUser(updatedUserData);
+                  }
+                } catch (error) {
+                  // Silently fail background verification
                 }
-              } catch (verificationError) {
-                console.log('Using cached auth data due to verification error');
-                setUser(userData); // Use cached data if verification fails
-              }
+              }, 2000); // Verify after 2 seconds
             } else {
               // Use existing data without verification
               setUser(userData);

@@ -306,57 +306,34 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Load songs from localStorage when component mounts or user changes
   const loadSongs = useCallback(() => {
-    console.log(`🔍 Loading songs for user: ${user?.email}`);
     if (user?.email) {
       const songs = LocalSongStorage.getAllSongs(user.email);
-      console.log(`🎵 Found ${songs.length} songs in storage:`, songs);
       // Sort songs alphabetically by title
       const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
       setAllSongs(sortedSongs);
-      console.log(`✅ Set ${sortedSongs.length} songs in state`);
       
       // If we had a selected song, try to restore it
       if (selectedSongId) {
         const song = LocalSongStorage.getSong(user.email, selectedSongId);
         setSelectedSong(song || null);
-        console.log(`🔍 Restored selected song: ${song?.title || 'not found'}`);
       }
-    } else {
-      console.log(`⚠️ No user email, cannot load songs`);
     }
   }, [user?.email, selectedSongId]);
 
   useEffect(() => {
-    console.log(`🔄 loadSongs useEffect triggered`);
     loadSongs();
   }, [loadSongs]);
 
-
-
-  // Debug: Monitor song selection state
-  useEffect(() => {
-    console.log(`🔍 Song selection state changed - selectedSongId: ${selectedSongId}, user?.email: ${user?.email}`);
-  }, [selectedSongId, user?.email]);
-
   // Update selected song when selectedSongId changes
   useEffect(() => {
-    console.log(`🔍 Song loading useEffect triggered - selectedSongId: ${selectedSongId}, user?.email: ${user?.email}`);
     if (selectedSongId && user?.email) {
       const song = LocalSongStorage.getSong(user.email, selectedSongId);
       setSelectedSong(song || null);
       
       // Load MIDI commands into sequencer when song changes
-      console.log(`🔍 Checking song for MIDI commands:`, song);
-      console.log(`🔍 Song lyrics field:`, song?.lyrics);
-      console.log(`🔍 Song lyrics type:`, typeof song?.lyrics);
-      console.log(`🔍 Song lyrics length:`, song?.lyrics?.length);
-      
       if (song && song.lyrics) {
-        console.log(`🎹 Loading MIDI commands for song: ${song.title}`);
-        console.log(`🎼 Lyrics content:`, song.lyrics);
         midiSequencer.setMIDICommands(song.lyrics);
       } else {
-        console.log(`⚠️ No lyrics found - song: ${!!song}, lyrics: ${!!song?.lyrics}`);
         midiSequencer.setMIDICommands(''); // Clear commands if no song or lyrics
       }
     } else {

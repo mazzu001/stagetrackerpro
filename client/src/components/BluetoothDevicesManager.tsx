@@ -371,19 +371,41 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     console.log(`📤 Sending MIDI to ${device.name} via ${characteristic.char}`);
     console.log(`🎵 Raw MIDI: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
     
-    // Decode the MIDI command for better debugging
+    // Decode the MIDI command for detailed debugging
     if (midiBytes.length >= 2) {
       const status = midiBytes[0];
       const channel = (status & 0x0F) + 1; // Convert to 1-based channel
       const command = status & 0xF0;
       
+      console.log(`🔍 MIDI Analysis:`);
+      console.log(`  Status Byte: 0x${status.toString(16).padStart(2, '0').toUpperCase()}`);
+      console.log(`  Command: 0x${command.toString(16).padStart(2, '0')} Channel: ${channel}`);
+      
       if (command === 0xC0) {
-        console.log(`🎼 Decoded: Program Change ${midiBytes[1]} on Channel ${channel}`);
+        console.log(`🎼 Program Change ${midiBytes[1]} on Channel ${channel}`);
         console.log(`🔄 Will also try Program ${midiBytes[1] - 1} (1-based numbering)`);
-      } else if (command === 0xB0) {
-        console.log(`🎛️ Decoded: Control Change ${midiBytes[1]}=${midiBytes[2]} on Channel ${channel}`);
-      } else if (command === 0x90) {
-        console.log(`🎹 Decoded: Note On ${midiBytes[1]} velocity ${midiBytes[2]} on Channel ${channel}`);
+      } else if (command === 0xB0 && midiBytes.length >= 3) {
+        console.log(`🎛️ Control Change: Controller ${midiBytes[1]} = ${midiBytes[2]} on Channel ${channel}`);
+        console.log(`📊 Controller Details:`);
+        console.log(`  - Controller: ${midiBytes[1]} (0x${midiBytes[1].toString(16).padStart(2, '0')})`);
+        console.log(`  - Value: ${midiBytes[2]} (0x${midiBytes[2].toString(16).padStart(2, '0')})`);
+        console.log(`  - Channel: ${channel}`);
+        
+        // Common TC-Helicon VoiceLive 3 controllers for reference
+        const commonControllers = {
+          7: 'Volume',
+          10: 'Pan', 
+          11: 'Expression',
+          1: 'Modulation',
+          64: 'Sustain Pedal',
+          21: 'Unknown/Custom (CC21)',
+          22: 'Unknown/Custom (CC22)',
+          23: 'Unknown/Custom (CC23)'
+        };
+        const controllerName = commonControllers[midiBytes[1]] || `Custom Controller ${midiBytes[1]}`;
+        console.log(`  - Function: ${controllerName}`);
+      } else if (command === 0x90 && midiBytes.length >= 3) {
+        console.log(`🎹 Note On ${midiBytes[1]} velocity ${midiBytes[2]} on Channel ${channel}`);
       }
     }
     
@@ -468,8 +490,10 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       for (const writeMethod of writeMethods) {
         try {
           console.log(`📤 Using ${writeMethod.name} with ${format.name}...`);
+          console.log(`📦 Sending bytes: [${Array.from(format.data).map(b => '0x' + b.toString(16).padStart(2, '0')).join(', ')}]`);
           await writeMethod.method();
           console.log(`✅ SUCCESS: ${format.name} worked with ${writeMethod.name}!`);
+          console.log(`🚨 WIDI Jack should blink now - check VoiceLive 3 for response!`);
           return;
         } catch (error) {
           console.log(`⚠️ ${format.name} with ${writeMethod.name} failed:`, error);

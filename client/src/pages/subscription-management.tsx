@@ -44,12 +44,15 @@ export default function SubscriptionManagement() {
   const [canceling, setCanceling] = useState(false);
 
   useEffect(() => {
+    console.log('🔍 SubscriptionManagement useEffect triggered', { email: user?.email });
     if (!user?.email) {
+      console.log('❌ No user email, redirecting to home');
       setLocation('/');
       return;
     }
+    console.log('✅ User email found, loading subscription details');
     loadSubscriptionDetails();
-  }, [user?.email, setLocation]);
+  }, [user?.email]);
 
   const loadSubscriptionDetails = async () => {
     try {
@@ -112,6 +115,16 @@ export default function SubscriptionManagement() {
   const handleCancelSubscription = async () => {
     try {
       setCanceling(true);
+      // For demo users, just show success message
+      if (user?.email === 'professional@demo.com') {
+        setSubscription(prev => prev ? { ...prev, cancelAtPeriodEnd: true } : null);
+        toast({
+          title: "Demo Subscription Updated",
+          description: "In a real implementation, this would cancel your subscription at the end of the billing period.",
+        });
+        return;
+      }
+      
       const response = await apiRequest('POST', '/api/subscription/cancel');
       const data = await response.json();
       
@@ -139,6 +152,16 @@ export default function SubscriptionManagement() {
   const handleReactivateSubscription = async () => {
     try {
       setCanceling(true);
+      // For demo users, just show success message
+      if (user?.email === 'professional@demo.com') {
+        setSubscription(prev => prev ? { ...prev, cancelAtPeriodEnd: false } : null);
+        toast({
+          title: "Demo Subscription Updated",
+          description: "In a real implementation, this would reactivate your subscription.",
+        });
+        return;
+      }
+      
       const response = await apiRequest('POST', '/api/subscription/reactivate');
       const data = await response.json();
       
@@ -165,6 +188,15 @@ export default function SubscriptionManagement() {
 
   const openStripePortal = async () => {
     try {
+      // For demo users, show a message
+      if (user?.email === 'professional@demo.com') {
+        toast({
+          title: "Demo Mode",
+          description: "In a real implementation, this would open the Stripe billing portal where you can update payment methods and download invoices.",
+        });
+        return;
+      }
+      
       const response = await apiRequest('POST', '/api/subscription/portal');
       const data = await response.json();
       

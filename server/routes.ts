@@ -616,10 +616,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Debug endpoint to check user object structure
+  app.get('/api/debug/user', isAuthenticated, async (req: any, res) => {
+    console.log('🔍 DEBUG - Full req.user object:', JSON.stringify(req.user, null, 2));
+    console.log('🔍 DEBUG - req.user type:', typeof req.user);
+    console.log('🔍 DEBUG - req.user.id:', req.user?.id);
+    console.log('🔍 DEBUG - req.user.claims:', req.user?.claims);
+    console.log('🔍 DEBUG - req.user.claims.sub:', req.user?.claims?.sub);
+    console.log('🔍 DEBUG - req.user.email:', req.user?.email);
+    res.json({ 
+      user: req.user,
+      hasId: !!req.user?.id,
+      hasClaims: !!req.user?.claims,
+      hasClaimsSub: !!req.user?.claims?.sub
+    });
+  });
+
   // Subscription management routes
   app.get('/api/subscription/details', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      // Try different ways to get user ID
+      let userId = req.user?.claims?.sub || req.user?.id;
+      console.log('🔍 DEBUG - Trying to get userId:', { 
+        claimsSub: req.user?.claims?.sub, 
+        id: req.user?.id,
+        finalUserId: userId 
+      });
+      
       if (!userId) {
         return res.status(401).json({ error: 'User not found' });
       }
@@ -683,7 +706,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Cancel subscription
   app.post('/api/subscription/cancel', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user?.claims?.sub || req.user?.id;
       if (!userId) {
         return res.status(401).json({ error: 'User not found' });
       }
@@ -710,7 +733,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Reactivate subscription
   app.post('/api/subscription/reactivate', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user?.claims?.sub || req.user?.id;
       if (!userId) {
         return res.status(401).json({ error: 'User not found' });
       }
@@ -737,7 +760,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Stripe Customer Portal
   app.post('/api/subscription/portal', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.user?.claims?.sub || req.user?.id;
       if (!userId) {
         return res.status(401).json({ error: 'User not found' });
       }

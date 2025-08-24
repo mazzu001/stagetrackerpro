@@ -26,7 +26,6 @@ import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import { USBMIDIDevicesManager } from "@/components/USBMIDIDevicesManager";
 import BluetoothDevicesManager from "@/components/BluetoothDevicesManager";
-import WIDIJackManager from "@/components/WIDIJackManager";
 import { parseMIDICommand } from '@/utils/midiFormatter';
 
 
@@ -57,7 +56,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isUSBMIDIOpen, setIsUSBMIDIOpen] = useState(false);
   const [isBluetoothDevicesOpen, setIsBluetoothDevicesOpen] = useState(false);
-  const [isWIDIJackOpen, setIsWIDIJackOpen] = useState(false);
   const [connectedUSBMIDIDevices, setConnectedUSBMIDIDevices] = useState<any[]>([]);
   const [isMidiConnected, setIsMidiConnected] = useState(false);
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
@@ -1052,14 +1050,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                       <Bluetooth className="w-4 h-4 mr-2" />
                       <span>Bluetooth Devices</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem 
-                      onClick={() => setIsWIDIJackOpen(true)}
-                      className="flex items-center cursor-pointer"
-                      data-testid="menu-widi-jack"
-                    >
-                      <Music className="w-4 h-4 mr-2 text-purple-500" />
-                      <span>WIDI Jack (TC-Helicon)</span>
-                    </DropdownMenuItem>
                   </>
                 )}
 
@@ -1737,11 +1727,6 @@ Click "Timestamp" to insert current time`}
         onClose={() => setIsBluetoothDevicesOpen(false)} 
       />
 
-      {/* WIDI Jack Manager Modal */}
-      <WIDIJackManager 
-        isOpen={isWIDIJackOpen} 
-        onClose={() => setIsWIDIJackOpen(false)} 
-      />
 
     </div>
   );

@@ -190,14 +190,23 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     }
   };
 
-  // Check if device might be MIDI-related based on name and manufacturer
+  // Enhanced device detection for maximum MIDI device compatibility
   const isMIDIDevice = (name: string): 'midi' | 'bluetooth' => {
     const lowerName = name.toLowerCase();
     const midiKeywords = [
+      // Core MIDI terms
       'midi', 'piano', 'keyboard', 'synth', 'drum', 'guitar', 'bass',
+      // Major manufacturers  
       'roland', 'yamaha', 'korg', 'novation', 'akai', 'moog', 'arturia',
-      'behringer', 'boss', 'tc electronic', 'line 6', 'fractal', 'kemper',
-      'pedal', 'footswitch', 'controller', 'daw', 'sequencer'
+      'behringer', 'boss', 'tc', 'helicon', 'line', 'fractal', 'kemper',
+      'native', 'instruments', 'ableton', 'steinberg', 'focusrite',
+      // Device types
+      'pedal', 'footswitch', 'controller', 'daw', 'sequencer', 'interface',
+      'mixer', 'preamp', 'processor', 'effect', 'amp', 'cabinet',
+      // Wireless MIDI adapters
+      'widi', 'bluetooth', 'wireless', 'bt', 'ble',
+      // User's specific device
+      'matts', 'voicelive', 'voice', 'live'
     ];
     
     return midiKeywords.some(keyword => lowerName.includes(keyword)) ? 'midi' : 'bluetooth';
@@ -327,34 +336,68 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     }
   };
 
-  // Send MIDI data to a specific characteristic - WIDI JACK COMPATIBLE
+  // Universal MIDI send function - compatible with widest range of Bluetooth MIDI devices
   const sendMIDIToCharacteristic = async (characteristic: any, midiBytes: number[], device: BluetoothDevice) => {
     console.log(`📤 Sending MIDI to ${device.name} via ${characteristic.char}`);
     console.log(`🎵 Raw MIDI: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
     
-    // WIDI Jack specific BLE MIDI format
-    const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
-    const timestampHigh = 0x80 | (timestamp >> 7);     // Header byte
-    const timestampLow = 0x80 | (timestamp & 0x7F);    // Timestamp byte
-    const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
+    // Try multiple packet formats for maximum compatibility
+    const packetFormats = [];
     
-    console.log(`📤 BLE MIDI packet: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-    console.log(`🎯 Packet breakdown: Header=${timestampHigh.toString(16)} Time=${timestampLow.toString(16)} MIDI=[${midiBytes.map(b => b.toString(16)).join(' ')}]`);
+    // 1. Standard BLE MIDI format (most common)
+    const timestamp = Date.now() & 0x1FFF;
+    const timestampHigh = 0x80 | (timestamp >> 7);
+    const timestampLow = 0x80 | (timestamp & 0x7F);
+    packetFormats.push({
+      name: 'BLE MIDI Standard',
+      data: new Uint8Array([timestampHigh, timestampLow, ...midiBytes])
+    });
     
-    // Always use writeValueWithResponse for WIDI Jack (critical requirement)
-    if (characteristic.canWrite) {
-      console.log(`📤 Sending via writeValueWithResponse to ${characteristic.char}...`);
-      await characteristic.characteristic.writeValueWithResponse(blePacket);
-      console.log(`✅ writeValueWithResponse completed - WIDI Jack should blink now!`);
-    } else if (characteristic.canWriteWithoutResponse) {
-      console.log(`📤 Sending via writeValueWithoutResponse to ${characteristic.char}...`);
-      await characteristic.characteristic.writeValueWithoutResponse(blePacket);
-      console.log(`✅ writeValueWithoutResponse completed - check WIDI Jack for activity!`);
-    } else {
-      throw new Error(`Characteristic ${characteristic.char} has no write capability`);
+    // 2. Raw MIDI (no timestamp headers)
+    packetFormats.push({
+      name: 'Raw MIDI',
+      data: new Uint8Array(midiBytes)
+    });
+    
+    // 3. Simple timestamped format (alternative)
+    packetFormats.push({
+      name: 'Simple Timestamp',
+      data: new Uint8Array([0x80, 0x80, ...midiBytes])
+    });
+    
+    // 4. Alternative BLE MIDI format
+    const altTimestamp = (Date.now() & 0x7F) | 0x80;
+    packetFormats.push({
+      name: 'Alt BLE MIDI',
+      data: new Uint8Array([0x80, altTimestamp, ...midiBytes])
+    });
+    
+    // Try each format until one works
+    for (const format of packetFormats) {
+      try {
+        console.log(`📦 Trying ${format.name}: [${Array.from(format.data).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+        
+        // Try writeValueWithResponse first (most reliable)
+        if (characteristic.canWrite) {
+          console.log(`📤 Using writeValueWithResponse...`);
+          await characteristic.characteristic.writeValueWithResponse(format.data);
+          console.log(`✅ ${format.name} worked with writeValueWithResponse!`);
+          return;
+        } 
+        // Fallback to writeValueWithoutResponse
+        else if (characteristic.canWriteWithoutResponse) {
+          console.log(`📤 Using writeValueWithoutResponse...`);
+          await characteristic.characteristic.writeValueWithoutResponse(format.data);
+          console.log(`✅ ${format.name} worked with writeValueWithoutResponse!`);
+          return;
+        }
+      } catch (error) {
+        console.log(`⚠️ ${format.name} failed: ${error}`);
+        continue;
+      }
     }
     
-    console.log(`🚨 Command sent to WIDI Jack - did it blink or change settings?`);
+    throw new Error(`All packet formats failed for ${device.name}`);
   };
 
 
@@ -374,9 +417,12 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       const bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
         acceptAllDevices: true,
         optionalServices: [
-          '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // BLE MIDI
+          '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // BLE MIDI Standard
           '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART
-          '0000fff0-0000-1000-8000-00805f9b34fb'  // Generic MIDI
+          '0000fff0-0000-1000-8000-00805f9b34fb', // Generic service
+          '12345678-1234-1234-1234-123456789abc', // Custom services
+          '0000180f-0000-1000-8000-00805f9b34fb', // Battery service
+          '0000180a-0000-1000-8000-00805f9b34fb'  // Device info service
         ]
       });
 
@@ -437,23 +483,44 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     console.log('🔍 Starting deep scan for all Bluetooth devices...');
     
     try {
-      // Multiple scans with different service filters
+      // Universal scan with comprehensive service filters for maximum device compatibility
       const scanPromises = [
-        // MIDI specific scan
+        // Standard BLE MIDI scan
         (navigator as any).bluetooth.requestDevice({
           filters: [
-            { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] }, // BLE MIDI
+            { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] }, // BLE MIDI Standard
           ],
           optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
         }).catch(() => null),
         
-        // General device scan
+        // MIDI device name patterns
+        (navigator as any).bluetooth.requestDevice({
+          filters: [
+            { namePrefix: 'MIDI' },
+            { namePrefix: 'Roland' },
+            { namePrefix: 'Yamaha' },
+            { namePrefix: 'Korg' },
+            { namePrefix: 'WIDI' },
+            { namePrefix: 'Matts' }, // User's WIDI Jack appears as "Matts Pedal"
+            { namePrefix: 'TC' },
+            { namePrefix: 'Novation' },
+            { namePrefix: 'Akai' }
+          ],
+          optionalServices: [
+            '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // BLE MIDI
+            '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART (some MIDI devices)
+            '0000fff0-0000-1000-8000-00805f9b34fb'  // Generic service
+          ]
+        }).catch(() => null),
+        
+        // General device scan for any device
         (navigator as any).bluetooth.requestDevice({
           acceptAllDevices: true,
           optionalServices: [
             '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // BLE MIDI
             '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART
-            '0000fff0-0000-1000-8000-00805f9b34fb'  // Generic MIDI
+            '0000fff0-0000-1000-8000-00805f9b34fb', // Generic
+            '12345678-1234-1234-1234-123456789abc'  // Custom services
           ]
         }).catch(() => null),
       ];

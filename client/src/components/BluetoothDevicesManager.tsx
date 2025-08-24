@@ -55,23 +55,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   const isProfessional = user?.userType === 'professional';
   const { toast } = useToast();
 
-  // Professional subscription check - restrict Bluetooth MIDI features to level 3 subscribers only
-  useEffect(() => {
-    if (isOpen && !isProfessional) {
-      toast({
-        title: "Professional Subscription Required",
-        description: "Bluetooth MIDI features are only available for Professional subscribers (Level 3)",
-        variant: "destructive",
-      });
-      onClose();
-    }
-  }, [isOpen, isProfessional, onClose, toast]);
-
-  // Early return if not professional to prevent any MIDI access
-  if (!isProfessional) {
-    return null;
-  }
-
+  // All useState hooks must come first before any conditional logic
   const [devices, setDevices] = useState<BluetoothDevice[]>([]);
   const [connectedDevices, setConnectedDevices] = useState<BluetoothDevice[]>([]);
   const [isScanning, setIsScanning] = useState(false);
@@ -84,6 +68,18 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   const [outgoingDataActive, setOutgoingDataActive] = useState(false);
   // Store Bluetooth device connections for sending commands
   const [deviceConnections, setDeviceConnections] = useState<Map<string, any>>(new Map());
+
+  // Professional subscription check - restrict Bluetooth MIDI features to level 3 subscribers only
+  useEffect(() => {
+    if (isOpen && !isProfessional) {
+      toast({
+        title: "Professional Subscription Required",
+        description: "Bluetooth MIDI features are only available for Professional subscribers (Level 3)",
+        variant: "destructive",
+      });
+      onClose();
+    }
+  }, [isOpen, isProfessional, onClose, toast]);
 
   // Check Bluetooth availability
   useEffect(() => {
@@ -951,6 +947,11 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         return 'text-gray-600 dark:text-gray-400';
     }
   };
+
+  // Don't render for non-professional users, but still call all hooks above
+  if (!isProfessional) {
+    return null;
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

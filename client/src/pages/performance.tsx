@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth, Zap, X, Target, Send, Award, Sparkles, Shield } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth, Zap, X, Target, Send, Award, Sparkles, Shield, CreditCard } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -1027,7 +1027,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   <span>
                     {userType === 'free' && 'View Plans'}
                     {(userType === 'paid' || userType === 'premium') && 'Upgrade to Professional'}
-                    {userType === 'professional' && 'Manage Subscription'}
+                    {userType === 'professional' && 'View Plans'}
                   </span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="mobile-hidden" />
@@ -1052,6 +1052,15 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                       <span>Bluetooth Devices</span>
                     </DropdownMenuItem>
                     */}
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem 
+                      onClick={() => setLocation('/subscription-management')}
+                      className="flex items-center cursor-pointer"
+                      data-testid="menu-subscription-management"
+                    >
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      <span>Manage Subscription</span>
+                    </DropdownMenuItem>
                   </>
                 )}
 

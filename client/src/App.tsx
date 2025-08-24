@@ -13,6 +13,7 @@ import SubscribeDebug from "@/pages/subscribe-debug";
 import SubscribeElementsTest from "@/pages/subscribe-elements-test";
 import SubscribeTest from "@/pages/subscribe-test";
 import Plans from "@/pages/plans";
+import SubscriptionManagement from "@/pages/subscription-management";
 import Landing from "@/pages/landing";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
@@ -113,6 +114,7 @@ function AppContent() {
           <Route path="/subscribe-old" component={Subscribe} />
           <Route path="/subscribe-test" component={SubscribeTest} />
           <Route path="/plans" component={Plans} />
+          <Route path="/subscription-management" component={SubscriptionManagement} />
         </Router>
       )}
       <Toaster />

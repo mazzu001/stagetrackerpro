@@ -180,53 +180,83 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   const sendMIDIToCharacteristic = async (characteristic: any, midiBytes: number[], device: BluetoothDevice) => {
     console.log(`🎯 Attempting to send MIDI to characteristic ${characteristic.char}`);
     console.log(`🎵 MIDI bytes to send: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+    console.log(`🔍 Raw MIDI decimal: [${midiBytes.join(', ')}]`);
     
-    // Try multiple formats to ensure compatibility with different devices
+    // Test with a simple, known working MIDI command first (Note On C4)
+    const testCommand = [0x90, 0x3C, 0x7F]; // Note On, middle C (60), velocity 127
+    console.log(`🧪 Testing with known MIDI command: [${testCommand.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+    
+    // Try multiple formats with both test command and actual command
     const formats = [
       {
-        name: 'BLE MIDI with proper timestamp',
+        name: 'Raw MIDI (no BLE headers)',
+        data: () => new Uint8Array(midiBytes)
+      },
+      {
+        name: 'Standard BLE MIDI format',
         data: () => {
-          const timestamp = Date.now() & 0x1FFF;
-          const timestampHigh = 0x80 | (timestamp >> 7);
-          const timestampLow = 0x80 | (timestamp & 0x7F);
+          // BLE MIDI standard format: header + timestamp + MIDI data
+          const timestamp = Date.now() % 16384; // 14-bit timestamp (0-16383)
+          const timestampHigh = 0x80 | ((timestamp >> 7) & 0x3F); // Header with upper 6 bits
+          const timestampLow = 0x80 | (timestamp & 0x7F); // Lower 7 bits
           return new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
         }
       },
       {
-        name: 'BLE MIDI with fixed timestamp',
+        name: 'Simple BLE MIDI (fixed header)',
         data: () => new Uint8Array([0x80, 0x80, ...midiBytes])
       },
       {
-        name: 'Raw MIDI data',
-        data: () => new Uint8Array(midiBytes)
+        name: 'Test Note On command (raw)',
+        data: () => new Uint8Array(testCommand)
+      },
+      {
+        name: 'Test Note On with BLE header',
+        data: () => new Uint8Array([0x80, 0x80, ...testCommand])
       }
     ];
 
     let lastError = null;
+    let successFormat = null;
     
     for (const format of formats) {
       try {
         const packet = format.data();
-        console.log(`📤 Trying ${format.name}: [${Array.from(packet).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+        const hexString = Array.from(packet).map(b => b.toString(16).padStart(2, '0')).join(' ');
+        console.log(`📤 Trying ${format.name}: [${hexString}]`);
         
-        // Try writeValueWithResponse first (more reliable for most devices)
+        // Always try writeValueWithResponse first (WIDI Jack specifically needs this)
         if (characteristic.canWrite) {
+          console.log(`   Using writeValueWithResponse...`);
           await characteristic.characteristic.writeValueWithResponse(packet);
-          console.log(`✅ Success with ${format.name} using writeValueWithResponse`);
-          return;
+          successFormat = format.name;
+          console.log(`✅ SUCCESS with ${format.name} using writeValueWithResponse!`);
+          console.log(`🚨 Did your device react to this command? Check if lights blink or settings change!`);
+          break;
         } else if (characteristic.canWriteWithoutResponse) {
+          console.log(`   Using writeValueWithoutResponse...`);
           await characteristic.characteristic.writeValueWithoutResponse(packet);
-          console.log(`✅ Success with ${format.name} using writeValueWithoutResponse`);
-          return;
+          successFormat = format.name;
+          console.log(`✅ SUCCESS with ${format.name} using writeValueWithoutResponse!`);
+          console.log(`🚨 Did your device react to this command? Check if lights blink or settings change!`);
+          break;
         }
         
       } catch (error) {
         console.log(`❌ ${format.name} failed: ${error}`);
         lastError = error;
       }
+      
+      // Small delay between attempts
+      await new Promise(resolve => setTimeout(resolve, 200));
     }
     
-    throw new Error(`All MIDI formats failed. Last error: ${lastError}`);
+    if (!successFormat) {
+      throw new Error(`All MIDI formats failed. Last error: ${lastError}`);
+    }
+    
+    console.log(`🎊 Command sent successfully using: ${successFormat}`);
+    return successFormat;
   };
 
   // Discover and test characteristics (only when needed)

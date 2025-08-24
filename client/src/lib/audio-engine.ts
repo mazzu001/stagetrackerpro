@@ -31,10 +31,16 @@ export class AudioEngine {
       this.masterGainNode.connect(this.masterAnalyzerNode);
       this.masterAnalyzerNode.connect(this.audioContext.destination);
       
-      // Resume audio context if suspended (required for user interaction)
-      if (this.audioContext.state === 'suspended') {
-        await this.audioContext.resume();
-      }
+      // Defer audio context resume to prevent blocking
+      setTimeout(async () => {
+        if (this.audioContext?.state === 'suspended') {
+          try {
+            await this.audioContext.resume();
+          } catch (error) {
+            // Silently handle resume errors
+          }
+        }
+      }, 100);
     } catch (error) {
       throw new Error('Failed to initialize audio engine: ' + error);
     }

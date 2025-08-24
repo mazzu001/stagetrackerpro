@@ -49,8 +49,8 @@ function AppContent() {
       }
     }
     
-    // Check if local file system is already initialized
-    const checkLocalFS = async () => {
+    // Defer file system check to prevent startup blocking
+    setTimeout(async () => {
       try {
         const browserFS = BrowserFileSystem.getInstance();
         const isAlreadyInitialized = await browserFS.isAlreadyInitialized();
@@ -72,9 +72,7 @@ function AppContent() {
       } finally {
         setIsCheckingFS(false);
       }
-    };
-
-    checkLocalFS();
+    }, 800); // Defer by 800ms to allow UI to render first
   }, []);
 
   const handleLocalFSInitialized = () => {

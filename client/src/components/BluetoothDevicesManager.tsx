@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -23,7 +24,8 @@ import {
   Zap, 
   ArrowRight, 
   MoreVertical, 
-  Activity 
+  Activity,
+  Ear
 } from 'lucide-react';
 
 interface BluetoothDevice {
@@ -45,6 +47,13 @@ interface BluetoothMessage {
   type: 'midi';
 }
 
+interface LearnedMidiData {
+  controller: number;
+  channel: number;
+  deviceId: string;
+  deviceName: string;
+}
+
 interface BluetoothDevicesManagerProps {
   isOpen: boolean;
   onClose: () => void;
@@ -62,6 +71,9 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   const [messages, setMessages] = useState<BluetoothMessage[]>([]);
   const [selectedTab, setSelectedTab] = useState<'devices' | 'messages' | 'commands'>('devices');
   const [commandInput, setCommandInput] = useState('');
+  const [isLearning, setIsLearning] = useState(false);
+  const [learnedMidiData, setLearnedMidiData] = useState<LearnedMidiData | null>(null);
+  const [sliderValue, setSliderValue] = useState([64]); // Default MIDI value 64
   const [hasBluetoothSupport, setHasBluetoothSupport] = useState(false);
   const [bluetoothState, setBluetoothState] = useState<string>('unknown');
   const [incomingDataActive, setIncomingDataActive] = useState(false);
@@ -874,6 +886,36 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                     console.log('📋 Extracted MIDI bytes from BLE format:', midiBytes);
                   }
                   
+                  // Check if we're in learn mode and this is a Control Change message
+                  if (isLearning && midiBytes.length >= 3) {
+                    const status = midiBytes[0];
+                    const command = status & 0xF0;
+                    
+                    if (command === 0xB0) { // Control Change
+                      const controller = midiBytes[1];
+                      const channel = (status & 0x0F) + 1; // Convert to 1-based
+                      
+                      setLearnedMidiData({
+                        controller,
+                        channel,
+                        deviceId: device.id,
+                        deviceName: device.name
+                      });
+                      setIsLearning(false);
+                      
+                      console.log('🎯 MIDI LEARNED!', {
+                        controller,
+                        channel,
+                        deviceName: device.name
+                      });
+                      
+                      toast({
+                        title: "MIDI Learned!",
+                        description: `Controller ${controller} on Channel ${channel} from ${device.name}`,
+                      });
+                    }
+                  }
+                  
                   // Translate to bracket format
                   const bracketFormat = translateMIDIBytesToBracketFormat(midiBytes);
                   console.log('🎼 Translated to bracket format:', bracketFormat);
@@ -1340,6 +1382,67 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                         </div>
                         <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
                           Example formats: [[PC:1:1]] (Program Change), [[CC:7:127:1]] (Control Change), [[NOTE:60:127:1]] (Note On)
+                        </div>
+                        
+                        {/* MIDI Learn Slider */}
+                        <div className="mt-4 p-3 border rounded bg-gray-50 dark:bg-gray-800">
+                          <div className="flex items-center justify-between mb-3">
+                            <h4 className="text-sm font-medium text-black dark:text-white">
+                              MIDI Learn Controller
+                            </h4>
+                            <Button
+                              variant={isLearning ? "destructive" : "outline"}
+                              size="sm"
+                              onClick={() => setIsLearning(!isLearning)}
+                              className="flex items-center gap-1"
+                              data-testid={`button-learn-${device.id}`}
+                            >
+                              <Ear className="h-3 w-3" />
+                              {isLearning ? 'Stop Learning' : 'Learn'}
+                            </Button>
+                          </div>
+                          
+                          {isLearning && (
+                            <div className="mb-3 p-2 bg-blue-100 dark:bg-blue-900 rounded text-sm text-blue-800 dark:text-blue-200">
+                              🎯 Learning mode active - Move any controller on your MIDI device...
+                            </div>
+                          )}
+                          
+                          {learnedMidiData && (
+                            <div className="mb-3">
+                              <div className="text-xs text-gray-600 dark:text-gray-300 mb-2">
+                                Learned: Controller {learnedMidiData.controller} • Channel {learnedMidiData.channel} • {learnedMidiData.deviceName}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs text-gray-500 dark:text-gray-400 min-w-[20px]">0</span>
+                                <Slider
+                                  value={sliderValue}
+                                  onValueChange={(value) => {
+                                    setSliderValue(value);
+                                    if (learnedMidiData && learnedMidiData.deviceId === device.id) {
+                                      const command = `[[CC:${learnedMidiData.controller}:${value[0]}:${learnedMidiData.channel}]]`;
+                                      console.log('🎛️ Sending learned MIDI command:', command);
+                                      handleSendCommand(device, command);
+                                    }
+                                  }}
+                                  max={127}
+                                  step={1}
+                                  className="flex-1"
+                                  data-testid={`slider-midi-${device.id}`}
+                                />
+                                <span className="text-xs text-gray-500 dark:text-gray-400 min-w-[30px]">127</span>
+                              </div>
+                              <div className="text-center text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                Value: {sliderValue[0]}
+                              </div>
+                            </div>
+                          )}
+                          
+                          {!learnedMidiData && !isLearning && (
+                            <div className="text-xs text-gray-500 dark:text-gray-400 text-center py-2">
+                              Click Learn and move a controller on your MIDI device to assign it to this slider
+                            </div>
+                          )}
                         </div>
                       </CardContent>
                     </Card>

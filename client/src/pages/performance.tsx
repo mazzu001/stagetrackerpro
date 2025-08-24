@@ -1042,6 +1042,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                       <Usb className="w-4 h-4 mr-2" />
                       <span>USB MIDI Devices</span>
                     </DropdownMenuItem>
+                    {/* Temporarily hidden - Bluetooth MIDI functionality preserved for future use
                     <DropdownMenuItem 
                       onClick={() => setIsBluetoothDevicesOpen(true)}
                       className="flex items-center cursor-pointer"
@@ -1050,6 +1051,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                       <Bluetooth className="w-4 h-4 mr-2" />
                       <span>Bluetooth Devices</span>
                     </DropdownMenuItem>
+                    */}
                   </>
                 )}
 

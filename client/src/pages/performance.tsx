@@ -212,8 +212,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
-  // Auto-send MIDI command from timestamped lyrics - uses EXACT same code as footer send button
-  const handleLyricsMidiCommand = useCallback(async (command: string) => {
+  // Wrapper for lyrics MIDI command execution - uses the USB MIDI sequencer's executeMIDICommand
+  const handleLyricsMidiCommand = useCallback((command: string) => {
     // Check professional subscription before allowing automatic MIDI commands
     if (user?.userType !== 'professional') {
       console.warn('⚠️ Lyrics MIDI sequencer blocked: Professional subscription required');
@@ -221,43 +221,19 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     console.log(`🎼 Processing MIDI command from timestamped lyrics: ${command}`);
-    setFooterMidiCommand(command);
     
-    // EXACT SAME CODE AS FOOTER SEND BUTTON - handleFooterSendMessage
-    const selectedOutputDevice = localStorage.getItem('usb_midi_selected_output_device');
-    if (!selectedOutputDevice || !command.trim()) return;
-
-    try {
-      if (navigator.requestMIDIAccess) {
-        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
-        const output = midiAccess.outputs.get(selectedOutputDevice);
-        
-        if (output) {
-          // Parse MIDI command using proper parser (supports [[PC:12:1]], hex, and text formats)
-          const parseResult = parseMIDICommand(command);
-          
-          if (parseResult && parseResult.bytes.length > 0) {
-            console.log(`📤 Lyrics Auto MIDI Sending: ${command} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-            output.send(parseResult.bytes);
-            triggerMidiBlink(); // Blue blink for visual confirmation
-            // Silent execution - no toast notification during performance
-          } else {
-            console.warn(`⚠️ Invalid MIDI command from lyrics: ${command}`);
-            return;
-          }
-        } else {
-          console.warn(`⚠️ MIDI output device not found for lyrics command: ${command}`);
-          return;
-        }
+    // Use the USB MIDI sequencer's execution function (the working one!)
+    executeMIDICommand(command).then(success => {
+      if (success) {
+        triggerMidiBlink(); // Blue blink for visual confirmation
+        console.log(`✅ Lyrics MIDI command executed successfully: ${command}`);
+      } else {
+        console.warn(`⚠️ Lyrics MIDI command execution failed: ${command}`);
       }
-      
-      // Clear the input after successful send
-      setTimeout(() => setFooterMidiCommand(''), 100);
-    } catch (error) {
+    }).catch(error => {
       console.error('Lyrics MIDI Send Error:', error);
-      // Silent error handling - no toast notification during performance
-    }
-  }, [selectedMidiDeviceName, toast]);
+    });
+  }, [user?.userType, executeMIDICommand, triggerMidiBlink]);
 
   // Initialize MIDI sequencer
   const midiSequencer = useMIDISequencer({

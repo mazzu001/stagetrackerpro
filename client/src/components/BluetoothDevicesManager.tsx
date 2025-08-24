@@ -176,87 +176,28 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     return midiKeywords.some(keyword => lowerName.includes(keyword)) ? 'midi' : 'bluetooth';
   };
 
-  // Send MIDI data to a specific characteristic
+  // Send MIDI data to a specific characteristic - SIMPLIFIED FOR WIDI JACK
   const sendMIDIToCharacteristic = async (characteristic: any, midiBytes: number[], device: BluetoothDevice) => {
-    console.log(`🎯 Attempting to send MIDI to characteristic ${characteristic.char}`);
-    console.log(`🎵 MIDI bytes to send: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-    console.log(`🔍 Raw MIDI decimal: [${midiBytes.join(', ')}]`);
+    console.log(`📤 Sending MIDI to ${device.name}: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
     
-    // Test with a simple, known working MIDI command first (Note On C4)
-    const testCommand = [0x90, 0x3C, 0x7F]; // Note On, middle C (60), velocity 127
-    console.log(`🧪 Testing with known MIDI command: [${testCommand.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+    // Create proper BLE MIDI packet (this was working before)
+    const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp 
+    const timestampHigh = 0x80 | (timestamp >> 7);     // Header with upper 6 bits
+    const timestampLow = 0x80 | (timestamp & 0x7F);    // Lower 7 bits
+    const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
     
-    // Try multiple formats with both test command and actual command
-    const formats = [
-      {
-        name: 'Raw MIDI (no BLE headers)',
-        data: () => new Uint8Array(midiBytes)
-      },
-      {
-        name: 'Standard BLE MIDI format',
-        data: () => {
-          // BLE MIDI standard format: header + timestamp + MIDI data
-          const timestamp = Date.now() % 16384; // 14-bit timestamp (0-16383)
-          const timestampHigh = 0x80 | ((timestamp >> 7) & 0x3F); // Header with upper 6 bits
-          const timestampLow = 0x80 | (timestamp & 0x7F); // Lower 7 bits
-          return new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
-        }
-      },
-      {
-        name: 'Simple BLE MIDI (fixed header)',
-        data: () => new Uint8Array([0x80, 0x80, ...midiBytes])
-      },
-      {
-        name: 'Test Note On command (raw)',
-        data: () => new Uint8Array(testCommand)
-      },
-      {
-        name: 'Test Note On with BLE header',
-        data: () => new Uint8Array([0x80, 0x80, ...testCommand])
-      }
-    ];
-
-    let lastError = null;
-    let successFormat = null;
+    console.log(`📤 BLE MIDI packet: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
     
-    for (const format of formats) {
-      try {
-        const packet = format.data();
-        const hexString = Array.from(packet).map(b => b.toString(16).padStart(2, '0')).join(' ');
-        console.log(`📤 Trying ${format.name}: [${hexString}]`);
-        
-        // Always try writeValueWithResponse first (WIDI Jack specifically needs this)
-        if (characteristic.canWrite) {
-          console.log(`   Using writeValueWithResponse...`);
-          await characteristic.characteristic.writeValueWithResponse(packet);
-          successFormat = format.name;
-          console.log(`✅ SUCCESS with ${format.name} using writeValueWithResponse!`);
-          console.log(`🚨 Did your device react to this command? Check if lights blink or settings change!`);
-          break;
-        } else if (characteristic.canWriteWithoutResponse) {
-          console.log(`   Using writeValueWithoutResponse...`);
-          await characteristic.characteristic.writeValueWithoutResponse(packet);
-          successFormat = format.name;
-          console.log(`✅ SUCCESS with ${format.name} using writeValueWithoutResponse!`);
-          console.log(`🚨 Did your device react to this command? Check if lights blink or settings change!`);
-          break;
-        }
-        
-      } catch (error) {
-        console.log(`❌ ${format.name} failed: ${error}`);
-        lastError = error;
-      }
-      
-      // Small delay between attempts
-      await new Promise(resolve => setTimeout(resolve, 200));
+    // Send using writeValueWithResponse (WIDI Jack requirement)
+    if (characteristic.canWrite) {
+      await characteristic.characteristic.writeValueWithResponse(blePacket);
+      console.log(`✅ Sent via writeValueWithResponse`);
+    } else if (characteristic.canWriteWithoutResponse) {
+      await characteristic.characteristic.writeValueWithoutResponse(blePacket);
+      console.log(`✅ Sent via writeValueWithoutResponse`);
+    } else {
+      throw new Error('Characteristic has no write capability');
     }
-    
-    if (!successFormat) {
-      throw new Error(`All MIDI formats failed. Last error: ${lastError}`);
-    }
-    
-    console.log(`🎊 Command sent successfully using: ${successFormat}`);
-    return successFormat;
   };
 
   // Discover and test characteristics (only when needed)
@@ -339,32 +280,24 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     // Sort by priority (MIDI service characteristics first)
     writableCharacteristics.sort((a, b) => a.priority - b.priority);
     
-    console.log(`🎯 Found ${writableCharacteristics.length} writable characteristics, testing each one...`);
+    console.log(`🎯 Found ${writableCharacteristics.length} writable characteristics`);
     
-    // Test each characteristic until one works
+    // Use the first BLE MIDI characteristic (most likely to work) - don't test multiple
     let workingCharacteristic = null;
     
-    for (let i = 0; i < writableCharacteristics.length; i++) {
-      const testChar = writableCharacteristics[i];
-      console.log(`\n🧪 Test ${i + 1}/${writableCharacteristics.length} - Service: ${testChar.service}`);
-      console.log(`🔍 Characteristic: ${testChar.char}`);
-      console.log(`📤 Testing MIDI transmission...`);
+    if (writableCharacteristics.length > 0) {
+      const testChar = writableCharacteristics[0]; // Use first one (highest priority)
+      console.log(`🔍 Using characteristic: ${testChar.char} from service: ${testChar.service}`);
       
       try {
         await sendMIDIToCharacteristic(testChar, midiBytes, device);
-        
-        // Success! This characteristic works
         workingCharacteristic = testChar;
-        console.log(`✅ Found working characteristic: ${testChar.char}`);
-        break;
+        console.log(`✅ Command sent successfully!`);
         
       } catch (testError) {
-        console.log(`❌ Characteristic ${testChar.char} failed: ${testError}`);
-        // Continue to next characteristic
+        console.log(`❌ Command failed: ${testError}`);
+        throw testError;
       }
-      
-      // Small delay between tests to avoid overwhelming the device
-      await new Promise(resolve => setTimeout(resolve, 500));
     }
     
     if (!workingCharacteristic) {

@@ -1047,8 +1047,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                     </DropdownMenuItem>
                     <DropdownMenuItem 
                       onClick={() => setIsBluetoothDevicesOpen(true)}
-                      className="flex items-center cursor-pointer"
+                      className="flex items-center cursor-pointer hidden"
                       data-testid="menu-bluetooth-devices"
+                      style={{ display: 'none' }}
                     >
                       <Bluetooth className="w-4 h-4 mr-2" />
                       <span>Bluetooth Devices</span>

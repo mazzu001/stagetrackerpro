@@ -51,36 +51,6 @@ export function USBMIDIDevicesManager({
   const [midiCommand, setMidiCommand] = useState('[[PC:12:1]]');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Mock MIDI devices for development/demo
-  const mockDevices: USBMIDIDevice[] = [
-    {
-      id: 'input-0',
-      name: 'MIDI Keyboard',
-      manufacturer: 'Yamaha',
-      type: 'input',
-      state: 'connected',
-      portIndex: 1,
-      version: '1.0'
-    },
-    {
-      id: 'output-1',
-      name: 'MIDI Interface',
-      manufacturer: 'Roland',
-      type: 'output',
-      state: 'connected',
-      portIndex: 1,
-      version: '1.0'
-    },
-    {
-      id: 'input-2',
-      name: 'USB MIDI Controller',
-      manufacturer: 'Novation',
-      type: 'input',
-      state: 'disconnected',
-      portIndex: 2,
-      version: '1.0'
-    }
-  ];
 
   useEffect(() => {
     if (isVisible && isProfessional) {
@@ -103,14 +73,15 @@ export function USBMIDIDevicesManager({
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // In a real implementation, this would use React Native MIDI libraries
-      // For now, we'll use mock devices
-      setDevices(mockDevices);
+      // For now, no devices will be found on mobile until real MIDI library is integrated
+      const foundDevices: USBMIDIDevice[] = [];
+      setDevices(foundDevices);
       
-      const connected = mockDevices.filter(device => device.state === 'connected');
+      const connected = foundDevices.filter(device => device.state === 'connected');
       setConnectedDevices(connected);
       onConnectedDevicesChange?.(connected);
       
-      console.log(`✅ Found ${mockDevices.length} USB MIDI devices (${connected.length} connected)`);
+      console.log(`🔍 USB MIDI scan completed: ${foundDevices.length} devices found`);
     } catch (error) {
       console.error('❌ Failed to scan for USB MIDI devices:', error);
       Alert.alert('Error', 'Failed to scan for MIDI devices');
@@ -274,9 +245,15 @@ export function USBMIDIDevicesManager({
               </View>
             ))}
 
-            {filteredDevices.length === 0 && (
+            {filteredDevices.length === 0 && !isScanning && (
               <Text style={styles.noDevicesText}>
-                No devices found. Try scanning for devices.
+                No USB MIDI devices found. Connect a USB MIDI device and scan again.
+              </Text>
+            )}
+            
+            {isScanning && (
+              <Text style={styles.scanningText}>
+                Scanning for USB MIDI devices...
               </Text>
             )}
           </View>
@@ -460,6 +437,12 @@ const styles = StyleSheet.create({
   noDevicesText: {
     textAlign: 'center',
     color: '#666',
+    fontStyle: 'italic',
+    padding: 20,
+  },
+  scanningText: {
+    textAlign: 'center',
+    color: '#007AFF',
     fontStyle: 'italic',
     padding: 20,
   },

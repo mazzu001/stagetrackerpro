@@ -891,28 +891,35 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                     const status = midiBytes[0];
                     const command = status & 0xF0;
                     
+                    console.log('🎯 Learning mode - checking MIDI:', {
+                      status: status.toString(16),
+                      command: command.toString(16),
+                      isControlChange: command === 0xB0,
+                      bytes: midiBytes
+                    });
+                    
                     if (command === 0xB0) { // Control Change
                       const controller = midiBytes[1];
                       const channel = (status & 0x0F) + 1; // Convert to 1-based
                       
-                      setLearnedMidiData({
+                      const newLearnedData = {
                         controller,
                         channel,
                         deviceId: device.id,
                         deviceName: device.name
-                      });
+                      };
+                      
+                      setLearnedMidiData(newLearnedData);
                       setIsLearning(false);
                       
-                      console.log('🎯 MIDI LEARNED!', {
-                        controller,
-                        channel,
-                        deviceName: device.name
-                      });
+                      console.log('🎯 MIDI LEARNED!', newLearnedData);
                       
                       toast({
                         title: "MIDI Learned!",
                         description: `Controller ${controller} on Channel ${channel} from ${device.name}`,
                       });
+                    } else {
+                      console.log('⚠️ Not a Control Change message - try moving a knob, fader, or mod wheel');
                     }
                   }
                   
@@ -1408,16 +1415,17 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                             </div>
                           )}
                           
-                          {learnedMidiData && (
+                          {learnedMidiData && learnedMidiData.deviceId === device.id && (
                             <div className="mb-3">
-                              <div className="text-xs text-gray-600 dark:text-gray-300 mb-2">
-                                Learned: Controller {learnedMidiData.controller} • Channel {learnedMidiData.channel} • {learnedMidiData.deviceName}
+                              <div className="text-xs text-green-700 dark:text-green-300 mb-2 p-2 bg-green-100 dark:bg-green-900 rounded">
+                                ✅ Learned: Controller {learnedMidiData.controller} • Channel {learnedMidiData.channel} • {learnedMidiData.deviceName}
                               </div>
                               <div className="flex items-center gap-2">
                                 <span className="text-xs text-gray-500 dark:text-gray-400 min-w-[20px]">0</span>
                                 <Slider
                                   value={sliderValue}
                                   onValueChange={(value) => {
+                                    console.log('🎛️ Slider moved to:', value[0]);
                                     setSliderValue(value);
                                     if (learnedMidiData && learnedMidiData.deviceId === device.id) {
                                       const command = `[[CC:${learnedMidiData.controller}:${value[0]}:${learnedMidiData.channel}]]`;
@@ -1427,7 +1435,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                                   }}
                                   max={127}
                                   step={1}
-                                  className="flex-1"
+                                  className="flex-1 h-6"
                                   data-testid={`slider-midi-${device.id}`}
                                 />
                                 <span className="text-xs text-gray-500 dark:text-gray-400 min-w-[30px]">127</span>
@@ -1435,14 +1443,30 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                               <div className="text-center text-xs text-gray-500 dark:text-gray-400 mt-1">
                                 Value: {sliderValue[0]}
                               </div>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setLearnedMidiData(null)}
+                                className="mt-2 text-xs"
+                              >
+                                Clear Learning
+                              </Button>
                             </div>
                           )}
                           
-                          {!learnedMidiData && !isLearning && (
+                          {(!learnedMidiData || learnedMidiData.deviceId !== device.id) && !isLearning && (
                             <div className="text-sm text-blue-700 dark:text-blue-300 text-center py-3 border border-blue-300 dark:border-blue-600 rounded bg-blue-100 dark:bg-blue-800">
-                              👆 Click "Learn" above and move a controller on your MIDI device to assign it to this slider
+                              👆 Click "Learn" above and move a KNOB or MOD WHEEL on your MOTOR 61 to assign it to this slider
+                              <div className="text-xs mt-1 text-blue-600 dark:text-blue-400">
+                                (Note: Only Control Change messages work - try knobs, faders, mod wheel)
+                              </div>
                             </div>
                           )}
+                          
+                          {/* Debug info */}
+                          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                            Debug: Learning={isLearning ? 'ON' : 'OFF'} | Learned={learnedMidiData ? `CC${learnedMidiData.controller}` : 'None'}
+                          </div>
                         </div>
                       </CardContent>
                     </Card>

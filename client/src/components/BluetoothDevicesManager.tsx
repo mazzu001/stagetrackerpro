@@ -515,7 +515,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
           console.log(`📦 Sending bytes: [${Array.from(format.data).map(b => '0x' + b.toString(16).padStart(2, '0')).join(', ')}]`);
           await writeMethod.method();
           console.log(`✅ SUCCESS: ${format.name} worked with ${writeMethod.name}!`);
-          console.log(`🚨 WIDI Jack should blink now - check VoiceLive 3 for response!`);
+          console.log(`🚨 WIDI Jack should blink now - check MOTOR 61 for response!`);
           return;
         } catch (error) {
           console.log(`⚠️ ${format.name} with ${writeMethod.name} failed:`, error);

@@ -178,36 +178,55 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
 
   // Send MIDI data to a specific characteristic
   const sendMIDIToCharacteristic = async (characteristic: any, midiBytes: number[], device: BluetoothDevice) => {
-    // Try BLE MIDI format first (most common for Bluetooth MIDI)
-    const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
-    const timestampHigh = 0x80 | (timestamp >> 7);
-    const timestampLow = 0x80 | (timestamp & 0x7F);
-    const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
+    console.log(`🎯 Attempting to send MIDI to characteristic ${characteristic.char}`);
+    console.log(`🎵 MIDI bytes to send: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
     
-    console.log(`📤 Sending BLE MIDI: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-    
-    try {
-      if (characteristic.canWrite) {
-        await characteristic.characteristic.writeValueWithResponse(blePacket);
-      } else if (characteristic.canWriteWithoutResponse) {
-        await characteristic.characteristic.writeValueWithoutResponse(blePacket);
+    // Try multiple formats to ensure compatibility with different devices
+    const formats = [
+      {
+        name: 'BLE MIDI with proper timestamp',
+        data: () => {
+          const timestamp = Date.now() & 0x1FFF;
+          const timestampHigh = 0x80 | (timestamp >> 7);
+          const timestampLow = 0x80 | (timestamp & 0x7F);
+          return new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
+        }
+      },
+      {
+        name: 'BLE MIDI with fixed timestamp',
+        data: () => new Uint8Array([0x80, 0x80, ...midiBytes])
+      },
+      {
+        name: 'Raw MIDI data',
+        data: () => new Uint8Array(midiBytes)
       }
-      console.log(`✅ BLE MIDI sent successfully`);
-      return;
-    } catch (bleError) {
-      console.log(`⚠️ BLE MIDI failed, trying raw format: ${bleError}`);
+    ];
+
+    let lastError = null;
+    
+    for (const format of formats) {
+      try {
+        const packet = format.data();
+        console.log(`📤 Trying ${format.name}: [${Array.from(packet).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+        
+        // Try writeValueWithResponse first (more reliable for most devices)
+        if (characteristic.canWrite) {
+          await characteristic.characteristic.writeValueWithResponse(packet);
+          console.log(`✅ Success with ${format.name} using writeValueWithResponse`);
+          return;
+        } else if (characteristic.canWriteWithoutResponse) {
+          await characteristic.characteristic.writeValueWithoutResponse(packet);
+          console.log(`✅ Success with ${format.name} using writeValueWithoutResponse`);
+          return;
+        }
+        
+      } catch (error) {
+        console.log(`❌ ${format.name} failed: ${error}`);
+        lastError = error;
+      }
     }
     
-    // Fallback to raw MIDI
-    const rawPacket = new Uint8Array(midiBytes);
-    console.log(`📤 Sending raw MIDI: [${Array.from(rawPacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-    
-    if (characteristic.canWrite) {
-      await characteristic.characteristic.writeValueWithResponse(rawPacket);
-    } else if (characteristic.canWriteWithoutResponse) {
-      await characteristic.characteristic.writeValueWithoutResponse(rawPacket);
-    }
-    console.log(`✅ Raw MIDI sent successfully`);
+    throw new Error(`All MIDI formats failed. Last error: ${lastError}`);
   };
 
   // Discover and test characteristics (only when needed)
@@ -221,10 +240,51 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     const services = await server.getPrimaryServices();
     const writableCharacteristics = [];
     
-    // Find writable characteristics
+    // Look for BLE MIDI service first (most common)
+    const bleMidiServiceUuid = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
+    let midiService = null;
+    
+    try {
+      midiService = await server.getPrimaryService(bleMidiServiceUuid);
+      console.log(`🎵 Found BLE MIDI service: ${bleMidiServiceUuid}`);
+    } catch (error) {
+      console.log(`⚠️ No BLE MIDI service found, checking all services`);
+    }
+    
+    // If we found MIDI service, prioritize its characteristics
+    if (midiService) {
+      try {
+        const midiCharacteristics = await midiService.getCharacteristics();
+        console.log(`🎼 BLE MIDI service has ${midiCharacteristics.length} characteristics`);
+        
+        for (const char of midiCharacteristics) {
+          console.log(`  📝 Characteristic: ${char.uuid}`);
+          console.log(`    Properties: write:${char.properties.write} writeWithoutResponse:${char.properties.writeWithoutResponse} notify:${char.properties.notify}`);
+          
+          if (char.properties.write || char.properties.writeWithoutResponse) {
+            writableCharacteristics.push({
+              service: midiService.uuid,
+              char: char.uuid,
+              characteristic: char,
+              canWrite: char.properties.write,
+              canWriteWithoutResponse: char.properties.writeWithoutResponse,
+              priority: 1 // High priority for MIDI service
+            });
+          }
+        }
+      } catch (charError) {
+        console.log(`❌ Could not read MIDI service characteristics`);
+      }
+    }
+    
+    // Find writable characteristics in all other services
     for (const service of services) {
+      if (service.uuid === bleMidiServiceUuid) continue; // Already processed
+      
       try {
         const characteristics = await service.getCharacteristics();
+        console.log(`📋 Service ${service.uuid} has ${characteristics.length} characteristics`);
+        
         for (const char of characteristics) {
           if (char.properties.write || char.properties.writeWithoutResponse) {
             writableCharacteristics.push({
@@ -232,7 +292,8 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
               char: char.uuid,
               characteristic: char,
               canWrite: char.properties.write,
-              canWriteWithoutResponse: char.properties.writeWithoutResponse
+              canWriteWithoutResponse: char.properties.writeWithoutResponse,
+              priority: 2 // Lower priority for non-MIDI services
             });
           }
         }
@@ -245,50 +306,71 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       throw new Error('No writable characteristics found on device');
     }
     
-    console.log(`🎯 Found ${writableCharacteristics.length} writable characteristics - testing first one...`);
+    // Sort by priority (MIDI service characteristics first)
+    writableCharacteristics.sort((a, b) => a.priority - b.priority);
     
-    // Test the first writable characteristic (most likely to work)
-    const testChar = writableCharacteristics[0];
-    console.log(`🧪 Testing characteristic: ${testChar.char}`);
+    console.log(`🎯 Found ${writableCharacteristics.length} writable characteristics, testing each one...`);
     
-    try {
-      await sendMIDIToCharacteristic(testChar, midiBytes, device);
+    // Test each characteristic until one works
+    let workingCharacteristic = null;
+    
+    for (let i = 0; i < writableCharacteristics.length; i++) {
+      const testChar = writableCharacteristics[i];
+      console.log(`\n🧪 Test ${i + 1}/${writableCharacteristics.length} - Service: ${testChar.service}`);
+      console.log(`🔍 Characteristic: ${testChar.char}`);
+      console.log(`📤 Testing MIDI transmission...`);
       
-      // Success! Save this characteristic for future use
-      setDeviceConnections(prev => {
-        const newConnections = new Map(prev);
-        const existingConnection = newConnections.get(device.id) || {};
-        newConnections.set(device.id, {
-          ...existingConnection,
-          sendCharacteristic: testChar
-        });
-        return newConnections;
-      });
+      try {
+        await sendMIDIToCharacteristic(testChar, midiBytes, device);
+        
+        // Success! This characteristic works
+        workingCharacteristic = testChar;
+        console.log(`✅ Found working characteristic: ${testChar.char}`);
+        break;
+        
+      } catch (testError) {
+        console.log(`❌ Characteristic ${testChar.char} failed: ${testError}`);
+        // Continue to next characteristic
+      }
       
-      console.log(`✅ Characteristic ${testChar.char} works! Saved for future use.`);
-      
-      // Show success feedback
-      setOutgoingDataActive(true);
-      setTimeout(() => setOutgoingDataActive(false), 300);
-      
-      const message: BluetoothMessage = {
-        timestamp: Date.now(),
-        deviceId: device.id,
-        deviceName: device.name,
-        data: `Sent: ${parsed.formatted} → [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
-        type: 'midi'
-      };
-      setMessages(prev => [...prev.slice(-49), message]);
-      
-      toast({
-        title: "Command Sent",
-        description: `Successfully sent ${parsed.formatted} to ${device.name}`,
-      });
-      
-    } catch (testError) {
-      console.log(`❌ First characteristic test failed: ${testError}`);
-      throw new Error(`No working characteristic found. Device may not support MIDI input.`);
+      // Small delay between tests to avoid overwhelming the device
+      await new Promise(resolve => setTimeout(resolve, 500));
     }
+    
+    if (!workingCharacteristic) {
+      throw new Error(`No working characteristic found after testing ${writableCharacteristics.length} characteristics. Device may not support MIDI input.`);
+    }
+    
+    // Save the working characteristic for future use
+    setDeviceConnections(prev => {
+      const newConnections = new Map(prev);
+      const existingConnection = newConnections.get(device.id) || {};
+      newConnections.set(device.id, {
+        ...existingConnection,
+        sendCharacteristic: workingCharacteristic
+      });
+      return newConnections;
+    });
+    
+    console.log(`💾 Saved working characteristic for future use`);
+    
+    // Show success feedback
+    setOutgoingDataActive(true);
+    setTimeout(() => setOutgoingDataActive(false), 300);
+    
+    const message: BluetoothMessage = {
+      timestamp: Date.now(),
+      deviceId: device.id,
+      deviceName: device.name,
+      data: `Sent: ${parsed.formatted} → [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}] via ${workingCharacteristic.char}`,
+      type: 'midi'
+    };
+    setMessages(prev => [...prev.slice(-49), message]);
+    
+    toast({
+      title: "Command Sent",
+      description: `Successfully sent ${parsed.formatted} to ${device.name}`,
+    });
   };
 
   // Quick scan for easily discoverable devices

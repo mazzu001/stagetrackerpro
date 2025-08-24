@@ -894,6 +894,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                     bytesLength: midiBytes.length
                   });
                   
+                  // Use current learning state check
                   if (isLearning && midiBytes.length >= 3) {
                     const status = midiBytes[0];
                     const command = status & 0xF0;
@@ -918,7 +919,10 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                       
                       console.log('🎯 SETTING LEARNED DATA:', newLearnedData);
                       setLearnedMidiData(newLearnedData);
-                      setIsLearning(false);
+                      setIsLearning(() => {
+                        console.log('🎯 Disabling learning mode after successful learn');
+                        return false;
+                      });
                       
                       console.log('🎯 MIDI LEARNED SUCCESSFULLY!', newLearnedData);
                       
@@ -1444,14 +1448,21 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                               variant={isLearning ? "destructive" : "outline"}
                               size="sm"
                               onClick={() => {
-                                const newLearningState = !isLearning;
-                                console.log('🎯 Learning button clicked - old state:', isLearning, 'new state:', newLearningState);
-                                setIsLearning(newLearningState);
+                                console.log('🎯 Learning button clicked - current state:', isLearning);
+                                // Use functional update to avoid closure issues
+                                setIsLearning(prevState => {
+                                  const newState = !prevState;
+                                  console.log('🎯 State update - from:', prevState, 'to:', newState);
+                                  return newState;
+                                });
                                 
-                                // Force re-render debugging
+                                // Check state after React has processed
                                 setTimeout(() => {
-                                  console.log('🎯 Learning state after timeout:', isLearning);
-                                }, 100);
+                                  setIsLearning(currentState => {
+                                    console.log('🎯 State check after timeout:', currentState);
+                                    return currentState; // Don't change, just check
+                                  });
+                                }, 200);
                               }}
                               className="flex items-center gap-1"
                               data-testid={`button-learn-${device.id}`}

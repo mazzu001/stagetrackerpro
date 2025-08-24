@@ -190,6 +190,36 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     }
   };
 
+  // Translate raw MIDI bytes back to bracket format for display
+  const translateMIDIBytesToBracketFormat = (midiBytes: number[]): string => {
+    if (midiBytes.length < 2) return 'Invalid MIDI data';
+    
+    const status = midiBytes[0];
+    const channel = (status & 0x0F) + 1; // Convert to 1-based channel
+    const command = status & 0xF0;
+    
+    try {
+      if (command === 0xC0) {
+        // Program Change
+        return `[[PC:${midiBytes[1]}:${channel}]]`;
+      } else if (command === 0xB0 && midiBytes.length >= 3) {
+        // Control Change
+        return `[[CC:${midiBytes[1]}:${midiBytes[2]}:${channel}]]`;
+      } else if (command === 0x90 && midiBytes.length >= 3) {
+        // Note On
+        return `[[NOTE:${midiBytes[1]}:${midiBytes[2]}:${channel}]]`;
+      } else if (command === 0x80 && midiBytes.length >= 3) {
+        // Note Off
+        return `[[NOTE:${midiBytes[1]}:0:${channel}]]`;
+      } else {
+        // Unknown or unsupported command
+        return `Raw MIDI: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`;
+      }
+    } catch (error) {
+      return `Parse error: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`;
+    }
+  };
+
   // Enhanced device detection for maximum MIDI device compatibility
   const isMIDIDevice = (name: string): 'midi' | 'bluetooth' => {
     const lowerName = name.toLowerCase();
@@ -799,13 +829,26 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                   
                   // Parse received data (might be BLE MIDI format)
                   const receivedData = Array.from(data);
-                  console.log('Received MIDI data:', receivedData);
+                  console.log('📥 Received raw data:', receivedData);
+                  
+                  // Extract MIDI bytes from BLE MIDI format (remove timestamp headers)
+                  let midiBytes = receivedData;
+                  
+                  // If data starts with timestamp headers (0x80), remove them
+                  if (receivedData.length >= 3 && (receivedData[0] & 0x80) && (receivedData[1] & 0x80)) {
+                    midiBytes = receivedData.slice(2); // Remove first 2 timestamp bytes
+                    console.log('📋 Extracted MIDI bytes from BLE format:', midiBytes);
+                  }
+                  
+                  // Translate to bracket format
+                  const bracketFormat = translateMIDIBytesToBracketFormat(midiBytes);
+                  console.log('🎼 Translated to bracket format:', bracketFormat);
                   
                   const message: BluetoothMessage = {
                     timestamp: Date.now(),
                     deviceId: device.id,
                     deviceName: device.name,
-                    data: `Received: [${receivedData.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+                    data: `Received: ${bracketFormat} → [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
                     type: 'midi'
                   };
                   

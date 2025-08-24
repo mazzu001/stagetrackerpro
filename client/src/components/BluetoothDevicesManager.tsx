@@ -176,6 +176,121 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     return midiKeywords.some(keyword => lowerName.includes(keyword)) ? 'midi' : 'bluetooth';
   };
 
+  // Send MIDI data to a specific characteristic
+  const sendMIDIToCharacteristic = async (characteristic: any, midiBytes: number[], device: BluetoothDevice) => {
+    // Try BLE MIDI format first (most common for Bluetooth MIDI)
+    const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
+    const timestampHigh = 0x80 | (timestamp >> 7);
+    const timestampLow = 0x80 | (timestamp & 0x7F);
+    const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
+    
+    console.log(`📤 Sending BLE MIDI: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+    
+    try {
+      if (characteristic.canWrite) {
+        await characteristic.characteristic.writeValueWithResponse(blePacket);
+      } else if (characteristic.canWriteWithoutResponse) {
+        await characteristic.characteristic.writeValueWithoutResponse(blePacket);
+      }
+      console.log(`✅ BLE MIDI sent successfully`);
+      return;
+    } catch (bleError) {
+      console.log(`⚠️ BLE MIDI failed, trying raw format: ${bleError}`);
+    }
+    
+    // Fallback to raw MIDI
+    const rawPacket = new Uint8Array(midiBytes);
+    console.log(`📤 Sending raw MIDI: [${Array.from(rawPacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+    
+    if (characteristic.canWrite) {
+      await characteristic.characteristic.writeValueWithResponse(rawPacket);
+    } else if (characteristic.canWriteWithoutResponse) {
+      await characteristic.characteristic.writeValueWithoutResponse(rawPacket);
+    }
+    console.log(`✅ Raw MIDI sent successfully`);
+  };
+
+  // Discover and test characteristics (only when needed)
+  const discoverAndTestCharacteristics = async (device: BluetoothDevice, midiBytes: number[], parsed: any) => {
+    const connectionInfo = deviceConnections.get(device.id);
+    const bluetoothDevice = connectionInfo?.bluetoothDevice;
+    const server = bluetoothDevice.gatt;
+    
+    console.log(`🔍 Discovering characteristics for ${device.name}...`);
+    
+    const services = await server.getPrimaryServices();
+    const writableCharacteristics = [];
+    
+    // Find writable characteristics
+    for (const service of services) {
+      try {
+        const characteristics = await service.getCharacteristics();
+        for (const char of characteristics) {
+          if (char.properties.write || char.properties.writeWithoutResponse) {
+            writableCharacteristics.push({
+              service: service.uuid,
+              char: char.uuid,
+              characteristic: char,
+              canWrite: char.properties.write,
+              canWriteWithoutResponse: char.properties.writeWithoutResponse
+            });
+          }
+        }
+      } catch (charError) {
+        console.log(`❌ Could not read characteristics from service ${service.uuid}`);
+      }
+    }
+    
+    if (writableCharacteristics.length === 0) {
+      throw new Error('No writable characteristics found on device');
+    }
+    
+    console.log(`🎯 Found ${writableCharacteristics.length} writable characteristics - testing first one...`);
+    
+    // Test the first writable characteristic (most likely to work)
+    const testChar = writableCharacteristics[0];
+    console.log(`🧪 Testing characteristic: ${testChar.char}`);
+    
+    try {
+      await sendMIDIToCharacteristic(testChar, midiBytes, device);
+      
+      // Success! Save this characteristic for future use
+      setDeviceConnections(prev => {
+        const newConnections = new Map(prev);
+        const existingConnection = newConnections.get(device.id) || {};
+        newConnections.set(device.id, {
+          ...existingConnection,
+          sendCharacteristic: testChar
+        });
+        return newConnections;
+      });
+      
+      console.log(`✅ Characteristic ${testChar.char} works! Saved for future use.`);
+      
+      // Show success feedback
+      setOutgoingDataActive(true);
+      setTimeout(() => setOutgoingDataActive(false), 300);
+      
+      const message: BluetoothMessage = {
+        timestamp: Date.now(),
+        deviceId: device.id,
+        deviceName: device.name,
+        data: `Sent: ${parsed.formatted} → [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+        type: 'midi'
+      };
+      setMessages(prev => [...prev.slice(-49), message]);
+      
+      toast({
+        title: "Command Sent",
+        description: `Successfully sent ${parsed.formatted} to ${device.name}`,
+      });
+      
+    } catch (testError) {
+      console.log(`❌ First characteristic test failed: ${testError}`);
+      throw new Error(`No working characteristic found. Device may not support MIDI input.`);
+    }
+  };
+
   // Quick scan for easily discoverable devices
   const handleQuickScan = async () => {
     if (!hasBluetoothSupport) {
@@ -214,23 +329,24 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         toast({
           title: "Device Already Added",
           description: `${newDevice.name} is already in your device list`,
-          variant: "default",
         });
-      } else {
-        const updatedDevices = [...devices, newDevice];
-        setDevices(updatedDevices);
-        saveDevicesToStorage(updatedDevices);
-
-        toast({
-          title: "Device Added",
-          description: `Added ${newDevice.name} to device list`,
-        });
+        return;
       }
-    } catch (error) {
-      if (error instanceof Error && error.name !== 'NotFoundError') {
+
+      const updatedDevices = [...devices, newDevice];
+      setDevices(updatedDevices);
+      saveDevicesToStorage(updatedDevices);
+
+      toast({
+        title: "Device Found",
+        description: `Added ${newDevice.name} to device list`,
+      });
+    } catch (error: any) {
+      console.error('Quick scan error:', error);
+      if (error.name !== 'NotFoundError') {
         toast({
           title: "Scan Failed",
-          description: `Quick scan failed: ${error.message}`,
+          description: error.message || "Failed to scan for devices",
           variant: "destructive",
         });
       }
@@ -239,7 +355,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     }
   };
 
-  // Deep scan with multiple attempts
+  // Deep scan for all discoverable devices
   const handleDeepScan = async () => {
     if (!hasBluetoothSupport) {
       toast({
@@ -251,194 +367,177 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     }
 
     setIsScanning(true);
+    console.log('🔍 Starting deep scan for all Bluetooth devices...');
+    
     try {
-      // Try multiple scan approaches
-      const services = [
-        '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // BLE MIDI
-        '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART  
-        '0000fff0-0000-1000-8000-00805f9b34fb', // Generic MIDI
-        '0000180a-0000-1000-8000-00805f9b34fb', // Device Information
-        '0000180f-0000-1000-8000-00805f9b34fb'  // Battery Service
+      // Multiple scans with different service filters
+      const scanPromises = [
+        // MIDI specific scan
+        (navigator as any).bluetooth.requestDevice({
+          filters: [
+            { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] }, // BLE MIDI
+          ],
+          optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
+        }).catch(() => null),
+        
+        // General device scan
+        (navigator as any).bluetooth.requestDevice({
+          acceptAllDevices: true,
+          optionalServices: [
+            '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // BLE MIDI
+            '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART
+            '0000fff0-0000-1000-8000-00805f9b34fb'  // Generic MIDI
+          ]
+        }).catch(() => null),
       ];
 
-      for (let attempt = 1; attempt <= 3; attempt++) {
-        try {
-          console.log(`Deep scan attempt ${attempt}/3`);
-          
-          for (const service of services) {
-            try {
-              const bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
-                filters: [{ services: [service] }],
-                optionalServices: services
-              });
+      const results = await Promise.allSettled(scanPromises);
+      const foundDevices = results
+        .filter(result => result.status === 'fulfilled' && result.value)
+        .map(result => (result as any).value);
 
-              const deviceType = isMIDIDevice(bluetoothDevice.name || 'Unknown');
-              const newDevice: BluetoothDevice = {
-                id: bluetoothDevice.id || `bt_${Date.now()}_${attempt}`,
-                name: bluetoothDevice.name || `Unknown Device ${attempt}`,
-                connected: false,
-                paired: true,
-                type: deviceType,
-                address: bluetoothDevice.id || undefined
-              };
+      let addedCount = 0;
+      for (const bluetoothDevice of foundDevices) {
+        const deviceType = isMIDIDevice(bluetoothDevice.name || 'Unknown');
+        const newDevice: BluetoothDevice = {
+          id: bluetoothDevice.id || `bt_${Date.now()}`,
+          name: bluetoothDevice.name || 'Unknown Device',
+          connected: false,
+          paired: true,
+          type: deviceType,
+          address: bluetoothDevice.id || undefined
+        };
 
-              // Check if device already exists
-              if (!devices.find(d => d.id === newDevice.id || d.name === newDevice.name)) {
-                setDevices(prev => {
-                  const updated = [...prev, newDevice];
-                  saveDevicesToStorage(updated);
-                  return updated;
-                });
-
-                const deviceTypeLabel = deviceType === 'midi' ? 'MIDI device' : 'Bluetooth device';
-                toast({
-                  title: "Device Found",
-                  description: `Found: ${newDevice.name} (${deviceTypeLabel})`,
-                });
-                break;
-              }
-            } catch (attemptError) {
-              console.log(`Scan attempt ${attempt} failed:`, attemptError);
-            }
-          }
-        } catch (attemptError) {
-          console.log(`Scan attempt ${attempt} failed:`, attemptError);
+        // Check if device already exists
+        const existingDevice = devices.find(d => d.id === newDevice.id || d.name === newDevice.name);
+        if (!existingDevice) {
+          setDevices(prev => {
+            const updated = [...prev, newDevice];
+            saveDevicesToStorage(updated);
+            return updated;
+          });
+          addedCount++;
         }
-        
-        // Wait between attempts
-        await new Promise(resolve => setTimeout(resolve, 200));
       }
-    } catch (error) {
-      console.error('Deep scan failed:', error);
-      toast({
-        title: "Deep Scan Failed",
-        description: `Deep scan failed: ${error}`,
-        variant: "destructive",
-      });
+
+      if (addedCount > 0) {
+        toast({
+          title: "Deep Scan Complete",
+          description: `Found and added ${addedCount} new device(s)`,
+        });
+      } else {
+        toast({
+          title: "Deep Scan Complete",
+          description: "No new devices found",
+        });
+      }
+    } catch (error: any) {
+      console.error('Deep scan error:', error);
+      if (error.name !== 'NotFoundError') {
+        toast({
+          title: "Deep Scan Failed",
+          description: error.message || "Failed to perform deep scan",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsScanning(false);
     }
   };
 
-  // Connect to device
+  // Connect to a device
   const handleConnectDevice = async (device: BluetoothDevice) => {
-    if (!hasBluetoothSupport) {
-      toast({
-        title: "Connection Failed",
-        description: "Bluetooth not supported in this browser",
-        variant: "destructive",
-      });
-      return;
-    }
-
     try {
-      console.log('Connecting to MIDI device:', device.name);
-
-      // Request the device again to get a fresh connection
+      console.log(`🔗 Connecting to ${device.name}...`);
+      
       const bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
         filters: [{ name: device.name }],
-        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700', '7772e5db-3868-4112-a1a9-f2669d106bf3']
+        optionalServices: [
+          '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // BLE MIDI
+          '6e400001-b5a3-f393-e0a9-e50e24dcca9e', // Nordic UART
+          '0000fff0-0000-1000-8000-00805f9b34fb'  // Generic MIDI
+        ]
       });
 
-      console.log('Device requested, connecting to GATT server...');
+      console.log('🔗 Connecting to GATT server...');
       const server = await bluetoothDevice.gatt.connect();
       
-      console.log('Connected to GATT server');
+      console.log('🔍 Getting primary services...');
+      const services = await server.getPrimaryServices();
+      
+      console.log(`✅ Connected to ${device.name} with ${services.length} services`);
 
-      // Store the Bluetooth device connection for sending commands
+      // Store the Bluetooth device connection
       setDeviceConnections(prev => {
         const newConnections = new Map(prev);
         newConnections.set(device.id, {
-          bluetoothDevice: bluetoothDevice,
-          gattServer: server
+          bluetoothDevice,
+          server,
+          services
         });
         return newConnections;
       });
 
       // Update device status
       setDevices(prev => prev.map(d => 
-        d.id === device.id ? { ...d, connected: true, paired: true } : d
+        d.id === device.id ? { ...d, connected: true } : d
       ));
-      setConnectedDevices(prev => [...prev.filter(d => d.id !== device.id), { ...device, connected: true, paired: true }]);
-
-      // Set up device listening
-      await setupDeviceListening(bluetoothDevice, device);
-
+      setConnectedDevices(prev => {
+        const isAlreadyConnected = prev.some(d => d.id === device.id);
+        return isAlreadyConnected ? prev : [...prev, { ...device, connected: true }];
+      });
+      
       saveDevicesToStorage(devices.map(d => 
-        d.id === device.id ? { ...d, connected: true, paired: true } : d
+        d.id === device.id ? { ...d, connected: true } : d
       ));
+
+      // Set up notification handlers for incoming MIDI data (if this is a MIDI device)
+      if (device.type === 'midi') {
+        await setupMIDINotifications(device, bluetoothDevice);
+      }
 
       toast({
-        title: "MIDI Device Connected",
+        title: "Device Connected",
         description: `Successfully connected to ${device.name}`,
       });
-    } catch (error) {
-      console.error('Connection failed:', error);
-      
-      setDevices(prev => prev.map(d => 
-        d.id === device.id ? { ...d, connected: false } : d
-      ));
-
+    } catch (error: any) {
+      console.error('Connection error:', error);
       toast({
         title: "Connection Failed",
-        description: `Failed to connect to ${device.name}: ${error}`,
+        description: `Failed to connect to ${device.name}: ${error.message}`,
         variant: "destructive",
       });
     }
   };
 
-  // Set up device listening for MIDI messages
-  const setupDeviceListening = async (bluetoothDevice: any, device: BluetoothDevice) => {
-    console.log('Setting up MIDI device listening for:', device.name);
-    
-    const debugMessage: BluetoothMessage = {
-      timestamp: Date.now(),
-      deviceId: device.id,
-      deviceName: device.name,
-      data: 'DEBUG: Starting MIDI listener setup...',
-      type: 'midi'
-    };
-    setMessages(prev => [...prev.slice(-49), debugMessage]);
-    
+  // Setup MIDI notifications for receiving data
+  const setupMIDINotifications = async (device: BluetoothDevice, bluetoothDevice: any) => {
     try {
-      // DISCOVER ALL SERVICES AND CHARACTERISTICS THAT WORK FOR RECEIVING
-      const server = bluetoothDevice.gatt;
-      console.log(`🔍 ANALYZING ALL SERVICES FOR RECEIVING FROM ${device.name}...`);
+      console.log(`🎵 Setting up MIDI notifications for ${device.name}...`);
       
+      const server = bluetoothDevice.gatt;
       const services = await server.getPrimaryServices();
-      let foundReceiveChar = null;
+      
+      let foundReceiveChar = false;
       let foundReceiveService = null;
       
-      // Try to find ANY characteristic that can notify (receive data from device)
+      // Look for notification characteristics
       for (const service of services) {
-        console.log(`🔍 Checking service: ${service.uuid}`);
         try {
           const characteristics = await service.getCharacteristics();
+          console.log(`📋 Service ${service.uuid} has ${characteristics.length} characteristics`);
+          
           for (const char of characteristics) {
-            console.log(`  📝 Characteristic: ${char.uuid}`);
-            console.log(`    Properties:`, char.properties);
-            
-            if (char.properties.notify || char.properties.indicate) {
-              console.log(`  🎯 FOUND NOTIFICATION CHARACTERISTIC: ${service.uuid} → ${char.uuid}`);
+            if (char.properties.notify) {
+              console.log(`🔔 Found notification characteristic: ${char.uuid}`);
               
               try {
-                // Try to start notifications on this characteristic
-                await char.startNotifications();
-                foundReceiveChar = char;
-                foundReceiveService = service;
-                
-                console.log(`✅ SUCCESSFULLY STARTED NOTIFICATIONS ON: ${service.uuid} → ${char.uuid}`);
-                console.log(`🔑 THIS IS THE CHARACTERISTIC YOUR PEDAL USES FOR OUTPUT!`);
-                
-                // Store this information for later use in sending
+                // Store receive info for this device
                 const receiveInfo = {
                   serviceUuid: service.uuid,
-                  charUuid: char.uuid,
-                  service: service,
-                  characteristic: char
+                  charUuid: char.uuid
                 };
                 
-                // Store in device connections for reference during sending
                 setDeviceConnections(prev => {
                   const newConnections = new Map(prev);
                   const existingDevice = newConnections.get(device.id) || {};
@@ -447,6 +546,33 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                     receiveInfo: receiveInfo
                   });
                   return newConnections;
+                });
+                
+                await char.startNotifications();
+                foundReceiveChar = true;
+                foundReceiveService = service;
+                
+                char.addEventListener('characteristicvaluechanged', (event: any) => {
+                  const value = event.target.value;
+                  const data = new Uint8Array(value.buffer);
+                  
+                  // Flash green light for incoming data
+                  setIncomingDataActive(true);
+                  setTimeout(() => setIncomingDataActive(false), 300);
+                  
+                  // Parse received data (might be BLE MIDI format)
+                  const receivedData = Array.from(data);
+                  console.log('Received MIDI data:', receivedData);
+                  
+                  const message: BluetoothMessage = {
+                    timestamp: Date.now(),
+                    deviceId: device.id,
+                    deviceName: device.name,
+                    data: `Received: [${receivedData.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+                    type: 'midi'
+                  };
+                  
+                  setMessages(prev => [...prev.slice(-49), message]);
                 });
                 
                 break; // Found a working notification characteristic
@@ -461,97 +587,27 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         }
       }
       
-      if (!foundReceiveChar || !foundReceiveService) {
-        throw new Error('No notification characteristics found');
+      if (foundReceiveChar) {
+        console.log('✅ MIDI notifications setup complete');
+        
+        const successMessage: BluetoothMessage = {
+          timestamp: Date.now(),
+          deviceId: device.id,
+          deviceName: device.name,
+          data: 'MIDI listener setup complete - ready to receive data',
+          type: 'midi'
+        };
+        setMessages(prev => [...prev.slice(-49), successMessage]);
+      } else {
+        console.log('⚠️ No notification characteristics found');
       }
       
-      const midiService = foundReceiveService;
-      const midiCharacteristic = foundReceiveChar;
-      
-      // Set up notification listener for incoming MIDI data
-      await midiCharacteristic.startNotifications();
-      
-      midiCharacteristic.addEventListener('characteristicvaluechanged', (event: any) => {
-        const value = event.target.value;
-        const data = new Uint8Array(value.buffer);
-        
-        // Flash green light for incoming data
-        setIncomingDataActive(true);
-        setTimeout(() => setIncomingDataActive(false), 300);
-        
-        // Parse BLE MIDI data (skip timestamp header bytes)
-        const midiData = Array.from(data).slice(2); // Remove BLE MIDI timestamp header
-        
-        // Create readable message
-        const message: BluetoothMessage = {
-          timestamp: Date.now(),
-          deviceId: device.id,
-          deviceName: device.name,
-          data: `Received: [${midiData.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
-          type: 'midi'
-        };
-        
-        setMessages(prev => [...prev.slice(-49), message]);
-        console.log('Received MIDI data from', device.name, ':', midiData);
-      });
-      
-      console.log('MIDI characteristic notifications started successfully');
-      
-      const successMessage: BluetoothMessage = {
-        timestamp: Date.now(),
-        deviceId: device.id,
-        deviceName: device.name,
-        data: 'MIDI listener setup complete - ready to receive data',
-        type: 'midi'
-      };
-      setMessages(prev => [...prev.slice(-49), successMessage]);
-      
-      // Add disconnect listener
-      bluetoothDevice.addEventListener('gattserverdisconnected', () => {
-        console.log('MIDI device disconnected:', device.name);
-        const disconnectMessage: BluetoothMessage = {
-          timestamp: Date.now(),
-          deviceId: device.id,
-          deviceName: device.name,
-          data: 'MIDI device disconnected',
-          type: 'midi'
-        };
-        setMessages(prev => [...prev.slice(-49), disconnectMessage]);
-        
-        // Update device status
-        setDevices(prev => prev.map(d => 
-          d.id === device.id ? { ...d, connected: false } : d
-        ));
-        setConnectedDevices(prev => prev.filter(d => d.id !== device.id));
-      });
-      
-    } catch (error) {
-      console.error('Error setting up MIDI device listening:', error);
-      
-      const errorMessage: BluetoothMessage = {
-        timestamp: Date.now(),
-        deviceId: device.id,
-        deviceName: device.name,
-        data: `ERROR: Failed to set up MIDI listeners: ${error}`,
-        type: 'midi'
-      };
-      setMessages(prev => [...prev.slice(-49), errorMessage]);
+    } catch (error: any) {
+      console.error('Failed to setup MIDI notifications:', error);
     }
-    
-    // Add a test message to confirm the MIDI system is working
-    setTimeout(() => {
-      const testMessage: BluetoothMessage = {
-        timestamp: Date.now(),
-        deviceId: device.id,
-        deviceName: device.name,
-        data: 'MIDI system ready - waiting for MIDI input...',
-        type: 'midi'
-      };
-      setMessages(prev => [...prev.slice(-49), testMessage]);
-    }, 1000);
   };
 
-  // Disconnect device
+  // Disconnect from a device
   const handleDisconnectDevice = async (device: BluetoothDevice) => {
     try {
       // Remove device connection
@@ -598,7 +654,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
     });
   };
 
-  // Send command to device - SIMPLIFIED VERSION FOR TESTING
+  // Send command to device - EFFICIENT VERSION
   const handleSendCommand = async (device: BluetoothDevice, command: string) => {
     try {
       console.log(`🎹 Sending command to ${device.name}:`, command);
@@ -610,7 +666,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
       }
       
       const midiBytes = parsed.bytes;
-      console.log(`🎵 Parsed MIDI bytes:`, midiBytes);
+      console.log(`🎵 Parsed MIDI bytes: [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
       
       // Get the stored Bluetooth connection
       const connectionInfo = deviceConnections.get(device.id);
@@ -629,274 +685,45 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
           throw new Error('Device not connected and reconnection failed');
         }
       }
-      
-      // FIRST CHECK IF WE HAVE RECEIVE INFO TO GUIDE US  
-      let receiveInfo = null;
-      
-      if (connectionInfo && connectionInfo.receiveInfo) {
-        receiveInfo = connectionInfo.receiveInfo;
-        console.log(`🔑 USING RECEIVE INFO TO GUIDE SENDING:`);
-        console.log(`🔑 Pedal receives FROM us using service: ${receiveInfo.serviceUuid}`);
-        console.log(`🔑 Pedal sends TO us using characteristic: ${receiveInfo.charUuid}`);
-        console.log(`🔑 Looking for INPUT characteristic in same service...`);
+
+      // Check if we have a known working characteristic from previous connection
+      let knownCharacteristic = null;
+      if (connectionInfo && connectionInfo.sendCharacteristic) {
+        knownCharacteristic = connectionInfo.sendCharacteristic;
+        console.log(`📤 Using known working characteristic: ${knownCharacteristic.char}`);
       }
-      
-      // TEST ALL WRITABLE CHARACTERISTICS (prioritizing same service as receiver)
-      try {
-        const server = bluetoothDevice.gatt;
-        console.log(`🔍 TESTING ALL WRITABLE CHARACTERISTICS FOR ${device.name}...`);
-        
-        const services = await server.getPrimaryServices();
-        const writableCharacteristics = [];
-        
-        // Find ALL characteristics (not just writable ones) and try each one
-        console.log(`🔍 ANALYZING ALL CHARACTERISTICS (including non-writable ones):`);
-        
-        for (const service of services) {
-          try {
-            const characteristics = await service.getCharacteristics();
-            console.log(`\n📋 SERVICE ${service.uuid} has ${characteristics.length} characteristics:`);
-            
-            for (const char of characteristics) {
-              const isFromReceiveService = receiveInfo && service.uuid === receiveInfo.serviceUuid;
-              const isSameAsReceiveChar = receiveInfo && char.uuid === receiveInfo.charUuid;
-              
-              console.log(`  📝 Characteristic: ${char.uuid}`);
-              console.log(`    Properties: read:${char.properties.read} write:${char.properties.write} writeWithoutResponse:${char.properties.writeWithoutResponse} notify:${char.properties.notify}`);
-              
-              // Add ALL characteristics that might potentially work for input
-              const couldBeInput = char.properties.write || 
-                                  char.properties.writeWithoutResponse || 
-                                  (!isSameAsReceiveChar && isFromReceiveService); // Different char in same service
-              
-              if (couldBeInput) {
-                writableCharacteristics.push({
-                  service: service.uuid,
-                  char: char.uuid,
-                  characteristic: char,
-                  canWrite: char.properties.write,
-                  canWriteWithoutResponse: char.properties.writeWithoutResponse,
-                  priority: isFromReceiveService ? (isSameAsReceiveChar ? 1 : 2) : 3,
-                  reason: char.properties.write ? 'CAN_WRITE' : 
-                         char.properties.writeWithoutResponse ? 'CAN_WRITE_WITHOUT_RESPONSE' :
-                         'SAME_SERVICE_AS_RECEIVER'
-                });
-                
-                const priorityLabel = isFromReceiveService 
-                  ? (isSameAsReceiveChar ? ' 🌟 SAME AS RECEIVE CHAR!' : ' ⭐ SAME SERVICE AS RECEIVER')
-                  : '';
-                console.log(`    🎯 POTENTIAL INPUT: ${service.uuid} → ${char.uuid}${priorityLabel} (${char.properties.write ? 'write' : ''}${char.properties.writeWithoutResponse ? 'writeWithoutResponse' : ''})`);
-              } else {
-                console.log(`    ❌ Not suitable for input: ${service.uuid} → ${char.uuid}`);
-              }
-            }
-          } catch (charError: any) {
-            console.log(`❌ Could not read characteristics from service ${service.uuid}`);
-          }
-        }
-        
-        if (writableCharacteristics.length === 0) {
-          throw new Error('No writable characteristics found on device');
-        }
-        
-        // Sort by priority (same char first, then same service, then others)
-        writableCharacteristics.sort((a, b) => a.priority - b.priority);
-        
-        console.log(`🎯 Found ${writableCharacteristics.length} writable characteristics - testing each one (prioritized by receive info)...`);
-        
-        // SPECIAL CASE: If we found the exact receive characteristic and it's writable, test it first
-        if (receiveInfo) {
-          const exactReceiveChar = writableCharacteristics.find(wc => 
-            wc.service === receiveInfo.serviceUuid && 
-            wc.char === receiveInfo.charUuid
-          );
+
+      // Try to send using known working characteristic first
+      if (knownCharacteristic) {
+        try {
+          await sendMIDIToCharacteristic(knownCharacteristic, midiBytes, device);
           
-          if (exactReceiveChar) {
-            console.log(`\n🌟 SPECIAL TEST: Using EXACT same characteristic that receives data from your pedal!`);
-            console.log(`🌟 Service: ${receiveInfo.serviceUuid}`);
-            console.log(`🌟 Characteristic: ${receiveInfo.charUuid}`);
-            console.log(`📤 WATCH YOUR PEDAL LIGHT - This should work!`);
-            
-            try {
-              // Create BLE MIDI packet with timestamp header (same format as incoming data)
-              // WIDI Jack exact BLE MIDI format - 13-bit timestamp properly split
-              const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp (0-8191ms)
-              const timestampHigh = 0x80 | (timestamp >> 7);     // Header: upper 6 bits (no extra mask needed)
-              const timestampLow = 0x80 | (timestamp & 0x7F);    // Timestamp: lower 7 bits
-              const blePacket = new Uint8Array([timestampHigh, timestampLow, ...midiBytes]);
-              
-              console.log(`📤 Sending BLE MIDI packet: [${Array.from(blePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              console.log(`📤 Raw MIDI data: [${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              console.log(`📤 BLE timestamp header: [${timestampHigh.toString(16).padStart(2, '0')} ${timestampLow.toString(16).padStart(2, '0')}]`);
-              
-              // USE WRITE WITH RESPONSE FIRST (this fixes the most common issue!)
-              if (exactReceiveChar.canWrite) {
-                await exactReceiveChar.characteristic.writeValueWithResponse(blePacket);
-                console.log(`✅ writeValueWithResponse() with BLE MIDI format completed!`);
-              } else if (exactReceiveChar.canWriteWithoutResponse) {
-                await exactReceiveChar.characteristic.writeValueWithoutResponse(blePacket);
-                console.log(`✅ writeValueWithoutResponse() with BLE MIDI format completed!`);
-              }
-              
-              console.log(`🚨🚨🚨 DID YOUR WIDI JACK RECEIVE THE COMMAND? If NO, trying alternative formats...🚨🚨🚨`);
-              console.log(`📍 WIDI Jack should BLINK when receiving data - if no blink, data not reaching device!`);
-              
-              // Enable notifications (required for most BLE MIDI devices)
-              try {
-                await exactReceiveChar.characteristic.startNotifications();
-                console.log(`✅ Notifications enabled for BLE MIDI device`);
-              } catch (notifError) {
-                console.log(`⚠️ Could not enable notifications:`, notifError);
-              }
-              
-              // Wait longer for WIDI Jack (they need sequential operations)
-              await new Promise(resolve => setTimeout(resolve, 2000));
-              
-              // Try alternative formats if the standard one didn't work
-              console.log(`\n🔄 TRYING ALTERNATIVE DATA FORMATS FOR WIDI JACK...`);
-              
-              // Format 1: Raw MIDI data (no BLE headers)
-              console.log(`📤 FORMAT 1: Raw MIDI data (no BLE timestamp)`);
-              const rawPacket = new Uint8Array(midiBytes);
-              console.log(`📤 Sending: [${Array.from(rawPacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              // Try writeValueWithResponse for raw data too
-              if (exactReceiveChar.canWrite) {
-                await exactReceiveChar.characteristic.writeValueWithResponse(rawPacket);
-                console.log(`✅ writeValueWithResponse() on raw data completed!`);
-              } else {
-                await exactReceiveChar.characteristic.writeValueWithoutResponse(rawPacket);
-                console.log(`✅ writeValueWithoutResponse() on raw data completed!`);
-              }
-              console.log(`🚨 DID WIDI JACK RECEIVE RAW FORMAT?`);
-              await new Promise(resolve => setTimeout(resolve, 2000)); // Longer delay for WIDI Jack
-              
-              // Format 2: Different BLE MIDI timestamp format with response
-              console.log(`📤 FORMAT 2: Alternative BLE MIDI timestamp WITH RESPONSE`);
-              const altBlePacket = new Uint8Array([0x80, 0x80, ...midiBytes]); // Fixed timestamp
-              console.log(`📤 Sending: [${Array.from(altBlePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              if (exactReceiveChar.canWrite) {
-                await exactReceiveChar.characteristic.writeValueWithResponse(altBlePacket);
-                console.log(`✅ writeValueWithResponse() on fixed timestamp completed!`);
-              } else {
-                await exactReceiveChar.characteristic.writeValueWithoutResponse(altBlePacket);
-                console.log(`✅ writeValueWithoutResponse() on fixed timestamp completed!`);
-              }
-              console.log(`🚨 DID WIDI JACK RECEIVE FIXED TIMESTAMP?`);
-              await new Promise(resolve => setTimeout(resolve, 2000)); // Longer delay for WIDI Jack
-              
-              // Format 3: Try a Note On command with response
-              console.log(`📤 FORMAT 3: Note On command WITH RESPONSE`);
-              const noteOnBytes = [0x90, 0x40, 0x7F]; // Note On, middle C, velocity 127
-              const noteOnBlePacket = new Uint8Array([timestampHigh, timestampLow, ...noteOnBytes]);
-              console.log(`📤 Sending Note On: [${Array.from(noteOnBlePacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              if (exactReceiveChar.canWrite) {
-                await exactReceiveChar.characteristic.writeValueWithResponse(noteOnBlePacket);
-                console.log(`✅ writeValueWithResponse() on Note On completed!`);
-              } else {
-                await exactReceiveChar.characteristic.writeValueWithoutResponse(noteOnBlePacket);
-                console.log(`✅ writeValueWithoutResponse() on Note On completed!`);
-              }
-              console.log(`🚨 DID WIDI JACK RECEIVE NOTE ON COMMAND?`);
-              await new Promise(resolve => setTimeout(resolve, 2000)); // Longer delay for WIDI Jack
-              
-              // Format 4: Try raw Note On with response
-              console.log(`📤 FORMAT 4: Raw Note On WITH RESPONSE`);
-              const rawNoteOnPacket = new Uint8Array(noteOnBytes);
-              console.log(`📤 Sending raw Note On: [${Array.from(rawNoteOnPacket).map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-              if (exactReceiveChar.canWrite) {
-                await exactReceiveChar.characteristic.writeValueWithResponse(rawNoteOnPacket);
-                console.log(`✅ writeValueWithResponse() on raw Note On completed!`);
-              } else {
-                await exactReceiveChar.characteristic.writeValueWithoutResponse(rawNoteOnPacket);
-                console.log(`✅ writeValueWithoutResponse() on raw Note On completed!`);
-              }
-              console.log(`🚨 DID WIDI JACK RECEIVE RAW NOTE ON?`);
-              
-              console.log(`\n🎯 WIDI JACK FORMAT TESTS COMPLETE - Did any commands reach your VoiceLive 3?`);
-              
-              setOutgoingDataActive(true);
-              setTimeout(() => setOutgoingDataActive(false), 300);
-              
-              const testMessage: BluetoothMessage = {
-                timestamp: Date.now(),
-                deviceId: device.id,
-                deviceName: device.name,
-                data: `TESTED 4 formats on exact receive characteristic - check if any worked!`,
-                type: 'midi'
-              };
-              setMessages(prev => [...prev.slice(-49), testMessage]);
-              
-              toast({
-                title: "Multiple Format Test Complete!",
-                description: `Tried 4 different data formats - did any make the light blink?`,
-              });
-              
-              // Continue to test other characteristics if none of the formats worked
-              console.log(`\n🔄 If no formats worked, will test other characteristics...`);
-              
-            } catch (directError: any) {
-              console.log(`❌ Direct test on exact receive characteristic failed: ${directError?.message}`);
-            }
-          }
-        }
-        
-        console.log(`\n🔄 Testing all writable characteristics as fallback...`);
-        
-        // Test each writable characteristic
-        for (let i = 0; i < writableCharacteristics.length; i++) {
-          const testChar = writableCharacteristics[i];
-          console.log(`\n🧪 TEST ${i + 1}/${writableCharacteristics.length}:`);
-          console.log(`🔍 Service: ${testChar.service}`);
-          console.log(`🔍 Characteristic: ${testChar.char}`);
-          console.log(`📤 WATCH YOUR PEDAL LIGHT - Testing write to this characteristic...`);
+          // Success! Show feedback
+          setOutgoingDataActive(true);
+          setTimeout(() => setOutgoingDataActive(false), 300);
           
-          try {
-            // Test with raw MIDI data
-            const testPacket = new Uint8Array(midiBytes);
-            
-            if (testChar.canWriteWithoutResponse) {
-              await testChar.characteristic.writeValueWithoutResponse(testPacket);
-              console.log(`✅ writeValueWithoutResponse() test completed`);
-            } else if (testChar.canWrite) {
-              await testChar.characteristic.writeValue(testPacket);
-              console.log(`✅ writeValue() test completed`);
-            }
-            
-            console.log(`🚨 DID YOUR PEDAL LIGHT BLINK? If YES, this is the correct characteristic!`);
-            console.log(`⏳ Waiting 2 seconds before next test...`);
-            
-            // Wait 2 seconds between tests
-            await new Promise(resolve => setTimeout(resolve, 2000));
-            
-          } catch (testError: any) {
-            console.log(`❌ Test failed for ${testChar.char}: ${testError?.message || testError}`);
-          }
+          const message: BluetoothMessage = {
+            timestamp: Date.now(),
+            deviceId: device.id,
+            deviceName: device.name,
+            data: `Sent: ${parsed.formatted} → [${midiBytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`,
+            type: 'midi'
+          };
+          setMessages(prev => [...prev.slice(-49), message]);
+          
+          toast({
+            title: "Command Sent",
+            description: `Successfully sent ${parsed.formatted} to ${device.name}`,
+          });
+          
+          return; // Exit early if successful
+        } catch (knownCharError) {
+          console.log(`⚠️ Known characteristic failed, trying discovery: ${knownCharError}`);
         }
-        
-        console.log(`\n🎯 All tests completed. Which test made your pedal light blink?`);
-        
-        // Flash blue light for outgoing data attempt
-        setOutgoingDataActive(true);
-        setTimeout(() => setOutgoingDataActive(false), 300);
-        
-        const message: BluetoothMessage = {
-          timestamp: Date.now(),
-          deviceId: device.id,
-          deviceName: device.name,
-          data: `Tested ${writableCharacteristics.length} characteristics with: ${parsed.formatted}`,
-          type: 'midi'
-        };
-        setMessages(prev => [...prev.slice(-49), message]);
-        
-        toast({
-          title: "Characteristic Tests Completed",
-          description: `Tested ${writableCharacteristics.length} characteristics - check console for results`,
-        });
-        
-      } catch (gattError: any) {
-        console.error('🚨 GATT error:', gattError);
-        throw new Error(`Failed to access device characteristics: ${gattError?.message || gattError}`);
       }
+
+      // Discover and test characteristics if no known characteristic works
+      await discoverAndTestCharacteristics(device, midiBytes, parsed);
       
     } catch (error: any) {
       console.error('🚨 Error sending MIDI command:', error);
@@ -1045,10 +872,9 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
               </Button>
 
               {!hasBluetoothSupport && (
-                <Badge variant="destructive">
-                  <X className="h-3 w-3 mr-1" />
-                  Bluetooth Not Supported
-                </Badge>
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  Bluetooth not supported in this browser
+                </p>
               )}
             </div>
 
@@ -1057,13 +883,13 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                 {devices.length === 0 ? (
                   <div className="text-center text-gray-500 dark:text-gray-400 py-8">
                     <Bluetooth className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                    <p>No Bluetooth devices found</p>
-                    <p className="text-sm">Use Quick Scan or Deep Scan to discover devices</p>
+                    <p>No devices found</p>
+                    <p className="text-sm">Use Quick Scan or Deep Scan to discover Bluetooth devices</p>
                   </div>
                 ) : (
                   devices
                     .sort((a, b) => {
-                      // Sort MIDI devices first, then by connection status, then by name
+                      // MIDI devices first, then by connection status, then by name
                       if (a.type === 'midi' && b.type !== 'midi') return -1;
                       if (a.type !== 'midi' && b.type === 'midi') return 1;
                       if (a.connected && !b.connected) return -1;
@@ -1074,27 +900,22 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                       <Card key={device.id} className="p-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className={`p-2 rounded-full bg-gray-100 dark:bg-gray-800 ${getDeviceColor(device.type)}`}>
+                            <div className="flex items-center gap-2">
                               {getDeviceIcon(device.type)}
+                              <span className={`text-sm font-medium ${getDeviceColor(device.type)}`}>
+                                {device.name}
+                              </span>
+                              <Badge variant={device.type === 'midi' ? 'default' : 'secondary'} className="text-xs">
+                                {device.type === 'midi' ? 'MIDI' : 'Bluetooth'}
+                              </Badge>
                             </div>
-                            <div>
-                              <h3 className="font-medium text-sm">{device.name}</h3>
-                              <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                                <Badge variant={device.type === 'midi' ? 'default' : 'secondary'} className="text-xs">
-                                  {device.type === 'midi' ? 'MIDI' : 'Bluetooth'}
-                                </Badge>
-                                <Badge variant={device.connected ? 'default' : 'outline'} className="text-xs">
-                                  {device.connected ? 'Connected' : 'Disconnected'}
-                                </Badge>
-                                {device.paired && (
-                                  <Badge variant="outline" className="text-xs">
-                                    Paired
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
+                            {device.connected && (
+                              <Badge variant="default" className="bg-green-600 text-white text-xs">
+                                Connected
+                              </Badge>
+                            )}
                           </div>
-                          <div className="flex items-center gap-1">
+                          <div className="flex items-center gap-2">
                             {device.connected ? (
                               <Button
                                 variant="outline"
@@ -1102,7 +923,7 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                                 onClick={() => handleDisconnectDevice(device)}
                                 data-testid={`button-disconnect-${device.id}`}
                               >
-                                <WifiOff className="h-4 w-4" />
+                                Disconnect
                               </Button>
                             ) : (
                               <Button
@@ -1111,11 +932,11 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                                 onClick={() => handleConnectDevice(device)}
                                 data-testid={`button-connect-${device.id}`}
                               >
-                                <Wifi className="h-4 w-4" />
+                                Connect
                               </Button>
                             )}
                             <Button
-                              variant="ghost"
+                              variant="outline"
                               size="sm"
                               onClick={() => handleRemoveDevice(device)}
                               data-testid={`button-remove-${device.id}`}
@@ -1140,35 +961,37 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                 onClick={handleClearMessages}
                 data-testid="button-clear-messages"
               >
-                <Trash2 className="h-4 w-4" />
                 Clear Messages
               </Button>
             </div>
-
-            <ScrollArea className="h-[400px] border rounded-md p-4 bg-gray-50 dark:bg-gray-900 font-mono text-sm">
-              {messages.length === 0 ? (
-                <div className="text-center text-gray-500 dark:text-gray-400 py-8">
-                  <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                  <p>No MIDI messages yet</p>
-                  <p className="text-sm">Connect a MIDI device and start playing to see messages here</p>
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {messages.map((message, index) => (
-                    <div key={index} className="text-xs">
-                      <div className="text-gray-500 dark:text-gray-400">
-                        {new Date(message.timestamp).toLocaleTimeString()}
+            
+            <ScrollArea className="h-[400px]">
+              <div className="space-y-2">
+                {messages.length === 0 ? (
+                  <div className="text-center text-gray-500 dark:text-gray-400 py-8">
+                    <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                    <p>No MIDI messages</p>
+                    <p className="text-sm">Connect to a device and send commands to see messages here</p>
+                  </div>
+                ) : (
+                  messages.map((message, index) => (
+                    <Card key={index} className="p-3">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 text-sm">
+                          <Music className="h-3 w-3 text-purple-600" />
+                          <span className="font-medium text-black dark:text-white">{message.deviceName}</span>
+                          <span className="text-gray-500 dark:text-gray-400">
+                            {new Date(message.timestamp).toLocaleTimeString()}
+                          </span>
+                        </div>
+                        <p className="text-sm font-mono text-black dark:text-white bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                          {message.data}
+                        </p>
                       </div>
-                      <div className="font-semibold text-blue-600 dark:text-blue-400">
-                        {message.deviceName}
-                      </div>
-                      <div className="text-gray-900 dark:text-gray-100">
-                        {message.data}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    </Card>
+                  ))
+                )}
+              </div>
             </ScrollArea>
           </TabsContent>
 

@@ -1385,10 +1385,10 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                         </div>
                         
                         {/* MIDI Learn Slider */}
-                        <div className="mt-4 p-3 border rounded bg-gray-50 dark:bg-gray-800">
+                        <div className="mt-4 p-3 border-2 border-blue-200 dark:border-blue-700 rounded bg-blue-50 dark:bg-blue-900/20">
                           <div className="flex items-center justify-between mb-3">
-                            <h4 className="text-sm font-medium text-black dark:text-white">
-                              MIDI Learn Controller
+                            <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-100">
+                              🎛️ MIDI Learn Controller
                             </h4>
                             <Button
                               variant={isLearning ? "destructive" : "outline"}
@@ -1439,8 +1439,8 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
                           )}
                           
                           {!learnedMidiData && !isLearning && (
-                            <div className="text-xs text-gray-500 dark:text-gray-400 text-center py-2">
-                              Click Learn and move a controller on your MIDI device to assign it to this slider
+                            <div className="text-sm text-blue-700 dark:text-blue-300 text-center py-3 border border-blue-300 dark:border-blue-600 rounded bg-blue-100 dark:bg-blue-800">
+                              👆 Click "Learn" above and move a controller on your MIDI device to assign it to this slider
                             </div>
                           )}
                         </div>

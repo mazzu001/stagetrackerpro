@@ -52,24 +52,12 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
   const { user } = useLocalAuth();
   const isProfessional = user?.userType === 'professional';
   
+  // All useState hooks must come first before any useEffect hooks
   const [devices, setDevices] = useState<USBMIDIDevice[]>([]);
   const [connectedDevices, setConnectedDevices] = useState<USBMIDIDevice[]>([]);
   const [isScanning, setIsScanning] = useState(false);
   const [messages, setMessages] = useState<USBMIDIMessage[]>([]);
   const [selectedOutputDevice, setSelectedOutputDevice] = useState<string>('');
-  
-  // Storage keys
-  const CONNECTED_DEVICES_STORAGE_KEY = 'usb_midi_connected_devices';
-  const SELECTED_OUTPUT_DEVICE_KEY = 'usb_midi_selected_output_device';
-
-  // Load saved selected output device on startup
-  useEffect(() => {
-    const savedDevice = localStorage.getItem(SELECTED_OUTPUT_DEVICE_KEY);
-    if (savedDevice) {
-      setSelectedOutputDevice(savedDevice);
-      console.log(`📱 Restored selected USB output device from storage: ${savedDevice}`);
-    }
-  }, []);
   const [midiCommand, setMidiCommand] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [hasWebMIDISupport, setHasWebMIDISupport] = useState(false);
@@ -84,6 +72,19 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
   } | null>(null);
   
   const { toast } = useToast();
+  
+  // Storage keys
+  const CONNECTED_DEVICES_STORAGE_KEY = 'usb_midi_connected_devices';
+  const SELECTED_OUTPUT_DEVICE_KEY = 'usb_midi_selected_output_device';
+
+  // Load saved selected output device on startup
+  useEffect(() => {
+    const savedDevice = localStorage.getItem(SELECTED_OUTPUT_DEVICE_KEY);
+    if (savedDevice) {
+      setSelectedOutputDevice(savedDevice);
+      console.log(`📱 Restored selected USB output device from storage: ${savedDevice}`);
+    }
+  }, []);
 
   // Professional subscription check - restrict MIDI features to level 3 subscribers only
   useEffect(() => {

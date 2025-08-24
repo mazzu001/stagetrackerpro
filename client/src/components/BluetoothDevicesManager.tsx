@@ -905,8 +905,8 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
         setMessages(prev => [...prev.slice(-49), message]);
         
         toast({
-          title: "Command Sent",
-          description: `Successfully sent ${parsed.formatted} to ${device.name}`,
+          title: "✅ MIDI Command Sent!",
+          description: `Successfully sent ${parsed.formatted} to ${device.name} - Check your device for response`,
         });
       } else {
         throw new Error('Failed to find a working characteristic for sending MIDI data');

@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth, Zap, X, Target, Send } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth, Zap, X, Target, Send, Award, Sparkles, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -917,6 +917,17 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 <span className="text-xs md:text-sm text-green-300">Premium</span>
               </div>
             )}
+            {userType === 'professional' && (
+              <div className="flex items-center space-x-1 md:space-x-2 bg-gradient-to-r from-purple-900/40 to-pink-900/40 border border-purple-400/50 px-2 md:px-3 py-1 rounded-lg mobile-hidden">
+                <div className="relative">
+                  <Award className="w-3 h-3 md:w-4 md:h-4 text-yellow-400" />
+                  <Sparkles className="w-2 h-2 md:w-2.5 md:h-2.5 absolute -top-0.5 -right-0.5 text-purple-300 animate-pulse" />
+                </div>
+                <span className="text-xs md:text-sm text-transparent bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text font-semibold">
+                  ✨ Elite Pro
+                </span>
+              </div>
+            )}
             <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
               <DialogContent className="max-w-[98vw] w-full md:max-w-[85vw] max-h-[90vh] overflow-y-auto p-3 md:p-6">
                 <DialogHeader>
@@ -987,9 +998,19 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   )}
                   {userType === 'professional' && (
                     <>
-                      <DropdownMenuItem className="flex items-center">
-                        <Crown className="w-4 h-4 mr-2 text-purple-500" />
-                        <span className="text-purple-400">Professional Active</span>
+                      <DropdownMenuItem className="flex items-center bg-gradient-to-r from-purple-900/50 to-pink-900/50 border border-purple-500/30 rounded-lg mx-2 my-1">
+                        <div className="flex items-center">
+                          <div className="relative">
+                            <Award className="w-5 h-5 mr-2 text-yellow-400" />
+                            <Sparkles className="w-3 h-3 absolute -top-1 -right-1 text-purple-300 animate-pulse" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-transparent bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text font-semibold">
+                              ✨ Professional Elite
+                            </span>
+                            <span className="text-xs text-purple-400">Highest Tier Active</span>
+                          </div>
+                        </div>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                     </>

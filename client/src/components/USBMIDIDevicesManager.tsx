@@ -22,6 +22,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 import { formatMIDIMessage as formatMIDIData, parseMIDICommand } from '@/utils/midiFormatter';
+import { useLocalAuth } from '@/hooks/useLocalAuth';
 
 interface USBMIDIDevice {
   id: string;
@@ -48,12 +49,19 @@ interface USBMIDIDevicesManagerProps {
 }
 
 export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChange }: USBMIDIDevicesManagerProps) {
+  const { user } = useLocalAuth();
+  const isProfessional = user?.userType === 'professional';
+  
   const [devices, setDevices] = useState<USBMIDIDevice[]>([]);
   const [connectedDevices, setConnectedDevices] = useState<USBMIDIDevice[]>([]);
   const [isScanning, setIsScanning] = useState(false);
   const [messages, setMessages] = useState<USBMIDIMessage[]>([]);
   const [selectedOutputDevice, setSelectedOutputDevice] = useState<string>('');
   
+  // Storage keys
+  const CONNECTED_DEVICES_STORAGE_KEY = 'usb_midi_connected_devices';
+  const SELECTED_OUTPUT_DEVICE_KEY = 'usb_midi_selected_output_device';
+
   // Load saved selected output device on startup
   useEffect(() => {
     const savedDevice = localStorage.getItem(SELECTED_OUTPUT_DEVICE_KEY);
@@ -77,9 +85,22 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
   
   const { toast } = useToast();
 
-  // Storage keys
-  const CONNECTED_DEVICES_STORAGE_KEY = 'usb_midi_connected_devices';
-  const SELECTED_OUTPUT_DEVICE_KEY = 'usb_midi_selected_output_device';
+  // Professional subscription check - restrict MIDI features to level 3 subscribers only
+  useEffect(() => {
+    if (isOpen && !isProfessional) {
+      toast({
+        title: "Professional Subscription Required",
+        description: "USB MIDI features are only available for Professional subscribers (Level 3)",
+        variant: "destructive",
+      });
+      onClose();
+    }
+  }, [isOpen, isProfessional, onClose, toast]);
+
+  // Early return if not professional to prevent any MIDI access
+  if (!isProfessional) {
+    return null;
+  }
 
   // Save connected devices to localStorage
   const saveConnectedDevices = useCallback((devices: USBMIDIDevice[]) => {

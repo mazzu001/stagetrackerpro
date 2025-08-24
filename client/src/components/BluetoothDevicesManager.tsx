@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
+import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { parseMIDICommand } from '@/utils/midiFormatter';
 import { 
   Bluetooth, 
@@ -50,6 +51,27 @@ interface BluetoothDevicesManagerProps {
 }
 
 export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDevicesManagerProps) {
+  const { user } = useLocalAuth();
+  const isProfessional = user?.userType === 'professional';
+  const { toast } = useToast();
+
+  // Professional subscription check - restrict Bluetooth MIDI features to level 3 subscribers only
+  useEffect(() => {
+    if (isOpen && !isProfessional) {
+      toast({
+        title: "Professional Subscription Required",
+        description: "Bluetooth MIDI features are only available for Professional subscribers (Level 3)",
+        variant: "destructive",
+      });
+      onClose();
+    }
+  }, [isOpen, isProfessional, onClose, toast]);
+
+  // Early return if not professional to prevent any MIDI access
+  if (!isProfessional) {
+    return null;
+  }
+
   const [devices, setDevices] = useState<BluetoothDevice[]>([]);
   const [connectedDevices, setConnectedDevices] = useState<BluetoothDevice[]>([]);
   const [isScanning, setIsScanning] = useState(false);
@@ -62,7 +84,6 @@ export default function BluetoothDevicesManager({ isOpen, onClose }: BluetoothDe
   const [outgoingDataActive, setOutgoingDataActive] = useState(false);
   // Store Bluetooth device connections for sending commands
   const [deviceConnections, setDeviceConnections] = useState<Map<string, any>>(new Map());
-  const { toast } = useToast();
 
   // Check Bluetooth availability
   useEffect(() => {

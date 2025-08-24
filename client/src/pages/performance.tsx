@@ -150,8 +150,18 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }, 300); // Blink for 300ms
   }, []);
 
-  // Manual MIDI send function (exact copy from USB MIDI devices page)
+  // Manual MIDI send function - restricted to professional subscribers only
   const handleFooterSendMessage = async () => {
+    // Check professional subscription before allowing MIDI commands
+    if (user?.userType !== 'professional') {
+      toast({
+        title: "Professional Subscription Required",
+        description: "MIDI command features are only available for Professional subscribers (Level 3)",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const selectedOutputDevice = localStorage.getItem('usb_midi_selected_output_device');
     if (!selectedOutputDevice || !footerMidiCommand.trim()) return;
 
@@ -204,6 +214,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Auto-send MIDI command from timestamped lyrics - uses EXACT same code as footer send button
   const handleLyricsMidiCommand = useCallback(async (command: string) => {
+    // Check professional subscription before allowing automatic MIDI commands
+    if (user?.userType !== 'professional') {
+      console.warn('⚠️ Lyrics MIDI sequencer blocked: Professional subscription required');
+      return;
+    }
+
     console.log(`🎼 Processing MIDI command from timestamped lyrics: ${command}`);
     setFooterMidiCommand(command);
     

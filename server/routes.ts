@@ -1246,8 +1246,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Send MIDI message
-  app.post('/api/midi/send', async (req: any, res) => {
+  app.post('/api/midi/send', isAuthenticated, async (req: any, res) => {
     try {
+      // Check if user has professional subscription (level 3) for MIDI features
+      const userId = req.user?.claims?.sub;
+      if (userId) {
+        const user = await storage.getUser(userId);
+        if (Number(user?.subscriptionStatus) !== 3) {
+          return res.status(403).json({ 
+            success: false, 
+            error: "Professional subscription required for MIDI features (Level 3)" 
+          });
+        }
+      } else {
+        return res.status(401).json({ 
+          success: false, 
+          error: "Authentication required" 
+        });
+      }
+
       const { deviceId, command } = req.body;
       
       if (!deviceId || !command) {
@@ -1305,7 +1322,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const wss = new WebSocketServer({ server: httpServer, path: '/api/midi/stream' });
   
   wss.on('connection', (ws: WebSocket, req: any) => {
-    console.log('🎹 MIDI WebSocket client connected');
+    console.log('🎹 MIDI WebSocket client connected with professional access required');
     
     // Create MIDI message listener for this client
     const messageListener = (message: MIDIMessage) => {

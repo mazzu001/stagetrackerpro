@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, useRef } from 'r
 import { Audio } from 'expo-av';
 import * as FileSystem from 'expo-file-system';
 import { useDatabase } from './DatabaseProvider';
+import { useLocalAuth } from '../hooks/useLocalAuth';
 
 interface AudioLevels {
   [trackId: string]: {
@@ -50,6 +51,7 @@ interface AudioPlayer {
 
 export default function AudioEngineProvider({ children }: { children: React.ReactNode }) {
   const { getTracksBySong, updateTrack } = useDatabase();
+  const { user } = useLocalAuth();
   
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);

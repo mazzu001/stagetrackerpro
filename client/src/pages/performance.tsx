@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth, Zap, X, Target, Send, Award, Sparkles, Shield, CreditCard } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Usb, Bluetooth, Zap, X, Target, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -212,8 +212,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
-  // Wrapper for lyrics MIDI command execution - uses the USB MIDI sequencer's executeMIDICommand
-  const handleLyricsMidiCommand = useCallback((command: string) => {
+  // Auto-send MIDI command from timestamped lyrics - uses EXACT same code as footer send button
+  const handleLyricsMidiCommand = useCallback(async (command: string) => {
     // Check professional subscription before allowing automatic MIDI commands
     if (user?.userType !== 'professional') {
       console.warn('⚠️ Lyrics MIDI sequencer blocked: Professional subscription required');
@@ -221,19 +221,43 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     console.log(`🎼 Processing MIDI command from timestamped lyrics: ${command}`);
+    setFooterMidiCommand(command);
     
-    // Use the USB MIDI sequencer's execution function (the working one!)
-    executeMIDICommand(command).then(success => {
-      if (success) {
-        triggerMidiBlink(); // Blue blink for visual confirmation
-        console.log(`✅ Lyrics MIDI command executed successfully: ${command}`);
-      } else {
-        console.warn(`⚠️ Lyrics MIDI command execution failed: ${command}`);
+    // EXACT SAME CODE AS FOOTER SEND BUTTON - handleFooterSendMessage
+    const selectedOutputDevice = localStorage.getItem('usb_midi_selected_output_device');
+    if (!selectedOutputDevice || !command.trim()) return;
+
+    try {
+      if (navigator.requestMIDIAccess) {
+        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+        const output = midiAccess.outputs.get(selectedOutputDevice);
+        
+        if (output) {
+          // Parse MIDI command using proper parser (supports [[PC:12:1]], hex, and text formats)
+          const parseResult = parseMIDICommand(command);
+          
+          if (parseResult && parseResult.bytes.length > 0) {
+            console.log(`📤 Lyrics Auto MIDI Sending: ${command} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+            output.send(parseResult.bytes);
+            triggerMidiBlink(); // Blue blink for visual confirmation
+            // Silent execution - no toast notification during performance
+          } else {
+            console.warn(`⚠️ Invalid MIDI command from lyrics: ${command}`);
+            return;
+          }
+        } else {
+          console.warn(`⚠️ MIDI output device not found for lyrics command: ${command}`);
+          return;
+        }
       }
-    }).catch(error => {
+      
+      // Clear the input after successful send
+      setTimeout(() => setFooterMidiCommand(''), 100);
+    } catch (error) {
       console.error('Lyrics MIDI Send Error:', error);
-    });
-  }, [user?.userType, executeMIDICommand, triggerMidiBlink]);
+      // Silent error handling - no toast notification during performance
+    }
+  }, [selectedMidiDeviceName, toast]);
 
   // Initialize MIDI sequencer
   const midiSequencer = useMIDISequencer({
@@ -306,34 +330,57 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Load songs from localStorage when component mounts or user changes
   const loadSongs = useCallback(() => {
+    console.log(`🔍 Loading songs for user: ${user?.email}`);
     if (user?.email) {
       const songs = LocalSongStorage.getAllSongs(user.email);
+      console.log(`🎵 Found ${songs.length} songs in storage:`, songs);
       // Sort songs alphabetically by title
       const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
       setAllSongs(sortedSongs);
+      console.log(`✅ Set ${sortedSongs.length} songs in state`);
       
       // If we had a selected song, try to restore it
       if (selectedSongId) {
         const song = LocalSongStorage.getSong(user.email, selectedSongId);
         setSelectedSong(song || null);
+        console.log(`🔍 Restored selected song: ${song?.title || 'not found'}`);
       }
+    } else {
+      console.log(`⚠️ No user email, cannot load songs`);
     }
   }, [user?.email, selectedSongId]);
 
   useEffect(() => {
+    console.log(`🔄 loadSongs useEffect triggered`);
     loadSongs();
   }, [loadSongs]);
 
+
+
+  // Debug: Monitor song selection state
+  useEffect(() => {
+    console.log(`🔍 Song selection state changed - selectedSongId: ${selectedSongId}, user?.email: ${user?.email}`);
+  }, [selectedSongId, user?.email]);
+
   // Update selected song when selectedSongId changes
   useEffect(() => {
+    console.log(`🔍 Song loading useEffect triggered - selectedSongId: ${selectedSongId}, user?.email: ${user?.email}`);
     if (selectedSongId && user?.email) {
       const song = LocalSongStorage.getSong(user.email, selectedSongId);
       setSelectedSong(song || null);
       
       // Load MIDI commands into sequencer when song changes
+      console.log(`🔍 Checking song for MIDI commands:`, song);
+      console.log(`🔍 Song lyrics field:`, song?.lyrics);
+      console.log(`🔍 Song lyrics type:`, typeof song?.lyrics);
+      console.log(`🔍 Song lyrics length:`, song?.lyrics?.length);
+      
       if (song && song.lyrics) {
+        console.log(`🎹 Loading MIDI commands for song: ${song.title}`);
+        console.log(`🎼 Lyrics content:`, song.lyrics);
         midiSequencer.setMIDICommands(song.lyrics);
       } else {
+        console.log(`⚠️ No lyrics found - song: ${!!song}, lyrics: ${!!song?.lyrics}`);
         midiSequencer.setMIDICommands(''); // Clear commands if no song or lyrics
       }
     } else {
@@ -894,17 +941,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 <span className="text-xs md:text-sm text-green-300">Premium</span>
               </div>
             )}
-            {userType === 'professional' && (
-              <div className="flex items-center space-x-1 md:space-x-2 bg-gradient-to-r from-purple-900/40 to-pink-900/40 border border-purple-400/50 px-2 md:px-3 py-1 rounded-lg mobile-hidden">
-                <div className="relative">
-                  <Award className="w-3 h-3 md:w-4 md:h-4 text-yellow-400" />
-                  <Sparkles className="w-2 h-2 md:w-2.5 md:h-2.5 absolute -top-0.5 -right-0.5 text-purple-300 animate-pulse" />
-                </div>
-                <span className="text-xs md:text-sm text-transparent bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text font-semibold">
-                  ✨ Elite Pro
-                </span>
-              </div>
-            )}
             <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
               <DialogContent className="max-w-[98vw] w-full md:max-w-[85vw] max-h-[90vh] overflow-y-auto p-3 md:p-6">
                 <DialogHeader>
@@ -975,19 +1011,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   )}
                   {userType === 'professional' && (
                     <>
-                      <DropdownMenuItem className="flex items-center bg-gradient-to-r from-purple-900/50 to-pink-900/50 border border-purple-500/30 rounded-lg mx-2 my-1">
-                        <div className="flex items-center">
-                          <div className="relative">
-                            <Award className="w-5 h-5 mr-2 text-yellow-400" />
-                            <Sparkles className="w-3 h-3 absolute -top-1 -right-1 text-purple-300 animate-pulse" />
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="text-transparent bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text font-semibold">
-                              ✨ Professional Elite
-                            </span>
-                            <span className="text-xs text-purple-400">Highest Tier Active</span>
-                          </div>
-                        </div>
+                      <DropdownMenuItem className="flex items-center">
+                        <Crown className="w-4 h-4 mr-2 text-purple-500" />
+                        <span className="text-purple-400">Professional Active</span>
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                     </>
@@ -1004,7 +1030,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   <span>
                     {userType === 'free' && 'View Plans'}
                     {(userType === 'paid' || userType === 'premium') && 'Upgrade to Professional'}
-                    {userType === 'professional' && 'View Plans'}
+                    {userType === 'professional' && 'Manage Subscription'}
                   </span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="mobile-hidden" />
@@ -1019,7 +1045,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                       <Usb className="w-4 h-4 mr-2" />
                       <span>USB MIDI Devices</span>
                     </DropdownMenuItem>
-                    {/* Temporarily hidden - Bluetooth MIDI functionality preserved for future use
                     <DropdownMenuItem 
                       onClick={() => setIsBluetoothDevicesOpen(true)}
                       className="flex items-center cursor-pointer"
@@ -1027,16 +1052,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                     >
                       <Bluetooth className="w-4 h-4 mr-2" />
                       <span>Bluetooth Devices</span>
-                    </DropdownMenuItem>
-                    */}
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem 
-                      onClick={() => setLocation('/subscription-management')}
-                      className="flex items-center cursor-pointer"
-                      data-testid="menu-subscription-management"
-                    >
-                      <CreditCard className="w-4 h-4 mr-2" />
-                      <span>Manage Subscription</span>
                     </DropdownMenuItem>
                   </>
                 )}
@@ -1714,7 +1729,6 @@ Click "Timestamp" to insert current time`}
         isOpen={isBluetoothDevicesOpen} 
         onClose={() => setIsBluetoothDevicesOpen(false)} 
       />
-
 
     </div>
   );

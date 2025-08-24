@@ -1,354 +1,186 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   Text,
-  ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import { useMIDISequencer } from '../hooks/useMIDISequencer';
-
-interface LyricsLine {
-  timestamp: number; // in seconds
-  text: string;
-  hasMIDICommand?: boolean;
-  midiCommands?: string[];
-}
 
 interface LyricsDisplayProps {
   lyrics: string;
   currentTime: number;
   isPlaying: boolean;
-  onMidiCommand?: (command: string) => void;
-  fontSize?: number;
-  autoScrollEnabled?: boolean;
 }
 
-export default function LyricsDisplay({ 
-  lyrics, 
-  currentTime, 
-  isPlaying, 
-  onMidiCommand,
-  fontSize: propFontSize = 18,
-  autoScrollEnabled: propAutoScrollEnabled = true
+export default function LyricsDisplay({
+  lyrics,
+  currentTime,
+  isPlaying,
 }: LyricsDisplayProps) {
-  const [fontSize, setFontSize] = useState(propFontSize);
-  const [autoScrollEnabled, setAutoScrollEnabled] = useState(propAutoScrollEnabled);
-  const [parsedLines, setParsedLines] = useState<LyricsLine[]>([]);
-  const [currentLineIndex, setCurrentLineIndex] = useState(-1);
-  
   const scrollViewRef = useRef<ScrollView>(null);
-  const { loadFromLyrics, updateTime } = useMIDISequencer({ 
-    onExecuteCommand: onMidiCommand 
-  });
 
-  // Parse lyrics into lines with timestamps and MIDI commands
-  const parseLines = (): LyricsLine[] => {
-    if (!lyrics) return [];
+  // Parse lyrics into lines with timestamps (if available)
+  const parseLyrics = (lyricsText: string) => {
+    const lines = lyricsText.split('\n').filter(line => line.trim());
     
-    return lyrics.split('\n').map((line, index) => {
-      const timestampMatch = line.match(/\[(\d{1,2}):(\d{2})\]/);
-      const midiMatches = line.match(/\[\[([^\]]+)\]\]/g);
-      
-      if (timestampMatch) {
-        const minutes = parseInt(timestampMatch[1]);
-        const seconds = parseInt(timestampMatch[2]);
-        const timestamp = minutes * 60 + seconds;
+    // Check if lyrics have timestamp format [mm:ss] or [mm:ss.ss]
+    const timestampRegex = /^\[(\d{1,2}):(\d{2})(?:\.(\d{2}))?\]/;
+    
+    return lines.map((line, index) => {
+      const match = line.match(timestampRegex);
+      if (match) {
+        const minutes = parseInt(match[1], 10);
+        const seconds = parseInt(match[2], 10);
+        const centiseconds = match[3] ? parseInt(match[3], 10) : 0;
+        const timestamp = minutes * 60 + seconds + centiseconds / 100;
+        const text = line.replace(timestampRegex, '').trim();
         
-        // Remove timestamp and MIDI commands from display text
-        let text = line.replace(/\[\d{1,2}:\d{2}\]/, '').trim();
-        if (midiMatches) {
-          midiMatches.forEach(match => {
-            text = text.replace(match, '').trim();
-          });
-        }
-        
-        return { 
-          timestamp, 
-          text, 
-          hasMIDICommand: !!midiMatches,
-          midiCommands: midiMatches || []
+        return {
+          timestamp,
+          text,
+          index,
         };
       }
-      return { timestamp: -1, text: line, hasMIDICommand: false };
-    }).filter(line => line.text.length > 0);
+      
+      // For lyrics without timestamps, estimate timing
+      const estimatedTimestamp = index * 4; // 4 seconds per line
+      return {
+        timestamp: estimatedTimestamp,
+        text: line,
+        index,
+      };
+    });
   };
 
-  // Update parsed lines and load MIDI commands when lyrics change
-  useEffect(() => {
-    const lines = parseLines();
-    setParsedLines(lines);
-    
-    // Load MIDI commands from lyrics
-    if (lyrics) {
-      loadFromLyrics(lyrics);
-    }
-  }, [lyrics, loadFromLyrics]);
+  const lyricsLines = parseLyrics(lyrics);
 
-  // Update current line based on time and handle MIDI sequencing
+  // Find current line based on playback time
+  const getCurrentLineIndex = () => {
+    for (let i = lyricsLines.length - 1; i >= 0; i--) {
+      if (currentTime >= lyricsLines[i].timestamp) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  const currentLineIndex = getCurrentLineIndex();
+
+  // Auto-scroll to current line
   useEffect(() => {
-    if (parsedLines.length === 0) return;
-    
-    // Update MIDI sequencer time
-    updateTime(currentTime * 1000); // Convert to milliseconds
-    
-    // Find current line based on timestamp
-    let newCurrentLineIndex = -1;
-    for (let i = parsedLines.length - 1; i >= 0; i--) {
-      if (parsedLines[i].timestamp <= currentTime && parsedLines[i].timestamp >= 0) {
-        newCurrentLineIndex = i;
-        break;
-      }
+    if (isPlaying && currentLineIndex >= 0 && scrollViewRef.current) {
+      const scrollPosition = currentLineIndex * 40; // Approximate line height
+      scrollViewRef.current.scrollTo({
+        y: Math.max(0, scrollPosition - 100), // Keep current line visible
+        animated: true,
+      });
     }
-    
-    if (newCurrentLineIndex !== currentLineIndex) {
-      setCurrentLineIndex(newCurrentLineIndex);
-      
-      // Auto-scroll to current line
-      if (autoScrollEnabled && isPlaying && newCurrentLineIndex >= 0 && scrollViewRef.current) {
-        const lineHeight = 60; // Approximate line height
-        const scrollOffset = Math.max(0, (newCurrentLineIndex - 2) * lineHeight);
-        scrollViewRef.current.scrollTo({ y: scrollOffset, animated: true });
-      }
-    }
-  }, [currentTime, parsedLines, currentLineIndex, autoScrollEnabled, isPlaying, updateTime]);
+  }, [currentLineIndex, isPlaying]);
+
+  if (!lyrics || lyrics.trim() === '') {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>No lyrics available</Text>
+      </View>
+    );
+  }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.controlsContainer}>
-        <Text style={styles.title}>Lyrics</Text>
-        
-        <View style={styles.controls}>
-          <TouchableOpacity
-            style={[
-              styles.autoScrollButton,
-              autoScrollEnabled && styles.autoScrollButtonActive
-            ]}
-            onPress={() => setAutoScrollEnabled(!autoScrollEnabled)}
-          >
-            <Text style={[
-              styles.autoScrollText,
-              autoScrollEnabled && styles.autoScrollTextActive
-            ]}>
-              {autoScrollEnabled ? '⏸' : '▶'}
+    <ScrollView
+      ref={scrollViewRef}
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      showsVerticalScrollIndicator={false}
+    >
+      {lyricsLines.map((line, index) => {
+        const isCurrent = index === currentLineIndex;
+        const isPast = index < currentLineIndex;
+        const isFuture = index > currentLineIndex;
+
+        return (
+          <View key={index} style={styles.lineContainer}>
+            <Text
+              style={[
+                styles.lyricsLine,
+                isCurrent && styles.currentLine,
+                isPast && styles.pastLine,
+                isFuture && styles.futureLine,
+              ]}
+            >
+              {line.text}
             </Text>
-          </TouchableOpacity>
-          
-          <View style={styles.fontControls}>
-            <TouchableOpacity
-              style={styles.fontButton}
-              onPress={() => setFontSize(Math.max(12, fontSize - 2))}
-            >
-              <Text style={styles.fontButtonText}>A-</Text>
-            </TouchableOpacity>
-            <Text style={styles.fontSizeDisplay}>{fontSize}</Text>
-            <TouchableOpacity
-              style={styles.fontButton}
-              onPress={() => setFontSize(Math.min(32, fontSize + 2))}
-            >
-              <Text style={styles.fontButtonText}>A+</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-
-      <ScrollView 
-        ref={scrollViewRef}
-        style={styles.lyricsContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.lyricsContent}>
-          {parsedLines.map((line, index) => {
-            const isActive = index === currentLineIndex;
-            const isUpcoming = index === currentLineIndex + 1;
             
-            return (
-              <View key={index} style={styles.lineContainer}>
-                <Text
-                  style={[
-                    styles.lyricsLine,
-                    { fontSize },
-                    isActive && styles.activeLine,
-                    isUpcoming && styles.upcomingLine,
-                    line.hasMIDICommand && styles.midiLine
-                  ]}
-                >
-                  {line.text}
-                </Text>
-                
-                {/* Show MIDI command indicator */}
-                {line.hasMIDICommand && (
-                  <View style={styles.midiIndicator}>
-                    <Text style={styles.midiIndicatorText}>🎹</Text>
-                    {line.midiCommands && (
-                      <Text style={styles.midiCommandText}>
-                        {line.midiCommands.join(', ')}
-                      </Text>
-                    )}
-                  </View>
-                )}
-              </View>
-            );
-          })}
-          
-          {/* Spacer for scrolling */}
-          <View style={{ height: 200 }} />
-        </View>
-      </ScrollView>
-
-      {parsedLines.length === 0 && (
-        <View style={styles.noLyricsContainer}>
-          <Text style={styles.noLyricsText}>No lyrics available</Text>
-        </View>
-      )}
+            {/* Show timestamp for current line */}
+            {isCurrent && isPlaying && (
+              <Text style={styles.timestamp}>
+                {formatTime(line.timestamp)}
+              </Text>
+            )}
+          </View>
+        );
+      })}
       
-      {/* Show current line info for debugging */}
-      {__DEV__ && currentLineIndex >= 0 && (
-        <View style={styles.debugInfo}>
-          <Text style={styles.debugText}>
-            Line {currentLineIndex + 1}/{parsedLines.length} • {Math.floor(currentTime)}s
-          </Text>
-        </View>
-      )}
-    </View>
+      {/* Add some bottom padding for better scrolling */}
+      <View style={styles.bottomPadding} />
+    </ScrollView>
   );
 }
+
+const formatTime = (seconds: number) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2a2a2a',
-    borderRadius: 12,
   },
-  controlsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  content: {
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#444',
   },
-  title: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#ffffff',
-  },
-  controls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  autoScrollButton: {
-    backgroundColor: '#2a2a2a',
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+  emptyContainer: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    padding: 32,
   },
-  autoScrollButtonActive: {
-    backgroundColor: '#007AFF',
-  },
-  autoScrollText: {
+  emptyText: {
     color: '#666',
-    fontSize: 14,
-  },
-  autoScrollTextActive: {
-    color: '#ffffff',
-  },
-  fontControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  fontButton: {
-    backgroundColor: '#2a2a2a',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 6,
-  },
-  fontButtonText: {
-    color: '#007AFF',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  fontSizeDisplay: {
-    color: '#ffffff',
-    fontSize: 14,
-    fontWeight: '600',
-    minWidth: 24,
-    textAlign: 'center',
-  },
-  lyricsContainer: {
-    flex: 1,
-  },
-  lyricsContent: {
-    padding: 16,
+    fontSize: 16,
+    fontStyle: 'italic',
   },
   lineContainer: {
     marginBottom: 12,
   },
   lyricsLine: {
+    fontSize: 16,
+    lineHeight: 24,
     color: '#ffffff',
-    lineHeight: 32,
-    marginBottom: 4,
     textAlign: 'center',
   },
-  activeLine: {
-    color: '#4CAF50',
-    fontWeight: '700',
-    textShadowColor: 'rgba(76, 175, 80, 0.3)',
-    textShadowOffset: { width: 0, height: 1 },
-    textShadowRadius: 2,
+  currentLine: {
+    color: '#007AFF',
+    fontWeight: 'bold',
+    fontSize: 18,
+    transform: [{ scale: 1.05 }],
   },
-  upcomingLine: {
-    color: '#FFC107',
-    fontWeight: '600',
-  },
-  midiLine: {
-    borderLeftWidth: 3,
-    borderLeftColor: '#9C27B0',
-    paddingLeft: 12,
-  },
-  midiIndicator: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 4,
+  pastLine: {
+    color: '#888',
     opacity: 0.7,
   },
-  midiIndicatorText: {
-    fontSize: 12,
-    marginRight: 6,
+  futureLine: {
+    color: '#aaa',
+    opacity: 0.5,
   },
-  midiCommandText: {
-    fontSize: 10,
-    color: '#9C27B0',
-    fontFamily: 'monospace',
-  },
-  debugInfo: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    padding: 4,
-    borderRadius: 4,
-  },
-  debugText: {
-    color: '#ffffff',
-    fontSize: 10,
-    fontFamily: 'monospace',
-  },
-  noLyricsContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 40,
-  },
-  noLyricsText: {
+  timestamp: {
     color: '#666',
-    fontSize: 16,
-    fontStyle: 'italic',
+    fontSize: 12,
     textAlign: 'center',
+    marginTop: 4,
+    fontFamily: 'monospace',
+  },
+  bottomPadding: {
+    height: 100,
   },
 });

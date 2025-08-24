@@ -30,35 +30,37 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
   // Update commands ref when commands change
   useEffect(() => {
     commandsRef.current = commands;
+    console.log(`🔄 Commands ref updated: ${commands.length} commands`, commands);
   }, [commands]);
 
   // Parse MIDI commands from lyrics text
   const parseMIDICommands = useCallback((lyricsText: string): MIDICommand[] => {
-    // Early return for empty or invalid lyrics
-    if (!lyricsText || typeof lyricsText !== 'string' || lyricsText.trim() === '') {
-      return [];
-    }
-
     const lines = lyricsText.split('\n');
     const parsedCommands: MIDICommand[] = [];
+    console.log(`🔍 Parsing lyrics with ${lines.length} lines:`, lines);
 
-    lines.forEach((line) => {
-      // Skip empty lines quickly
-      if (!line.trim()) return;
+    lines.forEach((line, lineIndex) => {
+      console.log(`📝 Processing line ${lineIndex}: "${line}"`);
       
       // Look for MIDI commands in bracket format: [[PC:12:1]] or with timestamps: [00:30] [[PC:12:1]]
       const timestampMatch = line.match(/\[(\d{1,2}):(\d{2})\]/);
       const midiMatches = line.match(/\[\[([^\]]+)\]\]/g);
+      
+      console.log(`⏰ Timestamp match:`, timestampMatch);
+      console.log(`🎵 MIDI matches:`, midiMatches);
 
       if (timestampMatch && midiMatches) {
         const minutes = parseInt(timestampMatch[1]);
         const seconds = parseInt(timestampMatch[2]);
         const timestamp = (minutes * 60 + seconds) * 1000; // Convert to milliseconds
+        console.log(`⏱️ Parsed timestamp: ${timestampMatch[0]} → ${timestamp}ms`);
 
         midiMatches.forEach(midiMatch => {
           const commandText = midiMatch.slice(2, -2); // Remove [[ ]]
+          console.log(`🎯 Processing MIDI command: "${commandText}"`);
           try {
             const midiResult = parseMIDICommand(commandText);
+            console.log(`🔧 Parse result:`, midiResult);
             if (midiResult && midiResult.bytes.length > 0) {
               const midiBytes = midiResult.bytes;
               // Convert MIDI bytes to MIDICommand structure
@@ -86,15 +88,21 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
                   break;
               }
 
+              console.log(`✅ Created MIDI command:`, command);
               parsedCommands.push(command);
+            } else {
+              console.warn(`⚠️ Failed to parse MIDI command bytes: ${commandText}`);
             }
           } catch (error) {
-            // Silently handle parse errors
+            console.warn(`❌ Error parsing MIDI command: ${commandText}`, error);
           }
         });
+      } else {
+        console.log(`⚠️ Line has no valid timestamp + MIDI command combination`);
       }
     });
 
+    console.log(`🎼 Final parsed commands (${parsedCommands.length}):`, parsedCommands);
     return parsedCommands.sort((a, b) => a.timestamp - b.timestamp);
   }, []);
 
@@ -258,9 +266,15 @@ export function useMIDISequencer({ onExecuteCommand }: MIDISequencerProps = {}) 
 
   // Set commands from external source
   const setMIDICommands = useCallback((lyricsText: string) => {
+    console.log(`🎼 Parsing MIDI commands from lyrics:`, lyricsText);
     const parsedCommands = parseMIDICommands(lyricsText);
+    console.log(`🎹 Parsed ${parsedCommands.length} commands:`, parsedCommands);
+    
     setCommands(parsedCommands);
     commandsRef.current = parsedCommands;
+    
+    console.log(`✅ Commands set - State: ${parsedCommands.length}, Ref: ${commandsRef.current.length}`);
+    console.log(`🎹 Final loaded MIDI commands:`, commandsRef.current);
   }, [parseMIDICommands]);
 
   // Cleanup on unmount

@@ -13,7 +13,6 @@ import SubscribeDebug from "@/pages/subscribe-debug";
 import SubscribeElementsTest from "@/pages/subscribe-elements-test";
 import SubscribeTest from "@/pages/subscribe-test";
 import Plans from "@/pages/plans";
-import SubscriptionManagement from "@/pages/subscription-management";
 import Landing from "@/pages/landing";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
@@ -49,8 +48,8 @@ function AppContent() {
       }
     }
     
-    // Defer file system check to prevent startup blocking
-    setTimeout(async () => {
+    // Check if local file system is already initialized
+    const checkLocalFS = async () => {
       try {
         const browserFS = BrowserFileSystem.getInstance();
         const isAlreadyInitialized = await browserFS.isAlreadyInitialized();
@@ -72,7 +71,9 @@ function AppContent() {
       } finally {
         setIsCheckingFS(false);
       }
-    }, 800); // Defer by 800ms to allow UI to render first
+    };
+
+    checkLocalFS();
   }, []);
 
   const handleLocalFSInitialized = () => {
@@ -112,7 +113,6 @@ function AppContent() {
           <Route path="/subscribe-old" component={Subscribe} />
           <Route path="/subscribe-test" component={SubscribeTest} />
           <Route path="/plans" component={Plans} />
-          <Route path="/subscription-management" component={SubscriptionManagement} />
         </Router>
       )}
       <Toaster />

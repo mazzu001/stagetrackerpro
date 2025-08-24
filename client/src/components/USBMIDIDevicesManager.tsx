@@ -266,6 +266,15 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
           console.log('Available inputs:', midiAccess.inputs.size);
           console.log('Available outputs:', midiAccess.outputs.size);
           
+          // Enhanced device logging for debugging
+          console.log('📋 All available MIDI devices:');
+          midiAccess.inputs.forEach((input: any, id: string) => {
+            console.log(`  📥 Input: ${input.name || 'Unnamed'} (ID: ${id}) - State: ${input.state}`);
+          });
+          midiAccess.outputs.forEach((output: any, id: string) => {
+            console.log(`  📤 Output: ${output.name || 'Unnamed'} (ID: ${id}) - State: ${output.state}`);
+          });
+          
           setPermissionStatus('granted');
           loadMIDIDevices(midiAccess);
         } catch (error) {
@@ -273,7 +282,7 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
           setPermissionStatus('denied');
           toast({
             title: "MIDI Access Denied",
-            description: "Please allow MIDI device access in your browser settings",
+            description: "Please allow MIDI device access in your browser settings. Try refreshing the page.",
             variant: "destructive",
           });
         }

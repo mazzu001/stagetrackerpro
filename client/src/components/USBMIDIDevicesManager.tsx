@@ -52,11 +52,6 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
   const { user } = useLocalAuth();
   const isProfessional = user?.userType === 'professional';
   
-  // Early return if not professional to prevent any MIDI access
-  if (!isProfessional) {
-    return null;
-  }
-  
   // All useState hooks must come first before any useEffect hooks
   const [devices, setDevices] = useState<USBMIDIDevice[]>([]);
   const [connectedDevices, setConnectedDevices] = useState<USBMIDIDevice[]>([]);
@@ -604,6 +599,11 @@ export function USBMIDIDevicesManager({ isOpen, onClose, onConnectedDevicesChang
   const handleClearMessages = () => {
     setMessages([]);
   };
+
+  // Don't render for non-professional users, but still call all hooks above
+  if (!isProfessional) {
+    return null;
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>

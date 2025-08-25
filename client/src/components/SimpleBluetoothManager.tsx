@@ -455,8 +455,8 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     const val = parseInt(value);
 
     switch (type.toUpperCase()) {
-      case 'PC': // Program Change
-        return new Uint8Array([0xC0 | ch, Math.min(127, Math.max(0, val))]);
+      case 'PC': // Program Change (MIDI uses 0-based indexing: Program 1 = 0)
+        return new Uint8Array([0xC0 | ch, Math.min(127, Math.max(0, val - 1))]);
         
       case 'CC': // Control Change - expect format [[CC:controller:value:channel]]
         const parts = command.match(/\[\[CC:([^:]+):([^:]+):([^\]]+)\]\]/);
@@ -476,6 +476,19 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
           const noteChannel = Math.max(1, Math.min(16, parseInt(noteParts[3]))) - 1;
           const cmd = velocity > 0 ? 0x90 : 0x80; // Note On or Note Off
           return new Uint8Array([cmd | noteChannel, Math.min(127, Math.max(0, note)), Math.min(127, Math.max(0, velocity))]);
+        }
+        return null;
+
+      case 'BANK': // Bank Select - expect format [[BANK:bank:channel]]
+        const bankParts = command.match(/\[\[BANK:([^:]+):([^\]]+)\]\]/);
+        if (bankParts) {
+          const bank = parseInt(bankParts[1]);
+          const bankChannel = Math.max(1, Math.min(16, parseInt(bankParts[2]))) - 1;
+          // Send Bank Select MSB (CC 0) followed by Bank Select LSB (CC 32)
+          return new Uint8Array([
+            0xB0 | bankChannel, 0, Math.min(127, Math.max(0, bank >> 7)), // MSB
+            0xB0 | bankChannel, 32, Math.min(127, Math.max(0, bank & 0x7F)) // LSB
+          ]);
         }
         return null;
         
@@ -520,7 +533,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       if (!midiBytes) {
         toast({
           title: "Invalid MIDI Format",
-          description: "Use format: [[PC:1:1]] or [[CC:7:64:1]] or [[NOTE:60:127:1]]",
+          description: "Use format: [[PC:1:1]] [[CC:7:64:1]] [[NOTE:60:127:1]] [[BANK:0:1]]",
           variant: "destructive",
         });
         return;
@@ -724,7 +737,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
                   type="text"
                   value={testMessage}
                   onChange={(e) => setTestMessage(e.target.value)}
-                  placeholder="[[PC:1:1]] or [[CC:7:64:1]] or [[NOTE:60:127:1]]"
+                  placeholder="[[PC:1:1]] [[CC:7:64:1]] [[NOTE:60:127:1]] [[BANK:0:1]]"
                   className="flex-1 px-3 py-2 border rounded text-black dark:text-white bg-white dark:bg-gray-800"
                   disabled={connectionStatus !== 'connected'}
                 />

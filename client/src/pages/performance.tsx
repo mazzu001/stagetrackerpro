@@ -928,6 +928,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   song.id === updatedSong.id ? updatedSong : song
                 ));
               }}
+              onPlay={play}
+              onPause={pause}
+              isPlaying={isPlaying}
+              isLoadingTracks={isLoadingTracks}
+              audioLevels={audioLevels}
               data-testid="track-manager"
             />
           )}

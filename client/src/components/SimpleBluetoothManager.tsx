@@ -44,6 +44,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
   const [lastSentMessage, setLastSentMessage] = useState<string>('');
   const [lastReceivedMessage, setLastReceivedMessage] = useState<string>('');
   const [bluetoothDevice, setBluetoothDevice] = useState<any>(null);
+  const [midiMessages, setMidiMessages] = useState<Array<{timestamp: string, message: string}>>([]);
 
   // Check for professional subscription
   useEffect(() => {
@@ -268,7 +269,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
           </DialogTitle>
         </DialogHeader>
 
-        <div className="flex-1 space-y-4">
+        <div className="flex-1 space-y-4 overflow-y-auto pr-2">
           {/* Connection Status */}
           <Card>
             <CardHeader>
@@ -370,7 +371,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
                   value={testMessage}
                   onChange={(e) => setTestMessage(e.target.value)}
                   placeholder="Enter test message"
-                  className="flex-1 px-3 py-2 border rounded"
+                  className="flex-1 px-3 py-2 border rounded text-black dark:text-white bg-white dark:bg-gray-800"
                   disabled={connectionStatus !== 'connected'}
                 />
                 <Button 
@@ -397,6 +398,60 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
                   </div>
                 </div>
               )}
+            </CardContent>
+          </Card>
+
+          {/* MIDI Message Listener */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">MIDI Commands Listener</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Listening for MIDI commands from connected device
+                </span>
+                <Badge variant={connectionStatus === 'connected' ? "default" : "secondary"}>
+                  {connectionStatus === 'connected' ? "Active" : "Inactive"}
+                </Badge>
+              </div>
+              
+              {/* MIDI Messages Display */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <h4 className="font-medium text-sm">Recent MIDI Messages:</h4>
+                  <Button
+                    onClick={() => setMidiMessages([])}
+                    variant="outline"
+                    size="sm"
+                    disabled={midiMessages.length === 0}
+                  >
+                    Clear
+                  </Button>
+                </div>
+                
+                <ScrollArea className="h-32 w-full rounded border p-2 bg-gray-50 dark:bg-gray-900">
+                  {midiMessages.length === 0 ? (
+                    <div className="text-center text-gray-500 text-sm py-4">
+                      No MIDI messages received yet
+                    </div>
+                  ) : (
+                    <div className="space-y-1">
+                      {midiMessages.slice(-10).map((msg, index) => (
+                        <div key={index} className="text-xs font-mono bg-white dark:bg-gray-800 p-2 rounded border">
+                          <div className="text-gray-500 text-[10px]">{msg.timestamp}</div>
+                          <div className="text-green-600 dark:text-green-400">{msg.message}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </ScrollArea>
+              </div>
+
+              <div className="text-xs text-gray-500">
+                MIDI commands will appear here when received from your connected Bluetooth device.
+                Supports standard MIDI messages like Program Change, Control Change, and Note On/Off.
+              </div>
             </CardContent>
           </Card>
         </div>

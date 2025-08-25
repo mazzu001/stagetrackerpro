@@ -455,8 +455,10 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     const val = parseInt(value);
 
     switch (type.toUpperCase()) {
-      case 'PC': // Program Change (MIDI uses 0-based indexing: Program 1 = 0)
-        return new Uint8Array([0xC0 | ch, Math.min(127, Math.max(0, val - 1))]);
+      case 'PC': // Program Change for TC-Helicon (MIDI 0-based: Program 1 = 0)
+        const programValue = Math.min(127, Math.max(0, val - 1));
+        console.log(`🎛️ TC-Helicon Program Change: User Program ${val} → MIDI Value ${programValue}`);
+        return new Uint8Array([0xC0 | ch, programValue]);
         
       case 'CC': // Control Change - expect format [[CC:controller:value:channel]]
         const parts = command.match(/\[\[CC:([^:]+):([^:]+):([^\]]+)\]\]/);
@@ -495,6 +497,93 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       default:
         return null;
     }
+  };
+
+  // Send TC-Helicon optimized preset change
+  const sendTCHeliconPreset = async (presetNumber: number) => {
+    if (!bluetoothDevice?.gatt?.connected || !midiCharacteristic) {
+      toast({
+        title: "Not Connected",
+        description: "Please connect to device first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      console.log(`🎛️ TC-Helicon Preset Change: Setting to Preset ${presetNumber}`);
+      
+      // Step 1: Bank Select (recommended for TC-Helicon)
+      console.log('🏦 Sending Bank Select MSB (CC 0)...');
+      await sendMidiCommand(new Uint8Array([0xB0, 0, 0])); // Bank Select MSB = 0
+      await new Promise(resolve => setTimeout(resolve, 20));
+      
+      console.log('🏦 Sending Bank Select LSB (CC 32)...');
+      await sendMidiCommand(new Uint8Array([0xB0, 32, 0])); // Bank Select LSB = 0
+      await new Promise(resolve => setTimeout(resolve, 20));
+      
+      // Step 2: Program Change
+      console.log(`📋 Sending Program Change ${presetNumber - 1}...`);
+      await sendMidiCommand(new Uint8Array([0xC0, presetNumber - 1])); // PC (0-based)
+      
+      toast({
+        title: "TC-Helicon Preset Sent",
+        description: `Bank 0, Preset ${presetNumber}`,
+      });
+      
+    } catch (error) {
+      console.error('❌ TC-Helicon preset change failed:', error);
+      toast({
+        title: "Preset Change Failed",
+        description: "Check device connection",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Send TC-Helicon Control Change (optimized for TC-Helicon VoiceLive 3)
+  const sendTCHeliconCC = async (controller: number, value: number) => {
+    if (!bluetoothDevice?.gatt?.connected || !midiCharacteristic) {
+      toast({
+        title: "Not Connected", 
+        description: "Please connect to device first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // TC-Helicon uses 0-63=OFF, 64-127=ON (we're sending 127 for ON)
+      const tcValue = value >= 64 ? 127 : 0; // Ensure proper TC-Helicon ON/OFF values
+      console.log(`🎛️ TC-Helicon CC ${controller}: ${value} → ${tcValue} (${tcValue >= 64 ? 'ON' : 'OFF'})`);
+      
+      await sendMidiCommand(new Uint8Array([0xB0, controller, tcValue])); // CC on channel 1
+      
+      const controllerName = controller === 110 ? 'Vocal Harmonies' : `CC ${controller}`;
+      toast({
+        title: `TC-Helicon ${controllerName}`,
+        description: `${tcValue >= 64 ? 'ON' : 'OFF'} (CC ${controller}:${tcValue})`,
+      });
+      
+    } catch (error) {
+      console.error('❌ TC-Helicon CC failed:', error);
+      toast({
+        title: "CC Command Failed",
+        description: "Check device connection",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Helper function to send raw MIDI command with proper BLE formatting
+  const sendMidiCommand = async (midiBytes: Uint8Array) => {
+    const timestamp = Date.now() & 0x1FFF;
+    const headerByte = 0x80 | ((timestamp >> 7) & 0x3F);
+    const timestampByte = 0x80 | (timestamp & 0x7F);
+    const bleMidiPacket = new Uint8Array([headerByte, timestampByte, ...Array.from(midiBytes)]);
+    
+    console.log(`📡 Sending: ${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
+    await midiCharacteristic!.writeValueWithResponse(bleMidiPacket);
   };
 
   // Send test message
@@ -539,53 +628,27 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         return;
       }
 
-      // Create BLE MIDI packet for WIDI Jack compatibility
-      const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp for BLE MIDI
-      const timestampHi = 0x80 | ((timestamp >> 7) & 0x3F);
-      const timestampLo = 0x80 | (timestamp & 0x7F);
+      // Create proper BLE MIDI packet for WIDI Jack (full MMA specification compliance)
+      const timestamp = Date.now() & 0x1FFF; // 13-bit millisecond timestamp
+      const headerByte = 0x80 | ((timestamp >> 7) & 0x3F); // Top 6 bits + MSB
+      const timestampByte = 0x80 | (timestamp & 0x7F); // Lower 7 bits + MSB
       
-      // WIDI Jack requires BLE MIDI format: [timestamp_hi, timestamp_lo, ...midi_data]
-      const bleMidiPacket = new Uint8Array([timestampHi, timestampLo, ...Array.from(midiBytes)]);
+      // Standard BLE MIDI packet: [header, timestamp, ...midi_payload]
+      const bleMidiPacket = new Uint8Array([headerByte, timestampByte, ...Array.from(midiBytes)]);
       
       const rawHexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
       const bleHexString = Array.from(bleMidiPacket).map(b => b.toString(16).padStart(2, '0')).join(' ');
-      console.log(`🎵 Raw MIDI bytes: ${rawHexString}`);
-      console.log(`📦 BLE MIDI packet for WIDI Jack: ${bleHexString}`);
-      console.log(`⏰ Timestamp: ${timestamp.toString(16)} (hi=${timestampHi.toString(16)}, lo=${timestampLo.toString(16)})`);
+      console.log(`🎵 Raw MIDI: ${rawHexString}`);
+      console.log(`📦 BLE MIDI (WIDI Jack): ${bleHexString}`);
+      console.log(`⏰ 13-bit timestamp: ${timestamp.toString(16)} (header=${headerByte.toString(16)}, ts=${timestampByte.toString(16)})`);
       
-      // Try multiple write methods for WIDI Jack compatibility
-      let writeSuccess = false;
-      let lastError = null;
-
-      // Method 1: Try writeValueWithoutResponse first (often works better for WIDI Jack)
-      if (midiCharacteristic.properties.writeWithoutResponse && !writeSuccess) {
-        try {
-          console.log('📤 Trying writeValueWithoutResponse for WIDI Jack...');
-          await midiCharacteristic.writeValueWithoutResponse(bleMidiPacket);
-          writeSuccess = true;
-          console.log('✅ WIDI Jack write successful via writeValueWithoutResponse');
-        } catch (error) {
-          console.log('⚠️ writeValueWithoutResponse failed:', error);
-          lastError = error;
-        }
-      }
-
-      // Method 2: Try writeValueWithResponse as fallback
-      if (midiCharacteristic.properties.write && !writeSuccess) {
-        try {
-          console.log('📤 Trying writeValueWithResponse for WIDI Jack...');
-          await midiCharacteristic.writeValueWithResponse(bleMidiPacket);
-          writeSuccess = true;
-          console.log('✅ WIDI Jack write successful via writeValueWithResponse');
-        } catch (error) {
-          console.log('⚠️ writeValueWithResponse failed:', error);
-          lastError = error;
-        }
-      }
-
-      if (!writeSuccess) {
-        throw lastError || new Error('No write method succeeded');
-      }
+      // WIDI Jack + TC-Helicon optimized transmission
+      console.log('📤 Sending via writeValueWithResponse (WIDI Jack standard)...');
+      await midiCharacteristic.writeValueWithResponse(bleMidiPacket);
+      console.log('✅ WIDI Jack transmission successful');
+      
+      // Small delay for TC-Helicon processing (some devices need time between commands)
+      await new Promise(resolve => setTimeout(resolve, 10));
       
       const hexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
       setLastSentMessage(`${testMessage} → [${hexString}]`);
@@ -737,7 +800,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
                   type="text"
                   value={testMessage}
                   onChange={(e) => setTestMessage(e.target.value)}
-                  placeholder="[[PC:1:1]] [[CC:7:64:1]] [[NOTE:60:127:1]] [[BANK:0:1]]"
+                  placeholder="[[PC:1:1]] [[CC:110:127:1]] [[BANK:0:1]] (TC-Helicon optimized)"
                   className="flex-1 px-3 py-2 border rounded text-black dark:text-white bg-white dark:bg-gray-800"
                   disabled={connectionStatus !== 'connected'}
                 />
@@ -751,6 +814,30 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
                 >
                   <Send className="h-4 w-4 mr-2" />
                   Send
+                </Button>
+                <Button 
+                  onClick={() => sendTCHeliconPreset(1)}
+                  disabled={connectionStatus !== 'connected'}
+                  variant="outline"
+                  size="sm"
+                >
+                  TC P1
+                </Button>
+                <Button 
+                  onClick={() => sendTCHeliconPreset(2)}
+                  disabled={connectionStatus !== 'connected'}
+                  variant="outline"
+                  size="sm"
+                >
+                  TC P2
+                </Button>
+                <Button 
+                  onClick={() => sendTCHeliconCC(110, 127)} // Vocal harmonies ON
+                  disabled={connectionStatus !== 'connected'}
+                  variant="outline"
+                  size="sm"
+                >
+                  Harmonies
                 </Button>
               </div>
 

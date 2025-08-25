@@ -256,10 +256,13 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         
         // For sending MIDI data - prefer writeWithoutResponse for MIDI
         if (char.properties.writeWithoutResponse || char.properties.write) {
-          writeCharacteristic = char;
-          console.log(`✍️ Found write characteristic: ${char.uuid}`);
+          writeCharacteristic = char; // Always use the latest writable characteristic (might be same as notify)
+          console.log(`✍️ Found write characteristic: ${char.uuid} (write=${char.properties.write}, writeWithoutResponse=${char.properties.writeWithoutResponse})`);
         }
       }
+
+      console.log(`🔍 Final characteristics - Notify: ${notifyCharacteristic?.uuid}, Write: ${writeCharacteristic?.uuid}`);
+      console.log(`🔍 Same characteristic for read/write: ${notifyCharacteristic?.uuid === writeCharacteristic?.uuid}`);
 
       // Set up notifications for incoming MIDI
       if (notifyCharacteristic) {
@@ -478,7 +481,12 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
 
   // Send test message
   const sendTestMessage = async () => {
+    console.log('🚀 Send button clicked!');
+    console.log('🔍 Bluetooth device connected:', !!bluetoothDevice?.gatt?.connected);
+    console.log('🔍 MIDI characteristic available:', !!midiCharacteristic);
+    
     if (!bluetoothDevice || !bluetoothDevice.gatt.connected) {
+      console.log('❌ Device not connected');
       toast({
         title: "Not Connected",
         description: "Please connect to a device first",
@@ -488,6 +496,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     }
 
     if (!midiCharacteristic) {
+      console.log('❌ No MIDI characteristic available');
       toast({
         title: "MIDI Not Available",
         description: "MIDI characteristic not found on this device",
@@ -495,6 +504,8 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       });
       return;
     }
+
+    console.log('✅ All checks passed, proceeding to send MIDI...');
 
     try {
       console.log(`📤 Parsing MIDI command: ${testMessage}`);
@@ -541,11 +552,12 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       console.error('❌ MIDI send failed:', error);
       
       let errorMessage = "Failed to send MIDI command";
-      if (error.message.includes("Not paired")) {
+      const errorStr = error instanceof Error ? error.message : String(error);
+      if (errorStr.includes("Not paired")) {
         errorMessage = "Device not paired. Try disconnecting and reconnecting.";
-      } else if (error.message.includes("GATT")) {
+      } else if (errorStr.includes("GATT")) {
         errorMessage = "Bluetooth connection issue. Check device pairing.";
-      } else if (error.message.includes("write")) {
+      } else if (errorStr.includes("write")) {
         errorMessage = "Device doesn't support MIDI sending.";
       }
       

@@ -83,37 +83,35 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   }, []);
 
   const {
-    isLoaded,
     isPlaying,
     currentTime,
     duration,
-    volume,
-    setVolume,
     masterVolume,
-    setMasterVolume,
+    updateMasterVolume,
     play,
     pause,
     stop,
     seek,
-    loadSong,
-    trackStates,
     isAudioEngineOnline,
     masterStereoLevels,
-    progress
+    audioLevels,
+    isLoadingTracks
   } = useAudioEngine();
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
-    onPlay: play,
-    onPause: pause,
-    onStop: stop
+    onTogglePlayback: isPlaying ? pause : play,
+    onTrackMute: () => {}, // Not implemented in simplified version
+    isPlaying
   });
 
   // Load all songs on mount
   useEffect(() => {
-    const loadAllSongs = async () => {
+    const loadAllSongs = () => {
+      if (!user?.email) return;
+      
       try {
-        const songs = await LocalSongStorage.getAllSongs();
+        const songs = LocalSongStorage.getAllSongs(user.email);
         setAllSongs(songs);
         console.log(`📋 Loaded ${songs.length} songs from local storage`);
       } catch (error) {
@@ -127,16 +125,18 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     };
 
     loadAllSongs();
-  }, [toast]);
+  }, [user?.email, toast]);
 
-  const refreshSongs = useCallback(async () => {
+  const refreshSongs = useCallback(() => {
+    if (!user?.email) return;
+    
     try {
-      const songs = await LocalSongStorage.getAllSongs();
+      const songs = LocalSongStorage.getAllSongs(user.email);
       setAllSongs(songs);
     } catch (error) {
       console.error('Failed to refresh songs:', error);
     }
-  }, []);
+  }, [user?.email]);
 
   // Select song and load its tracks
   useEffect(() => {
@@ -147,11 +147,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
     setSelectedSong(song);
     
-    if (song.tracks && song.tracks.length > 0) {
-      // Load the tracks into the audio engine
-      loadSong(song.tracks);
-    }
-  }, [selectedSongId, allSongs, loadSong]);
+    // Audio loading is handled automatically by the audio engine hook
+  }, [selectedSongId, allSongs]);
 
   const handleSeek = useCallback((time: number) => {
     seek(time);
@@ -177,7 +174,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     stop();
   }, [stop]);
 
-  const handleAddSongLocal = useCallback(async () => {
+  const handleAddSongLocal = useCallback(() => {
     if (!user?.email) {
       toast({
         title: "Authentication Required",
@@ -188,7 +185,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     try {
-      const newSong = await LocalSongStorage.createSong(songTitle, songArtist);
+      const newSong = LocalSongStorage.addSong(user.email, {
+        title: songTitle,
+        artist: songArtist,
+        duration: 0,
+        lyrics: '',
+        waveform: []
+      });
       setAllSongs(prev => [newSong, ...prev]);
       setSongTitle("");
       setSongArtist("");
@@ -208,24 +211,26 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   }, [user?.email, songTitle, songArtist, toast]);
 
-  const handleUpdateLyrics = useCallback(async () => {
-    if (!selectedSong) return;
+  const handleUpdateLyrics = useCallback(() => {
+    if (!selectedSong || !user?.email) return;
 
     try {
-      const updatedSong = await LocalSongStorage.updateSong(selectedSong.id, {
+      const updatedSong = LocalSongStorage.updateSong(user.email, selectedSong.id, {
         lyrics: lyricsText
       });
       
-      setSelectedSong(updatedSong);
-      setAllSongs(prev => prev.map(song => 
-        song.id === selectedSong.id ? updatedSong : song
-      ));
-      setIsEditLyricsOpen(false);
-      
-      toast({
-        title: "Lyrics updated",
-        description: "Song lyrics have been saved."
-      });
+      if (updatedSong) {
+        setSelectedSong(updatedSong);
+        setAllSongs(prev => prev.map(song => 
+          song.id === selectedSong.id ? updatedSong : song
+        ));
+        setIsEditLyricsOpen(false);
+        
+        toast({
+          title: "Lyrics updated",
+          description: "Song lyrics have been saved."
+        });
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -233,7 +238,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         variant: "destructive"
       });
     }
-  }, [selectedSong, lyricsText, toast]);
+  }, [selectedSong, lyricsText, user?.email, toast]);
 
   // Add generic MIDI command at current timestamp (functionality removed)
   const handleAddMidiCommand = () => {
@@ -651,7 +656,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               isPlaying={isPlaying}
               currentTime={currentTime}
               duration={duration}
-              progress={progress}
+              progress={currentTime / duration * 100}
               isMidiConnected={isMidiConnected}
               onPlay={play}
               onPause={pause}
@@ -704,7 +709,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   isPlaying={isPlaying}
                   currentTime={currentTime}
                   duration={duration}
-                  progress={progress}
+                  progress={currentTime / duration * 100}
                   isMidiConnected={isMidiConnected}
                   onPlay={handlePlay}
                   onPause={handlePause}
@@ -903,16 +908,18 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           <DialogHeader>
             <DialogTitle>Track Manager</DialogTitle>
           </DialogHeader>
-          <TrackManager
-            selectedSong={selectedSong}
-            onSongUpdate={(updatedSong) => {
-              setSelectedSong(updatedSong);
-              setAllSongs(prev => prev.map(song => 
-                song.id === updatedSong.id ? updatedSong : song
-              ));
-            }}
-            data-testid="track-manager"
-          />
+          {selectedSong && (
+            <TrackManager
+              song={selectedSong}
+              onSongUpdate={(updatedSong) => {
+                setSelectedSong(updatedSong);
+                setAllSongs(prev => prev.map(song => 
+                  song.id === updatedSong.id ? updatedSong : song
+                ));
+              }}
+              data-testid="track-manager"
+            />
+          )}
         </DialogContent>
       </Dialog>
 

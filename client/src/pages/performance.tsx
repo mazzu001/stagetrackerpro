@@ -746,34 +746,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             </div>
           </div>
 
-          {/* Right Sidebar - Audio Controls (Desktop only) */}
+          {/* Right Sidebar - Waveform Only (Desktop only) */}
           <div className="w-80 border-l bg-card flex flex-col hidden md:flex">
-            {/* VU Meter */}
-            <div className="p-4 border-b">
-              <StereoVUMeter 
-                leftLevel={masterStereoLevels.left}
-                rightLevel={masterStereoLevels.right}
-                isPlaying={isPlaying}
-                data-testid="vu-meter" 
-              />
-            </div>
-
-            {/* Audio Mixer */}
-            <div className="flex-1 p-4">
-              <AudioMixer
-                song={selectedSong}
-                audioLevels={audioLevels}
-                masterVolume={masterVolume}
-                onTrackVolumeChange={() => {}} // Not implemented in simplified version
-                onTrackMuteToggle={() => {}} // Not implemented in simplified version
-                onTrackSoloToggle={() => {}} // Not implemented in simplified version
-                onMasterVolumeChange={updateMasterVolume}
-                data-testid="audio-mixer"
-              />
-            </div>
-
             {/* Waveform Visualizer */}
-            <div className="p-4 border-t">
+            <div className="p-4 h-full">
               <WaveformVisualizer
                 song={selectedSong}
                 currentTime={currentTime}

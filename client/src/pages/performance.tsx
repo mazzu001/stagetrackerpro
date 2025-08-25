@@ -96,13 +96,20 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     masterStereoLevels,
     audioLevels,
     isLoadingTracks
-  } = useAudioEngine();
+  } = useAudioEngine({ 
+    song: selectedSong,
+    onDurationUpdated: (songId: string, newDuration: number) => {
+      if (selectedSong && selectedSong.id === songId && user?.email) {
+        LocalSongStorage.updateSong(user.email, songId, { duration: newDuration });
+      }
+    }
+  });
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
-    onTogglePlayback: isPlaying ? pause : play,
-    onTrackMute: () => {}, // Not implemented in simplified version
-    isPlaying
+    onPlay: play,
+    onPause: pause,
+    onStop: stop
   });
 
   // Load all songs on mount
@@ -189,8 +196,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         title: songTitle,
         artist: songArtist,
         duration: 0,
-        lyrics: '',
-        waveform: []
+        lyrics: ''
       });
       setAllSongs(prev => [newSong, ...prev]);
       setSongTitle("");
@@ -755,8 +761,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             {/* Audio Mixer */}
             <div className="flex-1 p-4">
               <AudioMixer
-                trackStates={audioLevels}
+                song={selectedSong}
+                audioLevels={audioLevels}
                 masterVolume={masterVolume}
+                onTrackVolumeChange={() => {}} // Not implemented in simplified version
+                onTrackMuteToggle={() => {}} // Not implemented in simplified version
+                onTrackSoloToggle={() => {}} // Not implemented in simplified version
                 onMasterVolumeChange={updateMasterVolume}
                 data-testid="audio-mixer"
               />
@@ -945,8 +955,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </DialogHeader>
           {selectedSong && (
             <TrackManager
-              song={selectedSong}
-              onSongUpdate={(updatedSong) => {
+              song={selectedSong as any}
+              onSongUpdate={(updatedSong: any) => {
                 setSelectedSong(updatedSong);
                 setAllSongs(prev => prev.map(song => 
                   song.id === updatedSong.id ? updatedSong : song

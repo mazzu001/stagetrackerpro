@@ -739,6 +739,41 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               </div>
             </div>
           </div>
+
+          {/* Right Sidebar - Audio Controls (Desktop only) */}
+          <div className="w-80 border-l bg-card flex flex-col hidden md:flex">
+            {/* VU Meter */}
+            <div className="p-4 border-b">
+              <StereoVUMeter 
+                leftLevel={masterStereoLevels.left}
+                rightLevel={masterStereoLevels.right}
+                isPlaying={isPlaying}
+                data-testid="vu-meter" 
+              />
+            </div>
+
+            {/* Audio Mixer */}
+            <div className="flex-1 p-4">
+              <AudioMixer
+                trackStates={audioLevels}
+                masterVolume={masterVolume}
+                onMasterVolumeChange={updateMasterVolume}
+                data-testid="audio-mixer"
+              />
+            </div>
+
+            {/* Waveform Visualizer */}
+            <div className="p-4 border-t">
+              <WaveformVisualizer
+                song={selectedSong}
+                currentTime={currentTime}
+                duration={duration}
+                isPlaying={isPlaying}
+                audioLevels={audioLevels}
+                data-testid="waveform-visualizer"
+              />
+            </div>
+          </div>
         </div>
       </div>
       {/* Status Bar & Manual MIDI Send - Desktop only */}

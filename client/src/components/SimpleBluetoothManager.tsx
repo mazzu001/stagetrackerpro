@@ -173,7 +173,12 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       console.log('✅ Connected to GATT server');
 
       // Try to setup MIDI communication
-      await setupMidiCommunication(server);
+      try {
+        await setupMidiCommunication(server);
+        console.log('🎵 MIDI setup completed');
+      } catch (midiError) {
+        console.error('⚠️ MIDI setup failed but connection succeeded:', midiError);
+      }
 
       setBluetoothDevice(bluetoothDevice);
       setSelectedDevice({ ...device, connected: true });
@@ -601,6 +606,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
                       <CheckCircle className="h-5 w-5 text-green-500" />
                       <span className="text-green-600 dark:text-green-400">
                         Connected to {selectedDevice?.name}
+                        {midiCharacteristic ? ' (MIDI Ready)' : ' (No MIDI)'}
                       </span>
                     </>
                   ) : connectionStatus === 'connecting' ? (
@@ -693,8 +699,12 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
                   disabled={connectionStatus !== 'connected'}
                 />
                 <Button 
-                  onClick={sendTestMessage}
+                  onClick={() => {
+                    console.log('🖱️ Send button clicked - testing click handler');
+                    sendTestMessage();
+                  }}
                   disabled={connectionStatus !== 'connected'}
+                  data-testid="button-send-midi"
                 >
                   <Send className="h-4 w-4 mr-2" />
                   Send

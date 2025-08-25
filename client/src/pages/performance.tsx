@@ -428,14 +428,18 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               <Music className="h-5 w-5 md:h-6 md:w-6 text-primary" />
               <span className="text-base md:text-lg font-semibold">Live Performance</span>
             </div>
-            
-            {selectedSong && (
-              <div className="text-xs md:text-sm text-gray-400 truncate max-w-[200px] md:max-w-none">
-                <span className="font-medium">{selectedSong.title}</span>
-                <span className="mx-1 md:mx-2">•</span>
-                <span>{selectedSong.artist}</span>
-              </div>
-            )}
+          </div>
+
+          {/* Waveform Visualizer - Stretch across available space */}
+          <div className="flex-1 mx-4 max-h-12">
+            <WaveformVisualizer
+              song={selectedSong}
+              currentTime={currentTime}
+              duration={duration}
+              isPlaying={isPlaying}
+              audioLevels={audioLevels}
+              data-testid="header-waveform-visualizer"
+            />
           </div>
 
           <div className="flex items-center gap-1 md:gap-2">
@@ -746,20 +750,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             </div>
           </div>
 
-          {/* Right Sidebar - Waveform Only (Desktop only) */}
-          <div className="w-80 border-l bg-card flex flex-col hidden md:flex">
-            {/* Waveform Visualizer */}
-            <div className="p-4 h-full">
-              <WaveformVisualizer
-                song={selectedSong}
-                currentTime={currentTime}
-                duration={duration}
-                isPlaying={isPlaying}
-                audioLevels={audioLevels}
-                data-testid="waveform-visualizer"
-              />
-            </div>
-          </div>
         </div>
       </div>
       {/* Status Bar & Manual MIDI Send - Desktop only */}

@@ -40,7 +40,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
   const [isConnecting, setIsConnecting] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<'disconnected' | 'connecting' | 'connected'>('disconnected');
   const [hasBluetoothSupport, setHasBluetoothSupport] = useState(false);
-  const [testMessage, setTestMessage] = useState('Hello Device!');
+  const [testMessage, setTestMessage] = useState('[[PC:1:1]]');
   const [lastSentMessage, setLastSentMessage] = useState<string>('');
   const [lastReceivedMessage, setLastReceivedMessage] = useState<string>('');
   const [bluetoothDevice, setBluetoothDevice] = useState<any>(null);
@@ -409,6 +409,54 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     }
   };
 
+  // Parse MIDI bracket format to bytes
+  const parseMidiCommand = (command: string): Uint8Array | null => {
+    // Parse [[TYPE:VALUE:CHANNEL]] format
+    const bracketMatch = command.match(/\[\[([^:]+):([^:]+):([^\]]+)\]\]/);
+    if (!bracketMatch) {
+      // Try legacy hex format like "C0 0C"
+      const hexMatch = command.match(/^([0-9A-Fa-f\s]+)$/);
+      if (hexMatch) {
+        const hexBytes = command.split(/\s+/).filter(h => h.length > 0);
+        return new Uint8Array(hexBytes.map(h => parseInt(h, 16)));
+      }
+      return null;
+    }
+
+    const [, type, value, channel] = bracketMatch;
+    const ch = Math.max(1, Math.min(16, parseInt(channel))) - 1; // Convert to 0-15
+    const val = parseInt(value);
+
+    switch (type.toUpperCase()) {
+      case 'PC': // Program Change
+        return new Uint8Array([0xC0 | ch, Math.min(127, Math.max(0, val))]);
+        
+      case 'CC': // Control Change - expect format [[CC:controller:value:channel]]
+        const parts = command.match(/\[\[CC:([^:]+):([^:]+):([^\]]+)\]\]/);
+        if (parts) {
+          const controller = parseInt(parts[1]);
+          const ccValue = parseInt(parts[2]);
+          const ccChannel = Math.max(1, Math.min(16, parseInt(parts[3]))) - 1;
+          return new Uint8Array([0xB0 | ccChannel, Math.min(127, Math.max(0, controller)), Math.min(127, Math.max(0, ccValue))]);
+        }
+        return null;
+        
+      case 'NOTE': // Note On - expect format [[NOTE:note:velocity:channel]]
+        const noteParts = command.match(/\[\[NOTE:([^:]+):([^:]+):([^\]]+)\]\]/);
+        if (noteParts) {
+          const note = parseInt(noteParts[1]);
+          const velocity = parseInt(noteParts[2]);
+          const noteChannel = Math.max(1, Math.min(16, parseInt(noteParts[3]))) - 1;
+          const cmd = velocity > 0 ? 0x90 : 0x80; // Note On or Note Off
+          return new Uint8Array([cmd | noteChannel, Math.min(127, Math.max(0, note)), Math.min(127, Math.max(0, velocity))]);
+        }
+        return null;
+        
+      default:
+        return null;
+    }
+  };
+
   // Send test message
   const sendTestMessage = async () => {
     if (!bluetoothDevice || !bluetoothDevice.gatt.connected) {
@@ -420,27 +468,48 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       return;
     }
 
+    if (!midiCharacteristic) {
+      toast({
+        title: "MIDI Not Available",
+        description: "MIDI characteristic not found on this device",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
-      console.log(`📤 Sending test message: ${testMessage}`);
+      console.log(`📤 Parsing MIDI command: ${testMessage}`);
       
-      // This is a basic implementation - you may need to adapt for specific device protocols
-      const encoder = new TextEncoder();
-      const data = encoder.encode(testMessage);
+      // Parse the MIDI command
+      const midiBytes = parseMidiCommand(testMessage);
+      if (!midiBytes) {
+        toast({
+          title: "Invalid MIDI Format",
+          description: "Use format: [[PC:1:1]] or [[CC:7:64:1]] or [[NOTE:60:127:1]]",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      console.log(`🎵 Sending MIDI bytes: ${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
       
-      // For demonstration - actual implementation depends on device services/characteristics
-      setLastSentMessage(testMessage);
-      console.log('✅ Test message sent');
+      // Send actual MIDI data over Bluetooth
+      await midiCharacteristic.writeValueWithResponse(midiBytes);
+      
+      const hexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
+      setLastSentMessage(`${testMessage} → [${hexString}]`);
+      console.log('✅ MIDI command sent successfully');
       
       toast({
-        title: "Message Sent",
-        description: `Sent: ${testMessage}`,
+        title: "MIDI Sent",
+        description: `Sent: ${testMessage} → [${hexString}]`,
       });
 
     } catch (error) {
-      console.error('❌ Send failed:', error);
+      console.error('❌ MIDI send failed:', error);
       toast({
         title: "Send Failed",
-        description: "Failed to send test message",
+        description: "Failed to send MIDI command",
         variant: "destructive",
       });
     }
@@ -565,7 +634,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
                   type="text"
                   value={testMessage}
                   onChange={(e) => setTestMessage(e.target.value)}
-                  placeholder="Enter test message"
+                  placeholder="[[PC:1:1]] or [[CC:7:64:1]] or [[NOTE:60:127:1]]"
                   className="flex-1 px-3 py-2 border rounded text-black dark:text-white bg-white dark:bg-gray-800"
                   disabled={connectionStatus !== 'connected'}
                 />

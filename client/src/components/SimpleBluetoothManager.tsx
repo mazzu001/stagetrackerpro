@@ -45,6 +45,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
   const [lastReceivedMessage, setLastReceivedMessage] = useState<string>('');
   const [bluetoothDevice, setBluetoothDevice] = useState<any>(null);
   const [midiMessages, setMidiMessages] = useState<Array<{timestamp: string, message: string}>>([]);
+  const [midiCharacteristic, setMidiCharacteristic] = useState<any>(null);
 
   // Check for professional subscription
   useEffect(() => {
@@ -96,10 +97,21 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     try {
       console.log('🔍 Scanning for Bluetooth devices...');
       
-      // Request any Bluetooth device
+      // Request MIDI capable Bluetooth device with comprehensive service support
       const device = await (navigator as any).bluetooth.requestDevice({
         acceptAllDevices: true,
-        optionalServices: ['generic_access', 'generic_attribute']
+        optionalServices: [
+          // Standard MIDI over BLE service
+          '03b80e5a-ede8-4b33-a751-6ce34ec4c700',
+          // Generic services that many devices use
+          'generic_access', 
+          'generic_attribute',
+          // Additional MIDI services used by various manufacturers
+          '7772e5db-3868-4112-a1a9-f2669d106bf3', // Roland
+          '42a7ce7d-8f4c-4f7f-8c8d-8e6c9b2a4b3c', // Yamaha variants
+          // Nordic UART service (used by some MIDI devices)
+          '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
+        ]
       });
 
       console.log('📱 Found device:', device.name || 'Unknown Device');
@@ -143,11 +155,25 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       
       const bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
         filters: [{ name: device.name }],
-        optionalServices: ['generic_access', 'generic_attribute']
+        optionalServices: [
+          // Standard MIDI over BLE service
+          '03b80e5a-ede8-4b33-a751-6ce34ec4c700',
+          // Generic services
+          'generic_access', 
+          'generic_attribute',
+          // Additional MIDI services
+          '7772e5db-3868-4112-a1a9-f2669d106bf3', // Roland
+          '42a7ce7d-8f4c-4f7f-8c8d-8e6c9b2a4b3c', // Yamaha variants
+          // Nordic UART service (used by some MIDI devices)
+          '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
+        ]
       });
 
       const server = await bluetoothDevice.gatt.connect();
       console.log('✅ Connected to GATT server');
+
+      // Try to setup MIDI communication
+      await setupMidiCommunication(server);
 
       setBluetoothDevice(bluetoothDevice);
       setSelectedDevice({ ...device, connected: true });
@@ -180,6 +206,163 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     }
   };
 
+  // Setup MIDI communication over BLE
+  const setupMidiCommunication = async (server: any) => {
+    try {
+      console.log('🎵 Setting up MIDI communication...');
+      
+      // Try standard MIDI service first
+      const midiServiceUUIDs = [
+        '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // Standard MIDI
+        '7772e5db-3868-4112-a1a9-f2669d106bf3', // Roland
+        '6e400001-b5a3-f393-e0a9-e50e24dcca9e'  // Nordic UART
+      ];
+
+      let midiService = null;
+      let characteristic = null;
+
+      // Try to find a MIDI service
+      for (const serviceUUID of midiServiceUUIDs) {
+        try {
+          midiService = await server.getPrimaryService(serviceUUID);
+          console.log(`✅ Found MIDI service: ${serviceUUID}`);
+          break;
+        } catch (e) {
+          console.log(`❌ Service ${serviceUUID} not found`);
+        }
+      }
+
+      if (!midiService) {
+        console.log('⚠️ No MIDI service found, trying generic communication');
+        return;
+      }
+
+      // Get characteristics for MIDI communication
+      const characteristics = await midiService.getCharacteristics();
+      console.log(`📋 Found ${characteristics.length} characteristics`);
+
+      // Look for notification-capable characteristic (for receiving MIDI)
+      for (const char of characteristics) {
+        if (char.properties.notify || char.properties.indicate) {
+          characteristic = char;
+          console.log(`🔔 Using characteristic: ${char.uuid}`);
+          break;
+        }
+      }
+
+      if (characteristic) {
+        // Start notifications for incoming MIDI data
+        await characteristic.startNotifications();
+        console.log('🎵 Started MIDI notifications');
+
+        // Listen for MIDI messages
+        characteristic.addEventListener('characteristicvaluechanged', handleMidiMessage);
+        setMidiCharacteristic(characteristic);
+
+        addMidiMessage('MIDI connection established - listening for commands');
+      } else {
+        console.log('⚠️ No suitable characteristic found for MIDI');
+      }
+
+    } catch (error) {
+      console.error('❌ MIDI setup failed:', error);
+      addMidiMessage('MIDI setup failed - basic connection only');
+    }
+  };
+
+  // Handle incoming MIDI messages
+  const handleMidiMessage = (event: any) => {
+    const value = event.target.value;
+    const data = new Uint8Array(value.buffer);
+    
+    console.log('🎵 Received MIDI data:', Array.from(data).map(b => b.toString(16).padStart(2, '0')).join(' '));
+    
+    // Parse MIDI message
+    const midiCommand = parseMidiMessage(data);
+    if (midiCommand) {
+      addMidiMessage(midiCommand);
+    }
+  };
+
+  // Parse MIDI message into readable format
+  const parseMidiMessage = (data: Uint8Array): string | null => {
+    if (data.length === 0) return null;
+
+    // Handle BLE MIDI format (first byte is often timestamp header)
+    let midiBytes = data;
+    if (data.length > 1 && (data[0] & 0x80) === 0x80) {
+      // Skip BLE MIDI timestamp header
+      midiBytes = data.slice(1);
+    }
+
+    if (midiBytes.length === 0) return null;
+
+    const status = midiBytes[0];
+    const channel = (status & 0x0F) + 1;
+    const command = status & 0xF0;
+
+    switch (command) {
+      case 0x90: // Note On
+        if (midiBytes.length >= 3) {
+          const note = midiBytes[1];
+          const velocity = midiBytes[2];
+          return `Note ON: ${getMidiNoteName(note)} (${note}) velocity ${velocity} ch${channel}`;
+        }
+        break;
+        
+      case 0x80: // Note Off
+        if (midiBytes.length >= 3) {
+          const note = midiBytes[1];
+          const velocity = midiBytes[2];
+          return `Note OFF: ${getMidiNoteName(note)} (${note}) velocity ${velocity} ch${channel}`;
+        }
+        break;
+        
+      case 0xC0: // Program Change
+        if (midiBytes.length >= 2) {
+          const program = midiBytes[1];
+          return `Program Change: ${program} ch${channel}`;
+        }
+        break;
+        
+      case 0xB0: // Control Change
+        if (midiBytes.length >= 3) {
+          const controller = midiBytes[1];
+          const value = midiBytes[2];
+          return `Control Change: CC${controller} = ${value} ch${channel}`;
+        }
+        break;
+        
+      case 0xE0: // Pitch Bend
+        if (midiBytes.length >= 3) {
+          const lsb = midiBytes[1];
+          const msb = midiBytes[2];
+          const value = (msb << 7) | lsb;
+          return `Pitch Bend: ${value} ch${channel}`;
+        }
+        break;
+        
+      default:
+        return `Unknown MIDI: ${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}`;
+    }
+
+    return `Invalid MIDI data: ${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}`;
+  };
+
+  // Convert MIDI note number to note name
+  const getMidiNoteName = (note: number): string => {
+    const noteNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const octave = Math.floor(note / 12) - 1;
+    const noteName = noteNames[note % 12];
+    return `${noteName}${octave}`;
+  };
+
+  // Add MIDI message to display
+  const addMidiMessage = (message: string) => {
+    const timestamp = new Date().toLocaleTimeString();
+    setMidiMessages(prev => [...prev, { timestamp, message }].slice(-50)); // Keep last 50 messages
+  };
+
   // Disconnect from device
   const disconnectFromDevice = () => {
     if (bluetoothDevice && bluetoothDevice.gatt.connected) {
@@ -187,9 +370,21 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       console.log('🔌 Disconnected from device');
     }
     
+    // Clean up MIDI resources
+    if (midiCharacteristic) {
+      try {
+        midiCharacteristic.removeEventListener('characteristicvaluechanged', handleMidiMessage);
+        console.log('🎵 MIDI listener removed');
+      } catch (e) {
+        console.log('⚠️ Error removing MIDI listener:', e);
+      }
+      setMidiCharacteristic(null);
+    }
+    
     setBluetoothDevice(null);
     setConnectionStatus('disconnected');
     setSelectedDevice(prev => prev ? { ...prev, connected: false } : null);
+    addMidiMessage('MIDI connection closed');
     
     // Update devices list
     if (selectedDevice) {

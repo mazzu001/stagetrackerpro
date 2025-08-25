@@ -6,7 +6,7 @@ import { storage } from "./storage";
 import { insertSongSchema, insertTrackSchema } from "@shared/schema";
 import { setupAuth, isAuthenticated, requireSubscription } from "./replitAuth";
 import { subscriptionManager } from "./subscriptionManager";
-import { midiService, type MIDIDevice, type MIDIMessage } from "./midi-service";
+// MIDI functionality removed
 import Stripe from "stripe";
 import multer from "multer";
 import path from "path";
@@ -1166,191 +1166,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log('🔍 Registering lyrics search routes...');
   console.log('📁 Registering file registry routes...');
 
-  // MIDI routes for Professional users
-  console.log('🎹 Registering MIDI management routes...');
-
-  // MIDI devices scan
-  app.get('/api/midi/devices', async (req: any, res) => {
-    try {
-      // For demo purposes, allow access to mock MIDI devices
-      // In production, this would check user authentication
-      const devices = midiService.scanDevices();
-      res.json(devices);
-    } catch (error: any) {
-      console.error('MIDI devices scan error:', error);
-      res.status(500).json({ 
-        error: 'midi_scan_failed',
-        message: 'Failed to scan MIDI devices' 
-      });
-    }
-  });
-
-  // Connect MIDI device
-  app.post('/api/midi/connect', async (req: any, res) => {
-    try {
-      const { deviceId, type, channel } = req.body;
-      
-      if (!deviceId || !type) {
-        return res.status(400).json({ error: 'Device ID and type are required' });
-      }
-
-      let success = false;
-      if (type === 'input') {
-        success = midiService.connectInputDevice(deviceId, channel);
-      } else if (type === 'output') {
-        success = midiService.connectOutputDevice(deviceId, channel);
-      }
-
-      if (success) {
-        res.json({ success: true, message: `Connected ${type} device: ${deviceId}` });
-      } else {
-        res.status(400).json({ error: `Failed to connect ${type} device: ${deviceId}` });
-      }
-    } catch (error: any) {
-      console.error('MIDI connect error:', error);
-      res.status(500).json({ 
-        error: 'midi_connect_failed',
-        message: 'Failed to connect MIDI device' 
-      });
-    }
-  });
-
-  // Disconnect MIDI device
-  app.post('/api/midi/disconnect', async (req: any, res) => {
-    try {
-      const { deviceId, type } = req.body;
-      
-      if (!deviceId || !type) {
-        return res.status(400).json({ error: 'Device ID and type are required' });
-      }
-
-      let success = false;
-      if (type === 'input') {
-        success = midiService.disconnectInputDevice(deviceId);
-      } else if (type === 'output') {
-        success = midiService.disconnectOutputDevice(deviceId);
-      }
-
-      if (success) {
-        res.json({ success: true, message: `Disconnected ${type} device: ${deviceId}` });
-      } else {
-        res.status(400).json({ error: `Failed to disconnect ${type} device: ${deviceId}` });
-      }
-    } catch (error: any) {
-      console.error('MIDI disconnect error:', error);
-      res.status(500).json({ 
-        error: 'midi_disconnect_failed',
-        message: 'Failed to disconnect MIDI device' 
-      });
-    }
-  });
-
-  // Send MIDI message
-  app.post('/api/midi/send', isAuthenticated, async (req: any, res) => {
-    try {
-      // Check if user has professional subscription (level 3) for MIDI features
-      const userId = req.user?.claims?.sub;
-      if (userId) {
-        const user = await storage.getUser(userId);
-        if (Number(user?.subscriptionStatus) !== 3) {
-          return res.status(403).json({ 
-            success: false, 
-            error: "Professional subscription required for MIDI features (Level 3)" 
-          });
-        }
-      } else {
-        return res.status(401).json({ 
-          success: false, 
-          error: "Authentication required" 
-        });
-      }
-
-      const { deviceId, command } = req.body;
-      
-      if (!deviceId || !command) {
-        return res.status(400).json({ error: 'Device ID and command are required' });
-      }
-
-      // Parse MIDI command
-      const midiData = midiService.parseMIDICommand(command);
-      if (!midiData) {
-        return res.status(400).json({ error: 'Invalid MIDI command format' });
-      }
-
-      const success = midiService.sendMIDIMessage(deviceId, midiData);
-      
-      if (success) {
-        res.json({ 
-          success: true, 
-          message: `Sent MIDI message to ${deviceId}`,
-          parsedData: midiData,
-          formattedCommand: midiService.formatMIDIMessage(midiData)
-        });
-      } else {
-        res.status(400).json({ error: `Failed to send MIDI message to ${deviceId}` });
-      }
-    } catch (error: any) {
-      console.error('MIDI send error:', error);
-      res.status(500).json({ 
-        error: 'midi_send_failed',
-        message: 'Failed to send MIDI message' 
-      });
-    }
-  });
-
-  // Get connected devices
-  app.get('/api/midi/connected', async (req: any, res) => {
-    try {
-      const connectedDevices = midiService.getConnectedDevices();
-      res.json(connectedDevices);
-    } catch (error: any) {
-      console.error('MIDI connected devices error:', error);
-      res.status(500).json({ 
-        error: 'midi_connected_failed',
-        message: 'Failed to get connected MIDI devices' 
-      });
-    }
-  });
-
-  console.log('✅ MIDI management routes registered');
+  // MIDI functionality has been completely removed
   
   console.log('🌐 Creating HTTP server...');
   const httpServer = createServer(app);
   console.log('✅ HTTP server created successfully');
 
-  // Set up WebSocket server for MIDI message streaming
-  const wss = new WebSocketServer({ server: httpServer, path: '/api/midi/stream' });
-  
-  wss.on('connection', (ws: WebSocket, req: any) => {
-    console.log('🎹 MIDI WebSocket client connected with professional access required');
-    
-    // Create MIDI message listener for this client
-    const messageListener = (message: MIDIMessage) => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({
-          type: 'midi_message',
-          data: message
-        }));
-      }
-    };
-
-    // Add listener to MIDI service
-    midiService.addMessageListener(messageListener);
-
-    // Handle client disconnect
-    ws.on('close', () => {
-      console.log('🎹 MIDI WebSocket client disconnected');
-      midiService.removeMessageListener(messageListener);
-    });
-
-    // Send connection confirmation
-    ws.send(JSON.stringify({
-      type: 'connection_established',
-      message: 'MIDI message streaming connected'
-    }));
-  });
-
-  console.log('🎹 MIDI WebSocket server initialized on /api/midi/stream');
+  // MIDI WebSocket functionality has been completely removed
   console.log('🎯 Route registration completed successfully');
   
   return httpServer;

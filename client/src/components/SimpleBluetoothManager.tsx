@@ -532,7 +532,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       const timestampLo = 0x80 | (timestamp & 0x7F);
       
       // WIDI Jack requires BLE MIDI format: [timestamp_hi, timestamp_lo, ...midi_data]
-      const bleMidiPacket = new Uint8Array([timestampHi, timestampLo, ...midiBytes]);
+      const bleMidiPacket = new Uint8Array([timestampHi, timestampLo, ...Array.from(midiBytes)]);
       
       const rawHexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
       const bleHexString = Array.from(bleMidiPacket).map(b => b.toString(16).padStart(2, '0')).join(' ');
@@ -540,9 +540,39 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       console.log(`📦 BLE MIDI packet for WIDI Jack: ${bleHexString}`);
       console.log(`⏰ Timestamp: ${timestamp.toString(16)} (hi=${timestampHi.toString(16)}, lo=${timestampLo.toString(16)})`);
       
-      // WIDI Jack requires writeValueWithResponse for reliability
-      console.log('📤 Using writeValueWithResponse for WIDI Jack compatibility');
-      await midiCharacteristic.writeValueWithResponse(bleMidiPacket);
+      // Try multiple write methods for WIDI Jack compatibility
+      let writeSuccess = false;
+      let lastError = null;
+
+      // Method 1: Try writeValueWithoutResponse first (often works better for WIDI Jack)
+      if (midiCharacteristic.properties.writeWithoutResponse && !writeSuccess) {
+        try {
+          console.log('📤 Trying writeValueWithoutResponse for WIDI Jack...');
+          await midiCharacteristic.writeValueWithoutResponse(bleMidiPacket);
+          writeSuccess = true;
+          console.log('✅ WIDI Jack write successful via writeValueWithoutResponse');
+        } catch (error) {
+          console.log('⚠️ writeValueWithoutResponse failed:', error);
+          lastError = error;
+        }
+      }
+
+      // Method 2: Try writeValueWithResponse as fallback
+      if (midiCharacteristic.properties.write && !writeSuccess) {
+        try {
+          console.log('📤 Trying writeValueWithResponse for WIDI Jack...');
+          await midiCharacteristic.writeValueWithResponse(bleMidiPacket);
+          writeSuccess = true;
+          console.log('✅ WIDI Jack write successful via writeValueWithResponse');
+        } catch (error) {
+          console.log('⚠️ writeValueWithResponse failed:', error);
+          lastError = error;
+        }
+      }
+
+      if (!writeSuccess) {
+        throw lastError || new Error('No write method succeeded');
+      }
       
       const hexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
       setLastSentMessage(`${testMessage} → [${hexString}]`);

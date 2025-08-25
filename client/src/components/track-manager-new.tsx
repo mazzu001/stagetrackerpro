@@ -536,7 +536,7 @@ export default function TrackManager({
           </CardContent>
         </Card>
       ) : (
-        <div className="space-y-2">
+        <div className="space-y-2 max-h-[60vh] overflow-y-auto pr-2">
           {tracks.map((track) => {
             const currentVolume = localTrackValues[track.id]?.volume ?? track.volume ?? 50;
             const currentBalance = localTrackValues[track.id]?.balance ?? track.balance ?? 0;

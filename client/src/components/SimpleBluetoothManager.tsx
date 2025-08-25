@@ -526,23 +526,23 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         return;
       }
 
-      console.log(`🎵 Sending MIDI bytes: ${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
+      // Create BLE MIDI packet for WIDI Jack compatibility
+      const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp for BLE MIDI
+      const timestampHi = 0x80 | ((timestamp >> 7) & 0x3F);
+      const timestampLo = 0x80 | (timestamp & 0x7F);
       
-      // Try different write methods based on characteristic properties
-      try {
-        if (midiCharacteristic.properties.writeWithoutResponse) {
-          console.log('📤 Using writeValueWithoutResponse');
-          await midiCharacteristic.writeValueWithoutResponse(midiBytes);
-        } else if (midiCharacteristic.properties.write) {
-          console.log('📤 Using writeValueWithResponse');
-          await midiCharacteristic.writeValueWithResponse(midiBytes);
-        } else {
-          throw new Error('Characteristic does not support writing');
-        }
-      } catch (writeError) {
-        console.error('❌ Write method failed:', writeError);
-        throw writeError;
-      }
+      // WIDI Jack requires BLE MIDI format: [timestamp_hi, timestamp_lo, ...midi_data]
+      const bleMidiPacket = new Uint8Array([timestampHi, timestampLo, ...midiBytes]);
+      
+      const rawHexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
+      const bleHexString = Array.from(bleMidiPacket).map(b => b.toString(16).padStart(2, '0')).join(' ');
+      console.log(`🎵 Raw MIDI bytes: ${rawHexString}`);
+      console.log(`📦 BLE MIDI packet for WIDI Jack: ${bleHexString}`);
+      console.log(`⏰ Timestamp: ${timestamp.toString(16)} (hi=${timestampHi.toString(16)}, lo=${timestampLo.toString(16)})`);
+      
+      // WIDI Jack requires writeValueWithResponse for reliability
+      console.log('📤 Using writeValueWithResponse for WIDI Jack compatibility');
+      await midiCharacteristic.writeValueWithResponse(bleMidiPacket);
       
       const hexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
       setLastSentMessage(`${testMessage} → [${hexString}]`);

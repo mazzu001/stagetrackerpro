@@ -95,26 +95,21 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
 
     setIsScanning(true);
     try {
-      console.log('🔍 Scanning for Bluetooth devices...');
+      console.log('🔍 Opening device picker - look for your WIDI Jack...');
+      toast({
+        title: "Device Picker Opening",
+        description: "Select your MIDI device from the browser popup",
+      });
       
-      // Request MIDI capable Bluetooth device with comprehensive service support
+      // Simple device request that will show ALL paired devices
       const device = await (navigator as any).bluetooth.requestDevice({
         acceptAllDevices: true,
-        optionalServices: [
-          // Standard MIDI over BLE service
-          '03b80e5a-ede8-4b33-a751-6ce34ec4c700',
-          // Generic services that many devices use
-          'generic_access', 
-          'generic_attribute',
-          // Additional MIDI services used by various manufacturers
-          '7772e5db-3868-4112-a1a9-f2669d106bf3', // Roland
-          '42a7ce7d-8f4c-4f7f-8c8d-8e6c9b2a4b3c', // Yamaha variants
-          // Nordic UART service (used by some MIDI devices)
-          '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
-        ]
+        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] // MIDI service
       });
 
-      console.log('📱 Found device:', device.name || 'Unknown Device');
+      console.log('✅ Device selected:', device.name || 'Unknown Device');
+      console.log('📍 Device ID:', device.id);
+      console.log('🔗 Already connected:', device.gatt?.connected);
       
       const newDevice: BluetoothDevice = {
         id: device.id,
@@ -122,24 +117,27 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         connected: false
       };
 
-      setDevices(prev => {
-        const exists = prev.find(d => d.id === device.id);
-        if (exists) return prev;
-        return [...prev, newDevice];
-      });
-
+      setDevices([newDevice]); // Replace any existing devices
+      
       toast({
         title: "Device Found",
-        description: `Found: ${newDevice.name}`,
+        description: `Ready to connect to: ${newDevice.name}`,
       });
 
-    } catch (error) {
-      console.error('❌ Bluetooth scan failed:', error);
-      toast({
-        title: "Scan Failed",
-        description: "Failed to scan for Bluetooth devices",
-        variant: "destructive",
-      });
+    } catch (error: any) {
+      console.error('❌ Device selection failed:', error);
+      if (error.name === 'NotFoundError') {
+        toast({
+          title: "No Device Selected",
+          description: "No device was selected from the picker",
+        });
+      } else {
+        toast({
+          title: "Scan Failed",
+          description: error.message || "Failed to scan for devices",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsScanning(false);
     }

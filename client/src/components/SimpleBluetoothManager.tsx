@@ -82,7 +82,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     }
   }, [isOpen, isProfessional]);
 
-  // Scan for Bluetooth devices
+  // Scan for Bluetooth devices  
   const scanForDevices = async () => {
     if (!hasBluetoothSupport) {
       toast({
@@ -95,21 +95,21 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
 
     setIsScanning(true);
     try {
-      console.log('🔍 Opening device picker - look for your WIDI Jack...');
-      toast({
-        title: "Device Picker Opening",
-        description: "Select your MIDI device from the browser popup",
-      });
+      console.log('🔍 Scanning for Bluetooth devices...');
       
-      // Simple device request that will show ALL paired devices
       const device = await (navigator as any).bluetooth.requestDevice({
-        acceptAllDevices: true,
-        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] // MIDI service
+        filters: [
+          { services: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700'] },
+          { namePrefix: 'WIDI' },
+          { namePrefix: 'BLE-MIDI' },
+          { namePrefix: 'MIDI' },
+          { namePrefix: 'Matt' },
+          { namePrefix: 'CME' }
+        ],
+        optionalServices: ['03b80e5a-ede8-4b33-a751-6ce34ec4c700']
       });
 
-      console.log('✅ Device selected:', device.name || 'Unknown Device');
-      console.log('📍 Device ID:', device.id);
-      console.log('🔗 Already connected:', device.gatt?.connected);
+      console.log('📱 Found device:', device.name || 'Unknown Device');
       
       const newDevice: BluetoothDevice = {
         id: device.id,
@@ -117,27 +117,24 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         connected: false
       };
 
-      setDevices([newDevice]); // Replace any existing devices
-      
-      toast({
-        title: "Device Found",
-        description: `Ready to connect to: ${newDevice.name}`,
+      setDevices(prev => {
+        const exists = prev.find(d => d.id === device.id);
+        if (exists) return prev;
+        return [...prev, newDevice];
       });
 
-    } catch (error: any) {
-      console.error('❌ Device selection failed:', error);
-      if (error.name === 'NotFoundError') {
-        toast({
-          title: "No Device Selected",
-          description: "No device was selected from the picker",
-        });
-      } else {
-        toast({
-          title: "Scan Failed",
-          description: error.message || "Failed to scan for devices",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Device Found",
+        description: `Found: ${newDevice.name}`,
+      });
+
+    } catch (error) {
+      console.error('❌ Bluetooth scan failed:', error);
+      toast({
+        title: "Scan Failed",
+        description: "Failed to scan for Bluetooth devices",
+        variant: "destructive",
+      });
     } finally {
       setIsScanning(false);
     }

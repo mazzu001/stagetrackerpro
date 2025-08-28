@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useUpgradePrompt } from "@/hooks/useSubscription";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { ListMusic, Plus, FolderOpen } from "lucide-react";
+import { ListMusic, Plus, FolderOpen, Search, ExternalLink, Loader2 } from "lucide-react";
 import type { Song, InsertSong } from "@shared/schema";
 
 interface SongSelectorProps {
@@ -19,6 +19,8 @@ interface SongSelectorProps {
 
 export default function SongSelector({ selectedSongId, onSongSelect }: SongSelectorProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
+  const [searchResult, setSearchResult] = useState<any>(null);
   const [newSong, setNewSong] = useState<InsertSong>({
     userId: "", // Will be set when creating
     title: "",
@@ -110,6 +112,63 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
     createSongMutation.mutate({ ...newSong, userId });
   };
 
+  const handleSearchLyrics = async () => {
+    if (!newSong.title.trim() || !newSong.artist.trim()) {
+      toast({
+        title: "Missing Information",
+        description: "Please enter both title and artist to search for lyrics",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSearchingLyrics(true);
+    setSearchResult(null);
+
+    try {
+      const response = await apiRequest('POST', '/api/lyrics/search', {
+        title: newSong.title,
+        artist: newSong.artist
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        // Direct lyrics found - unlikely with current server implementation
+        setNewSong({ ...newSong, lyrics: data.lyrics });
+        toast({
+          title: "Lyrics Found",
+          description: "Lyrics have been automatically added to your song"
+        });
+      } else if (data.openBrowser && data.searchResult) {
+        // Found a lyrics page to open
+        setSearchResult(data.searchResult);
+        toast({
+          title: "Lyrics Page Found",
+          description: "Opening lyrics page for manual copy-paste"
+        });
+        
+        // Open the URL in a new tab
+        window.open(data.searchResult.url, '_blank');
+      } else {
+        toast({
+          title: "No Lyrics Found",
+          description: data.message || "Could not find lyrics for this song",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error('Lyrics search error:', error);
+      toast({
+        title: "Search Error",
+        description: "Failed to search for lyrics. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSearchingLyrics(false);
+    }
+  };
+
   const formatDuration = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -196,15 +255,54 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                   />
                 </div>
                 <div>
-                  <Label htmlFor="lyrics">Lyrics (with timestamps and MIDI commands)</Label>
+                  <div className="flex items-center justify-between mb-2">
+                    <Label htmlFor="lyrics">Lyrics (with timestamps and MIDI commands)</Label>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleSearchLyrics}
+                      disabled={isSearchingLyrics || !newSong.title.trim() || !newSong.artist.trim()}
+                      className="flex items-center gap-2"
+                      data-testid="button-search-lyrics"
+                    >
+                      {isSearchingLyrics ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Search className="w-4 h-4" />
+                      )}
+                      {isSearchingLyrics ? "Searching..." : "Search Online"}
+                    </Button>
+                  </div>
+                  
+                  {searchResult && (
+                    <div className="mb-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                      <div className="flex items-center gap-2 mb-2">
+                        <ExternalLink className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                        <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                          Lyrics page opened in new tab
+                        </span>
+                      </div>
+                      <p className="text-xs text-blue-700 dark:text-blue-300 mb-2">
+                        {searchResult.title}
+                      </p>
+                      <p className="text-xs text-blue-600 dark:text-blue-400">
+                        Copy and paste the lyrics from the opened page into the text area below
+                      </p>
+                    </div>
+                  )}
+                  
                   <Textarea
                     id="lyrics"
                     value={newSong.lyrics || ""}
                     onChange={(e) => setNewSong({ ...newSong, lyrics: e.target.value })}
                     placeholder="[00:15] First line of lyrics&#10;[00:30] <!-- MIDI: Program Change 1 -->&#10;[00:32] Second line..."
-                    rows={6}
+                    rows={8}
                     data-testid="input-song-lyrics"
                   />
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Tip: Use timestamps like [01:30] and add MIDI commands with &lt;!-- MIDI: Program Change 1 --&gt;
+                  </div>
                 </div>
                 <div className="flex justify-end space-x-2">
                   <Button 

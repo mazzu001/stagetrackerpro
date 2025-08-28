@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -51,6 +51,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [midiCommandSent, setMidiCommandSent] = useState(false);
   const [isMidiConnected, setIsMidiConnected] = useState(false);
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
+  const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
+  const [searchResult, setSearchResult] = useState<any>(null);
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
@@ -302,6 +304,69 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   }, [selectedSong, lyricsText, user?.email, toast]);
 
+  const handleSearchLyrics = async () => {
+    if (!selectedSong) {
+      toast({
+        title: "No Song Selected",
+        description: "Please select a song to search for lyrics",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSearchingLyrics(true);
+    setSearchResult(null);
+
+    try {
+      const response = await fetch('/api/lyrics/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: selectedSong.title,
+          artist: selectedSong.artist
+        })
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        // Direct lyrics found - unlikely with current server implementation
+        setLyricsText(data.lyrics);
+        toast({
+          title: "Lyrics Found",
+          description: "Lyrics have been automatically loaded"
+        });
+      } else if (data.openBrowser && data.searchResult) {
+        // Found a lyrics page to open
+        setSearchResult(data.searchResult);
+        toast({
+          title: "Lyrics Page Found",
+          description: "Opening lyrics page for manual copy-paste"
+        });
+        
+        // Open the URL in a new tab
+        window.open(data.searchResult.url, '_blank');
+      } else {
+        toast({
+          title: "No Lyrics Found",
+          description: data.message || "Could not find lyrics for this song",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error('Lyrics search error:', error);
+      toast({
+        title: "Search Error",
+        description: "Failed to search for lyrics. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSearchingLyrics(false);
+    }
+  };
+
   // Add generic MIDI command at current timestamp (functionality removed)
   const handleAddMidiCommand = () => {
     toast({
@@ -471,14 +536,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
-  const handleSearchLyrics = () => {
-    // Functionality removed - was for online lyrics search
-    toast({
-      title: "Feature Not Available",
-      description: "Online lyrics search has been removed",
-      variant: "destructive",
-    });
-  };
+
 
   const toggleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
@@ -893,12 +951,16 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                     variant="outline"
                     size="sm"
                     onClick={handleSearchLyrics}
-                    disabled={!selectedSong}
+                    disabled={!selectedSong || isSearchingLyrics}
                     data-testid="button-search-lyrics"
                     className="h-8 px-3"
                   >
-                    <Music className="w-3 h-3 mr-1" />
-                    Search
+                    {isSearchingLyrics ? (
+                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                    ) : (
+                      <Search className="w-3 h-3 mr-1" />
+                    )}
+                    {isSearchingLyrics ? 'Searching...' : 'Search Online'}
                   </Button>
                 </>
               )}
@@ -926,13 +988,29 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   <TabsTrigger value="midi" data-testid="tab-midi">MIDI Commands</TabsTrigger>
                 )}
               </TabsList>
-              <TabsContent value="lyrics" className="flex-1 min-h-0">
+              <TabsContent value="lyrics" className="flex-1 min-h-0 flex flex-col">
+                {searchResult && (
+                  <div className="mb-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg flex-shrink-0">
+                    <div className="flex items-center gap-2 mb-2">
+                      <ExternalLink className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                      <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                        Lyrics page opened in new tab
+                      </span>
+                    </div>
+                    <p className="text-xs text-blue-700 dark:text-blue-300 mb-2">
+                      {searchResult.title}
+                    </p>
+                    <p className="text-xs text-blue-600 dark:text-blue-400">
+                      Copy and paste the lyrics from the opened page into the text area below
+                    </p>
+                  </div>
+                )}
                 <Textarea
                   id="lyrics"
                   value={lyricsText}
                   onChange={(e) => setLyricsText(e.target.value)}
-                  placeholder="Enter song lyrics here..."
-                  className="w-full h-full resize-none font-mono text-sm border border-gray-600 bg-background"
+                  placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and add MIDI commands with <!-- MIDI: Program Change 1 -->"
+                  className="w-full flex-1 resize-none font-mono text-sm border border-gray-600 bg-background"
                   data-testid="textarea-lyrics"
                 />
               </TabsContent>

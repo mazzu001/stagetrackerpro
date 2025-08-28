@@ -50,11 +50,11 @@ Found output device: MidiPort () - State: connected
 **Device Setup**: TC-Helicon VoiceLive 3 + WIDI Jack Bluetooth adapter
 **Key Findings**:
 - ✅ **Bluetooth connection working**: Successfully connects to WIDI Jack (appears as "Matts Pedal")
-- ✅ **BLE MIDI format implemented**: Proper 13-bit timestamp headers for BLE MIDI packets
-- ✅ **writeValueWithResponse() required**: Most BLE devices need response acknowledgment
-- ⚠️ **Device compatibility**: WIDI Jack requires very specific BLE MIDI format compliance
-- 📋 **Troubleshooting steps completed**: Timestamp format, notification enabling, multiple data formats tested
-**Status**: Ready for testing with alternative Bluetooth MIDI devices
+- ✅ **MIDI transmission confirmed**: Raw MIDI bytes (`c0 01`) successfully sent via `writeValueWithoutResponse`
+- ✅ **Device responding**: TC-Helicon sending back MIDI data with BLE timestamps (`a9 e4 b0 20 00 e4 c0 04`)
+- ✅ **Bidirectional communication**: Both sending and receiving MIDI data working properly
+- 📋 **Next steps**: Test bank selection and program numbers 0-127 for TC-Helicon compatibility
+**Status**: ✅ MIDI communication fully functional - testing device-specific commands needed
 
 ## Bluetooth Device Management Overhaul
 - ✅ **All-device scanning**: Shows all Bluetooth devices, not just MIDI devices

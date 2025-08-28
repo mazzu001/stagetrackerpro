@@ -1,0 +1,227 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+audio-file-storage.ts:168 No stored audio file references found
+useLocalAuth.ts:34 🔄 Checking fresh subscription status for: professional@demo.com
+App.tsx:58 Browser file system already initialized - auto-initializing
+browser-file-system.ts:80 Browser file system initialized successfully
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+[Deprecation] -ms-high-contrast is in the process of being deprecated. Please see <URL> for tips on updating to the new Forced Colors Mode standard.
+useLocalAuth.ts:41 ✅ Fresh subscription status: professional
+lyrics-display.tsx:197 🔄 Resetting processed timestamps - Song changed to: none
+lyrics-display.tsx:204 ⏹️ Resetting processed timestamps - Playback stopped
+lyrics-display.tsx:218 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+useLocalAuth.ts:34 🔄 Checking fresh subscription status for: professional@demo.com
+audio-engine.ts:36  The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page.
+initialize @ audio-engine.ts:36
+useLocalAuth.ts:41 ✅ Fresh subscription status: professional
+useLocalAuth.ts:34 🔄 Checking fresh subscription status for: professional@demo.com
+SimpleBluetoothManager.tsx:113 🎧 🔥 SETTING UP EXTERNAL MIDI EVENT LISTENER
+performance.tsx:179 📋 Loaded 1 songs from local storage
+useLocalAuth.ts:41 ✅ Fresh subscription status: professional
+SimpleBluetoothManager.tsx:632 🔄 Attempting to reconnect to Matts Pedal...
+SimpleBluetoothManager.tsx:209 🔗 Connecting to Matts Pedal...
+SimpleBluetoothManager.tsx:216 🔄 Attempting to reconnect to existing device...
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+SimpleBluetoothManager.tsx:272 ✅ Connected to GATT server
+SimpleBluetoothManager.tsx:403 🎵 Setting up MIDI communication...
+SimpleBluetoothManager.tsx:419 ✅ Found MIDI service: 03b80e5a-ede8-4b33-a751-6ce34ec4c700
+SimpleBluetoothManager.tsx:433 📋 Found 1 characteristics
+SimpleBluetoothManager.tsx:440 📋 Characteristic 7772e5db-3868-4112-a1a9-f2669d106bf3: notify=true, write=false, writeWithoutResponse=true
+SimpleBluetoothManager.tsx:445 🔔 Found notify characteristic: 7772e5db-3868-4112-a1a9-f2669d106bf3
+SimpleBluetoothManager.tsx:451 ✍️ Found write characteristic: 7772e5db-3868-4112-a1a9-f2669d106bf3 (write=false, writeWithoutResponse=true)
+SimpleBluetoothManager.tsx:455 🔍 Final characteristics - Notify: 7772e5db-3868-4112-a1a9-f2669d106bf3, Write: 7772e5db-3868-4112-a1a9-f2669d106bf3
+SimpleBluetoothManager.tsx:456 🔍 Same characteristic for read/write: true
+SimpleBluetoothManager.tsx:462 🎵 Started MIDI notifications
+SimpleBluetoothManager.tsx:474 ✅ 🔥 MIDI WRITE CHARACTERISTIC STORED SUCCESSFULLY
+SimpleBluetoothManager.tsx:475 🔍 Characteristic UUID: 7772e5db-3868-4112-a1a9-f2669d106bf3
+SimpleBluetoothManager.tsx:476 🔍 Write properties: Object
+SimpleBluetoothManager.tsx:281 🎵 MIDI setup completed
+performance.tsx:64 🔄 Bluetooth MIDI status: Connected (No MIDI)
+SimpleBluetoothManager.tsx:117 🎧 🔥 REMOVING EXTERNAL MIDI EVENT LISTENER
+SimpleBluetoothManager.tsx:113 🎧 🔥 SETTING UP EXTERNAL MIDI EVENT LISTENER
+SimpleBluetoothManager.tsx:1037 🖱️ Send button clicked - testing click handler
+SimpleBluetoothManager.tsx:813 🚀 Send button clicked!
+SimpleBluetoothManager.tsx:814 🔍 Bluetooth device connected: true
+SimpleBluetoothManager.tsx:815 🔍 MIDI characteristic available: true
+SimpleBluetoothManager.tsx:837 ✅ All checks passed, proceeding to send MIDI...
+SimpleBluetoothManager.tsx:840 📤 Parsing MIDI command: [[PC:1:1]]
+SimpleBluetoothManager.tsx:854 🎵 About to send MIDI bytes: 0xc0 0x01
+SimpleBluetoothManager.tsx:702 🚀 🔥 SEND MIDI COMMAND CALLED
+SimpleBluetoothManager.tsx:703 📋 MIDI bytes to send: c0 01
+SimpleBluetoothManager.tsx:717 🔥 RAW MIDI BYTES (no brackets): Array(2)
+SimpleBluetoothManager.tsx:728 📡 🔥 BLE MIDI packet: c0 01
+SimpleBluetoothManager.tsx:729 🔍 Characteristic properties: Object
+SimpleBluetoothManager.tsx:743 📤 Method 1: Sending RAW MIDI bytes directly...
+SimpleBluetoothManager.tsx:744 🔥 Packet: Array(2)
+SimpleBluetoothManager.tsx:746 ✅ SUCCESS: Raw MIDI sent without response!
+SimpleBluetoothManager.tsx:859 ✅ MIDI command sent successfully to device
+SimpleBluetoothManager.tsx:496 🎵 Received MIDI data: a9 e4 b0 20 00 e4 c0 04 e4 b0 73 00
+SimpleBluetoothManager.tsx:496 🎵 Received MIDI data: a9 ed b0 70 40
+SimpleBluetoothManager.tsx:496 🎵 Received MIDI data: a9 f2 b0 68 40
+SimpleBluetoothManager.tsx:496 🎵 Received MIDI data: a9 f5 b0 1b 40
+SimpleBluetoothManager.tsx:496 🎵 Received MIDI data: a9 f7 b0 1d 00
+SimpleBluetoothManager.tsx:496 🎵 Received MIDI data: a9 fa b0 19 40

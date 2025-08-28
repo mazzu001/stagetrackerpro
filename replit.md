@@ -107,6 +107,7 @@ This project is a professional live music performance application built for stag
 - ✅ **Device scanning**: Deep scan and quick scan for all device types
 - ✅ **Connection management**: Connect, disconnect, and remove device capabilities
 - ✅ **Signal monitoring**: Visual indicators for incoming/outgoing MIDI data
+- ✅ **AUTOMATED LYRICS MIDI**: MIDI commands embedded in timestamped lyrics execute automatically during playback
 
 ### Performance Interface
 - ✅ Transport controls: Play, pause, stop, seek with keyboard shortcuts

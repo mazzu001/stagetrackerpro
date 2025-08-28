@@ -92,14 +92,21 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
   // Request MIDI access
   const requestMIDIAccess = async () => {
     try {
-      console.log('🎵 Requesting MIDI access...');
+      console.log('🎵 Requesting Web MIDI access...');
+      console.log('🔍 Checking system MIDI availability...');
       
       // Request access with sysex for broader device compatibility
       const access = await navigator.requestMIDIAccess({ sysex: true });
       setMidiAccess(access);
-      console.log('✅ MIDI access granted:', access);
-      console.log('📊 MIDI inputs available:', access.inputs.size);
-      console.log('📊 MIDI outputs available:', access.outputs.size);
+      
+      console.log('✅ Web MIDI access granted successfully');
+      console.log('🔍 System reports:', access.inputs.size, 'input devices and', access.outputs.size, 'output devices');
+      
+      // Additional debugging for paired Bluetooth devices
+      console.log('🔍 Detailed device analysis:');
+      console.log('  - Web MIDI can only see devices that appear in your system\'s MIDI device list');
+      console.log('  - Paired Bluetooth devices must be "connected" (not just paired) to appear');
+      console.log('  - Some Bluetooth MIDI devices need to be "activated" in system settings');
       
       // Set up device change listeners
       access.onstatechange = handleDeviceChange;
@@ -110,16 +117,19 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
       if (access.inputs.size > 0 || access.outputs.size > 0) {
         onStatusChange?.('Connected');
       } else {
-        onStatusChange?.('No Devices Found');
-        console.log('⚠️ No MIDI devices found. Make sure your device is connected and recognized by your system.');
+        onStatusChange?.('No System MIDI Devices');
+        console.log('⚠️ No MIDI devices detected by system. For Bluetooth MIDI:');
+        console.log('  1. Verify device shows as "Connected" in Bluetooth settings');
+        console.log('  2. Look for it in system MIDI settings (not just Bluetooth)');
+        console.log('  3. Some devices need driver installation or manual activation');
       }
       
     } catch (error) {
-      console.error('❌ Failed to get MIDI access:', error);
+      console.error('❌ Web MIDI access failed:', error);
       onStatusChange?.('Error');
       toast({
-        title: "MIDI Access Failed",
-        description: "Could not access MIDI devices. Make sure your browser supports Web MIDI API.",
+        title: "Web MIDI Access Denied",
+        description: "Browser blocked MIDI access. Check permissions and try again.",
         variant: "destructive",
       });
     }
@@ -195,12 +205,16 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
     console.log(`📊 Scan complete: ${inputs.length} input devices and ${outputs.length} output devices`);
     
     if (inputs.length === 0 && outputs.length === 0) {
-      console.log('⚠️ No MIDI devices detected. Troubleshooting steps:');
-      console.log('  1. Ensure your MIDI device is connected to your computer');
-      console.log('  2. Check if your device appears in your system MIDI settings');
-      console.log('  3. For Bluetooth MIDI devices, ensure they are paired and connected');
-      console.log('  4. Try refreshing the page or reconnecting your device');
-      console.log('  5. For USB MIDI devices, try a different USB port');
+      console.log('⚠️ Web MIDI API found no devices. This means:');
+      console.log('  - Your system\'s MIDI subsystem has no active MIDI devices');
+      console.log('  - Bluetooth MIDI devices must appear in system MIDI settings, not just Bluetooth settings');
+      console.log('  - Try: Windows MIDI Settings, Mac Audio MIDI Setup, or Linux ALSA/JACK');
+      console.log('  - WIDI Jack should appear as a MIDI device after pairing AND connecting');
+      
+      // Check for Bluetooth in user agent as additional context
+      const hasBluetoothAPI = 'bluetooth' in navigator;
+      console.log(`  - Browser Bluetooth API available: ${hasBluetoothAPI}`);
+      console.log('  - Web MIDI API is separate from Bluetooth API and only sees system MIDI devices');
     }
   };
 
@@ -356,18 +370,35 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
             <p>Browser: {navigator.userAgent.includes('Chrome') ? 'Chrome ✅' : navigator.userAgent.includes('Edge') ? 'Edge ✅' : 'Other (may not support Web MIDI)'}</p>
           </div>
           
-          {/* WIDI Jack Specific Instructions */}
+          {/* System MIDI Setup Instructions */}
           {outputDevices.length === 0 && (
-            <div className="mt-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-              <h5 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">WIDI Jack / Bluetooth MIDI Setup:</h5>
-              <ol className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1 list-decimal list-inside">
-                <li>Pair your WIDI Jack in your system's Bluetooth settings first</li>
-                <li>Ensure it shows as "Connected" in Bluetooth settings</li>
-                <li>Look for a device named "WIDI Jack" or similar in system MIDI settings</li>
-                <li>Windows: Check "MIDI Devices" in Device Manager</li>
-                <li>Mac: Check "Audio MIDI Setup" application</li>
-                <li>After pairing, click "Refresh Devices" below</li>
-              </ol>
+            <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+              <h5 className="font-medium text-red-800 dark:text-red-200 mb-2">Your WIDI Jack is not appearing as a MIDI device</h5>
+              <div className="text-sm text-red-700 dark:text-red-300 space-y-3">
+                <p className="font-medium">The problem: Web MIDI API only sees devices in your system's MIDI device list.</p>
+                
+                <div>
+                  <p className="font-medium mb-1">Windows Users:</p>
+                  <ol className="list-decimal list-inside space-y-1 ml-2">
+                    <li>Open Settings → Bluetooth & devices → Make sure WIDI Jack shows "Connected"</li>
+                    <li>Open Device Manager → Look for "MIDI" section or "Sound, video and game controllers"</li>
+                    <li>If WIDI Jack isn't listed as a MIDI device, try unpairing and re-pairing</li>
+                    <li>Some users need to install WIDI Jack drivers manually</li>
+                  </ol>
+                </div>
+
+                <div>
+                  <p className="font-medium mb-1">Mac Users:</p>
+                  <ol className="list-decimal list-inside space-y-1 ml-2">
+                    <li>Open System Preferences → Bluetooth → Ensure WIDI Jack shows "Connected"</li>
+                    <li>Open Applications → Utilities → Audio MIDI Setup</li>
+                    <li>Look for WIDI Jack in the MIDI devices list</li>
+                    <li>If not there, try forgetting and re-pairing the device</li>
+                  </ol>
+                </div>
+
+                <p className="text-xs italic">Note: Being "paired" in Bluetooth is not enough - the device must appear in your system's MIDI device list.</p>
+              </div>
             </div>
           )}
         </div>
@@ -534,8 +565,9 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
         
         {/* Additional Help */}
         <div className="text-xs text-muted-foreground bg-muted/30 p-3 rounded">
-          <p className="font-medium mb-1">Still not seeing your device?</p>
-          <p>Web MIDI API only detects devices that are already connected to your operating system. Unlike Bluetooth Web API, it cannot discover or pair new devices.</p>
+          <p className="font-medium mb-1">Key Difference from Previous Bluetooth Implementation:</p>
+          <p>The old version used Bluetooth Web API to connect directly to your WIDI Jack. The new Web MIDI API approach is more reliable but requires your device to be properly installed as a system MIDI device first.</p>
+          <p className="mt-2 font-medium">Once your WIDI Jack appears above, MIDI commands will work much more reliably!</p>
         </div>
       </CardContent>
     </Card>

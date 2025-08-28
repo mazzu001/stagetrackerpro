@@ -23,7 +23,8 @@ import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, F
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
-import { WebMIDIManager } from "@/components/WebMIDIManager";
+import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
+import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
 
 interface PerformanceProps {
   userType: UserType;
@@ -57,20 +58,40 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
 
-  // Listen for Bluetooth MIDI connection status changes
+  // Global Web MIDI integration - persistent across dialog closures
+  const globalMidi = useGlobalWebMIDI();
+
+  // Initialize global MIDI event listener for external commands
+  useEffect(() => {
+    console.log('🎵 Setting up persistent Web MIDI event listener...');
+    const cleanup = setupGlobalMIDIEventListener();
+    return cleanup;
+  }, []);
+
+  // Update local state when global MIDI connection changes
+  useEffect(() => {
+    setIsMidiConnected(globalMidi.isConnected);
+    setSelectedMidiDeviceName(globalMidi.deviceName);
+    console.log(`🔄 Global Web MIDI status: ${globalMidi.isConnected ? 'Connected' : 'Disconnected'} - ${globalMidi.deviceName}`);
+  }, [globalMidi.isConnected, globalMidi.deviceName]);
+
+  // Listen for legacy Bluetooth MIDI connection status changes (fallback)
   useEffect(() => {
     const handleStatusChange = (event: any) => {
       const { connected, deviceName, midiReady } = event.detail;
-      setIsMidiConnected(connected && midiReady);
-      setSelectedMidiDeviceName(deviceName);
-      console.log(`🔄 Bluetooth MIDI status: ${connected ? 'Connected' : 'Disconnected'} ${midiReady ? '(MIDI Ready)' : '(No MIDI)'}`);
+      // Only use if global MIDI is not connected
+      if (!globalMidi.isConnected) {
+        setIsMidiConnected(connected && midiReady);
+        setSelectedMidiDeviceName(deviceName);
+        console.log(`🔄 Legacy Bluetooth MIDI status: ${connected ? 'Connected' : 'Disconnected'} ${midiReady ? '(MIDI Ready)' : '(No MIDI)'}`);
+      }
     };
 
     window.addEventListener('bluetoothMidiStatusChanged', handleStatusChange);
     return () => {
       window.removeEventListener('bluetoothMidiStatusChanged', handleStatusChange);
     };
-  }, []);
+  }, [globalMidi.isConnected]);
   
   // Use userType from authenticated user, fallback to prop
   const userType = user?.userType || propUserType;
@@ -97,17 +118,29 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     try {
-      // Send via custom event to Bluetooth MIDI manager
-      const event = new CustomEvent('sendBluetoothMIDI', {
-        detail: { command: footerMidiCommand.trim() }
-      });
-      window.dispatchEvent(event);
+      // Try global Web MIDI first, fallback to legacy Bluetooth
+      const success = await globalMidi.sendCommand(footerMidiCommand.trim());
+      if (success) {
+        console.log('✅ Manual MIDI command sent via global Web MIDI');
+        triggerMidiBlink();
+        toast({
+          title: "MIDI Command Sent",
+          description: `Sent via Web MIDI: ${footerMidiCommand.trim()}`,
+        });
+      } else {
+        console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
+        // Send via custom event to Bluetooth MIDI manager as fallback
+        const event = new CustomEvent('sendBluetoothMIDI', {
+          detail: { command: footerMidiCommand.trim() }
+        });
+        window.dispatchEvent(event);
+        triggerMidiBlink();
+        toast({
+          title: "MIDI Command Sent",
+          description: `Sent via Bluetooth: ${footerMidiCommand.trim()}`,
+        });
+      }
       
-      triggerMidiBlink();
-      toast({
-        title: "MIDI Command Sent",
-        description: `Sent: ${footerMidiCommand.trim()}`,
-      });
       setFooterMidiCommand('');
     } catch (error) {
       toast({
@@ -128,17 +161,24 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     try {
       console.log(`🎼 Sending MIDI command from lyrics: ${command}`);
       
-      // Send via custom event to Bluetooth MIDI manager
-      const event = new CustomEvent('sendBluetoothMIDI', {
-        detail: { command: command.trim() }
-      });
-      window.dispatchEvent(event);
-      
-      triggerMidiBlink();
+      // Try global Web MIDI first, fallback to legacy Bluetooth
+      const success = await globalMidi.sendCommand(command.trim());
+      if (success) {
+        console.log('✅ MIDI command sent via global Web MIDI');
+        triggerMidiBlink();
+      } else {
+        console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
+        // Send via custom event to Bluetooth MIDI manager as fallback
+        const event = new CustomEvent('sendBluetoothMIDI', {
+          detail: { command: command.trim() }
+        });
+        window.dispatchEvent(event);
+        triggerMidiBlink();
+      }
     } catch (error) {
       console.error('❌ Failed to send lyrics MIDI command:', error);
     }
-  }, [userType, triggerMidiBlink]);
+  }, [userType, triggerMidiBlink, globalMidi]);
 
   const {
     isPlaying,
@@ -1130,19 +1170,17 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         </DialogContent>
       </Dialog>
 
-      {/* Web MIDI Manager Dialog - Professional Users Only */}
+      {/* Persistent Web MIDI Manager Dialog - Professional Users Only */}
       {userType === 'professional' && isBluetoothDevicesOpen && (
         <Dialog open={isBluetoothDevicesOpen} onOpenChange={setIsBluetoothDevicesOpen}>
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Web MIDI Devices</DialogTitle>
+              <DialogTitle>Persistent Web MIDI Devices</DialogTitle>
+              <p className="text-sm text-muted-foreground">
+                Connections persist even when this dialog is closed - perfect for live performance automation
+              </p>
             </DialogHeader>
-            <WebMIDIManager onStatusChange={(status) => {
-              setIsMidiConnected(status.includes('Connected'));
-              if (status.includes('Connected:')) {
-                setSelectedMidiDeviceName(status.replace('Connected: ', ''));
-              }
-            }} />
+            <PersistentWebMIDIManager />
           </DialogContent>
         </Dialog>
       )}

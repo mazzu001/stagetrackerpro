@@ -27,6 +27,15 @@ Found output device: MidiPort () - State: connected
 **THIS IS A CRITICAL RESTORE POINT - USB MIDI SYSTEM IS NOW FULLY FUNCTIONAL**
 
 # Recent Major Improvements (August 2025)
+## Bluetooth MIDI Communication Restored (August 28, 2025)
+- ✅ **Full Bluetooth MIDI integration**: Complete communication system between performance interface and Bluetooth MIDI devices
+- ✅ **Event-based messaging**: Custom events (`sendBluetoothMIDI`, `bluetoothMidiStatusChanged`) for seamless integration
+- ✅ **Real-time status tracking**: MIDI connection status, device name, and MIDI readiness indicators in performance interface
+- ✅ **Professional subscriber access**: Bluetooth MIDI features restricted to professional subscription tier
+- ✅ **Lyrics MIDI integration**: Timestamped MIDI commands in lyrics automatically sent to connected Bluetooth devices
+- ✅ **Manual command sending**: Direct MIDI command input with immediate transmission to Bluetooth MIDI devices
+- ✅ **Connection management**: Auto-reconnect, device pairing, and comprehensive error handling
+
 ## MIDI Command Format Standardization
 - ✅ **Implemented new bracket format**: `[[PC:12:1]]`, `[[CC:7:64:1]]`, `[[NOTE:60:127:1]]`
 - ✅ **Comprehensive MIDI parsing**: Supports Program Change, Control Change, Note On/Off with channel specification

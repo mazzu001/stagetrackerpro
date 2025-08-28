@@ -54,6 +54,21 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
+
+  // Listen for Bluetooth MIDI connection status changes
+  useEffect(() => {
+    const handleStatusChange = (event: any) => {
+      const { connected, deviceName, midiReady } = event.detail;
+      setIsMidiConnected(connected && midiReady);
+      setSelectedMidiDeviceName(deviceName);
+      console.log(`🔄 Bluetooth MIDI status: ${connected ? 'Connected' : 'Disconnected'} ${midiReady ? '(MIDI Ready)' : '(No MIDI)'}`);
+    };
+
+    window.addEventListener('bluetoothMidiStatusChanged', handleStatusChange);
+    return () => {
+      window.removeEventListener('bluetoothMidiStatusChanged', handleStatusChange);
+    };
+  }, []);
   
   // Use userType from authenticated user, fallback to prop
   const userType = user?.userType || propUserType;
@@ -66,21 +81,62 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }, 300); // Blink for 300ms
   }, []);
 
-  // Manual MIDI send function - restricted to professional subscribers only (functionality removed)
+  // Manual MIDI send function - restricted to professional subscribers only
   const handleFooterSendMessage = async () => {
-    // MIDI functionality removed - just show message
-    toast({
-      title: "MIDI Functionality Removed",
-      description: "MIDI commands are no longer supported in this version",
-      variant: "destructive",
-    });
+    if (!footerMidiCommand.trim()) return;
+    
+    if (userType !== 'professional') {
+      toast({
+        title: "Professional Subscription Required",
+        description: "MIDI commands are only available for Professional subscribers",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // Send via custom event to Bluetooth MIDI manager
+      const event = new CustomEvent('sendBluetoothMIDI', {
+        detail: { command: footerMidiCommand.trim() }
+      });
+      window.dispatchEvent(event);
+      
+      triggerMidiBlink();
+      toast({
+        title: "MIDI Command Sent",
+        description: `Sent: ${footerMidiCommand.trim()}`,
+      });
+      setFooterMidiCommand('');
+    } catch (error) {
+      toast({
+        title: "MIDI Send Failed",
+        description: "Failed to send MIDI command",
+        variant: "destructive",
+      });
+    }
   };
 
-  // Auto-send MIDI command from timestamped lyrics (functionality removed)
+  // Auto-send MIDI command from timestamped lyrics
   const handleLyricsMidiCommand = useCallback(async (command: string) => {
-    // MIDI functionality removed - command ignored
-    console.log(`🎼 MIDI command ignored (functionality removed): ${command}`);
-  }, []);
+    if (userType !== 'professional') {
+      console.log('🎼 MIDI command ignored - professional subscription required');
+      return;
+    }
+
+    try {
+      console.log(`🎼 Sending MIDI command from lyrics: ${command}`);
+      
+      // Send via custom event to Bluetooth MIDI manager
+      const event = new CustomEvent('sendBluetoothMIDI', {
+        detail: { command: command.trim() }
+      });
+      window.dispatchEvent(event);
+      
+      triggerMidiBlink();
+    } catch (error) {
+      console.error('❌ Failed to send lyrics MIDI command:', error);
+    }
+  }, [userType, triggerMidiBlink]);
 
   const {
     isPlaying,
@@ -255,13 +311,23 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     });
   };
 
-  // Start editing a MIDI command (functionality removed)
+  // Start editing a MIDI command
   const handleEditCommand = (index: number) => {
-    toast({
-      title: "MIDI Functionality Removed",
-      description: "MIDI commands are no longer supported",
-      variant: "destructive",
-    });
+    if (userType !== 'professional') {
+      toast({
+        title: "Professional Subscription Required",
+        description: "MIDI editing is only available for Professional subscribers",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (selectedSong?.midiEvents && selectedSong.midiEvents[index]) {
+      setEditingCommandIndex(index);
+      setEditingCommandText(selectedSong.midiEvents[index].command);
+      setCurrentLyricsTab("midi");
+      setIsEditLyricsOpen(true);
+    }
   };
 
   // Save edited MIDI command (functionality removed)
@@ -872,13 +938,60 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               </TabsContent>
               {userType === 'professional' && (
                 <TabsContent value="midi" className="flex-1 min-h-0 flex flex-col">
-                  <div className="flex-1 border border-gray-600 rounded-md flex items-center justify-center">
-                    <div className="text-center text-gray-400">
-                      <Zap className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">MIDI functionality has been removed</p>
-                      <p className="text-xs mt-1">
-                        MIDI commands are no longer supported in this version
-                      </p>
+                  <div className="flex-1">
+                    <div className="space-y-3 max-h-48 overflow-y-auto">
+                      {selectedSong?.midiEvents && selectedSong.midiEvents.length > 0 ? (
+                        selectedSong.midiEvents.map((event: any, index: number) => (
+                          <div key={index} className="p-2 bg-gray-800/50 rounded-md border border-gray-600">
+                            <div className="flex items-center justify-between text-xs">
+                              <span className="text-gray-400">
+                                {Math.floor(event.timestamp / 60)}:
+                                {(event.timestamp % 60).toFixed(1).padStart(4, '0')}s
+                              </span>
+                              <div className="flex items-center gap-1">
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => handleEditCommand(index)}
+                                  className="h-6 px-2"
+                                  data-testid={`button-edit-midi-${index}`}
+                                >
+                                  <Edit className="h-3 w-3" />
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => {
+                                    if (selectedSong?.midiEvents) {
+                                      const updated = { 
+                                        ...selectedSong, 
+                                        midiEvents: selectedSong.midiEvents.filter((_, i) => i !== index) 
+                                      };
+                                      setSelectedSong(updated);
+                                      if (user?.email) {
+                                        LocalSongStorage.updateSong(user.email, selectedSong.id, updated);
+                                      }
+                                    }
+                                  }}
+                                  className="h-6 px-2 text-red-400 hover:text-red-300"
+                                  data-testid={`button-delete-midi-${index}`}
+                                >
+                                  <Trash2 className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            </div>
+                            <div className="mt-1 font-mono text-xs text-green-400">
+                              {event.command}
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center text-gray-400 py-4">
+                          <Zap className="w-6 h-6 mx-auto mb-2 opacity-50" />
+                          <p className="text-sm">No MIDI commands yet</p>
+                          <p className="text-xs">Add timestamped MIDI commands in your lyrics</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </TabsContent>

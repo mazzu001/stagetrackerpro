@@ -59,6 +59,43 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     }
   }, [isOpen, isProfessional, onClose, toast]);
 
+  // Listen for external MIDI commands from performance interface
+  useEffect(() => {
+    const handleExternalMidi = async (event: any) => {
+      const { command } = event.detail;
+      console.log('🎼 Received external MIDI command:', command);
+
+      if (!bluetoothDevice || !bluetoothDevice.gatt.connected || !midiCharacteristic) {
+        console.log('⚠️ Cannot send MIDI - device not connected or MIDI not available');
+        return;
+      }
+
+      try {
+        const midiBytes = parseMidiCommand(command);
+        if (!midiBytes) {
+          console.log('❌ Invalid MIDI command format:', command);
+          return;
+        }
+
+        await sendMidiCommand(midiBytes);
+        const hexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
+        setLastSentMessage(`${command} → [${hexString}]`);
+        addMidiMessage(`Sent: ${command}`);
+        
+        console.log('✅ External MIDI command sent successfully');
+      } catch (error) {
+        console.error('❌ Failed to send external MIDI command:', error);
+        addMidiMessage(`Send failed: ${command}`);
+      }
+    };
+
+    window.addEventListener('sendBluetoothMIDI', handleExternalMidi);
+    
+    return () => {
+      window.removeEventListener('sendBluetoothMIDI', handleExternalMidi);
+    };
+  }, [bluetoothDevice, midiCharacteristic, toast]);
+
   // Check Bluetooth support
   useEffect(() => {
     const checkBluetoothSupport = async () => {
@@ -182,6 +219,15 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       // Remember this device
       localStorage.setItem('bluetooth_device_id', device.id);
       localStorage.setItem('bluetooth_device_name', device.name);
+
+      // Notify performance interface about connection status
+      window.dispatchEvent(new CustomEvent('bluetoothMidiStatusChanged', {
+        detail: { 
+          connected: true, 
+          deviceName: device.name,
+          midiReady: !!midiCharacteristic 
+        }
+      }));
 
       // Update devices list
       setDevices(prev => prev.map(d => 
@@ -414,6 +460,15 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         d.id === selectedDevice.id ? { ...d, connected: false } : d
       ));
     }
+
+    // Notify performance interface about disconnection
+    window.dispatchEvent(new CustomEvent('bluetoothMidiStatusChanged', {
+      detail: { 
+        connected: false, 
+        deviceName: '',
+        midiReady: false 
+      }
+    }));
 
     toast({
       title: "Disconnected",

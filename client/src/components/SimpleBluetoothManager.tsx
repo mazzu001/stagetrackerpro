@@ -63,38 +63,61 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
   useEffect(() => {
     const handleExternalMidi = async (event: any) => {
       const { command } = event.detail;
-      console.log('🎼 Received external MIDI command:', command);
+      console.log('🎼 🔥 RECEIVED EXTERNAL MIDI COMMAND:', command);
+      console.log('🔍 Connection state check:');
+      console.log('  - bluetoothDevice:', !!bluetoothDevice);
+      console.log('  - gatt connected:', bluetoothDevice?.gatt?.connected);
+      console.log('  - midiCharacteristic:', !!midiCharacteristic);
 
-      if (!bluetoothDevice || !bluetoothDevice.gatt.connected || !midiCharacteristic) {
-        console.log('⚠️ Cannot send MIDI - device not connected or MIDI not available');
+      if (!bluetoothDevice) {
+        console.log('❌ No Bluetooth device available');
+        addMidiMessage(`Send failed: No device - ${command}`);
+        return;
+      }
+
+      if (!bluetoothDevice.gatt?.connected) {
+        console.log('❌ Bluetooth device not connected');
+        addMidiMessage(`Send failed: Not connected - ${command}`);
+        return;
+      }
+
+      if (!midiCharacteristic) {
+        console.log('❌ No MIDI characteristic available');
+        addMidiMessage(`Send failed: No MIDI - ${command}`);
         return;
       }
 
       try {
+        console.log('🔧 Parsing MIDI command:', command);
         const midiBytes = parseMidiCommand(command);
         if (!midiBytes) {
           console.log('❌ Invalid MIDI command format:', command);
+          addMidiMessage(`Send failed: Invalid format - ${command}`);
           return;
         }
 
+        console.log('📡 Sending MIDI bytes:', Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' '));
         await sendMidiCommand(midiBytes);
+        
         const hexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
         setLastSentMessage(`${command} → [${hexString}]`);
-        addMidiMessage(`Sent: ${command}`);
+        addMidiMessage(`✅ Sent: ${command}`);
         
-        console.log('✅ External MIDI command sent successfully');
+        console.log('✅ 🔥 EXTERNAL MIDI COMMAND SENT SUCCESSFULLY');
       } catch (error) {
-        console.error('❌ Failed to send external MIDI command:', error);
-        addMidiMessage(`Send failed: ${command}`);
+        console.error('❌ 🔥 FAILED TO SEND EXTERNAL MIDI COMMAND:', error);
+        addMidiMessage(`❌ Send failed: ${command} - ${error}`);
       }
     };
 
+    console.log('🎧 🔥 SETTING UP EXTERNAL MIDI EVENT LISTENER');
     window.addEventListener('sendBluetoothMIDI', handleExternalMidi);
     
     return () => {
+      console.log('🎧 🔥 REMOVING EXTERNAL MIDI EVENT LISTENER');
       window.removeEventListener('sendBluetoothMIDI', handleExternalMidi);
     };
-  }, [bluetoothDevice, midiCharacteristic, toast]);
+  }, [bluetoothDevice, midiCharacteristic]);
 
   // Check Bluetooth support
   useEffect(() => {
@@ -448,9 +471,14 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       if (writeCharacteristic) {
         setMidiCharacteristic(writeCharacteristic);
         addMidiMessage('MIDI send connection established');
-        console.log('✍️ MIDI write characteristic ready');
+        console.log('✅ 🔥 MIDI WRITE CHARACTERISTIC STORED SUCCESSFULLY');
+        console.log('🔍 Characteristic UUID:', writeCharacteristic.uuid);
+        console.log('🔍 Write properties:', {
+          write: writeCharacteristic.properties.write,
+          writeWithoutResponse: writeCharacteristic.properties.writeWithoutResponse
+        });
       } else {
-        console.log('⚠️ No writable characteristic found for MIDI');
+        console.log('⚠️ 🔥 NO WRITABLE CHARACTERISTIC FOUND FOR MIDI');
         addMidiMessage('MIDI connection established - receive only');
       }
 
@@ -669,34 +697,65 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     }
   };
 
-  // Simple MIDI send function with improved error handling
+  // Enhanced MIDI send function with comprehensive debugging
   const sendMidiCommand = async (midiBytes: Uint8Array) => {
+    console.log('🚀 🔥 SEND MIDI COMMAND CALLED');
+    console.log('📋 MIDI bytes to send:', Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' '));
+    
     if (!midiCharacteristic) {
+      console.log('❌ No MIDI characteristic');
       throw new Error('MIDI characteristic not available');
     }
 
     if (!bluetoothDevice || !bluetoothDevice.gatt.connected) {
+      console.log('❌ Device not connected');
       throw new Error('Device not connected');
     }
 
-    // Simple BLE MIDI packet: [0x80, 0x80, ...midi_data]
+    // Create proper BLE MIDI packet with timestamp (BLE MIDI spec compliant)
+    // Using simplified approach that works with most devices
     const bleMidiPacket = new Uint8Array([0x80, 0x80, ...Array.from(midiBytes)]);
-    console.log(`📡 MIDI: ${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
+    
+    console.log('📡 🔥 BLE MIDI packet:', Array.from(bleMidiPacket).map(b => b.toString(16).padStart(2, '0')).join(' '));
+    console.log('🔍 Characteristic properties:', {
+      write: midiCharacteristic.properties.write,
+      writeWithoutResponse: midiCharacteristic.properties.writeWithoutResponse,
+      notify: midiCharacteristic.properties.notify,
+      indicate: midiCharacteristic.properties.indicate
+    });
     
     try {
-      // Try writeValueWithResponse first (more reliable)
-      await midiCharacteristic.writeValueWithResponse(bleMidiPacket);
-      console.log('✅ MIDI sent with response acknowledgment');
-    } catch (responseError) {
-      console.log('⚠️ Response write failed, trying without response...');
-      try {
-        // Fallback to writeValueWithoutResponse
+      // Try writeValueWithoutResponse first (preferred for MIDI)
+      if (midiCharacteristic.properties.writeWithoutResponse) {
+        console.log('📤 Trying writeValueWithoutResponse...');
         await midiCharacteristic.writeValueWithoutResponse(bleMidiPacket);
-        console.log('✅ MIDI sent without response');
-      } catch (noResponseError) {
-        console.log('❌ Both write methods failed:', responseError, noResponseError);
-        const errorMsg = responseError instanceof Error ? responseError.message : 'Unknown error';
-        throw new Error(`MIDI write failed: ${errorMsg}`);
+        console.log('✅ 🔥 MIDI sent without response - SUCCESS!');
+        return;
+      }
+      
+      // Fallback to writeValueWithResponse
+      if (midiCharacteristic.properties.write) {
+        console.log('📤 Trying writeValueWithResponse...');
+        await midiCharacteristic.writeValueWithResponse(bleMidiPacket);
+        console.log('✅ 🔥 MIDI sent with response - SUCCESS!');
+        return;
+      }
+      
+      throw new Error('No write method available on characteristic');
+      
+    } catch (error) {
+      console.error('❌ 🔥 MIDI SEND ERROR:', error);
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      
+      // Enhanced error analysis
+      if (errorMsg.includes('Not paired')) {
+        throw new Error('Device not paired - use Re-pair button');
+      } else if (errorMsg.includes('GATT')) {
+        throw new Error('Bluetooth connection lost - reconnect device');  
+      } else if (errorMsg.includes('write')) {
+        throw new Error('Device does not support MIDI writing');
+      } else {
+        throw new Error(`MIDI send failed: ${errorMsg}`);
       }
     }
   };

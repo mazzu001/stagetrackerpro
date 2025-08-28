@@ -158,9 +158,9 @@ export class AudioEngine {
         this.currentSong.duration = maxDuration;
         this.actualDuration = maxDuration; // Store the actual detected duration
         
-        // Trigger a callback to update the UI with the correct duration
+        // Trigger a callback to update the UI with the correct duration (rounded to avoid decimals)
         if (this.onDurationUpdated) {
-          this.onDurationUpdated(maxDuration);
+          this.onDurationUpdated(Math.round(maxDuration));
         }
       }
     }

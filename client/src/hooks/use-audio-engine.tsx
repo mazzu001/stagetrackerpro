@@ -42,13 +42,15 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         
         // Set up duration update callback
         audioEngineRef.current.onDurationUpdated = (newDuration: number) => {
-          console.log(`Duration updated from audio buffers: ${newDuration}s`);
-          setDuration(newDuration);
+          // Round duration to avoid decimal places in UI
+          const roundedDuration = Math.round(newDuration);
+          console.log(`Duration updated from audio buffers: ${roundedDuration}s`);
+          setDuration(roundedDuration);
           
           // Save duration to database if callback provided and song is loaded
           if (song && onDurationUpdated) {
-            console.log(`Saving updated duration ${newDuration}s to database for song: ${song.title}`);
-            onDurationUpdated(song.id, Math.round(newDuration));
+            console.log(`Saving updated duration ${roundedDuration}s to database for song: ${song.title}`);
+            onDurationUpdated(song.id, roundedDuration);
           }
         };
         
@@ -167,9 +169,33 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         return;
       }
       
-      // Fallback: Load tracks if preloading failed or is still in progress
+      // Fallback: Wait for preloading to complete if still in progress
       if (audioEngineRef.current.getIsLoading()) {
-        console.log('Tracks still preloading, waiting...');
+        console.log('Tracks still preloading, waiting for completion...');
+        // Wait for loading to complete instead of returning immediately
+        const waitForLoad = async () => {
+          let attempts = 0;
+          while (audioEngineRef.current?.getIsLoading() && attempts < 50) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+          }
+          
+          if (audioEngineRef.current?.getIsLoaded()) {
+            console.log('Preloading completed, starting playback');
+            await audioEngineRef.current.play();
+            setIsPlaying(true);
+          } else {
+            console.log('Preloading did not complete, attempting fallback load');
+            await audioEngineRef.current?.loadSong(song);
+            await audioEngineRef.current?.play();
+            setIsPlaying(true);
+          }
+        };
+        
+        waitForLoad().catch(error => {
+          console.error('Failed to wait for preload completion:', error);
+          setIsLoadingTracks(false);
+        });
         return;
       }
       

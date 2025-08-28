@@ -36,12 +36,15 @@ Found output device: MidiPort () - State: connected
 - ✅ **Manual command sending**: Direct MIDI command input with immediate transmission to Bluetooth MIDI devices
 - ✅ **Connection management**: Auto-reconnect, device pairing, and comprehensive error handling
 
-## MIDI Command Format Standardization
+## MIDI Command Format Standardization (FIXED August 28, 2025)
 - ✅ **Implemented new bracket format**: `[[PC:12:1]]`, `[[CC:7:64:1]]`, `[[NOTE:60:127:1]]`
 - ✅ **Comprehensive MIDI parsing**: Supports Program Change, Control Change, Note On/Off with channel specification
 - ✅ **Backward compatibility**: Legacy hex (`90 40 7F`) and text (`note on C4 127`) formats still supported
 - ✅ **UI consistency**: All MIDI input fields updated with new format examples
 - ✅ **Message formatting**: Incoming MIDI data displayed in readable bracket format
+- 🔧 **CRITICAL FIX**: Program Change commands now send correct MIDI values (removed incorrect -1 offset)
+- 🔧 **BLE MIDI Enhancement**: Proper 13-bit timestamp format for better device compatibility
+- 🔧 **Enhanced Debugging**: Comprehensive packet logging for troubleshooting MIDI transmission
 
 ## WIDI Jack Bluetooth MIDI Investigation (August 2025)
 **Device Setup**: TC-Helicon VoiceLive 3 + WIDI Jack Bluetooth adapter

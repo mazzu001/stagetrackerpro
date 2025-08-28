@@ -655,8 +655,8 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     const val = parseInt(value);
 
     switch (type.toUpperCase()) {
-      case 'PC': // Program Change (0-based: Program 1 = 0)
-        return new Uint8Array([0xC0 | ch, Math.min(127, Math.max(0, val - 1))]);
+      case 'PC': // Program Change - MIDI values are 0-127, send value as-is
+        return new Uint8Array([0xC0 | ch, Math.min(127, Math.max(0, val))]);
         
       case 'CC': // Control Change - expect format [[CC:controller:value:channel]]
         const parts = command.match(/\[\[CC:([^:]+):([^:]+):([^\]]+)\]\]/);
@@ -712,9 +712,12 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       throw new Error('Device not connected');
     }
 
-    // Create proper BLE MIDI packet with timestamp (BLE MIDI spec compliant)
-    // Using simplified approach that works with most devices
-    const bleMidiPacket = new Uint8Array([0x80, 0x80, ...Array.from(midiBytes)]);
+    // Create proper BLE MIDI packet with timestamp header
+    // BLE MIDI spec: [timestamp high] [timestamp low] [MIDI data...]
+    const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
+    const timestampHigh = 0x80 | ((timestamp >> 7) & 0x3F);
+    const timestampLow = 0x80 | (timestamp & 0x7F);
+    const bleMidiPacket = new Uint8Array([timestampHigh, timestampLow, ...Array.from(midiBytes)]);
     
     console.log('📡 🔥 BLE MIDI packet:', Array.from(bleMidiPacket).map(b => b.toString(16).padStart(2, '0')).join(' '));
     console.log('🔍 Characteristic properties:', {
@@ -802,16 +805,20 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         return;
       }
 
-      // Simple BLE MIDI packet
+      // Send MIDI command with enhanced debugging
+      console.log('🎵 About to send MIDI bytes:', Array.from(midiBytes).map(b => `0x${b.toString(16).padStart(2, '0')}`).join(' '));
       await sendMidiCommand(midiBytes);
       
       const hexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
       setLastSentMessage(`${testMessage} → [${hexString}]`);
-      console.log('✅ MIDI command sent successfully');
+      console.log('✅ MIDI command sent successfully to device');
+      
+      // Add message to display
+      addMidiMessage(`📤 ${testMessage} → [${hexString}]`);
       
       toast({
-        title: "MIDI Sent",
-        description: `Sent: ${testMessage} → [${hexString}]`,
+        title: "MIDI Sent Successfully",
+        description: `Command: ${testMessage} → [${hexString}]`,
       });
 
     } catch (error) {

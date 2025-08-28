@@ -93,23 +93,33 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
   const requestMIDIAccess = async () => {
     try {
       console.log('🎵 Requesting MIDI access...');
-      const access = await navigator.requestMIDIAccess({ sysex: false });
+      
+      // Request access with sysex for broader device compatibility
+      const access = await navigator.requestMIDIAccess({ sysex: true });
       setMidiAccess(access);
-      console.log('✅ MIDI access granted');
+      console.log('✅ MIDI access granted:', access);
+      console.log('📊 MIDI inputs available:', access.inputs.size);
+      console.log('📊 MIDI outputs available:', access.outputs.size);
       
       // Set up device change listeners
       access.onstatechange = handleDeviceChange;
       
       // Scan for devices
       scanDevices(access);
-      onStatusChange?.('Connected');
+      
+      if (access.inputs.size > 0 || access.outputs.size > 0) {
+        onStatusChange?.('Connected');
+      } else {
+        onStatusChange?.('No Devices Found');
+        console.log('⚠️ No MIDI devices found. Make sure your device is connected and recognized by your system.');
+      }
       
     } catch (error) {
       console.error('❌ Failed to get MIDI access:', error);
       onStatusChange?.('Error');
       toast({
         title: "MIDI Access Failed",
-        description: "Could not access MIDI devices",
+        description: "Could not access MIDI devices. Make sure your browser supports Web MIDI API.",
         variant: "destructive",
       });
     }
@@ -134,6 +144,19 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
     const outputs: MIDIDevice[] = [];
 
     console.log('🔍 Scanning MIDI devices...');
+    console.log('🔍 Total inputs available:', access.inputs.size);
+    console.log('🔍 Total outputs available:', access.outputs.size);
+
+    // Log all available ports for debugging
+    console.log('🔍 All input ports:');
+    access.inputs.forEach((input: MIDIInput, key: string) => {
+      console.log(`  - ${key}: ${input.name} (${input.manufacturer}) - State: ${input.state}, Connection: ${input.connection}`);
+    });
+    
+    console.log('🔍 All output ports:');
+    access.outputs.forEach((output: MIDIOutput, key: string) => {
+      console.log(`  - ${key}: ${output.name} (${output.manufacturer}) - State: ${output.state}, Connection: ${output.connection}`);
+    });
 
     // Scan input devices
     access.inputs.forEach((input: MIDIInput) => {
@@ -146,7 +169,7 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
         type: 'input'
       };
       inputs.push(device);
-      console.log('🎹 Found input device:', device);
+      console.log('🎹 Added input device:', device);
 
       // Set up message listener
       input.onmidimessage = handleMIDIMessage;
@@ -163,13 +186,22 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
         type: 'output'
       };
       outputs.push(device);
-      console.log('🎵 Found output device:', device);
+      console.log('🎵 Added output device:', device);
     });
 
     setInputDevices(inputs);
     setOutputDevices(outputs);
 
-    console.log(`📊 Found ${inputs.length} input devices and ${outputs.length} output devices`);
+    console.log(`📊 Scan complete: ${inputs.length} input devices and ${outputs.length} output devices`);
+    
+    if (inputs.length === 0 && outputs.length === 0) {
+      console.log('⚠️ No MIDI devices detected. Troubleshooting steps:');
+      console.log('  1. Ensure your MIDI device is connected to your computer');
+      console.log('  2. Check if your device appears in your system MIDI settings');
+      console.log('  3. For Bluetooth MIDI devices, ensure they are paired and connected');
+      console.log('  4. Try refreshing the page or reconnecting your device');
+      console.log('  5. For USB MIDI devices, try a different USB port');
+    }
   };
 
   // Handle incoming MIDI messages
@@ -314,11 +346,48 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
       </CardHeader>
       <CardContent className="space-y-6">
         
+        {/* Debug Info */}
+        <div className="bg-muted/50 p-3 rounded-lg text-sm">
+          <h4 className="font-medium mb-2">Debug Information</h4>
+          <div className="space-y-1 text-muted-foreground">
+            <p>Web MIDI API Supported: {isSupported ? '✅ Yes' : '❌ No'}</p>
+            <p>MIDI Access: {midiAccess ? '✅ Granted' : '❌ Not Available'}</p>
+            <p>Total Devices: {inputDevices.length + outputDevices.length}</p>
+            <p>Browser: {navigator.userAgent.includes('Chrome') ? 'Chrome ✅' : navigator.userAgent.includes('Edge') ? 'Edge ✅' : 'Other (may not support Web MIDI)'}</p>
+          </div>
+          
+          {/* WIDI Jack Specific Instructions */}
+          {outputDevices.length === 0 && (
+            <div className="mt-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+              <h5 className="font-medium text-yellow-800 dark:text-yellow-200 mb-2">WIDI Jack / Bluetooth MIDI Setup:</h5>
+              <ol className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1 list-decimal list-inside">
+                <li>Pair your WIDI Jack in your system's Bluetooth settings first</li>
+                <li>Ensure it shows as "Connected" in Bluetooth settings</li>
+                <li>Look for a device named "WIDI Jack" or similar in system MIDI settings</li>
+                <li>Windows: Check "MIDI Devices" in Device Manager</li>
+                <li>Mac: Check "Audio MIDI Setup" application</li>
+                <li>After pairing, click "Refresh Devices" below</li>
+              </ol>
+            </div>
+          )}
+        </div>
+
         {/* Output Devices */}
         <div>
           <h3 className="text-lg font-semibold mb-3">Output Devices</h3>
           {outputDevices.length === 0 ? (
-            <p className="text-muted-foreground">No MIDI output devices found</p>
+            <div className="text-muted-foreground space-y-2">
+              <p>No MIDI output devices found</p>
+              <div className="text-xs bg-muted/50 p-3 rounded">
+                <p className="font-medium mb-1">Troubleshooting:</p>
+                <ul className="space-y-1 list-disc list-inside">
+                  <li>Connect your MIDI device to your computer</li>
+                  <li>For Bluetooth MIDI: Pair and connect your device first</li>
+                  <li>Check your system's MIDI settings</li>
+                  <li>Try clicking "Refresh Devices" below</li>
+                </ul>
+              </div>
+            </div>
           ) : (
             <div className="grid gap-2">
               {outputDevices.map((device) => (
@@ -353,7 +422,13 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
         <div>
           <h3 className="text-lg font-semibold mb-3">Input Devices</h3>
           {inputDevices.length === 0 ? (
-            <p className="text-muted-foreground">No MIDI input devices found</p>
+            <div className="text-muted-foreground space-y-2">
+              <p>No MIDI input devices found</p>
+              <div className="text-xs bg-muted/50 p-3 rounded">
+                <p className="font-medium mb-1">Note:</p>
+                <p>Input devices are MIDI controllers/keyboards that send data to this app. If you only need to send commands to your device, you only need an output device.</p>
+              </div>
+            </div>
           ) : (
             <div className="grid gap-2">
               {inputDevices.map((device) => (
@@ -428,10 +503,40 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
           </div>
         )}
 
-        {/* Refresh Button */}
-        <Button onClick={requestMIDIAccess} variant="outline" className="w-full" data-testid="button-refresh-devices">
-          Refresh Devices
-        </Button>
+        {/* Action Buttons */}
+        <div className="flex gap-2">
+          <Button onClick={requestMIDIAccess} variant="outline" className="flex-1" data-testid="button-refresh-devices">
+            Refresh Devices
+          </Button>
+          <Button 
+            onClick={() => {
+              console.log('🔍 System MIDI Check:');
+              console.log('Navigator:', navigator);
+              console.log('User Agent:', navigator.userAgent);
+              console.log('Web MIDI Support:', !!navigator.requestMIDIAccess);
+              if (midiAccess) {
+                console.log('Current MIDI Access:', midiAccess);
+                console.log('Input size:', midiAccess.inputs.size);
+                console.log('Output size:', midiAccess.outputs.size);
+              }
+              
+              toast({
+                title: "Debug Info Logged",
+                description: "Check browser console for detailed system information",
+              });
+            }}
+            variant="outline" 
+            className="flex-1"
+          >
+            Debug Info
+          </Button>
+        </div>
+        
+        {/* Additional Help */}
+        <div className="text-xs text-muted-foreground bg-muted/30 p-3 rounded">
+          <p className="font-medium mb-1">Still not seeing your device?</p>
+          <p>Web MIDI API only detects devices that are already connected to your operating system. Unlike Bluetooth Web API, it cannot discover or pair new devices.</p>
+        </div>
       </CardContent>
     </Card>
   );

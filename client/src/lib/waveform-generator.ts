@@ -69,6 +69,7 @@ export class WaveformGenerator {
     console.log(`Auto-generating waveform for "${song.title}" from ${song.tracks.length} tracks...`);
 
     try {
+      // Use regular audio context for compatibility
       const audioContext = new AudioContext();
       const sampleCount = 400; // Standard resolution for performance
       const combinedData: number[] = new Array(sampleCount).fill(0);
@@ -143,12 +144,18 @@ export class WaveformGenerator {
         // Save waveform to local cache for instant loading next time
         this.saveWaveformToCache(song.id, combinedData);
         
-        await audioContext.close();
+        // Clean up audio context
+        if (typeof audioContext.close === 'function') {
+          await audioContext.close();
+        }
         return combinedData;
       } else {
         console.log('No tracks with audio data available, generating fallback waveform pattern');
         const fallbackData = this.generateFallbackWaveform(sampleCount, song.duration || 240);
-        await audioContext.close();
+        // Clean up audio context
+        if (typeof audioContext.close === 'function') {
+          await audioContext.close();
+        }
         return fallbackData;
       }
 

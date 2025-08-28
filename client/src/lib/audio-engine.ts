@@ -60,15 +60,19 @@ export class AudioEngine {
 
     console.log(`Loading song "${song.title}" with ${song.tracks.length} tracks`);
 
-    // Load each track
-    const loadPromises = song.tracks.map(async (track) => {
+    // Load tracks sequentially to prevent memory crashes from large files
+    let successfulTracks = 0;
+    for (let i = 0; i < song.tracks.length; i++) {
+      const track = song.tracks[i];
       try {
-        console.log(`Starting load for track: ${track.name} (${track.id})`);
+        console.log(`Loading track ${i + 1}/${song.tracks.length}: ${track.name} (${track.id})`);
+        
         const trackController = new TrackController(
           this.audioContext!,
           this.masterGainNode!,
           track
         );
+        
         await trackController.load();
         this.tracks.set(track.id, trackController);
 
@@ -79,17 +83,21 @@ export class AudioEngine {
         trackController.connectAnalyzer(analyzer);
         this.analyzerNodes.set(track.id, analyzer);
         
-        console.log(`Successfully loaded track: ${track.name}`);
+        successfulTracks++;
+        console.log(`✅ Successfully loaded track ${i + 1}/${song.tracks.length}: ${track.name}`);
+        
+        // Add small delay between tracks to prevent browser crashes
+        if (i < song.tracks.length - 1) {
+          await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
       } catch (error) {
-        console.error(`Failed to load track ${track.name}:`, error);
-        // Don't add failed tracks to the collection
+        console.error(`❌ Failed to load track ${i + 1}/${song.tracks.length} (${track.name}):`, error);
+        // Continue loading other tracks even if one fails
       }
-    });
-
-    // Wait for all tracks to load
-    await Promise.allSettled(loadPromises);
+    }
     
-    console.log(`Loaded ${this.tracks.size} out of ${song.tracks.length} tracks successfully`);
+    console.log(`🎵 Loaded ${successfulTracks} out of ${song.tracks.length} tracks successfully`);
     
     // Update song duration based on the longest track's actual audio buffer duration
     if (this.tracks.size > 0) {
@@ -113,15 +121,18 @@ export class AudioEngine {
       }
     }
     
-    // Auto-generate waveform in background after tracks are loaded
+    // Auto-generate waveform in background with delay to prevent memory issues
     if (this.tracks.size > 0) {
-      console.log(`Starting automatic waveform generation for "${song.title}"...`);
-      // Run in background without blocking playback
-      waveformGenerator.generateWaveformFromSong(song).then((waveformData) => {
-        console.log(`Waveform auto-generated for "${song.title}" (${waveformData.length} data points)`);
-      }).catch((error) => {
-        console.error(`Failed to auto-generate waveform for "${song.title}":`, error);
-      });
+      console.log(`Scheduling waveform generation for "${song.title}"...`);
+      // Delay waveform generation to allow browser to recover from audio loading
+      setTimeout(() => {
+        console.log(`Starting automatic waveform generation for "${song.title}"...`);
+        waveformGenerator.generateWaveformFromSong(song).then((waveformData) => {
+          console.log(`📈 Waveform auto-generated for "${song.title}" (${waveformData.length} data points)`);
+        }).catch((error) => {
+          console.error(`❌ Failed to auto-generate waveform for "${song.title}":`, error);
+        });
+      }, 2000); // 2 second delay after all tracks loaded
     }
     
     // Clear loading state - song is ready for playback
@@ -489,7 +500,8 @@ class TrackController {
       
       console.log(`Loading track: ${this.track.name} from local file storage`);
       
-      // Fetch and decode the audio from local blob URL
+      // Fetch and decode the audio from local blob URL with memory management
+      console.log(`Fetching audio data for ${this.track.name}...`);
       const response = await fetch(audioUrl);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -501,8 +513,15 @@ class TrackController {
         throw new Error(`Empty audio file for track ${this.track.name}`);
       }
       
-      console.log(`Decoding audio data for ${this.track.name}, size: ${arrayBuffer.byteLength} bytes`);
-      this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      console.log(`Decoding audio data for ${this.track.name}, size: ${(arrayBuffer.byteLength / 1024 / 1024).toFixed(2)} MB`);
+      
+      // Add timeout to prevent hanging on large files
+      const decodePromise = this.audioContext.decodeAudioData(arrayBuffer);
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => reject(new Error(`Audio decode timeout for ${this.track.name}`)), 30000);
+      });
+      
+      this.audioBuffer = await Promise.race([decodePromise, timeoutPromise]);
       
       // Verify audio buffer integrity
       const bufferSampleRate = this.audioBuffer.sampleRate;

@@ -72,18 +72,32 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     };
   }, []);
 
-  // Set up song reference but don't load tracks immediately (lazy loading)
+  // Set up song and preload tracks for instant playback
   useEffect(() => {
     if (song && audioEngineRef.current) {
-      console.log(`Song selected: "${song.title}" with ${song.tracks.length} tracks (lazy loading enabled)`);
+      console.log(`Song selected: "${song.title}" with ${song.tracks.length} tracks - starting background preload`);
       
-      // Just set the song reference without loading tracks
+      // Set the song reference immediately (for visual display)
       audioEngineRef.current.setSong(song);
       
       // Use existing duration from database
       setDuration(song.duration);
       setCurrentTime(0);
       setIsPlaying(false);
+      
+      // Start background preloading after a short delay (let UI render first)
+      setTimeout(() => {
+        console.log(`Starting background preload for "${song.title}"`);
+        setIsLoadingTracks(true);
+        
+        audioEngineRef.current?.preloadSong(song).then(() => {
+          console.log(`✅ Background preload complete for "${song.title}" - ready for instant playback`);
+          setIsLoadingTracks(false);
+        }).catch((error: Error) => {
+          console.error(`❌ Background preload failed for "${song.title}":`, error);
+          setIsLoadingTracks(false);
+        });
+      }, 100); // Short delay to let track manager UI render first
     }
   }, [song?.id, song?.tracks?.length]);
 
@@ -147,30 +161,34 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         return;
       }
       
-      // Lazy load tracks only when playback is requested
-      if (!audioEngineRef.current.isLoaded()) {
-        console.log(`Loading tracks for playback: "${song.title}"`);
-        setIsLoadingTracks(true);
-        
-        try {
-          await audioEngineRef.current.loadSong(song);
-          setIsLoadingTracks(false);
-          console.log(`Tracks loaded for playback: "${song.title}"`);
-        } catch (error) {
-          console.error(`Failed to load song for playback: "${song.title}"`, error);
-          setIsLoadingTracks(false);
-          return;
-        }
-      }
-      
-      // Check if song is still loading to prevent race conditions
-      if (audioEngineRef.current.getIsLoading()) {
-        console.log('Song is still loading, cannot start playback yet');
+      // Check if tracks are preloaded (should be instant)
+      if (audioEngineRef.current.getIsLoaded()) {
+        console.log(`Tracks preloaded - starting instant playback for "${song.title}"`);
+        await audioEngineRef.current.play();
+        setIsPlaying(true);
         return;
       }
       
-      await audioEngineRef.current.play();
-      setIsPlaying(true);
+      // Fallback: Load tracks if preloading failed or is still in progress
+      if (audioEngineRef.current.getIsLoading()) {
+        console.log('Tracks still preloading, waiting...');
+        return;
+      }
+      
+      console.log(`Fallback loading tracks for playback: "${song.title}"`);
+      setIsLoadingTracks(true);
+      
+      try {
+        await audioEngineRef.current.loadSong(song);
+        setIsLoadingTracks(false);
+        console.log(`Fallback tracks loaded: "${song.title}"`);
+        
+        await audioEngineRef.current.play();
+        setIsPlaying(true);
+      } catch (error) {
+        console.error(`Failed to load song for playback: "${song.title}"`, error);
+        setIsLoadingTracks(false);
+      }
     }
   }, [song]);
 

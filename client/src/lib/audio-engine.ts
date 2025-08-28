@@ -186,8 +186,21 @@ export class AudioEngine {
     this.actualDuration = 0;
   }
 
-  isLoaded(): boolean {
+  getIsLoaded(): boolean {
     return this.isLoaded;
+  }
+
+  async preloadSong(song: SongWithTracks): Promise<void> {
+    // Background preloading for instant playback
+    console.log(`🔄 Background preloading "${song.title}" with ${song.tracks.length} tracks...`);
+    
+    try {
+      await this.loadSong(song);
+      console.log(`✅ Background preload complete for "${song.title}" - instant playback ready`);
+    } catch (error) {
+      console.error(`❌ Background preload failed for "${song.title}":`, error);
+      throw error;
+    }
   }
 
   async play(): Promise<void> {

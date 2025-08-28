@@ -935,7 +935,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ success: true, message: "Data is loaded from cloud database automatically" });
   });
 
-  // Lyrics search route
+  // Simplified lyrics search route - Basic Google search
   app.post("/api/lyrics/search", async (req, res) => {
     try {
       const { title, artist } = req.body;
@@ -947,97 +947,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      console.log(`Searching lyrics for "${title}" by ${artist}...`);
+      console.log(`Opening Google search for "${title}" by ${artist} lyrics...`);
 
-      // Use Google Custom Search to find lyrics from text-based lyrics sites
-      try {
-        const searchQuery = `${title} ${artist} Lyrics site:genius.com OR site:azlyrics.com OR site:metrolyrics.com OR site:lyrics.com OR site:songlyrics.com`;
-        const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${process.env.GOOGLE_API_KEY}&cx=${process.env.GOOGLE_SEARCH_ENGINE_ID}&q=${encodeURIComponent(searchQuery)}`;
-        
-        if (!process.env.GOOGLE_API_KEY || !process.env.GOOGLE_SEARCH_ENGINE_ID) {
-          console.log('Google Search API credentials not configured, using fallback');
-          throw new Error('Search API not configured');
-        }
+      // Simple Google search for lyrics
+      const searchQuery = `${title} ${artist} lyrics`;
+      const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchQuery)}`;
 
-        const response = await fetch(searchUrl);
-        const data = await response.json();
+      console.log(`Google search URL: ${googleSearchUrl}`);
 
-        if (data.items && data.items.length > 0) {
-          // Filter out video sites and find text-based lyrics sites
-          const textLyricsSites = data.items.filter((item: any) => {
-            const url = item.link.toLowerCase();
-            return !url.includes('youtube.com') && 
-                   !url.includes('vimeo.com') && 
-                   !url.includes('dailymotion.com') && 
-                   !url.includes('video') &&
-                   (url.includes('genius.com') || 
-                    url.includes('azlyrics.com') || 
-                    url.includes('metrolyrics.com') || 
-                    url.includes('lyrics.com') || 
-                    url.includes('songlyrics.com') ||
-                    item.title.toLowerCase().includes('lyrics'));
-          });
-
-          if (textLyricsSites.length > 0) {
-            const firstResult = textLyricsSites[0];
-            const lyricsUrl = firstResult.link;
-            
-            console.log(`Found text lyrics page: ${lyricsUrl}`);
-            
-            return res.json({
-              success: false,
-              error: "Manual verification needed",
-              message: `Found "${title}" by ${artist} lyrics on text site. Opening browser for manual copy-paste.`,
-              searchResult: {
-                url: lyricsUrl,
-                title: firstResult.title,
-                snippet: firstResult.snippet
-              },
-              openBrowser: true
-            });
-          } else {
-            console.log('No text-based lyrics sites found in results');
-          }
-        }
-        
-      } catch (searchError: any) {
-        console.log('Web search failed, using manual guidance:', searchError?.message || 'Unknown error');
-      }
-
-      // Fallback to manual entry guidance
-      console.log(`Providing manual entry guidance for "${title}" by ${artist}`);
-      
       return res.json({
         success: false,
-        error: "Manual entry recommended", 
-        message: `Please search and copy lyrics manually for "${title}" by ${artist}. Opening browser search.`,
-        guidance: {
-          suggestion: `Search for "${title} ${artist} Lyrics" will be opened in your browser`,
-          tip: "Copy lyrics from your preferred site and paste them into the text area"
+        message: `Opening Google search for "${title}" by ${artist} lyrics`,
+        searchResult: {
+          url: googleSearchUrl,
+          title: `${title} by ${artist} - Lyrics`,
+          snippet: "Google search results for song lyrics"
         },
-        searchQuery: `${title} ${artist} Lyrics -youtube -video`,
         openBrowser: true
       });
 
-      // Legacy code for multiple APIs (currently disabled due to reliability issues)
-      /*
-      const apis = [
-        {
-          name: "Lyrics.ovh",
-          url: `https://api.lyrics.ovh/v1/${cleanArtist}/${cleanTitle}`,
-          timeout: 8000
-        }
-      ];
-
-      // Legacy API calling code (disabled)
-      */
-      
     } catch (error) {
       console.error("Lyrics search error:", error);
-      res.status(500).json({ 
+      return res.status(500).json({ 
         success: false, 
-        error: "Failed to search for lyrics",
-        message: "Network error occurred while searching for lyrics. Please check your internet connection."
+        error: "Failed to search for lyrics" 
       });
     }
   });

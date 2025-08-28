@@ -697,114 +697,27 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     }
   };
 
-  // Enhanced MIDI send function with comprehensive debugging
+  // Simplified MIDI send function - direct raw bytes only
   const sendMidiCommand = async (midiBytes: Uint8Array) => {
-    console.log('🚀 🔥 SEND MIDI COMMAND CALLED');
-    console.log('📋 MIDI bytes to send:', Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' '));
+    console.log('🎵 SENDING RAW MIDI:', Array.from(midiBytes).map(b => `0x${b.toString(16).padStart(2, '0')}`).join(' '));
     
     if (!midiCharacteristic) {
-      console.log('❌ No MIDI characteristic');
       throw new Error('MIDI characteristic not available');
     }
 
     if (!bluetoothDevice || !bluetoothDevice.gatt.connected) {
-      console.log('❌ Device not connected');
       throw new Error('Device not connected');
     }
 
-    // Create proper BLE MIDI packet 
-    // For most devices, send MIDI data directly without complex BLE MIDI wrapper
-    console.log('🔥 RAW MIDI BYTES (no brackets):', Array.from(midiBytes));
-    
-    // Try direct MIDI first (works for many devices)
-    let bleMidiPacket = midiBytes;
-    
-    // Alternative: Simple BLE MIDI with basic timestamp if direct fails
-    const timestamp = Date.now() & 0x1FFF;
-    const timestampHigh = 0x80 | ((timestamp >> 7) & 0x3F);
-    const timestampLow = 0x80 | (timestamp & 0x7F);
-    const bleMidiWithTimestamp = new Uint8Array([timestampHigh, timestampLow, ...Array.from(midiBytes)]);
-    
-    console.log('📡 🔥 BLE MIDI packet:', Array.from(bleMidiPacket).map(b => b.toString(16).padStart(2, '0')).join(' '));
-    console.log('🔍 Characteristic properties:', {
-      write: midiCharacteristic.properties.write,
-      writeWithoutResponse: midiCharacteristic.properties.writeWithoutResponse,
-      notify: midiCharacteristic.properties.notify,
-      indicate: midiCharacteristic.properties.indicate
-    });
-    
+    // Send raw MIDI bytes directly - no BLE MIDI wrapper, no timestamps, no complications
     try {
-      // Try multiple MIDI packet formats for maximum compatibility
-      let success = false;
-      
-      // Method 1: Direct raw MIDI bytes (simplest, works for many devices)
-      if (midiCharacteristic.properties.writeWithoutResponse && !success) {
-        try {
-          console.log('📤 Method 1: Sending RAW MIDI bytes directly...');
-          console.log('🔥 Packet:', Array.from(midiBytes).map(b => `0x${b.toString(16).padStart(2, '0')}`));
-          await midiCharacteristic.writeValueWithoutResponse(midiBytes);
-          console.log('✅ SUCCESS: Raw MIDI sent without response!');
-          success = true;
-        } catch (e) {
-          console.log('❌ Method 1 failed:', e.message);
-        }
-      }
-      
-      // Method 2: BLE MIDI with timestamp (for spec-compliant devices)
-      if (!success && midiCharacteristic.properties.writeWithoutResponse) {
-        try {
-          console.log('📤 Method 2: Sending BLE MIDI with timestamp...');
-          console.log('🔥 Packet:', Array.from(bleMidiWithTimestamp).map(b => `0x${b.toString(16).padStart(2, '0')}`));
-          await midiCharacteristic.writeValueWithoutResponse(bleMidiWithTimestamp);
-          console.log('✅ SUCCESS: BLE MIDI sent without response!');
-          success = true;
-        } catch (e) {
-          console.log('❌ Method 2 failed:', e.message);
-        }
-      }
-      
-      // Method 3: Raw MIDI with response
-      if (!success && midiCharacteristic.properties.write) {
-        try {
-          console.log('📤 Method 3: Raw MIDI with response...');
-          await midiCharacteristic.writeValueWithResponse(midiBytes);
-          console.log('✅ SUCCESS: Raw MIDI sent with response!');
-          success = true;
-        } catch (e) {
-          console.log('❌ Method 3 failed:', e.message);
-        }
-      }
-      
-      // Method 4: BLE MIDI with response
-      if (!success && midiCharacteristic.properties.write) {
-        try {
-          console.log('📤 Method 4: BLE MIDI with response...');
-          await midiCharacteristic.writeValueWithResponse(bleMidiWithTimestamp);
-          console.log('✅ SUCCESS: BLE MIDI sent with response!');
-          success = true;
-        } catch (e) {
-          console.log('❌ Method 4 failed:', e.message);
-        }
-      }
-      
-      if (!success) {
-        throw new Error('All MIDI transmission methods failed');
-      }
+      console.log('📤 Sending raw MIDI bytes directly to device...');
+      await midiCharacteristic.writeValueWithoutResponse(midiBytes);
+      console.log('✅ Raw MIDI sent successfully!');
       
     } catch (error) {
-      console.error('❌ 🔥 MIDI SEND ERROR:', error);
-      const errorMsg = error instanceof Error ? error.message : String(error);
-      
-      // Enhanced error analysis
-      if (errorMsg.includes('Not paired')) {
-        throw new Error('Device not paired - use Re-pair button');
-      } else if (errorMsg.includes('GATT')) {
-        throw new Error('Bluetooth connection lost - reconnect device');  
-      } else if (errorMsg.includes('write')) {
-        throw new Error('Device does not support MIDI writing');
-      } else {
-        throw new Error(`MIDI send failed: ${errorMsg}`);
-      }
+      console.error('❌ MIDI send failed:', error);
+      throw error;
     }
   };
 
@@ -850,20 +763,18 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         return;
       }
 
-      // Send MIDI command with enhanced debugging
-      console.log('🎵 About to send MIDI bytes:', Array.from(midiBytes).map(b => `0x${b.toString(16).padStart(2, '0')}`).join(' '));
+      // Send raw MIDI bytes directly
       await sendMidiCommand(midiBytes);
       
       const hexString = Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ');
-      setLastSentMessage(`${testMessage} → [${hexString}]`);
-      console.log('✅ MIDI command sent successfully to device');
+      setLastSentMessage(`${testMessage} → ${hexString}`);
       
       // Add message to display
-      addMidiMessage(`📤 ${testMessage} → [${hexString}]`);
+      addMidiMessage(`📤 ${testMessage} → ${hexString}`);
       
       toast({
-        title: "MIDI Sent Successfully",
-        description: `Command: ${testMessage} → [${hexString}]`,
+        title: "MIDI Sent",
+        description: `${testMessage} → ${hexString}`,
       });
 
     } catch (error) {

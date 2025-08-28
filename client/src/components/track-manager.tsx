@@ -12,6 +12,8 @@ import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Pl
 import { Slider } from "@/components/ui/slider";
 import VUMeter from "@/components/vu-meter";
 import { TrackRecovery } from "@/components/track-recovery";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 
 import type { Track, SongWithTracks } from "@shared/schema";
 
@@ -771,6 +773,7 @@ export default function TrackManager({
                           <VUMeter 
                             level={audioLevels[track.id] || 0}
                             isMuted={track.isMuted || false}
+                            isPlaying={isPlaying}
                             className="flex-shrink-0"
                           />
                         </div>

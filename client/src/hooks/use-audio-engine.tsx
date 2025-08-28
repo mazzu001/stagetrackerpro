@@ -85,19 +85,17 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       setCurrentTime(0);
       setIsPlaying(false);
       
-      // Start background preloading after a short delay (let UI render first)
-      setTimeout(() => {
-        console.log(`Starting background preload for "${song.title}"`);
-        setIsLoadingTracks(true);
-        
-        audioEngineRef.current?.preloadSong(song).then(() => {
-          console.log(`✅ Background preload complete for "${song.title}" - ready for instant playback`);
-          setIsLoadingTracks(false);
-        }).catch((error: Error) => {
-          console.error(`❌ Background preload failed for "${song.title}":`, error);
-          setIsLoadingTracks(false);
-        });
-      }, 100); // Short delay to let track manager UI render first
+      // Start background preloading immediately for instant performance
+      console.log(`Starting immediate preload for "${song.title}"`);
+      setIsLoadingTracks(true);
+      
+      audioEngineRef.current?.preloadSong(song).then(() => {
+        console.log(`✅ Background preload complete for "${song.title}" - ready for instant playback`);
+        setIsLoadingTracks(false);
+      }).catch((error: Error) => {
+        console.error(`❌ Background preload failed for "${song.title}":`, error);
+        setIsLoadingTracks(false);
+      });
     }
   }, [song?.id, song?.tracks?.length]);
 

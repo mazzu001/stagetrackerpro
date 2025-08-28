@@ -83,10 +83,10 @@ export class AudioEngine {
             return null;
           }
           
-          // Load with timeout protection (reduced to 10 seconds for faster response)
+          // Load with timeout protection (reduced to 5 seconds for responsive feel)
           const loadPromise = trackController.load();
           const timeoutPromise = new Promise<never>((_, reject) => {
-            setTimeout(() => reject(new Error(`Track loading timeout: ${track.name}`)), 10000);
+            setTimeout(() => reject(new Error(`Track loading timeout: ${track.name}`)), 5000);
           });
           
           try {
@@ -165,18 +165,15 @@ export class AudioEngine {
       }
     }
     
-    // Auto-generate waveform in background with delay to prevent memory issues
+    // Auto-generate waveform in background immediately for responsive UI
     if (this.tracks.size > 0) {
-      console.log(`Scheduling waveform generation for "${song.title}"...`);
-      // Delay waveform generation to allow browser to recover from audio loading
-      setTimeout(() => {
-        console.log(`Starting automatic waveform generation for "${song.title}"...`);
-        waveformGenerator.generateWaveformFromSong(song).then((waveformData) => {
-          console.log(`📈 Waveform auto-generated for "${song.title}" (${waveformData.length} data points)`);
-        }).catch((error) => {
-          console.error(`❌ Failed to auto-generate waveform for "${song.title}":`, error);
-        });
-      }, 2000); // 2 second delay after all tracks loaded
+      console.log(`Starting immediate waveform generation for "${song.title}"...`);
+      // Generate waveform immediately without delay for instant response
+      waveformGenerator.generateWaveformFromSong(song).then((waveformData) => {
+        console.log(`📈 Waveform auto-generated for "${song.title}" (${waveformData.length} data points)`);
+      }).catch((error) => {
+        console.error(`❌ Failed to auto-generate waveform for "${song.title}":`, error);
+      });
     }
     
     console.log(`✅ Finished loading song: "${song.title}" - Ready for playback`);
@@ -600,9 +597,9 @@ class TrackController {
       const decodePromise = this.audioContext.decodeAudioData(arrayBuffer);
       const timeoutPromise = new Promise<never>((_, reject) => {
         setTimeout(() => {
-          console.error(`❌ DECODE TIMEOUT for ${this.track.name} after 15 seconds`);
+          console.error(`❌ DECODE TIMEOUT for ${this.track.name} after 8 seconds`);
           reject(new Error(`Audio decode timeout for ${this.track.name}`));
-        }, 15000);
+        }, 8000);
       });
       
       console.log(`🔄 Racing decode vs timeout for ${this.track.name}...`);

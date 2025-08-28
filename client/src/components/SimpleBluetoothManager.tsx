@@ -695,7 +695,8 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         console.log('✅ MIDI sent without response');
       } catch (noResponseError) {
         console.log('❌ Both write methods failed:', responseError, noResponseError);
-        throw new Error(`MIDI write failed: ${responseError.message || 'Unknown error'}`);
+        const errorMsg = responseError instanceof Error ? responseError.message : 'Unknown error';
+        throw new Error(`MIDI write failed: ${errorMsg}`);
       }
     }
   };

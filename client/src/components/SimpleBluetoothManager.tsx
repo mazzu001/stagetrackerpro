@@ -712,12 +712,18 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       throw new Error('Device not connected');
     }
 
-    // Create proper BLE MIDI packet with timestamp header
-    // BLE MIDI spec: [timestamp high] [timestamp low] [MIDI data...]
-    const timestamp = Date.now() & 0x1FFF; // 13-bit timestamp
+    // Create proper BLE MIDI packet 
+    // For most devices, send MIDI data directly without complex BLE MIDI wrapper
+    console.log('🔥 RAW MIDI BYTES (no brackets):', Array.from(midiBytes));
+    
+    // Try direct MIDI first (works for many devices)
+    let bleMidiPacket = midiBytes;
+    
+    // Alternative: Simple BLE MIDI with basic timestamp if direct fails
+    const timestamp = Date.now() & 0x1FFF;
     const timestampHigh = 0x80 | ((timestamp >> 7) & 0x3F);
     const timestampLow = 0x80 | (timestamp & 0x7F);
-    const bleMidiPacket = new Uint8Array([timestampHigh, timestampLow, ...Array.from(midiBytes)]);
+    const bleMidiWithTimestamp = new Uint8Array([timestampHigh, timestampLow, ...Array.from(midiBytes)]);
     
     console.log('📡 🔥 BLE MIDI packet:', Array.from(bleMidiPacket).map(b => b.toString(16).padStart(2, '0')).join(' '));
     console.log('🔍 Characteristic properties:', {
@@ -728,23 +734,62 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     });
     
     try {
-      // Try writeValueWithoutResponse first (preferred for MIDI)
-      if (midiCharacteristic.properties.writeWithoutResponse) {
-        console.log('📤 Trying writeValueWithoutResponse...');
-        await midiCharacteristic.writeValueWithoutResponse(bleMidiPacket);
-        console.log('✅ 🔥 MIDI sent without response - SUCCESS!');
-        return;
+      // Try multiple MIDI packet formats for maximum compatibility
+      let success = false;
+      
+      // Method 1: Direct raw MIDI bytes (simplest, works for many devices)
+      if (midiCharacteristic.properties.writeWithoutResponse && !success) {
+        try {
+          console.log('📤 Method 1: Sending RAW MIDI bytes directly...');
+          console.log('🔥 Packet:', Array.from(midiBytes).map(b => `0x${b.toString(16).padStart(2, '0')}`));
+          await midiCharacteristic.writeValueWithoutResponse(midiBytes);
+          console.log('✅ SUCCESS: Raw MIDI sent without response!');
+          success = true;
+        } catch (e) {
+          console.log('❌ Method 1 failed:', e.message);
+        }
       }
       
-      // Fallback to writeValueWithResponse
-      if (midiCharacteristic.properties.write) {
-        console.log('📤 Trying writeValueWithResponse...');
-        await midiCharacteristic.writeValueWithResponse(bleMidiPacket);
-        console.log('✅ 🔥 MIDI sent with response - SUCCESS!');
-        return;
+      // Method 2: BLE MIDI with timestamp (for spec-compliant devices)
+      if (!success && midiCharacteristic.properties.writeWithoutResponse) {
+        try {
+          console.log('📤 Method 2: Sending BLE MIDI with timestamp...');
+          console.log('🔥 Packet:', Array.from(bleMidiWithTimestamp).map(b => `0x${b.toString(16).padStart(2, '0')}`));
+          await midiCharacteristic.writeValueWithoutResponse(bleMidiWithTimestamp);
+          console.log('✅ SUCCESS: BLE MIDI sent without response!');
+          success = true;
+        } catch (e) {
+          console.log('❌ Method 2 failed:', e.message);
+        }
       }
       
-      throw new Error('No write method available on characteristic');
+      // Method 3: Raw MIDI with response
+      if (!success && midiCharacteristic.properties.write) {
+        try {
+          console.log('📤 Method 3: Raw MIDI with response...');
+          await midiCharacteristic.writeValueWithResponse(midiBytes);
+          console.log('✅ SUCCESS: Raw MIDI sent with response!');
+          success = true;
+        } catch (e) {
+          console.log('❌ Method 3 failed:', e.message);
+        }
+      }
+      
+      // Method 4: BLE MIDI with response
+      if (!success && midiCharacteristic.properties.write) {
+        try {
+          console.log('📤 Method 4: BLE MIDI with response...');
+          await midiCharacteristic.writeValueWithResponse(bleMidiWithTimestamp);
+          console.log('✅ SUCCESS: BLE MIDI sent with response!');
+          success = true;
+        } catch (e) {
+          console.log('❌ Method 4 failed:', e.message);
+        }
+      }
+      
+      if (!success) {
+        throw new Error('All MIDI transmission methods failed');
+      }
       
     } catch (error) {
       console.error('❌ 🔥 MIDI SEND ERROR:', error);

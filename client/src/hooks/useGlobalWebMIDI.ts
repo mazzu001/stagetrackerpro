@@ -72,21 +72,36 @@ const initializeWebMIDI = async (): Promise<boolean> => {
   if (globalMidiAccess) return true;
   
   try {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+      console.log('⚠️ Not in browser environment, skipping Web MIDI initialization');
+      return false;
+    }
+    
     if (!navigator.requestMIDIAccess) {
-      console.log('❌ Web MIDI API not supported');
+      console.log('❌ Web MIDI API not supported in this browser');
       return false;
     }
     
     console.log('🎵 Initializing global Web MIDI access...');
-    globalMidiAccess = await navigator.requestMIDIAccess({ sysex: true });
+    
+    // Add timeout to prevent hanging
+    const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000);
+    });
+    
+    globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;
     
     // Set up device change listener
     globalMidiAccess.onstatechange = (event) => {
       console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
       // Dispatch global event for UI updates
-      window.dispatchEvent(new CustomEvent('globalMidiDeviceChange', {
-        detail: { port: event.port }
-      }));
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('globalMidiDeviceChange', {
+          detail: { port: event.port }
+        }));
+      }, 0);
     };
     
     console.log('✅ Global Web MIDI access initialized');
@@ -184,8 +199,17 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [deviceName, setDeviceName] = useState(globalDeviceName);
   
   useEffect(() => {
-    // Initialize Web MIDI on first use
-    initializeWebMIDI();
+    // Initialize Web MIDI asynchronously to prevent blocking
+    const initAsync = async () => {
+      try {
+        await initializeWebMIDI();
+      } catch (error) {
+        console.error('❌ Failed to initialize Web MIDI in useGlobalWebMIDI:', error);
+      }
+    };
+    
+    // Don't block the component mounting
+    initAsync();
     
     // Listen for global connection changes
     const handleConnectionChange = (event: any) => {

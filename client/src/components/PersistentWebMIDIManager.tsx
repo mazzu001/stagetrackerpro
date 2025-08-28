@@ -44,7 +44,12 @@ export function PersistentWebMIDIManager() {
 
   // Get devices on mount and when global MIDI state changes
   useEffect(() => {
-    refreshDevices();
+    // Delay the initial refresh to prevent blocking
+    const timer = setTimeout(() => {
+      refreshDevices();
+    }, 100);
+    
+    return () => clearTimeout(timer);
   }, [globalMidi]);
 
   // Listen for global device changes

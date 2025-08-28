@@ -60,40 +60,74 @@ export class AudioEngine {
 
     console.log(`Loading song "${song.title}" with ${song.tracks.length} tracks`);
 
-    // Load tracks sequentially to prevent memory crashes from large files
+    // Load tracks sequentially with comprehensive error protection
     let successfulTracks = 0;
     for (let i = 0; i < song.tracks.length; i++) {
       const track = song.tracks[i];
       try {
-        console.log(`Loading track ${i + 1}/${song.tracks.length}: ${track.name} (${track.id})`);
+        console.log(`🔄 Loading track ${i + 1}/${song.tracks.length}: ${track.name}`);
         
-        const trackController = new TrackController(
-          this.audioContext!,
-          this.masterGainNode!,
-          track
-        );
+        // Wrap track creation in try-catch for added safety
+        let trackController: TrackController;
+        try {
+          trackController = new TrackController(
+            this.audioContext!,
+            this.masterGainNode!,
+            track
+          );
+        } catch (error) {
+          console.error(`❌ Failed to create track controller for ${track.name}:`, error);
+          continue;
+        }
         
-        await trackController.load();
-        this.tracks.set(track.id, trackController);
+        // Load with timeout protection
+        const loadPromise = trackController.load();
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          setTimeout(() => reject(new Error(`Track loading timeout: ${track.name}`)), 60000);
+        });
+        
+        try {
+          await Promise.race([loadPromise, timeoutPromise]);
+          
+          // Only add track if loading was successful
+          this.tracks.set(track.id, trackController);
 
-        // Create analyzer for audio level monitoring
-        const analyzer = this.audioContext!.createAnalyser();
-        analyzer.fftSize = 256;
-        analyzer.smoothingTimeConstant = 0.8;
-        trackController.connectAnalyzer(analyzer);
-        this.analyzerNodes.set(track.id, analyzer);
+          // Create analyzer for audio level monitoring
+          const analyzer = this.audioContext!.createAnalyser();
+          analyzer.fftSize = 256;
+          analyzer.smoothingTimeConstant = 0.8;
+          trackController.connectAnalyzer(analyzer);
+          this.analyzerNodes.set(track.id, analyzer);
+          
+          successfulTracks++;
+          console.log(`✅ Successfully loaded track ${i + 1}/${song.tracks.length}: ${track.name}`);
+          
+        } catch (loadError) {
+          console.error(`❌ Track load failed for ${track.name}:`, loadError);
+          // Clean up failed track controller
+          try {
+            trackController.dispose();
+          } catch (cleanupError) {
+            console.error('Failed to cleanup track controller:', cleanupError);
+          }
+        }
         
-        successfulTracks++;
-        console.log(`✅ Successfully loaded track ${i + 1}/${song.tracks.length}: ${track.name}`);
-        
-        // Add small delay between tracks to prevent browser crashes
+        // Add delay between tracks and force garbage collection opportunity
         if (i < song.tracks.length - 1) {
-          await new Promise(resolve => setTimeout(resolve, 100));
+          await new Promise(resolve => setTimeout(resolve, 500)); // Increased delay
+          // Try to encourage garbage collection if available
+          if (typeof window !== 'undefined' && (window as any).gc) {
+            try {
+              (window as any).gc();
+            } catch (e) {
+              // GC not available, continue
+            }
+          }
         }
         
       } catch (error) {
-        console.error(`❌ Failed to load track ${i + 1}/${song.tracks.length} (${track.name}):`, error);
-        // Continue loading other tracks even if one fails
+        console.error(`❌ Unexpected error loading track ${i + 1}/${song.tracks.length} (${track.name}):`, error);
+        // Continue with next track despite errors
       }
     }
     
@@ -655,5 +689,30 @@ class TrackController {
 
   getAudioBufferDuration(): number {
     return this.audioBuffer?.duration || 0;
+  }
+
+  dispose(): void {
+    // Stop any playing source
+    if (this.sourceNode) {
+      try {
+        this.sourceNode.stop();
+        this.sourceNode.disconnect();
+      } catch (error) {
+        // Source might already be stopped/disconnected
+      }
+      this.sourceNode = null;
+    }
+
+    // Disconnect all audio nodes
+    try {
+      this.gainNode.disconnect();
+      this.pannerNode.disconnect();
+      this.muteNode.disconnect();
+    } catch (error) {
+      // Nodes might already be disconnected
+    }
+
+    // Clear audio buffer to free memory
+    this.audioBuffer = null;
   }
 }

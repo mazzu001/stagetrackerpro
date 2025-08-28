@@ -185,31 +185,81 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     try {
       console.log(`🔗 Connecting to ${device.name}...`);
       
-      const bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
-        filters: [{ name: device.name }],
-        optionalServices: [
-          // Standard MIDI over BLE service
-          '03b80e5a-ede8-4b33-a751-6ce34ec4c700',
-          // Generic services
-          'generic_access', 
-          'generic_attribute',
-          // Additional MIDI services
-          '7772e5db-3868-4112-a1a9-f2669d106bf3', // Roland
-          '42a7ce7d-8f4c-4f7f-8c8d-8e6c9b2a4b3c', // Yamaha variants
-          // Nordic UART service (used by some MIDI devices)
-          '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
-        ]
+      // For reconnection, try to get the stored device first
+      let bluetoothDevice;
+      try {
+        // First try to reconnect to existing device
+        if (device.id === localStorage.getItem('bluetooth_device_id')) {
+          console.log('🔄 Attempting to reconnect to existing device...');
+          bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
+            filters: [{ name: device.name }],
+            optionalServices: [
+              '03b80e5a-ede8-4b33-a751-6ce34ec4c700',
+              'generic_access', 
+              'generic_attribute',
+              '7772e5db-3868-4112-a1a9-f2669d106bf3',
+              '42a7ce7d-8f4c-4f7f-8c8d-8e6c9b2a4b3c',
+              '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
+            ]
+          });
+        } else {
+          // New device connection
+          bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
+            filters: [{ name: device.name }],
+            optionalServices: [
+              '03b80e5a-ede8-4b33-a751-6ce34ec4c700',
+              'generic_access', 
+              'generic_attribute',
+              '7772e5db-3868-4112-a1a9-f2669d106bf3',
+              '42a7ce7d-8f4c-4f7f-8c8d-8e6c9b2a4b3c',
+              '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
+            ]
+          });
+        }
+      } catch (deviceError) {
+        console.log('⚠️ Device selection failed, trying alternative approach...');
+        // Fallback: try without filters
+        bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
+          acceptAllDevices: true,
+          optionalServices: [
+            '03b80e5a-ede8-4b33-a751-6ce34ec4c700',
+            'generic_access',
+            'generic_attribute',
+            '7772e5db-3868-4112-a1a9-f2669d106bf3',
+            '42a7ce7d-8f4c-4f7f-8c8d-8e6c9b2a4b3c',
+            '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
+          ]
+        });
+      }
+
+      // Add connection event listeners
+      bluetoothDevice.addEventListener('gattserverdisconnected', () => {
+        console.log('🔌 Device disconnected unexpectedly');
+        setConnectionStatus('disconnected');
+        setSelectedDevice(prev => prev ? { ...prev, connected: false } : null);
+        addMidiMessage('Device disconnected unexpectedly');
+        
+        // Notify performance interface
+        window.dispatchEvent(new CustomEvent('bluetoothMidiStatusChanged', {
+          detail: { connected: false, deviceName: '', midiReady: false }
+        }));
       });
 
       const server = await bluetoothDevice.gatt.connect();
       console.log('✅ Connected to GATT server');
 
+      // Add a small delay to ensure connection is stable
+      await new Promise(resolve => setTimeout(resolve, 500));
+
       // Try to setup MIDI communication
+      let midiSetupSuccess = false;
       try {
         await setupMidiCommunication(server);
         console.log('🎵 MIDI setup completed');
+        midiSetupSuccess = true;
       } catch (midiError) {
         console.error('⚠️ MIDI setup failed but connection succeeded:', midiError);
+        addMidiMessage('Connected but MIDI setup failed - device may not support MIDI');
       }
 
       setBluetoothDevice(bluetoothDevice);
@@ -225,7 +275,7 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         detail: { 
           connected: true, 
           deviceName: device.name,
-          midiReady: !!midiCharacteristic 
+          midiReady: midiSetupSuccess && !!midiCharacteristic 
         }
       }));
 
@@ -242,9 +292,81 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     } catch (error) {
       console.error('❌ Connection failed:', error);
       setConnectionStatus('disconnected');
+      
+      let errorMessage = `Failed to connect to ${device.name}`;
+      const errorStr = error instanceof Error ? error.message : String(error);
+      
+      if (errorStr.includes('User cancelled') || errorStr.includes('cancelled')) {
+        errorMessage = 'Connection cancelled by user';
+      } else if (errorStr.includes('not found') || errorStr.includes('NotFoundError')) {
+        errorMessage = 'Device not found. Make sure it\'s in pairing mode.';
+      } else if (errorStr.includes('Security') || errorStr.includes('NotAllowedError')) {
+        errorMessage = 'Connection not allowed. Check device permissions.';
+      }
+      
       toast({
         title: "Connection Failed",
-        description: `Failed to connect to ${device.name}`,
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsConnecting(false);
+    }
+  };
+
+  // Force pair and reconnect to fix pairing issues
+  const forcePairDevice = async (device: BluetoothDevice) => {
+    setIsConnecting(true);
+    
+    try {
+      console.log(`🔧 Force pairing ${device.name}...`);
+      
+      // Disconnect existing connection if any
+      if (bluetoothDevice && bluetoothDevice.gatt.connected) {
+        bluetoothDevice.gatt.disconnect();
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+      
+      // Clear stored device info to force fresh pairing
+      localStorage.removeItem('bluetooth_device_id');
+      localStorage.removeItem('bluetooth_device_name');
+      
+      // Request fresh device pairing
+      const newBluetoothDevice = await (navigator as any).bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: [
+          '03b80e5a-ede8-4b33-a751-6ce34ec4c700',
+          'generic_access',
+          'generic_attribute',
+          '7772e5db-3868-4112-a1a9-f2669d106bf3',
+          '42a7ce7d-8f4c-4f7f-8c8d-8e6c9b2a4b3c',
+          '6e400001-b5a3-f393-e0a9-e50e24dcca9e'
+        ]
+      });
+      
+      console.log('✅ New device paired:', newBluetoothDevice.name);
+      
+      // Update device info and connect normally
+      const updatedDevice = {
+        ...device,
+        id: newBluetoothDevice.id,
+        name: newBluetoothDevice.name || device.name
+      };
+      
+      // Now connect normally
+      await connectToDevice(updatedDevice);
+      
+      toast({
+        title: "Device Re-paired",
+        description: `Successfully re-paired ${updatedDevice.name}`,
+      });
+      
+    } catch (error) {
+      console.error('❌ Force pair failed:', error);
+      setConnectionStatus('disconnected');
+      toast({
+        title: "Re-pairing Failed",
+        description: "Could not re-pair device. Try putting device in pairing mode.",
         variant: "destructive",
       });
     } finally {
@@ -547,12 +669,35 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     }
   };
 
-  // Simple MIDI send function
+  // Simple MIDI send function with improved error handling
   const sendMidiCommand = async (midiBytes: Uint8Array) => {
+    if (!midiCharacteristic) {
+      throw new Error('MIDI characteristic not available');
+    }
+
+    if (!bluetoothDevice || !bluetoothDevice.gatt.connected) {
+      throw new Error('Device not connected');
+    }
+
     // Simple BLE MIDI packet: [0x80, 0x80, ...midi_data]
     const bleMidiPacket = new Uint8Array([0x80, 0x80, ...Array.from(midiBytes)]);
     console.log(`📡 MIDI: ${Array.from(midiBytes).map(b => b.toString(16).padStart(2, '0')).join(' ')}`);
-    await midiCharacteristic!.writeValueWithResponse(bleMidiPacket);
+    
+    try {
+      // Try writeValueWithResponse first (more reliable)
+      await midiCharacteristic.writeValueWithResponse(bleMidiPacket);
+      console.log('✅ MIDI sent with response acknowledgment');
+    } catch (responseError) {
+      console.log('⚠️ Response write failed, trying without response...');
+      try {
+        // Fallback to writeValueWithoutResponse
+        await midiCharacteristic.writeValueWithoutResponse(bleMidiPacket);
+        console.log('✅ MIDI sent without response');
+      } catch (noResponseError) {
+        console.log('❌ Both write methods failed:', responseError, noResponseError);
+        throw new Error(`MIDI write failed: ${responseError.message || 'Unknown error'}`);
+      }
+    }
   };
 
   // Send test message
@@ -679,14 +824,24 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
                 </div>
                 
                 {selectedDevice?.connected && (
-                  <Button 
-                    onClick={disconnectFromDevice}
-                    variant="outline" 
-                    size="sm"
-                  >
-                    <WifiOff className="h-4 w-4 mr-2" />
-                    Disconnect
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={() => forcePairDevice(selectedDevice)}
+                      variant="ghost" 
+                      size="sm"
+                      title="Re-pair device to fix connection issues"
+                    >
+                      🔧 Re-pair
+                    </Button>
+                    <Button 
+                      onClick={disconnectFromDevice}
+                      variant="outline" 
+                      size="sm"
+                    >
+                      <WifiOff className="h-4 w-4 mr-2" />
+                      Disconnect
+                    </Button>
+                  </div>
                 )}
               </div>
             </CardContent>
@@ -721,15 +876,26 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
                           )}
                         </div>
                         {!device.connected && (
-                          <Button 
-                            onClick={() => connectToDevice(device)}
-                            disabled={isConnecting}
-                            size="sm"
-                            variant="outline"
-                          >
-                            <Wifi className="h-4 w-4 mr-1" />
-                            Connect
-                          </Button>
+                          <div className="flex gap-1">
+                            <Button 
+                              onClick={() => connectToDevice(device)}
+                              disabled={isConnecting}
+                              size="sm"
+                              variant="outline"
+                            >
+                              <Wifi className="h-4 w-4 mr-1" />
+                              Connect
+                            </Button>
+                            <Button 
+                              onClick={() => forcePairDevice(device)}
+                              disabled={isConnecting}
+                              size="sm"
+                              variant="ghost"
+                              title="Force re-pair if connection issues persist"
+                            >
+                              🔧
+                            </Button>
+                          </div>
                         )}
                       </div>
                     ))}

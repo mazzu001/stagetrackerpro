@@ -27,14 +27,14 @@ Found output device: MidiPort () - State: connected
 **THIS IS A CRITICAL RESTORE POINT - USB MIDI SYSTEM IS NOW FULLY FUNCTIONAL**
 
 # Recent Major Improvements (August 2025)
-## Bluetooth MIDI Communication Restored (August 28, 2025)
-- ✅ **Full Bluetooth MIDI integration**: Complete communication system between performance interface and Bluetooth MIDI devices
-- ✅ **Event-based messaging**: Custom events (`sendBluetoothMIDI`, `bluetoothMidiStatusChanged`) for seamless integration
-- ✅ **Real-time status tracking**: MIDI connection status, device name, and MIDI readiness indicators in performance interface
-- ✅ **Professional subscriber access**: Bluetooth MIDI features restricted to professional subscription tier
-- ✅ **Lyrics MIDI integration**: Timestamped MIDI commands in lyrics automatically sent to connected Bluetooth devices
-- ✅ **Manual command sending**: Direct MIDI command input with immediate transmission to Bluetooth MIDI devices
-- ✅ **Connection management**: Auto-reconnect, device pairing, and comprehensive error handling
+## Web MIDI API Implementation (August 28, 2025)
+- ✅ **Architectural Change**: Switched from Bluetooth Web API to Web MIDI API for better compatibility and reliability
+- ✅ **Direct MIDI Communication**: Raw MIDI byte transmission without BLE wrappers or complex protocols
+- ✅ **Universal Device Support**: Supports both USB MIDI and Bluetooth MIDI adapters (like WIDI Jack) through standardized Web MIDI API
+- ✅ **Real-time Device Detection**: Automatic scanning and connection to MIDI input/output devices
+- ✅ **Simplified Command Format**: Direct `[[PC:1:1]]` to raw bytes `0xC0 0x01` conversion
+- ✅ **Professional Access**: Web MIDI features available to professional subscribers
+- ✅ **Bidirectional Communication**: Both sending commands and receiving MIDI data from devices
 
 ## MIDI Command Format Standardization (FIXED August 28, 2025)
 - ✅ **Implemented new bracket format**: `[[PC:12:1]]`, `[[CC:7:64:1]]`, `[[NOTE:60:127:1]]`

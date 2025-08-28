@@ -23,7 +23,7 @@ import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, F
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
-import SimpleBluetoothManager from "@/components/SimpleBluetoothManager";
+import { WebMIDIManager } from "@/components/WebMIDIManager";
 
 interface PerformanceProps {
   userType: UserType;
@@ -1052,12 +1052,21 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         </DialogContent>
       </Dialog>
 
-      {/* Simple Bluetooth Manager Dialog - Professional Users Only */}
-      {userType === 'professional' && (
-        <SimpleBluetoothManager
-          isOpen={isBluetoothDevicesOpen}
-          onClose={() => setIsBluetoothDevicesOpen(false)}
-        />
+      {/* Web MIDI Manager Dialog - Professional Users Only */}
+      {userType === 'professional' && isBluetoothDevicesOpen && (
+        <Dialog open={isBluetoothDevicesOpen} onOpenChange={setIsBluetoothDevicesOpen}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Web MIDI Devices</DialogTitle>
+            </DialogHeader>
+            <WebMIDIManager onStatusChange={(status) => {
+              setIsMidiConnected(status.includes('Connected'));
+              if (status.includes('Connected:')) {
+                setSelectedMidiDeviceName(status.replace('Connected: ', ''));
+              }
+            }} />
+          </DialogContent>
+        </Dialog>
       )}
 
     </div>

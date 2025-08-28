@@ -62,10 +62,11 @@ export class AudioEngine {
     console.log(`Loading song "${song.title}" with ${song.tracks.length} tracks`);
 
     try {
-      // Load tracks sequentially with comprehensive error protection
+      // Load tracks in parallel for much faster loading
+      console.log(`Loading ${song.tracks.length} tracks in parallel for faster performance...`);
       let successfulTracks = 0;
-      for (let i = 0; i < song.tracks.length; i++) {
-        const track = song.tracks[i];
+      
+      const trackLoadingPromises = song.tracks.map(async (track, i) => {
         try {
           console.log(`🔄 Loading track ${i + 1}/${song.tracks.length}: ${track.name}`);
           
@@ -79,30 +80,31 @@ export class AudioEngine {
             );
           } catch (error) {
             console.error(`❌ Failed to create track controller for ${track.name}:`, error);
-            continue;
+            return null;
           }
           
-          // Load with timeout protection (reduced to 30 seconds)
+          // Load with timeout protection (reduced to 10 seconds for faster response)
           const loadPromise = trackController.load();
           const timeoutPromise = new Promise<never>((_, reject) => {
-            setTimeout(() => reject(new Error(`Track loading timeout: ${track.name}`)), 30000);
+            setTimeout(() => reject(new Error(`Track loading timeout: ${track.name}`)), 10000);
           });
           
           try {
             await Promise.race([loadPromise, timeoutPromise]);
             
-            // Only add track if loading was successful
-            this.tracks.set(track.id, trackController);
-
             // Create analyzer for audio level monitoring
             const analyzer = this.audioContext!.createAnalyser();
             analyzer.fftSize = 256;
             analyzer.smoothingTimeConstant = 0.8;
             trackController.connectAnalyzer(analyzer);
-            this.analyzerNodes.set(track.id, analyzer);
             
-            successfulTracks++;
             console.log(`✅ Successfully loaded track ${i + 1}/${song.tracks.length}: ${track.name}`);
+            
+            return {
+              trackController,
+              analyzer,
+              trackId: track.id
+            };
             
           } catch (loadError) {
             console.error(`❌ Track load failed for ${track.name}:`, loadError);
@@ -112,18 +114,26 @@ export class AudioEngine {
             } catch (cleanupError) {
               console.error('Failed to cleanup track controller:', cleanupError);
             }
-          }
-          
-          // Add delay between tracks to prevent browser overload
-          if (i < song.tracks.length - 1) {
-            await new Promise(resolve => setTimeout(resolve, 200)); // Reduced delay
+            return null;
           }
           
         } catch (error) {
           console.error(`❌ Unexpected error loading track ${i + 1}/${song.tracks.length} (${track.name}):`, error);
-          // Continue with next track despite errors
+          return null;
         }
-      }
+      });
+      
+      // Wait for all tracks to load in parallel
+      const trackResults = await Promise.all(trackLoadingPromises);
+      
+      // Add successfully loaded tracks
+      trackResults.forEach((result) => {
+        if (result) {
+          this.tracks.set(result.trackId, result.trackController);
+          this.analyzerNodes.set(result.trackId, result.analyzer);
+          successfulTracks++;
+        }
+      });
       
       console.log(`🎵 Loaded ${successfulTracks} out of ${song.tracks.length} tracks successfully`);
     } catch (overallError) {
@@ -590,9 +600,9 @@ class TrackController {
       const decodePromise = this.audioContext.decodeAudioData(arrayBuffer);
       const timeoutPromise = new Promise<never>((_, reject) => {
         setTimeout(() => {
-          console.error(`❌ DECODE TIMEOUT for ${this.track.name} after 30 seconds`);
+          console.error(`❌ DECODE TIMEOUT for ${this.track.name} after 15 seconds`);
           reject(new Error(`Audio decode timeout for ${this.track.name}`));
-        }, 30000);
+        }, 15000);
       });
       
       console.log(`🔄 Racing decode vs timeout for ${this.track.name}...`);

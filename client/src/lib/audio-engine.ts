@@ -13,6 +13,7 @@ export class AudioEngine {
   private pausedTime: number = 0;
   private isPlaying: boolean = false;
   private isLoading: boolean = false;
+  private isLoaded: boolean = false; // Track if song tracks are loaded
   private analyzerNodes: Map<string, AnalyserNode> = new Map();
   private masterAnalyzerNode: AnalyserNode | null = null;
   public onDurationUpdated?: (duration: number) => void;
@@ -169,6 +170,24 @@ export class AudioEngine {
     }
     
     console.log(`✅ Finished loading song: "${song.title}" - Ready for playback`);
+    
+    // Mark as loaded
+    this.isLoaded = true;
+  }
+
+  setSong(song: SongWithTracks): void {
+    // Set song reference without loading tracks (lazy loading)
+    this.currentSong = song;
+    this.isLoaded = false; // Reset loaded state
+    
+    // Clear existing tracks
+    this.tracks.clear();
+    this.analyzerNodes.clear();
+    this.actualDuration = 0;
+  }
+
+  isLoaded(): boolean {
+    return this.isLoaded;
   }
 
   async play(): Promise<void> {

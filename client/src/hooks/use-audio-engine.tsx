@@ -72,23 +72,20 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     };
   }, []);
 
-  // Load song when selected (but not when just mute/solo properties change)
+  // Set up song reference but don't load tracks immediately (lazy loading)
   useEffect(() => {
     if (song && audioEngineRef.current) {
-      console.log(`Loading song: "${song.title}" with ${song.tracks.length} tracks`);
+      console.log(`Song selected: "${song.title}" with ${song.tracks.length} tracks (lazy loading enabled)`);
       
-      audioEngineRef.current.loadSong(song).then(() => {
-        console.log(`Finished loading song: "${song.title}"`);
-      }).catch((error) => {
-        console.error(`Failed to load song: "${song.title}"`, error);
-      });
+      // Just set the song reference without loading tracks
+      audioEngineRef.current.setSong(song);
       
-      // Don't set duration here - let the audio engine callback handle it
-      // setDuration(song.duration); // This overwrites the callback-updated duration
+      // Use existing duration from database
+      setDuration(song.duration);
       setCurrentTime(0);
       setIsPlaying(false);
     }
-  }, [song?.id, song?.tracks?.length]); // Reload when song ID changes OR when tracks are added/removed
+  }, [song?.id, song?.tracks?.length]);
 
   // Animation loop for real-time updates
 
@@ -148,6 +145,22 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       if (audioEngineRef.current.getIsPlaying()) {
         console.log('Already playing, ignoring duplicate play request');
         return;
+      }
+      
+      // Lazy load tracks only when playback is requested
+      if (!audioEngineRef.current.isLoaded()) {
+        console.log(`Loading tracks for playback: "${song.title}"`);
+        setIsLoadingTracks(true);
+        
+        try {
+          await audioEngineRef.current.loadSong(song);
+          setIsLoadingTracks(false);
+          console.log(`Tracks loaded for playback: "${song.title}"`);
+        } catch (error) {
+          console.error(`Failed to load song for playback: "${song.title}"`, error);
+          setIsLoadingTracks(false);
+          return;
+        }
       }
       
       // Check if song is still loading to prevent race conditions

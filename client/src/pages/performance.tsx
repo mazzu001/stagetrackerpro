@@ -1049,130 +1049,44 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 {isPlaying ? <Pause className="w-3 h-3 mr-1" /> : <Play className="w-3 h-3 mr-1" />}
                 {isPlaying ? 'Pause' : 'Play'}
               </Button>
-              {currentLyricsTab === "lyrics" && (
-                <>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleInsertTimestamp}
-                    data-testid="button-insert-timestamp"
-                    className="h-8 px-3"
-                  >
-                    <Clock className="w-3 h-3 mr-1" />
-                    Timestamp
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleSearchLyrics}
-                    disabled={!selectedSong || isSearchingLyrics}
-                    data-testid="button-search-lyrics"
-                    className="h-8 px-3"
-                  >
-                    {isSearchingLyrics ? (
-                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                    ) : (
-                      <Search className="w-3 h-3 mr-1" />
-                    )}
-                    {isSearchingLyrics ? 'Searching...' : 'Search Online'}
-                  </Button>
-                </>
-              )}
-              {currentLyricsTab === "midi" && userType === 'professional' && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleAddMidiCommand}
-                  data-testid="button-add-midi-command"
-                  className="h-8 px-3"
-                >
-                  <Target className="w-3 h-3 mr-1" />
-                  Add Command
-                </Button>
-              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleInsertTimestamp}
+                data-testid="button-insert-timestamp"
+                className="h-8 px-3"
+              >
+                <Clock className="w-3 h-3 mr-1" />
+                Timestamp
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSearchLyrics}
+                disabled={!selectedSong || isSearchingLyrics}
+                data-testid="button-search-lyrics"
+                className="h-8 px-3"
+              >
+                {isSearchingLyrics ? (
+                  <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                ) : (
+                  <Search className="w-3 h-3 mr-1" />
+                )}
+                {isSearchingLyrics ? 'Searching...' : 'Search Online'}
+              </Button>
             </div>
           </div>
 
-          {/* Tabbed Content */}
-          <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
-            <Tabs value={currentLyricsTab} onValueChange={setCurrentLyricsTab} className="flex-1 flex flex-col h-full">
-              <TabsList className="flex-shrink-0 mb-2">
-                <TabsTrigger value="lyrics" data-testid="tab-lyrics">Lyrics</TabsTrigger>
-                {userType === 'professional' && (
-                  <TabsTrigger value="midi" data-testid="tab-midi">MIDI Commands</TabsTrigger>
-                )}
-              </TabsList>
-              <TabsContent value="lyrics" className="flex-1 min-h-0 flex flex-col data-[state=active]:flex">
-                <Textarea
-                  id="lyrics"
-                  value={lyricsText}
-                  onChange={(e) => setLyricsText(e.target.value)}
-                  placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and add MIDI commands with <!-- MIDI: Program Change 1 -->"
-                  className="w-full flex-1 min-h-[300px] resize-none font-mono text-sm border border-gray-600 bg-background"
-                  data-testid="textarea-lyrics"
-                />
-              </TabsContent>
-              {userType === 'professional' && (
-                <TabsContent value="midi" className="flex-1 min-h-0 flex flex-col">
-                  <div className="flex-1">
-                    <div className="space-y-3 max-h-48 overflow-y-auto">
-                      {selectedSong?.midiEvents && selectedSong.midiEvents.length > 0 ? (
-                        selectedSong.midiEvents.map((event: any, index: number) => (
-                          <div key={index} className="p-2 bg-gray-800/50 rounded-md border border-gray-600">
-                            <div className="flex items-center justify-between text-xs">
-                              <span className="text-gray-400">
-                                {Math.floor(event.timestamp / 60)}:
-                                {(event.timestamp % 60).toFixed(1).padStart(4, '0')}s
-                              </span>
-                              <div className="flex items-center gap-1">
-                                <Button
-                                  size="sm"
-                                  variant="ghost"
-                                  onClick={() => handleEditCommand(index)}
-                                  className="h-6 px-2"
-                                  data-testid={`button-edit-midi-${index}`}
-                                >
-                                  <Edit className="h-3 w-3" />
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="ghost"
-                                  onClick={() => {
-                                    if (selectedSong?.midiEvents) {
-                                      const updated = { 
-                                        ...selectedSong, 
-                                        midiEvents: selectedSong.midiEvents.filter((_, i) => i !== index) 
-                                      };
-                                      setSelectedSong(updated);
-                                      if (user?.email) {
-                                        LocalSongStorage.updateSong(user.email, selectedSong.id, updated);
-                                      }
-                                    }
-                                  }}
-                                  className="h-6 px-2 text-red-400 hover:text-red-300"
-                                  data-testid={`button-delete-midi-${index}`}
-                                >
-                                  <Trash2 className="h-3 w-3" />
-                                </Button>
-                              </div>
-                            </div>
-                            <div className="mt-1 font-mono text-xs text-green-400">
-                              {event.command}
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <div className="text-center text-gray-400 py-4">
-                          <Zap className="w-6 h-6 mx-auto mb-2 opacity-50" />
-                          <p className="text-sm">No MIDI commands yet</p>
-                          <p className="text-xs">Add timestamped MIDI commands in your lyrics</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </TabsContent>
-              )}
-            </Tabs>
+          {/* Lyrics Editor Content */}
+          <div className="flex-1 overflow-hidden">
+            <Textarea
+              id="lyrics"
+              value={lyricsText}
+              onChange={(e) => setLyricsText(e.target.value)}
+              placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and add MIDI commands with <!-- MIDI: Program Change 1 -->"
+              className="w-full h-full resize-none font-mono text-sm border border-gray-600 bg-background"
+              data-testid="textarea-lyrics"
+            />
           </div>
 
           {/* Compact Action Buttons */}
@@ -1196,7 +1110,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               data-testid="button-save-lyrics"
               className="bg-primary hover:bg-primary/90"
             >
-              Save {currentLyricsTab === "midi" && userType === 'professional' ? "Lyrics & MIDI" : "Lyrics"}
+              Save Lyrics
             </Button>
           </div>
         </DialogContent>

@@ -49,20 +49,24 @@ const cancellationReasons = [
 
 export default function Unsubscribe() {
   const [, setLocation] = useLocation();
-  const { user } = useLocalAuth();
+  const { user, isLoading } = useLocalAuth();
   const { toast } = useToast();
   const [step, setStep] = useState<'retention' | 'feedback' | 'confirm'>('retention');
   const [selectedReasons, setSelectedReasons] = useState<string[]>([]);
   const [additionalFeedback, setAdditionalFeedback] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
-  // Redirect if not authenticated or free user
+  // Redirect if not authenticated or free user - but wait for loading to complete
   useEffect(() => {
-    if (!user || user.userType === 'free' || !user.userType) {
-      console.log('🚫 Unsubscribe access denied - User type:', user?.userType);
-      setLocation('/');
+    if (!isLoading) {
+      if (!user || user.userType === 'free' || !user.userType) {
+        console.log('🚫 Unsubscribe access denied - User type:', user?.userType, 'User exists:', !!user);
+        setLocation('/');
+      } else {
+        console.log('✅ Unsubscribe access granted - User type:', user.userType);
+      }
     }
-  }, [user, setLocation]);
+  }, [user, isLoading, setLocation]);
 
   const handleRetentionOffer = async (offerId: string) => {
     setIsProcessing(true);
@@ -159,7 +163,20 @@ export default function Unsubscribe() {
     }
   };
 
-  if (!user || user.userType === 'free') {
+  // Show loading while checking authentication
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">Checking access permissions...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render anything if user is not eligible (redirect will happen via useEffect)
+  if (!user || user.userType === 'free' || !user.userType) {
     return null;
   }
 

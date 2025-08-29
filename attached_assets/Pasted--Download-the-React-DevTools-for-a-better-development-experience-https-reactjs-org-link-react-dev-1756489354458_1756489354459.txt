@@ -1,0 +1,62 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ Loaded 5 audio file path references from localStorage
+ 🔄 Auto-loading 5 stored audio files...
+ 🔍 BrowserFS.getAudioFile: Looking for track 59bfca7c-b8c4-4f8b-9320-b41350168138
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 59bfca7c-b8c4-4f8b-9320-b41350168138
+ ❌ Database not initialized for track 59bfca7c-b8c4-4f8b-9320-b41350168138
+ Expected audio files for tracks:
+   - Already Gone - Backups.mp3 (browser://d656efbc-c4c6-42d7-b3cd-6c70f9905f17/59bfca7c-b8c4-4f8b-9320-b41350168138)
+   - Already Gone - Bass.mp3 (browser://d656efbc-c4c6-42d7-b3cd-6c70f9905f17/18663fa2-f0ed-4fc2-8863-83ef2665d329)
+   - Already Gone - Click.mp3 (browser://d656efbc-c4c6-42d7-b3cd-6c70f9905f17/328173d5-e59e-4e88-9a70-1cdced796c2f)
+   - Already Gone - Drums.mp3 (browser://d656efbc-c4c6-42d7-b3cd-6c70f9905f17/31a204be-1417-445d-b5b6-11e8d755ecf7)
+   - Already Gone - Guitars.mp3 (browser://d656efbc-c4c6-42d7-b3cd-6c70f9905f17/2ebc5fee-06a7-4782-ad6a-bd1ebb9a3468)
+ These files will be loaded when you select them through the file picker.
+ 🔍 BrowserFS.getAudioFile: Looking for track 18663fa2-f0ed-4fc2-8863-83ef2665d329
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 18663fa2-f0ed-4fc2-8863-83ef2665d329
+ ❌ Database not initialized for track 18663fa2-f0ed-4fc2-8863-83ef2665d329
+ 🔍 BrowserFS.getAudioFile: Looking for track 328173d5-e59e-4e88-9a70-1cdced796c2f
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 328173d5-e59e-4e88-9a70-1cdced796c2f
+ ❌ Database not initialized for track 328173d5-e59e-4e88-9a70-1cdced796c2f
+ 🔍 BrowserFS.getAudioFile: Looking for track 31a204be-1417-445d-b5b6-11e8d755ecf7
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 31a204be-1417-445d-b5b6-11e8d755ecf7
+ ❌ Database not initialized for track 31a204be-1417-445d-b5b6-11e8d755ecf7
+ 🔍 BrowserFS.getAudioFile: Looking for track 2ebc5fee-06a7-4782-ad6a-bd1ebb9a3468
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 2ebc5fee-06a7-4782-ad6a-bd1ebb9a3468
+ ❌ Database not initialized for track 2ebc5fee-06a7-4782-ad6a-bd1ebb9a3468
+ ✅ Auto-loaded 0/5 audio files into cache
+ Browser file system already initialized - auto-initializing
+ ✅ BrowserFileSystem database auto-initialized
+ Browser file system initialized successfully
+ Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=d2bc999b:343
+ ✅ Cloud login successful: pro@test.com
+ 🔄 Resetting processed timestamps - Song changed to: none
+lyrics-display.tsx:204 ⏹️ Resetting processed timestamps - Playback stopped
+lyrics-display.tsx:218 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+useGlobalWebMIDI.ts:180 🎵 Initializing global Web MIDI access...
+performance.tsx:84 🎵 Setting up persistent Web MIDI event listener...
+performance.tsx:93 🔄 Global Web MIDI status: Disconnected - 
+useGlobalWebMIDI.ts:201 ✅ Global Web MIDI access initialized
+performance.tsx:255 📋 Loaded 0 songs from local storage
+useGlobalWebMIDI.ts:39 📱 Found last connected MIDI device: MidiPort
+useGlobalWebMIDI.ts:116 🔄 Attempting auto-reconnect to: MidiPort
+useGlobalWebMIDI.ts:135 ⚠️ Last connected device not available: MidiPort
+performance.tsx:736 🔄 Navigating to unsubscribe - User type: professional User: Object
+audio-engine.ts:512 🔇 Audio engine AudioContext closed
+unsubscribe.tsx:62 🚫 Unsubscribe access denied - User type: undefined
+lyrics-display.tsx:197 🔄 Resetting processed timestamps - Song changed to: none
+lyrics-display.tsx:204 ⏹️ Resetting processed timestamps - Playback stopped
+lyrics-display.tsx:218 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+performance.tsx:84 🎵 Setting up persistent Web MIDI event listener...
+performance.tsx:93 🔄 Global Web MIDI status: Disconnected - 
+performance.tsx:255 📋 Loaded 0 songs from local storage

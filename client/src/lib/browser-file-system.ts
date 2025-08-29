@@ -167,7 +167,10 @@ export class BrowserFileSystem {
     }
 
     try {
-      // Store file in IndexedDB
+      // Convert file to ArrayBuffer for storage (don't store File object directly)
+      const fileArrayBuffer = await file.arrayBuffer();
+      
+      // Store file data in IndexedDB (NOT the File object itself)
       const transaction = this.db.transaction(['audioFiles'], 'readwrite');
       const store = transaction.objectStore('audioFiles');
       
@@ -177,7 +180,7 @@ export class BrowserFileSystem {
           songId: songId,
           name: trackName,
           fileName: file.name,
-          file: file,
+          fileData: fileArrayBuffer, // Store as ArrayBuffer, not File object
           size: file.size,
           type: file.type,
           lastModified: file.lastModified || Date.now()
@@ -232,11 +235,16 @@ export class BrowserFileSystem {
         request.onerror = () => reject(request.error);
       });
 
-      if (result && result.file) {
+      if (result && result.fileData) {
         console.log(`✅ Found in IndexedDB: ${trackId} (${result.fileName})`);
+        // Recreate File object from stored ArrayBuffer
+        const file = new File([result.fileData], result.fileName, {
+          type: result.type,
+          lastModified: result.lastModified
+        });
         // Cache in memory for faster access
-        this.audioFiles.set(trackId, result.file);
-        return result.file;
+        this.audioFiles.set(trackId, file);
+        return file;
       }
 
       console.log(`❌ Not found in IndexedDB: ${trackId}`);

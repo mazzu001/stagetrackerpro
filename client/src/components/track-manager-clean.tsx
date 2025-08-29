@@ -10,7 +10,7 @@ import { LocalSongStorage } from "@/lib/local-song-storage";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
-import VUMeter from "@/components/vu-meter";
+import StereoVUMeter from "@/components/stereo-vu-meter";
 import { TrackRecovery } from "@/components/track-recovery";
 
 import type { Track, SongWithTracks } from "@shared/schema";
@@ -520,10 +520,11 @@ export default function TrackManager({
                     </div>
                     
                     <div className="flex items-center gap-2">
-                      <VUMeter 
-                        level={level} 
-                        size="sm"
-                        showValue={false}
+                      <StereoVUMeter 
+                        leftLevel={level} 
+                        rightLevel={level}
+                        isPlaying={isPlaying}
+                        className="flex-shrink-0"
                       />
                       <Button
                         onClick={() => deleteTrack(track.id)}

@@ -753,7 +753,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               <Button
                 variant="default"
                 size="sm"
-                onClick={() => setLocation('/subscribe')}
+                onClick={() => {
+                  console.log('🔄 Current user type before upgrade:', userType, 'User:', user);
+                  setLocation('/subscribe');
+                }}
                 data-testid="button-upgrade-subscription"
                 className="h-8 px-2 md:px-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
               >
@@ -766,6 +769,52 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 </span>
               </Button>
             )}
+            
+            {/* Debug - Force Subscription Refresh Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={async () => {
+                if (!user?.email) return;
+                
+                console.log('🔄 Forcing subscription refresh from Stripe...');
+                try {
+                  const response = await fetch('/api/force-refresh-subscription', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: user.email })
+                  });
+                  
+                  const result = await response.json();
+                  if (result.success) {
+                    console.log('✅ Subscription refreshed:', result);
+                    toast({
+                      title: "Subscription Updated",
+                      description: `Status: ${result.statusName}`,
+                    });
+                    // Trigger auth refresh
+                    window.dispatchEvent(new CustomEvent('force-subscription-refresh'));
+                  } else {
+                    console.error('❌ Refresh failed:', result);
+                    toast({
+                      title: "Refresh Failed", 
+                      description: result.error || "Could not refresh subscription",
+                      variant: "destructive"
+                    });
+                  }
+                } catch (error) {
+                  console.error('❌ Refresh error:', error);
+                  toast({
+                    title: "Error",
+                    description: "Failed to refresh subscription status",
+                    variant: "destructive"
+                  });
+                }
+              }}
+              className="h-8 px-2 text-xs"
+            >
+              🔄 Fix Sub
+            </Button>
           </div>
         </div>
       </div>

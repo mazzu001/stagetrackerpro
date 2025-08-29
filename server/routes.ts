@@ -593,6 +593,79 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }
 
+  // Force refresh single user subscription status
+  app.post('/api/force-refresh-subscription', async (req, res) => {
+    try {
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).json({ error: 'Email is required' });
+      }
+
+      console.log(`🔄 Force refreshing subscription for: ${email}`);
+      
+      // Get user from database
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      if (!user.stripeCustomerId) {
+        return res.status(400).json({ error: 'User has no Stripe customer ID' });
+      }
+
+      // Get all subscriptions for this customer
+      const subscriptions = await stripe.subscriptions.list({
+        customer: user.stripeCustomerId,
+        status: 'all',
+        limit: 10
+      });
+
+      console.log(`📋 Found ${subscriptions.data.length} subscriptions for customer: ${user.stripeCustomerId}`);
+
+      let newStatus = 1; // Default to free
+      let activeSubscription = null;
+
+      // Find the most recent active subscription
+      for (const subscription of subscriptions.data) {
+        console.log(`📋 Subscription ${subscription.id}: ${subscription.status} (${subscription.items.data[0]?.price?.unit_amount || 0})`);
+        
+        if (subscription.status === 'active' || subscription.status === 'trialing') {
+          activeSubscription = subscription;
+          // Determine tier based on price
+          const priceAmount = subscription.items.data[0]?.price?.unit_amount || 0;
+          if (priceAmount >= 1499) { // $14.99 or more = Professional
+            newStatus = 3;
+          } else if (priceAmount > 0) { // Any payment = Premium
+            newStatus = 2;
+          }
+          break; // Use the first active subscription
+        }
+      }
+
+      // Update user subscription status
+      await storage.updateUserSubscription(user.id, {
+        subscriptionStatus: newStatus,
+        stripeSubscriptionId: activeSubscription?.id || null,
+        subscriptionEndDate: activeSubscription?.current_period_end ? 
+          new Date(activeSubscription.current_period_end * 1000).toISOString() : null
+      });
+
+      const statusName = newStatus === 3 ? 'Professional' : newStatus === 2 ? 'Premium' : 'Free';
+      console.log(`✅ Updated ${email} subscription status: ${newStatus} (${statusName})`);
+
+      res.json({ 
+        success: true, 
+        oldStatus: user.subscriptionStatus,
+        newStatus,
+        statusName,
+        activeSubscription: activeSubscription?.id || null
+      });
+    } catch (error) {
+      console.error('❌ Error forcing subscription refresh:', error);
+      res.status(500).json({ error: 'Failed to refresh subscription status' });
+    }
+  });
+
   // Manual subscription status check endpoint
   app.post('/api/check-subscriptions', async (req, res) => {
     try {

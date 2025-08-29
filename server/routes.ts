@@ -185,6 +185,114 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   console.log('✅ Sample file download routes registered');
 
+  // Stripe payment routes for subscription management
+  console.log('💳 Registering Stripe payment routes...');
+  
+  // Create subscription for premium/professional tiers
+  app.post('/api/create-subscription', async (req, res) => {
+    try {
+      const { email, priceId, planName } = req.body;
+      
+      if (!email || !priceId) {
+        return res.status(400).json({ error: 'Email and price ID are required' });
+      }
+
+      // Create or retrieve customer
+      let customer;
+      const existingCustomers = await stripe.customers.list({ email });
+      
+      if (existingCustomers.data.length > 0) {
+        customer = existingCustomers.data[0];
+      } else {
+        customer = await stripe.customers.create({ email });
+      }
+
+      // Create subscription
+      const subscription = await stripe.subscriptions.create({
+        customer: customer.id,
+        items: [{ price: priceId }],
+        payment_behavior: 'default_incomplete',
+        payment_settings: { save_default_payment_method: 'on_subscription' },
+        expand: ['latest_invoice.payment_intent'],
+        metadata: {
+          email,
+          planName: planName || 'premium'
+        }
+      });
+
+      // Update user in database with subscription info
+      const user = await storage.getUserByEmail(email);
+      if (user) {
+        const subscriptionStatus = planName === 'professional' ? 3 : 2; // 2=premium, 3=professional
+        await storage.updateUserStripeInfo(user.id, customer.id, subscription.id);
+        await storage.updateUserSubscription(user.id, {
+          subscriptionStatus,
+          subscriptionEndDate: null
+        });
+      }
+
+      const clientSecret = subscription.latest_invoice?.payment_intent?.client_secret;
+      
+      console.log(`✅ Created subscription for ${email}: ${subscription.id}`);
+      
+      res.json({
+        subscriptionId: subscription.id,
+        clientSecret,
+        customer: customer.id
+      });
+    } catch (error: any) {
+      console.error('❌ Error creating subscription:', error);
+      res.status(500).json({ error: 'Failed to create subscription' });
+    }
+  });
+
+  // Check subscription status
+  app.post('/api/verify-subscription', async (req, res) => {
+    try {
+      const { email } = req.body;
+      console.log('🔍 Verifying subscription for email:', email);
+      
+      if (!email) {
+        return res.status(400).json({ error: 'Email is required' });
+      }
+
+      // Get user from database
+      const user = await storage.getUserByEmail(email.toLowerCase());
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      console.log('🔍 Database subscription status:', user.subscriptionStatus);
+      
+      // Map subscription status to user type
+      let userType = 'free';
+      let isPaid = false;
+      
+      if (user.subscriptionStatus === 2) {
+        userType = 'paid';
+        isPaid = true;
+      } else if (user.subscriptionStatus === 3) {
+        userType = 'professional';
+        isPaid = true;
+      }
+      
+      console.log('🔍 Final userType:', userType);
+      
+      res.json({
+        isPaid,
+        userType,
+        subscriptionStatus: user.subscriptionStatus,
+        email: user.email
+      });
+    } catch (error: any) {
+      console.error('❌ Error verifying subscription:', error);
+      res.status(500).json({ 
+        error: 'Verification failed',
+        message: 'Unable to verify subscription status' 
+      });
+    }
+  });
+
   // Stripe webhook endpoint for subscription validation
   app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), async (req, res) => {
     const sig = req.headers['stripe-signature'];

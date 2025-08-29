@@ -703,6 +703,25 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+
+            {/* Upgrade Subscription Button */}
+            {userType !== 'professional' && (
+              <Button
+                variant="default"
+                size="sm"
+                onClick={() => setLocation('/subscribe')}
+                data-testid="button-upgrade-subscription"
+                className="h-8 px-2 md:px-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
+              >
+                <Crown className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                <span className="hidden sm:inline text-xs md:text-sm">
+                  {userType === 'free' ? 'Upgrade' : 'Upgrade to Pro'}
+                </span>
+                <span className="sm:hidden text-xs">
+                  {userType === 'free' ? 'Up' : 'Pro'}
+                </span>
+              </Button>
+            )}
           </div>
         </div>
       </div>

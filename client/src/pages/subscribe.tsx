@@ -206,7 +206,7 @@ const PaymentPage = ({ plan, onBack }: { plan: PlanOption; onBack: () => void })
           },
           body: JSON.stringify({
             email: userData.email,
-            tier: plan.id,
+            planName: plan.id,
             priceId: plan.priceId
           }),
         });

@@ -1094,21 +1094,21 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
 
           {/* Tabbed Content */}
-          <div className="flex-1 min-h-0 flex flex-col">
-            <Tabs value={currentLyricsTab} onValueChange={setCurrentLyricsTab} className="flex-1 flex flex-col">
+          <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+            <Tabs value={currentLyricsTab} onValueChange={setCurrentLyricsTab} className="flex-1 flex flex-col h-full">
               <TabsList className="flex-shrink-0 mb-2">
                 <TabsTrigger value="lyrics" data-testid="tab-lyrics">Lyrics</TabsTrigger>
                 {userType === 'professional' && (
                   <TabsTrigger value="midi" data-testid="tab-midi">MIDI Commands</TabsTrigger>
                 )}
               </TabsList>
-              <TabsContent value="lyrics" className="flex-1 min-h-0 flex flex-col">
+              <TabsContent value="lyrics" className="flex-1 min-h-0 flex flex-col data-[state=active]:flex">
                 <Textarea
                   id="lyrics"
                   value={lyricsText}
                   onChange={(e) => setLyricsText(e.target.value)}
                   placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and add MIDI commands with <!-- MIDI: Program Change 1 -->"
-                  className="w-full h-full min-h-0 flex-1 resize-none font-mono text-sm border border-gray-600 bg-background"
+                  className="w-full flex-1 min-h-[300px] resize-none font-mono text-sm border border-gray-600 bg-background"
                   data-testid="textarea-lyrics"
                 />
               </TabsContent>

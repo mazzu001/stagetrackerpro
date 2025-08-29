@@ -168,21 +168,42 @@ export default function TrackManager({
         }
       };
 
-      // Set up MediaRecorder
-      const recorder = new MediaRecorder(stream, {
-        mimeType: 'audio/webm;codecs=opus'
-      });
+      // Set up MediaRecorder with fallback format support
+      let mimeType = 'audio/webm;codecs=opus';
+      if (!MediaRecorder.isTypeSupported(mimeType)) {
+        mimeType = 'audio/webm';
+        if (!MediaRecorder.isTypeSupported(mimeType)) {
+          mimeType = 'audio/mp4';
+          if (!MediaRecorder.isTypeSupported(mimeType)) {
+            mimeType = ''; // Let browser choose
+          }
+        }
+      }
+
+      const recorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
+      console.log('🎤 MediaRecorder created with mimeType:', recorder.mimeType);
 
       recordingChunks.current = [];
       
       recorder.ondataavailable = (event) => {
         if (event.data.size > 0) {
           recordingChunks.current.push(event.data);
+          console.log('🎤 Audio chunk received, size:', event.data.size, 'total chunks:', recordingChunks.current.length);
         }
       };
 
       recorder.onstop = () => {
+        console.log('🎤 MediaRecorder stopped, total chunks:', recordingChunks.current.length);
         handleRecordingComplete();
+      };
+
+      recorder.onerror = (event) => {
+        console.error('🎤 MediaRecorder error:', event);
+        toast({
+          title: "Recording Error",
+          description: "MediaRecorder encountered an error. Please try again.",
+          variant: "destructive",
+        });
       };
 
       setMediaRecorder(recorder);
@@ -251,13 +272,42 @@ export default function TrackManager({
     }
 
     try {
-      // Create blob from recorded chunks
-      const audioBlob = new Blob(recordingChunks.current, { type: 'audio/webm;codecs=opus' });
+      // Get the actual MIME type used by MediaRecorder
+      const actualMimeType = mediaRecorder?.mimeType || 'audio/webm';
       
-      // Convert to a more compatible format if needed
-      const audioFile = new File([audioBlob], `${recordingName || 'recorded-track'}.webm`, {
-        type: 'audio/webm'
+      // Create blob from recorded chunks
+      const audioBlob = new Blob(recordingChunks.current, { type: actualMimeType });
+      
+      console.log('🎤 Recording blob created:', {
+        size: audioBlob.size,
+        type: actualMimeType,
+        chunks: recordingChunks.current.length
       });
+
+      // Determine file extension based on MIME type
+      let fileExtension = '.webm';
+      if (actualMimeType.includes('mp4')) {
+        fileExtension = '.mp4';
+      } else if (actualMimeType.includes('wav')) {
+        fileExtension = '.wav';
+      } else if (actualMimeType.includes('ogg')) {
+        fileExtension = '.ogg';
+      }
+      
+      // Create file with appropriate extension
+      const fileName = `${recordingName || 'recorded-track'}${fileExtension}`;
+      const audioFile = new File([audioBlob], fileName, {
+        type: actualMimeType
+      });
+
+      // Validate the audio file before processing
+      if (audioBlob.size === 0) {
+        throw new Error('Recording is empty - no audio data captured');
+      }
+
+      if (audioBlob.size < 1000) { // Less than 1KB is probably not a valid recording
+        throw new Error('Recording too short - please record for at least 1 second');
+      }
 
       console.log('🎤 Recording completed, duration:', recordingDuration.toFixed(1), 'seconds');
       
@@ -300,8 +350,16 @@ export default function TrackManager({
     try {
       setIsImporting(true);
 
-      // Store the audio file
+      console.log('🎤 Processing recorded audio file:', {
+        name: audioFile.name,
+        size: audioFile.size,
+        type: audioFile.type,
+        lastModified: audioFile.lastModified
+      });
+
+      // Store the audio file using the local storage system
       const filePath = await AudioFileStorage.storeAudioFile(audioFile, user.email);
+      console.log('🎤 Audio file stored at:', filePath);
       
       // Create track data
       const trackName = recordingName || `Recorded Track ${tracks.length + 1}`;
@@ -312,39 +370,34 @@ export default function TrackManager({
         volume: 1.0,
         balance: 0.0,
         isMuted: false,
-        isSolo: false
+        isSolo: false,
+        localFileName: audioFile.name,
+        fileSize: audioFile.size
       };
 
-      // Save track to database
-      const response = await fetch(`/api/songs/${song.id}/tracks`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(trackData)
-      });
+      console.log('🎤 Creating track with data:', trackData);
 
-      if (!response.ok) {
-        throw new Error('Failed to save track');
-      }
-
-      const newTrack = await response.json();
+      // Use LocalSongStorage directly instead of API call
+      const success = LocalSongStorage.addTrack(user.email, song.id, trackData);
       
-      // Update the song with the new track
-      const updatedSong = {
-        ...song,
-        tracks: [...tracks, newTrack]
-      };
-
-      if (onSongUpdate) {
-        onSongUpdate(updatedSong);
+      if (!success) {
+        throw new Error('Failed to save track to local storage');
       }
 
-      console.log('🎤 Recorded track added to song:', trackName);
+      // Get updated song and notify parent component
+      const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+      if (updatedSong && onSongUpdate) {
+        console.log('🎤 Track added, refreshing song with', updatedSong.tracks.length, 'tracks');
+        onSongUpdate(updatedSong as any);
+      }
+
+      console.log('🎤 Recorded track added to song successfully:', trackName);
 
     } catch (error) {
       console.error('Error adding recorded track:', error);
       toast({
         title: "Error",
-        description: "Failed to add recorded track to song.",
+        description: error instanceof Error ? error.message : "Failed to add recorded track to song.",
         variant: "destructive",
       });
     } finally {
@@ -820,7 +873,7 @@ export default function TrackManager({
                       id="audio-input"
                       value={selectedAudioInput}
                       onChange={(e) => setSelectedAudioInput(e.target.value)}
-                      className="w-full p-2 border rounded-md"
+                      className="w-full p-2 border rounded-md bg-white dark:bg-gray-800 text-black dark:text-white"
                     >
                       {availableAudioInputs.map((input) => (
                         <option key={input.deviceId} value={input.deviceId}>

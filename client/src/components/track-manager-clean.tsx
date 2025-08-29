@@ -394,12 +394,22 @@ export default function TrackManager({
         fileExtension = '.ogg';
       }
       
-      // Create file with appropriate extension - fallback for environments without File constructor
+      // Create file with appropriate extension - improved compatibility
       const fileName = `${recordingName || 'recorded-track'}${fileExtension}`;
       let audioFile: File;
-      try {
-        audioFile = new File([audioBlob], fileName, { type: actualMimeType });
-      } catch {
+      
+      // Check if File constructor is available and working
+      if (typeof File !== 'undefined') {
+        try {
+          audioFile = new (File as any)([audioBlob], fileName, { type: actualMimeType });
+        } catch {
+          // Fallback: create a Blob with File-like properties
+          audioFile = Object.assign(audioBlob, {
+            name: fileName,
+            lastModified: Date.now()
+          }) as File;
+        }
+      } else {
         // Fallback: create a Blob with File-like properties
         audioFile = Object.assign(audioBlob, {
           name: fileName,

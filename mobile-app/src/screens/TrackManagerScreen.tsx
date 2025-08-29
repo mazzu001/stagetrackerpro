@@ -41,22 +41,50 @@ export default function TrackManagerScreen() {
   }, [songId]);
 
   const loadData = () => {
-    const foundSong = songs.find(s => s.id === songId);
-    setSong(foundSong);
-    
-    const songTracks = getTracksBySong(songId);
-    setTracks(songTracks);
+    try {
+      if (!songId) {
+        console.error('No songId provided for loadData');
+        return;
+      }
+
+      const foundSong = songs.find(s => s.id === songId);
+      setSong(foundSong || null);
+      
+      const songTracks = getTracksBySong(songId);
+      setTracks(Array.isArray(songTracks) ? songTracks : []);
+    } catch (error) {
+      console.error('Failed to load data:', error);
+      setTracks([]);
+      setSong(null);
+    }
   };
 
   const handleAddTracks = async () => {
     try {
+      // Validate inputs first
+      if (!songId) {
+        Alert.alert('Error', 'No song selected');
+        return;
+      }
+
+      if (isUploading) {
+        Alert.alert('Info', 'Upload already in progress');
+        return;
+      }
+
       const result = await DocumentPicker.getDocumentAsync({
         type: 'audio/*',
         multiple: true,
         copyToCacheDirectory: true,
       });
 
-      if (result.canceled) return;
+      if (result.canceled || !result.assets) return;
+
+      // Validate result structure
+      if (!Array.isArray(result.assets) || result.assets.length === 0) {
+        Alert.alert('Error', 'No valid audio files selected');
+        return;
+      }
 
       if (tracks.length + result.assets.length > 6) {
         Alert.alert(
@@ -67,11 +95,23 @@ export default function TrackManagerScreen() {
       }
 
       setIsUploading(true);
+      let successCount = 0;
+      let errorCount = 0;
       
       for (const asset of result.assets) {
         try {
-          // Create a permanent file path
-          const fileName = asset.name || `track_${Date.now()}.mp3`;
+          // Validate asset structure
+          if (!asset || !asset.uri) {
+            console.error('Invalid asset:', asset);
+            errorCount++;
+            continue;
+          }
+
+          // Create a permanent file path with safe filename
+          const fileName = asset.name ? 
+            asset.name.replace(/[^a-zA-Z0-9.-]/g, '_') : 
+            `track_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.mp3`;
+          
           const permanentPath = `${FileSystem.documentDirectory}audio/${fileName}`;
           
           // Ensure audio directory exists
@@ -80,16 +120,28 @@ export default function TrackManagerScreen() {
             { intermediates: true }
           );
 
+          // Verify source file exists before copying
+          const sourceInfo = await FileSystem.getInfoAsync(asset.uri);
+          if (!sourceInfo.exists) {
+            throw new Error('Source file does not exist');
+          }
+
           // Copy file to permanent location
           await FileSystem.copyAsync({
             from: asset.uri,
             to: permanentPath,
           });
 
-          // Extract track name from filename
-          const trackName = fileName.replace(/\.[^/.]+$/, ''); // Remove extension
+          // Verify the copied file exists
+          const copiedInfo = await FileSystem.getInfoAsync(permanentPath);
+          if (!copiedInfo.exists) {
+            throw new Error('Failed to copy file to permanent location');
+          }
 
-          // Add track to database
+          // Extract track name from filename (remove extension)
+          const trackName = fileName.replace(/\.[^/.]+$/, '');
+
+          // Add track to database with proper error handling
           await addTrack({
             songId,
             name: trackName,
@@ -100,32 +152,69 @@ export default function TrackManagerScreen() {
             balance: 0,
           });
 
-          console.log(`Added track: ${trackName}`);
+          console.log(`Successfully added track: ${trackName}`);
+          successCount++;
         } catch (error) {
-          console.error(`Failed to add track ${asset.name}:`, error);
-          Alert.alert(
-            'Upload Error',
-            `Failed to add track: ${asset.name}`
-          );
+          console.error(`Failed to add track ${asset?.name || 'unknown'}:`, error);
+          errorCount++;
+          
+          // Clean up any partial files
+          try {
+            const fileName = asset?.name ? 
+              asset.name.replace(/[^a-zA-Z0-9.-]/g, '_') : 
+              `track_${Date.now()}.mp3`;
+            const permanentPath = `${FileSystem.documentDirectory}audio/${fileName}`;
+            const fileInfo = await FileSystem.getInfoAsync(permanentPath);
+            if (fileInfo.exists) {
+              await FileSystem.deleteAsync(permanentPath);
+            }
+          } catch (cleanupError) {
+            console.error('Failed to clean up partial file:', cleanupError);
+          }
         }
       }
 
-      // Refresh data
-      loadData();
+      // Refresh data after all operations
+      try {
+        loadData();
+      } catch (refreshError) {
+        console.error('Failed to refresh data:', refreshError);
+      }
       
-      Alert.alert(
-        'Success',
-        `Added ${result.assets.length} track(s) successfully`
-      );
+      // Show appropriate success/error message
+      if (successCount > 0 && errorCount === 0) {
+        Alert.alert(
+          'Success',
+          `Added ${successCount} track(s) successfully`
+        );
+      } else if (successCount > 0 && errorCount > 0) {
+        Alert.alert(
+          'Partial Success',
+          `Added ${successCount} track(s) successfully. ${errorCount} track(s) failed to upload.`
+        );
+      } else {
+        Alert.alert(
+          'Upload Failed',
+          'Failed to add any tracks. Please try again.'
+        );
+      }
     } catch (error) {
       console.error('Failed to add tracks:', error);
-      Alert.alert('Error', 'Failed to add tracks');
+      Alert.alert(
+        'Error', 
+        `Failed to add tracks: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
     } finally {
       setIsUploading(false);
     }
   };
 
   const handleDeleteTrack = (track: Track) => {
+    if (!track || !track.id) {
+      Alert.alert('Error', 'Invalid track data');
+      return;
+    }
+
     Alert.alert(
       'Delete Track',
       `Are you sure you want to delete "${track.name}"? This will also delete the audio file.`,
@@ -136,11 +225,33 @@ export default function TrackManagerScreen() {
           style: 'destructive',
           onPress: async () => {
             try {
+              // Delete the audio file first
+              if (track.filePath) {
+                try {
+                  const fileInfo = await FileSystem.getInfoAsync(track.filePath);
+                  if (fileInfo.exists) {
+                    await FileSystem.deleteAsync(track.filePath);
+                    console.log(`Deleted audio file: ${track.filePath}`);
+                  }
+                } catch (fileError) {
+                  console.error('Failed to delete audio file:', fileError);
+                  // Continue with database deletion even if file deletion fails
+                }
+              }
+
+              // Delete from database
               await deleteTrack(track.id);
+              
+              // Refresh data
               loadData();
+              
+              console.log(`Successfully deleted track: ${track.name}`);
             } catch (error) {
               console.error('Failed to delete track:', error);
-              Alert.alert('Error', 'Failed to delete track');
+              Alert.alert(
+                'Error', 
+                `Failed to delete track: ${error instanceof Error ? error.message : 'Unknown error'}`
+              );
             }
           },
         },

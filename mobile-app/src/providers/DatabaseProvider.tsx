@@ -231,6 +231,21 @@ export default function DatabaseProvider({ children }: { children: React.ReactNo
   const addTrack = async (trackData: Omit<Track, 'id' | 'createdAt' | 'updatedAt'>): Promise<Track> => {
     if (!db) throw new Error('Database not initialized');
 
+    // Validate required fields
+    if (!trackData.songId || !trackData.name || !trackData.filePath) {
+      throw new Error('Missing required track data: songId, name, or filePath');
+    }
+
+    // Validate file path exists
+    try {
+      const fileInfo = await FileSystem.getInfoAsync(trackData.filePath);
+      if (!fileInfo.exists) {
+        throw new Error(`Audio file does not exist at path: ${trackData.filePath}`);
+      }
+    } catch (error) {
+      throw new Error(`Failed to verify audio file: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+
     const id = generateId();
     const now = new Date().toISOString();
     const track: Track = {
@@ -240,14 +255,18 @@ export default function DatabaseProvider({ children }: { children: React.ReactNo
       updatedAt: new Date(now)
     };
 
-    await db.runAsync(
-      `INSERT INTO tracks (id, songId, name, filePath, volume, muted, solo, balance, createdAt, updatedAt) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [id, track.songId, track.name, track.filePath, track.volume, track.muted ? 1 : 0, track.solo ? 1 : 0, track.balance, now, now]
-    );
+    try {
+      await db.runAsync(
+        `INSERT INTO tracks (id, songId, name, filePath, volume, muted, solo, balance, createdAt, updatedAt) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [id, track.songId, track.name, track.filePath, track.volume, track.muted ? 1 : 0, track.solo ? 1 : 0, track.balance, now, now]
+      );
 
-    await refreshData();
-    return track;
+      await refreshData();
+      return track;
+    } catch (error) {
+      throw new Error(`Failed to add track to database: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   };
 
   const updateTrack = async (id: string, updates: Partial<Track>): Promise<void> => {
@@ -277,18 +296,34 @@ export default function DatabaseProvider({ children }: { children: React.ReactNo
 
   const deleteTrack = async (id: string): Promise<void> => {
     if (!db) throw new Error('Database not initialized');
+    
+    if (!id) {
+      throw new Error('Track ID is required for deletion');
+    }
 
     const track = tracks.find(t => t.id === id);
     if (track) {
       try {
         await FileSystem.deleteAsync(track.filePath, { idempotent: true });
+        console.log(`Successfully deleted audio file: ${track.filePath}`);
       } catch (error) {
         console.warn(`Failed to delete audio file: ${track.filePath}`, error);
+        // Continue with database deletion even if file deletion fails
       }
     }
 
-    await db.runAsync('DELETE FROM tracks WHERE id = ?', [id]);
-    await refreshData();
+    try {
+      const result = await db.runAsync('DELETE FROM tracks WHERE id = ?', [id]);
+      
+      if (result.changes === 0) {
+        throw new Error('Track not found or already deleted');
+      }
+
+      await refreshData();
+      console.log(`Successfully deleted track with ID: ${id}`);
+    } catch (error) {
+      throw new Error(`Failed to delete track: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
   };
 
   const getTracksBySong = (songId: string): Track[] => {

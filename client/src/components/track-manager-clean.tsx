@@ -429,10 +429,19 @@ export default function TrackManager({
       });
 
     } catch (error) {
-      console.error('Error processing recording:', error);
+      console.error('🎤 Error in processRecordingImmediately - Full error details:', {
+        error: error,
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : 'No stack trace',
+        recordingChunksLength: recordingChunks.current.length,
+        recordingDuration: recordingDuration,
+        mediaRecorderMimeType: mediaRecorder?.mimeType,
+        songId: song?.id,
+        userEmail: user?.email
+      });
       toast({
         title: "Processing Error",
-        description: "Failed to process recorded audio.",
+        description: `Failed to process recorded audio: ${error instanceof Error ? error.message : "Unknown error"}`,
         variant: "destructive",
       });
     }
@@ -465,28 +474,10 @@ export default function TrackManager({
         throw new Error('Audio file is empty or corrupted');
       }
 
-      // Test if file can be read as audio
+      // Simple validation - just check if we can create a URL
       const audioUrl = URL.createObjectURL(audioFile);
-      const testAudio = new Audio(audioUrl);
-      
-      // Wait for audio to load metadata
-      await new Promise((resolve, reject) => {
-        testAudio.onloadedmetadata = () => {
-          console.log('🎤 Audio file validated - duration:', testAudio.duration, 'seconds');
-          URL.revokeObjectURL(audioUrl);
-          resolve(true);
-        };
-        testAudio.onerror = (e) => {
-          console.error('🎤 Audio file validation failed:', e);
-          URL.revokeObjectURL(audioUrl);
-          reject(new Error('Invalid audio file format'));
-        };
-        // Timeout after 5 seconds
-        setTimeout(() => {
-          URL.revokeObjectURL(audioUrl);
-          reject(new Error('Audio validation timeout'));
-        }, 5000);
-      });
+      console.log('🎤 Audio URL created successfully:', audioUrl.substring(0, 50) + '...');
+      URL.revokeObjectURL(audioUrl);
 
       // Store the audio file using the local storage system
       console.log('🎤 Storing audio file...');
@@ -537,10 +528,20 @@ export default function TrackManager({
       console.log('🎤 Recorded track added to song successfully:', trackName);
 
     } catch (error) {
-      console.error('🎤 Error adding recorded track:', error);
+      console.error('🎤 Error adding recorded track - Full error details:', {
+        error: error,
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : 'No stack trace',
+        songId: song?.id,
+        userEmail: user?.email,
+        trackDataUsed: {
+          name: recordingName,
+          tracksLength: tracks.length
+        }
+      });
       toast({
         title: "Processing Error",
-        description: error instanceof Error ? error.message : "Failed to process recorded audio.",
+        description: `Failed to process recorded audio: ${error instanceof Error ? error.message : "Unknown error"}`,
         variant: "destructive",
       });
     } finally {

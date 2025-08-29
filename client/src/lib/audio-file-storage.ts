@@ -93,8 +93,8 @@ export class AudioFileStorage {
       console.warn(`⚠️ Audio file not found for track: ${trackId}`);
       console.log(`🔍 Checking if browser file system has any files...`);
       
-      console.log(`💡 Audio files need to be uploaded to enable playback for this track`);
-      console.log(`🎵 Use the "Add Audio Files" button to upload audio files for your tracks`);
+      console.log(`💡 Audio files are stored locally when you record or add tracks`);
+      console.log(`🎵 Record new audio or add existing audio files to enable playback`);
       
       
       return null;

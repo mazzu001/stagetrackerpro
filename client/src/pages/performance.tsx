@@ -64,6 +64,18 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   const { toast } = useToast();
 
+  // Listen for fullscreen changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
   // Global Web MIDI integration - persistent across dialog closures
   const globalMidi = useGlobalWebMIDI();
 
@@ -608,9 +620,26 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
 
 
-  const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen);
-  };
+  const toggleFullscreen = useCallback(async () => {
+    try {
+      if (!document.fullscreenElement) {
+        // Enter fullscreen
+        await document.documentElement.requestFullscreen();
+        setIsFullscreen(true);
+      } else {
+        // Exit fullscreen
+        await document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    } catch (error) {
+      console.error('Fullscreen toggle failed:', error);
+      toast({
+        title: "Fullscreen Error",
+        description: "Unable to toggle fullscreen mode",
+        variant: "destructive",
+      });
+    }
+  }, [toast]);
 
   return (
     <div className={`h-screen flex flex-col bg-background text-foreground overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>

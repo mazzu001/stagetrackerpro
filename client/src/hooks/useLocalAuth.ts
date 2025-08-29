@@ -51,7 +51,10 @@ export function useLocalAuth() {
     
     // Prevent multiple simultaneous verification requests
     const checkExistingSession = async () => {
-      if (isVerifying) return; // Prevent concurrent calls
+      if (isVerifying) {
+        console.log('🔄 Authentication already in progress, skipping...');
+        return; // Prevent concurrent calls
+      }
       
       // Check browser compatibility first
       if (!isBrowserCompatible()) {
@@ -194,13 +197,17 @@ export function useLocalAuth() {
     // Debounced auth change handler to prevent rapid-fire calls
     let authChangeTimeout: NodeJS.Timeout;
     const handleAuthChange = () => {
+      if (isVerifying) {
+        console.log('🔄 Skipping auth change - verification in progress');
+        return;
+      }
       clearTimeout(authChangeTimeout);
       authChangeTimeout = setTimeout(() => {
         if (mounted && !isVerifying) {
           setIsLoading(true);
           checkExistingSession();
         }
-      }, 100); // 100ms debounce
+      }, 500); // Increased debounce to 500ms to prevent rapid calls
     };
     
     // Listen for force subscription refresh events
@@ -229,7 +236,7 @@ export function useLocalAuth() {
       window.removeEventListener('storage', handleAuthChange);
       window.removeEventListener('force-subscription-refresh', handleForceRefresh);
     };
-  }, [isVerifying]);
+  }, []); // Remove isVerifying dependency to prevent infinite loops
 
   const login = (userType: UserType, email: string) => {
     const userData: LocalUser = {

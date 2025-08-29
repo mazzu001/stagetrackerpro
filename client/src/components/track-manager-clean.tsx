@@ -522,6 +522,7 @@ export default function TrackManager({
                     <div className="flex items-center gap-2">
                       <VUMeter 
                         level={level} 
+                        size="sm"
                         showValue={false}
                       />
                       <Button

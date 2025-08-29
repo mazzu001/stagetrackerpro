@@ -5,9 +5,11 @@ interface VUMeterProps {
   isMuted?: boolean;
   isPlaying?: boolean; // Add isPlaying prop like stereo VU meters
   className?: string;
+  size?: 'sm' | 'md' | 'lg';
+  showValue?: boolean;
 }
 
-export default function VUMeter({ level, isMuted = false, isPlaying = true, className = "" }: VUMeterProps) {
+export default function VUMeter({ level, isMuted = false, isPlaying = true, className = "", size = 'md', showValue = true }: VUMeterProps) {
   const [peakLevel, setPeakLevel] = useState(0);
 
   // Use direct level - no smoothing since audio engine already provides smooth responsive data
@@ -58,24 +60,29 @@ export default function VUMeter({ level, isMuted = false, isPlaying = true, clas
     return 'bg-red-900/20';
   };
 
+  const sizeClasses = {
+    sm: { meter: 'h-12', segment: 'w-3 h-1', text: 'text-xs' },
+    md: { meter: 'h-16', segment: 'w-4 h-1', text: 'text-xs' },
+    lg: { meter: 'h-20', segment: 'w-5 h-1.5', text: 'text-sm' }
+  };
+
+  const classes = sizeClasses[size];
+
   return (
-    <div className={`flex items-center justify-center ${className}`}>
-      {/* VU Meter Segments - Responsive width for mobile */}
-      <div className="flex space-x-0.5 px-1 w-full justify-center">
-        {Array.from({ length: segments }, (_, index) => (
+    <div className={`flex flex-col items-center gap-1 ${className}`}>
+      <div className={`flex flex-col-reverse gap-0.5 ${classes.meter}`}>
+        {Array.from({ length: segments }, (_, i) => (
           <div
-            key={index}
-            className={`flex-1 h-4 rounded-sm transition-all duration-75 max-w-[8px] min-w-[2px] ${getSegmentColor(index)}`}
-            style={{
-              boxShadow: (index < activeSegments || index === peakSegment - 1) && !isMuted && isPlaying
-                ? getSegmentColor(index).includes('shadow-') 
-                  ? '0 0 4px currentColor' 
-                  : 'none'
-                : 'none'
-            }}
+            key={i}
+            className={`${classes.segment} rounded-sm transition-all duration-150 ${getSegmentColor(i)}`}
           />
         ))}
       </div>
+      {showValue && (
+        <div className={`text-gray-500 text-center ${classes.text}`}>
+          {Math.round(currentLevel)}%
+        </div>
+      )}
     </div>
   );
 }

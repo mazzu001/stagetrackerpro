@@ -83,10 +83,10 @@ export class AudioEngine {
             return null;
           }
           
-          // Load with timeout protection (reduced to 5 seconds for responsive feel)
+          // Load with timeout protection (reduced to 2 seconds for responsive feel)
           const loadPromise = trackController.load();
           const timeoutPromise = new Promise<never>((_, reject) => {
-            setTimeout(() => reject(new Error(`Track loading timeout: ${track.name}`)), 5000);
+            setTimeout(() => reject(new Error(`Track loading timeout: ${track.name}`)), 2000);
           });
           
           try {
@@ -593,9 +593,9 @@ class TrackController {
       const decodePromise = this.audioContext.decodeAudioData(arrayBuffer);
       const timeoutPromise = new Promise<never>((_, reject) => {
         setTimeout(() => {
-          console.error(`❌ DECODE TIMEOUT for ${this.track.name} after 8 seconds`);
+          console.error(`❌ DECODE TIMEOUT for ${this.track.name} after 1 second`);
           reject(new Error(`Audio decode timeout for ${this.track.name}`));
-        }, 8000);
+        }, 1000);
       });
       
       console.log(`🔄 Racing decode vs timeout for ${this.track.name}...`);

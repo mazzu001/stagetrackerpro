@@ -106,7 +106,7 @@ const parseMIDICommand = (command: string): Uint8Array | null => {
   return null;
 };
 
-// Auto-reconnect to last known device
+// Auto-reconnect to last known device - CHECK ONLY ONCE, NO LOOPS
 const attemptAutoReconnect = async (): Promise<boolean> => {
   const lastDevice = getLastConnectedDevice();
   if (!lastDevice || !globalMidiAccess) {
@@ -115,20 +115,8 @@ const attemptAutoReconnect = async (): Promise<boolean> => {
   
   console.log('🔄 Attempting auto-reconnect to:', lastDevice.name);
   
-  // Try to find the device by ID first
-  let output = globalMidiAccess.outputs.get(lastDevice.id);
-  
-  // If not found by ID, try to find by name (device ID might have changed)
-  if (!output) {
-    globalMidiAccess.outputs.forEach((port: MIDIOutput, id: string) => {
-      if (port.name === lastDevice.name && port.manufacturer === lastDevice.manufacturer) {
-        console.log('🔍 Found device by name/manufacturer match:', port.name);
-        output = port;
-        // Update stored ID for next time
-        saveLastConnectedDevice(id, port.name || 'Unknown', port.manufacturer || 'Unknown');
-      }
-    });
-  }
+  // Try to find the device by ID ONLY - no loops or searching
+  const output = globalMidiAccess.outputs.get(lastDevice.id);
   
   if (!output) {
     console.log('⚠️ Last connected device not available:', lastDevice.name);
@@ -160,7 +148,7 @@ const attemptAutoReconnect = async (): Promise<boolean> => {
   }
 };
 
-// Initialize Web MIDI access once
+// Initialize Web MIDI access once - NO REPEATED CHECKING
 const initializeWebMIDI = async (): Promise<boolean> => {
   if (globalMidiAccess) return true;
   
@@ -186,23 +174,17 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
     globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;
     
-    // Set up device change listener
-    globalMidiAccess.onstatechange = (event: MIDIConnectionEvent) => {
-      console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
-      // Dispatch global event for UI updates
-      setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('globalMidiDeviceChange', {
-          detail: { port: event.port }
-        }));
-      }, 0);
+    // Minimal device change listener - no complex logic
+    globalMidiAccess.onstatechange = (event: any) => {
+      if (event.port) {
+        console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
+      }
     };
     
     console.log('✅ Global Web MIDI access initialized');
     
-    // Attempt to auto-reconnect to the last connected device
-    setTimeout(() => {
-      attemptAutoReconnect();
-    }, 1000); // Wait a moment for devices to be detected
+    // Check for auto-reconnect ONCE only, no repeated attempts
+    attemptAutoReconnect();
     
     return true;
     
@@ -212,23 +194,19 @@ const initializeWebMIDI = async (): Promise<boolean> => {
   }
 };
 
-// Get available MIDI output devices
+// Get available MIDI output devices - NO LOOPS, return array directly
 const getAvailableOutputs = (): MIDIDevice[] => {
   if (!globalMidiAccess) return [];
   
-  const outputs: MIDIDevice[] = [];
-  globalMidiAccess.outputs.forEach((output: MIDIOutput) => {
-    outputs.push({
-      id: output.id,
-      name: output.name || 'Unknown Device',
-      manufacturer: output.manufacturer || 'Unknown',
-      state: output.state,
-      type: 'output',
-      connection: output.connection
-    });
-  });
-  
-  return outputs;
+  // Convert to array without loops
+  return Array.from(globalMidiAccess.outputs.values()).map((output: MIDIOutput) => ({
+    id: output.id,
+    name: output.name || 'Unknown Device',
+    manufacturer: output.manufacturer || 'Unknown',
+    state: output.state,
+    type: 'output' as const,
+    connection: output.connection
+  }));
 };
 
 // Connect to a specific device

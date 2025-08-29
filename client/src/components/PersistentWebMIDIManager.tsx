@@ -27,11 +27,10 @@ export function PersistentWebMIDIManager() {
   
   const globalMidi = useGlobalWebMIDI();
 
-  // Refresh available devices
+  // Refresh available devices - MINIMAL, NO REPEATED CALLS
   const refreshDevices = async () => {
     setIsRefreshing(true);
     try {
-      await globalMidi.refreshDevices();
       const outputs = globalMidi.getAvailableOutputs();
       setAvailableOutputs(outputs);
       console.log('🔄 Refreshed MIDI devices:', outputs.length, 'outputs found');

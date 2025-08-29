@@ -937,22 +937,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
         </div>
       </div>
-      {/* Audio Mode Indicator */}
-      <div className="px-4 py-2 bg-gray-800 border-t border-gray-700 flex-shrink-0">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm">
-            <Zap className="h-4 w-4 text-green-400" />
-            <span className="text-green-400">Instant Playback</span>
-            <span className="text-gray-400">- Zero delay audio</span>
-          </div>
-          {isLoadingTracks && (
-            <div className="flex items-center gap-2 text-sm text-yellow-400">
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Loading tracks...
-            </div>
-          )}
-        </div>
-      </div>
+      
 
       {/* Status Bar & Manual MIDI Send - Desktop only */}
       <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 mobile-hidden">

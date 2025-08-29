@@ -12,6 +12,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import { useDatabase } from '../providers/DatabaseProvider';
+import { ErrorBoundary, withErrorHandler } from '../components/ErrorBoundary';
 
 interface Track {
   id: string;
@@ -26,7 +27,7 @@ interface Track {
   updatedAt: Date;
 }
 
-export default function TrackManagerScreen() {
+function TrackManagerScreenInner() {
   console.log('=== TrackManagerScreen RENDER START ===');
   const route = useRoute();
   const navigation = useNavigation();
@@ -70,9 +71,8 @@ export default function TrackManagerScreen() {
     }
   };
 
-  const handleAddTracks = async () => {
+  const handleAddTracks = withErrorHandler(async () => {
     console.log('=== Starting handleAddTracks ===');
-    try {
       // Validate inputs first
       if (!songId) {
         console.error('No songId provided');
@@ -92,13 +92,33 @@ export default function TrackManagerScreen() {
         multiple: true,
         copyToCacheDirectory: true,
       });
-      console.log('Document picker result:', JSON.stringify(result, null, 2));
+      console.log('Document picker result type:', typeof result);
+      console.log('Document picker result keys:', Object.keys(result || {}));
+      console.log('Document picker canceled:', result?.canceled);
+      console.log('Document picker assets length:', result?.assets?.length);
+      console.log('Document picker full result:', JSON.stringify(result, null, 2));
 
-      if (result.canceled || !result.assets) return;
+      if (result.canceled) {
+        console.log('User canceled document picker');
+        return;
+      }
+
+      if (!result.assets) {
+        console.error('No assets in result');
+        Alert.alert('Error', 'No files were selected');
+        return;
+      }
 
       // Validate result structure
-      if (!Array.isArray(result.assets) || result.assets.length === 0) {
-        Alert.alert('Error', 'No valid audio files selected');
+      if (!Array.isArray(result.assets)) {
+        console.error('Assets is not an array:', typeof result.assets, result.assets);
+        Alert.alert('Error', 'Invalid file selection result');
+        return;
+      }
+
+      if (result.assets.length === 0) {
+        console.log('No files selected');
+        Alert.alert('Info', 'No audio files were selected');
         return;
       }
 
@@ -228,25 +248,10 @@ export default function TrackManagerScreen() {
           'Failed to add any tracks. Please try again.'
         );
       }
-    } catch (error) {
-      console.error('=== CRITICAL ERROR in handleAddTracks ===');
-      console.error('Error type:', typeof error);
-      console.error('Error instanceof Error:', error instanceof Error);
-      console.error('Error message:', error instanceof Error ? error.message : 'No message');
-      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
-      console.error('Full error object:', error);
-      console.error('=== END CRITICAL ERROR ===');
-      
-      Alert.alert(
-        'Error', 
-        `Failed to add tracks: ${error instanceof Error ? error.message : 'Unknown error'}`
-      );
-    } finally {
-      console.log('=== handleAddTracks finally block ===');
-      setIsUploading(false);
-      console.log('=== End handleAddTracks ===');
-    }
-  };
+    console.log('=== handleAddTracks finally block ===');
+    setIsUploading(false);
+    console.log('=== End handleAddTracks ===');
+  }, 'Add tracks operation');
 
   const handleDeleteTrack = (track: Track) => {
     if (!track || !track.id) {
@@ -396,6 +401,14 @@ export default function TrackManagerScreen() {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+  );
+}
+
+export default function TrackManagerScreen() {
+  return (
+    <ErrorBoundary>
+      <TrackManagerScreenInner />
+    </ErrorBoundary>
   );
 }
 

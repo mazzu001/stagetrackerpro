@@ -135,19 +135,33 @@ export default function DatabaseProvider({ children }: { children: React.ReactNo
   };
 
   const refreshData = async () => {
-    if (!db) return;
+    console.log('=== DatabaseProvider.refreshData START ===');
+    if (!db) {
+      console.error('Database not available for refresh');
+      return;
+    }
 
     try {
+      console.log('Fetching songs...');
       const songsResult = await db.getAllAsync('SELECT * FROM songs ORDER BY title');
-      const tracksResult = await db.getAllAsync('SELECT * FROM tracks ORDER BY name');
-      const midiEventsResult = await db.getAllAsync('SELECT * FROM midiEvents ORDER BY timestamp');
+      console.log('Songs result:', songsResult.length, 'songs');
 
+      console.log('Fetching tracks...');
+      const tracksResult = await db.getAllAsync('SELECT * FROM tracks ORDER BY name');
+      console.log('Tracks result:', tracksResult.length, 'tracks');
+
+      console.log('Fetching MIDI events...');
+      const midiEventsResult = await db.getAllAsync('SELECT * FROM midiEvents ORDER BY timestamp');
+      console.log('MIDI events result:', midiEventsResult.length, 'events');
+
+      console.log('Processing songs data...');
       setSongs(songsResult.map((row: any) => ({
         ...row,
         createdAt: new Date(row.createdAt),
         updatedAt: new Date(row.updatedAt)
       })) as Song[]);
 
+      console.log('Processing tracks data...');
       setTracks(tracksResult.map((row: any) => ({
         ...row,
         createdAt: new Date(row.createdAt),
@@ -156,13 +170,21 @@ export default function DatabaseProvider({ children }: { children: React.ReactNo
         solo: Boolean(row.solo)
       })) as Track[]);
 
+      console.log('Processing MIDI events data...');
       setMidiEvents(midiEventsResult.map((row: any) => ({
         ...row,
         createdAt: new Date(row.createdAt),
         updatedAt: new Date(row.updatedAt)
       })) as MidiEvent[]);
+
+      console.log('=== DatabaseProvider.refreshData SUCCESS ===');
     } catch (error) {
-      console.error('Failed to refresh data:', error);
+      console.error('=== DatabaseProvider.refreshData ERROR ===');
+      console.error('Error type:', typeof error);
+      console.error('Error message:', error instanceof Error ? error.message : 'No message');
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
+      console.error('Full error:', error);
+      console.error('=== END REFRESH ERROR ===');
     }
   };
 

@@ -714,17 +714,18 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           <div className="p-2 md:p-4 border-b border-gray-700 flex-shrink-0">
             <div className="flex items-center justify-between mb-2 md:mb-4">
               <h2 className="text-sm md:text-lg font-semibold">Songs</h2>
-              <Dialog open={isAddSongOpen} onOpenChange={setIsAddSongOpen}>
-                <DialogTrigger asChild>
-                  <Button 
-                    size="sm" 
-                    className="h-7 md:h-8 px-2 md:px-3"
-                    data-testid="button-add-song"
-                  >
-                    <Plus className="h-3 w-3 md:h-4 md:w-4 mr-1" />
-                    <span className="text-xs md:text-sm">Add</span>
-                  </Button>
-                </DialogTrigger>
+              <div className="flex items-center gap-2">
+                <Dialog open={isAddSongOpen} onOpenChange={setIsAddSongOpen}>
+                  <DialogTrigger asChild>
+                    <Button 
+                      size="sm" 
+                      className="h-7 md:h-8 px-2 md:px-3"
+                      data-testid="button-add-song"
+                    >
+                      <Plus className="h-3 w-3 md:h-4 md:w-4 mr-1" />
+                      <span className="text-xs md:text-sm">Add</span>
+                    </Button>
+                  </DialogTrigger>
                 <DialogContent data-testid="dialog-add-song">
                   <DialogHeader>
                     <DialogTitle>Add New Song</DialogTitle>
@@ -768,6 +769,29 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   </div>
                 </DialogContent>
               </Dialog>
+              
+              <Button 
+                size="sm" 
+                variant="outline"
+                className="h-7 md:h-8 px-2 md:px-3"
+                onClick={() => {
+                  if (selectedSong) {
+                    setIsDeleteSongOpen(true);
+                  } else {
+                    toast({
+                      title: "No Song Selected",
+                      description: "Please select a song to delete",
+                      variant: "destructive"
+                    });
+                  }
+                }}
+                disabled={!selectedSong || isPlaying}
+                data-testid="button-delete-song"
+              >
+                <Trash2 className="h-3 w-3 md:h-4 md:w-4 mr-1" />
+                <span className="text-xs md:text-sm">Delete</span>
+              </Button>
+              </div>
 
               {/* Delete Song Dialog */}
               <Dialog open={isDeleteSongOpen} onOpenChange={setIsDeleteSongOpen}>
@@ -815,45 +839,24 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               >
                 <div className="flex items-center justify-between">
                   <div className="font-medium text-sm md:text-base truncate mr-2">{song.title}</div>
-                  <div className="flex items-center gap-1">
-                    <button
-                      className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
-                        isPlaying 
-                          ? 'bg-gray-600 cursor-not-allowed opacity-50' 
-                          : 'bg-gray-700 hover:bg-gray-600'
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (!isPlaying) {
-                          setSelectedSongId(song.id);
-                          setIsTrackManagerOpen(true);
-                        }
-                      }}
-                      disabled={isPlaying}
-                      data-testid={`button-tracks-${song.id}`}
-                    >
-                      {song.tracks ? song.tracks.length : 0} tracks
-                    </button>
-                    <button
-                      className={`p-1 rounded transition-colors touch-target flex-shrink-0 text-red-400 hover:text-red-300 hover:bg-red-900/20 ${
-                        isPlaying 
-                          ? 'cursor-not-allowed opacity-50' 
-                          : ''
-                      }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        if (!isPlaying) {
-                          setSelectedSong(song);
-                          setIsDeleteSongOpen(true);
-                        }
-                      }}
-                      disabled={isPlaying}
-                      data-testid={`button-delete-${song.id}`}
-                      title="Delete song"
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </button>
-                  </div>
+                  <button
+                    className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
+                      isPlaying 
+                        ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                        : 'bg-gray-700 hover:bg-gray-600'
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (!isPlaying) {
+                        setSelectedSongId(song.id);
+                        setIsTrackManagerOpen(true);
+                      }
+                    }}
+                    disabled={isPlaying}
+                    data-testid={`button-tracks-${song.id}`}
+                  >
+                    {song.tracks ? song.tracks.length : 0} tracks
+                  </button>
                 </div>
                 <div className="text-xs md:text-sm text-gray-400 truncate">{song.artist}</div>
                 <div className="flex items-center justify-between">

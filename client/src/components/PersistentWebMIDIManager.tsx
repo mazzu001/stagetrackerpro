@@ -277,20 +277,7 @@ export function PersistentWebMIDIManager() {
             </Button>
           </div>
 
-          {/* Quick Test Buttons */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {quickCommands.map((cmd) => (
-              <Button
-                key={cmd.label}
-                size="sm"
-                variant="outline"
-                onClick={() => setTestMessage(cmd.command)}
-                data-testid={`button-persistent-quick-${cmd.label.toLowerCase().replace(' ', '-')}`}
-              >
-                {cmd.label}
-              </Button>
-            ))}
-          </div>
+          
 
           {lastSentMessage && (
             <p className="text-sm text-muted-foreground">

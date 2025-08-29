@@ -24,6 +24,7 @@ import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, F
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
+import type { SongWithTracks } from "@shared/schema";
 import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
 import { USBMidiManager } from "@/components/USBMidiManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
@@ -665,7 +666,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             <WaveformVisualizer
               song={selectedSong ? { ...selectedSong, userId: user?.email || '' } as SongWithTracks : null}
               currentTime={currentTime}
-              duration={duration}
               isPlaying={isPlaying}
               audioLevels={audioLevels}
               data-testid="header-waveform-visualizer"

@@ -176,7 +176,7 @@ export function PersistentWebMIDIManager() {
     }, 100);
     
     return () => clearTimeout(timer);
-  }, [globalMidi]);
+  }, []);
 
   // Listen for global device changes
   useEffect(() => {
@@ -213,6 +213,73 @@ export function PersistentWebMIDIManager() {
       toast({
         title: "Connection Error",
         description: "An error occurred while connecting",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Force connection attempt for offline Bluetooth devices
+  const forceConnectToOfflineDevice = async (device: MIDIDevice) => {
+    try {
+      toast({
+        title: "Attempting Connection",
+        description: `Trying to connect to ${device.name}. Make sure Bluetooth is on and device is in pairing mode.`,
+      });
+
+      // First try to refresh devices to see if it's now available
+      await refreshDevices();
+      
+      // Check if device appeared in the refresh
+      const availableDevice = [...availableOutputs, ...bluetoothDevices].find(d => 
+        d.name === device.name || d.id === device.id
+      );
+      
+      if (availableDevice && availableDevice.state === 'connected') {
+        // Device is now available, try to connect normally
+        await connectToOutput(availableDevice.id);
+      } else {
+        // Try Web Bluetooth API for Bluetooth devices
+        if (device.deviceType === 'bluetooth' && 'bluetooth' in navigator) {
+          try {
+            const bluetoothDevice = await (navigator as any).bluetooth.requestDevice({
+              filters: [{ name: device.name }],
+              optionalServices: [
+                '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // MIDI service
+                'generic_access',
+                'generic_attribute'
+              ]
+            });
+            
+            if (bluetoothDevice) {
+              toast({
+                title: "Device Found",
+                description: `Found ${bluetoothDevice.name}. Connection will be handled by the system.`,
+              });
+              
+              // Refresh devices again after potential pairing
+              setTimeout(() => refreshDevices(), 2000);
+            }
+          } catch (bluetoothError) {
+            console.log('Web Bluetooth connection attempt:', bluetoothError);
+            toast({
+              title: "Direct Connection Failed",
+              description: `Could not connect directly to ${device.name}. Please ensure Bluetooth is on and the device is in pairing mode, then try 'Refresh All'.`,
+              variant: "destructive",
+            });
+          }
+        } else {
+          toast({
+            title: "Manual Connection Required",
+            description: `Please turn on Bluetooth and ensure ${device.name} is paired in your system settings, then click 'Refresh All'.`,
+            variant: "destructive",
+          });
+        }
+      }
+    } catch (error) {
+      console.error('❌ Force connection failed:', error);
+      toast({
+        title: "Connection Error",
+        description: `Failed to connect to ${device.name}. Please check Bluetooth settings.`,
         variant: "destructive",
       });
     }
@@ -470,11 +537,12 @@ export function PersistentWebMIDIManager() {
                       <Badge variant="outline" className="text-xs">{device.deviceType}</Badge>
                       <Button
                         size="sm"
-                        onClick={() => connectToOutput(device.id)}
+                        onClick={() => forceConnectToOfflineDevice(device)}
                         variant="outline"
-                        title="Try to reconnect - device must be turned on and in range"
+                        title="Force connection attempt - will try to wake up and connect to the device"
                       >
-                        Try Connect
+                        <Wifi className="h-4 w-4 mr-1" />
+                        Force Connect
                       </Button>
                     </div>
                   </div>

@@ -74,33 +74,43 @@ export class LocalSongStorage {
     return true;
   }
 
-  static addTrack(userEmail: string, songId: string, track: any): any | null {
-    const songs = this.getAllSongs(userEmail);
-    const songIndex = songs.findIndex(song => song.id === songId);
-    
-    if (songIndex === -1) return null;
-    
-    const newTrack = {
-      id: crypto.randomUUID(),
-      songId,
-      name: track.name || '',
-      trackNumber: track.trackNumber || 1,
-      audioUrl: track.audioUrl || '',
-      localFileName: track.localFileName || null,
-      audioData: track.audioData || null,
-      mimeType: track.mimeType || null,
-      fileSize: track.fileSize || null,
-      volume: track.volume || 1.0,
-      balance: track.balance || 0.0,
-      isMuted: track.isMuted || false,
-      isSolo: track.isSolo || false,
-      ...track,
-      createdAt: new Date().toISOString()
-    };
-    
-    songs[songIndex].tracks.push(newTrack);
-    this.saveSongs(userEmail, songs);
-    return newTrack;
+  static addTrack(userEmail: string, songId: string, track: any): boolean {
+    try {
+      const songs = this.getAllSongs(userEmail);
+      const songIndex = songs.findIndex(song => song.id === songId);
+      
+      if (songIndex === -1) {
+        console.error('LocalSongStorage.addTrack: Song not found:', songId);
+        return false;
+      }
+      
+      const newTrack = {
+        id: crypto.randomUUID(),
+        songId,
+        name: track.name || '',
+        trackNumber: track.trackNumber || 1,
+        audioUrl: track.audioUrl || '',
+        localFileName: track.localFileName || null,
+        audioData: track.audioData || null,
+        mimeType: track.mimeType || null,
+        fileSize: track.fileSize || null,
+        volume: track.volume || 1.0,
+        balance: track.balance || 0.0,
+        isMuted: track.isMuted || false,
+        isSolo: track.isSolo || false,
+        filePath: track.filePath || null,
+        ...track,
+        createdAt: new Date().toISOString()
+      };
+      
+      songs[songIndex].tracks.push(newTrack);
+      this.saveSongs(userEmail, songs);
+      console.log('LocalSongStorage.addTrack: Track added successfully:', newTrack.id);
+      return true;
+    } catch (error) {
+      console.error('LocalSongStorage.addTrack: Error adding track:', error);
+      return false;
+    }
   }
 
   static getTracks(userEmail: string, songId: string): any[] {

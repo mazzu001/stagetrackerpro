@@ -27,7 +27,7 @@ export default function StereoVUMeter({
     }
 
     // Apply amplification to make meters more reactive - increased for better visibility
-    const amplifiedLevel = leftLevel * 2.0; // Increased amplification for better VU meter visibility
+    const amplifiedLevel = leftLevel * 2.5; // Fine-tuned amplification for optimal VU meter visibility
     const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
     const animate = () => {
@@ -51,7 +51,7 @@ export default function StereoVUMeter({
     }
 
     // Apply amplification to make meters more reactive - increased for better visibility
-    const amplifiedLevel = rightLevel * 2.0; // Increased amplification for better VU meter visibility
+    const amplifiedLevel = rightLevel * 2.5; // Fine-tuned amplification for optimal VU meter visibility
     const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
     const animate = () => {

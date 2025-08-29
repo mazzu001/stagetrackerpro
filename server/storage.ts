@@ -1,5 +1,5 @@
 import { songs, tracks, users, type Song, type InsertSong, type Track, type InsertTrack, type SongWithTracks, type User, type UpsertUser } from "@shared/schema";
-import { pgDb, sqliteDbConn } from "./db";
+import { db } from "./db";
 import { eq, and, isNotNull } from "drizzle-orm";
 
 export interface IStorage {

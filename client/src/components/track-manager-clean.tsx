@@ -184,105 +184,74 @@ export default function TrackManager({
           let totalDuration = 0;
           let processedCount = 0;
           
-          // Process files one by one for memory efficiency (especially on mobile)
+          // Process files one at a time - wait for each to completely finish
           const isMobile = isMobileDevice;
-          const processingDelay = isMobile ? 1500 : 300; // Even longer delays on mobile
           
           for (let i = 0; i < files.length; i++) {
             const file = files[i];
-            let audio: HTMLAudioElement | null = null;
-            let url: string | null = null;
             
             try {
               console.log(`📁 Processing file ${i + 1}/${files.length}: ${file.name} (${(file.size / 1024 / 1024).toFixed(1)}MB)`);
               
               if (isMobile) {
-                console.log(`📱 Mobile mode: Processing one file at a time with memory cleanup`);
+                console.log(`📱 Mobile device: waiting for complete file processing before next`);
               }
               
-              // Process the actual file first
-              await processFile(file);
-              processedCount++;
-              console.log(`✅ File ${i + 1} processed successfully`);
+              // Update UI to show current file being processed
+              setSelectedFiles([file]);
               
-              // Get duration with explicit memory management
+              // Wait for the file to be completely processed (stored in IndexedDB, metadata updated, etc.)
+              console.log(`⏳ Starting processing of ${file.name}...`);
+              await processFile(file);
+              console.log(`✅ File ${i + 1} completely processed and stored`);
+              
+              processedCount++;
+              
+              // Get duration safely after processing
               try {
-                audio = new Audio();
-                url = URL.createObjectURL(file);
+                const audio = new Audio();
+                const url = URL.createObjectURL(file);
                 
                 const duration = await new Promise<number>((resolve) => {
                   const cleanup = () => {
-                    if (url) {
-                      URL.revokeObjectURL(url);
-                      url = null;
-                    }
-                    if (audio) {
-                      audio.src = '';
-                      audio.load(); // Force cleanup
-                      audio = null;
-                    }
+                    URL.revokeObjectURL(url);
+                    audio.src = '';
+                    audio.load();
                   };
                   
                   const timeoutId = setTimeout(() => {
-                    console.warn(`⏰ Duration timeout for ${file.name}`);
+                    console.warn(`⏰ Duration detection timeout for ${file.name}`);
                     cleanup();
                     resolve(0);
-                  }, isMobile ? 3000 : 5000);
+                  }, 5000);
                   
-                  audio!.addEventListener('loadedmetadata', () => {
+                  audio.addEventListener('loadedmetadata', () => {
                     clearTimeout(timeoutId);
-                    const fileDuration = audio!.duration || 0;
+                    const fileDuration = audio.duration || 0;
                     cleanup();
                     resolve(fileDuration);
                   });
                   
-                  audio!.addEventListener('error', () => {
+                  audio.addEventListener('error', () => {
                     clearTimeout(timeoutId);
                     cleanup();
                     resolve(0);
                   });
                   
-                  audio!.src = url!;
+                  audio.src = url;
                 });
                 
                 totalDuration += duration;
+                console.log(`📊 Duration added: ${duration.toFixed(1)}s (total: ${totalDuration.toFixed(1)}s)`);
                 
               } catch (durationError) {
                 console.warn(`Could not get duration for ${file.name}:`, durationError);
-              } finally {
-                // Ensure cleanup happens
-                if (url) {
-                  URL.revokeObjectURL(url);
-                  url = null;
-                }
-                if (audio) {
-                  audio.src = '';
-                  audio.load();
-                  audio = null;
-                }
               }
               
-              // Mobile-safe delay between files
-              if (i < files.length - 1) {
-                console.log(`⏳ Waiting ${processingDelay}ms before next file...`);
-                
-                // Update UI to show progress
-                setSelectedFiles(files.slice(0, i + 1));
-                
-                await new Promise(resolve => setTimeout(resolve, processingDelay));
-                
-                // Force memory cleanup on mobile
-                if (isMobile) {
-                  if ('gc' in window && typeof window.gc === 'function') {
-                    window.gc();
-                  }
-                  // Additional cleanup hint
-                  if (typeof requestIdleCallback !== 'undefined') {
-                    requestIdleCallback(() => {
-                      console.log('📱 Mobile idle cleanup completed');
-                    });
-                  }
-                }
+              // Give mobile devices a moment to breathe between files
+              if (isMobile && i < files.length - 1) {
+                console.log(`📱 Mobile safety pause...`);
+                await new Promise(resolve => setTimeout(resolve, 500));
               }
               
             } catch (fileError) {
@@ -293,19 +262,10 @@ export default function TrackManager({
                 variant: "destructive"
               });
               
-              // Cleanup on error
-              if (url) {
-                URL.revokeObjectURL(url);
-              }
-              if (audio) {
-                audio.src = '';
-                audio.load();
-              }
-              
-              // On mobile, be more cautious about continuing
+              // On mobile, stop on first error to prevent cascade
               if (isMobile) {
-                console.log(`📱 Mobile error - pausing before next file`);
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                console.log(`📱 Mobile: stopping batch processing after error to prevent crash`);
+                break;
               }
             }
           }

@@ -85,23 +85,30 @@ export class StreamingAudioEngine {
   private createStreamingTrack(trackData: { id: string; name: string; url: string }): StreamingTrack {
     const audioElement = new Audio();
     audioElement.src = trackData.url;
-    audioElement.preload = 'metadata'; // Only load metadata, not full audio
+    audioElement.preload = 'none'; // CRITICAL: No preloading to prevent crashes
     audioElement.crossOrigin = 'anonymous';
     
-    // Create audio nodes
-    const source = this.audioContext.createMediaElementSource(audioElement);
-    const gainNode = this.audioContext.createGain();
-    const panNode = this.audioContext.createStereoPanner();
-    const analyzerNode = this.audioContext.createAnalyser();
+    // Create audio nodes with error handling
+    let source, gainNode, panNode, analyzerNode;
     
-    // Connect audio graph
-    source.connect(gainNode);
-    gainNode.connect(panNode);
-    panNode.connect(analyzerNode);
-    analyzerNode.connect(this.state.masterGainNode!);
-    
-    // Setup analyzer
-    analyzerNode.fftSize = 256;
+    try {
+      source = this.audioContext.createMediaElementSource(audioElement);
+      gainNode = this.audioContext.createGain();
+      panNode = this.audioContext.createStereoPanner();
+      analyzerNode = this.audioContext.createAnalyser();
+      
+      // Connect audio graph safely
+      source.connect(gainNode);
+      gainNode.connect(panNode);
+      panNode.connect(analyzerNode);
+      analyzerNode.connect(this.state.masterGainNode!);
+      
+      // Setup analyzer with minimal settings
+      analyzerNode.fftSize = 128; // Smaller to reduce CPU
+    } catch (error) {
+      console.error('Failed to create streaming track audio nodes:', error);
+      throw error;
+    }
     
     const track: StreamingTrack = {
       id: trackData.id,
@@ -350,9 +357,7 @@ export class StreamingAudioEngine {
   }
 
   get isReady(): boolean {
-    const ready = this.state.tracks.length > 0;
-    console.log(`🔍 Streaming isReady check: ${ready} (tracks: ${this.state.tracks.length}, duration: ${this.state.duration})`);
-    return ready;
+    return this.state.tracks.length > 0;
   }
 
   subscribe(listener: () => void) {

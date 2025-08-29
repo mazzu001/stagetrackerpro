@@ -341,6 +341,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Test endpoint to create users with different subscription levels
+  app.post('/api/create-test-users', async (req, res) => {
+    try {
+      // Create paid test user
+      await storage.upsertUser({
+        id: 'test_paid_user',
+        email: 'paid@test.com',
+        firstName: 'Paid',
+        lastName: 'User'
+      });
+      await storage.updateUserSubscription('test_paid_user', {
+        subscriptionStatus: 2, // Premium
+        subscriptionEndDate: null
+      });
+
+      // Create professional test user  
+      await storage.upsertUser({
+        id: 'test_pro_user',
+        email: 'pro@test.com',
+        firstName: 'Pro',
+        lastName: 'User'
+      });
+      await storage.updateUserSubscription('test_pro_user', {
+        subscriptionStatus: 3, // Professional
+        subscriptionEndDate: null
+      });
+
+      console.log('✅ Test users created successfully');
+      res.json({
+        success: true,
+        users: [
+          { email: 'paid@test.com', type: 'Premium (tier 2)' },
+          { email: 'pro@test.com', type: 'Professional (tier 3)' },
+          { email: 'brooke@mnb.com', type: 'Free (tier 1)' }
+        ]
+      });
+    } catch (error: any) {
+      console.error('❌ Error creating test users:', error);
+      res.status(500).json({ error: 'Failed to create test users' });
+    }
+  });
+
   // Stripe webhook endpoint for subscription validation
   app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), async (req, res) => {
     const sig = req.headers['stripe-signature'];

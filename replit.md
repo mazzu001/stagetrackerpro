@@ -2,6 +2,7 @@
 This project is a professional, offline-capable live music performance application designed for stage use. It features real-time audio mixing, advanced Web MIDI device management, and synchronized lyrics display. The application prioritizes offline functionality, utilizing local storage for all performance data and blob URLs for audio files. It is production-ready with robust MIDI integration, including persistent connections, and comprehensive device management.
 
 ## Recent Changes
+- **Web Streaming Audio Implementation (Jan 29, 2025)**: Successfully implemented zero-load-time streaming audio for web version to eliminate 8+ second decode delays. Added streaming mode toggle in Settings, real-time mode indicator, and unified track controls for both streaming and preload modes. Fixed conflicts between dual audio engines and created performance demo page for mode comparison.
 - **Mobile App Crash Fix (Jan 29, 2025)**: Fixed Android crash when adding tracks by simplifying error handling and removing excessive logging that was interfering with async file operations. Streamlined the track addition process in TrackManagerScreen and DatabaseProvider.
 
 # User Preferences
@@ -31,6 +32,11 @@ This project is a professional, offline-capable live music performance applicati
 - **Automated Lyrics MIDI**: MIDI commands embedded in timestamped lyrics automatically execute during playback.
 
 ## Core Features
+- **Dual Audio Engine Architecture**: 
+  - **Preload Mode**: Traditional buffered audio with 8+ second decode time but full Web Audio API features
+  - **Streaming Mode**: Zero-load-time instant playback using HTMLAudioElement with local blob URLs
+  - **Mode Toggle**: Settings menu toggle with real-time indicator showing current audio engine
+  - **Unified Controls**: All track controls (volume, mute, solo, balance) work seamlessly in both modes
 - **Multi-Track Audio Engine**: Supports up to 6 tracks per song with individual volume, mute, solo, and balance controls. Features real-time VU meters and automatic song duration detection.
 - **Advanced MIDI Integration**: Comprehensive device detection, universal command formatting, real-time message monitoring, and persistent connection management.
 - **Performance Interface**: Transport controls (play, pause, stop, seek) with keyboard shortcuts, synchronized lyrics with auto-scrolling and MIDI command highlighting, interactive position slider, and fullscreen mode. Optimized for mobile and touch controls.

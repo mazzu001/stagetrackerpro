@@ -333,6 +333,15 @@ export class StreamingAudioEngine {
     return { ...this.state };
   }
 
+  // Additional streaming-specific getters
+  get isLoading(): boolean {
+    return false; // Streaming is always instant, never loading
+  }
+
+  get isReady(): boolean {
+    return this.state.tracks.length > 0 && this.state.duration > 0;
+  }
+
   subscribe(listener: () => void) {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);

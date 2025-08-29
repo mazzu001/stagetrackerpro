@@ -63,9 +63,12 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
   const loadSong = useCallback(async (song: SongWithTracks) => {
     if (!song || song.tracks.length === 0) {
       console.warn('🚀 No tracks to load for streaming');
+      setIsLoading(false);
+      setIsReady(false);
       return;
     }
     
+    console.log(`🚀 Streaming loadSong called: "${song.title}" with ${song.tracks.length} tracks`);
     setIsLoading(true);
     setIsReady(false);
     setCurrentSong(song);

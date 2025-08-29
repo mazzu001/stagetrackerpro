@@ -42,7 +42,7 @@ export function PersistentWebMIDIManager() {
     }
   };
 
-  // Get devices on mount and when global MIDI state changes
+  // Get devices on mount only (remove dependency to prevent infinite loop)
   useEffect(() => {
     // Delay the initial refresh to prevent blocking
     const timer = setTimeout(() => {
@@ -50,7 +50,7 @@ export function PersistentWebMIDIManager() {
     }, 100);
     
     return () => clearTimeout(timer);
-  }, [globalMidi]);
+  }, []); // Empty dependency array - only run on mount
 
   // Listen for global device changes
   useEffect(() => {
@@ -63,7 +63,7 @@ export function PersistentWebMIDIManager() {
     return () => {
       window.removeEventListener('globalMidiDeviceChange', handleDeviceChange);
     };
-  }, []);
+  }, [refreshDevices]); // Include refreshDevices in dependency
 
   // Connect to output device
   const connectToOutput = async (deviceId: string) => {

@@ -120,15 +120,14 @@ const attemptAutoReconnect = async (): Promise<boolean> => {
   
   // If not found by ID, try to find by name (device ID might have changed)
   if (!output) {
-    for (const [id, port] of globalMidiAccess.outputs) {
+    globalMidiAccess.outputs.forEach((port: MIDIOutput, id: string) => {
       if (port.name === lastDevice.name && port.manufacturer === lastDevice.manufacturer) {
         console.log('🔍 Found device by name/manufacturer match:', port.name);
         output = port;
         // Update stored ID for next time
         saveLastConnectedDevice(id, port.name || 'Unknown', port.manufacturer || 'Unknown');
-        break;
       }
-    }
+    });
   }
   
   if (!output) {
@@ -188,7 +187,7 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;
     
     // Set up device change listener
-    globalMidiAccess.onstatechange = (event) => {
+    globalMidiAccess.onstatechange = (event: MIDIConnectionEvent) => {
       console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
       // Dispatch global event for UI updates
       setTimeout(() => {

@@ -190,6 +190,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     pause,
     stop,
     seek,
+    updateTrackVolume,
+    updateTrackBalance,
+    updateTrackMute,
+    updateTrackSolo,
     isAudioEngineOnline,
     masterStereoLevels,
     audioLevels,
@@ -1162,8 +1166,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 ));
               }}
               onTrackVolumeChange={updateTrackVolume}
-              onTrackMuteToggle={toggleTrackMute}
-              onTrackSoloToggle={toggleTrackSolo}
+              onTrackMuteToggle={updateTrackMute}
+              onTrackSoloToggle={updateTrackSolo}
               onTrackBalanceChange={updateTrackBalance}
               onPlay={play}
               onPause={pause}

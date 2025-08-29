@@ -2,10 +2,10 @@
 This project is a professional, offline-capable live music performance application designed for stage use. It features real-time audio mixing, advanced Web MIDI device management, and synchronized lyrics display. The application prioritizes offline functionality, utilizing local storage for all performance data and blob URLs for audio files. It is production-ready with robust MIDI integration, including persistent connections, and comprehensive device management.
 
 ## Recent Changes
+- **Schema Architecture Fixed (Jan 29, 2025)**: Resolved TypeScript schema conflicts by properly separating cloud vs local data operations. Server-side music operations now correctly return no-ops since all music data (songs, tracks, audio files, waveforms) stays local for offline capability. User authentication and subscriptions use cloud PostgreSQL, music data uses local storage.
+- **Upgrade Subscription Button (Jan 29, 2025)**: Added attractive gradient upgrade button (purple to blue) with Crown icon below settings button. Shows contextual text based on subscription tier ("Upgrade" for free, "Upgrade to Pro" for paid). Integrates with Stripe payment system for subscription upgrades.
 - **Auto-Reconnect MIDI Implementation (Jan 29, 2025)**: Added automatic reconnection to the last known USB MIDI device when the app launches. System stores device info in localStorage and attempts reconnection using device ID or name/manufacturer matching. Provides seamless experience for live performers who use the same MIDI devices consistently.
-- **Persistent USB MIDI Connections (Jan 29, 2025)**: Integrated USB MIDI Manager with global Web MIDI system to ensure connections persist when dialogs are closed. Eliminated local MIDI state management in favor of global persistence, allowing MIDI commands from lyrics and other features to work seamlessly.
 - **Instant Playback Implementation (Jan 29, 2025)**: Successfully replaced slow `decodeAudioData` approach with instant HTMLAudioElement playback. Eliminated 8+ second audio decode delays by using MediaElementSource for immediate response while background decoding for advanced features. Audio now plays instantly when clicking play button.
-- **Streaming Mode Removal (Jan 29, 2025)**: Completely removed streaming mode functionality since main audio engine now provides instant playback. Simplified codebase by eliminating dual audio engine architecture and mode switching complexity.
 
 # User Preferences
 - **Communication style**: Simple, everyday language

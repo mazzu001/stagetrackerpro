@@ -254,93 +254,25 @@ export class DatabaseStorage implements IStorage {
     };
   }
 
-  // Store audio file data directly in database as base64
-  async storeAudioFile(trackId: string, audioData: string, mimeType: string, fileSize: number): Promise<void> {
-    await db
-      .update(tracks)
-      .set({ 
-        audioData,
-        mimeType,
-        fileSize,
-        audioUrl: 'blob:stored' // Indicate this is a database blob
-      })
-      .where(eq(tracks.id, trackId));
-    
-    console.log('Audio file stored in local database for track:', trackId, `(${Math.round(fileSize / 1024)}KB)`);
-  }
-
-  // Get audio file data from database
-  async getAudioFileData(trackId: string): Promise<{ data: string; mimeType: string; size: number } | null> {
-    const [track] = await db
-      .select({ 
-        audioData: tracks.audioData, 
-        mimeType: tracks.mimeType, 
-        fileSize: tracks.fileSize 
-      })
-      .from(tracks)
-      .where(eq(tracks.id, trackId));
-
-    if (track?.audioData) {
-      return {
-        data: track.audioData,
-        mimeType: track.mimeType || 'audio/mpeg',
-        size: track.fileSize || 0
-      };
-    }
-
-    return null;
-  }
-
   async updateTrack(id: string, track: Partial<InsertTrack>): Promise<Track | undefined> {
-    const [updatedTrack] = await db
-      .update(tracks)
-      .set(track)
-      .where(eq(tracks.id, id))
-      .returning();
-    
-    if (updatedTrack) {
-      console.log('Track updated in database:', id, updatedTrack.name);
-    }
-    return updatedTrack || undefined;
+    console.log('updateTrack: Music data handled locally in browser, not on server');
+    return undefined;
   }
 
   async deleteTrack(id: string): Promise<boolean> {
-    const result = await db.delete(tracks).where(eq(tracks.id, id));
-    const deleted = result.changes ? result.changes > 0 : false;
-    
-    if (deleted) {
-      console.log('Track deleted from local database:', id);
-    }
-    return deleted;
+    console.log('deleteTrack: Music data handled locally in browser, not on server');
+    return false;
   }
 
   // MIDI functionality has been completely removed
 
-  // Waveform operations (store in song's waveformData field in local database)
+  // Waveform operations (handled locally in browser - these are no-op on server)
   async saveWaveform(songId: string, waveformData: number[]): Promise<void> {
-    await localDb
-      .update(songs)
-      .set({ 
-        waveformData: JSON.stringify(waveformData),
-        waveformGenerated: true 
-      })
-      .where(eq(songs.id, songId));
-    
-    console.log('Waveform saved to local database for song:', songId);
+    console.log('saveWaveform: Music data handled locally in browser, not on server');
   }
 
   async getWaveform(songId: string): Promise<number[] | null> {
-    const [song] = await localDb.select({ waveformData: songs.waveformData }).from(songs).where(eq(songs.id, songId));
-    
-    if (song?.waveformData) {
-      try {
-        return JSON.parse(song.waveformData);
-      } catch (error) {
-        console.error('Error parsing waveform data:', error);
-        return null;
-      }
-    }
-    
+    console.log('getWaveform: Music data handled locally in browser, not on server');
     return null;
   }
 }

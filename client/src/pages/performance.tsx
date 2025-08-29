@@ -212,7 +212,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     audioLevels
   } = audioEngine;
 
+  // Create toggle functions for track manager compatibility
+  const toggleTrackMute = useCallback((trackId: string) => {
+    updateTrackMute(trackId);
+  }, [updateTrackMute]);
 
+  const toggleTrackSolo = useCallback((trackId: string) => {
+    updateTrackSolo(trackId);
+  }, [updateTrackSolo]);
 
   // Keyboard shortcuts
   useKeyboardShortcuts({

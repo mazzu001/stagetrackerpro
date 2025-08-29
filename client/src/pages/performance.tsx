@@ -310,7 +310,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       // Load in streaming engine only
       if (song.tracks && song.tracks.length > 0) {
         console.log(`🚀 Switching to streaming mode for: ${song.title}`);
-        streamingAudioEngine.loadSong(song);
+        streamingAudioEngine.loadSong(song).catch(error => {
+          console.error('❌ Streaming load failed:', error);
+        });
       }
     } else {
       // In preload mode, use the original audio engine
@@ -1016,7 +1018,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               </>
             )}
           </div>
-          {(useStreamingMode ? (!streamingAudioEngine.isReady) : isLoadingTracks) && (
+          {(useStreamingMode ? (streamingAudioEngine.isLoading || !streamingAudioEngine.isReady) : isLoadingTracks) && (
             <div className="flex items-center gap-2 text-sm text-yellow-400">
               <Loader2 className="h-4 w-4 animate-spin" />
               {useStreamingMode ? 'Setting up streams...' : 'Loading tracks...'}

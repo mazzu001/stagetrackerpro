@@ -75,7 +75,7 @@ export class StreamingAudioEngine {
     
     // Set up duration detection without blocking
     if (tracks.length > 0) {
-      setTimeout(() => this.setupDurationDetection(), 10);
+      this.setupDurationDetection();
     }
     
     this.notifyListeners();
@@ -350,7 +350,9 @@ export class StreamingAudioEngine {
   }
 
   get isReady(): boolean {
-    return this.state.tracks.length > 0 && this.state.duration > 0;
+    const ready = this.state.tracks.length > 0;
+    console.log(`🔍 Streaming isReady check: ${ready} (tracks: ${this.state.tracks.length}, duration: ${this.state.duration})`);
+    return ready;
   }
 
   subscribe(listener: () => void) {

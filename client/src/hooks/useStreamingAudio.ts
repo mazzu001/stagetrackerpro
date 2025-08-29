@@ -61,7 +61,7 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
   }, [streamingEngine]);
 
   const loadSong = useCallback(async (song: SongWithTracks) => {
-    if (!song || song.tracks.length === 0) {
+    if (!song || !song.tracks || song.tracks.length === 0) {
       console.warn('🚀 No tracks to load for streaming');
       setIsLoading(false);
       setIsReady(false);
@@ -72,6 +72,8 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
     setIsLoading(true);
     setIsReady(false);
     setCurrentSong(song);
+    
+
     
     try {
       console.log(`🚀 Streaming load: "${song.title}" with ${song.tracks.length} tracks (instant setup)`);
@@ -100,16 +102,19 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
       }
       
       // Load tracks in streaming engine (instant)
+      console.log('🔄 About to load tracks in streaming engine...');
       await streamingEngine.loadTracks(trackData);
-      setIsReady(true);
+      console.log('✅ Streaming engine loadTracks completed');
       
-      console.log(`✅ Streaming hook ready: "${song.title}" with ${trackData.length} tracks`);
+      // Force state update immediately
+      setIsReady(true);
+      setIsLoading(false);
       
       console.log(`✅ Streaming ready: "${song.title}" - ${trackData.length}/${song.tracks.length} tracks loaded instantly`);
+      console.log('🎯 Streaming hook state updated: isLoading=false, isReady=true');
     } catch (error) {
       console.error('❌ Streaming load failed:', error);
       setIsReady(false);
-    } finally {
       setIsLoading(false);
     }
   }, [streamingEngine]);

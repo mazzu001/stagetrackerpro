@@ -171,6 +171,24 @@ export default function TrackManager({
             });
             return;
           }
+
+          // Mobile safety: Warn if trying to process too many files at once
+          const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          if (isMobileDevice && files.length > 3) {
+            const shouldContinue = confirm(
+              `📱 Mobile Safety Warning: You're trying to add ${files.length} files at once. ` +
+              `This might cause the app to crash on mobile devices.\n\n` +
+              `For better stability, consider adding 3 or fewer files at a time.\n\n` +
+              `Do you want to continue anyway?`
+            );
+            
+            if (!shouldContinue) {
+              console.log('📱 User cancelled mobile bulk upload for safety');
+              return;
+            }
+            
+            console.log('📱 User chose to proceed with bulk upload on mobile - using extra safety measures');
+          }
           
           setSelectedFiles(files);
           setIsImporting(true);
@@ -178,9 +196,18 @@ export default function TrackManager({
           let totalDuration = 0;
           let processedCount = 0;
           
+          // Detect if we're on a mobile device for safer processing
+          const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          const processingDelay = isMobile ? 1000 : 200; // Longer delays on mobile
+          
           for (const file of files) {
             try {
               console.log(`Processing file ${processedCount + 1}/${files.length}: ${file.name}`);
+              
+              if (isMobile) {
+                console.log(`📱 Mobile device detected - using safe processing with ${processingDelay}ms delays`);
+              }
+              
               await processFile(file);
               processedCount++;
               
@@ -191,6 +218,7 @@ export default function TrackManager({
                 await new Promise<void>((resolve) => {
                   const cleanup = () => {
                     URL.revokeObjectURL(url);
+                    audio.src = ''; // Clear audio source to free memory
                     resolve();
                   };
                   
@@ -200,11 +228,29 @@ export default function TrackManager({
                   });
                   
                   audio.addEventListener('error', cleanup);
+                  
+                  // Add timeout for mobile stability
+                  if (isMobile) {
+                    setTimeout(cleanup, 5000); // 5 second timeout on mobile
+                  }
+                  
                   audio.src = url;
                 });
               } catch (durationError) {
                 console.warn(`Could not get duration for ${file.name}:`, durationError);
               }
+              
+              // Add delay between files for mobile memory management
+              if (processedCount < files.length && (isMobile || files.length > 3)) {
+                console.log(`⏳ Waiting ${processingDelay}ms before next file (mobile safety)...`);
+                await new Promise(resolve => setTimeout(resolve, processingDelay));
+                
+                // Force garbage collection hint (helps on mobile)
+                if (isMobile && 'gc' in window && typeof window.gc === 'function') {
+                  window.gc();
+                }
+              }
+              
             } catch (fileError) {
               console.error(`Failed to process file ${file.name}:`, fileError);
               toast({
@@ -212,6 +258,12 @@ export default function TrackManager({
                 description: `Failed to process ${file.name}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`,
                 variant: "destructive"
               });
+              
+              // On mobile, stop processing if we hit an error to prevent cascading failures
+              if (isMobile) {
+                console.log(`📱 Mobile error detected - stopping batch processing to prevent crash`);
+                break;
+              }
             }
           }
           

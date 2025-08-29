@@ -780,7 +780,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </div>
       </div>
-
       {/* Main Content */}
       <div className="flex-1 flex min-h-0">
         {/* Left Sidebar - Song Selection */}
@@ -1049,8 +1048,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
         </div>
       </div>
-      
-
       {/* Status Bar & Manual MIDI Send - Desktop only */}
       <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 mobile-hidden">
         <div className="flex items-center justify-between gap-4">
@@ -1158,7 +1155,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </DialogContent>
       </Dialog>
-
       {/* Track Manager Dialog */}
       <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
         <DialogContent className="max-w-6xl max-h-[90vh]" data-testid="dialog-track-manager">
@@ -1189,13 +1185,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           )}
         </DialogContent>
       </Dialog>
-
       {/* Persistent Web MIDI Manager Dialog - Professional Users Only */}
       {userType === 'professional' && isBluetoothDevicesOpen && (
         <Dialog open={isBluetoothDevicesOpen} onOpenChange={setIsBluetoothDevicesOpen}>
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>Persistent Web MIDI Devices</DialogTitle>
+              <DialogTitle>Bluetooth MIDI Devices</DialogTitle>
               <p className="text-sm text-muted-foreground">
                 Connections persist even when this dialog is closed - perfect for live performance automation
               </p>
@@ -1204,7 +1199,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </DialogContent>
         </Dialog>
       )}
-
       {/* USB MIDI Manager Dialog - Professional Users Only */}
       {userType === 'professional' && (
         <Dialog open={isUSBMidiOpen} onOpenChange={setIsUSBMidiOpen}>
@@ -1219,7 +1213,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </DialogContent>
         </Dialog>
       )}
-
     </div>
   );
 }

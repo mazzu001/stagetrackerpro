@@ -1054,7 +1054,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           },
         ],
         mode: 'subscription',
-        success_url: successUrl,
+        success_url: `${successUrl}?redirect_status=succeeded&email=${encodeURIComponent(email)}&tier=${tier}`,
         cancel_url: cancelUrl,
         metadata: {
           email,

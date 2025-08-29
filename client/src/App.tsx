@@ -29,42 +29,46 @@ function AppContent() {
     // Check URL parameters for successful payment
     const urlParams = new URLSearchParams(window.location.search);
     const redirectStatus = urlParams.get('redirect_status');
+    const email = urlParams.get('email');
+    const tier = urlParams.get('tier');
     
-    if (redirectStatus === 'succeeded') {
+    if (redirectStatus === 'succeeded' && email && tier) {
       // Clear URL parameters immediately to prevent re-processing
       window.history.replaceState({}, document.title, window.location.pathname);
       
-      console.log('✅ Payment completed successfully - updating subscription status');
+      console.log(`✅ Payment completed successfully - updating ${email} to ${tier}`);
       
       // Update subscription status immediately
       const updateSubscription = async () => {
         try {
-          const userData = localStorage.getItem('lpp_local_user');
-          if (userData) {
-            const user = JSON.parse(userData);
-            
-            // Update subscription status to Professional (since that's what we're selling)
-            const response = await fetch('/api/update-subscription-status', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ 
-                email: user.email,
-                subscriptionStatus: 3 // Professional tier
-              })
-            });
-            
-            if (response.ok) {
-              // Update local storage immediately
-              user.userType = 'professional';
+          // Determine subscription status based on tier
+          const subscriptionStatus = tier === 'professional' ? 3 : tier === 'premium' ? 2 : 1;
+          
+          const response = await fetch('/api/update-subscription-status', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              email: email,
+              subscriptionStatus: subscriptionStatus
+            })
+          });
+          
+          if (response.ok) {
+            // Update local storage immediately  
+            const userData = localStorage.getItem('lpp_local_user');
+            if (userData) {
+              const user = JSON.parse(userData);
+              user.userType = tier;
               localStorage.setItem('lpp_local_user', JSON.stringify(user));
-              
-              console.log('✅ Subscription updated to Professional');
-              
-              // Force page refresh to load with new subscription
-              window.location.reload();
-            } else {
-              console.error('❌ Failed to update subscription status');
             }
+            
+            const tierName = tier === 'professional' ? 'Professional' : tier === 'premium' ? 'Premium' : 'Free';
+            console.log(`✅ Subscription updated to ${tierName}`);
+            
+            // Force page refresh to load with new subscription
+            window.location.reload();
+          } else {
+            console.error('❌ Failed to update subscription status');
           }
         } catch (error) {
           console.error('❌ Error updating subscription:', error);

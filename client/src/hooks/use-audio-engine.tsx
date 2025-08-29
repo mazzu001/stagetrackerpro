@@ -102,18 +102,19 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       const loadTracksAsync = async () => {
         try {
           const audioStorage = AudioFileStorage.getInstance();
-          const trackData = [];
           
-          for (const track of song.tracks) {
+          // Load all audio URLs in parallel to prevent blocking
+          const audioUrlPromises = song.tracks.map(async (track) => {
             const audioUrl = await audioStorage.getAudioUrl(track.id);
-            if (audioUrl) {
-              trackData.push({
-                id: track.id,
-                name: track.name,
-                url: audioUrl
-              });
-            }
-          }
+            return audioUrl ? {
+              id: track.id,
+              name: track.name,
+              url: audioUrl
+            } : null;
+          });
+          
+          const trackDataResults = await Promise.all(audioUrlPromises);
+          const trackData = trackDataResults.filter(track => track !== null);
           
           await audioEngineRef.current?.loadTracks(trackData);
           

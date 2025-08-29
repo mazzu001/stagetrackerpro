@@ -21,6 +21,11 @@ interface BluetoothDevice {
   id: string;
   name: string;
   connected: boolean;
+  paired?: boolean;
+  lastSeen?: string;
+  deviceType?: 'midi' | 'audio' | 'other';
+  batteryLevel?: number;
+  signalStrength?: number;
 }
 
 interface SimpleBluetoothManagerProps {
@@ -33,8 +38,10 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
   const isProfessional = user?.userType === 'professional';
   const { toast } = useToast();
 
-  // All state hooks
+  // All state hooks  
   const [devices, setDevices] = useState<BluetoothDevice[]>([]);
+  const [offlineDevices, setOfflineDevices] = useState<BluetoothDevice[]>([]);
+  const [availableDevices, setAvailableDevices] = useState<BluetoothDevice[]>([]);
   const [selectedDevice, setSelectedDevice] = useState<BluetoothDevice | null>(null);
   const [isScanning, setIsScanning] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -119,11 +126,15 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     };
   }, [bluetoothDevice, midiCharacteristic]);
 
-  // Check Bluetooth support
+  // Check Bluetooth support and load stored devices
   useEffect(() => {
     const checkBluetoothSupport = async () => {
       if ('bluetooth' in navigator) {
         setHasBluetoothSupport(true);
+        
+        // Load previously paired devices
+        loadStoredDevices();
+        
         // Try to restore previously connected device
         const savedDeviceId = localStorage.getItem('bluetooth_device_id');
         const savedDeviceName = localStorage.getItem('bluetooth_device_name');
@@ -171,11 +182,18 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
 
       console.log('📱 Found device:', device.name || 'Unknown Device');
       
+      const deviceType = determineDeviceType(device.name || 'Unknown Device');
       const newDevice: BluetoothDevice = {
         id: device.id,
         name: device.name || 'Unknown Device',
-        connected: false
+        connected: false,
+        paired: false,
+        deviceType: deviceType,
+        lastSeen: new Date().toISOString()
       };
+      
+      // Save device to storage
+      saveDeviceToStorage(newDevice);
 
       setDevices(prev => {
         const exists = prev.find(d => d.id === device.id);
@@ -292,6 +310,9 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       // Remember this device
       localStorage.setItem('bluetooth_device_id', device.id);
       localStorage.setItem('bluetooth_device_name', device.name);
+      
+      // Save to paired devices
+      saveDeviceToStorage({ ...device, connected: true, deviceType: 'midi' });
 
       // Notify performance interface about connection status
       window.dispatchEvent(new CustomEvent('bluetoothMidiStatusChanged', {
@@ -579,6 +600,138 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
   const addMidiMessage = (message: string) => {
     const timestamp = new Date().toLocaleTimeString();
     setMidiMessages(prev => [...prev, { timestamp, message }].slice(-50)); // Keep last 50 messages
+  };
+
+  // Load stored devices from localStorage
+  const loadStoredDevices = () => {
+    try {
+      const storedDevices = localStorage.getItem('bluetooth_paired_devices');
+      if (storedDevices) {
+        const parsedDevices = JSON.parse(storedDevices) as BluetoothDevice[];
+        setOfflineDevices(parsedDevices.map(device => ({
+          ...device,
+          connected: false,
+          paired: true,
+          lastSeen: device.lastSeen || 'Unknown'
+        })));
+        console.log('📱 Loaded', parsedDevices.length, 'stored devices');
+      }
+    } catch (error) {
+      console.error('❌ Error loading stored devices:', error);
+    }
+  };
+
+  // Save device to localStorage when paired
+  const saveDeviceToStorage = (device: BluetoothDevice) => {
+    try {
+      const storedDevices = localStorage.getItem('bluetooth_paired_devices');
+      let devices = storedDevices ? JSON.parse(storedDevices) : [];
+      
+      // Check if device already exists
+      const existingIndex = devices.findIndex((d: BluetoothDevice) => d.id === device.id);
+      const deviceToSave = {
+        ...device,
+        lastSeen: new Date().toISOString(),
+        paired: true
+      };
+      
+      if (existingIndex >= 0) {
+        devices[existingIndex] = deviceToSave;
+      } else {
+        devices.push(deviceToSave);
+      }
+      
+      localStorage.setItem('bluetooth_paired_devices', JSON.stringify(devices));
+      console.log('💾 Saved device to storage:', device.name);
+    } catch (error) {
+      console.error('❌ Error saving device to storage:', error);
+    }
+  };
+
+  // Enhanced device scanning for more device types
+  const scanForAllDevices = async () => {
+    if (!hasBluetoothSupport) {
+      toast({
+        title: "Bluetooth Not Supported",
+        description: "This browser doesn't support Bluetooth",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsScanning(true);
+    try {
+      console.log('🔍 Scanning for all Bluetooth devices...');
+      
+      // First scan for MIDI devices (current functionality)
+      await scanForDevices();
+      
+      // Then scan for other Bluetooth devices
+      const device = await (navigator as any).bluetooth.requestDevice({
+        acceptAllDevices: true,
+        optionalServices: [
+          '03b80e5a-ede8-4b33-a751-6ce34ec4c700', // MIDI
+          '0000180f-0000-1000-8000-00805f9b34fb', // Battery Service
+          '0000180a-0000-1000-8000-00805f9b34fb', // Device Information
+          '0000110b-0000-1000-8000-00805f9b34fb', // Audio Sink
+          '0000110e-0000-1000-8000-00805f9b34fb', // A2DP
+          'generic_access',
+          'generic_attribute'
+        ]
+      });
+
+      const deviceType = determineDeviceType(device.name || 'Unknown');
+      const newDevice: BluetoothDevice = {
+        id: device.id,
+        name: device.name || 'Unknown Device',
+        connected: false,
+        paired: false,
+        deviceType: deviceType,
+        lastSeen: new Date().toISOString()
+      };
+
+      setAvailableDevices(prev => {
+        const exists = prev.find(d => d.id === device.id);
+        if (exists) return prev;
+        return [...prev, newDevice];
+      });
+
+      // Save to storage
+      saveDeviceToStorage(newDevice);
+
+      toast({
+        title: "Device Found",
+        description: `Found: ${newDevice.name} (${deviceType})`,
+      });
+
+    } catch (error) {
+      console.error('❌ Enhanced Bluetooth scan failed:', error);
+      // Don't show error toast for cancelled scans
+      const errorString = error instanceof Error ? error.message : String(error);
+      if (!errorString.includes('cancelled')) {
+        toast({
+          title: "Scan Failed",
+          description: "Failed to scan for Bluetooth devices",
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setIsScanning(false);
+    }
+  };
+
+  // Determine device type based on name and services
+  const determineDeviceType = (name: string): 'midi' | 'audio' | 'other' => {
+    const nameLower = name.toLowerCase();
+    if (nameLower.includes('midi') || nameLower.includes('widi') || 
+        nameLower.includes('cme') || nameLower.includes('roland')) {
+      return 'midi';
+    }
+    if (nameLower.includes('headphones') || nameLower.includes('speaker') || 
+        nameLower.includes('airpods') || nameLower.includes('audio')) {
+      return 'audio';
+    }
+    return 'other';
   };
 
   // Disconnect from device
@@ -876,53 +1029,174 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
               <CardTitle className="text-lg">Device Selection</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <Button 
-                onClick={scanForDevices} 
-                disabled={isScanning || !hasBluetoothSupport}
-                className="w-full"
-              >
-                <Search className="h-4 w-4 mr-2" />
-                {isScanning ? 'Scanning...' : 'Scan for Devices'}
-              </Button>
+              <div className="grid grid-cols-2 gap-2">
+                <Button 
+                  onClick={scanForDevices} 
+                  disabled={isScanning || !hasBluetoothSupport}
+                >
+                  <Search className="h-4 w-4 mr-2" />
+                  {isScanning ? 'Scanning MIDI...' : 'Scan MIDI Devices'}
+                </Button>
+                <Button 
+                  onClick={scanForAllDevices} 
+                  disabled={isScanning || !hasBluetoothSupport}
+                  variant="outline"
+                >
+                  <Search className="h-4 w-4 mr-2" />
+                  {isScanning ? 'Scanning All...' : 'Scan All Devices'}
+                </Button>
+              </div>
 
-              {devices.length > 0 && (
+              {/* Connected Devices */}
+              {devices.filter(d => d.connected).length > 0 && (
                 <div className="space-y-2">
-                  <h4 className="font-medium">Available Devices:</h4>
-                  <ScrollArea className="h-32">
-                    {devices.map(device => (
-                      <div key={device.id} className="flex items-center justify-between p-2 border rounded">
+                  <h4 className="font-medium flex items-center gap-2">
+                    <CheckCircle className="h-4 w-4 text-green-500" />
+                    Connected Devices:
+                  </h4>
+                  <ScrollArea className="h-24">
+                    {devices.filter(d => d.connected).map(device => (
+                      <div key={device.id} className="flex items-center justify-between p-2 border border-green-200 rounded bg-green-50 dark:bg-green-900/20">
                         <div className="flex items-center gap-2">
-                          <Bluetooth className="h-4 w-4" />
+                          <Bluetooth className="h-4 w-4 text-green-600" />
                           <span>{device.name}</span>
-                          {device.connected && (
-                            <Badge variant="default" className="text-xs">Connected</Badge>
+                          <Badge variant="default" className="text-xs bg-green-600">Connected</Badge>
+                          {device.deviceType && (
+                            <Badge variant="outline" className="text-xs">{device.deviceType}</Badge>
                           )}
                         </div>
-                        {!device.connected && (
-                          <div className="flex gap-1">
-                            <Button 
-                              onClick={() => connectToDevice(device)}
-                              disabled={isConnecting}
-                              size="sm"
-                              variant="outline"
-                            >
-                              <Wifi className="h-4 w-4 mr-1" />
-                              Connect
-                            </Button>
-                            <Button 
-                              onClick={() => forcePairDevice(device)}
-                              disabled={isConnecting}
-                              size="sm"
-                              variant="ghost"
-                              title="Force re-pair if connection issues persist"
-                            >
-                              🔧
-                            </Button>
-                          </div>
-                        )}
+                        <Button 
+                          onClick={disconnectFromDevice}
+                          size="sm"
+                          variant="outline"
+                        >
+                          <WifiOff className="h-4 w-4 mr-1" />
+                          Disconnect
+                        </Button>
                       </div>
                     ))}
                   </ScrollArea>
+                </div>
+              )}
+
+              {/* Available/Discovered Devices */}
+              {devices.filter(d => !d.connected).length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="font-medium flex items-center gap-2">
+                    <Search className="h-4 w-4 text-blue-500" />
+                    Available Devices:
+                  </h4>
+                  <ScrollArea className="h-32">
+                    {devices.filter(d => !d.connected).map(device => (
+                      <div key={device.id} className="flex items-center justify-between p-2 border border-blue-200 rounded bg-blue-50 dark:bg-blue-900/20">
+                        <div className="flex items-center gap-2">
+                          <Bluetooth className="h-4 w-4 text-blue-600" />
+                          <span>{device.name}</span>
+                          {device.deviceType && (
+                            <Badge variant="outline" className="text-xs">{device.deviceType}</Badge>
+                          )}
+                        </div>
+                        <div className="flex gap-1">
+                          <Button 
+                            onClick={() => connectToDevice(device)}
+                            disabled={isConnecting}
+                            size="sm"
+                            variant="outline"
+                          >
+                            <Wifi className="h-4 w-4 mr-1" />
+                            Connect
+                          </Button>
+                          <Button 
+                            onClick={() => forcePairDevice(device)}
+                            disabled={isConnecting}
+                            size="sm"
+                            variant="ghost"
+                            title="Force re-pair if connection issues persist"
+                          >
+                            🔧
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </ScrollArea>
+                </div>
+              )}
+
+              {/* Other Bluetooth Devices */}
+              {availableDevices.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="font-medium flex items-center gap-2">
+                    <Bluetooth className="h-4 w-4 text-purple-500" />
+                    Other Bluetooth Devices:
+                  </h4>
+                  <ScrollArea className="h-32">
+                    {availableDevices.map(device => (
+                      <div key={device.id} className="flex items-center justify-between p-2 border border-purple-200 rounded bg-purple-50 dark:bg-purple-900/20">
+                        <div className="flex items-center gap-2">
+                          <Bluetooth className="h-4 w-4 text-purple-600" />
+                          <span>{device.name}</span>
+                          {device.deviceType && (
+                            <Badge variant="outline" className="text-xs">{device.deviceType}</Badge>
+                          )}
+                          {device.lastSeen && (
+                            <span className="text-xs text-gray-500">Last seen: {new Date(device.lastSeen).toLocaleDateString()}</span>
+                          )}
+                        </div>
+                        <Button 
+                          onClick={() => connectToDevice(device)}
+                          disabled={isConnecting}
+                          size="sm"
+                          variant="outline"
+                        >
+                          <Wifi className="h-4 w-4 mr-1" />
+                          Connect
+                        </Button>
+                      </div>
+                    ))}
+                  </ScrollArea>
+                </div>
+              )}
+
+              {/* Offline/Paired Devices */}
+              {offlineDevices.length > 0 && (
+                <div className="space-y-2">
+                  <h4 className="font-medium flex items-center gap-2">
+                    <WifiOff className="h-4 w-4 text-gray-500" />
+                    Offline Devices (Bluetooth may be turned off):
+                  </h4>
+                  <ScrollArea className="h-32">
+                    {offlineDevices.map(device => (
+                      <div key={device.id} className="flex items-center justify-between p-2 border border-gray-300 rounded bg-gray-50 dark:bg-gray-800">
+                        <div className="flex items-center gap-2">
+                          <WifiOff className="h-4 w-4 text-gray-500" />
+                          <span className="text-gray-600 dark:text-gray-400">{device.name}</span>
+                          <Badge variant="secondary" className="text-xs">Offline</Badge>
+                          {device.deviceType && (
+                            <Badge variant="outline" className="text-xs">{device.deviceType}</Badge>
+                          )}
+                          {device.lastSeen && (
+                            <span className="text-xs text-gray-500">Last seen: {new Date(device.lastSeen).toLocaleDateString()}</span>
+                          )}
+                        </div>
+                        <Button 
+                          onClick={() => connectToDevice(device)}
+                          disabled={isConnecting}
+                          size="sm"
+                          variant="outline"
+                        >
+                          <Wifi className="h-4 w-4 mr-1" />
+                          Try Connect
+                        </Button>
+                      </div>
+                    ))}
+                  </ScrollArea>
+                </div>
+              )}
+
+              {devices.length === 0 && availableDevices.length === 0 && offlineDevices.length === 0 && (
+                <div className="text-center text-gray-500 py-4">
+                  <Bluetooth className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                  <p>No devices found. Try scanning for devices.</p>
                 </div>
               )}
             </CardContent>

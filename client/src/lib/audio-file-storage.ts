@@ -63,6 +63,9 @@ export class AudioFileStorage {
 
       this.audioFiles.set(trackId, storedFile);
       
+      // CRITICAL: Save metadata to localStorage so it persists between sessions
+      this.saveToStorage();
+      
       console.log(`Successfully stored audio file for track: ${track.name} (${Math.round(file.size / 1024)}KB)`);
     } catch (error) {
       console.error('Failed to store audio file:', error);
@@ -172,6 +175,9 @@ export class AudioFileStorage {
         this.audioFiles = new Map(data);
         console.log(`Loaded ${this.audioFiles.size} audio file path references from localStorage`);
         
+        // Auto-load audio files from IndexedDB into memory cache
+        this.autoLoadStoredFiles();
+        
         // Display which files we're looking for
         this.displayExpectedFiles();
       } else {
@@ -181,6 +187,29 @@ export class AudioFileStorage {
       console.error('Failed to load audio file references from storage:', error);
       this.audioFiles = new Map();
     }
+  }
+
+  // Automatically load stored audio files from IndexedDB into memory cache
+  private async autoLoadStoredFiles(): Promise<void> {
+    console.log(`🔄 Auto-loading ${this.audioFiles.size} stored audio files...`);
+    
+    let loadedCount = 0;
+    const trackIds = Array.from(this.audioFiles.keys());
+    
+    for (const trackId of trackIds) {
+      try {
+        // This will load from IndexedDB and cache in memory
+        const url = await this.browserFS.getAudioUrl(trackId);
+        if (url) {
+          loadedCount++;
+          console.log(`✅ Auto-loaded audio file for track: ${trackId}`);
+        }
+      } catch (error) {
+        console.warn(`⚠️ Failed to auto-load audio file for track: ${trackId}`, error);
+      }
+    }
+    
+    console.log(`✅ Auto-loaded ${loadedCount}/${this.audioFiles.size} audio files into cache`);
   }
 
   // Display the files that the app expects to find

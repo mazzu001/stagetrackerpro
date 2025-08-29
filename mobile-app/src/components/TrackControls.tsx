@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import VUMeter from './VUMeter';
+import StereoVUMeter from './StereoVUMeter';
 
 interface Track {
   id: string;
@@ -28,6 +28,7 @@ interface AudioLevel {
 interface TrackControlsProps {
   track: Track;
   audioLevel?: AudioLevel;
+  isPlaying?: boolean;
   onVolumeChange: (volume: number) => void;
   onMuteToggle: (muted: boolean) => void;
   onSoloToggle: (solo: boolean) => void;
@@ -37,6 +38,7 @@ interface TrackControlsProps {
 export default function TrackControls({
   track,
   audioLevel,
+  isPlaying = false,
   onVolumeChange,
   onMuteToggle,
   onSoloToggle,
@@ -61,10 +63,12 @@ export default function TrackControls({
 
       {/* VU Meter */}
       <View style={styles.vuMeterContainer}>
-        <VUMeter
-          level={audioLevel ? (audioLevel.left + audioLevel.right) / 2 : 0}
+        <StereoVUMeter
+          leftLevel={audioLevel ? audioLevel.left * 8 : 0}
+          rightLevel={audioLevel ? audioLevel.right * 8 : 0}
+          isPlaying={isPlaying}
           height={60}
-          showPeak={true}
+          width={20}
         />
       </View>
 

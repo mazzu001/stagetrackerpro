@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { AudioEngine } from "@/lib/audio-engine";
+import { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 import type { SongWithTracks } from "@shared/schema";
+import { AudioFileStorage } from "@/lib/audio-file-storage";
 
 interface UseAudioEngineProps {
   song?: SongWithTracks;
@@ -31,30 +32,35 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   const [masterVolume, setMasterVolume] = useState(85);
   const [isLoadingTracks, setIsLoadingTracks] = useState(false);
 
-  const audioEngineRef = useRef<AudioEngine | null>(null);
+  const audioEngineRef = useRef<StreamingAudioEngine | null>(null);
   const animationFrameRef = useRef<number>();
 
   // Initialize audio engine
   useEffect(() => {
     const initAudioEngine = async () => {
       try {
-        audioEngineRef.current = new AudioEngine();
+        audioEngineRef.current = new StreamingAudioEngine();
         
-        // Set up duration update callback
-        audioEngineRef.current.onDurationUpdated = (newDuration: number) => {
-          // Round duration to avoid decimal places in UI
-          const roundedDuration = Math.round(newDuration);
-          console.log(`Duration updated from audio buffers: ${roundedDuration}s`);
-          setDuration(roundedDuration);
-          
-          // Save duration to database if callback provided and song is loaded
-          if (song && onDurationUpdated) {
-            console.log(`Saving updated duration ${roundedDuration}s to database for song: ${song.title}`);
-            onDurationUpdated(song.id, roundedDuration);
+        // Set up state listener for duration updates
+        const unsubscribe = audioEngineRef.current.subscribe(() => {
+          if (audioEngineRef.current) {
+            const state = audioEngineRef.current.getState();
+            if (state.duration > 0 && state.duration !== duration) {
+              const roundedDuration = Math.round(state.duration);
+              console.log(`Duration updated from streaming engine: ${roundedDuration}s`);
+              setDuration(roundedDuration);
+              
+              // Save duration to database if callback provided and song is loaded
+              if (song && onDurationUpdated) {
+                console.log(`Saving updated duration ${roundedDuration}s to database for song: ${song.title}`);
+                onDurationUpdated(song.id, roundedDuration);
+              }
+            }
           }
-        };
+        });
         
-        await audioEngineRef.current.initialize();
+        // Store unsubscribe function
+        (audioEngineRef.current as any).unsubscribe = unsubscribe;
         setIsAudioEngineOnline(true);
       } catch (error) {
         console.error('Failed to initialize audio engine:', error);
@@ -66,6 +72,10 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
 
     return () => {
       if (audioEngineRef.current) {
+        // Call unsubscribe if it exists
+        if ((audioEngineRef.current as any).unsubscribe) {
+          (audioEngineRef.current as any).unsubscribe();
+        }
         audioEngineRef.current.dispose();
       }
       if (animationFrameRef.current) {
@@ -74,30 +84,47 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     };
   }, []);
 
-  // Set up song and preload tracks for instant playback
+  // Set up song and load tracks for streaming playback
   useEffect(() => {
     if (song && audioEngineRef.current) {
-      console.log(`Song selected: "${song.title}" with ${song.tracks.length} tracks - starting background preload`);
-      
-      // Set the song reference immediately (for visual display)
-      audioEngineRef.current.setSong(song);
+      console.log(`Song selected: "${song.title}" with ${song.tracks.length} tracks - loading for streaming`);
       
       // Use existing duration from database
       setDuration(song.duration);
       setCurrentTime(0);
       setIsPlaying(false);
       
-      // Start background preloading immediately for instant performance
-      console.log(`Starting immediate preload for "${song.title}"`);
+      // Start track loading for streaming playback
+      console.log(`Loading tracks for streaming: "${song.title}"`);
       setIsLoadingTracks(true);
       
-      audioEngineRef.current?.preloadSong(song).then(() => {
-        console.log(`✅ Background preload complete for "${song.title}" - ready for instant playback`);
-        setIsLoadingTracks(false);
-      }).catch((error: Error) => {
-        console.error(`❌ Background preload failed for "${song.title}":`, error);
-        setIsLoadingTracks(false);
-      });
+      // Convert song tracks to track data format and load
+      const loadTracksAsync = async () => {
+        try {
+          const audioStorage = AudioFileStorage.getInstance();
+          const trackData = [];
+          
+          for (const track of song.tracks) {
+            const audioUrl = await audioStorage.getAudioUrl(track.id);
+            if (audioUrl) {
+              trackData.push({
+                id: track.id,
+                name: track.name,
+                url: audioUrl
+              });
+            }
+          }
+          
+          await audioEngineRef.current?.loadTracks(trackData);
+          console.log(`✅ Streaming tracks loaded for "${song.title}" - ready for instant playback`);
+          setIsLoadingTracks(false);
+        } catch (error) {
+          console.error(`❌ Streaming track loading failed for "${song.title}":`, error);
+          setIsLoadingTracks(false);
+        }
+      };
+      
+      loadTracksAsync();
     }
   }, [song?.id, song?.tracks?.length]);
 
@@ -106,23 +133,31 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   useEffect(() => {
     const animate = () => {
       if (audioEngineRef.current && song) {
-        const levels = audioEngineRef.current.getAudioLevels();
+        const state = audioEngineRef.current.getState();
+        
+        // Update track levels
+        const levels: Record<string, number> = {};
+        song.tracks.forEach(track => {
+          const trackLevels = audioEngineRef.current!.getTrackLevels(track.id);
+          // Convert stereo levels to single level for compatibility
+          levels[track.id] = Math.max(trackLevels.left, trackLevels.right) * 100;
+        });
         setAudioLevels(levels);
         
-        const masterLevels = audioEngineRef.current.getMasterStereoLevels();
+        const masterLevels = audioEngineRef.current.getMasterLevels();
         setMasterStereoLevels(masterLevels);
         
         // Update loading state from audio engine
-        const engineIsLoading = audioEngineRef.current.getIsLoading();
+        const engineIsLoading = audioEngineRef.current.isLoading;
         if (isLoadingTracks !== engineIsLoading) {
           setIsLoadingTracks(engineIsLoading);
         }
         
         // Use audio engine's state to determine if we should update time
-        const engineIsPlaying = audioEngineRef.current.getIsPlaying();
+        const engineIsPlaying = state.isPlaying;
         if (engineIsPlaying) {
-          const time = audioEngineRef.current.getCurrentTime();
-          setCurrentTime(time); // Already rounded in getCurrentTime()
+          const time = state.currentTime;
+          setCurrentTime(time);
           
           // Simulate CPU usage fluctuation
           setCpuUsage(20 + Math.random() * 10);
@@ -157,17 +192,9 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     if (!audioEngineRef.current || !song) return;
     
     // Wait for tracks to be loaded if they're not already
-    if (!audioEngineRef.current.getIsLoaded()) {
-      console.log('Tracks not loaded, waiting for preload to complete...');
-      setIsLoadingTracks(true);
-      try {
-        await audioEngineRef.current.loadSong(song);
-        setIsLoadingTracks(false);
-      } catch (error) {
-        console.error('Failed to load tracks for playback:', error);
-        setIsLoadingTracks(false);
-        return;
-      }
+    if (!audioEngineRef.current.isReady) {
+      console.log('Tracks not loaded, cannot start playback yet');
+      return;
     }
     
     try {
@@ -196,7 +223,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
 
   const seek = useCallback(async (time: number) => {
     if (audioEngineRef.current) {
-      await audioEngineRef.current.seek(time);
+      audioEngineRef.current.seek(time);
       setCurrentTime(Math.round(time * 10) / 10);
     }
   }, []);
@@ -231,7 +258,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
 
   const updateMasterVolume = useCallback((volume: number) => {
     if (audioEngineRef.current) {
-      audioEngineRef.current.setMasterVolume(volume);
+      audioEngineRef.current.setMasterVolume(volume / 100); // Convert percentage to 0-1 range
       setMasterVolume(volume);
     }
   }, []);

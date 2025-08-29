@@ -313,11 +313,7 @@ export function PersistentWebMIDIManager() {
           </div>
         )}
 
-        {/* Help */}
-        <div className="text-xs text-muted-foreground bg-blue-50 dark:bg-blue-900/20 p-3 rounded border border-blue-200 dark:border-blue-800">
-          <p className="font-medium mb-1 text-blue-800 dark:text-blue-200">🎯 Persistent Connection:</p>
-          <p className="text-blue-700 dark:text-blue-300">Once connected, your MIDI device will remain accessible for automated commands even when this dialog is closed. Perfect for live performance!</p>
-        </div>
+        
       </CardContent>
     </Card>
   );

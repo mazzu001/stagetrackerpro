@@ -68,9 +68,11 @@ export class WaveformGenerator {
 
     console.log(`Auto-generating waveform for "${song.title}" from ${song.tracks.length} tracks...`);
 
+    // Declare AudioContext outside try block for proper cleanup access
+    let audioContext: AudioContext | null = null;
     try {
       // Use regular audio context for compatibility
-      const audioContext = new AudioContext();
+      audioContext = new AudioContext();
       const sampleCount = 400; // Standard resolution for performance
       const combinedData: number[] = new Array(sampleCount).fill(0);
       let maxDuration = 0;
@@ -85,6 +87,10 @@ export class WaveformGenerator {
         }
 
         try {
+          if (!audioContext) {
+            console.error('AudioContext not available for track processing');
+            return null;
+          }
           const audioBuffer = await audioContext.decodeAudioData(audioData.slice(0));
           const channelData = audioBuffer.getChannelData(0); // Use first channel
           
@@ -144,18 +150,10 @@ export class WaveformGenerator {
         // Save waveform to local cache for instant loading next time
         this.saveWaveformToCache(song.id, combinedData);
         
-        // Clean up audio context
-        if (typeof audioContext.close === 'function') {
-          await audioContext.close();
-        }
         return combinedData;
       } else {
         console.log('No tracks with audio data available, generating fallback waveform pattern');
         const fallbackData = this.generateFallbackWaveform(sampleCount, song.duration || 240);
-        // Clean up audio context
-        if (typeof audioContext.close === 'function') {
-          await audioContext.close();
-        }
         return fallbackData;
       }
 
@@ -164,6 +162,16 @@ export class WaveformGenerator {
       // On error, still generate fallback waveform
       console.log('Generating fallback waveform due to error');
       return this.generateFallbackWaveform(400, song.duration || 240);
+    } finally {
+      // Always clean up audio context in finally block to prevent resource leaks
+      try {
+        if (audioContext && audioContext.state !== 'closed' && typeof audioContext.close === 'function') {
+          await audioContext.close();
+          console.log('🔇 Closed temporary AudioContext for waveform generation');
+        }
+      } catch (closeError) {
+        console.warn('⚠️ Error closing AudioContext (already closed):', closeError);
+      }
     }
   }
 

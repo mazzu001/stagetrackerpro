@@ -485,7 +485,9 @@ export default function TrackManager({
       
       // Create track data
       const trackName = recordingName || `Recorded Track ${tracks.length + 1}`;
+      const trackId = `track_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       const trackData = {
+        id: trackId,
         songId: song.id,
         name: trackName,
         trackNumber: tracks.length + 1,
@@ -517,6 +519,11 @@ export default function TrackManager({
       }
       
       console.log('🎤 Track added to local storage successfully');
+
+      // Also store the audio file in AudioFileStorage for playback
+      const audioStorage = AudioFileStorage.getInstance();
+      await audioStorage.storeAudioFile(trackId, audioFile, trackData);
+      console.log('🎤 Audio file stored for playback:', trackId);
 
       // Get updated song and notify parent component
       const updatedSong = LocalSongStorage.getSong(user.email, song.id);

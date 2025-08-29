@@ -382,8 +382,14 @@ export class StreamingAudioEngine {
     this.stopTimeTracking();
     this.listeners.clear();
     
-    if (this.audioContext.state !== 'closed') {
-      this.audioContext.close();
+    // Enhanced AudioContext cleanup with error handling
+    try {
+      if (this.audioContext && this.audioContext.state !== 'closed') {
+        this.audioContext.close();
+        console.log('🔇 Streaming audio engine AudioContext closed');
+      }
+    } catch (error) {
+      console.warn('⚠️ Error closing streaming audio engine AudioContext (already closed):', error);
     }
   }
 }

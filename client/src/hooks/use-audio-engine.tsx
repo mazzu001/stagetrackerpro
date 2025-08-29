@@ -154,50 +154,14 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   }, [isPlaying, duration, song]);
 
   const play = useCallback(async () => {
-    if (audioEngineRef.current && song) {
-      // Check if already playing to prevent multiple calls
-      if (audioEngineRef.current.getIsPlaying()) {
-        console.log('Already playing, ignoring duplicate play request');
-        return;
-      }
-      
-      // Always ensure tracks are loaded before playing
-      console.log(`Play requested for "${song.title}" - checking track status`);
-      
-      if (!audioEngineRef.current.getIsLoaded()) {
-        console.log('Tracks not loaded - loading now for immediate playback');
-        setIsLoadingTracks(true);
-        
-        try {
-          await audioEngineRef.current.loadSong(song);
-          setIsLoadingTracks(false);
-          console.log(`Tracks loaded successfully: "${song.title}"`);
-        } catch (error) {
-          console.error(`Failed to load tracks for playback: "${song.title}"`, error);
-          setIsLoadingTracks(false);
-          return;
-        }
-      }
-      
-      // Tracks are loaded - start playback immediately
-      console.log(`Starting playback for "${song.title}"`);
+    if (!audioEngineRef.current || !song) return;
+    
+    try {
       await audioEngineRef.current.play();
       setIsPlaying(true);
-      
-      console.log(`Fallback loading tracks for playback: "${song.title}"`);
-      setIsLoadingTracks(true);
-      
-      try {
-        await audioEngineRef.current.loadSong(song);
-        setIsLoadingTracks(false);
-        console.log(`Fallback tracks loaded: "${song.title}"`);
-        
-        await audioEngineRef.current.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.error(`Failed to load song for playback: "${song.title}"`, error);
-        setIsLoadingTracks(false);
-      }
+    } catch (error) {
+      console.error('Failed to start playback:', error);
+      setIsPlaying(false);
     }
   }, [song]);
 

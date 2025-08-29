@@ -139,8 +139,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         const levels: Record<string, number> = {};
         song.tracks.forEach(track => {
           const trackLevels = audioEngineRef.current!.getTrackLevels(track.id);
-          // Convert stereo levels to single level for compatibility
-          levels[track.id] = Math.max(trackLevels.left, trackLevels.right) * 100;
+          // Convert stereo levels to single level with reduced sensitivity
+          levels[track.id] = Math.max(trackLevels.left, trackLevels.right) * 30; // Reduced from 100 to 30 for better range
         });
         setAudioLevels(levels);
         

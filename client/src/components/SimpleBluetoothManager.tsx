@@ -119,18 +119,16 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     };
   }, [bluetoothDevice, midiCharacteristic]);
 
-  // Check Bluetooth support
+  // Check Bluetooth support - ONE TIME ONLY, NO LOOPS
   useEffect(() => {
-    const checkBluetoothSupport = async () => {
+    const checkBluetoothSupport = () => {
       if ('bluetooth' in navigator) {
         setHasBluetoothSupport(true);
-        // Try to restore previously connected device
+        // Simply restore device info without auto-reconnect
         const savedDeviceId = localStorage.getItem('bluetooth_device_id');
         const savedDeviceName = localStorage.getItem('bluetooth_device_name');
         if (savedDeviceId && savedDeviceName) {
           setSelectedDevice({ id: savedDeviceId, name: savedDeviceName, connected: false });
-          // Attempt auto-reconnect
-          await attemptReconnect(savedDeviceId, savedDeviceName);
         }
       } else {
         setHasBluetoothSupport(false);
@@ -302,10 +300,14 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
         }
       }));
 
-      // Update devices list
-      setDevices(prev => prev.map(d => 
-        d.id === device.id ? { ...d, connected: true } : d
-      ));
+      // Update devices list - NO MAPPING LOOPS
+      setDevices(prev => {
+        const updated = prev.find(d => d.id === device.id);
+        if (updated) {
+          updated.connected = true;
+        }
+        return [...prev];
+      });
 
       toast({
         title: "Connected",
@@ -412,15 +414,12 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       let midiService = null;
       let characteristic = null;
 
-      // Try to find a MIDI service
-      for (const serviceUUID of midiServiceUUIDs) {
-        try {
-          midiService = await server.getPrimaryService(serviceUUID);
-          console.log(`✅ Found MIDI service: ${serviceUUID}`);
-          break;
-        } catch (e) {
-          console.log(`❌ Service ${serviceUUID} not found`);
-        }
+      // Try ONLY the standard MIDI service - NO LOOPS
+      try {
+        midiService = await server.getPrimaryService('03b80e5a-ede8-4b33-a751-6ce34ec4c700');
+        console.log('✅ Found standard MIDI service');
+      } catch (e) {
+        console.log('❌ Standard MIDI service not found');
       }
 
       if (!midiService) {
@@ -435,20 +434,20 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       let notifyCharacteristic = null;
       let writeCharacteristic = null;
 
-      // Look for characteristics we can use
-      for (const char of characteristics) {
-        console.log(`📋 Characteristic ${char.uuid}: notify=${char.properties.notify}, write=${char.properties.write}, writeWithoutResponse=${char.properties.writeWithoutResponse}`);
+      // Get first available characteristics - NO LOOPS
+      if (characteristics.length > 0) {
+        const firstChar = characteristics[0];
+        console.log(`📋 Using first characteristic ${firstChar.uuid}`);
         
-        // For receiving MIDI data
-        if (char.properties.notify || char.properties.indicate) {
-          notifyCharacteristic = char;
-          console.log(`🔔 Found notify characteristic: ${char.uuid}`);
+        // Check if first characteristic supports what we need
+        if (firstChar.properties.notify || firstChar.properties.indicate) {
+          notifyCharacteristic = firstChar;
+          console.log(`🔔 Using for notifications: ${firstChar.uuid}`);
         }
         
-        // For sending MIDI data - prefer writeWithoutResponse for MIDI
-        if (char.properties.writeWithoutResponse || char.properties.write) {
-          writeCharacteristic = char; // Always use the latest writable characteristic (might be same as notify)
-          console.log(`✍️ Found write characteristic: ${char.uuid} (write=${char.properties.write}, writeWithoutResponse=${char.properties.writeWithoutResponse})`);
+        if (firstChar.properties.writeWithoutResponse || firstChar.properties.write) {
+          writeCharacteristic = firstChar;
+          console.log(`✍️ Using for writing: ${firstChar.uuid}`);
         }
       }
 
@@ -604,11 +603,15 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     setSelectedDevice(prev => prev ? { ...prev, connected: false } : null);
     addMidiMessage('MIDI connection closed');
     
-    // Update devices list
+    // Update devices list - NO MAPPING LOOPS
     if (selectedDevice) {
-      setDevices(prev => prev.map(d => 
-        d.id === selectedDevice.id ? { ...d, connected: false } : d
-      ));
+      setDevices(prev => {
+        const updated = prev.find(d => d.id === selectedDevice.id);
+        if (updated) {
+          updated.connected = false;
+        }
+        return [...prev];
+      });
     }
 
     // Notify performance interface about disconnection

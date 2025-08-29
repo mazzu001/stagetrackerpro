@@ -205,6 +205,24 @@ export default function TrackManager({
   // Start recording
   const startRecording = async () => {
     try {
+      if (!song?.id) {
+        toast({
+          title: "No Song Selected",
+          description: "Please select a song before recording.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (tracks.length >= 6) {
+        toast({
+          title: "Track Limit Reached",
+          description: "Maximum 6 tracks allowed. Delete some tracks first.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       const constraints = {
         audio: {
           deviceId: selectedAudioInput ? { exact: selectedAudioInput } : undefined,
@@ -216,9 +234,17 @@ export default function TrackManager({
       };
 
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      
+      // Stop any existing recording stream first
+      if (recordingStream && recordingStream !== stream) {
+        recordingStream.getTracks().forEach(track => track.stop());
+      }
       setRecordingStream(stream);
 
       // Set up audio analysis for level monitoring
+      if (recordingAudioContext.current) {
+        recordingAudioContext.current.close();
+      }
       recordingAudioContext.current = new AudioContext({ sampleRate: 44100 });
       const source = recordingAudioContext.current.createMediaStreamSource(stream);
       recordingAnalyser.current = recordingAudioContext.current.createAnalyser();
@@ -383,6 +409,8 @@ export default function TrackManager({
         throw new Error('Recording too short - please record for at least 1 second');
       }
 
+      console.log('🎤 Recording validation passed, processing audio blob...');
+
       console.log('🎤 Recording completed, duration:', recordingDuration.toFixed(1), 'seconds');
       
       // Immediately add the recorded track to the song
@@ -413,6 +441,7 @@ export default function TrackManager({
   // Add recorded track to song
   const addRecordedTrack = async (audioFile: File) => {
     if (!song?.id || !user?.email) {
+      console.error('🎤 Cannot add track: missing song ID or user email');
       toast({
         title: "Error",
         description: "Please select a song first.",
@@ -431,7 +460,36 @@ export default function TrackManager({
         lastModified: audioFile.lastModified
       });
 
+      // Validate file before processing
+      if (!audioFile.size || audioFile.size === 0) {
+        throw new Error('Audio file is empty or corrupted');
+      }
+
+      // Test if file can be read as audio
+      const audioUrl = URL.createObjectURL(audioFile);
+      const testAudio = new Audio(audioUrl);
+      
+      // Wait for audio to load metadata
+      await new Promise((resolve, reject) => {
+        testAudio.onloadedmetadata = () => {
+          console.log('🎤 Audio file validated - duration:', testAudio.duration, 'seconds');
+          URL.revokeObjectURL(audioUrl);
+          resolve(true);
+        };
+        testAudio.onerror = (e) => {
+          console.error('🎤 Audio file validation failed:', e);
+          URL.revokeObjectURL(audioUrl);
+          reject(new Error('Invalid audio file format'));
+        };
+        // Timeout after 5 seconds
+        setTimeout(() => {
+          URL.revokeObjectURL(audioUrl);
+          reject(new Error('Audio validation timeout'));
+        }, 5000);
+      });
+
       // Store the audio file using the local storage system
+      console.log('🎤 Storing audio file...');
       const filePath = await AudioFileStorage.storeAudioFile(audioFile, user.email);
       console.log('🎤 Audio file stored at:', filePath);
       
@@ -451,27 +509,38 @@ export default function TrackManager({
 
       console.log('🎤 Creating track with data:', trackData);
 
+      // Check if LocalSongStorage is available
+      if (!LocalSongStorage) {
+        throw new Error('Local storage system not available');
+      }
+
       // Use LocalSongStorage directly instead of API call
+      console.log('🎤 Adding track to local storage...');
       const success = LocalSongStorage.addTrack(user.email, song.id, trackData);
       
       if (!success) {
-        throw new Error('Failed to save track to local storage');
+        console.error('🎤 LocalSongStorage.addTrack returned false');
+        throw new Error('Failed to save track to local storage - operation returned false');
       }
+      
+      console.log('🎤 Track added to local storage successfully');
 
       // Get updated song and notify parent component
       const updatedSong = LocalSongStorage.getSong(user.email, song.id);
       if (updatedSong && onSongUpdate) {
         console.log('🎤 Track added, refreshing song with', updatedSong.tracks.length, 'tracks');
         onSongUpdate(updatedSong as any);
+      } else {
+        throw new Error('Failed to retrieve updated song after adding track');
       }
 
       console.log('🎤 Recorded track added to song successfully:', trackName);
 
     } catch (error) {
-      console.error('Error adding recorded track:', error);
+      console.error('🎤 Error adding recorded track:', error);
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to add recorded track to song.",
+        title: "Processing Error",
+        description: error instanceof Error ? error.message : "Failed to process recorded audio.",
         variant: "destructive",
       });
     } finally {

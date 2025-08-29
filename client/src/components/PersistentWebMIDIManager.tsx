@@ -15,6 +15,9 @@ interface MIDIDevice {
   state: string;
   type: 'input' | 'output';
   connection: string;
+  deviceType?: 'usb' | 'bluetooth' | 'other';
+  lastSeen?: string;
+  paired?: boolean;
 }
 
 export function PersistentWebMIDIManager() {
@@ -22,6 +25,8 @@ export function PersistentWebMIDIManager() {
   const [midiMessages, setMidiMessages] = useState<string[]>([]);
   const [lastSentMessage, setLastSentMessage] = useState('');
   const [availableOutputs, setAvailableOutputs] = useState<MIDIDevice[]>([]);
+  const [offlineDevices, setOfflineDevices] = useState<MIDIDevice[]>([]);
+  const [bluetoothDevices, setBluetoothDevices] = useState<MIDIDevice[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const { toast } = useToast();
   
@@ -33,8 +38,28 @@ export function PersistentWebMIDIManager() {
     try {
       await globalMidi.refreshDevices();
       const outputs = globalMidi.getAvailableOutputs();
-      setAvailableOutputs(outputs);
-      console.log('🔄 Refreshed MIDI devices:', outputs.length, 'outputs found');
+      
+      // Categorize devices and save previously connected ones
+      const enhancedOutputs = outputs.map(device => {
+        const deviceType = determineDeviceType(device.name, device.manufacturer);
+        const enhanced = { ...device, deviceType, lastSeen: new Date().toISOString() };
+        
+        // Save device for offline tracking
+        if (device.state === 'connected' || device.connection === 'open') {
+          saveOfflineDevice(enhanced);
+        }
+        
+        return enhanced;
+      });
+      
+      // Separate USB and Bluetooth devices
+      const usbDevices = enhancedOutputs.filter(d => d.deviceType === 'usb' || d.deviceType === 'other');
+      const bluetoothMidiDevices = enhancedOutputs.filter(d => d.deviceType === 'bluetooth');
+      
+      setAvailableOutputs(usbDevices);
+      setBluetoothDevices(bluetoothMidiDevices);
+      
+      console.log('🔄 Refreshed MIDI devices:', outputs.length, 'total -', usbDevices.length, 'USB,', bluetoothMidiDevices.length, 'Bluetooth');
     } catch (error) {
       console.error('❌ Failed to refresh devices:', error);
     } finally {
@@ -42,8 +67,69 @@ export function PersistentWebMIDIManager() {
     }
   };
 
+  // Determine device type
+  const determineDeviceType = (name: string, manufacturer: string): 'usb' | 'bluetooth' | 'other' => {
+    const nameLower = name.toLowerCase();
+    const mfgLower = manufacturer.toLowerCase();
+    
+    if (nameLower.includes('bluetooth') || nameLower.includes('ble') || 
+        nameLower.includes('wireless') || nameLower.includes('widi') ||
+        mfgLower.includes('bluetooth')) {
+      return 'bluetooth';
+    }
+    
+    if (nameLower.includes('usb') || mfgLower.includes('usb')) {
+      return 'usb';
+    }
+    
+    return 'other';
+  };
+
+  // Load stored offline devices
+  const loadStoredDevices = () => {
+    try {
+      const storedDevices = localStorage.getItem('midi_offline_devices');
+      if (storedDevices) {
+        const parsedDevices = JSON.parse(storedDevices) as MIDIDevice[];
+        setOfflineDevices(parsedDevices);
+        console.log('📱 Loaded', parsedDevices.length, 'offline MIDI devices');
+      }
+    } catch (error) {
+      console.error('❌ Error loading offline devices:', error);
+    }
+  };
+
+  // Save device to offline storage
+  const saveOfflineDevice = (device: MIDIDevice) => {
+    try {
+      const storedDevices = localStorage.getItem('midi_offline_devices');
+      let devices = storedDevices ? JSON.parse(storedDevices) : [];
+      
+      const existingIndex = devices.findIndex((d: MIDIDevice) => d.id === device.id);
+      const deviceToSave = {
+        ...device,
+        lastSeen: new Date().toISOString(),
+        paired: true
+      };
+      
+      if (existingIndex >= 0) {
+        devices[existingIndex] = deviceToSave;
+      } else {
+        devices.push(deviceToSave);
+      }
+      
+      localStorage.setItem('midi_offline_devices', JSON.stringify(devices));
+      console.log('💾 Saved offline device:', device.name);
+    } catch (error) {
+      console.error('❌ Error saving offline device:', error);
+    }
+  };
+
   // Get devices on mount and when global MIDI state changes
   useEffect(() => {
+    // Load stored devices first
+    loadStoredDevices();
+    
     // Delay the initial refresh to prevent blocking
     const timer = setTimeout(() => {
       refreshDevices();
@@ -201,10 +287,10 @@ export function PersistentWebMIDIManager() {
           </p>
         </div>
 
-        {/* Output Devices */}
+        {/* Device Categories */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-semibold">MIDI Output Devices</h3>
+            <h3 className="text-lg font-semibold">MIDI Devices</h3>
             <Button 
               onClick={refreshDevices} 
               disabled={isRefreshing}
@@ -212,49 +298,164 @@ export function PersistentWebMIDIManager() {
               variant="outline"
             >
               <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-              Refresh
+              Refresh All
             </Button>
           </div>
 
-          {availableOutputs.length === 0 ? (
+          {/* Connected Devices */}
+          {[...availableOutputs, ...bluetoothDevices].filter(d => d.state === 'connected').length > 0 && (
+            <div className="mb-4">
+              <h4 className="font-medium mb-2 flex items-center gap-2">
+                <Wifi className="h-4 w-4 text-green-500" />
+                Connected Devices
+              </h4>
+              <div className="grid gap-2">
+                {[...availableOutputs, ...bluetoothDevices].filter(d => d.state === 'connected').map((device) => (
+                  <div key={device.id} className="flex items-center justify-between p-3 border border-green-200 rounded-lg bg-green-50 dark:bg-green-900/20">
+                    <div className="flex items-center gap-3">
+                      <Music className="h-4 w-4 text-green-600" />
+                      <div>
+                        <div className="font-medium">{device.name}</div>
+                        <div className="text-sm text-muted-foreground">{device.manufacturer}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="default" className="bg-green-600">Connected</Badge>
+                      <Badge variant="outline" className="text-xs">{device.deviceType}</Badge>
+                      <Button
+                        size="sm"
+                        onClick={() => connectToOutput(device.id)}
+                        variant={globalMidi.isConnected && globalMidi.deviceName === device.name ? 'default' : 'outline'}
+                      >
+                        {globalMidi.isConnected && globalMidi.deviceName === device.name ? 'Active' : 'Use'}
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Available USB Devices */}
+          {availableOutputs.filter(d => d.state !== 'connected').length > 0 && (
+            <div className="mb-4">
+              <h4 className="font-medium mb-2 flex items-center gap-2">
+                <Music className="h-4 w-4 text-blue-500" />
+                Available USB MIDI Devices
+              </h4>
+              <div className="grid gap-2">
+                {availableOutputs.filter(d => d.state !== 'connected').map((device) => (
+                  <div key={device.id} className="flex items-center justify-between p-3 border border-blue-200 rounded-lg bg-blue-50 dark:bg-blue-900/20">
+                    <div className="flex items-center gap-3">
+                      <Music className="h-4 w-4 text-blue-600" />
+                      <div>
+                        <div className="font-medium">{device.name}</div>
+                        <div className="text-sm text-muted-foreground">{device.manufacturer}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary">{device.state}</Badge>
+                      <Badge variant="outline" className="text-xs">{device.deviceType}</Badge>
+                      <Button
+                        size="sm"
+                        onClick={() => connectToOutput(device.id)}
+                        disabled={device.state !== 'connected'}
+                        variant="outline"
+                      >
+                        Connect
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Bluetooth MIDI Devices */}
+          {bluetoothDevices.length > 0 && (
+            <div className="mb-4">
+              <h4 className="font-medium mb-2 flex items-center gap-2">
+                <Wifi className="h-4 w-4 text-purple-500" />
+                Bluetooth MIDI Devices
+              </h4>
+              <div className="grid gap-2">
+                {bluetoothDevices.map((device) => (
+                  <div key={device.id} className="flex items-center justify-between p-3 border border-purple-200 rounded-lg bg-purple-50 dark:bg-purple-900/20">
+                    <div className="flex items-center gap-3">
+                      <Wifi className="h-4 w-4 text-purple-600" />
+                      <div>
+                        <div className="font-medium">{device.name}</div>
+                        <div className="text-sm text-muted-foreground">{device.manufacturer}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant={device.state === 'connected' ? 'default' : 'secondary'}>
+                        {device.state}
+                      </Badge>
+                      <Badge variant="outline" className="text-xs">bluetooth</Badge>
+                      <Button
+                        size="sm"
+                        onClick={() => connectToOutput(device.id)}
+                        disabled={device.state !== 'connected'}
+                        variant="outline"
+                      >
+                        Connect
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Offline Devices */}
+          {offlineDevices.length > 0 && (
+            <div className="mb-4">
+              <h4 className="font-medium mb-2 flex items-center gap-2">
+                <WifiOff className="h-4 w-4 text-gray-500" />
+                Offline Devices (Bluetooth may be turned off)
+              </h4>
+              <div className="grid gap-2">
+                {offlineDevices.map((device) => (
+                  <div key={device.id} className="flex items-center justify-between p-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800">
+                    <div className="flex items-center gap-3">
+                      <WifiOff className="h-4 w-4 text-gray-500" />
+                      <div>
+                        <div className="font-medium text-gray-600 dark:text-gray-400">{device.name}</div>
+                        <div className="text-sm text-gray-500">{device.manufacturer} • Last seen: {device.lastSeen ? new Date(device.lastSeen).toLocaleDateString() : 'Unknown'}</div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="secondary">Offline</Badge>
+                      <Badge variant="outline" className="text-xs">{device.deviceType}</Badge>
+                      <Button
+                        size="sm"
+                        onClick={() => connectToOutput(device.id)}
+                        variant="outline"
+                        title="Try to reconnect - device must be turned on and in range"
+                      >
+                        Try Connect
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* No devices found */}
+          {availableOutputs.length === 0 && bluetoothDevices.length === 0 && offlineDevices.length === 0 && (
             <div className="text-muted-foreground space-y-2">
-              <p>No MIDI output devices found</p>
+              <p>No MIDI devices found</p>
               <div className="text-xs bg-muted/50 p-3 rounded">
                 <p className="font-medium mb-1">Troubleshooting:</p>
                 <ul className="space-y-1 list-disc list-inside">
-                  <li>Connect your MIDI device to your computer</li>
-                  <li>For Bluetooth MIDI: Pair and connect your device first</li>
+                  <li>Connect your USB MIDI device to your computer</li>
+                  <li>For Bluetooth MIDI: Pair and connect your device in system settings first</li>
                   <li>Ensure your device appears in system MIDI settings</li>
-                  <li>Try clicking "Refresh" above</li>
+                  <li>Try clicking "Refresh All" above</li>
                 </ul>
               </div>
-            </div>
-          ) : (
-            <div className="grid gap-2">
-              {availableOutputs.map((device) => (
-                <div key={device.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Music className="h-4 w-4" />
-                    <div>
-                      <div className="font-medium">{device.name}</div>
-                      <div className="text-sm text-muted-foreground">{device.manufacturer}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant={device.state === 'connected' ? 'default' : 'secondary'}>
-                      {device.state}
-                    </Badge>
-                    <Button
-                      size="sm"
-                      onClick={() => connectToOutput(device.id)}
-                      disabled={device.state !== 'connected'}
-                      variant={globalMidi.isConnected && globalMidi.deviceName === device.name ? 'default' : 'outline'}
-                    >
-                      {globalMidi.isConnected && globalMidi.deviceName === device.name ? 'Connected' : 'Connect'}
-                    </Button>
-                  </div>
-                </div>
-              ))}
             </div>
           )}
         </div>

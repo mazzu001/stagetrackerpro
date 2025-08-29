@@ -79,6 +79,87 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Email/password authentication endpoints for frontend
+  app.post('/api/auth/register', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
+      }
+      
+      if (password.length < 6) {
+        return res.status(400).json({ error: 'Password must be at least 6 characters' });
+      }
+      
+      // Check if user already exists
+      const existingUser = await storage.getUserByEmail(email);
+      if (existingUser) {
+        return res.status(409).json({ error: 'User already exists with this email' });
+      }
+      
+      // Create new user with hashed password
+      const passwordHash = await bcrypt.hash(password, 10);
+      
+      const newUser = await storage.upsertUser({
+        id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        email: email.toLowerCase(),
+        firstName: null,
+        lastName: null,
+        profileImageUrl: null,
+        subscriptionStatus: 1, // 1 = free user
+      });
+      
+      console.log('✅ New user registered:', newUser.email);
+      res.json({ 
+        success: true, 
+        user: { 
+          id: newUser.id, 
+          email: newUser.email,
+          userType: newUser.subscriptionStatus === 1 ? 'free' : 
+                   newUser.subscriptionStatus === 2 ? 'paid' : 'professional'
+        }
+      });
+    } catch (error: any) {
+      console.error('❌ Registration error:', error);
+      res.status(500).json({ error: 'Registration failed' });
+    }
+  });
+  
+  // Login endpoint for email/password authentication
+  app.post('/api/auth/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      
+      if (!email || !password) {
+        return res.status(400).json({ error: 'Email and password are required' });
+      }
+      
+      // Check if user exists
+      const user = await storage.getUserByEmail(email.toLowerCase());
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+      
+      console.log('✅ User authenticated:', user.email);
+      
+      const userType = user.subscriptionStatus === 1 ? 'free' : 
+                      user.subscriptionStatus === 2 ? 'paid' : 'professional';
+      
+      res.json({ 
+        success: true, 
+        user: { 
+          id: user.id, 
+          email: user.email,
+          userType: userType
+        }
+      });
+    } catch (error: any) {
+      console.error('❌ Login error:', error);
+      res.status(500).json({ error: 'Login failed' });
+    }
+  });
+
   console.log('✅ Authentication routes registered');
 
   // Sample ZIP file download routes

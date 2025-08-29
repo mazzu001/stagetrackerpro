@@ -4,21 +4,21 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 
-// Screens
-import PerformanceScreen from './src/screens/PerformanceScreen';
-import SongListScreen from './src/screens/SongListScreen';
+// Simple screens
+import SimplePerformanceScreen from './src/screens/SimplePerformanceScreen';
+import SimpleSongListScreen from './src/screens/SimpleSongListScreen';
 import TrackManagerScreen from './src/screens/TrackManagerScreen';
 
-// Audio Engine Setup
-import AudioEngineProvider from './src/providers/AudioEngineProvider';
-import DatabaseProvider from './src/providers/DatabaseProvider';
+// Simple providers
+import SimpleAudioEngineProvider from './src/providers/SimpleAudioEngine';
+import SimpleDatabaseProvider from './src/providers/SimpleDatabase';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <DatabaseProvider>
-      <AudioEngineProvider>
+    <SimpleDatabaseProvider>
+      <SimpleAudioEngineProvider>
         <NavigationContainer>
           <View style={styles.container}>
             <StatusBar style="light" />
@@ -36,12 +36,12 @@ export default function App() {
             >
               <Stack.Screen 
                 name="SongList" 
-                component={SongListScreen}
+                component={SimpleSongListScreen}
                 options={{ title: 'Songs' }}
               />
               <Stack.Screen 
                 name="Performance" 
-                component={PerformanceScreen}
+                component={SimplePerformanceScreen}
                 options={{ title: 'Performance Mode' }}
               />
               <Stack.Screen 
@@ -52,8 +52,8 @@ export default function App() {
             </Stack.Navigator>
           </View>
         </NavigationContainer>
-      </AudioEngineProvider>
-    </DatabaseProvider>
+      </SimpleAudioEngineProvider>
+    </SimpleDatabaseProvider>
   );
 }
 

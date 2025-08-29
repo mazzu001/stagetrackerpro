@@ -11,7 +11,7 @@ import {
 import { useRoute, useNavigation } from '@react-navigation/native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
-import { useDatabase } from '../providers/DatabaseProvider';
+import { useSimpleDatabase } from '../providers/SimpleDatabase';
 
 
 interface Track {
@@ -34,7 +34,7 @@ export default function TrackManagerScreen() {
   const navigation = useNavigation();
   const { songId } = route.params as { songId: string };
   
-  const { songs, getTracksBySong, addTrack, deleteTrack } = useDatabase();
+  const { songs, getTracksBySong, addTrack, deleteTrack } = useSimpleDatabase();
   const [song, setSong] = useState<any>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [isUploading, setIsUploading] = useState(false);

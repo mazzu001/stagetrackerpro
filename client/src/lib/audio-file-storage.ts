@@ -72,21 +72,31 @@ export class AudioFileStorage {
 
   // Get audio file as blob URL using browser storage
   async getAudioUrl(trackId: string): Promise<string | null> {
+    console.log(`🔍 Requesting audio URL for track: ${trackId}`);
+    console.log(`📂 Available audio files (${this.audioFiles.size}):`, Array.from(this.audioFiles.keys()));
+    console.log(`💾 Memory cache files (${this.fileObjects.size}):`, Array.from(this.fileObjects.keys()));
+    
     // Try browser file system first (handles caching internally)
     try {
       const url = await this.browserFS.getAudioUrl(trackId);
       if (url) {
-        console.log(`Got audio URL from browser storage for track: ${trackId}`);
+        console.log(`✅ Got audio URL from browser storage for track: ${trackId}`);
         return url;
       }
     } catch (error) {
-      console.error(`Error getting URL from browser storage for track ${trackId}:`, error);
+      console.error(`❌ Error getting URL from browser storage for track ${trackId}:`, error);
     }
 
     // Fallback to in-memory cache
     const fileObject = this.fileObjects.get(trackId);
     if (!fileObject) {
-      console.warn(`Audio file not found for track: ${trackId}`);
+      console.warn(`⚠️ Audio file not found for track: ${trackId}`);
+      console.log(`🔍 Checking if browser file system has any files...`);
+      
+      console.log(`💡 Audio files need to be uploaded to enable playback for this track`);
+      console.log(`🎵 Use the "Add Audio Files" button to upload audio files for your tracks`);
+      
+      
       return null;
     }
 

@@ -10,8 +10,8 @@ import SimpleSongListScreen from './src/screens/SimpleSongListScreen';
 import InstantTrackManager from './src/screens/InstantTrackManager';
 import LoadingScreen from './src/screens/LoadingScreen';
 
-// Minimal providers
-import MinimalAudioProvider from './src/providers/MinimalAudio';
+// Streaming providers for zero load times
+import StreamingAudioProvider from './src/providers/StreamingAudio';
 import MinimalStorageProvider from './src/providers/MinimalStorage';
 
 const Stack = createStackNavigator();
@@ -30,7 +30,7 @@ export default function App() {
 
   return (
     <MinimalStorageProvider>
-      <MinimalAudioProvider>
+      <StreamingAudioProvider>
         <NavigationContainer>
           <View style={styles.container}>
             <StatusBar style="light" />
@@ -64,7 +64,7 @@ export default function App() {
             </Stack.Navigator>
           </View>
         </NavigationContainer>
-      </MinimalAudioProvider>
+      </StreamingAudioProvider>
     </MinimalStorageProvider>
   );
 }

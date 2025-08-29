@@ -8,17 +8,16 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useMinimalStorage } from '../providers/MinimalStorage';
-import { useMinimalAudio } from '../providers/MinimalAudio';
+import { useStreamingAudio } from '../providers/StreamingAudio';
 
 export default function SimplePerformanceScreen() {
   const route = useRoute();
   const { songId } = route.params as { songId: string };
   
-  const { songs, getTracksBySong } = useMinimalStorage();
-  const { isPlaying, currentTime, duration, play, pause, stop, loadSong } = useMinimalAudio();
+  const { songs } = useMinimalStorage();
+  const { isPlaying, currentTime, duration, tracks, play, pause, stop, loadSong, seek } = useStreamingAudio();
   
   const [song, setSong] = useState<any>(null);
-  const [tracks, setTracks] = useState<any[]>([]);
 
   useEffect(() => {
     if (!songId) return;
@@ -26,11 +25,10 @@ export default function SimplePerformanceScreen() {
     const foundSong = songs.find(s => s.id === songId);
     if (foundSong) {
       setSong(foundSong);
-      const songTracks = getTracksBySong(songId);
-      setTracks(songTracks);
+      // Load song for streaming - instant, no preload delay
       loadSong(songId);
     }
-  }, [songId, songs.length]);
+  }, [songId, songs.length, loadSong]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

@@ -1103,28 +1103,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 )}
               </TabsList>
               <TabsContent value="lyrics" className="flex-1 min-h-0 flex flex-col">
-                {searchResult && (
-                  <div className="mb-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg flex-shrink-0">
-                    <div className="flex items-center gap-2 mb-2">
-                      <ExternalLink className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                      <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                        Lyrics page opened in new tab
-                      </span>
-                    </div>
-                    <p className="text-xs text-blue-700 dark:text-blue-300 mb-2">
-                      {searchResult.title}
-                    </p>
-                    <p className="text-xs text-blue-600 dark:text-blue-400">
-                      Copy and paste the lyrics from the opened page into the text area below
-                    </p>
-                  </div>
-                )}
                 <Textarea
                   id="lyrics"
                   value={lyricsText}
                   onChange={(e) => setLyricsText(e.target.value)}
                   placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and add MIDI commands with <!-- MIDI: Program Change 1 -->"
-                  className="w-full flex-1 resize-none font-mono text-sm border border-gray-600 bg-background"
+                  className="w-full h-full min-h-0 flex-1 resize-none font-mono text-sm border border-gray-600 bg-background"
                   data-testid="textarea-lyrics"
                 />
               </TabsContent>

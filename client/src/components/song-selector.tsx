@@ -275,29 +275,12 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                     </Button>
                   </div>
                   
-                  {searchResult && (
-                    <div className="mb-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
-                      <div className="flex items-center gap-2 mb-2">
-                        <ExternalLink className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                        <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
-                          Lyrics page opened in new tab
-                        </span>
-                      </div>
-                      <p className="text-xs text-blue-700 dark:text-blue-300 mb-2">
-                        {searchResult.title}
-                      </p>
-                      <p className="text-xs text-blue-600 dark:text-blue-400">
-                        Copy and paste the lyrics from the opened page into the text area below
-                      </p>
-                    </div>
-                  )}
-                  
                   <Textarea
                     id="lyrics"
                     value={newSong.lyrics || ""}
                     onChange={(e) => setNewSong({ ...newSong, lyrics: e.target.value })}
                     placeholder="[00:15] First line of lyrics&#10;[00:30] <!-- MIDI: Program Change 1 -->&#10;[00:32] Second line..."
-                    rows={8}
+                    className="min-h-[200px] resize-y"
                     data-testid="input-song-lyrics"
                   />
                   <div className="text-xs text-muted-foreground mt-1">

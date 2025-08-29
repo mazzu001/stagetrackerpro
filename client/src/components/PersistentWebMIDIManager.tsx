@@ -259,32 +259,7 @@ export function PersistentWebMIDIManager() {
           )}
         </div>
 
-        <Separator />
-
-        {/* Send MIDI Commands */}
-        <div>
-          <h3 className="text-lg font-semibold mb-3">Send MIDI Commands</h3>
-          <div className="flex gap-2 mb-3">
-            <Input
-              value={testMessage}
-              onChange={(e) => setTestMessage(e.target.value)}
-              placeholder="e.g., [[PC:1:1]] [[CC:7:64:1]] [[NOTE:60:127:1]]"
-              className="flex-1"
-              data-testid="input-persistent-midi-command"
-            />
-            <Button onClick={sendMIDICommand} disabled={!globalMidi.isConnected} data-testid="button-send-persistent-midi">
-              Send
-            </Button>
-          </div>
-
-          
-
-          {lastSentMessage && (
-            <p className="text-sm text-muted-foreground">
-              Last sent: {lastSentMessage}
-            </p>
-          )}
-        </div>
+        
 
         {/* MIDI Messages */}
         {midiMessages.length > 0 && (

@@ -35,13 +35,12 @@ export class LocalSongStorage {
     }
   }
 
-  static addSong(userEmail: string, song: Omit<LocalSong, 'id' | 'tracks' | 'midiEvents' | 'waveformGenerated' | 'createdAt'>): LocalSong {
+  static addSong(userEmail: string, song: Omit<LocalSong, 'id' | 'tracks' | 'waveformGenerated' | 'createdAt'>): LocalSong {
     const songs = this.getAllSongs(userEmail);
     const newSong: LocalSong = {
       id: crypto.randomUUID(),
       ...song,
       tracks: [],
-      midiEvents: [],
       waveformGenerated: false,
       createdAt: new Date().toISOString()
     };

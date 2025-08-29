@@ -185,7 +185,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Instant audio engine (now with zero decode delays)
   const audioEngine = useAudioEngine({ 
-    song: selectedSong,
+    song: selectedSong ? { ...selectedSong, userId: user?.email || '' } as SongWithTracks : undefined,
     onDurationUpdated: (songId: string, newDuration: number) => {
       if (selectedSong && selectedSong.id === songId && user?.email) {
         LocalSongStorage.updateSong(user.email, songId, { duration: newDuration });
@@ -201,7 +201,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     pause,
     stop,
     seek,
-    isLoading: isLoadingTracks,
+    isLoadingTracks,
     masterVolume,
     updateMasterVolume,
     updateTrackVolume,
@@ -315,7 +315,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         title: songTitle,
         artist: songArtist,
         duration: 0,
-        lyrics: ''
+        bpm: null,
+        key: null,
+        lyrics: '',
+        waveformData: null
       });
       setAllSongs(prev => [newSong, ...prev]);
       setSongTitle("");
@@ -448,9 +451,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       return;
     }
 
-    if (selectedSong?.midiEvents && selectedSong.midiEvents[index]) {
+    // MIDI functionality removed
+    if (false) {
       setEditingCommandIndex(index);
-      setEditingCommandText(selectedSong.midiEvents[index].command);
+      setEditingCommandText('');
       setCurrentLyricsTab("midi");
       setIsEditLyricsOpen(true);
     }
@@ -623,7 +627,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           {/* Waveform Visualizer - Stretch across available space */}
           <div className="flex-1 mx-4 max-h-12">
             <WaveformVisualizer
-              song={selectedSong}
+              song={selectedSong ? { ...selectedSong, userId: user?.email || '' } as SongWithTracks : null}
               currentTime={currentTime}
               duration={duration}
               isPlaying={isPlaying}

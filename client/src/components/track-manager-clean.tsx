@@ -79,8 +79,8 @@ export default function TrackManager({
       const initialValues: Record<string, { volume: number; balance: number }> = {};
       tracks.forEach(track => {
         initialValues[track.id] = {
-          volume: track.volume,
-          balance: track.balance
+          volume: track.volume || 1.0,
+          balance: track.balance || 0.0
         };
       });
       setLocalTrackValues(initialValues);
@@ -394,11 +394,18 @@ export default function TrackManager({
         fileExtension = '.ogg';
       }
       
-      // Create file with appropriate extension
+      // Create file with appropriate extension - fallback for environments without File constructor
       const fileName = `${recordingName || 'recorded-track'}${fileExtension}`;
-      const audioFile = new File([audioBlob], fileName, {
-        type: actualMimeType
-      });
+      let audioFile: File;
+      try {
+        audioFile = new File([audioBlob], fileName, { type: actualMimeType });
+      } catch {
+        // Fallback: create a Blob with File-like properties
+        audioFile = Object.assign(audioBlob, {
+          name: fileName,
+          lastModified: Date.now()
+        }) as File;
+      }
 
       // Validate the audio file before processing
       if (audioBlob.size === 0) {
@@ -475,26 +482,29 @@ export default function TrackManager({
       }
 
       // Simple validation - just check if we can create a URL
-      const audioUrl = URL.createObjectURL(audioFile);
-      console.log('🎤 Audio URL created successfully:', audioUrl.substring(0, 50) + '...');
-      URL.revokeObjectURL(audioUrl);
+      const tempAudioUrl = URL.createObjectURL(audioFile);
+      console.log('🎤 Audio URL created successfully:', tempAudioUrl.substring(0, 50) + '...');
+      URL.revokeObjectURL(tempAudioUrl);
 
-      // Store the audio file using the local storage system
-      console.log('🎤 Storing audio file...');
-      const filePath = await AudioFileStorage.storeAudioFile(audioFile, user.email);
-      console.log('🎤 Audio file stored at:', filePath);
+      // Create a blob URL for the audio file
+      console.log('🎤 Creating blob URL for audio file...');
+      const audioUrl = URL.createObjectURL(audioFile);
+      console.log('🎤 Audio blob URL created:', audioUrl.substring(0, 50) + '...');
       
       // Create track data
       const trackName = recordingName || `Recorded Track ${tracks.length + 1}`;
       const trackData = {
         songId: song.id,
         name: trackName,
-        filePath: filePath,
-        volume: 1.0,
-        balance: 0.0,
+        trackNumber: tracks.length + 1,
+        audioUrl: audioUrl,
+        volume: 100,
+        balance: 0,
         isMuted: false,
         isSolo: false,
         localFileName: audioFile.name,
+        audioData: null,
+        mimeType: audioFile.type,
         fileSize: audioFile.size
       };
 
@@ -520,7 +530,7 @@ export default function TrackManager({
       const updatedSong = LocalSongStorage.getSong(user.email, song.id);
       if (updatedSong && onSongUpdate) {
         console.log('🎤 Track added, refreshing song with', updatedSong.tracks.length, 'tracks');
-        onSongUpdate(updatedSong as any);
+        onSongUpdate(updatedSong as SongWithTracks);
       } else {
         throw new Error('Failed to retrieve updated song after adding track');
       }
@@ -563,7 +573,7 @@ export default function TrackManager({
       const updatedSong = LocalSongStorage.getSong(user.email, song.id);
       if (updatedSong && onSongUpdate) {
         console.log('Track Manager: Found', updatedSong.tracks.length, 'tracks for song', updatedSong.title, `(ID: ${updatedSong.id}):`, updatedSong.tracks.map(t => t.name));
-        onSongUpdate(updatedSong);
+        onSongUpdate(updatedSong as SongWithTracks);
       }
     } catch (error) {
       console.error('Failed to refetch tracks:', error);
@@ -728,7 +738,7 @@ export default function TrackManager({
       
       console.log(`Adding track "${trackName}" with file: ${audioFileName}`);
       
-      const newTrack = LocalSongStorage.addTrack(user.email, song.id, {
+      const trackAdded = LocalSongStorage.addTrack(user.email, song.id, {
         name: trackName,
         songId: song.id,
         trackNumber: tracks.length + 1,
@@ -743,15 +753,15 @@ export default function TrackManager({
         isSolo: false
       });
       
-      if (newTrack) {
-        // Store the file in audio storage system
-        const audioStorage = AudioFileStorage.getInstance();
-        await audioStorage.storeAudioFile(newTrack.id, file, newTrack, song.title);
+      if (trackAdded) {
+        // Create audio URL for the file
+        const audioUrl = URL.createObjectURL(file);
+        console.log('Audio URL created:', audioUrl);
         
         // Detect and update song duration from the audio file
         await detectAndUpdateSongDuration(file, song.id);
         
-        console.log('Track added successfully:', newTrack);
+        console.log('Track added successfully');
         
         // Get updated song with new tracks and notify parent component
         const updatedSong = LocalSongStorage.getSong(user.email, song.id);

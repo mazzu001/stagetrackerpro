@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,23 @@ import {
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useMinimalStorage } from '../providers/MinimalStorage';
 
-export default function CrashProofTrackManager() {
+// Optimized track item component to prevent unnecessary re-renders
+const TrackItem = React.memo(({ track, onDelete }: { track: any; onDelete: (id: string) => void }) => (
+  <View style={styles.trackItem}>
+    <View style={styles.trackInfo}>
+      <Text style={styles.trackName}>{track.name}</Text>
+    </View>
+    <TouchableOpacity
+      style={styles.deleteButton}
+      onPress={() => onDelete(track.id)}
+      activeOpacity={0.7}
+    >
+      <Text style={styles.deleteButtonText}>Delete</Text>
+    </TouchableOpacity>
+  </View>
+));
+
+export default function InstantTrackManager() {
   const route = useRoute();
   const navigation = useNavigation();
   const { songId } = route.params as { songId: string };
@@ -18,28 +34,32 @@ export default function CrashProofTrackManager() {
   const { songs, tracks, addTrack, deleteTrack } = useMinimalStorage();
   const [counter, setCounter] = useState(1);
 
-  // Optimized data lookup - cache results for better performance
+  // Cache computed values to prevent recalculation on every render
   const song = React.useMemo(() => songs.find(s => s.id === songId), [songs, songId]);
   const songTracks = React.useMemo(() => tracks.filter(t => t.songId === songId), [tracks, songId]);
 
-  const handleAddTrack = () => {
-    // Immediate synchronous operation - zero delay
-    const trackName = `Demo Track ${counter}`;
+  // Optimized add track function with immediate UI feedback
+  const handleAddTrack = useCallback(() => {
+    const trackName = `Instant Track ${counter}`;
     
-    // Direct state update with no intermediate steps
+    // Update counter immediately for UI responsiveness
+    setCounter(prev => prev + 1);
+    
+    // Add track with zero delay
     addTrack({
       songId,
       name: trackName,
     });
-    
-    // Update counter immediately
-    setCounter(prev => prev + 1);
-  };
+  }, [counter, songId, addTrack]);
 
-  const handleDeleteTrack = (trackId: string) => {
-    // Immediate synchronous operation
+  // Optimized delete with no confirmation for speed
+  const handleDeleteTrack = useCallback((trackId: string) => {
     deleteTrack(trackId);
-  };
+  }, [deleteTrack]);
+
+  const handleGoToPerformance = useCallback(() => {
+    navigation.navigate('Performance', { songId });
+  }, [navigation, songId]);
 
   if (!song) {
     return (
@@ -57,42 +77,34 @@ export default function CrashProofTrackManager() {
         <View style={styles.songInfo}>
           <Text style={styles.songTitle}>{song.title}</Text>
           <Text style={styles.songArtist}>{song.artist}</Text>
+          <Text style={styles.trackCount}>Tracks: {songTracks.length}</Text>
         </View>
         <TouchableOpacity
           style={styles.addButton}
           onPress={handleAddTrack}
           activeOpacity={0.7}
         >
-          <Text style={styles.addButtonText}>+ Add Instant Track</Text>
+          <Text style={styles.addButtonText}>+ INSTANT ADD</Text>
         </TouchableOpacity>
-      </View>
-
-      <View style={styles.trackCounter}>
-        <Text style={styles.trackCounterText}>
-          Tracks: {songTracks.length}
-        </Text>
       </View>
 
       {songTracks.length === 0 ? (
         <View style={styles.emptyState}>
           <Text style={styles.emptyTitle}>No Tracks</Text>
-          <Text style={styles.emptyText}>Tap "Add Demo Track" to add a demo track</Text>
+          <Text style={styles.emptyText}>Tap "INSTANT ADD" for zero-delay track addition</Text>
         </View>
       ) : (
-        <ScrollView style={styles.tracksList}>
+        <ScrollView 
+          style={styles.tracksList}
+          removeClippedSubviews={true}
+          showsVerticalScrollIndicator={false}
+        >
           {songTracks.map(track => (
-            <View key={track.id} style={styles.trackItem}>
-              <View style={styles.trackInfo}>
-                <Text style={styles.trackName}>{track.name}</Text>
-              </View>
-              
-              <TouchableOpacity
-                style={styles.deleteButton}
-                onPress={() => handleDeleteTrack(track.id)}
-              >
-                <Text style={styles.deleteButtonText}>Delete</Text>
-              </TouchableOpacity>
-            </View>
+            <TrackItem
+              key={track.id}
+              track={track}
+              onDelete={handleDeleteTrack}
+            />
           ))}
         </ScrollView>
       )}
@@ -100,7 +112,8 @@ export default function CrashProofTrackManager() {
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.performanceButton}
-          onPress={() => navigation.navigate('Performance', { songId })}
+          onPress={handleGoToPerformance}
+          activeOpacity={0.7}
         >
           <Text style={styles.performanceButtonText}>Go to Performance</Text>
         </TouchableOpacity>
@@ -135,25 +148,23 @@ const styles = StyleSheet.create({
     color: '#aaa',
     marginTop: 2,
   },
+  trackCount: {
+    fontSize: 12,
+    color: '#4CAF50',
+    marginTop: 4,
+    fontWeight: '600',
+  },
   addButton: {
     backgroundColor: '#4CAF50',
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 10,
     borderRadius: 8,
+    elevation: 2,
   },
   addButtonText: {
     color: '#ffffff',
-    fontWeight: '600',
-  },
-  trackCounter: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
-  },
-  trackCounterText: {
-    fontSize: 16,
-    color: '#aaa',
-    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 12,
   },
   emptyState: {
     flex: 1,
@@ -180,9 +191,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#2a2a2a',
     borderRadius: 8,
     padding: 16,
-    marginBottom: 12,
+    marginBottom: 8,
     flexDirection: 'row',
     alignItems: 'center',
+    elevation: 1,
   },
   trackInfo: {
     flex: 1,
@@ -213,6 +225,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     alignItems: 'center',
+    elevation: 2,
   },
   performanceButtonText: {
     color: '#ffffff',

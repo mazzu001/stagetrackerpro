@@ -4,10 +4,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 
-// Crash-proof screens
+// Instant performance screens
 import SimplePerformanceScreen from './src/screens/SimplePerformanceScreen';
 import SimpleSongListScreen from './src/screens/SimpleSongListScreen';
-import CrashProofTrackManager from './src/screens/CrashProofTrackManager';
+import InstantTrackManager from './src/screens/InstantTrackManager';
 import LoadingScreen from './src/screens/LoadingScreen';
 
 // Minimal providers
@@ -58,8 +58,8 @@ export default function App() {
               />
               <Stack.Screen 
                 name="TrackManager" 
-                component={CrashProofTrackManager}
-                options={{ title: 'Track Manager' }}
+                component={InstantTrackManager}
+                options={{ title: 'Instant Track Manager' }}
               />
             </Stack.Navigator>
           </View>

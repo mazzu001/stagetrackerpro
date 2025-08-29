@@ -83,6 +83,7 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
       const trackDataPromises = song.tracks.map(async (track) => {
         try {
           const audioUrl = await audioStorage.getAudioUrl(track.id);
+          if (!audioUrl) return null;
           console.log(`🎵 Streaming track: ${track.name} -> ${audioUrl.substring(0, 50)}...`);
           return {
             id: track.id,

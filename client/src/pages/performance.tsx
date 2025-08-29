@@ -184,7 +184,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Original audio engine (preload mode) - only active when NOT streaming
   const preloadAudio = useAudioEngine({ 
-    song: useStreamingMode ? null : selectedSong, // CRITICAL: Disable when streaming
+    song: useStreamingMode ? undefined : selectedSong, // CRITICAL: Disable when streaming
     onDurationUpdated: (songId: string, newDuration: number) => {
       if (selectedSong && selectedSong.id === songId && user?.email) {
         LocalSongStorage.updateSong(user.email, songId, { duration: newDuration });
@@ -260,7 +260,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     onPlay: play,
     onPause: pause,
     onStop: stop,
-    onTogglePlayback: isPlaying ? pause : play
+    onTogglePlayback: isPlaying ? pause : play,
+    onTrackMute: () => {},
+    isPlaying
   });
 
   // Load all songs on mount

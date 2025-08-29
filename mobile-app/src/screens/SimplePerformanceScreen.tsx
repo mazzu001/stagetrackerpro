@@ -8,14 +8,14 @@ import {
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useSimpleDatabase } from '../providers/SimpleDatabase';
-import { useSimpleAudioEngine } from '../providers/SimpleAudioEngine';
+import { useCrashSafeAudioEngine } from '../providers/CrashSafeAudioEngine';
 
 export default function SimplePerformanceScreen() {
   const route = useRoute();
   const { songId } = route.params as { songId: string };
   
   const { songs, getTracksBySong } = useSimpleDatabase();
-  const { isPlaying, currentTime, duration, play, pause, stop, loadSong } = useSimpleAudioEngine();
+  const { isPlaying, currentTime, duration, play, pause, stop, loadSong } = useCrashSafeAudioEngine();
   
   const [song, setSong] = useState<any>(null);
   const [tracks, setTracks] = useState<any[]>([]);

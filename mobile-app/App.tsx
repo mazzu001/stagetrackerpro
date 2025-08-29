@@ -10,8 +10,8 @@ import SimpleSongListScreen from './src/screens/SimpleSongListScreen';
 import UltraSimpleTrackManager from './src/screens/UltraSimpleTrackManager';
 import LoadingScreen from './src/screens/LoadingScreen';
 
-// Simple providers
-import SimpleAudioEngineProvider from './src/providers/SimpleAudioEngine';
+// Crash-safe providers
+import CrashSafeAudioEngineProvider from './src/providers/CrashSafeAudioEngine';
 import SimpleDatabaseProvider from './src/providers/SimpleDatabase';
 
 const Stack = createStackNavigator();
@@ -34,7 +34,7 @@ export default function App() {
 
   return (
     <SimpleDatabaseProvider>
-      <SimpleAudioEngineProvider>
+      <CrashSafeAudioEngineProvider>
         <NavigationContainer>
           <View style={styles.container}>
             <StatusBar style="light" />
@@ -68,7 +68,7 @@ export default function App() {
             </Stack.Navigator>
           </View>
         </NavigationContainer>
-      </SimpleAudioEngineProvider>
+      </CrashSafeAudioEngineProvider>
     </SimpleDatabaseProvider>
   );
 }

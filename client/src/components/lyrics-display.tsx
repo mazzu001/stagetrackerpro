@@ -307,18 +307,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
       position: 'relative',
       contain: 'layout style paint'
     }}>
-      {/* Header */}
-      <div style={{ 
-        height: '60px',
-        backgroundColor: '#1f2937',
-        borderBottom: '1px solid #374151',
-        padding: '8px 16px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between'
-      }}>
-        <h3 style={{ fontSize: '18px', fontWeight: '500', color: 'white' }}>{song.title} - Lyrics</h3>
-      </div>
+      
 
       {/* Lyrics Container */}
       <div 

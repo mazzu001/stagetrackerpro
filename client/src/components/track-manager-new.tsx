@@ -18,6 +18,7 @@ import type { Track, SongWithTracks } from "@shared/schema";
 interface TrackManagerProps {
   song?: SongWithTracks;
   onTrackUpdate?: () => void;
+  onSongUpdate?: (updatedSong: SongWithTracks) => void;
   onTrackVolumeChange?: (trackId: string, volume: number) => void;
   onTrackMuteToggle?: (trackId: string) => void;
   onTrackSoloToggle?: (trackId: string) => void;
@@ -32,6 +33,7 @@ interface TrackManagerProps {
 export default function TrackManager({ 
   song, 
   onTrackUpdate, 
+  onSongUpdate,
   onTrackVolumeChange, 
   onTrackMuteToggle, 
   onTrackSoloToggle, 
@@ -228,14 +230,15 @@ export default function TrackManager({
         console.log('Track added successfully:', newTrack);
         refetchTracks();
         
-        // Notify parent component that song data has changed
-        onTrackUpdate?.();
+        // Get updated song with new tracks and notify parent component
+        const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+        if (updatedSong && onSongUpdate) {
+          console.log('Track data updated, refreshing song with', updatedSong.tracks.length, 'tracks');
+          onSongUpdate(updatedSong);
+        }
         
-        // Add small delay then notify again to ensure audio engine reloads
-        setTimeout(() => {
-          console.log('Track data updated, refreshing song...');
-          onTrackUpdate?.();
-        }, 100);
+        // Legacy callback for backward compatibility
+        onTrackUpdate?.();
         
         // Clear cached waveform to force regeneration with new tracks
         if (song?.id) {
@@ -272,7 +275,14 @@ export default function TrackManager({
       if (success) {
         refetchTracks();
         
-        // Notify parent component that song data has changed
+        // Get updated song with removed track and notify parent component
+        const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+        if (updatedSong && onSongUpdate) {
+          console.log('Track deleted, refreshing song with', updatedSong.tracks.length, 'tracks');
+          onSongUpdate(updatedSong);
+        }
+        
+        // Legacy callback for backward compatibility
         onTrackUpdate?.();
         
         // Clear cached waveform to force regeneration with remaining tracks

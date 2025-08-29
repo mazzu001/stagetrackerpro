@@ -1154,6 +1154,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             <TrackManager
               song={selectedSong as any}
               onSongUpdate={(updatedSong: any) => {
+                console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
                 setSelectedSong(updatedSong);
                 setAllSongs(prev => prev.map(song => 
                   song.id === updatedSong.id ? updatedSong : song

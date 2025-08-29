@@ -54,21 +54,32 @@ export class StreamingAudioEngine {
 
   // Instant track loading - no preloading required
   async loadTracks(trackData: Array<{ id: string; name: string; url: string }>) {
-    console.log(`🚀 Streaming load: ${trackData.length} tracks (instant, no preload)`);
+    console.log(`🚀 Streaming load: ${trackData.length} tracks (instant setup)`);
     
-    // Clear existing tracks
+    // Clear existing tracks first
     this.clearTracks();
     
-    // Create streaming tracks instantly
-    this.state.tracks = trackData.map(track => this.createStreamingTrack(track));
+    // Create streaming tracks with lightweight setup
+    const tracks = [];
+    for (const track of trackData) {
+      try {
+        const streamingTrack = this.createStreamingTrack(track);
+        tracks.push(streamingTrack);
+        console.log(`✅ Streaming track ready: ${track.name}`);
+      } catch (error) {
+        console.warn(`⚠️ Failed to create streaming track: ${track.name}`, error);
+      }
+    }
     
-    // Get duration from first track (streams in background)
-    if (this.state.tracks.length > 0) {
-      this.setupDurationDetection();
+    this.state.tracks = tracks;
+    
+    // Set up duration detection without blocking
+    if (tracks.length > 0) {
+      setTimeout(() => this.setupDurationDetection(), 10);
     }
     
     this.notifyListeners();
-    console.log(`✅ Streaming tracks ready instantly - ${this.state.tracks.length} tracks`);
+    console.log(`✅ Streaming ready: ${tracks.length} tracks loaded instantly`);
   }
 
   private createStreamingTrack(trackData: { id: string; name: string; url: string }): StreamingTrack {

@@ -182,9 +182,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   }, [userType, triggerMidiBlink, globalMidi]);
 
-  // Original audio engine (preload mode)
+  // Original audio engine (preload mode) - only active when NOT streaming
   const preloadAudio = useAudioEngine({ 
-    song: selectedSong,
+    song: useStreamingMode ? null : selectedSong, // CRITICAL: Disable when streaming
     onDurationUpdated: (songId: string, newDuration: number) => {
       if (selectedSong && selectedSong.id === songId && user?.email) {
         LocalSongStorage.updateSong(user.email, songId, { duration: newDuration });
@@ -304,14 +304,17 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     if (!song) return;
 
     if (useStreamingMode) {
-      // In streaming mode, don't set selectedSong for preload engine
-      // Load directly in streaming engine
+      // CRITICAL: Stop preload engine completely to prevent performance freeze
+      setSelectedSong(null);
+      
+      // Load in streaming engine only
       if (song.tracks && song.tracks.length > 0) {
+        console.log(`🚀 Switching to streaming mode for: ${song.title}`);
         streamingAudioEngine.loadSong(song);
       }
-      setSelectedSong(null); // Clear preload engine
     } else {
       // In preload mode, use the original audio engine
+      console.log(`🔄 Switching to preload mode for: ${song.title}`);
       setSelectedSong(song);
     }
   }, [selectedSongId, allSongs, useStreamingMode, streamingAudioEngine]);

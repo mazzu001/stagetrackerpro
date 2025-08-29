@@ -5,13 +5,15 @@ interface StereoVUMeterProps {
   rightLevel: number; // 0-100
   isPlaying?: boolean;
   className?: string;
+  amplification?: number; // VU meter amplification factor (default 2.5)
 }
 
 export default function StereoVUMeter({ 
   leftLevel, 
   rightLevel, 
   isPlaying = false, 
-  className = "" 
+  className = "",
+  amplification = 2.5
 }: StereoVUMeterProps) {
   const [animatedLeftLevel, setAnimatedLeftLevel] = useState(0);
   const [animatedRightLevel, setAnimatedRightLevel] = useState(0);
@@ -26,8 +28,8 @@ export default function StereoVUMeter({
       return;
     }
 
-    // Apply amplification to make meters more reactive - increased for better visibility
-    const amplifiedLevel = leftLevel * 2.5; // Fine-tuned amplification for optimal VU meter visibility
+    // Apply amplification to make meters more reactive - user controllable
+    const amplifiedLevel = leftLevel * amplification; // User-controlled amplification for VU meter visibility
     const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
     const animate = () => {
@@ -40,7 +42,7 @@ export default function StereoVUMeter({
 
     const interval = setInterval(animate, 6); // Faster update rate
     return () => clearInterval(interval);
-  }, [leftLevel, isPlaying]);
+  }, [leftLevel, isPlaying, amplification]);
 
   // Smooth animation for right channel
   useEffect(() => {
@@ -50,8 +52,8 @@ export default function StereoVUMeter({
       return;
     }
 
-    // Apply amplification to make meters more reactive - increased for better visibility
-    const amplifiedLevel = rightLevel * 2.5; // Fine-tuned amplification for optimal VU meter visibility
+    // Apply amplification to make meters more reactive - user controllable
+    const amplifiedLevel = rightLevel * amplification; // User-controlled amplification for VU meter visibility
     const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
     const animate = () => {
@@ -64,7 +66,7 @@ export default function StereoVUMeter({
 
     const interval = setInterval(animate, 6); // Faster update rate
     return () => clearInterval(interval);
-  }, [rightLevel, isPlaying]);
+  }, [rightLevel, isPlaying, amplification]);
 
   // Peak hold for left channel
   useEffect(() => {

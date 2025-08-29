@@ -229,20 +229,34 @@ export default function DatabaseProvider({ children }: { children: React.ReactNo
   };
 
   const addTrack = async (trackData: Omit<Track, 'id' | 'createdAt' | 'updatedAt'>): Promise<Track> => {
-    if (!db) throw new Error('Database not initialized');
+    console.log('=== DatabaseProvider.addTrack START ===');
+    console.log('Track data:', JSON.stringify(trackData, null, 2));
+    
+    if (!db) {
+      console.error('Database not initialized');
+      throw new Error('Database not initialized');
+    }
 
     // Validate required fields
     if (!trackData.songId || !trackData.name || !trackData.filePath) {
+      console.error('Missing required fields:', {
+        songId: !!trackData.songId,
+        name: !!trackData.name,
+        filePath: !!trackData.filePath
+      });
       throw new Error('Missing required track data: songId, name, or filePath');
     }
 
     // Validate file path exists
     try {
+      console.log('Verifying file exists at:', trackData.filePath);
       const fileInfo = await FileSystem.getInfoAsync(trackData.filePath);
+      console.log('File info:', fileInfo);
       if (!fileInfo.exists) {
         throw new Error(`Audio file does not exist at path: ${trackData.filePath}`);
       }
     } catch (error) {
+      console.error('File verification failed:', error);
       throw new Error(`Failed to verify audio file: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
 
@@ -255,16 +269,29 @@ export default function DatabaseProvider({ children }: { children: React.ReactNo
       updatedAt: new Date(now)
     };
 
+    console.log('Generated track object:', JSON.stringify(track, null, 2));
+
     try {
-      await db.runAsync(
+      console.log('Inserting into database...');
+      const result = await db.runAsync(
         `INSERT INTO tracks (id, songId, name, filePath, volume, muted, solo, balance, createdAt, updatedAt) 
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [id, track.songId, track.name, track.filePath, track.volume, track.muted ? 1 : 0, track.solo ? 1 : 0, track.balance, now, now]
       );
+      console.log('Database insert result:', result);
 
+      console.log('Refreshing data...');
       await refreshData();
+      console.log('=== DatabaseProvider.addTrack SUCCESS ===');
       return track;
     } catch (error) {
+      console.error('=== DatabaseProvider.addTrack DATABASE ERROR ===');
+      console.error('Error type:', typeof error);
+      console.error('Error instanceof Error:', error instanceof Error);
+      console.error('Error message:', error instanceof Error ? error.message : 'No message');
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
+      console.error('Full error object:', error);
+      console.error('=== END DATABASE ERROR ===');
       throw new Error(`Failed to add track to database: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   };

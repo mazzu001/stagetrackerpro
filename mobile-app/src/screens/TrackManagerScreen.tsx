@@ -27,9 +27,19 @@ interface Track {
 }
 
 export default function TrackManagerScreen() {
+  console.log('=== TrackManagerScreen RENDER START ===');
   const route = useRoute();
   const navigation = useNavigation();
-  const { songId } = route.params as { songId: string };
+  
+  let songId: string | undefined;
+  try {
+    const params = route.params as { songId: string };
+    songId = params?.songId;
+    console.log('Route params:', params);
+    console.log('Extracted songId:', songId);
+  } catch (error) {
+    console.error('Error extracting route params:', error);
+  }
   
   const { songs, getTracksBySong, addTrack, deleteTrack } = useDatabase();
   const [song, setSong] = useState<any>(null);
@@ -37,6 +47,7 @@ export default function TrackManagerScreen() {
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
+    console.log('TrackManagerScreen useEffect triggered with songId:', songId);
     loadData();
   }, [songId]);
 
@@ -60,23 +71,28 @@ export default function TrackManagerScreen() {
   };
 
   const handleAddTracks = async () => {
+    console.log('=== Starting handleAddTracks ===');
     try {
       // Validate inputs first
       if (!songId) {
+        console.error('No songId provided');
         Alert.alert('Error', 'No song selected');
         return;
       }
 
       if (isUploading) {
+        console.warn('Upload already in progress');
         Alert.alert('Info', 'Upload already in progress');
         return;
       }
 
+      console.log('Attempting to open document picker...');
       const result = await DocumentPicker.getDocumentAsync({
         type: 'audio/*',
         multiple: true,
         copyToCacheDirectory: true,
       });
+      console.log('Document picker result:', JSON.stringify(result, null, 2));
 
       if (result.canceled || !result.assets) return;
 
@@ -99,6 +115,7 @@ export default function TrackManagerScreen() {
       let errorCount = 0;
       
       for (const asset of result.assets) {
+        console.log(`Processing asset: ${asset?.name || 'unnamed'}`);
         try {
           // Validate asset structure
           if (!asset || !asset.uri) {
@@ -107,41 +124,54 @@ export default function TrackManagerScreen() {
             continue;
           }
 
+          console.log(`Asset URI: ${asset.uri}`);
+          console.log(`Asset name: ${asset.name}`);
+          console.log(`Asset size: ${asset.size}`);
+
           // Create a permanent file path with safe filename
           const fileName = asset.name ? 
             asset.name.replace(/[^a-zA-Z0-9.-]/g, '_') : 
             `track_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.mp3`;
           
           const permanentPath = `${FileSystem.documentDirectory}audio/${fileName}`;
+          console.log(`Target path: ${permanentPath}`);
           
           // Ensure audio directory exists
+          console.log('Creating audio directory...');
           await FileSystem.makeDirectoryAsync(
             `${FileSystem.documentDirectory}audio/`,
             { intermediates: true }
           );
 
           // Verify source file exists before copying
+          console.log('Verifying source file exists...');
           const sourceInfo = await FileSystem.getInfoAsync(asset.uri);
+          console.log('Source file info:', sourceInfo);
           if (!sourceInfo.exists) {
             throw new Error('Source file does not exist');
           }
 
           // Copy file to permanent location
+          console.log('Copying file...');
           await FileSystem.copyAsync({
             from: asset.uri,
             to: permanentPath,
           });
 
           // Verify the copied file exists
+          console.log('Verifying copied file...');
           const copiedInfo = await FileSystem.getInfoAsync(permanentPath);
+          console.log('Copied file info:', copiedInfo);
           if (!copiedInfo.exists) {
             throw new Error('Failed to copy file to permanent location');
           }
 
           // Extract track name from filename (remove extension)
           const trackName = fileName.replace(/\.[^/.]+$/, '');
+          console.log(`Track name: ${trackName}`);
 
           // Add track to database with proper error handling
+          console.log('Adding track to database...');
           await addTrack({
             songId,
             name: trackName,
@@ -199,13 +229,22 @@ export default function TrackManagerScreen() {
         );
       }
     } catch (error) {
-      console.error('Failed to add tracks:', error);
+      console.error('=== CRITICAL ERROR in handleAddTracks ===');
+      console.error('Error type:', typeof error);
+      console.error('Error instanceof Error:', error instanceof Error);
+      console.error('Error message:', error instanceof Error ? error.message : 'No message');
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
+      console.error('Full error object:', error);
+      console.error('=== END CRITICAL ERROR ===');
+      
       Alert.alert(
         'Error', 
         `Failed to add tracks: ${error instanceof Error ? error.message : 'Unknown error'}`
       );
     } finally {
+      console.log('=== handleAddTracks finally block ===');
       setIsUploading(false);
+      console.log('=== End handleAddTracks ===');
     }
   };
 

@@ -4,7 +4,7 @@ import { createServer, type Server } from "http";
 import bcrypt from "bcrypt";
 import { storage } from "./storage";
 import { insertSongSchema, insertTrackSchema } from "@shared/schema";
-import { setupAuth, isAuthenticated, requireSubscription } from "./replitAuth";
+import { setupAuth, isAuthenticated } from "./replitAuth";
 import { subscriptionManager } from "./subscriptionManager";
 // MIDI functionality removed
 import Stripe from "stripe";
@@ -67,125 +67,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     throw new Error(`Authentication setup failed: ${error.message}`);
   }
 
-  // Auth routes with proper authentication
-  console.log('📝 Registering authentication routes...');
-  
-  // Register new user endpoint
-  app.post('/api/auth/register', async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      
-      if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
-      }
-      
-      if (password.length < 6) {
-        return res.status(400).json({ error: 'Password must be at least 6 characters' });
-      }
-      
-      // Check if user already exists
-      const existingUser = await storage.getUserByEmail(email);
-      if (existingUser) {
-        return res.status(409).json({ error: 'User already exists with this email' });
-      }
-      
-      // Create new user in PostgreSQL cloud database with hashed password
-      const passwordHash = await bcrypt.hash(password, 10);
-      
-      const newUser = await storage.upsertUser({
-        id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        email: email.toLowerCase(),
-        firstName: null,
-        lastName: null,
-        profileImageUrl: null,
-        subscriptionStatus: 1 as any, // 1 = free user
-      } as any);
-      
-      console.log('✅ New user registered in cloud database:', newUser.email);
-      res.json({ 
-        success: true, 
-        user: { 
-          id: newUser.id, 
-          email: newUser.email,
-          userType: (parseInt(newUser.subscriptionStatus as any) === 1) ? 'free' : 
-                   (parseInt(newUser.subscriptionStatus as any) === 2) ? 'paid' : 'professional'
-        }
-      });
-    } catch (error: any) {
-      console.error('❌ Registration error:', error);
-      res.status(500).json({ error: 'Registration failed' });
-    }
-  });
-  
-  // Login endpoint for email/password authentication
-  app.post('/api/auth/login', async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      
-      if (!email || !password) {
-        return res.status(400).json({ error: 'Email and password are required' });
-      }
-      
-      // Check if user exists in cloud database
-      const user = await storage.getUserByEmail(email.toLowerCase());
-      if (!user) {
-        return res.status(401).json({ error: 'Invalid email or password' });
-      }
-      
-      // Verify password hash
-      const isValidPassword = await bcrypt.compare(password, (user as any).passwordHash || '');
-      if (!isValidPassword) {
-        return res.status(401).json({ error: 'Invalid email or password' });
-      }
-      
-      console.log('✅ User authenticated from cloud database:', user.email);
-      console.log('🔍 DEBUG - subscriptionStatus:', user.subscriptionStatus, 'type:', typeof user.subscriptionStatus);
-      console.log('🔍 DEBUG - parseInt result:', parseInt(user.subscriptionStatus as any));
-      
-      const subStatus = parseInt(user.subscriptionStatus as any);
-      let userType = 'professional'; // default
-      if (subStatus === 1) userType = 'free';
-      else if (subStatus === 2) userType = 'paid';
-      else if (subStatus === 3) userType = 'professional';
-      
-      console.log('🔍 DEBUG - Final userType:', userType);
-      
-      res.json({ 
-        success: true, 
-        user: { 
-          id: user.id, 
-          email: user.email,
-          userType: userType
-        }
-      });
-    } catch (error: any) {
-      console.error('❌ Login error:', error);
-      res.status(500).json({ error: 'Login failed' });
-    }
-  });
-
+  // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
-      console.log(`🔍 Fetching user data for userId: ${userId}`);
       const user = await storage.getUser(userId);
       res.json(user);
     } catch (error) {
-      console.error("❌ Error fetching user:", error);
+      console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
     }
-  });
-  // Debug endpoint to force localStorage clear
-  app.post('/api/debug/clear-cache', (req, res) => {
-    res.json({ 
-      success: true, 
-      message: 'Cache clear command sent',
-      script: `
-        localStorage.removeItem('lpp_local_user');
-        console.log('🗑️ Authentication cache cleared');
-        window.location.reload();
-      `
-    });
   });
 
   console.log('✅ Authentication routes registered');

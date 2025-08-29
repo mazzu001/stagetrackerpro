@@ -1,5 +1,5 @@
-import { songs, tracks, users, usersPg, type Song, type InsertSong, type Track, type InsertTrack, type SongWithTracks, type User, type UpsertUser, type UserPg } from "@shared/schema";
-import { localDb, userDb } from "./db";
+import { songs, tracks, users, type Song, type InsertSong, type Track, type InsertTrack, type SongWithTracks, type User, type UpsertUser } from "@shared/schema";
+import { db } from "./db";
 import { eq, and, isNotNull } from "drizzle-orm";
 
 export interface IStorage {
@@ -74,19 +74,9 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getAllUsersWithSubscriptions(): Promise<User[]> {
-    if (!userDb) {
-      console.error('Cloud database not available for user operations');
-      return [];
-    }
-    
     try {
-      const users = await userDb.select().from(usersPg).where(isNotNull(usersPg.stripeSubscriptionId));
-      return users.map(user => ({
-        ...user,
-        subscriptionStatus: String(user.subscriptionStatus),
-        createdAt: user.createdAt?.toISOString() || null,
-        updatedAt: user.updatedAt?.toISOString() || null,
-      }) as any);
+      const allUsers = await db.select().from(users).where(isNotNull(users.stripeSubscriptionId));
+      return allUsers;
     } catch (error) {
       console.error('❌ Error fetching users with subscriptions:', error);
       return [];
@@ -94,19 +84,15 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateUserSubscription(userId: string, data: { subscriptionStatus: number; subscriptionEndDate: string | null }): Promise<void> {
-    if (!userDb) {
-      throw new Error('Cloud database not available for user operations');
-    }
-    
     try {
-      await userDb
-        .update(usersPg)
+      await db
+        .update(users)
         .set({
           subscriptionStatus: data.subscriptionStatus,
-          subscriptionEndDate: data.subscriptionEndDate,
+          subscriptionEndDate: data.subscriptionEndDate ? new Date(data.subscriptionEndDate) : null,
           updatedAt: new Date(),
         })
-        .where(eq(usersPg.id, userId));
+        .where(eq(users.id, userId));
         
       console.log(`✅ Updated subscription for user ${userId}: status=${data.subscriptionStatus}`);
     } catch (error) {
@@ -115,97 +101,54 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  // User operations (use cloud PostgreSQL database)
+  // User operations (use PostgreSQL database)
   async getUser(id: string): Promise<User | undefined> {
-    if (!userDb) {
-      console.error('Cloud database not available for user operations');
-      return undefined;
-    }
-    const [user] = await userDb.select().from(usersPg).where(eq(usersPg.id, id));
-    if (!user) return undefined;
-    
-    // Convert PostgreSQL user to SQLite user format
-    return {
-      ...user,
-      subscriptionStatus: String(user.subscriptionStatus),
-      createdAt: user.createdAt?.toISOString() || null,
-      updatedAt: user.updatedAt?.toISOString() || null,
-    } as any;
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    if (!userDb) {
-      console.error('Cloud database not available for user operations');
-      return undefined;
-    }
-    const [user] = await userDb.select().from(usersPg).where(eq(usersPg.email, email));
-    if (!user) return undefined;
-    
-    // Convert PostgreSQL user to SQLite user format
-    return {
-      ...user,
-      subscriptionStatus: String(user.subscriptionStatus),
-      createdAt: user.createdAt?.toISOString() || null,
-      updatedAt: user.updatedAt?.toISOString() || null,
-    } as any;
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || undefined;
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
-    if (!userDb) {
-      throw new Error('Cloud database not available for user operations');
-    }
-    const [user] = await userDb
-      .insert(usersPg)
+    const [user] = await db
+      .insert(users)
       .values({
         ...userData,
-        subscriptionStatus: (userData.subscriptionStatus as any) || 1, // Default to 1 (free)
+        subscriptionStatus: userData.subscriptionStatus || 1, // Default to 1 (free)
         updatedAt: new Date(),
       })
       .onConflictDoUpdate({
-        target: usersPg.id,
+        target: users.id,
         set: {
           ...userData,
-          subscriptionStatus: (userData.subscriptionStatus as any) || 1,
+          subscriptionStatus: userData.subscriptionStatus || 1,
           updatedAt: new Date(),
         },
       })
       .returning();
     
-    console.log('User upserted in cloud database:', user.id, user.email, `subscription: ${user.subscriptionStatus}`);
-    
-    // Convert PostgreSQL user to SQLite user format
-    return {
-      ...user,
-      subscriptionStatus: String(user.subscriptionStatus),
-      createdAt: user.createdAt?.toISOString() || null,
-      updatedAt: user.updatedAt?.toISOString() || null,
-    } as any;
+    console.log('User upserted in database:', user.id, user.email, `subscription: ${user.subscriptionStatus}`);
+    return user;
   }
 
   async updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined> {
-    if (!userDb) {
-      console.error('Cloud database not available for user operations');
-      return undefined;
-    }
-    const [user] = await userDb
-      .update(usersPg)
+    const [user] = await db
+      .update(users)
       .set({
         stripeCustomerId,
         stripeSubscriptionId,
-        subscriptionStatus: 2 as any, // 2 = premium active
+        subscriptionStatus: 2, // 2 = premium active
         updatedAt: new Date(),
       })
-      .where(eq(usersPg.id, id))
+      .where(eq(users.id, id))
       .returning();
 
     if (user) {
-      console.log('Updated user Stripe info in cloud database:', id, stripeCustomerId);
-      // Convert PostgreSQL user to SQLite user format
-      return {
-        ...user,
-        createdAt: user.createdAt?.toISOString() || null,
-        updatedAt: user.updatedAt?.toISOString() || null,
-      };
+      console.log('Updated user Stripe info:', id, stripeCustomerId);
+      return user;
     } else {
       console.error('User not found for Stripe update:', id);
       return undefined;
@@ -213,47 +156,37 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateUserSubscriptionStatus(id: string, status: string, endDate: number): Promise<User | undefined> {
-    if (!userDb) {
-      console.error('Cloud database not available for user operations');
-      return undefined;
-    }
-    
     try {
-      const endDateISO = new Date(endDate * 1000).toISOString();
+      const endDateValue = new Date(endDate * 1000);
       
-      const [user] = await userDb
-        .update(usersPg)
+      const [user] = await db
+        .update(users)
         .set({ 
-          subscriptionStatus: status,
-          subscriptionEndDate: endDateISO,
+          subscriptionStatus: parseInt(status),
+          subscriptionEndDate: endDateValue,
           updatedAt: new Date()
         })
-        .where(eq(usersPg.id, id))
+        .where(eq(users.id, id))
         .returning();
       
       if (!user) return undefined;
       
-      console.log('User subscription status updated:', user.id, status, endDateISO);
-      
-      return {
-        ...user,
-        createdAt: user.createdAt?.toISOString() || null,
-        updatedAt: user.updatedAt?.toISOString() || null,
-      };
+      console.log('User subscription status updated:', user.id, status, endDateValue.toISOString());
+      return user;
     } catch (error) {
       console.error('Error updating user subscription status:', error);
       return undefined;
     }
   }
 
-  // Song operations (use local SQLite database)
+  // Song operations (use PostgreSQL database)
   async getSong(id: string, userId?: string): Promise<Song | undefined> {
     if (userId) {
-      const [song] = await localDb.select().from(songs)
+      const [song] = await db.select().from(songs)
         .where(and(eq(songs.id, id), eq(songs.userId, userId)));
       return song || undefined;
     } else {
-      const [song] = await localDb.select().from(songs)
+      const [song] = await db.select().from(songs)
         .where(eq(songs.id, id));
       return song || undefined;
     }
@@ -262,8 +195,8 @@ export class DatabaseStorage implements IStorage {
   async getAllSongs(userId?: string): Promise<SongWithTracks[]> {
     // Use a more efficient query by fetching everything in parallel, filtered by user
     const [allSongs, allTracks] = await Promise.all([
-      userId ? localDb.select().from(songs).where(eq(songs.userId, userId)) : localDb.select().from(songs),
-      localDb.select().from(tracks)
+      userId ? db.select().from(songs).where(eq(songs.userId, userId)) : db.select().from(songs),
+      db.select().from(tracks)
     ]);
     
     // Group tracks by song ID
@@ -286,8 +219,8 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createSong(song: InsertSong): Promise<Song> {
-    const [newSong] = await localDb.insert(songs).values(song).returning();
-    console.log('Song created in local database:', newSong.id, newSong.title);
+    const [newSong] = await db.insert(songs).values(song).returning();
+    console.log('Song created in database:', newSong.id, newSong.title);
     return newSong;
   }
 
@@ -297,7 +230,7 @@ export class DatabaseStorage implements IStorage {
       whereClause = and(eq(songs.id, id), eq(songs.userId, userId)) as any;
     }
     
-    const [updatedSong] = await localDb
+    const [updatedSong] = await db
       .update(songs)
       .set(song)
       .where(whereClause)
@@ -317,7 +250,7 @@ export class DatabaseStorage implements IStorage {
         whereClause = and(eq(songs.id, id), eq(songs.userId, userId)) as any;
       }
       
-      const existingSong = await localDb.select().from(songs).where(whereClause);
+      const existingSong = await db.select().from(songs).where(whereClause);
       if (existingSong.length === 0) {
         console.log('Song not found for deletion:', id);
         return false;
@@ -326,12 +259,12 @@ export class DatabaseStorage implements IStorage {
       console.log('Deleting song from local database:', id, existingSong[0].title);
 
       // Delete associated tracks (including audio data)
-      const tracksResult = await localDb.delete(tracks).where(eq(tracks.songId, id));
+      const tracksResult = await db.delete(tracks).where(eq(tracks.songId, id));
       
       console.log(`Deleted ${tracksResult.changes || 0} tracks for song: ${id}`);
       
       // Delete the song itself
-      const result = await localDb.delete(songs).where(whereClause);
+      const result = await db.delete(songs).where(whereClause);
       const deleted = result.changes ? result.changes > 0 : false;
       
       if (deleted) {
@@ -351,7 +284,7 @@ export class DatabaseStorage implements IStorage {
     const song = await this.getSong(id, userId);
     if (!song) return undefined;
 
-    const songTracks = await localDb.select().from(tracks).where(eq(tracks.songId, id));
+    const songTracks = await db.select().from(tracks).where(eq(tracks.songId, id));
 
     return {
       ...song,
@@ -359,14 +292,14 @@ export class DatabaseStorage implements IStorage {
     };
   }
 
-  // Track operations (use local SQLite database)
+  // Track operations (use PostgreSQL database)
   async getTrack(id: string): Promise<Track | undefined> {
-    const [track] = await localDb.select().from(tracks).where(eq(tracks.id, id));
+    const [track] = await db.select().from(tracks).where(eq(tracks.id, id));
     return track || undefined;
   }
 
   async getTracksBySongId(songId: string): Promise<Track[]> {
-    const trackData = await localDb.select().from(tracks).where(eq(tracks.songId, songId));
+    const trackData = await db.select().from(tracks).where(eq(tracks.songId, songId));
     
     // Add hasAudioData field to indicate if track has blob data
     return trackData.map(track => ({
@@ -376,14 +309,14 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createTrack(track: InsertTrack): Promise<Track> {
-    const [newTrack] = await localDb.insert(tracks).values(track).returning();
-    console.log('Track created in local database:', newTrack.id, newTrack.name);
+    const [newTrack] = await db.insert(tracks).values(track).returning();
+    console.log('Track created in database:', newTrack.id, newTrack.name);
     return newTrack;
   }
 
   // Store audio file data directly in database as base64
   async storeAudioFile(trackId: string, audioData: string, mimeType: string, fileSize: number): Promise<void> {
-    await localDb
+    await db
       .update(tracks)
       .set({ 
         audioData,
@@ -398,7 +331,7 @@ export class DatabaseStorage implements IStorage {
 
   // Get audio file data from database
   async getAudioFileData(trackId: string): Promise<{ data: string; mimeType: string; size: number } | null> {
-    const [track] = await localDb
+    const [track] = await db
       .select({ 
         audioData: tracks.audioData, 
         mimeType: tracks.mimeType, 
@@ -419,20 +352,20 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateTrack(id: string, track: Partial<InsertTrack>): Promise<Track | undefined> {
-    const [updatedTrack] = await localDb
+    const [updatedTrack] = await db
       .update(tracks)
       .set(track)
       .where(eq(tracks.id, id))
       .returning();
     
     if (updatedTrack) {
-      console.log('Track updated in local database:', id, updatedTrack.name);
+      console.log('Track updated in database:', id, updatedTrack.name);
     }
     return updatedTrack || undefined;
   }
 
   async deleteTrack(id: string): Promise<boolean> {
-    const result = await localDb.delete(tracks).where(eq(tracks.id, id));
+    const result = await db.delete(tracks).where(eq(tracks.id, id));
     const deleted = result.changes ? result.changes > 0 : false;
     
     if (deleted) {

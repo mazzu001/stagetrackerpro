@@ -270,14 +270,17 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     const song = allSongs.find(s => s.id === selectedSongId);
     if (!song) return;
 
-    setSelectedSong(song);
-    
-    // Load for streaming if enabled
-    if (useStreamingMode && song.tracks && song.tracks.length > 0) {
-      streamingAudioEngine.loadSong(song);
+    if (useStreamingMode) {
+      // In streaming mode, don't set selectedSong for preload engine
+      // Load directly in streaming engine
+      if (song.tracks && song.tracks.length > 0) {
+        streamingAudioEngine.loadSong(song);
+      }
+      setSelectedSong(null); // Clear preload engine
+    } else {
+      // In preload mode, use the original audio engine
+      setSelectedSong(song);
     }
-    
-    // Preload audio loading is handled automatically by the audio engine hook
   }, [selectedSongId, allSongs, useStreamingMode, streamingAudioEngine]);
 
   const handleSeek = useCallback((time: number) => {
@@ -285,16 +288,30 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   }, [seek]);
 
   const handlePlay = useCallback(() => {
-    if (selectedSong && selectedSong.tracks && selectedSong.tracks.length > 0) {
-      play();
+    if (useStreamingMode) {
+      // Check streaming readiness
+      if (streamingAudioEngine.isReady) {
+        play();
+      } else {
+        toast({
+          title: "Streaming Not Ready",
+          description: "Please wait for streaming setup to complete",
+          variant: "destructive"
+        });
+      }
     } else {
-      toast({
-        title: "No Tracks Available",
-        description: "Please add tracks to this song first",
-        variant: "destructive"
-      });
+      // Check preload readiness
+      if (selectedSong && selectedSong.tracks && selectedSong.tracks.length > 0) {
+        play();
+      } else {
+        toast({
+          title: "No Tracks Available", 
+          description: "Please add tracks to this song first",
+          variant: "destructive"
+        });
+      }
     }
-  }, [selectedSong, play, toast]);
+  }, [useStreamingMode, streamingAudioEngine.isReady, selectedSong, play, toast]);
 
   const handlePause = useCallback(() => {
     pause();
@@ -963,7 +980,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               </>
             )}
           </div>
-          {isLoadingTracks && (
+          {((useStreamingMode && streamingAudioEngine.isLoading) || (!useStreamingMode && isLoadingTracks)) && (
             <div className="flex items-center gap-2 text-sm text-yellow-400">
               <Loader2 className="h-4 w-4 animate-spin" />
               {useStreamingMode ? 'Setting up streams...' : 'Loading tracks...'}

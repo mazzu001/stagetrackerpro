@@ -96,8 +96,11 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
         throw new Error('No valid audio URLs found for streaming');
       }
       
+      // Load tracks in streaming engine (instant)
       await streamingEngine.loadTracks(trackData);
       setIsReady(true);
+      
+      console.log(`✅ Streaming hook ready: "${song.title}" with ${trackData.length} tracks`);
       
       console.log(`✅ Streaming ready: "${song.title}" - ${trackData.length}/${song.tracks.length} tracks loaded instantly`);
     } catch (error) {

@@ -53,32 +53,35 @@ export default function SimpleAudioEngineProvider({ children }: { children: Reac
   const loadSong = async (songId: string): Promise<void> => {
     try {
       await cleanup();
+      setCurrentSongId(songId);
       
       const tracks = getTracksBySong(songId);
       if (tracks.length === 0) {
-        setCurrentSongId(songId);
         return;
       }
       
-      // Load only the first track for simplicity
+      // Load only the first track for simplicity - no blocking operations
       const firstTrack = tracks[0];
       
-      const { sound: newSound } = await Audio.Sound.createAsync(
+      // Don't block the UI - load asynchronously in background
+      Audio.Sound.createAsync(
         { uri: firstTrack.filePath },
         { shouldPlay: false }
-      );
+      ).then(({ sound: newSound }) => {
+        sound.current = newSound;
+        
+        newSound.getStatusAsync().then(status => {
+          if (status.isLoaded && status.durationMillis) {
+            setDuration(status.durationMillis / 1000);
+          }
+        });
+      }).catch(error => {
+        console.warn('Audio loading failed:', error);
+      });
       
-      sound.current = newSound;
-      
-      const status = await newSound.getStatusAsync();
-      if (status.isLoaded && status.durationMillis) {
-        setDuration(status.durationMillis / 1000);
-      }
-      
-      setCurrentSongId(songId);
       setCurrentTime(0);
     } catch (error) {
-      console.error('Failed to load song:', error);
+      console.warn('Failed to load song:', error);
     }
   };
 

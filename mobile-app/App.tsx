@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
@@ -8,6 +8,7 @@ import { StyleSheet, View } from 'react-native';
 import SimplePerformanceScreen from './src/screens/SimplePerformanceScreen';
 import SimpleSongListScreen from './src/screens/SimpleSongListScreen';
 import TrackManagerScreen from './src/screens/TrackManagerScreen';
+import LoadingScreen from './src/screens/LoadingScreen';
 
 // Simple providers
 import SimpleAudioEngineProvider from './src/providers/SimpleAudioEngine';
@@ -16,6 +17,21 @@ import SimpleDatabaseProvider from './src/providers/SimpleDatabase';
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    // Fast startup - minimal delay
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isReady) {
+    return <LoadingScreen />;
+  }
+
   return (
     <SimpleDatabaseProvider>
       <SimpleAudioEngineProvider>

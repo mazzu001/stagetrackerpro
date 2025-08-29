@@ -40,7 +40,9 @@ export default function TrackManagerScreen() {
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
-    loadData();
+    if (songId && songs.length > 0) {
+      loadData();
+    }
   }, [songId]);
 
   const loadData = () => {

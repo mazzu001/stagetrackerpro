@@ -47,7 +47,19 @@ export default function SimpleDatabaseProvider({ children }: { children: React.R
   const [tracks, setTracks] = useState<Track[]>([]);
 
   useEffect(() => {
-    initDb();
+    let mounted = true;
+    
+    const initialize = async () => {
+      if (mounted) {
+        await initDb();
+      }
+    };
+    
+    initialize();
+    
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const initDb = async () => {
@@ -86,8 +98,10 @@ export default function SimpleDatabaseProvider({ children }: { children: React.R
     if (!db) return;
 
     try {
-      const songsResult = await db.getAllAsync('SELECT * FROM songs ORDER BY title');
-      const tracksResult = await db.getAllAsync('SELECT * FROM tracks ORDER BY name');
+      const [songsResult, tracksResult] = await Promise.all([
+        db.getAllAsync('SELECT * FROM songs ORDER BY title'),
+        db.getAllAsync('SELECT * FROM tracks ORDER BY name')
+      ]);
 
       setSongs(songsResult.map((row: any) => ({
         ...row,

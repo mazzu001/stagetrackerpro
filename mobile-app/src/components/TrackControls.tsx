@@ -64,8 +64,8 @@ export default function TrackControls({
       {/* VU Meter */}
       <View style={styles.vuMeterContainer}>
         <StereoVUMeter
-          leftLevel={audioLevel ? audioLevel.left * 8 : 0}
-          rightLevel={audioLevel ? audioLevel.right * 8 : 0}
+          leftLevel={audioLevel ? audioLevel.left : 0}
+          rightLevel={audioLevel ? audioLevel.right : 0}
           isPlaying={isPlaying}
           height={60}
           width={20}

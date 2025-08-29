@@ -31,8 +31,8 @@ export default function StereoVUMeter({
       return;
     }
 
-    // Apply amplification to make meters more reactive - mobile needs extra boost
-    const amplifiedLevel = leftLevel * 1.8; // Amplify for better visibility
+    // Apply amplification to match web version (2.5x total amplification)
+    const amplifiedLevel = leftLevel * 2.5; // Match web version amplification
     const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
     Animated.timing(animatedLeftLevel, {
@@ -63,8 +63,8 @@ export default function StereoVUMeter({
       return;
     }
 
-    // Apply amplification to make meters more reactive - mobile needs extra boost
-    const amplifiedLevel = rightLevel * 1.8; // Amplify for better visibility
+    // Apply amplification to match web version (2.5x total amplification)
+    const amplifiedLevel = rightLevel * 2.5; // Match web version amplification
     const targetLevel = Math.max(0, Math.min(100, amplifiedLevel));
     
     Animated.timing(animatedRightLevel, {

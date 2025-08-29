@@ -17,9 +17,7 @@ import {
   Zap,
   RefreshCw,
   Volume2,
-  VolumeX,
-  TestTube,
-  Loader2
+  VolumeX
 } from 'lucide-react';
 
 interface MIDIDevice {
@@ -51,8 +49,6 @@ export function USBMidiManager() {
   const [messages, setMessages] = useState<MIDIMessage[]>([]);
   const [isSupported, setIsSupported] = useState(true);
   const [isInitializing, setIsInitializing] = useState(false);
-  const [isTesting, setIsTesting] = useState(false);
-  const [testResults, setTestResults] = useState<{passed: number, failed: number, details: string[]}>({passed: 0, failed: 0, details: []});
   
   const { toast } = useToast();
 
@@ -314,124 +310,6 @@ export function USBMidiManager() {
     setMessages([]);
   }, []);
 
-  // MIDI Test Function
-  const runMIDITest = useCallback(async () => {
-    if (!isConnected || !midiAccess) {
-      toast({
-        title: "Test Failed",
-        description: "Please connect to MIDI devices first",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsTesting(true);
-    setTestResults({passed: 0, failed: 0, details: []});
-    
-    const results = {
-      passed: 0,
-      failed: 0,
-      details: [] as string[]
-    };
-
-    const outputDevice = outputDevices.find(d => d.id === selectedOutputId);
-    const inputDevice = inputDevices.find(d => d.id === selectedInputId);
-
-    if (!outputDevice?.port || !inputDevice?.port) {
-      results.failed++;
-      results.details.push("❌ Device ports not available");
-      setTestResults(results);
-      setIsTesting(false);
-      return;
-    }
-
-    // Test commands to send
-    const testCommands = [
-      { name: "Program Change", data: [0xC0, 0x00], format: "[[PC:0:1]]" },
-      { name: "Control Change (Volume)", data: [0xB0, 0x07, 0x64], format: "[[CC:7:100:1]]" },
-      { name: "Note On", data: [0x90, 0x60, 0x7F], format: "[[NOTE:96:127:1]]" },
-      { name: "Note Off", data: [0x80, 0x60, 0x00], format: "[[NOTE_OFF:96:0:1]]" }
-    ];
-
-    results.details.push("🧪 Starting MIDI loopback test...");
-    setTestResults({...results});
-
-    // Set up temporary input listener for test
-    let receivedMessages: number[][] = [];
-    const testListener = (event: any) => {
-      receivedMessages.push(Array.from(event.data));
-    };
-
-    inputDevice.port.onmidimessage = testListener;
-
-    try {
-      for (let i = 0; i < testCommands.length; i++) {
-        const command = testCommands[i];
-        results.details.push(`📤 Sending ${command.name}: ${command.format}`);
-        setTestResults({...results});
-
-        // Clear received messages
-        receivedMessages = [];
-        
-        // Send command
-        outputDevice.port.send(command.data);
-        
-        // Wait for response (500ms timeout)
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-        // Check if we received the message back
-        const received = receivedMessages.find(msg => 
-          msg.length >= command.data.length && 
-          msg.slice(0, command.data.length).every((val, idx) => val === command.data[idx])
-        );
-
-        if (received) {
-          results.passed++;
-          results.details.push(`✅ ${command.name} - Received: ${formatMIDIMessage(received)}`);
-        } else {
-          results.failed++;
-          results.details.push(`❌ ${command.name} - No response received`);
-        }
-        
-        setTestResults({...results});
-      }
-
-      // Restore original input listener
-      inputDevice.port.onmidimessage = (event: any) => {
-        const message = formatMIDIMessage(event.data);
-        addMessage({
-          timestamp: Date.now(),
-          data: Array.from(event.data),
-          formatted: message,
-          direction: 'in'
-        });
-      };
-
-      results.details.push(`🏁 Test completed: ${results.passed} passed, ${results.failed} failed`);
-      
-      if (results.passed === testCommands.length) {
-        toast({
-          title: "MIDI Test Passed",
-          description: `All ${results.passed} commands sent and received successfully`,
-        });
-      } else {
-        toast({
-          title: "MIDI Test Issues",
-          description: `${results.passed} passed, ${results.failed} failed. Check loopback connection.`,
-          variant: "destructive",
-        });
-      }
-
-    } catch (error) {
-      results.failed++;
-      results.details.push(`❌ Test error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      console.error('MIDI test error:', error);
-    }
-
-    setTestResults(results);
-    setIsTesting(false);
-  }, [isConnected, midiAccess, outputDevices, inputDevices, selectedOutputId, selectedInputId, formatMIDIMessage, addMessage, toast]);
-
   // Auto-initialize on component mount
   useEffect(() => {
     initializeMIDI();
@@ -623,54 +501,6 @@ export function USBMidiManager() {
                 Supports bracket format ([[PC:12:1]]) and hex format (B0 07 40)
               </p>
             </div>
-
-            {/* MIDI Test Section */}
-            <div>
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-medium flex items-center gap-2">
-                  <TestTube className="w-4 h-4" />
-                  MIDI Loopback Test
-                </h3>
-                <Button
-                  onClick={runMIDITest}
-                  disabled={isTesting || !isConnected}
-                  size="sm"
-                >
-                  {isTesting ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <TestTube className="w-4 h-4 mr-2" />
-                  )}
-                  {isTesting ? 'Testing...' : 'Run Test'}
-                </Button>
-              </div>
-              
-              {testResults.details.length > 0 && (
-                <div className="mb-4 p-3 bg-muted rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-sm font-medium">
-                      Test Results: {testResults.passed} passed, {testResults.failed} failed
-                    </span>
-                  </div>
-                  <ScrollArea className="h-32">
-                    <div className="space-y-1">
-                      {testResults.details.map((detail, index) => (
-                        <div key={index} className="text-xs font-mono">
-                          {detail}
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </div>
-              )}
-              
-              <p className="text-xs text-muted-foreground mb-4">
-                This test sends MIDI commands and checks if they're received back. 
-                Connect MIDI OUT to MIDI IN (loopback cable) for full testing.
-              </p>
-            </div>
-
-            <Separator />
 
             {/* Message Monitor */}
             <div>

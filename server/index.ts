@@ -5,29 +5,64 @@ import { setupVite, serveStatic, log } from "./vite";
 import * as fs from "fs";
 import * as path from "path";
 
-// Ensure required directories exist
+// Enhanced directory creation with comprehensive error handling
 function ensureDirectories() {
-  try {
-    const dataDir = path.join(process.cwd(), 'data');
-    const publicDir = path.join(process.cwd(), 'public');
-    
-    // Create data directory if it doesn't exist
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-      console.log('📁 Created data directory:', dataDir);
+  const requiredDirectories = [
+    { path: path.join(process.cwd(), 'data'), name: 'data', critical: true },
+    { path: path.join(process.cwd(), 'public'), name: 'public', critical: false },
+    { path: path.join(process.cwd(), 'uploads'), name: 'uploads', critical: false },
+    { path: path.join(process.cwd(), 'attached_assets'), name: 'attached_assets', critical: false }
+  ];
+  
+  let criticalFailures = 0;
+  let warnings = 0;
+  
+  for (const dir of requiredDirectories) {
+    try {
+      if (!fs.existsSync(dir.path)) {
+        fs.mkdirSync(dir.path, { recursive: true });
+        console.log(`📁 Created ${dir.name} directory: ${dir.path}`);
+      } else {
+        // Verify directory is writable
+        fs.accessSync(dir.path, fs.constants.W_OK);
+      }
+      console.log(`✅ ${dir.name} directory verified and writable`);
+    } catch (error: any) {
+      const errorMsg = `Failed to handle ${dir.name} directory (${dir.path}): ${error.message}`;
+      
+      if (dir.critical) {
+        console.error('❌', errorMsg);
+        criticalFailures++;
+        
+        // Provide specific guidance for critical directory failures
+        if (error.code === 'EACCES') {
+          console.error('💡 Permission denied - ensure write permissions for application directory');
+        } else if (error.code === 'ENOSPC') {
+          console.error('💡 No space left on device - check available disk space');
+        } else if (error.code === 'EROFS') {
+          console.error('💡 Read-only file system - check deployment configuration');
+        }
+      } else {
+        console.warn('⚠️', errorMsg);
+        warnings++;
+        console.log(`🔧 ${dir.name} directory will be created on-demand if needed`);
+      }
     }
-    
-    // Create public directory if it doesn't exist (for production builds)
-    if (!fs.existsSync(publicDir)) {
-      fs.mkdirSync(publicDir, { recursive: true });
-      console.log('📁 Created public directory:', publicDir);
-    }
-    
-    console.log('✅ Directory structure verified');
-  } catch (error: any) {
-    console.warn('⚠️ Failed to create directories:', error.message);
-    console.log('🔧 Continuing startup - directories may be created on demand...');
   }
+  
+  // Summary and decision logic
+  if (criticalFailures > 0) {
+    const message = `Critical directory creation failed (${criticalFailures} failures)`;
+    console.error('❌', message);
+    console.error('🛑 Cannot continue without required directories');
+    throw new Error(message);
+  }
+  
+  const statusMsg = warnings > 0 
+    ? `Directory structure verified with ${warnings} non-critical warnings` 
+    : 'Directory structure fully verified';
+    
+  console.log('✅', statusMsg);
 }
 
 // Enhanced environment variable validation with deployment-friendly defaults

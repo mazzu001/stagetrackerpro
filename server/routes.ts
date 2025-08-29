@@ -14,19 +14,29 @@ import fs from "fs";
 import { promises as fsPromises } from "fs";
 import { WebSocketServer, WebSocket } from 'ws';
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
+let stripe: Stripe | null = null;
+let isStripeEnabled = false;
+let isTestMode = false;
+
+if (process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== 'placeholder_for_deployment') {
+  try {
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    isStripeEnabled = true;
+    isTestMode = process.env.STRIPE_SECRET_KEY.startsWith('sk_test_');
+    console.log(`🔑 Stripe API Mode: ${isTestMode ? 'TEST MODE ✅' : 'LIVE MODE ⚠️'}`);
+    
+    if (!isTestMode) {
+      console.warn('⚠️ WARNING: Using live Stripe keys - test cards will be declined!');
+    }
+    console.log('✅ Stripe initialized successfully for payments');
+  } catch (error: any) {
+    console.error('❌ Failed to initialize Stripe for payments:', error.message);
+    console.log('🔧 Payment features will be disabled');
+  }
+} else {
+  console.log('⚠️ STRIPE_SECRET_KEY not available - payment features disabled');
+  console.log('💡 For production deployment, ensure STRIPE_SECRET_KEY is properly configured');
 }
-
-// Check if we're using test keys
-const isTestMode = process.env.STRIPE_SECRET_KEY.startsWith('sk_test_');
-console.log(`🔑 Stripe API Mode: ${isTestMode ? 'TEST MODE ✅' : 'LIVE MODE ⚠️'}`);
-
-if (!isTestMode) {
-  console.warn('⚠️ WARNING: Using live Stripe keys - test cards will be declined!');
-}
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Configure multer for file uploads
 const uploadDir = path.join(process.cwd(), "uploads");
@@ -56,6 +66,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
   console.log('🔧 Starting route registration...');
+  
+  // Global error handler for route registration
+  const handleRouteError = (section: string, error: any, req: any, res: any) => {
+    console.error(`❌ Error in ${section}:`, error);
+    if (res && !res.headersSent) {
+      res.status(500).json({ 
+        error: 'Internal server error', 
+        message: 'Service temporarily unavailable',
+        section: section 
+      });
+    }
+  };
   
   try {
     // Enable auth middleware for user-specific songs
@@ -188,8 +210,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Stripe payment routes for subscription management
   console.log('💳 Registering Stripe payment routes...');
   
-  // Create subscription for premium/professional tiers
-  app.post('/api/create-subscription', async (req, res) => {
+  if (!isStripeEnabled || !stripe) {
+    console.log('⚠️ Stripe not available - payment routes will return errors');
+    
+    // Register disabled payment routes
+    app.post('/api/create-subscription', (req, res) => {
+      res.status(503).json({ 
+        error: 'payment_unavailable',
+        message: 'Payment services are temporarily unavailable. Please try again later.' 
+      });
+    });
+    
+    app.post('/api/cancel-subscription', (req, res) => {
+      res.status(503).json({ 
+        error: 'payment_unavailable',
+        message: 'Payment services are temporarily unavailable. Please try again later.' 
+      });
+    });
+    
+    app.post('/api/verify-subscription', (req, res) => {
+      res.json({ isPaid: false, userType: 'free' });
+    });
+    
+    console.log('✅ Disabled payment routes registered');
+  } else {
+    console.log('💳 Registering active Stripe payment routes...');
+    
+    // Create subscription for premium/professional tiers
+    app.post('/api/create-subscription', async (req, res) => {
     try {
       const { email, priceId, planName } = req.body;
       
@@ -1119,6 +1167,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     }
   });
+  
+  } // Close else block for active Stripe routes
 
   // Serve uploaded files
   app.use("/uploads", express.static(uploadDir));

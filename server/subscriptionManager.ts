@@ -2,11 +2,22 @@ import Stripe from "stripe";
 import fs from "fs";
 import path from "path";
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
-}
+let stripe: Stripe | null = null;
+let isStripeEnabled = false;
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+if (process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== 'placeholder_for_deployment') {
+  try {
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    isStripeEnabled = true;
+    console.log('✅ Stripe initialized successfully for subscriptions');
+  } catch (error: any) {
+    console.error('❌ Failed to initialize Stripe:', error.message);
+    console.log('🔧 Subscription features will be disabled');
+  }
+} else {
+  console.log('⚠️ STRIPE_SECRET_KEY not available - subscription features disabled');
+  console.log('💡 For production deployment, ensure STRIPE_SECRET_KEY is properly configured');
+}
 
 interface SubscriptionData {
   email: string;
@@ -71,7 +82,12 @@ export class SubscriptionManager {
       }
     }
 
-    // If local data is stale or missing, verify with Stripe
+    // If local data is stale or missing, verify with Stripe (only if Stripe is available)
+    if (!isStripeEnabled || !stripe) {
+      console.log('⚠️ Stripe not available - using local subscription data only');
+      return { isPaid: false, source: 'local' };
+    }
+    
     try {
       const customers = await stripe.customers.list({
         email: email,
@@ -96,8 +112,8 @@ export class SubscriptionManager {
             status: subscription.status as 'active',
             planType: 'premium',
             priceId: subscription.items.data[0]?.price.id || '',
-            currentPeriodStart: subscription.current_period_start,
-            currentPeriodEnd: subscription.current_period_end,
+            currentPeriodStart: (subscription as any).current_period_start,
+            currentPeriodEnd: (subscription as any).current_period_end,
             updatedAt: Date.now()
           };
 

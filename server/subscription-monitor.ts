@@ -1,11 +1,22 @@
 import { storage } from "./storage";
 import Stripe from "stripe";
 
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('Missing required Stripe secret: STRIPE_SECRET_KEY');
-}
+let stripe: Stripe | null = null;
+let isStripeEnabled = false;
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+if (process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== 'placeholder_for_deployment') {
+  try {
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    isStripeEnabled = true;
+    console.log('✅ Stripe initialized successfully for monitoring');
+  } catch (error: any) {
+    console.error('❌ Failed to initialize Stripe for monitoring:', error.message);
+    console.log('🔧 Subscription monitoring will be disabled');
+  }
+} else {
+  console.log('⚠️ STRIPE_SECRET_KEY not available - subscription monitoring disabled');
+  console.log('💡 For production deployment, ensure STRIPE_SECRET_KEY is properly configured');
+}
 
 export class SubscriptionMonitor {
   private intervalId: NodeJS.Timeout | null = null;
@@ -33,6 +44,11 @@ export class SubscriptionMonitor {
   private async checkSubscriptions() {
     console.log('🔍 Starting subscription status check...');
     
+    if (!isStripeEnabled || !stripe) {
+      console.log('⚠️ Stripe not available - skipping subscription check');
+      return;
+    }
+    
     try {
       // Get all users with Stripe subscription IDs
       const users = await this.getAllUsersWithSubscriptions();
@@ -58,6 +74,11 @@ export class SubscriptionMonitor {
 
     try {
       // Get subscription from Stripe
+      if (!stripe) {
+        console.log(`⚠️ Stripe not available - skipping check for user ${user.email}`);
+        return;
+      }
+      
       const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
         expand: ['latest_invoice', 'latest_invoice.payment_intent']
       });
@@ -77,8 +98,8 @@ export class SubscriptionMonitor {
         case 'past_due':
           // Check if payment failed
           const latestInvoice = subscription.latest_invoice as Stripe.Invoice;
-          if (latestInvoice?.payment_intent) {
-            const paymentIntent = latestInvoice.payment_intent as Stripe.PaymentIntent;
+          if (latestInvoice && (latestInvoice as any).payment_intent) {
+            const paymentIntent = (latestInvoice as any).payment_intent as Stripe.PaymentIntent;
             if (paymentIntent.status === 'requires_payment_method') {
               newStatus = 1; // Free - payment method failed
               statusReason = 'Payment method declined';
@@ -114,7 +135,7 @@ export class SubscriptionMonitor {
       }
 
       // Check if subscription has expired
-      const currentPeriodEnd = subscription.current_period_end * 1000;
+      const currentPeriodEnd = (subscription as any).current_period_end * 1000;
       const now = Date.now();
       if (currentPeriodEnd < now && subscription.status !== 'canceled') {
         newStatus = 1; // Free - subscription expired

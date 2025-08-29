@@ -490,24 +490,29 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Delete song function
   const handleDeleteSongLocal = () => {
-    if (!user?.email || !selectedSongId) return;
+    if (!user?.email || !selectedSong) return;
     
     try {
-      const success = LocalSongStorage.deleteSong(user.email, selectedSongId);
+      const success = LocalSongStorage.deleteSong(user.email, selectedSong.id);
       
       if (success) {
         refreshSongs();
-        setSelectedSongId(null);
+        
+        // If we're deleting the currently selected song, clear the selection
+        if (selectedSongId === selectedSong.id) {
+          setSelectedSongId(null);
+        }
+        
         setIsDeleteSongOpen(false);
         
-        // Stop any playing audio if something is playing
-        if (isPlaying) {
+        // Stop any playing audio if the deleted song is currently playing
+        if (isPlaying && selectedSongId === selectedSong.id) {
           pause();
         }
         
         toast({
           title: "Song deleted",
-          description: "Song removed successfully."
+          description: `"${selectedSong.title}" by ${selectedSong.artist} removed successfully.`
         });
       } else {
         throw new Error("Song not found");
@@ -810,24 +815,45 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               >
                 <div className="flex items-center justify-between">
                   <div className="font-medium text-sm md:text-base truncate mr-2">{song.title}</div>
-                  <button
-                    className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
-                      isPlaying 
-                        ? 'bg-gray-600 cursor-not-allowed opacity-50' 
-                        : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (!isPlaying) {
-                        setSelectedSongId(song.id);
-                        setIsTrackManagerOpen(true);
-                      }
-                    }}
-                    disabled={isPlaying}
-                    data-testid={`button-tracks-${song.id}`}
-                  >
-                    {song.tracks ? song.tracks.length : 0} tracks
-                  </button>
+                  <div className="flex items-center gap-1">
+                    <button
+                      className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
+                        isPlaying 
+                          ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                          : 'bg-gray-700 hover:bg-gray-600'
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!isPlaying) {
+                          setSelectedSongId(song.id);
+                          setIsTrackManagerOpen(true);
+                        }
+                      }}
+                      disabled={isPlaying}
+                      data-testid={`button-tracks-${song.id}`}
+                    >
+                      {song.tracks ? song.tracks.length : 0} tracks
+                    </button>
+                    <button
+                      className={`p-1 rounded transition-colors touch-target flex-shrink-0 text-red-400 hover:text-red-300 hover:bg-red-900/20 ${
+                        isPlaying 
+                          ? 'cursor-not-allowed opacity-50' 
+                          : ''
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (!isPlaying) {
+                          setSelectedSong(song);
+                          setIsDeleteSongOpen(true);
+                        }
+                      }}
+                      disabled={isPlaying}
+                      data-testid={`button-delete-${song.id}`}
+                      title="Delete song"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </button>
+                  </div>
                 </div>
                 <div className="text-xs md:text-sm text-gray-400 truncate">{song.artist}</div>
                 <div className="flex items-center justify-between">

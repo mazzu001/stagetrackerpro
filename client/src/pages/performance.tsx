@@ -11,7 +11,7 @@ import StereoVUMeter from "@/components/stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
 
 import { useAudioEngine } from "@/hooks/use-audio-engine";
-import { useStreamingAudio } from "@/hooks/useStreamingAudio";
+
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -55,7 +55,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
-  const [useStreamingMode, setUseStreamingMode] = useState(false);
+
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
@@ -182,21 +182,15 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   }, [userType, triggerMidiBlink, globalMidi]);
 
-  // Original audio engine (preload mode) - only active when NOT streaming
-  const preloadAudio = useAudioEngine({ 
-    song: useStreamingMode ? undefined : selectedSong, // CRITICAL: Disable when streaming
+  // Instant audio engine (now with zero decode delays)
+  const audioEngine = useAudioEngine({ 
+    song: selectedSong,
     onDurationUpdated: (songId: string, newDuration: number) => {
       if (selectedSong && selectedSong.id === songId && user?.email) {
         LocalSongStorage.updateSong(user.email, songId, { duration: newDuration });
       }
     }
   });
-
-  // Streaming audio engine (zero load time)
-  const streamingAudioEngine = useStreamingAudio();
-
-  // Switch between preload and streaming modes
-  const currentAudio = useStreamingMode ? streamingAudioEngine : preloadAudio;
   
   const {
     isPlaying,
@@ -206,54 +200,19 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     pause,
     stop,
     seek,
-    isLoading: isLoadingTracks
-  } = currentAudio;
-
-  // Use preload audio for other features not yet in streaming
-  const {
+    isLoading: isLoadingTracks,
     masterVolume,
     updateMasterVolume,
-    updateTrackVolume: preloadUpdateTrackVolume,
-    updateTrackBalance: preloadUpdateTrackBalance,
-    updateTrackMute: preloadUpdateTrackMute,
-    updateTrackSolo: preloadUpdateTrackSolo,
+    updateTrackVolume,
+    updateTrackBalance,
+    updateTrackMute,
+    updateTrackSolo,
     isAudioEngineOnline,
     masterStereoLevels,
     audioLevels
-  } = preloadAudio;
+  } = audioEngine;
 
-  // Unified track control functions that work for both modes
-  const updateTrackVolume = useCallback((trackId: string, volume: number) => {
-    if (useStreamingMode) {
-      streamingAudioEngine.setTrackVolume(trackId, volume);
-    } else {
-      preloadUpdateTrackVolume(trackId, volume);
-    }
-  }, [useStreamingMode, streamingAudioEngine, preloadUpdateTrackVolume]);
 
-  const updateTrackBalance = useCallback((trackId: string, balance: number) => {
-    if (useStreamingMode) {
-      streamingAudioEngine.setTrackBalance(trackId, balance);
-    } else {
-      preloadUpdateTrackBalance(trackId, balance);
-    }
-  }, [useStreamingMode, streamingAudioEngine, preloadUpdateTrackBalance]);
-
-  const toggleTrackMute = useCallback((trackId: string) => {
-    if (useStreamingMode) {
-      streamingAudioEngine.toggleTrackMute(trackId);
-    } else {
-      preloadUpdateTrackMute(trackId);
-    }
-  }, [useStreamingMode, streamingAudioEngine, preloadUpdateTrackMute]);
-
-  const toggleTrackSolo = useCallback((trackId: string) => {
-    if (useStreamingMode) {
-      streamingAudioEngine.toggleTrackSolo(trackId);
-    } else {
-      preloadUpdateTrackSolo(trackId);
-    }
-  }, [useStreamingMode, streamingAudioEngine, preloadUpdateTrackSolo]);
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
@@ -261,7 +220,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     onPause: pause,
     onStop: stop,
     onTogglePlayback: isPlaying ? pause : play,
-    onTrackMute: () => {},
+    onTrackMute: (trackId: string) => updateTrackMute(trackId),
     isPlaying
   });
 
@@ -305,53 +264,25 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     const song = allSongs.find(s => s.id === selectedSongId);
     if (!song) return;
 
-    if (useStreamingMode) {
-      // CRITICAL: Stop preload engine completely to prevent performance freeze
-      setSelectedSong(null);
-      
-      // Load in streaming engine only
-      if (song.tracks && song.tracks.length > 0) {
-        console.log(`🚀 Switching to streaming mode for: ${song.title}`);
-        streamingAudioEngine.loadSong(song).catch(error => {
-          console.error('❌ Streaming load failed:', error);
-        });
-      }
-    } else {
-      // In preload mode, use the original audio engine
-      console.log(`🔄 Switching to preload mode for: ${song.title}`);
-      setSelectedSong(song);
-    }
-  }, [selectedSongId, allSongs, useStreamingMode, streamingAudioEngine]);
+    console.log(`🎵 Loading song: ${song.title}`);
+    setSelectedSong(song);
+  }, [selectedSongId, allSongs]);
 
   const handleSeek = useCallback((time: number) => {
     seek(time);
   }, [seek]);
 
   const handlePlay = useCallback(() => {
-    if (useStreamingMode) {
-      // Check streaming readiness
-      if (streamingAudioEngine.isReady) {
-        play();
-      } else {
-        toast({
-          title: "Streaming Not Ready",
-          description: "Please wait for streaming setup to complete",
-          variant: "destructive"
-        });
-      }
+    if (selectedSong && selectedSong.tracks && selectedSong.tracks.length > 0) {
+      play();
     } else {
-      // Check preload readiness
-      if (selectedSong && selectedSong.tracks && selectedSong.tracks.length > 0) {
-        play();
-      } else {
-        toast({
-          title: "No Tracks Available", 
-          description: "Please add tracks to this song first",
-          variant: "destructive"
-        });
-      }
+      toast({
+        title: "No Tracks Available", 
+        description: "Please add tracks to this song first",
+        variant: "destructive"
+      });
     }
-  }, [useStreamingMode, streamingAudioEngine.isReady, selectedSong, play, toast]);
+  }, [selectedSong, play, toast]);
 
   const handlePause = useCallback(() => {
     pause();
@@ -716,10 +647,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   <FileAudio className="h-4 w-4 mr-2" />
                   Track Manager
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setUseStreamingMode(!useStreamingMode)} data-testid="menuitem-streaming-mode">
-                  <Zap className="h-4 w-4 mr-2" />
-                  {useStreamingMode ? 'Disable' : 'Enable'} Streaming Mode
-                </DropdownMenuItem>
+
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={toggleFullscreen} data-testid="menuitem-fullscreen">
                   {isFullscreen ? (
@@ -1006,21 +934,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       <div className="px-4 py-2 bg-gray-800 border-t border-gray-700 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-sm">
-            {useStreamingMode ? (
-              <>
-                <Zap className="h-4 w-4 text-green-400" />
-                <span className="text-green-400">Streaming Mode</span>
-                <span className="text-gray-400">- Zero load time</span>
-              </>
-            ) : (
-              <>
-                <FileAudio className="h-4 w-4 text-blue-400" />
-                <span className="text-blue-400">Preload Mode</span>
-                <span className="text-gray-400">- Full buffered audio</span>
-              </>
-            )}
+            <Zap className="h-4 w-4 text-green-400" />
+            <span className="text-green-400">Instant Playback</span>
+            <span className="text-gray-400">- Zero delay audio</span>
           </div>
-          {(!useStreamingMode && isLoadingTracks) && (
+          {isLoadingTracks && (
             <div className="flex items-center gap-2 text-sm text-yellow-400">
               <Loader2 className="h-4 w-4 animate-spin" />
               Loading tracks...

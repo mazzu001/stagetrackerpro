@@ -5,6 +5,7 @@ This project is a professional, offline-capable live music performance applicati
 - **Instant Playback Implementation (Jan 29, 2025)**: Successfully replaced slow `decodeAudioData` approach with instant HTMLAudioElement playback. Eliminated 8+ second audio decode delays by using MediaElementSource for immediate response while background decoding for advanced features. Audio now plays instantly when clicking play button.
 - **Emergency Streaming Disable (Jan 29, 2025)**: Temporarily disabled streaming audio engine due to application crashes. The dual audio engine approach was causing memory conflicts and complete app freezes. Reverted to stable preload-only mode while streaming implementation is redesigned.
 - **Mobile App Crash Fix (Jan 29, 2025)**: Fixed Android crash when adding tracks by simplifying error handling and removing excessive logging that was interfering with async file operations. Streamlined the track addition process in TrackManagerScreen and DatabaseProvider.
+- **Streaming Mode Removal (Jan 29, 2025)**: Completely removed streaming mode functionality since main audio engine now provides instant playback. Simplified codebase by eliminating dual audio engine architecture and mode switching complexity.
 
 # User Preferences
 - **Communication style**: Simple, everyday language
@@ -33,11 +34,6 @@ This project is a professional, offline-capable live music performance applicati
 - **Automated Lyrics MIDI**: MIDI commands embedded in timestamped lyrics automatically execute during playback.
 
 ## Core Features
-- **Dual Audio Engine Architecture**: 
-  - **Preload Mode**: Traditional buffered audio with 8+ second decode time but full Web Audio API features
-  - **Streaming Mode**: Zero-load-time instant playback using HTMLAudioElement with local blob URLs
-  - **Mode Toggle**: Settings menu toggle with real-time indicator showing current audio engine
-  - **Unified Controls**: All track controls (volume, mute, solo, balance) work seamlessly in both modes
 - **Instant-Response Audio Engine**: Uses HTMLAudioElement with MediaElementSource for zero-delay playback while background decoding AudioBuffers for advanced features. Supports up to 6 tracks per song with individual volume, mute, solo, and balance controls. Features real-time VU meters and automatic song duration detection.
 - **Advanced MIDI Integration**: Comprehensive device detection, universal command formatting, real-time message monitoring, and persistent connection management.
 - **Performance Interface**: Transport controls (play, pause, stop, seek) with keyboard shortcuts, synchronized lyrics with auto-scrolling and MIDI command highlighting, interactive position slider, and fullscreen mode. Optimized for mobile and touch controls.

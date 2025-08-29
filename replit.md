@@ -2,8 +2,8 @@
 This project is a professional, offline-capable live music performance application designed for stage use. It features real-time audio mixing, advanced Web MIDI device management, and synchronized lyrics display. The application prioritizes offline functionality, utilizing local storage for all performance data and blob URLs for audio files. It is production-ready with robust MIDI integration, including persistent connections, and comprehensive device management.
 
 ## Recent Changes
+- **Instant Playback Implementation (Jan 29, 2025)**: Successfully replaced slow `decodeAudioData` approach with instant HTMLAudioElement playback. Eliminated 8+ second audio decode delays by using MediaElementSource for immediate response while background decoding for advanced features. Audio now plays instantly when clicking play button.
 - **Emergency Streaming Disable (Jan 29, 2025)**: Temporarily disabled streaming audio engine due to application crashes. The dual audio engine approach was causing memory conflicts and complete app freezes. Reverted to stable preload-only mode while streaming implementation is redesigned.
-- **Web Streaming Audio Implementation (Jan 29, 2025)**: Initially implemented zero-load-time streaming audio but discovered critical stability issues with dual audio engine architecture causing system crashes.
 - **Mobile App Crash Fix (Jan 29, 2025)**: Fixed Android crash when adding tracks by simplifying error handling and removing excessive logging that was interfering with async file operations. Streamlined the track addition process in TrackManagerScreen and DatabaseProvider.
 
 # User Preferences
@@ -38,7 +38,7 @@ This project is a professional, offline-capable live music performance applicati
   - **Streaming Mode**: Zero-load-time instant playback using HTMLAudioElement with local blob URLs
   - **Mode Toggle**: Settings menu toggle with real-time indicator showing current audio engine
   - **Unified Controls**: All track controls (volume, mute, solo, balance) work seamlessly in both modes
-- **Multi-Track Audio Engine**: Supports up to 6 tracks per song with individual volume, mute, solo, and balance controls. Features real-time VU meters and automatic song duration detection.
+- **Instant-Response Audio Engine**: Uses HTMLAudioElement with MediaElementSource for zero-delay playback while background decoding AudioBuffers for advanced features. Supports up to 6 tracks per song with individual volume, mute, solo, and balance controls. Features real-time VU meters and automatic song duration detection.
 - **Advanced MIDI Integration**: Comprehensive device detection, universal command formatting, real-time message monitoring, and persistent connection management.
 - **Performance Interface**: Transport controls (play, pause, stop, seek) with keyboard shortcuts, synchronized lyrics with auto-scrolling and MIDI command highlighting, interactive position slider, and fullscreen mode. Optimized for mobile and touch controls.
 - **Data Management**: Uses local file system for audio (Blob URLs), localStorage for offline authentication, and a hybrid PostgreSQL/SQLite database for music and user data. Includes subscription tiers with Stripe integration.

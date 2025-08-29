@@ -549,60 +549,63 @@ class TrackController {
 
   async load(): Promise<void> {
     try {
-      console.log(`🔄 Starting load process for track: ${this.track.name}`);
+      console.log(`⚡ INSTANT LOAD: ${this.track.name}`);
       
-      // Use fast local file storage system
       const audioStorage = AudioFileStorage.getInstance();
-      console.log(`🔄 AudioFileStorage instance obtained for ${this.track.name}`);
-      
-      // Get audio URL from local file storage (cached blob URLs)
-      console.log(`🔄 Getting audio URL for track ${this.track.name} (ID: ${this.track.id})`);
       const audioUrl = await audioStorage.getAudioUrl(this.track.id);
       if (!audioUrl) {
-        console.warn(`No file data available for track ${this.track.name}. Please re-add the audio file.`);
-        throw new Error(`Audio file not available for ${this.track.name}. Please re-add the audio file.`);
+        throw new Error(`Audio file not available for ${this.track.name}`);
       }
       
-      console.log(`✅ Audio URL obtained for ${this.track.name}: ${audioUrl.substring(0, 50)}...`);
+      // INSTANT PLAYBACK: Use HTMLAudioElement for zero-delay start
+      const audioElement = new Audio(audioUrl);
+      audioElement.preload = 'auto';
+      audioElement.crossOrigin = 'anonymous';
       
-      // Fetch and decode the audio from local blob URL with memory management
-      console.log(`🔄 Fetching audio data for ${this.track.name}...`);
-      const response = await fetch(audioUrl);
-      console.log(`✅ Fetch response received for ${this.track.name}: ${response.status} ${response.statusText}`);
+      // Create MediaElementSource for Web Audio integration
+      const source = this.audioContext.createMediaElementSource(audioElement);
+      source.connect(this.gainNode);
       
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
+      // Store references for instant playback
+      (this as any).audioElement = audioElement;
+      (this as any).mediaSource = source;
+      (this as any).isInstantReady = true;
       
-      console.log(`🔄 Converting to array buffer for ${this.track.name}...`);
-      const arrayBuffer = await response.arrayBuffer();
-      console.log(`✅ Array buffer received for ${this.track.name}: ${arrayBuffer.byteLength} bytes`);
+      console.log(`✅ INSTANT READY: ${this.track.name} - zero decode delay`);
       
-      if (arrayBuffer.byteLength === 0) {
-        throw new Error(`Empty audio file for track ${this.track.name}`);
-      }
+      // Background decode for waveform/advanced features (non-blocking)
+      this.backgroundDecode(audioUrl);
       
-      console.log(`🔄 Starting audio decode for ${this.track.name}, size: ${(arrayBuffer.byteLength / 1024 / 1024).toFixed(2)} MB`);
-      
-      // Decode directly - no timeout needed for local files
-      console.log(`🔄 Decoding audio for ${this.track.name}...`);
-      this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-      console.log(`✅ Audio decode completed for ${this.track.name}`);
-      
-      // Verify audio buffer integrity
-      const bufferSampleRate = this.audioBuffer.sampleRate;
-      const bufferLength = this.audioBuffer.length;
-      const expectedDuration = bufferLength / bufferSampleRate;
-      
-      console.log(`Successfully decoded ${this.track.name}: ${this.audioBuffer.duration.toFixed(2)}s, ${this.audioBuffer.numberOfChannels} channels`);
-      console.log(`Buffer details - samples: ${bufferLength}, sampleRate: ${bufferSampleRate}, calculated duration: ${expectedDuration.toFixed(2)}s`);
     } catch (error) {
-      console.error(`Failed to load audio for track ${this.track.name}:`, error);
-      throw error; // Re-throw to prevent adding failed tracks
+      console.error(`❌ Instant load failed for ${this.track.name}:`, error);
+      throw error;
+    }
+  }
+  
+  // Background decode for waveforms (non-blocking)
+  private async backgroundDecode(audioUrl: string): Promise<void> {
+    try {
+      const response = await fetch(audioUrl);
+      const arrayBuffer = await response.arrayBuffer();
+      this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      console.log(`🎵 Background decode complete: ${this.track.name}`);
+    } catch (error) {
+      console.warn(`Background decode failed: ${this.track.name}`, error);
     }
   }
 
   play(offset: number = 0): void {
+    // INSTANT PLAYBACK: Use audioElement if available for zero delay
+    if ((this as any).audioElement && (this as any).isInstantReady) {
+      const audioElement = (this as any).audioElement as HTMLAudioElement;
+      audioElement.currentTime = offset;
+      audioElement.play().catch(error => {
+        console.warn(`Instant play failed for ${this.track.name}:`, error);
+      });
+      return;
+    }
+    
+    // Fallback to buffer source (for advanced features)
     if (!this.audioBuffer) return;
 
     // Stop any existing source
@@ -618,25 +621,23 @@ class TrackController {
     
     // Start playback from the current position
     try {
-      // Ensure offset doesn't exceed buffer duration
       const safeOffset = Math.min(offset, this.audioBuffer.duration - 0.1);
-      
-      // Add event listener to debug when source ends
-      this.sourceNode.addEventListener('ended', () => {
-        console.log(`Track ${this.track.name} source ended naturally at ${(new Date()).toLocaleTimeString()}`);
-      });
-      
-      // Start the audio source - this should play from safeOffset to the end of the buffer
       this.sourceNode.start(0, safeOffset);
-      
-      // Add more detailed debug logging
-      console.log(`Track ${this.track.name} started - offset: ${safeOffset.toFixed(2)}s, bufferDuration: ${this.audioBuffer.duration.toFixed(2)}s, remaining: ${(this.audioBuffer.duration - safeOffset).toFixed(2)}s`);
+      console.log(`Track ${this.track.name} started via buffer source`);
     } catch (error) {
       console.warn(`Failed to start track ${this.track.name} at offset ${offset}:`, error);
     }
   }
 
   pause(): void {
+    // INSTANT PAUSE: Use audioElement if available
+    if ((this as any).audioElement) {
+      const audioElement = (this as any).audioElement as HTMLAudioElement;
+      audioElement.pause();
+      return;
+    }
+    
+    // Fallback to buffer source
     if (this.sourceNode) {
       try {
         this.sourceNode.stop();
@@ -650,6 +651,15 @@ class TrackController {
   }
 
   stop(): void {
+    // INSTANT STOP: Use audioElement if available
+    if ((this as any).audioElement) {
+      const audioElement = (this as any).audioElement as HTMLAudioElement;
+      audioElement.pause();
+      audioElement.currentTime = 0;
+      return;
+    }
+    
+    // Fallback to buffer source
     if (this.sourceNode) {
       try {
         this.sourceNode.stop();

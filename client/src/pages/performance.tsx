@@ -803,7 +803,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 <div className="text-xs md:text-sm text-gray-400 truncate">{song.artist}</div>
                 <div className="flex items-center justify-between">
                   <div className="text-xs text-gray-500">
-                    {song.duration > 0 ? `${Math.floor(song.duration / 60)}:${(song.duration % 60).toString().padStart(2, '0')}` : '0:00'}
+                    {song.duration > 0 ? `${Math.floor(song.duration / 60)}:${Math.floor(song.duration % 60).toString().padStart(2, '0')}` : '0:00'}
                   </div>
                   {selectedSongId === song.id && isPlaying && (
                     <StereoVUMeter

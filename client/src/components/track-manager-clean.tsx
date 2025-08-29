@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { LocalSongStorage } from "@/lib/local-song-storage";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
-import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
+import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle, Mic, Square, Circle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import StereoVUMeter from "@/components/stereo-vu-meter";
 
@@ -50,6 +50,22 @@ export default function TrackManager({
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
 
+  // Recording state
+  const [isRecording, setIsRecording] = useState(false);
+  const [isRecordDialogOpen, setIsRecordDialogOpen] = useState(false);
+  const [recordingName, setRecordingName] = useState("");
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
+  const [recordingStream, setRecordingStream] = useState<MediaStream | null>(null);
+  const [recordingDuration, setRecordingDuration] = useState(0);
+  const [recordingLevel, setRecordingLevel] = useState(0);
+  const [availableAudioInputs, setAvailableAudioInputs] = useState<MediaDeviceInfo[]>([]);
+  const [selectedAudioInput, setSelectedAudioInput] = useState<string>("");
+  const recordingChunks = useRef<Blob[]>([]);
+  const recordingStartTime = useRef<number>(0);
+  const recordingTimer = useRef<NodeJS.Timeout | null>(null);
+  const recordingAnalyser = useRef<AnalyserNode | null>(null);
+  const recordingAudioContext = useRef<AudioContext | null>(null);
+
   const { toast } = useToast();
   const { user } = useLocalAuth();
   const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
@@ -70,6 +86,278 @@ export default function TrackManager({
       setLocalTrackValues(initialValues);
     }
   }, [tracks]);
+
+  // Initialize audio inputs on component mount
+  useEffect(() => {
+    getAudioInputs();
+  }, []);
+
+  // Cleanup recording resources on unmount
+  useEffect(() => {
+    return () => {
+      stopRecording();
+      if (recordingStream) {
+        recordingStream.getTracks().forEach(track => track.stop());
+      }
+      if (recordingAudioContext.current) {
+        recordingAudioContext.current.close();
+      }
+    };
+  }, []);
+
+  // Get available audio input devices
+  const getAudioInputs = async () => {
+    try {
+      // Request microphone permission first
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+      
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const audioInputs = devices.filter(device => device.kind === 'audioinput');
+      setAvailableAudioInputs(audioInputs);
+      
+      // Set default input
+      if (audioInputs.length > 0 && !selectedAudioInput) {
+        setSelectedAudioInput(audioInputs[0].deviceId);
+      }
+    } catch (error) {
+      console.error('Error getting audio inputs:', error);
+      toast({
+        title: "Microphone Access",
+        description: "Please allow microphone access to record audio tracks.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Start recording
+  const startRecording = async () => {
+    try {
+      const constraints = {
+        audio: {
+          deviceId: selectedAudioInput ? { exact: selectedAudioInput } : undefined,
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
+          sampleRate: 44100
+        }
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      setRecordingStream(stream);
+
+      // Set up audio analysis for level monitoring
+      recordingAudioContext.current = new AudioContext({ sampleRate: 44100 });
+      const source = recordingAudioContext.current.createMediaStreamSource(stream);
+      recordingAnalyser.current = recordingAudioContext.current.createAnalyser();
+      recordingAnalyser.current.fftSize = 256;
+      source.connect(recordingAnalyser.current);
+
+      // Start level monitoring
+      const monitorLevels = () => {
+        if (!recordingAnalyser.current || !isRecording) return;
+        
+        const dataArray = new Uint8Array(recordingAnalyser.current.frequencyBinCount);
+        recordingAnalyser.current.getByteFrequencyData(dataArray);
+        
+        const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+        const normalizedLevel = average / 255;
+        setRecordingLevel(normalizedLevel);
+        
+        if (isRecording) {
+          requestAnimationFrame(monitorLevels);
+        }
+      };
+
+      // Set up MediaRecorder
+      const recorder = new MediaRecorder(stream, {
+        mimeType: 'audio/webm;codecs=opus'
+      });
+
+      recordingChunks.current = [];
+      
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordingChunks.current.push(event.data);
+        }
+      };
+
+      recorder.onstop = () => {
+        handleRecordingComplete();
+      };
+
+      setMediaRecorder(recorder);
+      recorder.start(1000); // Collect data every second
+      setIsRecording(true);
+      recordingStartTime.current = Date.now();
+
+      // Start duration timer
+      recordingTimer.current = setInterval(() => {
+        const elapsed = (Date.now() - recordingStartTime.current) / 1000;
+        setRecordingDuration(elapsed);
+      }, 100);
+
+      // Start level monitoring
+      monitorLevels();
+
+      console.log('🎤 Recording started');
+      toast({
+        title: "Recording Started",
+        description: "Recording audio track...",
+      });
+
+    } catch (error) {
+      console.error('Error starting recording:', error);
+      toast({
+        title: "Recording Error",
+        description: "Failed to start recording. Please check microphone permissions.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Stop recording
+  const stopRecording = () => {
+    if (mediaRecorder && isRecording) {
+      mediaRecorder.stop();
+      setIsRecording(false);
+      
+      if (recordingTimer.current) {
+        clearInterval(recordingTimer.current);
+        recordingTimer.current = null;
+      }
+
+      if (recordingStream) {
+        recordingStream.getTracks().forEach(track => track.stop());
+      }
+
+      if (recordingAudioContext.current) {
+        recordingAudioContext.current.close();
+        recordingAudioContext.current = null;
+      }
+
+      console.log('🎤 Recording stopped');
+    }
+  };
+
+  // Handle recording completion
+  const handleRecordingComplete = async () => {
+    if (recordingChunks.current.length === 0) {
+      toast({
+        title: "Recording Error",
+        description: "No audio data recorded.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      // Create blob from recorded chunks
+      const audioBlob = new Blob(recordingChunks.current, { type: 'audio/webm;codecs=opus' });
+      
+      // Convert to a more compatible format if needed
+      const audioFile = new File([audioBlob], `${recordingName || 'recorded-track'}.webm`, {
+        type: 'audio/webm'
+      });
+
+      console.log('🎤 Recording completed, duration:', recordingDuration.toFixed(1), 'seconds');
+      
+      // Add the recorded track to the song
+      await addRecordedTrack(audioFile);
+      
+      // Reset recording state
+      setRecordingName("");
+      setRecordingDuration(0);
+      setRecordingLevel(0);
+      recordingChunks.current = [];
+      setIsRecordDialogOpen(false);
+
+      toast({
+        title: "Recording Complete",
+        description: `Track "${recordingName || 'recorded-track'}" added successfully!`,
+      });
+
+    } catch (error) {
+      console.error('Error processing recording:', error);
+      toast({
+        title: "Processing Error",
+        description: "Failed to process recorded audio.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  // Add recorded track to song
+  const addRecordedTrack = async (audioFile: File) => {
+    if (!song?.id || !user?.email) {
+      toast({
+        title: "Error",
+        description: "Please select a song first.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setIsImporting(true);
+
+      // Store the audio file
+      const filePath = await AudioFileStorage.storeAudioFile(audioFile, user.email);
+      
+      // Create track data
+      const trackName = recordingName || `Recorded Track ${tracks.length + 1}`;
+      const trackData = {
+        songId: song.id,
+        name: trackName,
+        filePath: filePath,
+        volume: 1.0,
+        balance: 0.0,
+        isMuted: false,
+        isSolo: false
+      };
+
+      // Save track to database
+      const response = await fetch(`/api/songs/${song.id}/tracks`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(trackData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save track');
+      }
+
+      const newTrack = await response.json();
+      
+      // Update the song with the new track
+      const updatedSong = {
+        ...song,
+        tracks: [...tracks, newTrack]
+      };
+
+      if (onSongUpdate) {
+        onSongUpdate(updatedSong);
+      }
+
+      console.log('🎤 Recorded track added to song:', trackName);
+
+    } catch (error) {
+      console.error('Error adding recorded track:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add recorded track to song.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
+  // Format recording duration for display
+  const formatDuration = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   const refetchTracks = useCallback(() => {
     if (!song?.id || !user?.email) return;
@@ -495,6 +783,109 @@ export default function TrackManager({
           )}
           
           {/* Desktop buttons */}
+          <Dialog open={isRecordDialogOpen} onOpenChange={setIsRecordDialogOpen}>
+            <DialogTrigger asChild>
+              <Button
+                disabled={tracks.length >= 6 || isImporting}
+                size="sm"
+                variant="outline"
+                className="hidden md:flex"
+                data-testid="button-record-track"
+              >
+                <Mic className="h-4 w-4 mr-2" />
+                Record
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Record Audio Track</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                {/* Track name input */}
+                <div>
+                  <Label htmlFor="recording-name">Track Name</Label>
+                  <Input
+                    id="recording-name"
+                    value={recordingName}
+                    onChange={(e) => setRecordingName(e.target.value)}
+                    placeholder={`Recorded Track ${tracks.length + 1}`}
+                  />
+                </div>
+
+                {/* Audio input selection */}
+                {availableAudioInputs.length > 0 && (
+                  <div>
+                    <Label htmlFor="audio-input">Audio Input</Label>
+                    <select
+                      id="audio-input"
+                      value={selectedAudioInput}
+                      onChange={(e) => setSelectedAudioInput(e.target.value)}
+                      className="w-full p-2 border rounded-md"
+                    >
+                      {availableAudioInputs.map((input) => (
+                        <option key={input.deviceId} value={input.deviceId}>
+                          {input.label || `Microphone ${input.deviceId.slice(0, 8)}`}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
+
+                {/* Recording controls */}
+                <div className="flex flex-col space-y-3">
+                  {/* Recording level meter */}
+                  {isRecording && (
+                    <div className="space-y-2">
+                      <Label>Recording Level</Label>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-green-600 h-2 rounded-full transition-all duration-75"
+                          style={{ width: `${Math.min(recordingLevel * 100, 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Recording duration */}
+                  {isRecording && (
+                    <div className="text-center">
+                      <div className="text-2xl font-mono text-red-600">
+                        {formatDuration(recordingDuration)}
+                      </div>
+                      <div className="text-sm text-gray-600">Recording...</div>
+                    </div>
+                  )}
+
+                  {/* Recording button */}
+                  <Button
+                    onClick={isRecording ? stopRecording : startRecording}
+                    className={`w-full ${isRecording ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'}`}
+                    size="lg"
+                  >
+                    {isRecording ? (
+                      <>
+                        <Square className="h-5 w-5 mr-2" />
+                        Stop Recording
+                      </>
+                    ) : (
+                      <>
+                        <Circle className="h-5 w-5 mr-2" />
+                        Start Recording
+                      </>
+                    )}
+                  </Button>
+                </div>
+
+                {/* Tips */}
+                <div className="text-xs text-gray-600 space-y-1">
+                  <p>• Make sure your microphone is connected and working</p>
+                  <p>• For best quality, record in a quiet environment</p>
+                  <p>• The recording will be added as a new track to your song</p>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+
           <Button
             onClick={handleFileSelect}
             disabled={tracks.length >= 6 || isImporting}
@@ -520,6 +911,21 @@ export default function TrackManager({
           )}
 
           {/* Mobile buttons - more compact */}
+          <Dialog open={isRecordDialogOpen} onOpenChange={setIsRecordDialogOpen}>
+            <DialogTrigger asChild>
+              <Button
+                disabled={tracks.length >= 6 || isImporting}
+                size="sm"
+                variant="outline"
+                className="flex md:hidden h-8 w-8 p-0"
+                title="Record Track"
+                data-testid="button-record-track-mobile"
+              >
+                <Mic className="h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+          </Dialog>
+
           <Button
             onClick={handleFileSelect}
             disabled={tracks.length >= 6 || isImporting}

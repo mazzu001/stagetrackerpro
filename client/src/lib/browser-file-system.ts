@@ -57,6 +57,13 @@ export class BrowserFileSystem {
       songs: {},
       waveforms: {}
     };
+    
+    // Immediately initialize database to avoid race conditions
+    this.initializeDB().then(() => {
+      console.log('✅ BrowserFileSystem database auto-initialized');
+    }).catch((error) => {
+      console.error('❌ Failed to auto-initialize BrowserFileSystem database:', error);
+    });
   }
 
   // Check if already initialized
@@ -151,7 +158,13 @@ export class BrowserFileSystem {
 
   // Add audio file (user selects files through file picker)
   async addAudioFile(songId: string, trackId: string, trackName: string, file: File): Promise<boolean> {
-    if (!this.db) return false;
+    console.log(`🔄 BrowserFS.addAudioFile: Storing ${file.name} as track ${trackId}`);
+    console.log(`🗃️ Database initialized: ${!!this.db}`);
+    
+    if (!this.db) {
+      console.log(`❌ Database not initialized, cannot store file`);
+      return false;
+    }
 
     try {
       // Store file in IndexedDB
@@ -169,30 +182,45 @@ export class BrowserFileSystem {
           type: file.type,
           lastModified: file.lastModified || Date.now()
         });
-        request.onsuccess = () => resolve(request.result);
-        request.onerror = () => reject(request.error);
+        request.onsuccess = () => {
+          console.log(`✅ IndexedDB storage successful for ${trackId}`);
+          resolve(request.result);
+        };
+        request.onerror = () => {
+          console.log(`❌ IndexedDB storage failed for ${trackId}:`, request.error);
+          reject(request.error);
+        };
       });
 
       // Cache file in memory
       this.audioFiles.set(trackId, file);
+      console.log(`✅ Memory cache updated for ${trackId}`);
 
-      console.log(`Audio file stored: ${file.name} for track: ${trackName}`);
+      console.log(`✅ Audio file stored: ${file.name} for track: ${trackName}`);
       return true;
 
     } catch (error) {
-      console.error('Failed to store audio file:', error);
+      console.error(`❌ Failed to store audio file for ${trackId}:`, error);
       return false;
     }
   }
 
   // Get audio file for playback
   async getAudioFile(trackId: string): Promise<File | null> {
+    console.log(`🔍 BrowserFS.getAudioFile: Looking for track ${trackId}`);
+    console.log(`💾 Memory cache has: [${Array.from(this.audioFiles.keys()).join(', ')}]`);
+    console.log(`🗃️ Database initialized: ${!!this.db}`);
+    
     // Check memory cache first
     if (this.audioFiles.has(trackId)) {
+      console.log(`✅ Found in memory cache: ${trackId}`);
       return this.audioFiles.get(trackId)!;
     }
 
-    if (!this.db) return null;
+    if (!this.db) {
+      console.log(`❌ Database not initialized for track ${trackId}`);
+      return null;
+    }
 
     try {
       const transaction = this.db.transaction(['audioFiles'], 'readonly');
@@ -205,14 +233,16 @@ export class BrowserFileSystem {
       });
 
       if (result && result.file) {
+        console.log(`✅ Found in IndexedDB: ${trackId} (${result.fileName})`);
         // Cache in memory for faster access
         this.audioFiles.set(trackId, result.file);
         return result.file;
       }
 
+      console.log(`❌ Not found in IndexedDB: ${trackId}`);
       return null;
     } catch (error) {
-      console.error('Failed to load audio file:', error);
+      console.error(`❌ Failed to load audio file for ${trackId}:`, error);
       return null;
     }
   }

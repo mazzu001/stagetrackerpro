@@ -506,7 +506,14 @@ export class AudioEngine {
     this.levelCache.clear();
     
     if (this.audioContext) {
-      this.audioContext.close();
+      try {
+        if (this.audioContext.state !== 'closed') {
+          this.audioContext.close();
+          console.log('🔇 Audio engine AudioContext closed');
+        }
+      } catch (error) {
+        console.warn('⚠️ Error closing audio engine AudioContext (already closed):', error);
+      }
       this.audioContext = null;
     }
   }

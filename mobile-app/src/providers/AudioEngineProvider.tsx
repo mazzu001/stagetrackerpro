@@ -292,17 +292,17 @@ export default function AudioEngineProvider({ children }: { children: React.Reac
 
   const startPositionUpdates = () => {
     positionUpdateInterval.current = setInterval(async () => {
-      if (audioPlayers.current.length > 0) {
+      if (audioPlayers.current.length > 0 && isPlaying) {
         try {
           const status = await audioPlayers.current[0].sound.getStatusAsync();
           if (status.isLoaded && status.positionMillis !== undefined) {
             setCurrentTime(status.positionMillis / 1000);
           }
         } catch (error) {
-          console.warn('Failed to get position:', error);
+          // Silently ignore errors to avoid console spam
         }
       }
-    }, 100);
+    }, 200); // Less frequent updates
   };
 
   const stopPositionUpdates = () => {
@@ -313,19 +313,20 @@ export default function AudioEngineProvider({ children }: { children: React.Reac
   };
 
   const startLevelUpdates = () => {
-    // Simplified level simulation since Expo AV doesn't provide real-time levels
+    // Minimal level updates to improve performance
     levelUpdateInterval.current = setInterval(() => {
+      if (!isPlaying) return; // Skip updates when not playing
+      
       const levels: AudioLevels = {};
       audioPlayers.current.forEach(player => {
         const effectiveVolume = calculateEffectiveVolume(player);
-        const simulatedLevel = isPlaying ? effectiveVolume * (0.3 + Math.random() * 0.7) : 0;
         levels[player.trackId] = {
-          left: simulatedLevel,
-          right: simulatedLevel
+          left: effectiveVolume * 0.5,  // Static simulated level
+          right: effectiveVolume * 0.5
         };
       });
       setAudioLevels(levels);
-    }, 50);
+    }, 250); // Much less frequent updates
   };
 
   const stopLevelUpdates = () => {

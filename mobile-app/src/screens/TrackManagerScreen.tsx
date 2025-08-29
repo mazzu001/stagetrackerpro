@@ -12,7 +12,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
 import { useDatabase } from '../providers/DatabaseProvider';
-import { ErrorBoundary, withErrorHandler } from '../components/ErrorBoundary';
+
 
 interface Track {
   id: string;
@@ -27,7 +27,9 @@ interface Track {
   updatedAt: Date;
 }
 
-function TrackManagerScreenInner() {
+
+
+export default function TrackManagerScreen() {
   const route = useRoute();
   const navigation = useNavigation();
   const { songId } = route.params as { songId: string };
@@ -53,7 +55,6 @@ function TrackManagerScreenInner() {
 
   const handleAddTracks = async () => {
     try {
-      // Basic validation
       if (!songId) {
         Alert.alert('Error', 'No song selected');
         return;
@@ -66,7 +67,6 @@ function TrackManagerScreenInner() {
 
       setIsUploading(true);
 
-      // Simple document picker call
       const result = await DocumentPicker.getDocumentAsync({
         type: 'audio/*',
         multiple: true,
@@ -78,7 +78,6 @@ function TrackManagerScreenInner() {
         return;
       }
 
-      // Check track limit
       if (tracks.length + result.assets.length > 6) {
         Alert.alert(
           'Too Many Tracks',
@@ -88,28 +87,23 @@ function TrackManagerScreenInner() {
         return;
       }
 
-      // Process each file
       for (const asset of result.assets) {
         if (!asset?.uri || !asset?.name) continue;
 
         try {
-          // Create safe filename
           const fileName = asset.name.replace(/[^a-zA-Z0-9.-]/g, '_');
           const permanentPath = `${FileSystem.documentDirectory}audio/${fileName}`;
           
-          // Create directory
           await FileSystem.makeDirectoryAsync(
             `${FileSystem.documentDirectory}audio/`,
             { intermediates: true }
           );
 
-          // Copy file
           await FileSystem.copyAsync({
             from: asset.uri,
             to: permanentPath,
           });
 
-          // Add to database
           const trackName = fileName.replace(/\.[^/.]+$/, '');
           await addTrack({
             songId,
@@ -125,9 +119,7 @@ function TrackManagerScreenInner() {
         }
       }
 
-      // Refresh data
       loadData();
-      
       Alert.alert('Success', 'Tracks added successfully');
     } catch (error) {
       console.error('Failed to add tracks:', error);
@@ -153,27 +145,19 @@ function TrackManagerScreenInner() {
           style: 'destructive',
           onPress: async () => {
             try {
-              // Delete the audio file first
               if (track.filePath) {
                 try {
                   const fileInfo = await FileSystem.getInfoAsync(track.filePath);
                   if (fileInfo.exists) {
                     await FileSystem.deleteAsync(track.filePath);
-                    console.log(`Deleted audio file: ${track.filePath}`);
                   }
                 } catch (fileError) {
                   console.error('Failed to delete audio file:', fileError);
-                  // Continue with database deletion even if file deletion fails
                 }
               }
 
-              // Delete from database
               await deleteTrack(track.id);
-              
-              // Refresh data
               loadData();
-              
-              console.log(`Successfully deleted track: ${track.name}`);
             } catch (error) {
               console.error('Failed to delete track:', error);
               Alert.alert(
@@ -185,11 +169,6 @@ function TrackManagerScreenInner() {
         },
       ]
     );
-  };
-
-  const formatFileSize = (filePath: string) => {
-    // This would need to be implemented with FileSystem.getInfoAsync
-    return 'Unknown size';
   };
 
   const renderTrack = (track: Track) => (
@@ -285,14 +264,6 @@ function TrackManagerScreenInner() {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
-  );
-}
-
-export default function TrackManagerScreen() {
-  return (
-    <ErrorBoundary>
-      <TrackManagerScreenInner />
-    </ErrorBoundary>
   );
 }
 

@@ -14,6 +14,12 @@ const STORAGE_KEY = 'lpp_local_user';
 const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 const VERIFICATION_INTERVAL = 4 * 60 * 60 * 1000; // 4 hours
 
+// Edge browser detection
+const isEdgeBrowser = () => {
+  const userAgent = navigator.userAgent;
+  return userAgent.includes('Edg/') || userAgent.includes('Edge/');
+};
+
 export function useLocalAuth() {
   const [user, setUser] = useState<LocalUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,9 +28,37 @@ export function useLocalAuth() {
   useEffect(() => {
     let mounted = true;
     
+    // Browser compatibility check
+    const isBrowserCompatible = () => {
+      try {
+        // Test localStorage access (Edge sometimes blocks this)
+        const testKey = '_test_' + Date.now();
+        localStorage.setItem(testKey, 'test');
+        localStorage.removeItem(testKey);
+        
+        // Test fetch API availability
+        if (typeof fetch === 'undefined') {
+          console.error('❌ Fetch API not available');
+          return false;
+        }
+        
+        return true;
+      } catch (error) {
+        console.error('❌ Browser compatibility issue:', error);
+        return false;
+      }
+    };
+    
     // Prevent multiple simultaneous verification requests
     const checkExistingSession = async () => {
       if (isVerifying) return; // Prevent concurrent calls
+      
+      // Check browser compatibility first
+      if (!isBrowserCompatible()) {
+        console.error('❌ Browser not compatible with authentication system');
+        setIsLoading(false);
+        return;
+      }
       
       try {
         setIsVerifying(true);
@@ -35,15 +69,25 @@ export function useLocalAuth() {
           // Check if session is still valid (within 24 hours)
           if (Date.now() - userData.loginTime < SESSION_DURATION) {
             // Check if we need to verify (only verify once per hour max)
+            // Skip verification on initial load for Edge browser to prevent auth stuck state
+            const isEdge = isEdgeBrowser();
             const needsVerification = !userData.lastVerified || 
               (Date.now() - userData.lastVerified > 60 * 60 * 1000); // 1 hour
             
-            if (userData.email && needsVerification) {
+            if (userData.email && needsVerification && !isEdge) {
               try {
                 console.log('🔄 Checking fresh subscription status for:', userData.email);
-                const response = await apiRequest('POST', '/api/verify-subscription', {
+                
+                // Add timeout for Edge browser compatibility
+                const timeoutPromise = new Promise((_, reject) => 
+                  setTimeout(() => reject(new Error('Authentication timeout')), 10000) // 10 second timeout
+                );
+                
+                const responsePromise = apiRequest('POST', '/api/verify-subscription', {
                   email: userData.email
                 });
+                
+                const response = await Promise.race([responsePromise, timeoutPromise]) as Response;
                 
                 if (response.ok && mounted) {
                   const verificationResult = await response.json();
@@ -59,20 +103,50 @@ export function useLocalAuth() {
                   localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
                   setUser(updatedUserData);
                 } else if (mounted) {
-                  console.log('❌ Subscription verification failed, logging out');
-                  localStorage.removeItem(STORAGE_KEY);
-                  setUser(null);
+                  console.log('❌ Subscription verification failed, using cached data');
+                  // Use cached data instead of logging out on verification failure
+                  setUser(userData);
                 }
               } catch (verificationError) {
-                console.error('❌ Error verifying subscription:', verificationError);
+                console.error('❌ Error verifying subscription (Edge browser compatibility):', verificationError);
                 if (mounted) {
-                  // Use cached data if verification fails due to network issues
+                  // Always use cached data if verification fails - don't block Edge users
+                  console.log('📱 Using cached authentication data for Edge browser');
                   setUser(userData);
                 }
               }
             } else {
               // Use existing data without re-verification
-              if (mounted) setUser(userData);
+              if (mounted) {
+                setUser(userData);
+                
+                // For Edge browser: Schedule delayed background verification after UI loads
+                if (isEdge && userData.email && needsVerification) {
+                  setTimeout(async () => {
+                    try {
+                      console.log('📱 Edge browser: Starting background verification');
+                      const response = await apiRequest('POST', '/api/verify-subscription', {
+                        email: userData.email
+                      });
+                      
+                      if (response.ok && mounted) {
+                        const verificationResult = await response.json();
+                        const updatedUserData = {
+                          ...userData,
+                          userType: verificationResult.userType as UserType,
+                          lastVerified: Date.now()
+                        };
+                        
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
+                        setUser(updatedUserData);
+                        console.log('✅ Edge browser: Background verification complete');
+                      }
+                    } catch (error) {
+                      console.log('📱 Edge browser: Background verification failed, keeping cached data');
+                    }
+                  }, 2000); // 2 second delay for background verification
+                }
+              }
             }
           } else {
             // Session expired, remove it
@@ -82,8 +156,24 @@ export function useLocalAuth() {
         }
       } catch (error) {
         console.error('Error checking local session:', error);
-        localStorage.removeItem(STORAGE_KEY);
-        if (mounted) setUser(null);
+        // Don't remove localStorage for Edge browser compatibility
+        // Edge sometimes has issues accessing localStorage during initial load
+        if (mounted) {
+          try {
+            // Try fallback session read for Edge browser
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+              const userData = JSON.parse(stored) as LocalUser;
+              console.log('📱 Using fallback authentication for Edge browser compatibility');
+              setUser(userData);
+            } else {
+              setUser(null);
+            }
+          } catch (fallbackError) {
+            console.error('❌ Fallback session check failed:', fallbackError);
+            setUser(null);
+          }
+        }
       } finally {
         if (mounted) {
           setIsLoading(false);
@@ -92,7 +182,14 @@ export function useLocalAuth() {
       }
     };
 
-    checkExistingSession();
+    // Add longer delay for Edge browser to ensure DOM is ready
+    const isEdge = isEdgeBrowser();
+    const initTimeout = setTimeout(() => {
+      if (isEdge) {
+        console.log('📱 Edge browser detected - using compatibility mode');
+      }
+      checkExistingSession();
+    }, isEdge ? 500 : 100); // 500ms delay for Edge, 100ms for other browsers
     
     // Debounced auth change handler to prevent rapid-fire calls
     let authChangeTimeout: NodeJS.Timeout;
@@ -127,6 +224,7 @@ export function useLocalAuth() {
     return () => {
       mounted = false;
       clearTimeout(authChangeTimeout);
+      clearTimeout(initTimeout);
       window.removeEventListener('auth-change', handleAuthChange);
       window.removeEventListener('storage', handleAuthChange);
       window.removeEventListener('force-subscription-refresh', handleForceRefresh);

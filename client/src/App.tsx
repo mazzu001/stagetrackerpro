@@ -31,23 +31,12 @@ function AppContent() {
     const redirectStatus = urlParams.get('redirect_status');
     
     if (redirectStatus === 'succeeded') {
-      // Update user to paid status
-      const storedUser = localStorage.getItem('lpp_local_user');
-      if (storedUser) {
-        try {
-          const userData = JSON.parse(storedUser);
-          userData.userType = 'paid';
-          localStorage.setItem('lpp_local_user', JSON.stringify(userData));
-          
-          // Clear URL parameters
-          window.history.replaceState({}, document.title, window.location.pathname);
-          
-          // Trigger auth change event to update the UI
-          window.dispatchEvent(new Event('auth-change'));
-        } catch (error) {
-          console.error('Error updating user type:', error);
-        }
-      }
+      // Clear URL parameters immediately to prevent re-processing
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      // Show success message but let the database sync naturally
+      // The useLocalAuth hook will automatically detect the updated subscription status
+      console.log('✅ Payment completed successfully - subscription will be updated');
     }
     
     // Check if local file system is already initialized

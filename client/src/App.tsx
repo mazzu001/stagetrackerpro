@@ -34,13 +34,44 @@ function AppContent() {
       // Clear URL parameters immediately to prevent re-processing
       window.history.replaceState({}, document.title, window.location.pathname);
       
-      // Force a subscription refresh after successful payment
-      console.log('✅ Payment completed successfully - forcing subscription refresh');
+      console.log('✅ Payment completed successfully - updating subscription status');
       
-      // Wait a moment for Stripe webhook to process, then force refresh
-      setTimeout(() => {
-        window.dispatchEvent(new CustomEvent('force-subscription-refresh'));
-      }, 2000); // 2 second delay to let webhook process
+      // Update subscription status immediately
+      const updateSubscription = async () => {
+        try {
+          const userData = localStorage.getItem('lpp_local_user');
+          if (userData) {
+            const user = JSON.parse(userData);
+            
+            // Update subscription status to Professional (since that's what we're selling)
+            const response = await fetch('/api/update-subscription-status', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                email: user.email,
+                subscriptionStatus: 3 // Professional tier
+              })
+            });
+            
+            if (response.ok) {
+              // Update local storage immediately
+              user.userType = 'professional';
+              localStorage.setItem('lpp_local_user', JSON.stringify(user));
+              
+              console.log('✅ Subscription updated to Professional');
+              
+              // Force page refresh to load with new subscription
+              window.location.reload();
+            } else {
+              console.error('❌ Failed to update subscription status');
+            }
+          }
+        } catch (error) {
+          console.error('❌ Error updating subscription:', error);
+        }
+      };
+      
+      updateSubscription();
     }
     
     // Check if local file system is already initialized

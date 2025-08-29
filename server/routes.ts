@@ -593,6 +593,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }
 
+  // Simple subscription status update (for Stripe redirect success)
+  app.post('/api/update-subscription-status', async (req, res) => {
+    try {
+      const { email, subscriptionStatus } = req.body;
+      if (!email || !subscriptionStatus) {
+        return res.status(400).json({ error: 'Email and subscription status are required' });
+      }
+
+      console.log(`🔄 Updating subscription status for ${email} to ${subscriptionStatus}`);
+      
+      // Get user from database
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Update user subscription status directly
+      await storage.updateUserSubscription(user.id, {
+        subscriptionStatus: subscriptionStatus,
+        subscriptionEndDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() // 30 days from now
+      });
+
+      const statusName = subscriptionStatus === 3 ? 'Professional' : subscriptionStatus === 2 ? 'Premium' : 'Free';
+      console.log(`✅ Updated ${email} subscription status: ${subscriptionStatus} (${statusName})`);
+
+      res.json({ 
+        success: true, 
+        newStatus: subscriptionStatus,
+        statusName
+      });
+    } catch (error) {
+      console.error('❌ Error updating subscription status:', error);
+      res.status(500).json({ error: 'Failed to update subscription status' });
+    }
+  });
+
   // Force refresh single user subscription status
   app.post('/api/force-refresh-subscription', async (req, res) => {
     try {

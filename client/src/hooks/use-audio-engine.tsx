@@ -156,6 +156,20 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   const play = useCallback(async () => {
     if (!audioEngineRef.current || !song) return;
     
+    // Wait for tracks to be loaded if they're not already
+    if (!audioEngineRef.current.getIsLoaded()) {
+      console.log('Tracks not loaded, waiting for preload to complete...');
+      setIsLoadingTracks(true);
+      try {
+        await audioEngineRef.current.loadSong(song);
+        setIsLoadingTracks(false);
+      } catch (error) {
+        console.error('Failed to load tracks for playback:', error);
+        setIsLoadingTracks(false);
+        return;
+      }
+    }
+    
     try {
       await audioEngineRef.current.play();
       setIsPlaying(true);

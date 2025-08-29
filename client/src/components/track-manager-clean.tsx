@@ -267,7 +267,8 @@ export default function TrackManager({
 
       recorder.onstop = () => {
         console.log('🎤 MediaRecorder stopped, total chunks:', recordingChunks.current.length);
-        handleRecordingComplete();
+        // Automatically process and add the recording immediately when stopped
+        processRecordingImmediately();
       };
 
       recorder.onerror = (event) => {
@@ -333,8 +334,8 @@ export default function TrackManager({
     }
   };
 
-  // Handle recording completion
-  const handleRecordingComplete = async () => {
+  // Process recording immediately when stopped
+  const processRecordingImmediately = async () => {
     if (recordingChunks.current.length === 0) {
       toast({
         title: "Recording Error",
@@ -384,10 +385,10 @@ export default function TrackManager({
 
       console.log('🎤 Recording completed, duration:', recordingDuration.toFixed(1), 'seconds');
       
-      // Add the recorded track to the song
+      // Immediately add the recorded track to the song
       await addRecordedTrack(audioFile);
       
-      // Reset recording state
+      // Reset recording state and close dialog
       setRecordingName("");
       setRecordingDuration(0);
       setRecordingLevel(0);
@@ -395,8 +396,8 @@ export default function TrackManager({
       setIsRecordDialogOpen(false);
 
       toast({
-        title: "Recording Complete",
-        description: `Track "${recordingName || 'recorded-track'}" added successfully!`,
+        title: "Recording Added",
+        description: `Track "${recordingName || 'recorded-track'}" added to song automatically!`,
       });
 
     } catch (error) {
@@ -912,11 +913,12 @@ export default function TrackManager({
           <Dialog open={isRecordDialogOpen} onOpenChange={setIsRecordDialogOpen}>
             <DialogTrigger asChild>
               <Button
-                disabled={tracks.length >= 6 || isImporting}
+                disabled={tracks.length >= 6 || isImporting || !song?.id}
                 size="sm"
                 variant="outline"
                 className="hidden md:flex"
                 data-testid="button-record-track"
+                title={tracks.length >= 6 ? "Maximum 6 tracks allowed" : !song?.id ? "Select a song first" : "Record audio track"}
               >
                 <Mic className="h-4 w-4 mr-2" />
                 Record
@@ -930,6 +932,30 @@ export default function TrackManager({
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
+                {/* Show warning if no song selected */}
+                {!song?.id && (
+                  <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-md">
+                    <div className="flex items-center">
+                      <AlertTriangle className="h-4 w-4 text-yellow-600 dark:text-yellow-500 mr-2" />
+                      <span className="text-sm text-yellow-800 dark:text-yellow-200">
+                        Please select a song first to record audio tracks.
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Show warning if 6 tracks limit reached */}
+                {tracks.length >= 6 && (
+                  <div className="p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                    <div className="flex items-center">
+                      <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-500 mr-2" />
+                      <span className="text-sm text-red-800 dark:text-red-200">
+                        Maximum of 6 tracks allowed. Delete some tracks to record new ones.
+                      </span>
+                    </div>
+                  </div>
+                )}
+
                 {/* Track name input */}
                 <div>
                   <Label htmlFor="recording-name">Track Name</Label>
@@ -938,6 +964,7 @@ export default function TrackManager({
                     value={recordingName}
                     onChange={(e) => setRecordingName(e.target.value)}
                     placeholder={`Recorded Track ${tracks.length + 1}`}
+                    disabled={!song?.id}
                   />
                 </div>
 
@@ -1009,6 +1036,7 @@ export default function TrackManager({
                   {/* Recording button */}
                   <Button
                     onClick={isRecording ? stopRecording : startRecording}
+                    disabled={!song?.id || tracks.length >= 6}
                     className={`w-full ${isRecording ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700'}`}
                     size="lg"
                   >
@@ -1064,11 +1092,11 @@ export default function TrackManager({
           <Dialog open={isRecordDialogOpen} onOpenChange={setIsRecordDialogOpen}>
             <DialogTrigger asChild>
               <Button
-                disabled={tracks.length >= 6 || isImporting}
+                disabled={tracks.length >= 6 || isImporting || !song?.id}
                 size="sm"
                 variant="outline"
                 className="flex md:hidden h-8 w-8 p-0"
-                title="Record Track"
+                title={tracks.length >= 6 ? "Maximum 6 tracks allowed" : !song?.id ? "Select a song first" : "Record Track"}
                 data-testid="button-record-track-mobile"
               >
                 <Mic className="h-4 w-4" />

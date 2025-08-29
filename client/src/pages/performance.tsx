@@ -213,14 +213,47 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const {
     masterVolume,
     updateMasterVolume,
-    updateTrackVolume,
-    updateTrackBalance,
-    updateTrackMute,
-    updateTrackSolo,
+    updateTrackVolume: preloadUpdateTrackVolume,
+    updateTrackBalance: preloadUpdateTrackBalance,
+    updateTrackMute: preloadUpdateTrackMute,
+    updateTrackSolo: preloadUpdateTrackSolo,
     isAudioEngineOnline,
     masterStereoLevels,
     audioLevels
   } = preloadAudio;
+
+  // Unified track control functions that work for both modes
+  const updateTrackVolume = useCallback((trackId: string, volume: number) => {
+    if (useStreamingMode) {
+      streamingAudioEngine.setTrackVolume(trackId, volume);
+    } else {
+      preloadUpdateTrackVolume(trackId, volume);
+    }
+  }, [useStreamingMode, streamingAudioEngine, preloadUpdateTrackVolume]);
+
+  const updateTrackBalance = useCallback((trackId: string, balance: number) => {
+    if (useStreamingMode) {
+      streamingAudioEngine.setTrackBalance(trackId, balance);
+    } else {
+      preloadUpdateTrackBalance(trackId, balance);
+    }
+  }, [useStreamingMode, streamingAudioEngine, preloadUpdateTrackBalance]);
+
+  const toggleTrackMute = useCallback((trackId: string) => {
+    if (useStreamingMode) {
+      streamingAudioEngine.toggleTrackMute(trackId);
+    } else {
+      preloadUpdateTrackMute(trackId);
+    }
+  }, [useStreamingMode, streamingAudioEngine, preloadUpdateTrackMute]);
+
+  const toggleTrackSolo = useCallback((trackId: string) => {
+    if (useStreamingMode) {
+      streamingAudioEngine.toggleTrackSolo(trackId);
+    } else {
+      preloadUpdateTrackSolo(trackId);
+    }
+  }, [useStreamingMode, streamingAudioEngine, preloadUpdateTrackSolo]);
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
@@ -1234,8 +1267,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 ));
               }}
               onTrackVolumeChange={updateTrackVolume}
-              onTrackMuteToggle={updateTrackMute}
-              onTrackSoloToggle={updateTrackSolo}
+              onTrackMuteToggle={toggleTrackMute}
+              onTrackSoloToggle={toggleTrackSolo}
               onTrackBalanceChange={updateTrackBalance}
               onPlay={play}
               onPause={pause}

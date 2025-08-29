@@ -6,7 +6,7 @@ import { LyricsDisplay } from "@/components/lyrics-display";
 import { LyricsControls } from "@/components/lyrics-controls";
 import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
-import TrackManager from "@/components/track-manager-new";
+import TrackManager from "@/components/track-manager-clean";
 import StereoVUMeter from "@/components/stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
 
@@ -1160,6 +1160,23 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 setAllSongs(prev => prev.map(song => 
                   song.id === updatedSong.id ? updatedSong : song
                 ));
+              }}
+              onTrackVolumeChange={(trackId: string, volume: number) => {
+                // Forward to audio engine for real-time updates
+                // This would typically call audioEngine.setTrackVolume
+                console.log(`Setting track ${trackId} volume to ${volume}`);
+              }}
+              onTrackMuteToggle={(trackId: string) => {
+                // Forward to audio engine for real-time updates
+                console.log(`Toggling mute for track ${trackId}`);
+              }}
+              onTrackSoloToggle={(trackId: string) => {
+                // Forward to audio engine for real-time updates
+                console.log(`Toggling solo for track ${trackId}`);
+              }}
+              onTrackBalanceChange={(trackId: string, balance: number) => {
+                // Forward to audio engine for real-time updates
+                console.log(`Setting track ${trackId} balance to ${balance}`);
               }}
               onPlay={play}
               onPause={pause}

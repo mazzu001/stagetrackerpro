@@ -122,7 +122,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         const engineIsPlaying = audioEngineRef.current.getIsPlaying();
         if (engineIsPlaying) {
           const time = audioEngineRef.current.getCurrentTime();
-          setCurrentTime(Math.round(time * 10) / 10); // Round to 1 decimal place for smooth display
+          setCurrentTime(time); // Already rounded in getCurrentTime()
           
           // Simulate CPU usage fluctuation
           setCpuUsage(20 + Math.random() * 10);
@@ -161,32 +161,28 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         return;
       }
       
-      // Check if tracks are preloaded (should be instant)
-      if (audioEngineRef.current.getIsLoaded()) {
-        console.log(`Tracks preloaded - starting instant playback for "${song.title}"`);
-        await audioEngineRef.current.play();
-        setIsPlaying(true);
-        return;
-      }
+      // Always ensure tracks are loaded before playing
+      console.log(`Play requested for "${song.title}" - checking track status`);
       
-      // Fallback: If still loading, load immediately without waiting
-      if (audioEngineRef.current.getIsLoading()) {
-        console.log('Tracks still preloading, loading immediately for instant playback');
+      if (!audioEngineRef.current.getIsLoaded()) {
+        console.log('Tracks not loaded - loading now for immediate playback');
         setIsLoadingTracks(true);
         
         try {
           await audioEngineRef.current.loadSong(song);
           setIsLoadingTracks(false);
-          console.log(`Immediate load completed: "${song.title}"`);
-          
-          await audioEngineRef.current.play();
-          setIsPlaying(true);
+          console.log(`Tracks loaded successfully: "${song.title}"`);
         } catch (error) {
-          console.error(`Failed immediate load for playback: "${song.title}"`, error);
+          console.error(`Failed to load tracks for playback: "${song.title}"`, error);
           setIsLoadingTracks(false);
+          return;
         }
-        return;
       }
+      
+      // Tracks are loaded - start playback immediately
+      console.log(`Starting playback for "${song.title}"`);
+      await audioEngineRef.current.play();
+      setIsPlaying(true);
       
       console.log(`Fallback loading tracks for playback: "${song.title}"`);
       setIsLoadingTracks(true);

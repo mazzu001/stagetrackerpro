@@ -301,15 +301,11 @@ export class AudioEngine {
       // Use the actual duration from audio buffers, fallback to song duration
       const songDuration = this.actualDuration > 0 ? this.actualDuration : (this.currentSong?.duration || 0);
       
-      // Debug logging to track duration issues
-      if (result > 180 && result % 30 < 1) { // Log every 30 seconds after 3 minutes
-        console.log(`Debug duration - currentTime: ${result.toFixed(2)}s, actualDuration: ${this.actualDuration}s, songDuration: ${this.currentSong?.duration}s, using: ${songDuration}s`);
-      }
-      
       const cappedResult = songDuration > 0 ? Math.min(result, songDuration) : result;
-      return cappedResult;
+      // Round to 1 decimal place to avoid excessive precision in UI
+      return Math.round(cappedResult * 10) / 10;
     }
-    return this.pausedTime;
+    return Math.round(this.pausedTime * 10) / 10;
   }
 
   setMasterVolume(volume: number): void {

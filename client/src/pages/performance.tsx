@@ -11,6 +11,7 @@ import StereoVUMeter from "@/components/stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
 
 import { useAudioEngine } from "@/hooks/use-audio-engine";
+import { useStreamingAudio } from "@/hooks/useStreamingAudio";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -54,6 +55,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
+  const [useStreamingMode, setUseStreamingMode] = useState(false);
 
   const { toast } = useToast();
   const { user, logout } = useLocalAuth();
@@ -180,25 +182,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   }, [userType, triggerMidiBlink, globalMidi]);
 
-  const {
-    isPlaying,
-    currentTime,
-    duration,
-    masterVolume,
-    updateMasterVolume,
-    play,
-    pause,
-    stop,
-    seek,
-    updateTrackVolume,
-    updateTrackBalance,
-    updateTrackMute,
-    updateTrackSolo,
-    isAudioEngineOnline,
-    masterStereoLevels,
-    audioLevels,
-    isLoadingTracks
-  } = useAudioEngine({ 
+  // Original audio engine (preload mode)
+  const preloadAudio = useAudioEngine({ 
     song: selectedSong,
     onDurationUpdated: (songId: string, newDuration: number) => {
       if (selectedSong && selectedSong.id === songId && user?.email) {
@@ -206,6 +191,36 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       }
     }
   });
+
+  // Streaming audio engine (zero load time)
+  const streamingAudioEngine = useStreamingAudio();
+
+  // Switch between preload and streaming modes
+  const currentAudio = useStreamingMode ? streamingAudioEngine : preloadAudio;
+  
+  const {
+    isPlaying,
+    currentTime,
+    duration,
+    play,
+    pause,
+    stop,
+    seek,
+    isLoading: isLoadingTracks
+  } = currentAudio;
+
+  // Use preload audio for other features not yet in streaming
+  const {
+    masterVolume,
+    updateMasterVolume,
+    updateTrackVolume,
+    updateTrackBalance,
+    updateTrackMute,
+    updateTrackSolo,
+    isAudioEngineOnline,
+    masterStereoLevels,
+    audioLevels
+  } = preloadAudio;
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
@@ -257,8 +272,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
     setSelectedSong(song);
     
-    // Audio loading is handled automatically by the audio engine hook
-  }, [selectedSongId, allSongs]);
+    // Load for streaming if enabled
+    if (useStreamingMode && song.tracks && song.tracks.length > 0) {
+      streamingAudioEngine.loadSong(song);
+    }
+    
+    // Preload audio loading is handled automatically by the audio engine hook
+  }, [selectedSongId, allSongs, useStreamingMode, streamingAudioEngine]);
 
   const handleSeek = useCallback((time: number) => {
     seek(time);
@@ -639,6 +659,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   <FileAudio className="h-4 w-4 mr-2" />
                   Track Manager
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setUseStreamingMode(!useStreamingMode)} data-testid="menuitem-streaming-mode">
+                  <Zap className="h-4 w-4 mr-2" />
+                  {useStreamingMode ? 'Disable' : 'Enable'} Streaming Mode
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={toggleFullscreen} data-testid="menuitem-fullscreen">
                   {isFullscreen ? (
@@ -921,6 +945,33 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
         </div>
       </div>
+      {/* Audio Mode Indicator */}
+      <div className="px-4 py-2 bg-gray-800 border-t border-gray-700 flex-shrink-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm">
+            {useStreamingMode ? (
+              <>
+                <Zap className="h-4 w-4 text-green-400" />
+                <span className="text-green-400">Streaming Mode</span>
+                <span className="text-gray-400">- Zero load time</span>
+              </>
+            ) : (
+              <>
+                <FileAudio className="h-4 w-4 text-blue-400" />
+                <span className="text-blue-400">Preload Mode</span>
+                <span className="text-gray-400">- Full buffered audio</span>
+              </>
+            )}
+          </div>
+          {isLoadingTracks && (
+            <div className="flex items-center gap-2 text-sm text-yellow-400">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              {useStreamingMode ? 'Setting up streams...' : 'Loading tracks...'}
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Status Bar & Manual MIDI Send - Desktop only */}
       <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 mobile-hidden">
         <div className="flex items-center justify-between gap-4">

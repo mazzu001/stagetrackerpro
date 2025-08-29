@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Router } from "wouter";
 import Performance from "@/pages/performance";
+import StreamingDemo from "@/pages/streaming-demo";
 import Subscribe from "@/pages/subscribe";
 import SubscribeRedirect from "@/pages/subscribe-redirect";
 import SubscribeFixed from "@/pages/subscribe-fixed";
@@ -105,6 +106,7 @@ function AppContent() {
       ) : (
         <Router>
           <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
+          <Route path="/streaming-demo" component={StreamingDemo} />
           <Route path="/subscribe" component={SubscribeRedirect} />
           <Route path="/subscribe-fixed" component={SubscribeFixed} />
           <Route path="/subscribe-test-elements" component={SubscribeElementsTest} />

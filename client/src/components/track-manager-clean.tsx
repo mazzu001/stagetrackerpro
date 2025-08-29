@@ -49,7 +49,6 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
-  const [vuAmplification, setVuAmplification] = useState(2.5); // VU meter amplification control
 
   // Recording state
   // Recording features removed for simplicity
@@ -595,28 +594,6 @@ export default function TrackManager({
             )}
           </div>
           
-          {/* VU Meter Amplification Dial */}
-          {tracks.length > 0 && (
-            <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-md">
-              <Volume2 className="h-4 w-4 text-gray-600 dark:text-gray-400" />
-              <Label htmlFor="vu-amplification" className="text-xs font-medium whitespace-nowrap">
-                VU Gain
-              </Label>
-              <Slider
-                id="vu-amplification"
-                value={[vuAmplification]}
-                onValueChange={(value) => setVuAmplification(value[0])}
-                min={0.5}
-                max={10}
-                step={0.1}
-                className="w-16"
-                data-testid="slider-vu-amplification"
-              />
-              <span className="text-xs text-gray-600 dark:text-gray-400 font-mono min-w-fit">
-                {vuAmplification.toFixed(1)}x
-              </span>
-            </div>
-          )}
         </div>
         
         <div className="flex items-center gap-2">
@@ -724,7 +701,6 @@ export default function TrackManager({
                         leftLevel={level * 8} 
                         rightLevel={level * 8}
                         isPlaying={isPlaying}
-                        amplification={vuAmplification}
                         className="flex-shrink-0"
                       />
                       <Button

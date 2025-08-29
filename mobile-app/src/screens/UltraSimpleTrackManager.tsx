@@ -11,65 +11,36 @@ import {
 import { useRoute, useNavigation } from '@react-navigation/native';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system';
-import { useSimpleDatabase } from '../providers/SimpleDatabase';
+import { useMinimalStorage } from '../providers/MinimalStorage';
 
 export default function UltraSimpleTrackManager() {
   const route = useRoute();
   const navigation = useNavigation();
   const { songId } = route.params as { songId: string };
   
-  const { songs, tracks, addTrack, deleteTrack } = useSimpleDatabase();
+  const { songs, tracks, addTrack, deleteTrack } = useMinimalStorage();
   const [isUploading, setIsUploading] = useState(false);
 
   // Get data directly from props - no useEffect
   const song = songs.find(s => s.id === songId);
   const songTracks = tracks.filter(t => t.songId === songId);
 
-  const handleAddTracks = async () => {
+  const handleAddTracks = () => {
     if (!songId || isUploading) return;
 
     setIsUploading(true);
 
     try {
-      const result = await DocumentPicker.getDocumentAsync({
-        type: 'audio/*',
-        multiple: true,
-        copyToCacheDirectory: true,
+      // Simulate adding a track for demo purposes
+      const trackName = `Demo Track ${Date.now()}`;
+      addTrack({
+        songId,
+        name: trackName,
       });
 
-      if (result.canceled || !result.assets) {
-        setIsUploading(false);
-        return;
-      }
-
-      for (const asset of result.assets) {
-        if (!asset?.uri || !asset?.name) continue;
-
-        const fileName = asset.name.replace(/[^a-zA-Z0-9.-]/g, '_');
-        const permanentPath = `${FileSystem.documentDirectory}audio/${fileName}`;
-        
-        await FileSystem.makeDirectoryAsync(
-          `${FileSystem.documentDirectory}audio/`,
-          { intermediates: true }
-        );
-
-        await FileSystem.copyAsync({
-          from: asset.uri,
-          to: permanentPath,
-        });
-
-        const trackName = fileName.replace(/\.[^/.]+$/, '');
-        await addTrack({
-          songId,
-          name: trackName,
-          filePath: permanentPath,
-          volume: 0.8,
-        });
-      }
-
-      Alert.alert('Success', 'Tracks added');
+      Alert.alert('Success', 'Demo track added');
     } catch (error) {
-      Alert.alert('Error', 'Failed to add tracks');
+      Alert.alert('Error', 'Failed to add track');
     } finally {
       setIsUploading(false);
     }

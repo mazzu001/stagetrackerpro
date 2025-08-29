@@ -10,11 +10,11 @@ import {
   TextInput,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useSimpleDatabase } from '../providers/SimpleDatabase';
+import { useMinimalStorage } from '../providers/MinimalStorage';
 
 export default function SimpleSongListScreen() {
   const navigation = useNavigation();
-  const { songs, addSong } = useSimpleDatabase();
+  const { songs, addSong } = useMinimalStorage();
   const [showAddForm, setShowAddForm] = useState(false);
   const [title, setTitle] = useState('');
   const [artist, setArtist] = useState('');

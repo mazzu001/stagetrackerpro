@@ -7,15 +7,15 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { useSimpleDatabase } from '../providers/SimpleDatabase';
-import { useCrashSafeAudioEngine } from '../providers/CrashSafeAudioEngine';
+import { useMinimalStorage } from '../providers/MinimalStorage';
+import { useMinimalAudio } from '../providers/MinimalAudio';
 
 export default function SimplePerformanceScreen() {
   const route = useRoute();
   const { songId } = route.params as { songId: string };
   
-  const { songs, getTracksBySong } = useSimpleDatabase();
-  const { isPlaying, currentTime, duration, play, pause, stop, loadSong } = useCrashSafeAudioEngine();
+  const { songs, getTracksBySong } = useMinimalStorage();
+  const { isPlaying, currentTime, duration, play, pause, stop, loadSong } = useMinimalAudio();
   
   const [song, setSong] = useState<any>(null);
   const [tracks, setTracks] = useState<any[]>([]);

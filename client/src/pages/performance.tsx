@@ -207,7 +207,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   useKeyboardShortcuts({
     onPlay: play,
     onPause: pause,
-    onStop: stop
+    onStop: stop,
+    onTogglePlayback: isPlaying ? pause : play
   });
 
   // Load all songs on mount

@@ -58,7 +58,8 @@ export default function Unsubscribe() {
 
   // Redirect if not authenticated or free user
   useEffect(() => {
-    if (!user || user.userType === 'free') {
+    if (!user || user.userType === 'free' || !user.userType) {
+      console.log('🚫 Unsubscribe access denied - User type:', user?.userType);
       setLocation('/');
     }
   }, [user, setLocation]);

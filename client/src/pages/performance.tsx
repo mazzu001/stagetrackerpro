@@ -950,25 +950,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             midiCommandSent={midiCommandSent}
           />
           
-          {/* Manual MIDI Send - Exact copy from USB MIDI devices page */}
-          <div className="flex items-center gap-2 border-l border-gray-700 pl-4">
-            <Input
-              value={footerMidiCommand}
-              onChange={(e) => setFooterMidiCommand(e.target.value)}
-              placeholder="e.g., [[PC:12:1]], [[CC:7:64:1]]"
-              className="font-mono text-sm w-64"
-              data-testid="input-footer-midi-command"
-            />
-            <Button 
-              onClick={handleFooterSendMessage}
-              disabled={!isMidiConnected || !footerMidiCommand.trim()}
-              data-testid="button-send-footer-midi"
-              size="sm"
-            >
-              <Send className="h-4 w-4 mr-1" />
-              Send
-            </Button>
-          </div>
+          
         </div>
       </div>
       {/* Edit Lyrics Dialog - Tabbed Layout */}

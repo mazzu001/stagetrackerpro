@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
@@ -92,6 +92,20 @@ export default function TrackManager({
     getAudioInputs();
   }, []);
 
+  // Start monitoring when dialog opens
+  useEffect(() => {
+    if (isRecordDialogOpen && availableAudioInputs.length > 0) {
+      startAudioMonitoring();
+    }
+  }, [isRecordDialogOpen, availableAudioInputs]);
+
+  // Update monitoring when audio input changes
+  useEffect(() => {
+    if (isRecordDialogOpen && selectedAudioInput) {
+      startAudioMonitoring();
+    }
+  }, [selectedAudioInput]);
+
   // Cleanup recording resources on unmount
   useEffect(() => {
     return () => {
@@ -105,7 +119,7 @@ export default function TrackManager({
     };
   }, []);
 
-  // Get available audio input devices
+  // Get available audio input devices and start monitoring
   const getAudioInputs = async () => {
     try {
       // Request microphone permission first
@@ -119,6 +133,11 @@ export default function TrackManager({
       if (audioInputs.length > 0 && !selectedAudioInput) {
         setSelectedAudioInput(audioInputs[0].deviceId);
       }
+
+      // Start monitoring audio levels for the dialog
+      if (audioInputs.length > 0) {
+        startAudioMonitoring();
+      }
     } catch (error) {
       console.error('Error getting audio inputs:', error);
       toast({
@@ -126,6 +145,60 @@ export default function TrackManager({
         description: "Please allow microphone access to record audio tracks.",
         variant: "destructive",
       });
+    }
+  };
+
+  // Start audio monitoring for the visual meter
+  const startAudioMonitoring = async () => {
+    try {
+      const constraints = {
+        audio: {
+          deviceId: selectedAudioInput ? { exact: selectedAudioInput } : undefined,
+          echoCancellation: false,
+          noiseSuppression: false,
+          autoGainControl: false,
+        }
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      
+      // Create audio context for monitoring only
+      const audioContext = new AudioContext();
+      const source = audioContext.createMediaStreamSource(stream);
+      const analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;
+      source.connect(analyser);
+
+      // Store monitoring stream separately from recording stream
+      if (recordingStream && recordingStream !== stream) {
+        recordingStream.getTracks().forEach(track => track.stop());
+      }
+      setRecordingStream(stream);
+      recordingAudioContext.current = audioContext;
+      recordingAnalyser.current = analyser;
+
+      // Start level monitoring
+      const monitorLevels = () => {
+        if (!recordingAnalyser.current || !isRecordDialogOpen) {
+          // Clean up when dialog closes
+          stream.getTracks().forEach(track => track.stop());
+          audioContext.close();
+          return;
+        }
+        
+        const dataArray = new Uint8Array(recordingAnalyser.current.frequencyBinCount);
+        recordingAnalyser.current.getByteFrequencyData(dataArray);
+        
+        const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+        const normalizedLevel = average / 255;
+        setRecordingLevel(normalizedLevel);
+        
+        requestAnimationFrame(monitorLevels);
+      };
+
+      monitorLevels();
+    } catch (error) {
+      console.error('Error starting audio monitoring:', error);
     }
   };
 
@@ -852,6 +925,9 @@ export default function TrackManager({
             <DialogContent className="max-w-md">
               <DialogHeader>
                 <DialogTitle>Record Audio Track</DialogTitle>
+                <DialogDescription>
+                  Record live audio directly into your song. Monitor input levels and adjust settings before recording.
+                </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
                 {/* Track name input */}
@@ -863,6 +939,27 @@ export default function TrackManager({
                     onChange={(e) => setRecordingName(e.target.value)}
                     placeholder={`Recorded Track ${tracks.length + 1}`}
                   />
+                </div>
+
+                {/* Visual volume meter - always visible when dialog is open */}
+                <div className="space-y-2">
+                  <Label>Input Level Monitor</Label>
+                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
+                    <div
+                      className={`h-3 rounded-full transition-all duration-75 ${
+                        recordingLevel > 0.8 ? 'bg-red-500' : 
+                        recordingLevel > 0.6 ? 'bg-yellow-500' : 
+                        recordingLevel > 0.2 ? 'bg-green-500' : 'bg-green-300'
+                      }`}
+                      style={{ width: `${Math.min(recordingLevel * 100, 100)}%` }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+                    <span>Silent</span>
+                    <span>Good</span>
+                    <span>Loud</span>
+                    <span>Peak</span>
+                  </div>
                 </div>
 
                 {/* Audio input selection */}

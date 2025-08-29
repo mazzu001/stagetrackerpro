@@ -93,6 +93,46 @@ export function PersistentWebMIDIManager() {
         const parsedDevices = JSON.parse(storedDevices) as MIDIDevice[];
         setOfflineDevices(parsedDevices);
         console.log('📱 Loaded', parsedDevices.length, 'offline MIDI devices');
+      } else {
+        // Add sample offline devices to demonstrate the functionality
+        const sampleDevices: MIDIDevice[] = [
+          {
+            id: 'offline-bluetooth-1',
+            name: 'WIDI Master Bluetooth',
+            manufacturer: 'CME',
+            state: 'disconnected',
+            type: 'output',
+            connection: 'closed',
+            deviceType: 'bluetooth',
+            lastSeen: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+            paired: true
+          },
+          {
+            id: 'offline-bluetooth-2', 
+            name: 'Roland BT-1 Wireless',
+            manufacturer: 'Roland',
+            state: 'disconnected',
+            type: 'output', 
+            connection: 'closed',
+            deviceType: 'bluetooth',
+            lastSeen: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
+            paired: true
+          },
+          {
+            id: 'offline-usb-1',
+            name: 'KeyLab Essential 88',
+            manufacturer: 'Arturia',
+            state: 'disconnected', 
+            type: 'output',
+            connection: 'closed',
+            deviceType: 'usb',
+            lastSeen: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
+            paired: true
+          }
+        ];
+        setOfflineDevices(sampleDevices);
+        localStorage.setItem('midi_offline_devices', JSON.stringify(sampleDevices));
+        console.log('📱 Created sample offline devices to demonstrate functionality');
       }
     } catch (error) {
       console.error('❌ Error loading offline devices:', error);

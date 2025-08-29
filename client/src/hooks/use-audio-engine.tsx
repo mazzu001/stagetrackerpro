@@ -158,10 +158,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         };
         setMasterStereoLevels(scaledLevels);
         
-        // Debug: Log levels when they change significantly
-        if (scaledLevels.left > 5 || scaledLevels.right > 5) {
-          console.log(`🎚️ Master levels: L=${scaledLevels.left.toFixed(1)} R=${scaledLevels.right.toFixed(1)}`);
-        }
         
         // Update loading state from audio engine
         const engineIsLoading = audioEngineRef.current.isLoading;

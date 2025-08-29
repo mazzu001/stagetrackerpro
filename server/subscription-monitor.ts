@@ -58,29 +58,74 @@ export class SubscriptionMonitor {
 
     try {
       // Get subscription from Stripe
-      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId);
+      const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
+        expand: ['latest_invoice', 'latest_invoice.payment_intent']
+      });
       
       let newStatus = 1; // Default to free
+      let statusReason = '';
       
       switch (subscription.status) {
         case 'active':
+          newStatus = 2; // Premium - active subscription
+          statusReason = 'Active subscription';
+          break;
         case 'trialing':
-          newStatus = 2; // Premium
+          newStatus = 2; // Premium - trial period
+          statusReason = 'Trial period';
+          break;
+        case 'past_due':
+          // Check if payment failed
+          const latestInvoice = subscription.latest_invoice as Stripe.Invoice;
+          if (latestInvoice?.payment_intent) {
+            const paymentIntent = latestInvoice.payment_intent as Stripe.PaymentIntent;
+            if (paymentIntent.status === 'requires_payment_method') {
+              newStatus = 1; // Free - payment method failed
+              statusReason = 'Payment method declined';
+              await this.notifyPaymentFailure(user, 'Payment method declined');
+            } else {
+              newStatus = 1; // Free - payment past due
+              statusReason = 'Payment past due';
+              await this.notifyPaymentFailure(user, 'Payment past due');
+            }
+          } else {
+            newStatus = 1;
+            statusReason = 'Payment past due';
+          }
           break;
         case 'canceled':
+          newStatus = 1; // Free - subscription cancelled
+          statusReason = 'Subscription cancelled';
+          break;
+        case 'incomplete':
         case 'incomplete_expired':
-        case 'past_due':
+          newStatus = 1; // Free - incomplete payment
+          statusReason = 'Incomplete payment';
+          await this.notifyPaymentFailure(user, 'Payment incomplete');
+          break;
         case 'unpaid':
-          newStatus = 1; // Free
+          newStatus = 1; // Free - unpaid invoice
+          statusReason = 'Unpaid invoice';
+          await this.notifyPaymentFailure(user, 'Invoice unpaid');
           break;
         default:
           newStatus = 1; // Default to free for unknown status
+          statusReason = `Unknown status: ${subscription.status}`;
+      }
+
+      // Check if subscription has expired
+      const currentPeriodEnd = subscription.current_period_end * 1000;
+      const now = Date.now();
+      if (currentPeriodEnd < now && subscription.status !== 'canceled') {
+        newStatus = 1; // Free - subscription expired
+        statusReason = 'Subscription expired';
+        await this.notifySubscriptionExpired(user);
       }
 
       // Update user status if it changed
       if (user.subscriptionStatus !== newStatus) {
         await this.updateUserSubscriptionStatus(user.id, newStatus, subscription);
-        console.log(`📝 Updated user ${user.email}: ${user.subscriptionStatus} → ${newStatus}`);
+        console.log(`✅ Updated subscription for user ${user.email}: status=${newStatus} (${statusReason})`);
       }
 
     } catch (error: any) {
@@ -92,6 +137,18 @@ export class SubscriptionMonitor {
         console.error(`❌ Error checking subscription for ${user.email}:`, error);
       }
     }
+  }
+
+  private async notifyPaymentFailure(user: any, reason: string) {
+    console.log(`💳 Payment failure detected for ${user.email}: ${reason}`);
+    // TODO: Send email notification to user about payment failure
+    // Could integrate with email service here
+  }
+
+  private async notifySubscriptionExpired(user: any) {
+    console.log(`⏰ Subscription expired for ${user.email}`);
+    // TODO: Send email notification to user about subscription expiration
+    // Could integrate with email service here
   }
 
   private async updateUserSubscriptionStatus(userId: string, status: number, subscription: Stripe.Subscription | null) {

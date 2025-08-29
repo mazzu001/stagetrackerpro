@@ -401,85 +401,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     switch (event.type) {
       case 'customer.subscription.created':
       case 'customer.subscription.updated':
-      case 'customer.subscription.deleted':
         const subscription = event.data.object;
-        console.log('Subscription event:', event.type, subscription.id);
-        
-        // Store subscription status in a simple JSON file for local tracking
-        const subscriptionData = {
-          customerId: subscription.customer,
-          subscriptionId: subscription.id,
-          status: subscription.status,
-          email: subscription.metadata?.email,
-          updatedAt: Date.now()
-        };
-        
-        try {
-          const subscriptionsFile = path.join(process.cwd(), 'data', 'subscriptions.json');
-          let subscriptions = {};
-          
-          // Read existing subscriptions
-          if (fs.existsSync(subscriptionsFile)) {
-            subscriptions = JSON.parse(fs.readFileSync(subscriptionsFile, 'utf8'));
-          }
-          
-          // Update subscription
-          (subscriptions as any)[subscription.customer] = subscriptionData;
-          
-          // Write back to file
-          fs.writeFileSync(subscriptionsFile, JSON.stringify(subscriptions, null, 2));
-          console.log('Subscription status updated for customer:', subscription.customer);
-        } catch (error) {
-          console.error('Error updating subscription file:', error);
-        }
+        console.log(`📋 Subscription ${event.type}: ${subscription.id} (${subscription.status})`);
+        await handleSubscriptionChange(subscription);
         break;
         
-      case 'invoice.payment_succeeded':
-        console.log('Payment succeeded for subscription:', event.data.object.subscription);
-        
-        // Update subscription status to active on successful payment
-        const invoice = event.data.object;
-        if (invoice.subscription) {
-          try {
-            const subscription = await stripe.subscriptions.retrieve(invoice.subscription as string);
-            const customer = await stripe.customers.retrieve(subscription.customer as string);
-            
-            const subscriptionData = {
-              subscriptionId: subscription.id,
-              customerId: subscription.customer,
-              email: (customer as any).email,
-              status: 'active',
-              updatedAt: new Date().toISOString()
-            };
-            
-            const subscriptionsFile = path.join(process.cwd(), 'data', 'subscriptions.json');
-            
-            // Create data directory if it doesn't exist
-            const dataDir = path.dirname(subscriptionsFile);
-            if (!fs.existsSync(dataDir)) {
-              fs.mkdirSync(dataDir, { recursive: true });
-            }
-            
-            // Read existing subscriptions
-            let subscriptions = {};
-            if (fs.existsSync(subscriptionsFile)) {
-              subscriptions = JSON.parse(fs.readFileSync(subscriptionsFile, 'utf8'));
-            }
-            
-            // Update subscription
-            (subscriptions as any)[subscription.customer as string] = subscriptionData;
-            
-            // Write back to file
-            fs.writeFileSync(subscriptionsFile, JSON.stringify(subscriptions, null, 2));
-            console.log('Subscription activated via payment webhook:', subscription.id);
-          } catch (error) {
-            console.error('Error processing payment success webhook:', error);
-          }
-        }
+      case 'customer.subscription.deleted':
+        const deletedSubscription = event.data.object;
+        console.log(`🗑️ Subscription deleted: ${deletedSubscription.id}`);
+        await handleSubscriptionDeleted(deletedSubscription);
         break;
         
       case 'invoice.payment_failed':
-        console.log('Payment failed for subscription:', event.data.object.subscription);
+        const failedInvoice = event.data.object;
+        console.log(`💳 Payment failed for subscription: ${failedInvoice.subscription}`);
+        await handlePaymentFailed(failedInvoice);
+        break;
+        
+      case 'invoice.payment_succeeded':
+        const succeededInvoice = event.data.object;
+        console.log(`✅ Payment succeeded for subscription: ${succeededInvoice.subscription}`);
+        await handlePaymentSucceeded(succeededInvoice);
         break;
         
       default:
@@ -487,6 +429,244 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     res.json({received: true});
+  });
+
+  // Webhook handler functions
+  async function handleSubscriptionChange(subscription: any) {
+    try {
+      // Find user by Stripe customer ID
+      const user = await storage.getUserByStripeCustomerId(subscription.customer);
+      if (!user) {
+        console.log(`⚠️ User not found for customer ID: ${subscription.customer}`);
+        return;
+      }
+
+      let newStatus = 1; // Default to free
+      
+      switch (subscription.status) {
+        case 'active':
+        case 'trialing':
+          newStatus = 2; // Premium
+          break;
+        case 'past_due':
+        case 'canceled':
+        case 'incomplete':
+        case 'incomplete_expired':
+        case 'unpaid':
+          newStatus = 1; // Free
+          break;
+      }
+
+      // Update user subscription status
+      await storage.updateUserSubscription(user.id, {
+        subscriptionStatus: newStatus,
+        subscriptionEndDate: subscription.current_period_end ? 
+          new Date(subscription.current_period_end * 1000).toISOString() : null
+      });
+
+      console.log(`✅ Updated user ${user.email} subscription status: ${newStatus}`);
+    } catch (error) {
+      console.error('❌ Error handling subscription change:', error);
+    }
+  }
+
+  async function handleSubscriptionDeleted(subscription: any) {
+    try {
+      // Find user by Stripe customer ID
+      const user = await storage.getUserByStripeCustomerId(subscription.customer);
+      if (!user) {
+        console.log(`⚠️ User not found for customer ID: ${subscription.customer}`);
+        return;
+      }
+
+      // Set user to free tier
+      await storage.updateUserSubscription(user.id, {
+        subscriptionStatus: 1, // Free
+        subscriptionEndDate: null
+      });
+
+      console.log(`✅ Subscription cancelled for user ${user.email}, set to free tier`);
+    } catch (error) {
+      console.error('❌ Error handling subscription deletion:', error);
+    }
+  }
+
+  async function handlePaymentFailed(invoice: any) {
+    try {
+      if (!invoice.subscription) return;
+
+      // Get subscription details
+      const subscription = await stripe.subscriptions.retrieve(invoice.subscription);
+      const user = await storage.getUserByStripeCustomerId(subscription.customer as string);
+      
+      if (!user) {
+        console.log(`⚠️ User not found for customer ID: ${subscription.customer}`);
+        return;
+      }
+
+      // Set user to free tier on payment failure
+      await storage.updateUserSubscription(user.id, {
+        subscriptionStatus: 1, // Free
+        subscriptionEndDate: null
+      });
+
+      console.log(`💳 Payment failed for user ${user.email}, downgraded to free tier`);
+      
+      // Log the failure reason
+      const paymentIntent = invoice.payment_intent;
+      if (paymentIntent) {
+        console.log(`💳 Payment failure reason: ${paymentIntent.last_payment_error?.message || 'Unknown'}`);
+      }
+    } catch (error) {
+      console.error('❌ Error handling payment failure:', error);
+    }
+  }
+
+  async function handlePaymentSucceeded(invoice: any) {
+    try {
+      if (!invoice.subscription) return;
+
+      // Get subscription details
+      const subscription = await stripe.subscriptions.retrieve(invoice.subscription);
+      const user = await storage.getUserByStripeCustomerId(subscription.customer as string);
+      
+      if (!user) {
+        console.log(`⚠️ User not found for customer ID: ${subscription.customer}`);
+        return;
+      }
+
+      // Update user to premium tier on successful payment
+      await storage.updateUserSubscription(user.id, {
+        subscriptionStatus: 2, // Premium
+        subscriptionEndDate: subscription.current_period_end ? 
+          new Date(subscription.current_period_end * 1000).toISOString() : null
+      });
+
+      console.log(`✅ Payment succeeded for user ${user.email}, upgraded to premium`);
+    } catch (error) {
+      console.error('❌ Error handling payment success:', error);
+    }
+  }
+
+  // Manual subscription status check endpoint
+  app.post('/api/check-subscriptions', async (req, res) => {
+    try {
+      console.log('🔍 Manual subscription status check triggered');
+      
+      // Get all users with subscriptions
+      const users = await storage.getAllUsersWithSubscriptions();
+      const results = [];
+      
+      for (const user of users) {
+        if (!user.stripeSubscriptionId) continue;
+        
+        try {
+          // Get subscription from Stripe
+          const subscription = await stripe.subscriptions.retrieve(user.stripeSubscriptionId, {
+            expand: ['latest_invoice', 'latest_invoice.payment_intent']
+          });
+          
+          let status = 'unknown';
+          let needsUpdate = false;
+          let newStatus = user.subscriptionStatus;
+          
+          switch (subscription.status) {
+            case 'active':
+              status = 'Active';
+              newStatus = 2; // Premium
+              break;
+            case 'trialing':
+              status = 'Trial';
+              newStatus = 2; // Premium
+              break;
+            case 'past_due':
+              status = 'Payment Past Due';
+              newStatus = 1; // Free
+              needsUpdate = true;
+              break;
+            case 'canceled':
+              status = 'Cancelled';
+              newStatus = 1; // Free
+              needsUpdate = true;
+              break;
+            case 'incomplete':
+            case 'incomplete_expired':
+              status = 'Payment Incomplete';
+              newStatus = 1; // Free
+              needsUpdate = true;
+              break;
+            case 'unpaid':
+              status = 'Unpaid';
+              newStatus = 1; // Free
+              needsUpdate = true;
+              break;
+          }
+          
+          // Check if subscription has expired
+          const currentPeriodEnd = subscription.current_period_end * 1000;
+          const now = Date.now();
+          if (currentPeriodEnd < now && subscription.status !== 'canceled') {
+            status = 'Expired';
+            newStatus = 1; // Free
+            needsUpdate = true;
+          }
+          
+          // Update if needed
+          if (needsUpdate && user.subscriptionStatus !== newStatus) {
+            await storage.updateUserSubscription(user.id, {
+              subscriptionStatus: newStatus,
+              subscriptionEndDate: subscription.current_period_end ? 
+                new Date(subscription.current_period_end * 1000).toISOString() : null
+            });
+            console.log(`✅ Updated ${user.email}: ${user.subscriptionStatus} → ${newStatus}`);
+          }
+          
+          results.push({
+            email: user.email,
+            subscriptionId: user.stripeSubscriptionId,
+            stripeStatus: subscription.status,
+            readableStatus: status,
+            currentDbStatus: newStatus,
+            previousDbStatus: user.subscriptionStatus,
+            updated: needsUpdate,
+            expiresAt: subscription.current_period_end ? 
+              new Date(subscription.current_period_end * 1000).toISOString() : null
+          });
+          
+        } catch (error: any) {
+          if (error.code === 'resource_missing') {
+            await storage.updateUserSubscription(user.id, {
+              subscriptionStatus: 1,
+              subscriptionEndDate: null
+            });
+            results.push({
+              email: user.email,
+              subscriptionId: user.stripeSubscriptionId,
+              error: 'Subscription not found in Stripe',
+              currentDbStatus: 1,
+              previousDbStatus: user.subscriptionStatus,
+              updated: true
+            });
+          } else {
+            results.push({
+              email: user.email,
+              subscriptionId: user.stripeSubscriptionId,
+              error: error.message
+            });
+          }
+        }
+      }
+      
+      res.json({
+        success: true,
+        checked: results.length,
+        results: results
+      });
+      
+    } catch (error: any) {
+      console.error('❌ Error in manual subscription check:', error);
+      res.status(500).json({ error: 'Failed to check subscriptions' });
+    }
   });
 
   // Subscription verification endpoint

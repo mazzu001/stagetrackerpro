@@ -172,10 +172,22 @@ export default function TrackManager({
             return;
           }
 
-          // Mobile detection for enhanced processing
+          // Mobile detection with strict limits
           const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          // On mobile, enforce maximum 3 files to prevent crashes
+          if (isMobileDevice && files.length > 3) {
+            console.log(`📱 Mobile device detected - limiting to 3 files max to prevent crashes`);
+            toast({
+              title: "Mobile Device Limit",
+              description: `On mobile devices, you can only add 3 audio files at once to prevent crashes. Please select 3 files or fewer.`,
+              variant: "destructive"
+            });
+            return;
+          }
+          
           if (isMobileDevice && files.length > 1) {
-            console.log(`📱 Mobile device detected - processing ${files.length} files one-by-one with memory optimization`);
+            console.log(`📱 Mobile device: processing ${files.length} files with extra safety measures`);
           }
           
           setSelectedFiles(files);
@@ -206,6 +218,19 @@ export default function TrackManager({
               console.log(`✅ File ${i + 1} completely processed and stored`);
               
               processedCount++;
+              
+              // Mobile memory cleanup: force garbage collection hints
+              if (isMobile) {
+                console.log(`📱 Mobile cleanup after file ${i + 1}`);
+                
+                // Clear any temporary references
+                if ('gc' in window && typeof window.gc === 'function') {
+                  window.gc();
+                }
+                
+                // Force a short delay to let memory settle
+                await new Promise(resolve => setTimeout(resolve, 100));
+              }
               
               // Get duration safely after processing
               try {

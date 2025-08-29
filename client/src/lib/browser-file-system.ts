@@ -195,9 +195,16 @@ export class BrowserFileSystem {
         };
       });
 
-      // Cache file in memory
+      // Cache file in memory (but clear on mobile for memory management)
       this.audioFiles.set(trackId, file);
       console.log(`✅ Memory cache updated for ${trackId}`);
+
+      // On mobile devices, clear memory cache immediately after storage to prevent memory overload
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (isMobile) {
+        console.log(`📱 Mobile device: clearing memory cache for ${trackId} to save memory`);
+        this.audioFiles.delete(trackId);
+      }
 
       console.log(`✅ Audio file stored: ${file.name} for track: ${trackName}`);
       return true;
@@ -214,11 +221,13 @@ export class BrowserFileSystem {
     console.log(`💾 Memory cache has: [${Array.from(this.audioFiles.keys()).join(', ')}]`);
     console.log(`🗃️ Database initialized: ${!!this.db}`);
     
-    // Check memory cache first
+    // Check memory cache first (may be empty on mobile for memory safety)
     if (this.audioFiles.has(trackId)) {
       console.log(`✅ Found in memory cache: ${trackId}`);
       return this.audioFiles.get(trackId)!;
     }
+
+    console.log(`💾 Not in memory cache, checking IndexedDB for ${trackId}`);
 
     if (!this.db) {
       console.log(`❌ Database not initialized for track ${trackId}`);

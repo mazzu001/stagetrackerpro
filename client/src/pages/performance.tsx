@@ -20,11 +20,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2 } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
+import { USBMidiManager } from "@/components/USBMidiManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
 
 interface PerformanceProps {
@@ -55,6 +56,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
+  const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
 
 
   const { toast } = useToast();
@@ -655,6 +657,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   Track Manager
                 </DropdownMenuItem>
 
+                {userType === 'professional' && (
+                  <DropdownMenuItem onClick={() => setIsUSBMidiOpen(true)} data-testid="menuitem-usb-midi">
+                    <Usb className="h-4 w-4 mr-2" />
+                    USB MIDI
+                  </DropdownMenuItem>
+                )}
+
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={toggleFullscreen} data-testid="menuitem-fullscreen">
                   {isFullscreen ? (
@@ -1191,6 +1200,21 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               </p>
             </DialogHeader>
             <PersistentWebMIDIManager />
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* USB MIDI Manager Dialog - Professional Users Only */}
+      {userType === 'professional' && (
+        <Dialog open={isUSBMidiOpen} onOpenChange={setIsUSBMidiOpen}>
+          <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>USB MIDI Manager</DialogTitle>
+              <p className="text-sm text-muted-foreground">
+                Connect and control USB MIDI devices using the Web MIDI API
+              </p>
+            </DialogHeader>
+            <USBMidiManager />
           </DialogContent>
         </Dialog>
       )}

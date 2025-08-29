@@ -106,14 +106,30 @@ export function useLocalAuth() {
       }, 100); // 100ms debounce
     };
     
+    // Listen for force subscription refresh events
+    const handleForceRefresh = () => {
+      clearTimeout(authChangeTimeout);
+      authChangeTimeout = setTimeout(() => {
+        if (mounted && user?.email) {
+          console.log('🔄 Force refreshing subscription on demand');
+          // Reset verification time to force immediate check
+          const updatedUser = { ...user, lastVerified: 0 };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUser));
+          checkExistingSession();
+        }
+      }, 100);
+    };
+
     window.addEventListener('auth-change', handleAuthChange);
     window.addEventListener('storage', handleAuthChange);
+    window.addEventListener('force-subscription-refresh', handleForceRefresh);
     
     return () => {
       mounted = false;
       clearTimeout(authChangeTimeout);
       window.removeEventListener('auth-change', handleAuthChange);
       window.removeEventListener('storage', handleAuthChange);
+      window.removeEventListener('force-subscription-refresh', handleForceRefresh);
     };
   }, [isVerifying]);
 
@@ -151,6 +167,33 @@ export function useLocalAuth() {
     }
   };
 
+  const forceRefreshSubscription = async () => {
+    if (!user?.email) return;
+    
+    try {
+      console.log('🔄 Force refreshing subscription status for:', user.email);
+      const response = await apiRequest('POST', '/api/verify-subscription', {
+        email: user.email
+      });
+      
+      if (response.ok) {
+        const verificationResult = await response.json();
+        console.log('✅ Force refresh result:', verificationResult.userType);
+        
+        const updatedUserData = {
+          ...user,
+          userType: verificationResult.userType as UserType,
+          lastVerified: Date.now()
+        };
+        
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
+        setUser(updatedUserData);
+      }
+    } catch (error) {
+      console.error('❌ Error force refreshing subscription:', error);
+    }
+  };
+
   return {
     user,
     isLoading,
@@ -159,6 +202,7 @@ export function useLocalAuth() {
     isFreeUser: user?.userType === 'free',
     login,
     logout,
-    upgrade
+    upgrade,
+    forceRefreshSubscription
   };
 }

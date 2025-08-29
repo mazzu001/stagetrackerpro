@@ -34,9 +34,13 @@ function AppContent() {
       // Clear URL parameters immediately to prevent re-processing
       window.history.replaceState({}, document.title, window.location.pathname);
       
-      // Show success message but let the database sync naturally
-      // The useLocalAuth hook will automatically detect the updated subscription status
-      console.log('✅ Payment completed successfully - subscription will be updated');
+      // Force a subscription refresh after successful payment
+      console.log('✅ Payment completed successfully - forcing subscription refresh');
+      
+      // Wait a moment for Stripe webhook to process, then force refresh
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('force-subscription-refresh'));
+      }, 2000); // 2 second delay to let webhook process
     }
     
     // Check if local file system is already initialized

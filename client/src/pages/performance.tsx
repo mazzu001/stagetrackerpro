@@ -33,6 +33,9 @@ interface PerformanceProps {
 }
 
 export default function Performance({ userType: propUserType }: PerformanceProps) {
+  const { user, logout } = useLocalAuth(); // Get real-time user data
+  const userType = user?.userType || propUserType || 'free'; // Use fresh user type from auth
+  
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [, setLocation] = useLocation();
   const [latency, setLatency] = useState(2.1);
@@ -60,7 +63,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
 
   const { toast } = useToast();
-  const { user, logout } = useLocalAuth();
 
   // Global Web MIDI integration - persistent across dialog closures
   const globalMidi = useGlobalWebMIDI();
@@ -96,9 +98,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       window.removeEventListener('bluetoothMidiStatusChanged', handleStatusChange);
     };
   }, [globalMidi.isConnected]);
-  
-  // Use userType from authenticated user, fallback to prop
-  const userType = user?.userType || propUserType;
 
   // Trigger blue blink effect for MIDI status light
   const triggerMidiBlink = useCallback(() => {

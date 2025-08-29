@@ -424,6 +424,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         await handlePaymentSucceeded(succeededInvoice);
         break;
         
+      case 'checkout.session.completed':
+        const checkoutSession = event.data.object;
+        console.log(`💳 Checkout session completed: ${checkoutSession.id} for customer: ${checkoutSession.customer}`);
+        await handleCheckoutCompleted(checkoutSession);
+        break;
+        
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
@@ -545,6 +551,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log(`✅ Payment succeeded for user ${user.email}, upgraded to premium`);
     } catch (error) {
       console.error('❌ Error handling payment success:', error);
+    }
+  }
+
+  async function handleCheckoutCompleted(session: any) {
+    try {
+      console.log(`🎯 Processing checkout completion for session: ${session.id}`);
+      
+      // Find user by Stripe customer ID
+      const user = await storage.getUserByStripeCustomerId(session.customer);
+      if (!user) {
+        console.log(`⚠️ User not found for customer ID: ${session.customer}`);
+        return;
+      }
+
+      // Get the subscription from Stripe
+      if (session.subscription) {
+        const subscription = await stripe.subscriptions.retrieve(session.subscription);
+        console.log(`📋 Retrieved subscription: ${subscription.id} (${subscription.status})`);
+        
+        // Determine subscription tier from amount or metadata
+        let newStatus = 2; // Default to premium
+        if (session.amount_total >= 1499) { // $14.99 or higher = professional
+          newStatus = 3; // Professional
+        }
+
+        // Update user subscription status immediately after checkout
+        await storage.updateUserSubscription(user.id, {
+          subscriptionStatus: newStatus,
+          stripeSubscriptionId: subscription.id,
+          subscriptionEndDate: subscription.current_period_end ? 
+            new Date(subscription.current_period_end * 1000).toISOString() : null
+        });
+
+        console.log(`✅ Checkout completed: Updated user ${user.email} subscription status: ${newStatus} (${newStatus === 3 ? 'Professional' : 'Premium'})`);
+      } else {
+        console.log(`⚠️ No subscription found in checkout session: ${session.id}`);
+      }
+    } catch (error) {
+      console.error('❌ Error handling checkout completion:', error);
     }
   }
 

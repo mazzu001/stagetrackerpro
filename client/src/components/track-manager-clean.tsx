@@ -511,19 +511,33 @@ export default function TrackManager({
 
       // Use LocalSongStorage directly instead of API call
       console.log('🎤 Adding track to local storage...');
-      const success = LocalSongStorage.addTrack(user.email, song.id, trackData);
+      const addResult = LocalSongStorage.addTrack(user.email, song.id, trackData);
       
-      if (!success) {
+      if (!addResult) {
         console.error('🎤 LocalSongStorage.addTrack returned false');
         throw new Error('Failed to save track to local storage - operation returned false');
       }
       
-      console.log('🎤 Track added to local storage successfully');
+      // Handle both boolean and track object return types
+      let actualTrackId: string;
+      if (typeof addResult === 'object' && addResult.id) {
+        actualTrackId = addResult.id;
+        console.log('🎤 Track added to local storage successfully with ID:', actualTrackId);
+      } else {
+        // Fallback: get the track from the updated song
+        const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+        const lastTrack = updatedSong?.tracks[updatedSong.tracks.length - 1];
+        actualTrackId = lastTrack?.id || trackId;
+        console.log('🎤 Track added to local storage, using fallback ID:', actualTrackId);
+      }
 
-      // Also store the audio file in AudioFileStorage for playback
+      // Store the audio file in AudioFileStorage using the actual track ID
       const audioStorage = AudioFileStorage.getInstance();
-      await audioStorage.storeAudioFile(trackId, audioFile, trackData);
-      console.log('🎤 Audio file stored for playback:', trackId);
+      await audioStorage.storeAudioFile(actualTrackId, audioFile, {
+        ...trackData,
+        id: actualTrackId
+      });
+      console.log('🎤 Audio file stored for playback with correct ID:', actualTrackId);
 
       // Get updated song and notify parent component
       const updatedSong = LocalSongStorage.getSong(user.email, song.id);

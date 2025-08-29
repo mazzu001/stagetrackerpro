@@ -105,7 +105,7 @@ export class LocalSongStorage {
       songs[songIndex].tracks.push(newTrack);
       this.saveSongs(userEmail, songs);
       console.log('LocalSongStorage.addTrack: Track added successfully:', newTrack.id);
-      return true;
+      return newTrack; // Return the track with its generated ID
     } catch (error) {
       console.error('LocalSongStorage.addTrack: Error adding track:', error);
       return false;

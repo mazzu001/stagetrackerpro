@@ -28,19 +28,9 @@ interface Track {
 }
 
 function TrackManagerScreenInner() {
-  console.log('=== TrackManagerScreen RENDER START ===');
   const route = useRoute();
   const navigation = useNavigation();
-  
-  let songId: string | undefined;
-  try {
-    const params = route.params as { songId: string };
-    songId = params?.songId;
-    console.log('Route params:', params);
-    console.log('Extracted songId:', songId);
-  } catch (error) {
-    console.error('Error extracting route params:', error);
-  }
+  const { songId } = route.params as { songId: string };
   
   const { songs, getTracksBySong, addTrack, deleteTrack } = useDatabase();
   const [song, setSong] = useState<any>(null);
@@ -48,150 +38,79 @@ function TrackManagerScreenInner() {
   const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
-    console.log('TrackManagerScreen useEffect triggered with songId:', songId);
     loadData();
   }, [songId]);
 
   const loadData = () => {
-    try {
-      if (!songId) {
-        console.error('No songId provided for loadData');
-        return;
-      }
-
-      const foundSong = songs.find(s => s.id === songId);
-      setSong(foundSong || null);
-      
-      const songTracks = getTracksBySong(songId);
-      setTracks(Array.isArray(songTracks) ? songTracks : []);
-    } catch (error) {
-      console.error('Failed to load data:', error);
-      setTracks([]);
-      setSong(null);
-    }
+    if (!songId) return;
+    
+    const foundSong = songs.find(s => s.id === songId);
+    setSong(foundSong);
+    
+    const songTracks = getTracksBySong(songId);
+    setTracks(songTracks);
   };
 
-  const handleAddTracks = withErrorHandler(async () => {
-    console.log('=== Starting handleAddTracks ===');
-      // Validate inputs first
+  const handleAddTracks = async () => {
+    try {
+      // Basic validation
       if (!songId) {
-        console.error('No songId provided');
         Alert.alert('Error', 'No song selected');
         return;
       }
 
       if (isUploading) {
-        console.warn('Upload already in progress');
         Alert.alert('Info', 'Upload already in progress');
         return;
       }
 
-      console.log('Attempting to open document picker...');
+      setIsUploading(true);
+
+      // Simple document picker call
       const result = await DocumentPicker.getDocumentAsync({
         type: 'audio/*',
         multiple: true,
         copyToCacheDirectory: true,
       });
-      console.log('Document picker result type:', typeof result);
-      console.log('Document picker result keys:', Object.keys(result || {}));
-      console.log('Document picker canceled:', result?.canceled);
-      console.log('Document picker assets length:', result?.assets?.length);
-      console.log('Document picker full result:', JSON.stringify(result, null, 2));
 
-      if (result.canceled) {
-        console.log('User canceled document picker');
+      if (result.canceled || !result.assets) {
+        setIsUploading(false);
         return;
       }
 
-      if (!result.assets) {
-        console.error('No assets in result');
-        Alert.alert('Error', 'No files were selected');
-        return;
-      }
-
-      // Validate result structure
-      if (!Array.isArray(result.assets)) {
-        console.error('Assets is not an array:', typeof result.assets, result.assets);
-        Alert.alert('Error', 'Invalid file selection result');
-        return;
-      }
-
-      if (result.assets.length === 0) {
-        console.log('No files selected');
-        Alert.alert('Info', 'No audio files were selected');
-        return;
-      }
-
+      // Check track limit
       if (tracks.length + result.assets.length > 6) {
         Alert.alert(
           'Too Many Tracks',
           `You can only have 6 tracks per song. You currently have ${tracks.length} tracks.`
         );
+        setIsUploading(false);
         return;
       }
 
-      setIsUploading(true);
-      let successCount = 0;
-      let errorCount = 0;
-      
+      // Process each file
       for (const asset of result.assets) {
-        console.log(`Processing asset: ${asset?.name || 'unnamed'}`);
+        if (!asset?.uri || !asset?.name) continue;
+
         try {
-          // Validate asset structure
-          if (!asset || !asset.uri) {
-            console.error('Invalid asset:', asset);
-            errorCount++;
-            continue;
-          }
-
-          console.log(`Asset URI: ${asset.uri}`);
-          console.log(`Asset name: ${asset.name}`);
-          console.log(`Asset size: ${asset.size}`);
-
-          // Create a permanent file path with safe filename
-          const fileName = asset.name ? 
-            asset.name.replace(/[^a-zA-Z0-9.-]/g, '_') : 
-            `track_${Date.now()}_${Math.random().toString(36).substr(2, 9)}.mp3`;
-          
+          // Create safe filename
+          const fileName = asset.name.replace(/[^a-zA-Z0-9.-]/g, '_');
           const permanentPath = `${FileSystem.documentDirectory}audio/${fileName}`;
-          console.log(`Target path: ${permanentPath}`);
           
-          // Ensure audio directory exists
-          console.log('Creating audio directory...');
+          // Create directory
           await FileSystem.makeDirectoryAsync(
             `${FileSystem.documentDirectory}audio/`,
             { intermediates: true }
           );
 
-          // Verify source file exists before copying
-          console.log('Verifying source file exists...');
-          const sourceInfo = await FileSystem.getInfoAsync(asset.uri);
-          console.log('Source file info:', sourceInfo);
-          if (!sourceInfo.exists) {
-            throw new Error('Source file does not exist');
-          }
-
-          // Copy file to permanent location
-          console.log('Copying file...');
+          // Copy file
           await FileSystem.copyAsync({
             from: asset.uri,
             to: permanentPath,
           });
 
-          // Verify the copied file exists
-          console.log('Verifying copied file...');
-          const copiedInfo = await FileSystem.getInfoAsync(permanentPath);
-          console.log('Copied file info:', copiedInfo);
-          if (!copiedInfo.exists) {
-            throw new Error('Failed to copy file to permanent location');
-          }
-
-          // Extract track name from filename (remove extension)
+          // Add to database
           const trackName = fileName.replace(/\.[^/.]+$/, '');
-          console.log(`Track name: ${trackName}`);
-
-          // Add track to database with proper error handling
-          console.log('Adding track to database...');
           await addTrack({
             songId,
             name: trackName,
@@ -201,57 +120,22 @@ function TrackManagerScreenInner() {
             solo: false,
             balance: 0,
           });
-
-          console.log(`Successfully added track: ${trackName}`);
-          successCount++;
         } catch (error) {
-          console.error(`Failed to add track ${asset?.name || 'unknown'}:`, error);
-          errorCount++;
-          
-          // Clean up any partial files
-          try {
-            const fileName = asset?.name ? 
-              asset.name.replace(/[^a-zA-Z0-9.-]/g, '_') : 
-              `track_${Date.now()}.mp3`;
-            const permanentPath = `${FileSystem.documentDirectory}audio/${fileName}`;
-            const fileInfo = await FileSystem.getInfoAsync(permanentPath);
-            if (fileInfo.exists) {
-              await FileSystem.deleteAsync(permanentPath);
-            }
-          } catch (cleanupError) {
-            console.error('Failed to clean up partial file:', cleanupError);
-          }
+          console.error('Failed to process file:', asset.name, error);
         }
       }
 
-      // Refresh data after all operations
-      try {
-        loadData();
-      } catch (refreshError) {
-        console.error('Failed to refresh data:', refreshError);
-      }
+      // Refresh data
+      loadData();
       
-      // Show appropriate success/error message
-      if (successCount > 0 && errorCount === 0) {
-        Alert.alert(
-          'Success',
-          `Added ${successCount} track(s) successfully`
-        );
-      } else if (successCount > 0 && errorCount > 0) {
-        Alert.alert(
-          'Partial Success',
-          `Added ${successCount} track(s) successfully. ${errorCount} track(s) failed to upload.`
-        );
-      } else {
-        Alert.alert(
-          'Upload Failed',
-          'Failed to add any tracks. Please try again.'
-        );
-      }
-    console.log('=== handleAddTracks finally block ===');
-    setIsUploading(false);
-    console.log('=== End handleAddTracks ===');
-  }, 'Add tracks operation');
+      Alert.alert('Success', 'Tracks added successfully');
+    } catch (error) {
+      console.error('Failed to add tracks:', error);
+      Alert.alert('Error', 'Failed to add tracks');
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleDeleteTrack = (track: Track) => {
     if (!track || !track.id) {

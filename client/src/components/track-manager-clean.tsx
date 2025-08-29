@@ -11,7 +11,7 @@ import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import StereoVUMeter from "@/components/stereo-vu-meter";
-import { TrackRecovery } from "@/components/track-recovery";
+
 
 import type { Track, SongWithTracks } from "@shared/schema";
 
@@ -609,10 +609,7 @@ export default function TrackManager({
         </div>
       )}
 
-      {/* Track Recovery Component */}
-      <TrackRecovery 
-        onTrackRecovered={refetchTracks}
-      />
+
     </div>
   );
 }

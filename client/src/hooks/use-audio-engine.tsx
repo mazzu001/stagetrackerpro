@@ -94,16 +94,15 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       setCurrentTime(0);
       setIsPlaying(false);
       
-      // Start track loading for streaming playback
-      console.log(`Loading tracks for streaming: "${song.title}"`);
-      setIsLoadingTracks(true);
+      // Setup streaming tracks (instant - no loading required)
+      console.log(`Setting up streaming for: "${song.title}" - instant ready`);
       
-      // Convert song tracks to track data format and load
-      const loadTracksAsync = async () => {
+      // Convert song tracks to track data format and setup streaming
+      const setupStreamingAsync = async () => {
         try {
           const audioStorage = AudioFileStorage.getInstance();
           
-          // Load all audio URLs in parallel to prevent blocking
+          // Get all audio URLs in parallel 
           const audioUrlPromises = song.tracks.map(async (track) => {
             const audioUrl = await audioStorage.getAudioUrl(track.id);
             return audioUrl ? {
@@ -123,15 +122,13 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
             (audioEngineRef.current as any).autoGenerateWaveform(song);
           }
           
-          console.log(`✅ Streaming tracks loaded for "${song.title}" - ready for instant playback`);
-          setIsLoadingTracks(false);
+          console.log(`✅ Streaming ready for "${song.title}" - instant playback available`);
         } catch (error) {
-          console.error(`❌ Streaming track loading failed for "${song.title}":`, error);
-          setIsLoadingTracks(false);
+          console.error(`❌ Streaming setup failed for "${song.title}":`, error);
         }
       };
       
-      loadTracksAsync();
+      setupStreamingAsync();
     }
   }, [song?.id, song?.tracks?.length]);
 
@@ -160,11 +157,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         setMasterStereoLevels(scaledLevels);
         
         
-        // Update loading state from audio engine
-        const engineIsLoading = audioEngineRef.current.isLoading;
-        if (isLoadingTracks !== engineIsLoading) {
-          setIsLoadingTracks(engineIsLoading);
-        }
+        // Streaming is always ready - no loading state needed
         
         // Use audio engine's state to determine if we should update time
         const engineIsPlaying = state.isPlaying;

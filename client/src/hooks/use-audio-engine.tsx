@@ -116,6 +116,12 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
           }
           
           await audioEngineRef.current?.loadTracks(trackData);
+          
+          // Auto-generate waveform in background (restored functionality from AudioEngine)
+          if (audioEngineRef.current && typeof (audioEngineRef.current as any).autoGenerateWaveform === 'function') {
+            (audioEngineRef.current as any).autoGenerateWaveform(song);
+          }
+          
           console.log(`✅ Streaming tracks loaded for "${song.title}" - ready for instant playback`);
           setIsLoadingTracks(false);
         } catch (error) {

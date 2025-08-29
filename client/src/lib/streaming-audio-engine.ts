@@ -82,6 +82,20 @@ export class StreamingAudioEngine {
     console.log(`✅ Streaming ready: ${tracks.length} tracks loaded instantly`);
   }
 
+  // Auto-generate waveform in background for responsive UI (restored from AudioEngine)
+  async autoGenerateWaveform(song: any) {
+    if (this.state.tracks.length > 0 && song) {
+      console.log(`Starting automatic waveform generation for "${song.title}"...`);
+      try {
+        const { waveformGenerator } = await import('./waveform-generator');
+        const waveformData = await waveformGenerator.generateWaveformFromSong(song);
+        console.log(`📈 Waveform auto-generated for "${song.title}" (${waveformData.length} data points)`);
+      } catch (error) {
+        console.error(`❌ Failed to auto-generate waveform for "${song.title}":`, error);
+      }
+    }
+  }
+
   private createStreamingTrack(trackData: { id: string; name: string; url: string }): StreamingTrack {
     const audioElement = new Audio();
     audioElement.src = trackData.url;

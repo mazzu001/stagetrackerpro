@@ -177,7 +177,7 @@ export default function TrackManager({
     if (!song?.id || !user?.email) return;
     
     try {
-      console.log(`Processing file ${files.indexOf(file) + 1}/${files.length}: ${file.name}`);
+      console.log(`Processing file ${selectedFiles.indexOf(file) + 1}/${selectedFiles.length}: ${file.name}`);
       
       const audioFileName = file.name;
       const trackName = audioFileName.replace(/\.[^/.]+$/, ""); // Remove extension
@@ -213,7 +213,7 @@ export default function TrackManager({
         const updatedSong = LocalSongStorage.getSong(user.email, song.id);
         if (updatedSong && onSongUpdate) {
           console.log('Track data updated, refreshing song with', updatedSong.tracks.length, 'tracks');
-          onSongUpdate(updatedSong);
+          onSongUpdate(updatedSong as any);
         }
         
         // Clear cached waveform to force regeneration with new tracks
@@ -250,7 +250,7 @@ export default function TrackManager({
         const updatedSong = LocalSongStorage.getSong(user.email, song.id);
         if (updatedSong && onSongUpdate) {
           console.log('Track deleted, refreshing song with', updatedSong.tracks.length, 'tracks');
-          onSongUpdate(updatedSong);
+          onSongUpdate(updatedSong as any);
         }
         
         // Clear cached waveform to force regeneration with remaining tracks
@@ -287,7 +287,7 @@ export default function TrackManager({
       const updatedSong = LocalSongStorage.getSong(user.email, song.id);
       if (updatedSong && onSongUpdate) {
         console.log('All tracks cleared, refreshing song with', updatedSong.tracks.length, 'tracks');
-        onSongUpdate(updatedSong);
+        onSongUpdate(updatedSong as any);
       }
       
       // Clear cached waveform since all tracks are removed
@@ -411,7 +411,7 @@ export default function TrackManager({
   }, []);
 
   return (
-    <div className="w-full space-y-4">
+    <div className="w-full space-y-4 max-h-[70vh] overflow-y-auto pr-2">
       {/* Header with controls */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -514,7 +514,7 @@ export default function TrackManager({
                       <div className="min-w-0 flex-1">
                         <h4 className="font-medium truncate" title={track.name}>{track.name}</h4>
                         <p className="text-xs text-gray-500">
-                          {track.localFileName} • {(track.fileSize / 1024 / 1024).toFixed(1)}MB
+                          {track.localFileName} • {((track.fileSize || 0) / 1024 / 1024).toFixed(1)}MB
                         </p>
                       </div>
                     </div>
@@ -522,7 +522,6 @@ export default function TrackManager({
                     <div className="flex items-center gap-2">
                       <VUMeter 
                         level={level} 
-                        size="sm" 
                         showValue={false}
                       />
                       <Button
@@ -610,7 +609,6 @@ export default function TrackManager({
 
       {/* Track Recovery Component */}
       <TrackRecovery 
-        song={song}
         onTrackRecovered={refetchTracks}
       />
     </div>

@@ -1162,21 +1162,20 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 ));
               }}
               onTrackVolumeChange={(trackId: string, volume: number) => {
-                // Forward to audio engine for real-time updates
-                // This would typically call audioEngine.setTrackVolume
                 console.log(`Setting track ${trackId} volume to ${volume}`);
+                // Forward to audio engine - this functionality would be connected to the actual audio engine
               }}
               onTrackMuteToggle={(trackId: string) => {
-                // Forward to audio engine for real-time updates
                 console.log(`Toggling mute for track ${trackId}`);
+                // Forward to audio engine - this functionality would be connected to the actual audio engine  
               }}
               onTrackSoloToggle={(trackId: string) => {
-                // Forward to audio engine for real-time updates
                 console.log(`Toggling solo for track ${trackId}`);
+                // Forward to audio engine - this functionality would be connected to the actual audio engine
               }}
               onTrackBalanceChange={(trackId: string, balance: number) => {
-                // Forward to audio engine for real-time updates
                 console.log(`Setting track ${trackId} balance to ${balance}`);
+                // Forward to audio engine - this functionality would be connected to the actual audio engine
               }}
               onPlay={play}
               onPause={pause}

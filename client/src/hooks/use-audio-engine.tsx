@@ -94,8 +94,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       setCurrentTime(0);
       setIsPlaying(false);
       
-      // Setup streaming tracks (instant - no loading required)
-      console.log(`Setting up streaming for: "${song.title}" - instant ready`);
+      // Setup streaming tracks (non-blocking background setup)
+      console.log(`Setting up streaming for: "${song.title}" - UI stays responsive`);
       
       // Convert song tracks to track data format and setup streaming
       const setupStreamingAsync = async () => {
@@ -115,7 +115,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
           const trackDataResults = await Promise.all(audioUrlPromises);
           const trackData = trackDataResults.filter(track => track !== null);
           
-          await audioEngineRef.current?.loadTracks(trackData);
+          // Load tracks without blocking the UI
+          audioEngineRef.current?.loadTracks(trackData);
           
           // Auto-generate waveform in background (restored functionality from AudioEngine)
           if (audioEngineRef.current && typeof (audioEngineRef.current as any).autoGenerateWaveform === 'function') {
@@ -128,6 +129,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         }
       };
       
+      // Run setup in background without blocking UI
       setupStreamingAsync();
     }
   }, [song?.id, song?.tracks?.length]);

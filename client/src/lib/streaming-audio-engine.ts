@@ -1,23 +1,21 @@
-/**
- * Streaming Audio Engine - Zero load time implementation
- * Streams audio tracks directly instead of preloading into memory
- */
+// Streaming audio engine with lazy initialization to prevent UI blocking
 
-interface StreamingTrack {
+export interface StreamingTrack {
   id: string;
   name: string;
-  audioElement: HTMLAudioElement;
-  gainNode: GainNode;
-  panNode: StereoPannerNode;
-  analyzerNode: AnalyserNode;
-  volume: number;
-  muted: boolean;
-  solo: boolean;
-  balance: number;
   url: string;
+  audioElement: HTMLAudioElement | null;
+  source: MediaElementAudioSourceNode | null;
+  gainNode: GainNode | null;
+  panNode: StereoPannerNode | null;
+  analyzerNode: AnalyserNode | null;
+  volume: number;
+  balance: number;
+  isMuted: boolean;
+  isSolo: boolean;
 }
 
-interface StreamingAudioEngineState {
+export interface StreamingAudioEngineState {
   isPlaying: boolean;
   currentTime: number;
   duration: number;
@@ -52,37 +50,41 @@ export class StreamingAudioEngine {
     this.state.masterGainNode.gain.value = this.state.masterVolume;
   }
 
-  // Instant track loading - no preloading required
-  async loadTracks(trackData: Array<{ id: string; name: string; url: string }>) {
-    console.log(`🚀 Streaming load: ${trackData.length} tracks (instant setup)`);
+  // Instant track loading with deferred audio node creation
+  loadTracks(trackData: Array<{ id: string; name: string; url: string }>) {
+    console.log(`🚀 Streaming load: ${trackData.length} tracks (deferred setup)`);
     
     // Clear existing tracks first
     this.clearTracks();
     
-    // Create streaming tracks with lightweight setup
-    const tracks = [];
-    for (const track of trackData) {
-      try {
-        const streamingTrack = this.createStreamingTrack(track);
-        tracks.push(streamingTrack);
-        console.log(`✅ Streaming track ready: ${track.name}`);
-      } catch (error) {
-        console.warn(`⚠️ Failed to create streaming track: ${track.name}`, error);
-      }
-    }
+    // Create lightweight track references without audio nodes yet
+    const tracks = trackData.map(track => ({
+      id: track.id,
+      name: track.name,
+      url: track.url,
+      audioElement: null as HTMLAudioElement | null,
+      source: null as MediaElementAudioSourceNode | null,
+      gainNode: null as GainNode | null,
+      panNode: null as StereoPannerNode | null,
+      analyzerNode: null as AnalyserNode | null,
+      volume: 1,
+      balance: 0,
+      isMuted: false,
+      isSolo: false,
+    }));
     
     this.state.tracks = tracks;
     
-    // Set up duration detection without blocking
+    // Set up duration detection in background
     if (tracks.length > 0) {
-      this.setupDurationDetection();
+      setTimeout(() => this.setupDurationDetection(), 0);
     }
     
     this.notifyListeners();
-    console.log(`✅ Streaming ready: ${tracks.length} tracks loaded instantly`);
+    console.log(`✅ Streaming ready: ${tracks.length} tracks setup instantly (audio nodes created on demand)`);
   }
 
-  // Auto-generate waveform in background for responsive UI (restored from AudioEngine)
+  // Auto-generate waveform in background for responsive UI
   async autoGenerateWaveform(song: any) {
     if (this.state.tracks.length > 0 && song) {
       console.log(`Starting automatic waveform generation for "${song.title}"...`);
@@ -96,84 +98,85 @@ export class StreamingAudioEngine {
     }
   }
 
-  private createStreamingTrack(trackData: { id: string; name: string; url: string }): StreamingTrack {
-    const audioElement = new Audio();
-    audioElement.src = trackData.url;
-    audioElement.preload = 'none'; // CRITICAL: No preloading to prevent crashes
-    audioElement.crossOrigin = 'anonymous';
-    
-    // Create audio nodes with error handling
-    let source, gainNode, panNode, analyzerNode;
+  // Create audio nodes on demand to avoid blocking UI
+  private ensureTrackAudioNodes(track: StreamingTrack) {
+    if (track.audioElement) return; // Already created
     
     try {
-      source = this.audioContext.createMediaElementSource(audioElement);
-      gainNode = this.audioContext.createGain();
-      panNode = this.audioContext.createStereoPanner();
-      analyzerNode = this.audioContext.createAnalyser();
+      // Create audio element
+      track.audioElement = new Audio();
+      track.audioElement.src = track.url;
+      track.audioElement.preload = 'none'; // CRITICAL: No preloading
+      track.audioElement.crossOrigin = 'anonymous';
       
-      // Connect audio graph safely
-      source.connect(gainNode);
-      gainNode.connect(panNode);
-      panNode.connect(analyzerNode);
-      analyzerNode.connect(this.state.masterGainNode!);
+      // Create audio nodes
+      track.source = this.audioContext.createMediaElementSource(track.audioElement);
+      track.gainNode = this.audioContext.createGain();
+      track.panNode = this.audioContext.createStereoPanner();
+      track.analyzerNode = this.audioContext.createAnalyser();
+      
+      // Connect audio graph
+      track.source.connect(track.gainNode);
+      track.gainNode.connect(track.panNode);
+      track.panNode.connect(track.analyzerNode);
+      track.analyzerNode.connect(this.state.masterGainNode!);
       
       // Setup analyzer with minimal settings
-      analyzerNode.fftSize = 128; // Smaller to reduce CPU
+      track.analyzerNode.fftSize = 128;
+      
+      console.log(`🔧 Audio nodes created on demand for: ${track.name}`);
     } catch (error) {
-      console.error('Failed to create streaming track audio nodes:', error);
-      throw error;
+      console.error(`Failed to create audio nodes for ${track.name}:`, error);
     }
-    
-    const track: StreamingTrack = {
-      id: trackData.id,
-      name: trackData.name,
-      audioElement,
-      gainNode,
-      panNode,
-      analyzerNode,
-      volume: 0.8,
-      muted: false,
-      solo: false,
-      balance: 0,
-      url: trackData.url,
-    };
-    
-    // Setup event listeners for streaming
-    audioElement.addEventListener('loadedmetadata', () => {
-      if (this.state.duration === 0) {
-        this.state.duration = audioElement.duration;
-        this.notifyListeners();
-      }
-    });
-    
-    audioElement.addEventListener('timeupdate', () => {
-      if (this.state.isPlaying) {
-        this.state.currentTime = audioElement.currentTime;
-        this.notifyListeners();
-      }
-    });
-    
-    return track;
   }
 
+  // Auto-determine duration from longest track
   private setupDurationDetection() {
-    const firstTrack = this.state.tracks[0];
-    if (firstTrack) {
-      const checkDuration = () => {
-        if (firstTrack.audioElement.duration && !isNaN(firstTrack.audioElement.duration)) {
-          this.state.duration = firstTrack.audioElement.duration;
+    if (this.state.tracks.length === 0) return;
+    
+    // Set up listeners for each track to detect duration
+    this.state.tracks.forEach(track => {
+      this.ensureTrackAudioNodes(track);
+      if (track.audioElement) {
+        track.audioElement.addEventListener('loadedmetadata', () => {
+          if (this.state.tracks.length > 0) {
+            const maxDuration = Math.max(...this.state.tracks.map(t => {
+              return t.audioElement?.duration || 0;
+            }));
+            
+            if (maxDuration > 0 && maxDuration !== this.state.duration) {
+              this.state.duration = maxDuration;
+              this.notifyListeners();
+            }
+          }
+        });
+      }
+    });
+    
+    // Fallback: keep checking until we get a duration
+    const checkDuration = () => {
+      if (this.state.tracks.length > 0) {
+        const maxDuration = Math.max(...this.state.tracks.map(t => {
+          return t.audioElement?.duration || 0;
+        }));
+        
+        if (maxDuration > 0) {
+          this.state.duration = maxDuration;
           this.notifyListeners();
         } else {
           setTimeout(checkDuration, 100);
         }
-      };
-      checkDuration();
-    }
+      }
+    };
+    checkDuration();
   }
 
   // Instant play - no loading delays
   async play() {
     if (this.state.tracks.length === 0) return;
+    
+    // Ensure all tracks have audio nodes
+    this.state.tracks.forEach(track => this.ensureTrackAudioNodes(track));
     
     // Resume audio context if suspended
     if (this.audioContext.state === 'suspended') {
@@ -184,10 +187,13 @@ export class StreamingAudioEngine {
     
     // Start all tracks simultaneously
     const playPromises = this.state.tracks.map(track => {
-      track.audioElement.currentTime = this.state.currentTime;
-      return track.audioElement.play().catch(err => {
-        console.warn(`Failed to start streaming track ${track.name}:`, err);
-      });
+      if (track.audioElement) {
+        track.audioElement.currentTime = this.state.currentTime;
+        return track.audioElement.play().catch(err => {
+          console.warn(`Failed to start streaming track ${track.name}:`, err);
+        });
+      }
+      return Promise.resolve();
     });
     
     await Promise.allSettled(playPromises);
@@ -201,7 +207,9 @@ export class StreamingAudioEngine {
 
   pause() {
     this.state.tracks.forEach(track => {
-      track.audioElement.pause();
+      if (track.audioElement) {
+        track.audioElement.pause();
+      }
     });
     
     this.state.isPlaying = false;
@@ -213,8 +221,10 @@ export class StreamingAudioEngine {
 
   stop() {
     this.state.tracks.forEach(track => {
-      track.audioElement.pause();
-      track.audioElement.currentTime = 0;
+      if (track.audioElement) {
+        track.audioElement.pause();
+        track.audioElement.currentTime = 0;
+      }
     });
     
     this.state.isPlaying = false;
@@ -226,11 +236,13 @@ export class StreamingAudioEngine {
   }
 
   seek(time: number) {
-    this.state.currentTime = Math.max(0, Math.min(time, this.state.duration));
+    this.state.currentTime = Math.max(0, Math.min(this.state.duration, time));
     
     // Sync all tracks to new time
     this.state.tracks.forEach(track => {
-      track.audioElement.currentTime = this.state.currentTime;
+      if (track.audioElement) {
+        track.audioElement.currentTime = this.state.currentTime;
+      }
     });
     
     this.notifyListeners();
@@ -242,26 +254,29 @@ export class StreamingAudioEngine {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (track) {
       track.volume = volume;
-      track.gainNode.gain.value = track.muted ? 0 : volume;
-      this.notifyListeners();
+      this.ensureTrackAudioNodes(track);
+      if (track.gainNode) {
+        track.gainNode.gain.value = volume;
+      }
     }
   }
 
   toggleTrackMute(trackId: string) {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (track) {
-      track.muted = !track.muted;
-      track.gainNode.gain.value = track.muted ? 0 : track.volume;
-      this.notifyListeners();
+      track.isMuted = !track.isMuted;
+      this.ensureTrackAudioNodes(track);
+      if (track.gainNode) {
+        track.gainNode.gain.value = track.isMuted ? 0 : track.volume;
+      }
     }
   }
 
   toggleTrackSolo(trackId: string) {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (track) {
-      track.solo = !track.solo;
+      track.isSolo = !track.isSolo;
       this.updateSoloStates();
-      this.notifyListeners();
     }
   }
 
@@ -269,17 +284,22 @@ export class StreamingAudioEngine {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (track) {
       track.balance = balance;
-      track.panNode.pan.value = balance;
-      this.notifyListeners();
+      this.ensureTrackAudioNodes(track);
+      if (track.panNode) {
+        track.panNode.pan.value = balance;
+      }
     }
   }
 
   private updateSoloStates() {
-    const hasSoloedTracks = this.state.tracks.some(t => t.solo);
+    const hasSoloTracks = this.state.tracks.some(t => t.isSolo);
     
     this.state.tracks.forEach(track => {
-      const shouldPlay = !hasSoloedTracks || track.solo;
-      track.gainNode.gain.value = (track.muted || !shouldPlay) ? 0 : track.volume;
+      this.ensureTrackAudioNodes(track);
+      const shouldMute = hasSoloTracks && !track.isSolo;
+      if (track.gainNode) {
+        track.gainNode.gain.value = shouldMute ? 0 : track.volume;
+      }
     });
   }
 
@@ -288,58 +308,60 @@ export class StreamingAudioEngine {
     if (this.state.masterGainNode) {
       this.state.masterGainNode.gain.value = volume;
     }
-    this.notifyListeners();
   }
 
-  // Get streaming audio levels for VU meters
   getTrackLevels(trackId: string): { left: number; right: number } {
     const track = this.state.tracks.find(t => t.id === trackId);
-    if (!track) return { left: 0, right: 0 };
+    if (!track) {
+      return { left: 0, right: 0 };
+    }
+
+    this.ensureTrackAudioNodes(track);
     
+    if (!track.analyzerNode) {
+      return { left: 0, right: 0 };
+    }
+
     const bufferLength = track.analyzerNode.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
     track.analyzerNode.getByteFrequencyData(dataArray);
     
-    // Calculate RMS level
-    let sum = 0;
-    for (let i = 0; i < bufferLength; i++) {
-      sum += dataArray[i] * dataArray[i];
-    }
-    const level = Math.sqrt(sum / bufferLength) / 255;
+    // Calculate average level
+    const sum = dataArray.reduce((a, b) => a + b, 0);
+    const average = sum / bufferLength / 255; // Normalize to 0-1
     
-    return { left: level, right: level };
+    // Return simulated stereo levels (would need separate analyzers for true stereo)
+    return { left: average, right: average };
   }
 
   getMasterLevels(): { left: number; right: number } {
-    // Average levels from all active tracks
-    const activeTracks = this.state.tracks.filter(t => !t.muted && (!this.state.tracks.some(tr => tr.solo) || t.solo));
+    // Calculate combined levels from all tracks
+    const combinedLevels = this.state.tracks.reduce((total, tr) => {
+      const trackLevels = this.getTrackLevels(tr.id);
+      return {
+        left: Math.max(total.left, trackLevels.left),
+        right: Math.max(total.right, trackLevels.right)
+      };
+    }, { left: 0, right: 0 });
     
-    if (activeTracks.length === 0) return { left: 0, right: 0 };
-    
-    let leftSum = 0;
-    let rightSum = 0;
-    
-    activeTracks.forEach(track => {
-      const levels = this.getTrackLevels(track.id);
-      leftSum += levels.left;
-      rightSum += levels.right;
-    });
-    
-    return {
-      left: leftSum / activeTracks.length,
-      right: rightSum / activeTracks.length,
-    };
+    return combinedLevels;
   }
 
+  // Time tracking for smooth playback
   private startTimeTracking() {
-    this.stopTimeTracking();
+    this.stopTimeTracking(); // Clear any existing interval
+    
     this.updateInterval = window.setInterval(() => {
       if (this.state.isPlaying && this.state.tracks.length > 0) {
+        // Use the first track as time reference
         const firstTrack = this.state.tracks[0];
-        this.state.currentTime = firstTrack.audioElement.currentTime;
-        this.notifyListeners();
+        if (firstTrack.audioElement) {
+          const currentTime = firstTrack.audioElement.currentTime;
+          this.state.currentTime = currentTime;
+          this.notifyListeners();
+        }
       }
-    }, 100);
+    }, 16); // ~60fps updates
   }
 
   private stopTimeTracking() {
@@ -354,20 +376,20 @@ export class StreamingAudioEngine {
 
   private clearTracks() {
     this.state.tracks.forEach(track => {
-      track.audioElement.pause();
-      track.audioElement.src = '';
+      if (track.audioElement) {
+        track.audioElement.pause();
+        track.audioElement.src = '';
+      }
     });
     this.state.tracks = [];
   }
 
-  // State management
   getState(): StreamingAudioEngineState {
     return { ...this.state };
   }
 
-  // Additional streaming-specific getters
   get isLoading(): boolean {
-    return false; // Streaming is always instant, never loading
+    return false; // Streaming is always ready
   }
 
   get isReady(): boolean {
@@ -380,30 +402,17 @@ export class StreamingAudioEngine {
   }
 
   private notifyListeners() {
-    this.listeners.forEach(listener => {
-      try {
-        listener();
-      } catch (error) {
-        console.error('Streaming audio engine listener error:', error);
-      }
-    });
+    this.listeners.forEach(listener => listener());
   }
 
-  // Cleanup
   dispose() {
-    this.stop();
-    this.clearTracks();
     this.stopTimeTracking();
-    this.listeners.clear();
-    
-    // Enhanced AudioContext cleanup with error handling
-    try {
-      if (this.audioContext && this.audioContext.state !== 'closed') {
-        this.audioContext.close();
-        console.log('🔇 Streaming audio engine AudioContext closed');
-      }
-    } catch (error) {
-      console.warn('⚠️ Error closing streaming audio engine AudioContext (already closed):', error);
+    this.clearTracks();
+    if (this.state.masterGainNode) {
+      this.state.masterGainNode.disconnect();
+    }
+    if (this.audioContext.state !== 'closed') {
+      this.audioContext.close();
     }
   }
 }

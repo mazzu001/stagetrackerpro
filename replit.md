@@ -1,6 +1,9 @@
 # Overview
 This project is a professional, offline-capable live music performance application designed for stage use. It features real-time audio mixing, advanced Web MIDI device management, and synchronized lyrics display. The application prioritizes offline functionality, utilizing local storage for all performance data and blob URLs for audio files. It is production-ready with robust MIDI integration, including persistent connections, and comprehensive device management.
 
+## Recent Changes
+- **Mobile App Crash Fix (Jan 29, 2025)**: Fixed Android crash when adding tracks by simplifying error handling and removing excessive logging that was interfering with async file operations. Streamlined the track addition process in TrackManagerScreen and DatabaseProvider.
+
 # User Preferences
 - **Communication style**: Simple, everyday language
 - **Authentication**: Local storage sessions, offline-capable

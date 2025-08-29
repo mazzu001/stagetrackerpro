@@ -74,7 +74,7 @@ export default function SubscribeRedirect() {
         email: userData.email,
         tier: plan.id,
         priceAmount: plan.id === 'premium' ? 499 : 1499, // cents
-        successUrl: `${window.location.origin}/?payment=success`,
+        successUrl: `${window.location.origin}/`,
         cancelUrl: `${window.location.origin}/subscribe`
       };
       

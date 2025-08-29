@@ -26,11 +26,30 @@ function AppContent() {
   const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
 
   useEffect(() => {
-    // Check URL parameters for successful payment
-    const urlParams = new URLSearchParams(window.location.search);
-    const redirectStatus = urlParams.get('redirect_status');
-    const email = urlParams.get('email');
-    const tier = urlParams.get('tier');
+    // Check URL parameters for successful payment - handle both valid and invalid query formats
+    console.log('🔍 Checking URL for payment success:', window.location.href);
+    
+    let redirectStatus, email, tier;
+    
+    // Handle malformed URLs with double question marks
+    const url = window.location.href;
+    if (url.includes('redirect_status=succeeded')) {
+      const parts = url.split('redirect_status=succeeded')[1];
+      if (parts) {
+        const params = new URLSearchParams(parts);
+        redirectStatus = 'succeeded';
+        email = params.get('email') || params.get('&email');
+        tier = params.get('tier') || params.get('&tier');
+      }
+    } else {
+      // Normal URL parsing
+      const urlParams = new URLSearchParams(window.location.search);
+      redirectStatus = urlParams.get('redirect_status');
+      email = urlParams.get('email');
+      tier = urlParams.get('tier');
+    }
+    
+    console.log('🔍 Parsed values:', { redirectStatus, email, tier });
     
     if (redirectStatus === 'succeeded' && email && tier) {
       // Clear URL parameters immediately to prevent re-processing
@@ -44,6 +63,8 @@ function AppContent() {
           // Determine subscription status based on tier
           const subscriptionStatus = tier === 'professional' ? 3 : tier === 'premium' ? 2 : 1;
           
+          console.log(`🔄 Making API call to update subscription: ${email} -> ${subscriptionStatus}`);
+          
           const response = await fetch('/api/update-subscription-status', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -53,6 +74,10 @@ function AppContent() {
             })
           });
           
+          console.log(`📋 API response status: ${response.status}`);
+          const result = await response.json();
+          console.log(`📋 API response data:`, result);
+          
           if (response.ok) {
             // Update local storage immediately  
             const userData = localStorage.getItem('lpp_local_user');
@@ -60,15 +85,18 @@ function AppContent() {
               const user = JSON.parse(userData);
               user.userType = tier;
               localStorage.setItem('lpp_local_user', JSON.stringify(user));
+              console.log(`📱 Updated localStorage: ${user.email} -> ${tier}`);
             }
             
             const tierName = tier === 'professional' ? 'Professional' : tier === 'premium' ? 'Premium' : 'Free';
-            console.log(`✅ Subscription updated to ${tierName}`);
+            console.log(`✅ Subscription updated to ${tierName} - refreshing page in 1 second`);
             
             // Force page refresh to load with new subscription
-            window.location.reload();
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
           } else {
-            console.error('❌ Failed to update subscription status');
+            console.error('❌ Failed to update subscription status:', result);
           }
         } catch (error) {
           console.error('❌ Error updating subscription:', error);
@@ -76,6 +104,8 @@ function AppContent() {
       };
       
       updateSubscription();
+    } else {
+      console.log('🔍 No payment success detected in URL');
     }
     
     // Check if local file system is already initialized

@@ -495,7 +495,7 @@ export default function TrackManager({
         isMuted: false,
         isSolo: false,
         localFileName: audioFile.name,
-        audioData: null,
+        // Don't set audioData - recorded audio is stored as files in browser storage
         mimeType: audioFile.type,
         fileSize: audioFile.size
       };
@@ -525,17 +525,17 @@ export default function TrackManager({
         // Fallback: get the track from the updated song
         const updatedSong = LocalSongStorage.getSong(user.email, song.id);
         const lastTrack = updatedSong?.tracks[updatedSong.tracks.length - 1];
-        actualTrackId = lastTrack?.id || trackId;
+        actualTrackId = lastTrack?.id || 'fallback-id';
         console.log('🎤 Track added to local storage, using fallback ID:', actualTrackId);
       }
 
-      // Store the audio file in AudioFileStorage using the actual track ID
+      // Store the audio file in local browser storage (NOT database upload)
       const audioStorage = AudioFileStorage.getInstance();
       await audioStorage.storeAudioFile(actualTrackId, audioFile, {
         ...trackData,
         id: actualTrackId
       });
-      console.log('🎤 Audio file stored for playback with correct ID:', actualTrackId);
+      console.log('🎤 Audio file stored locally with correct ID:', actualTrackId);
 
       // Get updated song and notify parent component
       const updatedSong = LocalSongStorage.getSong(user.email, song.id);
@@ -755,7 +755,7 @@ export default function TrackManager({
         trackNumber: tracks.length + 1,
         audioUrl: '', // Will be set when file is loaded
         localFileName: audioFileName,
-        audioData: null,
+        // Don't set audioData - files are stored in browser storage
         mimeType: file.type,
         fileSize: file.size,
         volume: 50,

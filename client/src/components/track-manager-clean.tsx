@@ -116,61 +116,120 @@ export default function TrackManager({
   };
 
   const handleFileSelect = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.multiple = true;
-    input.accept = 'audio/*';
+    console.log('=== Web Track Manager: Starting file selection ===');
     
-    input.onchange = async (e) => {
-      const files = Array.from((e.target as HTMLInputElement).files || []);
-      if (files.length === 0) return;
+    try {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.multiple = true;
+      input.accept = 'audio/*';
       
-      setSelectedFiles(files);
-      setIsImporting(true);
-      
-      try {
-        let totalDuration = 0;
+      input.onchange = async (e) => {
+        console.log('=== Web Track Manager: File change event triggered ===');
         
-        for (const file of files) {
-          await processFile(file);
-          
-          // Estimate duration for progress
-          try {
-            const audio = new Audio();
-            const url = URL.createObjectURL(file);
-            await new Promise<void>((resolve) => {
-              audio.addEventListener('loadedmetadata', () => {
-                totalDuration += audio.duration;
-                URL.revokeObjectURL(url);
-                resolve();
-              });
-              audio.addEventListener('error', () => {
-                URL.revokeObjectURL(url);
-                resolve();
-              });
-              audio.src = url;
-            });
-          } catch (error) {
-            console.warn(`Could not get duration for ${file.name}`);
+        try {
+          const target = e.target as HTMLInputElement;
+          if (!target || !target.files) {
+            console.error('No target or files in change event');
+            return;
           }
+          
+          const files = Array.from(target.files);
+          console.log('Files selected:', files.length);
+          
+          if (files.length === 0) {
+            console.log('No files selected, returning');
+            return;
+          }
+
+          // Check track limit before processing
+          if (tracks.length + files.length > 6) {
+            console.warn(`Track limit would be exceeded: ${tracks.length} + ${files.length} > 6`);
+            toast({
+              title: "Too many tracks",
+              description: `You can only have 6 tracks per song. You currently have ${tracks.length} tracks.`,
+              variant: "destructive"
+            });
+            return;
+          }
+          
+          setSelectedFiles(files);
+          setIsImporting(true);
+          
+          let totalDuration = 0;
+          let processedCount = 0;
+          
+          for (const file of files) {
+            try {
+              console.log(`Processing file ${processedCount + 1}/${files.length}: ${file.name}`);
+              await processFile(file);
+              processedCount++;
+              
+              // Estimate duration for progress
+              try {
+                const audio = new Audio();
+                const url = URL.createObjectURL(file);
+                await new Promise<void>((resolve) => {
+                  const cleanup = () => {
+                    URL.revokeObjectURL(url);
+                    resolve();
+                  };
+                  
+                  audio.addEventListener('loadedmetadata', () => {
+                    totalDuration += audio.duration || 0;
+                    cleanup();
+                  });
+                  
+                  audio.addEventListener('error', cleanup);
+                  audio.src = url;
+                });
+              } catch (durationError) {
+                console.warn(`Could not get duration for ${file.name}:`, durationError);
+              }
+            } catch (fileError) {
+              console.error(`Failed to process file ${file.name}:`, fileError);
+              toast({
+                title: "File processing failed",
+                description: `Failed to process ${file.name}: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`,
+                variant: "destructive"
+              });
+            }
+          }
+          
+          setEstimatedDuration(totalDuration);
+          
+          if (processedCount > 0) {
+            toast({
+              title: "Files imported successfully",
+              description: `Successfully imported ${processedCount} out of ${files.length} files`
+            });
+          }
+        } catch (changeError) {
+          console.error('=== Web Track Manager: Error in file change handler ===');
+          console.error('Error:', changeError);
+          toast({
+            title: "File selection failed",
+            description: changeError instanceof Error ? changeError.message : "Failed to process selected files",
+            variant: "destructive"
+          });
+        } finally {
+          console.log('=== Web Track Manager: Cleaning up file selection ===');
+          setIsImporting(false);
+          setSelectedFiles([]);
+          setEstimatedDuration(0);
         }
-        
-        setEstimatedDuration(totalDuration);
-      } catch (error) {
-        console.error('Error processing files:', error);
-        toast({
-          title: "Import Error",
-          description: "Failed to import some audio files",
-          variant: "destructive"
-        });
-      } finally {
-        setIsImporting(false);
-        setSelectedFiles([]);
-        setEstimatedDuration(0);
-      }
-    };
-    
-    input.click();
+      };
+      
+      input.click();
+    } catch (error) {
+      console.error('=== Web Track Manager: Error creating file input ===');
+      console.error('Error:', error);
+      toast({
+        title: "File selection error",
+        description: error instanceof Error ? error.message : "Failed to open file selector",
+        variant: "destructive"
+      });
+    }
   };
 
   const processFile = async (file: File) => {

@@ -394,28 +394,15 @@ export default function TrackManager({
         fileExtension = '.ogg';
       }
       
-      // Create file with appropriate extension - improved compatibility
+      // Create file with appropriate extension - blob-based approach
       const fileName = `${recordingName || 'recorded-track'}${fileExtension}`;
-      let audioFile: File;
       
-      // Check if File constructor is available and working
-      if (typeof File !== 'undefined') {
-        try {
-          audioFile = new (File as any)([audioBlob], fileName, { type: actualMimeType });
-        } catch {
-          // Fallback: create a Blob with File-like properties
-          audioFile = Object.assign(audioBlob, {
-            name: fileName,
-            lastModified: Date.now()
-          }) as File;
-        }
-      } else {
-        // Fallback: create a Blob with File-like properties
-        audioFile = Object.assign(audioBlob, {
-          name: fileName,
-          lastModified: Date.now()
-        }) as File;
-      }
+      // Create a File-like object from the blob without using File constructor
+      const audioFile = Object.assign(audioBlob, {
+        name: fileName,
+        lastModified: Date.now(),
+        type: actualMimeType
+      }) as File;
 
       // Validate the audio file before processing
       if (audioBlob.size === 0) {
@@ -490,11 +477,6 @@ export default function TrackManager({
       if (!audioFile.size || audioFile.size === 0) {
         throw new Error('Audio file is empty or corrupted');
       }
-
-      // Simple validation - just check if we can create a URL
-      const tempAudioUrl = URL.createObjectURL(audioFile);
-      console.log('🎤 Audio URL created successfully:', tempAudioUrl.substring(0, 50) + '...');
-      URL.revokeObjectURL(tempAudioUrl);
 
       // Create a blob URL for the audio file
       console.log('🎤 Creating blob URL for audio file...');

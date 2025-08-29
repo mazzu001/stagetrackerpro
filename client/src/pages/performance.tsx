@@ -930,7 +930,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   <div className="text-xs text-gray-500">
                     {song.duration > 0 ? `${Math.floor(song.duration / 60)}:${Math.floor(song.duration % 60).toString().padStart(2, '0')}` : '0:00'}
                   </div>
-                  {selectedSongId === song.id && isPlaying && (
+                  {selectedSongId === song.id && (
                     <StereoVUMeter
                       leftLevel={masterStereoLevels.left}
                       rightLevel={masterStereoLevels.right}

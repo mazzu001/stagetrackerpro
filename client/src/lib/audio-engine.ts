@@ -83,14 +83,9 @@ export class AudioEngine {
             return null;
           }
           
-          // Load with timeout protection (reduced to 2 seconds for responsive feel)
-          const loadPromise = trackController.load();
-          const timeoutPromise = new Promise<never>((_, reject) => {
-            setTimeout(() => reject(new Error(`Track loading timeout: ${track.name}`)), 2000);
-          });
-          
+          // Load directly - no timeout needed for local files
           try {
-            await Promise.race([loadPromise, timeoutPromise]);
+            await trackController.load();
             
             // Create analyzer for audio level monitoring
             const analyzer = this.audioContext!.createAnalyser();
@@ -589,17 +584,9 @@ class TrackController {
       
       console.log(`🔄 Starting audio decode for ${this.track.name}, size: ${(arrayBuffer.byteLength / 1024 / 1024).toFixed(2)} MB`);
       
-      // Add timeout to prevent hanging on large files
-      const decodePromise = this.audioContext.decodeAudioData(arrayBuffer);
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => {
-          console.error(`❌ DECODE TIMEOUT for ${this.track.name} after 1 second`);
-          reject(new Error(`Audio decode timeout for ${this.track.name}`));
-        }, 1000);
-      });
-      
-      console.log(`🔄 Racing decode vs timeout for ${this.track.name}...`);
-      this.audioBuffer = await Promise.race([decodePromise, timeoutPromise]);
+      // Decode directly - no timeout needed for local files
+      console.log(`🔄 Decoding audio for ${this.track.name}...`);
+      this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       console.log(`✅ Audio decode completed for ${this.track.name}`);
       
       // Verify audio buffer integrity

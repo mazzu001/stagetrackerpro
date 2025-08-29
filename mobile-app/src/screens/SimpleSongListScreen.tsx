@@ -19,17 +19,16 @@ export default function SimpleSongListScreen() {
   const [title, setTitle] = useState('');
   const [artist, setArtist] = useState('');
 
-  const handleAddSong = async () => {
+  const handleAddSong = () => {
     if (!title.trim() || !artist.trim()) {
       Alert.alert('Error', 'Please enter both title and artist');
       return;
     }
 
     try {
-      await addSong({
+      addSong({
         title: title.trim(),
         artist: artist.trim(),
-        duration: 0,
       });
       
       setTitle('');

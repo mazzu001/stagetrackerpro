@@ -4,10 +4,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 
-// Ultra simple screens
+// Crash-proof screens
 import SimplePerformanceScreen from './src/screens/SimplePerformanceScreen';
 import SimpleSongListScreen from './src/screens/SimpleSongListScreen';
-import UltraSimpleTrackManager from './src/screens/UltraSimpleTrackManager';
+import CrashProofTrackManager from './src/screens/CrashProofTrackManager';
 import LoadingScreen from './src/screens/LoadingScreen';
 
 // Minimal providers
@@ -20,12 +20,8 @@ export default function App() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Fast startup - minimal delay
-    const timer = setTimeout(() => {
-      setIsReady(true);
-    }, 100);
-
-    return () => clearTimeout(timer);
+    // Immediate startup - no delay
+    setIsReady(true);
   }, []);
 
   if (!isReady) {
@@ -62,7 +58,7 @@ export default function App() {
               />
               <Stack.Screen 
                 name="TrackManager" 
-                component={UltraSimpleTrackManager}
+                component={CrashProofTrackManager}
                 options={{ title: 'Track Manager' }}
               />
             </Stack.Navigator>

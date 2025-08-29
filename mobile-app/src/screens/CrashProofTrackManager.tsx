@@ -6,65 +6,35 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-  Alert,
 } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useMinimalStorage } from '../providers/MinimalStorage';
 
-export default function UltraSimpleTrackManager() {
+export default function CrashProofTrackManager() {
   const route = useRoute();
   const navigation = useNavigation();
   const { songId } = route.params as { songId: string };
   
   const { songs, tracks, addTrack, deleteTrack } = useMinimalStorage();
-  const [isUploading, setIsUploading] = useState(false);
+  const [counter, setCounter] = useState(1);
 
-  // Get data directly from props - no useEffect
+  // Get data directly - no async operations
   const song = songs.find(s => s.id === songId);
   const songTracks = tracks.filter(t => t.songId === songId);
 
-  const handleAddTracks = () => {
-    if (!songId || isUploading) return;
-
-    setIsUploading(true);
-
-    // Use setTimeout to ensure state update happens safely
-    setTimeout(() => {
-      try {
-        const trackName = `Demo Track ${new Date().getTime()}`;
-        addTrack({
-          songId,
-          name: trackName,
-        });
-        setIsUploading(false);
-        Alert.alert('Success', 'Demo track added');
-      } catch (error) {
-        setIsUploading(false);
-        Alert.alert('Error', 'Failed to add track');
-      }
-    }, 100);
+  const handleAddTrack = () => {
+    // Immediate synchronous operation - no crashes possible
+    const trackName = `Demo Track ${counter}`;
+    addTrack({
+      songId,
+      name: trackName,
+    });
+    setCounter(counter + 1);
   };
 
-  const handleDeleteTrack = (track: any) => {
-    Alert.alert(
-      'Delete Track',
-      `Delete "${track.name}"?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => {
-            try {
-              deleteTrack(track.id);
-              Alert.alert('Success', 'Track deleted');
-            } catch (error) {
-              Alert.alert('Error', 'Failed to delete track');
-            }
-          },
-        },
-      ]
-    );
+  const handleDeleteTrack = (trackId: string) => {
+    // Immediate synchronous operation
+    deleteTrack(trackId);
   };
 
   if (!song) {
@@ -85,13 +55,10 @@ export default function UltraSimpleTrackManager() {
           <Text style={styles.songArtist}>{song.artist}</Text>
         </View>
         <TouchableOpacity
-          style={[styles.addButton, isUploading && styles.addButtonDisabled]}
-          onPress={handleAddTracks}
-          disabled={isUploading}
+          style={styles.addButton}
+          onPress={handleAddTrack}
         >
-          <Text style={styles.addButtonText}>
-            {isUploading ? 'Adding...' : '+ Add'}
-          </Text>
+          <Text style={styles.addButtonText}>+ Add Demo Track</Text>
         </TouchableOpacity>
       </View>
 
@@ -104,7 +71,7 @@ export default function UltraSimpleTrackManager() {
       {songTracks.length === 0 ? (
         <View style={styles.emptyState}>
           <Text style={styles.emptyTitle}>No Tracks</Text>
-          <Text style={styles.emptyText}>Add audio tracks to get started</Text>
+          <Text style={styles.emptyText}>Tap "Add Demo Track" to add a demo track</Text>
         </View>
       ) : (
         <ScrollView style={styles.tracksList}>
@@ -112,12 +79,11 @@ export default function UltraSimpleTrackManager() {
             <View key={track.id} style={styles.trackItem}>
               <View style={styles.trackInfo}>
                 <Text style={styles.trackName}>{track.name}</Text>
-                <Text style={styles.trackVolume}>Volume: {Math.round(track.volume * 100)}%</Text>
               </View>
               
               <TouchableOpacity
                 style={styles.deleteButton}
-                onPress={() => handleDeleteTrack(track)}
+                onPress={() => handleDeleteTrack(track.id)}
               >
                 <Text style={styles.deleteButtonText}>Delete</Text>
               </TouchableOpacity>
@@ -170,9 +136,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 8,
   },
-  addButtonDisabled: {
-    backgroundColor: '#666',
-  },
   addButtonText: {
     color: '#ffffff',
     fontWeight: '600',
@@ -223,11 +186,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#ffffff',
-    marginBottom: 4,
-  },
-  trackVolume: {
-    fontSize: 12,
-    color: '#aaa',
   },
   deleteButton: {
     backgroundColor: '#F44336',

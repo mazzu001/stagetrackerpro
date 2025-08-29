@@ -650,7 +650,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             <div className="flex items-center gap-2">
               <Music className="h-5 w-5 md:h-6 md:w-6 text-primary" />
               <div className="flex flex-col">
-                <span className="text-base md:text-lg font-semibold">Live Performance</span>
+                <span className="text-base md:text-lg font-semibold">StageTracker Pro</span>
                 {user?.email && (
                   <span className="text-xs text-gray-400" data-testid="text-username">
                     {user.email}

@@ -478,24 +478,18 @@ export default function TrackManager({
         throw new Error('Audio file is empty or corrupted');
       }
 
-      // Create a blob URL for the audio file
-      console.log('🎤 Creating blob URL for audio file...');
-      const audioUrl = URL.createObjectURL(audioFile);
-      console.log('🎤 Audio blob URL created:', audioUrl.substring(0, 50) + '...');
-      
-      // Create track data (without ID - let LocalSongStorage generate it)
+      // Create track data (will be saved to server)
       const trackName = recordingName || `Recorded Track ${tracks.length + 1}`;
       const trackData = {
         songId: song.id,
         name: trackName,
         trackNumber: tracks.length + 1,
-        audioUrl: audioUrl,
+        audioUrl: '', // Will be set after server save
         volume: 100,
         balance: 0,
         isMuted: false,
         isSolo: false,
         localFileName: audioFile.name,
-        // Don't set audioData - recorded audio is stored as files in browser storage
         mimeType: audioFile.type,
         fileSize: audioFile.size
       };
@@ -529,13 +523,36 @@ export default function TrackManager({
         console.log('🎤 Track added to local storage, using fallback ID:', actualTrackId);
       }
 
-      // Store the audio file in local browser storage (NOT database upload)
-      const audioStorage = AudioFileStorage.getInstance();
-      await audioStorage.storeAudioFile(actualTrackId, audioFile, {
-        ...trackData,
-        id: actualTrackId
+      // Save recorded audio to server (simple file on disk)
+      const formData = new FormData();
+      formData.append('audio', audioFile);
+      formData.append('trackId', actualTrackId);
+      formData.append('songId', song.id);
+      formData.append('trackName', trackName);
+
+      console.log('🎤 Saving recording to server...');
+      const response = await fetch('/api/save-recording', {
+        method: 'POST',
+        body: formData
       });
-      console.log('🎤 Audio file stored locally with correct ID:', actualTrackId);
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to save recording');
+      }
+
+      const result = await response.json();
+      console.log('🎤 Recording saved successfully:', result);
+
+      // Update track data with server URL
+      const updatedTrackData = {
+        ...trackData,
+        id: actualTrackId,
+        audioUrl: `/api/recording/${actualTrackId}` // Server URL for playback
+      };
+
+      // Update the track in local storage with server URL
+      LocalSongStorage.updateTrack(user.email, song.id, actualTrackId, updatedTrackData);
 
       // Get updated song and notify parent component
       const updatedSong = LocalSongStorage.getSong(user.email, song.id);
@@ -545,6 +562,29 @@ export default function TrackManager({
       } else {
         throw new Error('Failed to retrieve updated song after adding track');
       }
+
+      // Reset recording state
+      setRecordingName('');
+      setIsRecording(false);
+      setRecordingLevel(0);
+      
+      // Stop recording stream
+      if (recordingStream) {
+        recordingStream.getTracks().forEach(track => track.stop());
+        setRecordingStream(null);
+      }
+
+      // Close recording audio context
+      if (recordingAudioContext.current) {
+        recordingAudioContext.current.close();
+        recordingAudioContext.current = null;
+      }
+
+      toast({
+        title: "Recording Added",
+        description: `Track "${trackName}" has been successfully recorded and saved.`,
+        variant: "default",
+      });
 
       console.log('🎤 Recorded track added to song successfully:', trackName);
 

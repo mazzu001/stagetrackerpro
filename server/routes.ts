@@ -1447,6 +1447,94 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log('🎧 Registering track management routes...');
   console.log('📊 Registering waveform caching routes...');
   console.log('🔍 Registering lyrics search routes...');
+  console.log('🎤 Registering recording routes...');
+
+  // Recording API - Simple file saving to disk
+  const RECORDINGS_DIR = path.join(process.cwd(), "recordings");
+  const RECORDING_PATHS_FILE = path.join(process.cwd(), "data", "recording-paths.txt");
+  
+  // Ensure recordings directory exists
+  if (!fs.existsSync(RECORDINGS_DIR)) {
+    fs.mkdirSync(RECORDINGS_DIR, { recursive: true });
+  }
+
+  // Simple API to save recorded audio to disk
+  app.post("/api/save-recording", upload.single('audio'), async (req, res) => {
+    try {
+      const { trackId, songId, trackName } = req.body;
+      const file = req.file;
+
+      if (!file || !trackId || !songId || !trackName) {
+        return res.status(400).json({ error: "Missing required fields: audio file, trackId, songId, trackName" });
+      }
+
+      // Create filename with timestamp to avoid conflicts
+      const timestamp = Date.now();
+      const extension = path.extname(file.originalname) || '.webm';
+      const fileName = `${songId}_${trackId}_${timestamp}${extension}`;
+      const filePath = path.join(RECORDINGS_DIR, fileName);
+
+      // Save file to disk
+      await fsPromises.writeFile(filePath, file.buffer);
+
+      // Track file path in text file
+      const pathEntry = `${trackId}|${filePath}|${trackName}|${file.mimetype}|${file.size}|${timestamp}\n`;
+      await fsPromises.appendFile(RECORDING_PATHS_FILE, pathEntry);
+
+      console.log(`✅ Recorded audio saved: ${fileName} for track: ${trackName}`);
+
+      res.json({
+        success: true,
+        trackId,
+        filePath,
+        fileName,
+        size: file.size,
+        mimeType: file.mimetype
+      });
+
+    } catch (error) {
+      console.error('❌ Error saving recording:', error);
+      res.status(500).json({ error: "Failed to save recording" });
+    }
+  });
+
+  // API to get recording file path for playback
+  app.get("/api/recording/:trackId", async (req, res) => {
+    try {
+      const { trackId } = req.params;
+
+      // Read paths file
+      if (!fs.existsSync(RECORDING_PATHS_FILE)) {
+        return res.status(404).json({ error: "No recordings found" });
+      }
+
+      const pathsContent = await fsPromises.readFile(RECORDING_PATHS_FILE, 'utf8');
+      const lines = pathsContent.split('\n').filter(line => line.trim());
+
+      // Find track
+      for (const line of lines) {
+        const [id, filePath, trackName, mimeType, size, timestamp] = line.split('|');
+        if (id === trackId && fs.existsSync(filePath)) {
+          // Serve the actual audio file
+          res.set({
+            'Content-Type': mimeType,
+            'Content-Length': size,
+            'Cache-Control': 'public, max-age=3600'
+          });
+          
+          const fileBuffer = await fsPromises.readFile(filePath);
+          return res.send(fileBuffer);
+        }
+      }
+
+      res.status(404).json({ error: "Recording not found" });
+
+    } catch (error) {
+      console.error('❌ Error retrieving recording:', error);
+      res.status(500).json({ error: "Failed to retrieve recording" });
+    }
+  });
+
   console.log('📁 Registering file registry routes...');
 
   // MIDI functionality has been completely removed

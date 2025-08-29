@@ -278,9 +278,23 @@ export default function TrackManager({
       });
       
       if (trackAdded) {
-        // Create audio URL for the file
-        const audioUrl = URL.createObjectURL(file);
-        console.log('Audio URL created:', audioUrl);
+        // Get the track ID that was just created
+        const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+        const newTrack = updatedSong?.tracks.find(t => t.name === trackName && t.localFileName === audioFileName);
+        
+        if (newTrack) {
+          // Store the audio file in browser storage with the track ID
+          const audioStorage = AudioFileStorage.getInstance();
+          await audioStorage.storeAudioFile(newTrack.id, file, newTrack, song.title);
+          console.log('Audio file stored successfully for track:', newTrack.id);
+          
+          // Update the track with the audio URL
+          const audioUrl = await audioStorage.getAudioUrl(newTrack.id);
+          if (audioUrl) {
+            LocalSongStorage.updateTrack(user.email, song.id, newTrack.id, { audioUrl });
+            console.log('Track updated with audio URL:', audioUrl.substring(0, 50) + '...');
+          }
+        }
         
         // Detect and update song duration from the audio file
         await detectAndUpdateSongDuration(file, song.id);
@@ -288,10 +302,10 @@ export default function TrackManager({
         console.log('Track added successfully');
         
         // Get updated song with new tracks and notify parent component
-        const updatedSong = LocalSongStorage.getSong(user.email, song.id);
-        if (updatedSong && onSongUpdate) {
-          console.log('Track data updated, refreshing song with', updatedSong.tracks.length, 'tracks');
-          onSongUpdate(updatedSong as any);
+        const finalUpdatedSong = LocalSongStorage.getSong(user.email, song.id);
+        if (finalUpdatedSong && onSongUpdate) {
+          console.log('Track data updated, refreshing song with', finalUpdatedSong.tracks.length, 'tracks');
+          onSongUpdate(finalUpdatedSong as any);
         }
         
         // Clear cached waveform to force regeneration with new tracks

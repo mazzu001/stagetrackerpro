@@ -21,17 +21,16 @@ export default function SimplePerformanceScreen() {
   const [tracks, setTracks] = useState<any[]>([]);
 
   useEffect(() => {
-    if (songId && songs.length > 0) {
-      const foundSong = songs.find(s => s.id === songId);
+    if (!songId) return;
+    
+    const foundSong = songs.find(s => s.id === songId);
+    if (foundSong) {
       setSong(foundSong);
-      
       const songTracks = getTracksBySong(songId);
       setTracks(songTracks);
-      
-      // Load song into audio engine
       loadSong(songId);
     }
-  }, [songId]);
+  }, [songId, songs.length]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);

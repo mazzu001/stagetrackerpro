@@ -92,9 +92,13 @@ export default function SimpleAudioEngineProvider({ children }: { children: Reac
       await sound.current.playAsync();
       setIsPlaying(true);
       
-      // Simple position updates
+      // Much less frequent position updates to avoid performance issues
+      if (positionInterval.current) {
+        clearInterval(positionInterval.current);
+      }
+      
       positionInterval.current = setInterval(async () => {
-        if (sound.current) {
+        if (sound.current && isPlaying) {
           try {
             const status = await sound.current.getStatusAsync();
             if (status.isLoaded && status.positionMillis !== undefined) {
@@ -104,7 +108,7 @@ export default function SimpleAudioEngineProvider({ children }: { children: Reac
             // Ignore position errors
           }
         }
-      }, 500);
+      }, 1000);
     } catch (error) {
       console.error('Failed to play:', error);
     }

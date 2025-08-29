@@ -43,7 +43,7 @@ export default function TrackManagerScreen() {
     if (songId && songs.length > 0) {
       loadData();
     }
-  }, [songId]);
+  }, [songId, songs.length]);
 
   const loadData = () => {
     if (!songId) return;

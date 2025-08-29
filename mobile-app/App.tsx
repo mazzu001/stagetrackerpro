@@ -4,10 +4,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 
-// Simple screens
+// Ultra simple screens
 import SimplePerformanceScreen from './src/screens/SimplePerformanceScreen';
 import SimpleSongListScreen from './src/screens/SimpleSongListScreen';
-import TrackManagerScreen from './src/screens/TrackManagerScreen';
+import UltraSimpleTrackManager from './src/screens/UltraSimpleTrackManager';
 import LoadingScreen from './src/screens/LoadingScreen';
 
 // Simple providers
@@ -62,7 +62,7 @@ export default function App() {
               />
               <Stack.Screen 
                 name="TrackManager" 
-                component={TrackManagerScreen}
+                component={UltraSimpleTrackManager}
                 options={{ title: 'Track Manager' }}
               />
             </Stack.Navigator>

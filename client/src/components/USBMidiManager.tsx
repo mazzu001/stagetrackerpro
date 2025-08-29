@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
+import { useGlobalWebMIDI } from '@/hooks/useGlobalWebMIDI';
 import { 
   Usb, 
   Power, 
@@ -38,17 +39,22 @@ interface MIDIMessage {
 }
 
 export function USBMidiManager() {
-  const [midiAccess, setMidiAccess] = useState<any>(null);
-  const [inputDevices, setInputDevices] = useState<MIDIDevice[]>([]);
+  // Use global Web MIDI system for persistent connections
+  const { 
+    isConnected: globalIsConnected, 
+    deviceName: globalDeviceName, 
+    sendCommand: globalSendCommand, 
+    connectToDevice: globalConnectToDevice, 
+    refreshDevices, 
+    getAvailableOutputs 
+  } = useGlobalWebMIDI();
+  
+  // Local UI state
   const [outputDevices, setOutputDevices] = useState<MIDIDevice[]>([]);
-  const [selectedInputId, setSelectedInputId] = useState<string>('');
   const [selectedOutputId, setSelectedOutputId] = useState<string>('');
-  const [isConnected, setIsConnected] = useState(false);
   const [midiCommand, setMidiCommand] = useState('');
-  const [isMonitoring, setIsMonitoring] = useState(false);
   const [messages, setMessages] = useState<MIDIMessage[]>([]);
   const [isSupported, setIsSupported] = useState(true);
-  const [isInitializing, setIsInitializing] = useState(false);
   
   const { toast } = useToast();
 
@@ -60,182 +66,81 @@ export function USBMidiManager() {
     }
   }, []);
 
-  // Initialize MIDI access
-  const initializeMIDI = useCallback(async () => {
-    if (!navigator.requestMIDIAccess) {
-      toast({
-        title: "MIDI Not Supported",
-        description: "Your browser doesn't support the Web MIDI API",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsInitializing(true);
+  // Load devices from global system
+  const loadDevices = useCallback(async () => {
     try {
-      const access = await navigator.requestMIDIAccess({ sysex: false });
-      setMidiAccess(access);
-      
-      // Listen for device connections/disconnections
-      access.onstatechange = () => {
-        updateDeviceList(access);
-      };
-      
-      updateDeviceList(access);
-      
-      toast({
-        title: "MIDI Initialized",
-        description: "USB MIDI interface is ready",
-      });
+      await refreshDevices();
+      const availableOutputs = getAvailableOutputs();
+      setOutputDevices(availableOutputs);
     } catch (error) {
-      console.error('Failed to initialize MIDI:', error);
+      console.error('Failed to load MIDI devices:', error);
       toast({
-        title: "MIDI Initialization Failed",
-        description: "Could not access MIDI devices. Check browser permissions.",
+        title: "MIDI Device Loading Failed",
+        description: "Could not load MIDI devices. Check browser permissions.",
         variant: "destructive",
       });
-    } finally {
-      setIsInitializing(false);
     }
-  }, [toast]);
+  }, [refreshDevices, getAvailableOutputs, toast]);
 
-  // Update device list
-  const updateDeviceList = useCallback((access: any) => {
-    const inputs: MIDIDevice[] = [];
-    const outputs: MIDIDevice[] = [];
+  // Load available devices on component mount
+  useEffect(() => {
+    loadDevices();
+  }, [loadDevices]);
 
-    // Process input devices
-    for (const input of access.inputs.values()) {
-      inputs.push({
-        id: input.id,
-        name: input.name || 'Unknown Device',
-        manufacturer: input.manufacturer || 'Unknown',
-        state: input.state,
-        connection: input.connection,
-        type: 'input',
-        port: input
-      });
-    }
-
-    // Process output devices
-    for (const output of access.outputs.values()) {
-      outputs.push({
-        id: output.id,
-        name: output.name || 'Unknown Device',
-        manufacturer: output.manufacturer || 'Unknown',
-        state: output.state,
-        connection: output.connection,
-        type: 'output',
-        port: output
-      });
-    }
-
-    setInputDevices(inputs);
-    setOutputDevices(outputs);
-    
-    console.log(`🎹 Found ${inputs.length} MIDI inputs and ${outputs.length} MIDI outputs`);
-  }, []);
-
-  // Connect to selected devices
-  const connectToDevices = useCallback(() => {
-    if (!midiAccess || !selectedInputId || !selectedOutputId) {
+  // Connect to selected output device using global system
+  const connectToSelectedDevice = useCallback(async () => {
+    if (!selectedOutputId) {
       toast({
         title: "Device Selection Required",
-        description: "Please select both input and output devices",
+        description: "Please select an output device",
         variant: "destructive",
       });
       return;
     }
 
     try {
-      const inputDevice = inputDevices.find(d => d.id === selectedInputId);
-      const outputDevice = outputDevices.find(d => d.id === selectedOutputId);
-
-      if (!inputDevice || !outputDevice) {
-        throw new Error('Selected devices not found');
+      const success = await globalConnectToDevice(selectedOutputId);
+      if (success) {
+        toast({
+          title: "MIDI Connected",
+          description: `Connected to ${globalDeviceName}`,
+        });
+      } else {
+        throw new Error('Connection failed');
       }
-
-      // Set up input monitoring
-      if (inputDevice.port) {
-        inputDevice.port.onmidimessage = (event: any) => {
-          const message = formatMIDIMessage(event.data);
-          addMessage({
-            timestamp: Date.now(),
-            data: Array.from(event.data),
-            formatted: message,
-            direction: 'in'
-          });
-        };
-      }
-
-      setIsConnected(true);
-      
-      toast({
-        title: "MIDI Connected",
-        description: `Connected to ${inputDevice.name} → ${outputDevice.name}`,
-      });
-      
-      console.log(`🔗 Connected: ${inputDevice.name} → ${outputDevice.name}`);
     } catch (error) {
       console.error('Connection failed:', error);
       toast({
         title: "Connection Failed",
-        description: "Could not connect to selected MIDI devices",
+        description: "Could not connect to selected MIDI device",
         variant: "destructive",
       });
     }
-  }, [midiAccess, selectedInputId, selectedOutputId, inputDevices, outputDevices, toast]);
+  }, [selectedOutputId, globalConnectToDevice, globalDeviceName, toast]);
 
-  // Disconnect from devices
-  const disconnectFromDevices = useCallback(() => {
-    const inputDevice = inputDevices.find(d => d.id === selectedInputId);
-    if (inputDevice?.port) {
-      inputDevice.port.onmidimessage = null;
-    }
-    
-    setIsConnected(false);
-    setIsMonitoring(false);
-    
-    toast({
-      title: "MIDI Disconnected",
-      description: "Disconnected from MIDI devices",
-    });
-    
-    console.log('🔌 Disconnected from MIDI devices');
-  }, [inputDevices, selectedInputId, toast]);
-
-  // Send MIDI command
-  const sendMIDICommand = useCallback(() => {
-    if (!isConnected || !midiCommand.trim()) return;
+  // Send MIDI command using global system
+  const sendMIDICommand = useCallback(async () => {
+    if (!globalIsConnected || !midiCommand.trim()) return;
 
     try {
-      const outputDevice = outputDevices.find(d => d.id === selectedOutputId);
-      if (!outputDevice?.port) {
-        throw new Error('Output device not available');
+      const success = await globalSendCommand(midiCommand.trim());
+      if (success) {
+        addMessage({
+          timestamp: Date.now(),
+          data: [],
+          formatted: midiCommand.trim(),
+          direction: 'out'
+        });
+
+        toast({
+          title: "MIDI Sent",
+          description: midiCommand.trim(),
+        });
+        
+        setMidiCommand('');
+      } else {
+        throw new Error('Send failed');
       }
-
-      const midiData = parseMIDICommand(midiCommand.trim());
-      if (!midiData) {
-        throw new Error('Invalid MIDI command format');
-      }
-
-      outputDevice.port.send(midiData);
-      
-      const formatted = formatMIDIMessage(midiData);
-      addMessage({
-        timestamp: Date.now(),
-        data: midiData,
-        formatted,
-        direction: 'out'
-      });
-
-      toast({
-        title: "MIDI Sent",
-        description: formatted,
-      });
-      
-      console.log('📤 Sent MIDI:', formatted);
-      setMidiCommand('');
     } catch (error) {
       console.error('Send failed:', error);
       toast({
@@ -244,7 +149,7 @@ export function USBMidiManager() {
         variant: "destructive",
       });
     }
-  }, [isConnected, midiCommand, outputDevices, selectedOutputId, toast]);
+  }, [globalIsConnected, midiCommand, globalSendCommand, toast]);
 
   // Add message to log
   const addMessage = useCallback((message: MIDIMessage) => {
@@ -310,10 +215,7 @@ export function USBMidiManager() {
     setMessages([]);
   }, []);
 
-  // Auto-initialize on component mount
-  useEffect(() => {
-    initializeMIDI();
-  }, [initializeMIDI]);
+  // Remove the old parseMIDICommand and formatMIDIMessage functions since global system handles parsing
 
   if (!isSupported) {
     return (
@@ -346,18 +248,18 @@ export function USBMidiManager() {
         {/* Connection Status */}
         <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
           <div className="flex items-center gap-3">
-            {isConnected ? (
+            {globalIsConnected ? (
               <CheckCircle2 className="w-5 h-5 text-green-500" />
             ) : (
               <AlertCircle className="w-5 h-5 text-yellow-500" />
             )}
             <div>
               <p className="font-medium">
-                {isConnected ? 'Connected' : 'Disconnected'}
+                {globalIsConnected ? 'Connected' : 'Disconnected'}
               </p>
               <p className="text-sm text-muted-foreground">
-                {isConnected 
-                  ? `${inputDevices.find(d => d.id === selectedInputId)?.name} → ${outputDevices.find(d => d.id === selectedOutputId)?.name}`
+                {globalIsConnected 
+                  ? globalDeviceName
                   : 'No active MIDI connection'
                 }
               </p>
@@ -367,109 +269,59 @@ export function USBMidiManager() {
             <Button
               variant="outline"
               size="sm"
-              onClick={initializeMIDI}
-              disabled={isInitializing}
+              onClick={loadDevices}
             >
-              <RefreshCw className={`w-4 h-4 mr-2 ${isInitializing ? 'animate-spin' : ''}`} />
+              <RefreshCw className="w-4 h-4 mr-2" />
               Refresh
             </Button>
-            {isConnected ? (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={disconnectFromDevices}
-              >
-                <PowerOff className="w-4 h-4 mr-2" />
-                Disconnect
-              </Button>
+            <Button
+              size="sm"
+              onClick={connectToSelectedDevice}
+              disabled={!selectedOutputId}
+            >
+              <Power className="w-4 h-4 mr-2" />
+              Connect
+            </Button>
+          </div>
+        </div>
+
+        {/* Output Device Selection */}
+        <div>
+          <h3 className="font-medium mb-3 flex items-center gap-2">
+            <Volume2 className="w-4 h-4" />
+            MIDI Output Devices
+          </h3>
+          <div className="space-y-2">
+            {outputDevices.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No output devices found</p>
             ) : (
-              <Button
-                size="sm"
-                onClick={connectToDevices}
-                disabled={!selectedInputId || !selectedOutputId}
-              >
-                <Power className="w-4 h-4 mr-2" />
-                Connect
-              </Button>
+              outputDevices.map((device) => (
+                <div
+                  key={device.id}
+                  className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                    selectedOutputId === device.id
+                      ? 'border-primary bg-primary/10'
+                      : 'border-border hover:border-primary/50'
+                  }`}
+                  onClick={() => setSelectedOutputId(device.id)}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium text-sm">{device.name}</p>
+                      <p className="text-xs text-muted-foreground">{device.manufacturer}</p>
+                    </div>
+                    <Badge variant={device.state === 'connected' ? 'default' : 'secondary'}>
+                      {device.state}
+                    </Badge>
+                  </div>
+                </div>
+              ))
             )}
           </div>
         </div>
 
-        {/* Device Selection */}
-        <div className="grid md:grid-cols-2 gap-4">
-          {/* Input Devices */}
-          <div>
-            <h3 className="font-medium mb-3 flex items-center gap-2">
-              <VolumeX className="w-4 h-4" />
-              MIDI Input Devices
-            </h3>
-            <div className="space-y-2">
-              {inputDevices.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No input devices found</p>
-              ) : (
-                inputDevices.map((device) => (
-                  <div
-                    key={device.id}
-                    className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                      selectedInputId === device.id
-                        ? 'border-primary bg-primary/10'
-                        : 'border-border hover:border-primary/50'
-                    }`}
-                    onClick={() => setSelectedInputId(device.id)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-sm">{device.name}</p>
-                        <p className="text-xs text-muted-foreground">{device.manufacturer}</p>
-                      </div>
-                      <Badge variant={device.state === 'connected' ? 'default' : 'secondary'}>
-                        {device.state}
-                      </Badge>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* Output Devices */}
-          <div>
-            <h3 className="font-medium mb-3 flex items-center gap-2">
-              <Volume2 className="w-4 h-4" />
-              MIDI Output Devices
-            </h3>
-            <div className="space-y-2">
-              {outputDevices.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No output devices found</p>
-              ) : (
-                outputDevices.map((device) => (
-                  <div
-                    key={device.id}
-                    className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                      selectedOutputId === device.id
-                        ? 'border-primary bg-primary/10'
-                        : 'border-border hover:border-primary/50'
-                    }`}
-                    onClick={() => setSelectedOutputId(device.id)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium text-sm">{device.name}</p>
-                        <p className="text-xs text-muted-foreground">{device.manufacturer}</p>
-                      </div>
-                      <Badge variant={device.state === 'connected' ? 'default' : 'secondary'}>
-                        {device.state}
-                      </Badge>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-
         {/* MIDI Commands */}
-        {isConnected && (
+        {globalIsConnected && (
           <>
             <Separator />
             <div>
@@ -510,18 +362,6 @@ export function USBMidiManager() {
                   MIDI Message Log
                 </h3>
                 <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsMonitoring(!isMonitoring)}
-                  >
-                    {isMonitoring ? (
-                      <PowerOff className="w-4 h-4 mr-2" />
-                    ) : (
-                      <Power className="w-4 h-4 mr-2" />
-                    )}
-                    {isMonitoring ? 'Stop' : 'Monitor'}
-                  </Button>
                   <Button
                     variant="outline"
                     size="sm"

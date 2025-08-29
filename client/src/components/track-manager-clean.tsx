@@ -521,8 +521,8 @@ export default function TrackManager({
                     
                     <div className="flex items-center gap-2">
                       <StereoVUMeter 
-                        leftLevel={level} 
-                        rightLevel={level}
+                        leftLevel={level * 4} 
+                        rightLevel={level * 4}
                         isPlaying={isPlaying}
                         className="flex-shrink-0"
                       />

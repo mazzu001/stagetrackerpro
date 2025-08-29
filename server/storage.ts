@@ -179,139 +179,79 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  // Song operations (use PostgreSQL database)
+  // Song operations (handled locally in browser - these are no-op on server)
   async getSong(id: string, userId?: string): Promise<Song | undefined> {
-    if (userId) {
-      const [song] = await db.select().from(songs)
-        .where(and(eq(songs.id, id), eq(songs.userId, userId)));
-      return song || undefined;
-    } else {
-      const [song] = await db.select().from(songs)
-        .where(eq(songs.id, id));
-      return song || undefined;
-    }
+    console.log('getSong: Music data handled locally in browser, not on server');
+    return undefined;
   }
 
   async getAllSongs(userId?: string): Promise<SongWithTracks[]> {
-    // Use a more efficient query by fetching everything in parallel, filtered by user
-    const [allSongs, allTracks] = await Promise.all([
-      userId ? db.select().from(songs).where(eq(songs.userId, userId)) : db.select().from(songs),
-      db.select().from(tracks)
-    ]);
-    
-    // Group tracks by song ID
-    const tracksBySong = new Map<string, typeof allTracks>();
-    
-    allTracks.forEach(track => {
-      if (!tracksBySong.has(track.songId)) {
-        tracksBySong.set(track.songId, []);
-      }
-      tracksBySong.get(track.songId)!.push(track);
-    });
-    
-    // Combine all data
-    const songsWithTracks: SongWithTracks[] = allSongs.map(song => ({
-      ...song,
-      tracks: tracksBySong.get(song.id) || [],
-    }));
-    
-    return songsWithTracks;
+    console.log('getAllSongs: Music data handled locally in browser, not on server');
+    return [];
   }
 
   async createSong(song: InsertSong): Promise<Song> {
-    const [newSong] = await db.insert(songs).values(song).returning();
-    console.log('Song created in database:', newSong.id, newSong.title);
-    return newSong;
-  }
-
-  async updateSong(id: string, song: Partial<InsertSong>, userId?: string): Promise<Song | undefined> {
-    let whereClause = eq(songs.id, id);
-    if (userId) {
-      whereClause = and(eq(songs.id, id), eq(songs.userId, userId)) as any;
-    }
-    
-    const [updatedSong] = await db
-      .update(songs)
-      .set(song)
-      .where(whereClause)
-      .returning();
-    
-    if (updatedSong) {
-      console.log('Song updated in database:', id, updatedSong.title);
-    }
-    return updatedSong || undefined;
-  }
-
-  async deleteSong(id: string, userId?: string): Promise<boolean> {
-    try {
-      // First check if the song exists and belongs to user
-      let whereClause = eq(songs.id, id);
-      if (userId) {
-        whereClause = and(eq(songs.id, id), eq(songs.userId, userId)) as any;
-      }
-      
-      const existingSong = await db.select().from(songs).where(whereClause);
-      if (existingSong.length === 0) {
-        console.log('Song not found for deletion:', id);
-        return false;
-      }
-
-      console.log('Deleting song from local database:', id, existingSong[0].title);
-
-      // Delete associated tracks (including audio data)
-      const tracksResult = await db.delete(tracks).where(eq(tracks.songId, id));
-      
-      console.log(`Deleted ${tracksResult.changes || 0} tracks for song: ${id}`);
-      
-      // Delete the song itself
-      const result = await db.delete(songs).where(whereClause);
-      const deleted = result.changes ? result.changes > 0 : false;
-      
-      if (deleted) {
-        console.log('Song and all associated data deleted from database:', id);
-      } else {
-        console.log('Failed to delete song from database:', id);
-      }
-      
-      return deleted;
-    } catch (error) {
-      console.error('Error during song deletion:', error);
-      return false;
-    }
-  }
-
-  async getSongWithTracks(id: string, userId?: string): Promise<SongWithTracks | undefined> {
-    const song = await this.getSong(id, userId);
-    if (!song) return undefined;
-
-    const songTracks = await db.select().from(tracks).where(eq(tracks.songId, id));
-
+    console.log('createSong: Music data handled locally in browser, not on server');
+    // Return a mock song structure for type compatibility
     return {
-      ...song,
-      tracks: songTracks,
+      id: 'local-song',
+      userId: song.userId,
+      title: song.title,
+      artist: song.artist,
+      duration: song.duration,
+      bpm: song.bpm || null,
+      key: song.key || null,
+      lyrics: song.lyrics || null,
+      waveformData: song.waveformData || null,
+      waveformGenerated: false,
+      createdAt: new Date().toISOString(),
     };
   }
 
-  // Track operations (use PostgreSQL database)
+  async updateSong(id: string, song: Partial<InsertSong>, userId?: string): Promise<Song | undefined> {
+    console.log('updateSong: Music data handled locally in browser, not on server');
+    return undefined;
+  }
+
+  async deleteSong(id: string, userId?: string): Promise<boolean> {
+    console.log('deleteSong: Music data handled locally in browser, not on server');
+    return false;
+  }
+
+  async getSongWithTracks(id: string, userId?: string): Promise<SongWithTracks | undefined> {
+    console.log('getSongWithTracks: Music data handled locally in browser, not on server');
+    return undefined;
+  }
+
+  // Track operations (handled locally in browser - these are no-op on server)
   async getTrack(id: string): Promise<Track | undefined> {
-    const [track] = await db.select().from(tracks).where(eq(tracks.id, id));
-    return track || undefined;
+    console.log('getTrack: Music data handled locally in browser, not on server');
+    return undefined;
   }
 
   async getTracksBySongId(songId: string): Promise<Track[]> {
-    const trackData = await db.select().from(tracks).where(eq(tracks.songId, songId));
-    
-    // Add hasAudioData field to indicate if track has blob data
-    return trackData.map(track => ({
-      ...track,
-      hasAudioData: !!track.audioData
-    }));
+    console.log('getTracksBySongId: Music data handled locally in browser, not on server');
+    return [];
   }
 
   async createTrack(track: InsertTrack): Promise<Track> {
-    const [newTrack] = await db.insert(tracks).values(track).returning();
-    console.log('Track created in database:', newTrack.id, newTrack.name);
-    return newTrack;
+    console.log('createTrack: Music data handled locally in browser, not on server');
+    // Return a mock track structure for type compatibility
+    return {
+      id: 'local-track',
+      songId: track.songId,
+      name: track.name,
+      trackNumber: track.trackNumber,
+      audioUrl: track.audioUrl,
+      localFileName: track.localFileName || null,
+      audioData: track.audioData || null,
+      mimeType: track.mimeType || 'audio/mpeg',
+      fileSize: track.fileSize || 0,
+      volume: track.volume || 100,
+      balance: track.balance || 0,
+      isMuted: track.isMuted || false,
+      isSolo: track.isSolo || false,
+    };
   }
 
   // Store audio file data directly in database as base64

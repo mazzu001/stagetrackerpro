@@ -293,6 +293,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Cancel subscription endpoint
+  app.post('/api/cancel-subscription', async (req, res) => {
+    try {
+      const { email, reasons, feedback } = req.body;
+      
+      if (!email) {
+        return res.status(400).json({ error: 'Email is required' });
+      }
+
+      const user = await storage.getUserByEmail(email);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Cancel Stripe subscription if it exists
+      if (user.stripeSubscriptionId) {
+        try {
+          await stripe.subscriptions.cancel(user.stripeSubscriptionId);
+          console.log(`✅ Cancelled Stripe subscription: ${user.stripeSubscriptionId}`);
+        } catch (stripeError) {
+          console.error('❌ Error cancelling Stripe subscription:', stripeError);
+          // Continue with database update even if Stripe fails
+        }
+      }
+
+      // Update user subscription status to free (1)
+      await storage.updateUserSubscription(user.id, {
+        subscriptionStatus: 1,
+        subscriptionEndDate: null
+      });
+
+      // Log cancellation feedback for improvement
+      console.log(`📝 Subscription cancelled for ${email}`);
+      console.log(`Reasons: ${reasons?.join(', ') || 'None provided'}`);
+      if (feedback) {
+        console.log(`Feedback: ${feedback}`);
+      }
+
+      res.json({
+        success: true,
+        message: 'Subscription cancelled successfully'
+      });
+    } catch (error: any) {
+      console.error('❌ Error cancelling subscription:', error);
+      res.status(500).json({ error: 'Failed to cancel subscription' });
+    }
+  });
+
   // Stripe webhook endpoint for subscription validation
   app.post('/api/stripe-webhook', express.raw({type: 'application/json'}), async (req, res) => {
     const sig = req.headers['stripe-signature'];

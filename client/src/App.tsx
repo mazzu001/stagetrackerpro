@@ -15,6 +15,7 @@ import SubscribeElementsTest from "@/pages/subscribe-elements-test";
 import SubscribeTest from "@/pages/subscribe-test";
 import Plans from "@/pages/plans";
 import Landing from "@/pages/landing";
+import Unsubscribe from "@/pages/unsubscribe";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
@@ -115,6 +116,7 @@ function AppContent() {
           <Route path="/subscribe-old" component={Subscribe} />
           <Route path="/subscribe-test" component={SubscribeTest} />
           <Route path="/plans" component={Plans} />
+          <Route path="/unsubscribe" component={Unsubscribe} />
         </Router>
       )}
       <Toaster />

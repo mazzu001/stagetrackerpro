@@ -697,6 +697,15 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                     </>
                   )}
                 </DropdownMenuItem>
+                {(userType === 'paid' || userType === 'professional') && (
+                  <>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => setLocation('/unsubscribe')} data-testid="menuitem-unsubscribe">
+                      <X className="h-4 w-4 mr-2" />
+                      Unsubscribe
+                    </DropdownMenuItem>
+                  </>
+                )}
                 <DropdownMenuItem onClick={() => { logout(); setLocation('/'); }} data-testid="menuitem-logout">
                   <LogOut className="h-4 w-4 mr-2" />
                   Logout

@@ -6,6 +6,45 @@ let globalSelectedOutput: MIDIOutput | null = null;
 let globalConnectionStatus = 'Disconnected';
 let globalDeviceName = '';
 
+// Store last connected device info in localStorage for auto-reconnect
+const MIDI_DEVICE_STORAGE_KEY = 'lastConnectedMidiDevice';
+
+interface StoredMidiDevice {
+  id: string;
+  name: string;
+  manufacturer: string;
+}
+
+// Save last connected device to localStorage
+const saveLastConnectedDevice = (deviceId: string, deviceName: string, manufacturer: string) => {
+  try {
+    const deviceInfo: StoredMidiDevice = {
+      id: deviceId,
+      name: deviceName,
+      manufacturer: manufacturer
+    };
+    localStorage.setItem(MIDI_DEVICE_STORAGE_KEY, JSON.stringify(deviceInfo));
+    console.log('💾 Saved last connected MIDI device:', deviceName);
+  } catch (error) {
+    console.error('❌ Failed to save last connected device:', error);
+  }
+};
+
+// Get last connected device from localStorage
+const getLastConnectedDevice = (): StoredMidiDevice | null => {
+  try {
+    const stored = localStorage.getItem(MIDI_DEVICE_STORAGE_KEY);
+    if (stored) {
+      const deviceInfo = JSON.parse(stored) as StoredMidiDevice;
+      console.log('📱 Found last connected MIDI device:', deviceInfo.name);
+      return deviceInfo;
+    }
+  } catch (error) {
+    console.error('❌ Failed to load last connected device:', error);
+  }
+  return null;
+};
+
 interface GlobalMIDIState {
   isConnected: boolean;
   deviceName: string;
@@ -67,6 +106,61 @@ const parseMIDICommand = (command: string): Uint8Array | null => {
   return null;
 };
 
+// Auto-reconnect to last known device
+const attemptAutoReconnect = async (): Promise<boolean> => {
+  const lastDevice = getLastConnectedDevice();
+  if (!lastDevice || !globalMidiAccess) {
+    return false;
+  }
+  
+  console.log('🔄 Attempting auto-reconnect to:', lastDevice.name);
+  
+  // Try to find the device by ID first
+  let output = globalMidiAccess.outputs.get(lastDevice.id);
+  
+  // If not found by ID, try to find by name (device ID might have changed)
+  if (!output) {
+    for (const [id, port] of globalMidiAccess.outputs) {
+      if (port.name === lastDevice.name && port.manufacturer === lastDevice.manufacturer) {
+        console.log('🔍 Found device by name/manufacturer match:', port.name);
+        output = port;
+        // Update stored ID for next time
+        saveLastConnectedDevice(id, port.name || 'Unknown', port.manufacturer || 'Unknown');
+        break;
+      }
+    }
+  }
+  
+  if (!output) {
+    console.log('⚠️ Last connected device not available:', lastDevice.name);
+    return false;
+  }
+  
+  try {
+    await output.open();
+    globalSelectedOutput = output;
+    globalConnectionStatus = 'Connected';
+    globalDeviceName = output.name || 'Unknown Device';
+    
+    console.log('✅ Auto-reconnected to MIDI device:', globalDeviceName);
+    
+    // Dispatch connection status change
+    window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
+      detail: {
+        connected: true,
+        deviceName: globalDeviceName,
+        deviceId: output.id
+      }
+    }));
+    
+    return true;
+    
+  } catch (error) {
+    console.error('❌ Auto-reconnect failed:', error);
+    return false;
+  }
+};
+
 // Initialize Web MIDI access once
 const initializeWebMIDI = async (): Promise<boolean> => {
   if (globalMidiAccess) return true;
@@ -105,6 +199,12 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     };
     
     console.log('✅ Global Web MIDI access initialized');
+    
+    // Attempt to auto-reconnect to the last connected device
+    setTimeout(() => {
+      attemptAutoReconnect();
+    }, 1000); // Wait a moment for devices to be detected
+    
     return true;
     
   } catch (error) {
@@ -150,6 +250,13 @@ const connectToDevice = async (deviceId: string): Promise<boolean> => {
     globalSelectedOutput = output;
     globalConnectionStatus = 'Connected';
     globalDeviceName = output.name || 'Unknown Device';
+    
+    // Save this device as the last connected device
+    saveLastConnectedDevice(
+      deviceId, 
+      output.name || 'Unknown Device', 
+      output.manufacturer || 'Unknown'
+    );
     
     console.log('✅ Connected to MIDI device:', globalDeviceName);
     

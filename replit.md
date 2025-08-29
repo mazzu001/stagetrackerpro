@@ -2,9 +2,9 @@
 This project is a professional, offline-capable live music performance application designed for stage use. It features real-time audio mixing, advanced Web MIDI device management, and synchronized lyrics display. The application prioritizes offline functionality, utilizing local storage for all performance data and blob URLs for audio files. It is production-ready with robust MIDI integration, including persistent connections, and comprehensive device management.
 
 ## Recent Changes
+- **Auto-Reconnect MIDI Implementation (Jan 29, 2025)**: Added automatic reconnection to the last known USB MIDI device when the app launches. System stores device info in localStorage and attempts reconnection using device ID or name/manufacturer matching. Provides seamless experience for live performers who use the same MIDI devices consistently.
+- **Persistent USB MIDI Connections (Jan 29, 2025)**: Integrated USB MIDI Manager with global Web MIDI system to ensure connections persist when dialogs are closed. Eliminated local MIDI state management in favor of global persistence, allowing MIDI commands from lyrics and other features to work seamlessly.
 - **Instant Playback Implementation (Jan 29, 2025)**: Successfully replaced slow `decodeAudioData` approach with instant HTMLAudioElement playback. Eliminated 8+ second audio decode delays by using MediaElementSource for immediate response while background decoding for advanced features. Audio now plays instantly when clicking play button.
-- **Emergency Streaming Disable (Jan 29, 2025)**: Temporarily disabled streaming audio engine due to application crashes. The dual audio engine approach was causing memory conflicts and complete app freezes. Reverted to stable preload-only mode while streaming implementation is redesigned.
-- **Mobile App Crash Fix (Jan 29, 2025)**: Fixed Android crash when adding tracks by simplifying error handling and removing excessive logging that was interfering with async file operations. Streamlined the track addition process in TrackManagerScreen and DatabaseProvider.
 - **Streaming Mode Removal (Jan 29, 2025)**: Completely removed streaming mode functionality since main audio engine now provides instant playback. Simplified codebase by eliminating dual audio engine architecture and mode switching complexity.
 
 # User Preferences
@@ -27,6 +27,7 @@ This project is a professional, offline-capable live music performance applicati
 ## MIDI System Architecture
 - **API**: Web MIDI API for system-level MIDI device integration.
 - **Persistence**: Global Web MIDI service (`useGlobalWebMIDI.ts`) ensures persistent MIDI connections even when UI components close.
+- **Auto-Reconnect**: Automatically reconnects to the last known USB MIDI device on app launch using localStorage device persistence and intelligent device matching (ID or name/manufacturer).
 - **Server-side MIDI**: Node.js with `easymidi` library (mock mode in development) for server-side MIDI processing and `ws` for WebSocket communication.
 - **Device Management**: Supports USB MIDI, Bluetooth MIDI (for legacy devices), and general MIDI device types. Features automatic scanning, connection management, and signal monitoring.
 - **Command Parsing**: Multi-format parser supports new bracket format (`[[PC:12:1]]`, `[[CC:7:64:1]]`, `[[NOTE:60:127:1]]`), as well as legacy hex and text formats.

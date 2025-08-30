@@ -342,8 +342,8 @@ export class StreamingAudioEngine {
     
     const rawAverage = sum / weightedCount / 255; // Normalize to 0-1
     
-    // Light amplification for responsive meters without going too hot
-    const average = rawAverage * 0.85; // Increased from 0.6 for more responsiveness
+    // Increased amplification so peaks can reach yellow zone
+    const average = rawAverage * 1.3; // Increased from 0.85 to allow peaks into yellow range
     
     // Return simulated stereo levels (would need separate analyzers for true stereo)
     return { left: average, right: average };

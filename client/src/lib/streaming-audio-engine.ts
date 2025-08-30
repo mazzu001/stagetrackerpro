@@ -413,6 +413,9 @@ export class StreamingAudioEngine {
     return { ...this.state };
   }
 
+  getAudioContext(): AudioContext {
+    return this.audioContext;
+  }
 
   get isLoading(): boolean {
     return false; // Streaming is always ready

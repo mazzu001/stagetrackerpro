@@ -47,9 +47,19 @@ export default function SpectrumAnalyzer({
 
     // Get analyzer from master mix if available
     let analyzer: AnalyserNode | null = null;
+    console.log('🔍 Spectrum analyzer debug:', {
+      hasAudioEngine: !!audioEngine,
+      hasState: !!audioEngine?.getState,
+      hasMasterGain: !!audioEngine?.getState()?.masterGainNode,
+      hasAudioContext: !!audioEngine?.getAudioContext,
+      isPlaying: isPlaying
+    });
+    
     try {
-      if (audioEngine?.state?.masterGainNode && audioEngine?.audioContext) {
-        analyzer = audioEngine.audioContext.createAnalyser();
+      const engineState = audioEngine?.getState();
+      const audioContext = audioEngine?.getAudioContext();
+      if (engineState?.masterGainNode && audioContext) {
+        analyzer = audioContext.createAnalyser();
         if (analyzer) {
           analyzer.fftSize = 1024; // Increased for better frequency resolution
           analyzer.smoothingTimeConstant = 0.8;
@@ -57,11 +67,16 @@ export default function SpectrumAnalyzer({
           analyzer.maxDecibels = -10;
           
           // Connect to master output for full spectrum
-          audioEngine.state.masterGainNode.connect(analyzer);
+          engineState.masterGainNode.connect(analyzer);
           console.log('🎛️ Spectrum analyzer connected to master output');
         }
       } else {
         console.warn('❌ Audio engine or master gain node not available for spectrum analyzer');
+        console.log('🔍 Missing components:', {
+          engineState: !!engineState,
+          masterGainNode: !!engineState?.masterGainNode,
+          audioContext: !!audioContext
+        });
       }
     } catch (error) {
       console.error('❌ Could not create spectrum analyzer:', error);
@@ -121,8 +136,8 @@ export default function SpectrumAnalyzer({
       }
       // Disconnect analyzer to prevent memory leaks
       try {
-        if (analyzer && audioEngine?.state?.masterGainNode) {
-          audioEngine.state.masterGainNode.disconnect(analyzer);
+        if (analyzer && audioEngine?.getState()?.masterGainNode) {
+          audioEngine.getState().masterGainNode.disconnect(analyzer);
         }
       } catch (error) {
         // Ignore cleanup errors

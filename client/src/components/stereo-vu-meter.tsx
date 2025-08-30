@@ -119,15 +119,15 @@ export default function StereoVUMeter({
     };
 
     return (
-      <div className="flex items-center space-x-1">
-        <div className="text-xs text-gray-400 font-mono w-2 text-center leading-none">
+      <div className="flex flex-col items-center space-y-1">
+        <div className="text-xs text-gray-400 font-mono text-center leading-none">
           {channelName}
         </div>
-        <div className="flex space-x-0.5">
+        <div className="flex flex-col-reverse space-y-reverse space-y-0.5">
           {Array.from({ length: segments }, (_, index) => (
             <div
               key={index}
-              className={`w-1 h-1.5 rounded-sm ${getSegmentColor(index)} shadow-sm`}
+              className={`w-3 h-1 rounded-sm ${getSegmentColor(index)} shadow-sm`}
               style={{
                 opacity: index < activeSegments || index === peakSegment - 1 ? 1 : 0.3,
                 boxShadow: (index < activeSegments || index === peakSegment - 1) ? 
@@ -141,7 +141,7 @@ export default function StereoVUMeter({
   };
 
   return (
-    <div className={`flex flex-col space-y-0.5 ${className}`}>
+    <div className={`flex space-x-2 ${className}`}>
       {createChannelMeter(animatedLeftLevel, leftPeak, 'L')}
       {createChannelMeter(animatedRightLevel, rightPeak, 'R')}
     </div>

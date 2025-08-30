@@ -328,7 +328,10 @@ export class StreamingAudioEngine {
     
     // Calculate average level
     const sum = dataArray.reduce((a, b) => a + b, 0);
-    const average = sum / bufferLength / 255; // Normalize to 0-1
+    const rawAverage = sum / bufferLength / 255; // Normalize to 0-1
+    
+    // Reduce amplification to prevent VU meters from running too hot
+    const average = rawAverage * 0.6; // Reduce to 60% of original level
     
     // Return simulated stereo levels (would need separate analyzers for true stereo)
     return { left: average, right: average };

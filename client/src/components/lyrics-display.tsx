@@ -191,7 +191,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         setProcessedTimestamps(prev => new Set(Array.from(prev).concat(timestamp)));
       }
     }
-  }, [currentTime, song?.lyrics, onMidiCommand, processedTimestamps]);
+  }, [currentTime, song?.lyrics, processedTimestamps]);
   
   // Execute non-timestamped MIDI commands on song load
   useEffect(() => {
@@ -241,7 +241,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
     
     // Mark this song as having its non-timestamped commands executed
     nonTimestampedExecutedRef.current = song.id;
-  }, [song?.id, song?.lyrics, onMidiCommand]);
+  }, [song?.id, song?.lyrics]);
 
   // Reset MIDI tracking when song changes
   useEffect(() => {

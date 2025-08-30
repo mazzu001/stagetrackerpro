@@ -47,36 +47,26 @@ export default function SpectrumAnalyzer({
 
     // Get analyzer from master mix if available
     let analyzer: AnalyserNode | null = null;
-    console.log('🔍 Spectrum analyzer debug:', {
-      hasAudioEngine: !!audioEngine,
-      hasState: !!audioEngine?.getState,
-      hasMasterGain: !!audioEngine?.getState()?.masterGainNode,
-      hasAudioContext: !!audioEngine?.getAudioContext,
-      isPlaying: isPlaying
-    });
     
     try {
-      const engineState = audioEngine?.getState();
-      const audioContext = audioEngine?.getAudioContext();
-      if (engineState?.masterGainNode && audioContext) {
-        analyzer = audioContext.createAnalyser();
-        if (analyzer) {
-          analyzer.fftSize = 1024; // Increased for better frequency resolution
-          analyzer.smoothingTimeConstant = 0.8;
-          analyzer.minDecibels = -90;
-          analyzer.maxDecibels = -10;
-          
-          // Connect to master output for full spectrum
-          engineState.masterGainNode.connect(analyzer);
-          console.log('🎛️ Spectrum analyzer connected to master output');
+      // Check if audioEngine has the required methods
+      if (audioEngine && typeof audioEngine.getState === 'function' && typeof audioEngine.getAudioContext === 'function') {
+        const engineState = audioEngine.getState();
+        const audioContext = audioEngine.getAudioContext();
+        
+        if (engineState?.masterGainNode && audioContext) {
+          analyzer = audioContext.createAnalyser();
+          if (analyzer) {
+            analyzer.fftSize = 1024; // Increased for better frequency resolution
+            analyzer.smoothingTimeConstant = 0.8;
+            analyzer.minDecibels = -90;
+            analyzer.maxDecibels = -10;
+            
+            // Connect to master output for full spectrum
+            engineState.masterGainNode.connect(analyzer);
+            console.log('🎛️ Spectrum analyzer connected to master output');
+          }
         }
-      } else {
-        console.warn('❌ Audio engine or master gain node not available for spectrum analyzer');
-        console.log('🔍 Missing components:', {
-          engineState: !!engineState,
-          masterGainNode: !!engineState?.masterGainNode,
-          audioContext: !!audioContext
-        });
       }
     } catch (error) {
       console.error('❌ Could not create spectrum analyzer:', error);
@@ -136,8 +126,11 @@ export default function SpectrumAnalyzer({
       }
       // Disconnect analyzer to prevent memory leaks
       try {
-        if (analyzer && audioEngine?.getState()?.masterGainNode) {
-          audioEngine.getState().masterGainNode.disconnect(analyzer);
+        if (analyzer && audioEngine && typeof audioEngine.getState === 'function') {
+          const engineState = audioEngine.getState();
+          if (engineState?.masterGainNode) {
+            engineState.masterGainNode.disconnect(analyzer);
+          }
         }
       } catch (error) {
         // Ignore cleanup errors

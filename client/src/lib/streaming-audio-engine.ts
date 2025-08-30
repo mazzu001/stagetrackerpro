@@ -327,15 +327,20 @@ export class StreamingAudioEngine {
     const dataArray = new Uint8Array(bufferLength);
     track.analyzerNode.getByteFrequencyData(dataArray);
     
-    // Focus on mid and high frequencies for more responsive VU meters (skip very low frequencies)
-    const startBin = Math.floor(bufferLength * 0.1); // Skip lowest 10% of frequencies
-    const endBin = Math.floor(bufferLength * 0.9);   // Use up to 90% of frequency range
+    // Include full frequency spectrum for bass-heavy tracks
+    const startBin = Math.floor(bufferLength * 0.02); // Skip only sub-bass (below ~20Hz)
+    const endBin = Math.floor(bufferLength * 0.95);   // Use almost full frequency range
     
-    // Calculate weighted average focusing on music frequencies
+    // Calculate weighted average including bass frequencies
     let sum = 0;
     let weightedCount = 0;
     for (let i = startBin; i < endBin; i++) {
-      const weight = i < bufferLength * 0.3 ? 1.5 : 1.0; // Boost mid frequencies
+      // Weight frequencies for musical content
+      let weight = 1.0;
+      if (i < bufferLength * 0.15) weight = 1.2; // Boost bass (20-250 Hz)
+      else if (i < bufferLength * 0.4) weight = 1.4; // Boost mids (250-2kHz)
+      else weight = 1.1; // Slight boost for highs
+      
       sum += dataArray[i] * weight;
       weightedCount += weight;
     }

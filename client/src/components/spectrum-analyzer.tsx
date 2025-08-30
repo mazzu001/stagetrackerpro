@@ -19,6 +19,14 @@ export default function SpectrumAnalyzer({
 
   useEffect(() => {
     const canvas = canvasRef.current;
+    console.log('🔍 Spectrum analyzer received:', {
+      hasCanvas: !!canvas,
+      audioEngine: audioEngine,
+      audioEngineType: typeof audioEngine,
+      audioEngineMethods: audioEngine ? Object.getOwnPropertyNames(audioEngine) : [],
+      isPlaying: isPlaying
+    });
+    
     if (!canvas || !audioEngine || !isPlaying) {
       setIsActive(false);
       if (animationRef.current) {

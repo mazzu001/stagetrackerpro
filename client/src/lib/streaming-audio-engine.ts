@@ -289,7 +289,8 @@ export class StreamingAudioEngine {
       track.balance = balance;
       this.ensureTrackAudioNodes(track);
       if (track.panNode) {
-        track.panNode.pan.value = balance;
+        // Convert -100 to +100 balance to -1 to +1 pan range
+        track.panNode.pan.value = balance / 100;
       }
     }
   }

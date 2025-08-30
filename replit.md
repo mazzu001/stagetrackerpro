@@ -55,3 +55,17 @@ This project is a professional, offline-capable live music performance applicati
 - **MIDI/Audio**: `easymidi`, `ws` (WebSocket server)
 - **Authentication**: `express-session`, `connect-pg-simple`, `passport`, `openid-client`
 - **Payments**: `stripe`, `@stripe/stripe-js`, `@stripe/react-stripe-js`
+
+# Future Feature Ideas
+
+## Professional Backup System (Export/Import)
+**Feature**: Complete song library backup and restore functionality for professional users
+**Use Case**: Touring musicians need to backup entire setlists and transfer between devices
+**Technical Approach**:
+- Export songs, lyrics with timestamps, MIDI commands, and audio files into single zip file
+- Include manifest.json for metadata, audio/ folder for track files, settings.json for configurations
+- Use JSZip library for packaging, streaming approach for large backups
+- Import with conflict resolution (merge vs replace options, duplicate detection)
+- Selective export options (individual songs, date ranges, setlist-specific backups)
+**Benefits**: Seamless device migration while maintaining offline-first philosophy
+**Implementation Readiness**: High - current SQLite/IndexedDB architecture supports this well

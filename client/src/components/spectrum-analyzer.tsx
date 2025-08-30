@@ -48,20 +48,23 @@ export default function SpectrumAnalyzer({
     // Get analyzer from master mix if available
     let analyzer: AnalyserNode | null = null;
     try {
-      if (audioEngine.state?.masterGainNode) {
+      if (audioEngine?.state?.masterGainNode && audioEngine?.audioContext) {
         analyzer = audioEngine.audioContext.createAnalyser();
         if (analyzer) {
-          analyzer.fftSize = 512; // Match the VU meter settings
+          analyzer.fftSize = 1024; // Increased for better frequency resolution
           analyzer.smoothingTimeConstant = 0.8;
           analyzer.minDecibels = -90;
           analyzer.maxDecibels = -10;
           
           // Connect to master output for full spectrum
           audioEngine.state.masterGainNode.connect(analyzer);
+          console.log('🎛️ Spectrum analyzer connected to master output');
         }
+      } else {
+        console.warn('❌ Audio engine or master gain node not available for spectrum analyzer');
       }
     } catch (error) {
-      console.warn('Could not create spectrum analyzer:', error);
+      console.error('❌ Could not create spectrum analyzer:', error);
       return;
     }
 

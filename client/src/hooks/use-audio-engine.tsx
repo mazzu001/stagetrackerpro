@@ -151,10 +151,10 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         setAudioLevels(levels);
         
         const masterLevels = audioEngineRef.current.getMasterLevels();
-        // Scale master levels with reduced amplification to prevent hot meters
+        // Scale master levels with balanced amplification for song list stereo VU meters
         const scaledLevels = {
-          left: masterLevels.left * 60, // Reduced from 100 to 60 to match track level scaling
-          right: masterLevels.right * 60
+          left: masterLevels.left * 75, // Increased from 60 to 75 for better visibility
+          right: masterLevels.right * 75
         };
         setMasterStereoLevels(scaledLevels);
         

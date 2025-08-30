@@ -335,10 +335,10 @@ export class StreamingAudioEngine {
     let sum = 0;
     let weightedCount = 0;
     for (let i = startBin; i < endBin; i++) {
-      // Balanced frequency weighting for bass-responsive VU meters
+      // Enhanced bass frequency weighting for VU meters
       let weight = 1.0;
-      if (i < bufferLength * 0.08) weight = 4.5; // Much stronger boost for kick/sub-bass (20-80 Hz)
-      else if (i < bufferLength * 0.2) weight = 3.8; // Much stronger boost for bass (80-400 Hz)
+      if (i < bufferLength * 0.08) weight = 6.0; // Maximum boost for kick/sub-bass (20-80 Hz)
+      else if (i < bufferLength * 0.2) weight = 5.2; // Maximum boost for bass (80-400 Hz)
       else if (i < bufferLength * 0.4) weight = 1.26; // Reduced mids by 10% (was 1.4)
       else weight = 0.99; // Reduced highs by 10% (was 1.1)
       

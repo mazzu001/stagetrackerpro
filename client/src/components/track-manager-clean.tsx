@@ -11,6 +11,7 @@ import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import StereoVUMeter from "@/components/stereo-vu-meter";
+import SpectrumAnalyzer from "@/components/spectrum-analyzer";
 
 
 import type { Track, SongWithTracks } from "@shared/schema";
@@ -27,6 +28,7 @@ interface TrackManagerProps {
   isLoadingTracks?: boolean;
   onPlay?: () => void;
   onPause?: () => void;
+  audioEngine?: any;
 }
 
 export default function TrackManager({ 
@@ -40,7 +42,8 @@ export default function TrackManager({
   isPlaying = false,
   isLoadingTracks = false,
   onPlay,
-  onPause
+  onPause,
+  audioEngine
 }: TrackManagerProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
@@ -583,210 +586,218 @@ export default function TrackManager({
   }, []);
 
   return (
-    <div className="w-full space-y-4 max-h-[70vh] overflow-y-auto pr-2">
-      {/* Header with controls */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <h3 className="text-lg font-semibold">Track Manager</h3>
+    <div className="w-full h-full bg-gradient-to-b from-gray-900 to-black text-white overflow-hidden">
+      {/* Professional Mixing Console Header */}
+      <div className="bg-gray-800 border-b-2 border-gray-600 p-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <h3 className="text-lg font-bold text-green-400">MIXING CONSOLE</h3>
             {tracks.length > 0 && (
-              <span className="text-sm text-gray-500">({tracks.length} track{tracks.length !== 1 ? 's' : ''})</span>
+              <span className="text-xs text-gray-400 bg-gray-700 px-2 py-1 rounded">
+                {tracks.length}/6 TRACKS
+              </span>
             )}
           </div>
           
-        </div>
-        
-        <div className="flex items-center gap-2">
-          {/* Play/Pause button - only show if callbacks provided */}
-          {(onPlay || onPause) && (
+          <div className="flex items-center gap-2">
+            {/* Transport Controls */}
+            {(onPlay || onPause) && (
+              <Button
+                onClick={isPlaying ? onPause : onPlay}
+                variant={isPlaying ? "destructive" : "default"}
+                size="sm"
+                className="bg-green-600 hover:bg-green-700"
+                data-testid="button-play-pause"
+              >
+                {isPlaying ? <Pause className="h-4 w-4 mr-1" /> : <Play className="h-4 w-4 mr-1" />}
+                {isPlaying ? 'STOP' : 'PLAY'}
+              </Button>
+            )}
+            
             <Button
-              onClick={isPlaying ? onPause : onPlay}
-              variant={isPlaying ? "destructive" : "default"}
+              onClick={handleFileSelect}
+              disabled={tracks.length >= 6 || isImporting}
               size="sm"
-              data-testid="button-play-pause"
+              className="bg-blue-600 hover:bg-blue-700"
+              data-testid="button-add-tracks"
             >
-              {isPlaying ? <Pause className="h-4 w-4 mr-2" /> : <Play className="h-4 w-4 mr-2" />}
-              {isPlaying ? 'Pause' : 'Play'}
+              <Plus className="h-4 w-4 mr-1" />
+              {isImporting ? 'LOADING...' : 'ADD'}
             </Button>
-          )}
-          
-          {/* Recording features removed */}
-
-          <Button
-            onClick={handleFileSelect}
-            disabled={tracks.length >= 6 || isImporting}
-            size="sm"
-            className="hidden md:flex"
-            data-testid="button-add-tracks-desktop"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            {isImporting ? 'Adding...' : 'Add Tracks'}
-          </Button>
-          
-          {tracks.length > 0 && (
-            <Button
-              onClick={handleClearBrokenTracks}
-              variant="outline"
-              size="sm"
-              className="hidden md:flex"
-              data-testid="button-clear-tracks-desktop"
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Clear All
-            </Button>
-          )}
-
-          {/* Recording features removed */}
-
-          <Button
-            onClick={handleFileSelect}
-            disabled={tracks.length >= 6 || isImporting}
-            size="sm"
-            className="flex md:hidden"
-            data-testid="button-add-tracks-mobile"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            {isImporting ? 'Adding...' : 'Add'}
-          </Button>
-          
-          {tracks.length > 0 && (
-            <Button
-              onClick={handleClearBrokenTracks}
-              variant="outline"
-              size="sm"
-              className="flex md:hidden h-8 w-8 p-0"
-              title="Clear All Tracks"
-              data-testid="button-clear-tracks-mobile"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          )}
+            
+            {tracks.length > 0 && (
+              <Button
+                onClick={handleClearBrokenTracks}
+                variant="outline"
+                size="sm"
+                className="border-red-600 text-red-400 hover:bg-red-900"
+                data-testid="button-clear-tracks"
+              >
+                <Trash2 className="h-4 w-4 mr-1" />
+                CLEAR
+              </Button>
+            )}
+          </div>
         </div>
       </div>
 
+      {/* Master Spectrum Analyzer */}
+      <div className="p-4 border-b-2 border-gray-600">
+        <SpectrumAnalyzer 
+          audioEngine={audioEngine}
+          isPlaying={isPlaying}
+          height={100}
+          className="w-full"
+        />
+      </div>
+
       {tracks.length === 0 ? (
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-center text-gray-500">
-              <Music className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p className="mb-2">No tracks added yet</p>
-              <p className="text-sm">Add audio files to start building your performance</p>
-            </div>
-          </CardContent>
-        </Card>
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center text-gray-500">
+            <Music className="h-16 w-16 mx-auto mb-4 opacity-30" />
+            <p className="text-xl mb-2">NO TRACKS LOADED</p>
+            <p className="text-sm opacity-70">Add audio files to start mixing</p>
+          </div>
+        </div>
       ) : (
-        <div className="space-y-3">
-          {tracks.map((track, index) => {
-            const localValues = localTrackValues[track.id] || { volume: track.volume, balance: track.balance };
-            const level = audioLevels[track.id] || 0;
-            
-            return (
-              <Card key={track.id} className="transition-all hover:shadow-md">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-sm font-medium">
+        <div className="flex-1 overflow-x-auto p-4">
+          {/* Professional Mixing Console Layout */}
+          <div className="flex gap-4 min-w-max">
+            {tracks.map((track, index) => {
+              const localValues = localTrackValues[track.id] || { volume: track.volume, balance: track.balance };
+              const level = audioLevels[track.id] || 0;
+              
+              return (
+                <div key={track.id} className="flex flex-col bg-gray-800 rounded-lg border-2 border-gray-600 w-24 h-96 overflow-hidden">
+                  {/* Channel Header */}
+                  <div className="bg-gray-700 p-2 border-b border-gray-600">
+                    <div className="text-center">
+                      <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold mx-auto mb-1">
                         {index + 1}
                       </div>
-                      <div className="min-w-0 flex-1">
-                        <h4 className="font-medium truncate" title={track.name}>{track.name}</h4>
-                        <p className="text-xs text-gray-500">
-                          {track.localFileName} • {((track.fileSize || 0) / 1024 / 1024).toFixed(1)}MB
-                        </p>
+                      <div className="text-xs font-medium truncate" title={track.name}>
+                        {track.name.substring(0, 8)}
                       </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-2">
-                      <StereoVUMeter 
-                        leftLevel={level * 8} 
-                        rightLevel={level * 8}
-                        isPlaying={isPlaying}
-                        className="flex-shrink-0"
-                      />
-                      <Button
-                        onClick={() => deleteTrack(track.id)}
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
-                        title="Delete track"
-                        data-testid={`button-delete-track-${index}`}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
                     </div>
                   </div>
                   
-                  {/* Volume and Balance Controls */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Volume Control */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <Label className="text-xs font-medium">Volume</Label>
-                        <span className="text-xs text-gray-500">{localValues.volume}%</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          onClick={() => handleMuteToggle(track.id)}
-                          variant="ghost"
-                          size="sm"
-                          className={`h-8 w-8 p-0 ${track.isMuted ? 'text-red-500 bg-red-50' : 'text-gray-500'}`}
-                          title={track.isMuted ? "Unmute" : "Mute"}
-                          data-testid={`button-mute-track-${index}`}
-                        >
-                          {track.isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-                        </Button>
-                        <Slider
-                          value={[localValues.volume]}
-                          onValueChange={(value) => handleVolumeChange(track.id, value[0])}
-                          max={100}
-                          step={1}
-                          className="flex-1"
-                          data-testid={`slider-volume-track-${index}`}
-                        />
-                      </div>
-                    </div>
-                    
-                    {/* Balance Control */}
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <Label className="text-xs font-medium">Balance</Label>
-                        <span className="text-xs text-gray-500">
-                          {localValues.balance === 0 ? 'Center' : 
-                           localValues.balance < 0 ? `L${Math.abs(localValues.balance)}` : 
-                           `R${localValues.balance}`}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          onClick={() => handleSoloToggle(track.id)}
-                          variant="ghost"
-                          size="sm"
-                          className={`h-8 w-8 p-0 ${track.isSolo ? 'text-yellow-500 bg-yellow-50' : 'text-gray-500'}`}
-                          title={track.isSolo ? "Unsolo" : "Solo"}
-                          data-testid={`button-solo-track-${index}`}
-                        >
-                          <Headphones className="h-4 w-4" />
-                        </Button>
+                  {/* VU Meter */}
+                  <div className="p-2 flex justify-center">
+                    <StereoVUMeter 
+                      leftLevel={level * 8} 
+                      rightLevel={level * 8}
+                      isPlaying={isPlaying}
+                      className="scale-75"
+                    />
+                  </div>
+                  
+                  {/* Balance Control (Pan) */}
+                  <div className="px-2 py-1">
+                    <div className="text-center text-xs text-gray-400 mb-1">PAN</div>
+                    <div className="flex justify-center">
+                      <div className="w-16 relative">
                         <Slider
                           value={[localValues.balance]}
                           onValueChange={(value) => handleBalanceChange(track.id, value[0])}
                           min={-100}
                           max={100}
                           step={1}
-                          className="flex-1"
+                          className="w-full"
                           data-testid={`slider-balance-track-${index}`}
                         />
+                        <div className="text-xs text-center text-gray-500 mt-1">
+                          {localValues.balance === 0 ? 'C' : 
+                           localValues.balance < 0 ? `L${Math.abs(localValues.balance)}` : 
+                           `R${localValues.balance}`}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                  
+                  {/* Vertical Volume Fader */}
+                  <div className="flex-1 px-2 py-2 flex flex-col items-center">
+                    <div className="text-center text-xs text-gray-400 mb-2">LEVEL</div>
+                    <div className="flex-1 flex items-center justify-center">
+                      <div className="h-32 relative flex items-center">
+                        <Slider
+                          value={[localValues.volume]}
+                          onValueChange={(value) => handleVolumeChange(track.id, value[0])}
+                          max={100}
+                          step={1}
+                          orientation="vertical"
+                          className="h-full"
+                          data-testid={`slider-volume-track-${index}`}
+                        />
+                      </div>
+                    </div>
+                    <div className="text-xs text-center text-gray-400 mt-1">
+                      {localValues.volume}%
+                    </div>
+                  </div>
+                  
+                  {/* Control Buttons */}
+                  <div className="p-2 space-y-1 border-t border-gray-600">
+                    <Button
+                      onClick={() => handleMuteToggle(track.id)}
+                      variant="ghost"
+                      size="sm"
+                      className={`w-full h-8 text-xs ${
+                        track.isMuted 
+                          ? 'bg-red-600 text-white hover:bg-red-700' 
+                          : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      }`}
+                      data-testid={`button-mute-track-${index}`}
+                    >
+                      {track.isMuted ? 'MUTE' : 'MUTE'}
+                    </Button>
+                    
+                    <Button
+                      onClick={() => handleSoloToggle(track.id)}
+                      variant="ghost"
+                      size="sm"
+                      className={`w-full h-8 text-xs ${
+                        track.isSolo 
+                          ? 'bg-yellow-600 text-white hover:bg-yellow-700' 
+                          : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      }`}
+                      data-testid={`button-solo-track-${index}`}
+                    >
+                      {track.isSolo ? 'SOLO' : 'SOLO'}
+                    </Button>
+                    
+                    <Button
+                      onClick={() => deleteTrack(track.id)}
+                      variant="ghost"
+                      size="sm"
+                      className="w-full h-8 text-xs text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                      title="Delete track"
+                      data-testid={`button-delete-track-${index}`}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+            
+            {/* Add Track Channel - Empty Slot */}
+            {tracks.length < 6 && (
+              <div className="flex flex-col bg-gray-900 rounded-lg border-2 border-dashed border-gray-600 w-24 h-96 items-center justify-center opacity-60 hover:opacity-80 transition-opacity">
+                <Button
+                  onClick={handleFileSelect}
+                  disabled={isImporting}
+                  variant="ghost"
+                  className="h-full w-full flex flex-col items-center justify-center text-gray-400 hover:text-white"
+                  data-testid="button-add-track-slot"
+                >
+                  <Plus className="h-8 w-8 mb-2" />
+                  <span className="text-xs">ADD<br/>TRACK</span>
+                </Button>
+              </div>
+            )}
+          </div>
         </div>
       )}
-
-
     </div>
   );
 }

@@ -1183,6 +1183,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               isPlaying={isPlaying}
               isLoadingTracks={isLoadingTracks}
               audioLevels={audioLevels}
+              audioEngine={audioEngine}
               data-testid="track-manager"
             />
           )}

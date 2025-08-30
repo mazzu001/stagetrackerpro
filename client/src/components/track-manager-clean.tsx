@@ -669,14 +669,14 @@ export default function TrackManager({
               const level = audioLevels[track.id] || 0;
               
               return (
-                <div key={track.id} className="flex flex-col bg-gray-800 rounded-lg border-2 border-gray-600 w-24 h-96 overflow-hidden">
+                <div key={track.id} className="flex flex-col bg-gray-800 rounded-lg border-2 border-gray-600 w-32 h-80 overflow-hidden">
                   {/* Channel Header */}
                   <div className="bg-gray-700 p-2 border-b border-gray-600">
                     <div className="text-center">
                       <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold mx-auto mb-1">
                         {index + 1}
                       </div>
-                      <div className="w-16 h-4">
+                      <div className="w-24 h-4">
                         <ScrollingText 
                           text={track.name}
                           className="text-xs font-medium text-center"
@@ -686,21 +686,11 @@ export default function TrackManager({
                     </div>
                   </div>
                   
-                  {/* VU Meter */}
-                  <div className="p-2 flex justify-center">
-                    <StereoVUMeter 
-                      leftLevel={level * 8} 
-                      rightLevel={level * 8}
-                      isPlaying={isPlaying}
-                      className="scale-75"
-                    />
-                  </div>
-                  
                   {/* Balance Control (Pan) */}
                   <div className="px-2 py-1">
                     <div className="text-center text-xs text-gray-400 mb-1">PAN</div>
                     <div className="flex justify-center">
-                      <div className="w-16 relative">
+                      <div className="w-20 relative">
                         <Slider
                           value={[localValues.balance]}
                           onValueChange={(value) => handleBalanceChange(track.id, value[0])}
@@ -719,10 +709,11 @@ export default function TrackManager({
                     </div>
                   </div>
                   
-                  {/* Vertical Volume Fader */}
+                  {/* Volume Fader and VU Meter Side by Side */}
                   <div className="flex-1 px-2 py-2 flex flex-col items-center">
                     <div className="text-center text-xs text-gray-400 mb-2">LEVEL</div>
-                    <div className="flex-1 flex items-center justify-center">
+                    <div className="flex-1 flex items-center justify-center gap-2">
+                      {/* Vertical Volume Fader */}
                       <div className="h-32 relative flex items-center">
                         <Slider
                           value={[localValues.volume]}
@@ -734,6 +725,14 @@ export default function TrackManager({
                           data-testid={`slider-volume-track-${index}`}
                         />
                       </div>
+                      
+                      {/* VU Meter beside fader */}
+                      <StereoVUMeter 
+                        leftLevel={level * 8} 
+                        rightLevel={level * 8}
+                        isPlaying={isPlaying}
+                        className="scale-75"
+                      />
                     </div>
                     <div className="text-xs text-center text-gray-400 mt-1">
                       {localValues.volume}%
@@ -746,35 +745,35 @@ export default function TrackManager({
                       onClick={() => handleMuteToggle(track.id)}
                       variant="ghost"
                       size="sm"
-                      className={`w-full h-8 text-xs ${
+                      className={`w-full h-8 text-xs font-bold ${
                         track.isMuted 
                           ? 'bg-red-600 text-white hover:bg-red-700' 
                           : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                       }`}
                       data-testid={`button-mute-track-${index}`}
                     >
-                      {track.isMuted ? 'MUTE' : 'MUTE'}
+                      MUTE
                     </Button>
                     
                     <Button
                       onClick={() => handleSoloToggle(track.id)}
                       variant="ghost"
                       size="sm"
-                      className={`w-full h-8 text-xs ${
+                      className={`w-full h-8 text-xs font-bold ${
                         track.isSolo 
-                          ? 'bg-yellow-600 text-white hover:bg-yellow-700' 
+                          ? 'bg-yellow-600 text-black hover:bg-yellow-500' 
                           : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                       }`}
                       data-testid={`button-solo-track-${index}`}
                     >
-                      {track.isSolo ? 'SOLO' : 'SOLO'}
+                      SOLO
                     </Button>
                     
                     <Button
                       onClick={() => deleteTrack(track.id)}
                       variant="ghost"
                       size="sm"
-                      className="w-full h-8 text-xs text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                      className="w-full h-6 text-xs text-red-400 hover:text-red-300 hover:bg-red-900/20"
                       title="Delete track"
                       data-testid={`button-delete-track-${index}`}
                     >
@@ -787,7 +786,7 @@ export default function TrackManager({
             
             {/* Add Track Channel - Empty Slot */}
             {tracks.length < 6 && (
-              <div className="flex flex-col bg-gray-900 rounded-lg border-2 border-dashed border-gray-600 w-24 h-96 items-center justify-center opacity-60 hover:opacity-80 transition-opacity">
+              <div className="flex flex-col bg-gray-900 rounded-lg border-2 border-dashed border-gray-600 w-32 h-80 items-center justify-center opacity-60 hover:opacity-80 transition-opacity">
                 <Button
                   onClick={handleFileSelect}
                   disabled={isImporting}

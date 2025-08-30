@@ -12,6 +12,7 @@ import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Pl
 import { Slider } from "@/components/ui/slider";
 import StereoVUMeter from "@/components/stereo-vu-meter";
 import SpectrumAnalyzer from "@/components/spectrum-analyzer";
+import ScrollingText from "@/components/scrolling-text";
 
 
 import type { Track, SongWithTracks } from "@shared/schema";
@@ -675,8 +676,12 @@ export default function TrackManager({
                       <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold mx-auto mb-1">
                         {index + 1}
                       </div>
-                      <div className="text-xs font-medium truncate" title={track.name}>
-                        {track.name.substring(0, 8)}
+                      <div className="w-16 h-4">
+                        <ScrollingText 
+                          text={track.name}
+                          className="text-xs font-medium text-center"
+                          speed={3}
+                        />
                       </div>
                     </div>
                   </div>

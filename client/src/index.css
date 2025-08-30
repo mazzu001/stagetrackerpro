@@ -299,6 +299,16 @@
   .animate-pulse {
     animation: pulse 2s infinite;
   }
+
+  /* Scrolling text animation for mixing console */
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .animate-marquee {
+    animation: marquee linear infinite;
+  }
   
   /* Track card hover effects */
   .track-card {

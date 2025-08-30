@@ -269,7 +269,8 @@ export class StreamingAudioEngine {
       track.isMuted = !track.isMuted;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        track.gainNode.gain.value = track.isMuted ? 0 : track.volume;
+        // Convert 0-100 volume to 0-1 gain range when unmuting
+        track.gainNode.gain.value = track.isMuted ? 0 : track.volume / 100;
       }
     }
   }
@@ -300,7 +301,8 @@ export class StreamingAudioEngine {
       this.ensureTrackAudioNodes(track);
       const shouldMute = hasSoloTracks && !track.isSolo;
       if (track.gainNode) {
-        track.gainNode.gain.value = shouldMute ? 0 : track.volume;
+        // Convert 0-100 volume to 0-1 gain range when not muted
+        track.gainNode.gain.value = shouldMute ? 0 : track.volume / 100;
       }
     });
   }

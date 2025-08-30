@@ -257,7 +257,8 @@ export class StreamingAudioEngine {
       track.volume = volume;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        track.gainNode.gain.value = volume;
+        // Convert 0-100 volume to 0-1 gain range
+        track.gainNode.gain.value = volume / 100;
       }
     }
   }

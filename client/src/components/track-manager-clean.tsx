@@ -642,11 +642,11 @@ export default function TrackManager({
       </div>
 
       {/* Master Spectrum Analyzer */}
-      <div className="p-4 border-b-2 border-gray-600">
+      <div className="p-2 border-b-2 border-gray-600">
         <SpectrumAnalyzer 
           audioEngine={audioEngine}
           isPlaying={isPlaying}
-          height={100}
+          height={80}
           className="w-full"
         />
       </div>

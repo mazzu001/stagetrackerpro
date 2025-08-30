@@ -121,8 +121,9 @@ export class StreamingAudioEngine {
       track.panNode.connect(track.analyzerNode);
       track.analyzerNode.connect(this.state.masterGainNode!);
       
-      // Setup analyzer with minimal settings
-      track.analyzerNode.fftSize = 128;
+      // Setup analyzer with better frequency resolution for responsive VU meters
+      track.analyzerNode.fftSize = 512; // Increased for better frequency analysis
+      track.analyzerNode.smoothingTimeConstant = 0.6; // Less smoothing for more responsive meters
       
       console.log(`🔧 Audio nodes created on demand for: ${track.name}`);
     } catch (error) {
@@ -326,12 +327,23 @@ export class StreamingAudioEngine {
     const dataArray = new Uint8Array(bufferLength);
     track.analyzerNode.getByteFrequencyData(dataArray);
     
-    // Calculate average level
-    const sum = dataArray.reduce((a, b) => a + b, 0);
-    const rawAverage = sum / bufferLength / 255; // Normalize to 0-1
+    // Focus on mid and high frequencies for more responsive VU meters (skip very low frequencies)
+    const startBin = Math.floor(bufferLength * 0.1); // Skip lowest 10% of frequencies
+    const endBin = Math.floor(bufferLength * 0.9);   // Use up to 90% of frequency range
     
-    // Reduce amplification to prevent VU meters from running too hot
-    const average = rawAverage * 0.6; // Reduce to 60% of original level
+    // Calculate weighted average focusing on music frequencies
+    let sum = 0;
+    let weightedCount = 0;
+    for (let i = startBin; i < endBin; i++) {
+      const weight = i < bufferLength * 0.3 ? 1.5 : 1.0; // Boost mid frequencies
+      sum += dataArray[i] * weight;
+      weightedCount += weight;
+    }
+    
+    const rawAverage = sum / weightedCount / 255; // Normalize to 0-1
+    
+    // Light amplification for responsive meters without going too hot
+    const average = rawAverage * 0.85; // Increased from 0.6 for more responsiveness
     
     // Return simulated stereo levels (would need separate analyzers for true stereo)
     return { left: average, right: average };

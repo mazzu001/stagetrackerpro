@@ -18,6 +18,7 @@ interface LyricsDisplayProps {
 
 export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMidiCommand, isPlaying }: LyricsDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const nonTimestampedExecutedRef = useRef<string | null>(null);
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');
     return saved ? parseInt(saved) : 18;
@@ -196,6 +197,11 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
   useEffect(() => {
     if (!song?.lyrics || !onMidiCommand) return;
     
+    // Check if we've already executed non-timestamped commands for this song
+    if (nonTimestampedExecutedRef.current === song.id) {
+      return; // Already executed for this song
+    }
+    
     console.log(`📋 Checking for non-timestamped MIDI commands in: ${song.title}`);
     
     // Parse all lines to identify non-timestamped lines with MIDI commands
@@ -232,12 +238,17 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
     } else {
       console.log(`📋 No non-timestamped MIDI commands found in: ${song.title}`);
     }
+    
+    // Mark this song as having its non-timestamped commands executed
+    nonTimestampedExecutedRef.current = song.id;
   }, [song?.id, song?.lyrics, onMidiCommand]);
 
   // Reset MIDI tracking when song changes
   useEffect(() => {
     console.log(`🔄 Resetting processed timestamps - Song changed to: ${song?.title || 'none'}`);
     setProcessedTimestamps(new Set());
+    // Reset non-timestamped execution tracking for new song
+    nonTimestampedExecutedRef.current = null;
   }, [song?.id]);
 
   // Reset MIDI tracking and scroll position when playback stops

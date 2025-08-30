@@ -8,10 +8,15 @@ import { useToast } from "@/hooks/use-toast";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { LocalSongStorage } from "@/lib/local-song-storage";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
-import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
+import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle, Loader2 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import VUMeter from "@/components/vu-meter";
 import { TrackRecovery } from "@/components/track-recovery";
+
+// Mobile detection utility
+const isMobileDevice = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
 
 import type { Track, SongWithTracks } from "@shared/schema";
 
@@ -50,6 +55,9 @@ export default function TrackManager({
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
+  const [currentFileIndex, setCurrentFileIndex] = useState(0);
+  const [totalFiles, setTotalFiles] = useState(0);
+  const [currentFileName, setCurrentFileName] = useState("");
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
 
   const { toast } = useToast();
@@ -394,22 +402,35 @@ export default function TrackManager({
 
       setSelectedFiles(validFiles);
       setIsImporting(true);
+      setTotalFiles(validFiles.length);
+      setCurrentFileIndex(0);
 
-      // Process files sequentially to avoid overwhelming the system
-      processFilesSequentially(validFiles);
+      // Mobile devices: sequential processing with progress tracking
+      // Desktop: parallel processing for speed
+      if (isMobileDevice()) {
+        console.log('📱 Mobile device detected - using sequential file processing');
+        processFilesSequentiallyMobile(validFiles);
+      } else {
+        console.log('🖥️ Desktop device detected - using parallel file processing');
+        processFilesParallel(validFiles);
+      }
     };
     
     input.click();
   };
 
-  const processFilesSequentially = async (files: File[]) => {
+  const processFilesSequentiallyMobile = async (files: File[]) => {
     const results: { success: number; failed: string[] } = { success: 0, failed: [] };
     
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       
       try {
-        console.log(`Processing file ${i + 1}/${files.length}: ${file.name}`);
+        console.log(`📱 Mobile processing file ${i + 1}/${files.length}: ${file.name}`);
+        
+        // Update progress for mobile UI
+        setCurrentFileIndex(i + 1);
+        setCurrentFileName(file.name);
         
         // Extract track name from filename (remove extension)
         const trackName = file.name.replace(/\.[^/.]+$/, "");
@@ -418,18 +439,67 @@ export default function TrackManager({
         await addTrack(file.name, trackName, file);
         results.success++;
         
-        console.log(`Successfully processed: ${file.name}`);
+        console.log(`✅ Mobile processed: ${file.name}`);
+        
+        // Small delay to prevent mobile resource overload
+        await new Promise(resolve => setTimeout(resolve, 100));
         
       } catch (error) {
-        console.error(`Failed to process ${file.name}:`, error);
+        console.error(`❌ Mobile processing failed ${file.name}:`, error);
         results.failed.push(file.name);
       }
     }
     
     setIsImporting(false);
     setSelectedFiles([]);
+    setCurrentFileIndex(0);
+    setCurrentFileName("");
     
     // Show final results
+    showProcessingResults(results);
+  };
+
+  const processFilesParallel = async (files: File[]) => {
+    const results: { success: number; failed: string[] } = { success: 0, failed: [] };
+    
+    console.log(`🖥️ Desktop parallel processing ${files.length} files`);
+    
+    // Process all files in parallel for desktop speed
+    const promises = files.map(async (file) => {
+      try {
+        // Extract track name from filename (remove extension)
+        const trackName = file.name.replace(/\.[^/.]+$/, "");
+        
+        // Add track to song with file object for now
+        await addTrack(file.name, trackName, file);
+        return { success: true, fileName: file.name };
+      } catch (error) {
+        console.error(`❌ Desktop processing failed ${file.name}:`, error);
+        return { success: false, fileName: file.name };
+      }
+    });
+    
+    const promiseResults = await Promise.all(promises);
+    
+    // Collect results
+    promiseResults.forEach((result) => {
+      if (result.success) {
+        results.success++;
+      } else {
+        results.failed.push(result.fileName);
+      }
+    });
+    
+    setIsImporting(false);
+    setSelectedFiles([]);
+    
+    console.log(`✅ Desktop parallel processing complete: ${results.success}/${files.length} successful`);
+    
+    // Show final results
+    showProcessingResults(results);
+  };
+
+  const showProcessingResults = (results: { success: number; failed: string[] }) => {
     if (results.success > 0) {
       toast({
         title: `Added ${results.success} track${results.success > 1 ? 's' : ''}`,
@@ -453,7 +523,47 @@ export default function TrackManager({
 
   return (
     <div className="space-y-4 relative">
-      {/* Loading Overlay */}
+      {/* Mobile Loading Files Overlay */}
+      {isImporting && isMobileDevice() && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center">
+          <div className="bg-surface border border-gray-700 rounded-lg p-8 text-center max-w-sm mx-4">
+            <Loader2 className="w-10 h-10 animate-spin text-primary mx-auto mb-4" />
+            <h3 className="text-xl font-semibold mb-3 text-white">Loading Files</h3>
+            <p className="text-gray-300 mb-4">
+              Processing file {currentFileIndex} of {totalFiles}
+            </p>
+            {currentFileName && (
+              <p className="text-sm text-gray-400 mb-4 truncate">
+                {currentFileName}
+              </p>
+            )}
+            <div className="w-full bg-gray-700 rounded-full h-2">
+              <div 
+                className="bg-primary h-2 rounded-full transition-all duration-300" 
+                style={{ width: `${totalFiles > 0 ? (currentFileIndex / totalFiles) * 100 : 0}%` }}
+              />
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              Please wait while files are copied to browser storage
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop Loading Overlay */}
+      {isImporting && !isMobileDevice() && (
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center rounded-lg">
+          <div className="bg-surface border border-gray-700 rounded-lg p-6 text-center">
+            <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto mb-3" />
+            <h3 className="text-lg font-semibold mb-2">Processing Files...</h3>
+            <p className="text-gray-300 text-sm">
+              Adding {totalFiles} track{totalFiles > 1 ? 's' : ''} to song
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Track Loading Overlay */}
       {isLoadingTracks && (
         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center rounded-lg">
           <div className="bg-surface border border-gray-700 rounded-lg p-6 text-center">

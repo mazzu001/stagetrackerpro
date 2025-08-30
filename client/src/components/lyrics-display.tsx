@@ -192,6 +192,48 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
     }
   }, [currentTime, song?.lyrics, onMidiCommand, processedTimestamps]);
   
+  // Execute non-timestamped MIDI commands on song load
+  useEffect(() => {
+    if (!song?.lyrics || !onMidiCommand) return;
+    
+    console.log(`📋 Checking for non-timestamped MIDI commands in: ${song.title}`);
+    
+    // Parse all lines to identify non-timestamped lines with MIDI commands
+    const lines = song.lyrics.split('\n');
+    const nonTimestampedMidiCommands: string[] = [];
+    
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      
+      // Check if this line is NOT timestamped (doesn't start with [MM:SS])
+      const hasTimestamp = /^\[(\d{1,2}):(\d{2})\]/.test(trimmed);
+      
+      if (!hasTimestamp) {
+        // Look for MIDI commands in this non-timestamped line
+        const midiMatches = trimmed.match(/\[\[([^\]]+)\]\]/g);
+        if (midiMatches) {
+          for (const midiCommand of midiMatches) {
+            console.log(`🎵 Found non-timestamped MIDI command: ${midiCommand} in line: "${trimmed}"`);
+            nonTimestampedMidiCommands.push(midiCommand);
+          }
+        }
+      }
+    }
+    
+    // Execute all non-timestamped MIDI commands immediately
+    if (nonTimestampedMidiCommands.length > 0) {
+      console.log(`⚡ Executing ${nonTimestampedMidiCommands.length} non-timestamped MIDI commands on song load`);
+      
+      for (const command of nonTimestampedMidiCommands) {
+        console.log(`🎵 Executing non-timestamped MIDI command: ${command}`);
+        onMidiCommand(command);
+      }
+    } else {
+      console.log(`📋 No non-timestamped MIDI commands found in: ${song.title}`);
+    }
+  }, [song?.id, song?.lyrics, onMidiCommand]);
+
   // Reset MIDI tracking when song changes
   useEffect(() => {
     console.log(`🔄 Resetting processed timestamps - Song changed to: ${song?.title || 'none'}`);

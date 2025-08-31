@@ -54,24 +54,23 @@ export default function SpectrumAnalyzer({
             
             // Simple, working settings
             height: height,
-            fftSize: 4096,
+            fftSize: 2048, // Lighter processing
             
             // Professional appearance
-            mode: 6, // Octave bands
+            mode: 10, // Line graph - smooth and responsive
             showPeaks: true,
             peakFadeTime: 2000, // 2 second peak fade
             peakHoldTime: 1000, // 1 second hold
             
-            // Maximum sensitivity settings
-            minDecibels: -100,
-            maxDecibels: 0,
-            linearBoost: 4, // 4x amplitude boost
-            volume: 3, // 3x volume boost
-            smoothing: 0.4, // Less smoothing for more responsiveness
+            // Audio-safe settings - won't affect music quality
+            minDecibels: -60,
+            maxDecibels: -5,
+            smoothing: 0.8,
             
-            // Visual settings
-            gradient: 'rainbow',
-            barSpace: 0.15,
+            // Line graph visual settings
+            gradient: 'prism',
+            lineWidth: 2,
+            fillAlpha: 0.3,
             showScaleX: false,
             showScaleY: false,
             

@@ -100,18 +100,10 @@ export default function SpectrumAnalyzer({
           }
         });
         
+        console.log(`🔍 Found ${audioElements.length} audio elements, ${connectedToAudio ? 'connected to one' : 'none playing'}`);
+        
         if (!connectedToAudio) {
-          // Create oscillator as visual feedback that spectrum is ready
-          const oscillator = audioContext.createOscillator();
-          const gainNode = audioContext.createGain();
-          gainNode.gain.value = 0; // Silent
-          
-          oscillator.connect(gainNode);
-          gainNode.connect(analyzer);
-          oscillator.frequency.value = 440;
-          oscillator.start();
-          
-          console.log('🎛️ Spectrum analyzer ready (waiting for audio)');
+          console.log('🔍 No playing audio detected - spectrum analyzer ready but no data source');
         }
         
         analyzerRef.current = analyzer;
@@ -135,6 +127,22 @@ export default function SpectrumAnalyzer({
       ctx.fillStyle = 'rgba(16, 24, 32, 0.2)';
       ctx.fillRect(0, 0, rect.width, rect.height);
 
+      // Calculate total energy to see if we're getting audio data
+      let totalEnergy = 0;
+      for (let i = 0; i < bufferLength; i++) {
+        totalEnergy += dataArray[i];
+      }
+      
+      // Debug audio data every few frames
+      if (Math.random() < 0.01) { // Log ~1% of frames to avoid spam
+        console.log('🎵 Audio data:', {
+          totalEnergy,
+          maxValue: Math.max(...Array.from(dataArray)),
+          avgValue: totalEnergy / bufferLength,
+          sampleValues: [dataArray[0], dataArray[10], dataArray[50], dataArray[100]]
+        });
+      }
+
       // Draw frequency bars
       const barWidth = rect.width / (bufferLength * 0.4); // Show more frequency range
       let x = 0;
@@ -142,23 +150,27 @@ export default function SpectrumAnalyzer({
       for (let i = 0; i < bufferLength * 0.4; i++) {
         const barHeight = (dataArray[i] / 255) * rect.height * 0.8;
         
+        // Add minimum bar height for visual feedback
+        const minBarHeight = 2;
+        const finalBarHeight = Math.max(barHeight, dataArray[i] > 0 ? minBarHeight : 0);
+        
         // Color based on frequency range
         let color;
         const freqRatio = i / (bufferLength * 0.4);
         
         if (freqRatio < 0.2) {
           // Bass frequencies - blue/cyan
-          color = `hsl(${200 + (freqRatio * 40)}, 80%, ${40 + (barHeight / rect.height) * 40}%)`;
+          color = `hsl(${200 + (freqRatio * 40)}, 80%, ${40 + (finalBarHeight / rect.height) * 40}%)`;
         } else if (freqRatio < 0.6) {
           // Mid frequencies - green/yellow
-          color = `hsl(${120 - (freqRatio * 80)}, 70%, ${35 + (barHeight / rect.height) * 45}%)`;
+          color = `hsl(${120 - (freqRatio * 80)}, 70%, ${35 + (finalBarHeight / rect.height) * 45}%)`;
         } else {
           // High frequencies - orange/red
-          color = `hsl(${35 - (freqRatio * 25)}, 85%, ${40 + (barHeight / rect.height) * 35}%)`;
+          color = `hsl(${35 - (freqRatio * 25)}, 85%, ${40 + (finalBarHeight / rect.height) * 35}%)`;
         }
 
         ctx.fillStyle = color;
-        ctx.fillRect(x, rect.height - barHeight, barWidth - 1, barHeight);
+        ctx.fillRect(x, rect.height - finalBarHeight, barWidth - 1, finalBarHeight);
         
         x += barWidth;
       }

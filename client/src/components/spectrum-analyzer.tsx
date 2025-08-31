@@ -129,11 +129,26 @@ export default function SpectrumAnalyzer({
       let x = 0;
 
       for (let i = 0; i < displayBands; i++) {
-        // Enhanced bar height calculation for better visibility
+        // Enhanced bar height calculation with frequency balancing
         const rawValue = dataArray[i];
         const normalizedValue = rawValue / 255;
-        const amplifiedValue = Math.pow(normalizedValue, 0.7); // Power curve for better visibility
-        const barHeight = amplifiedValue * rect.height * 0.85; // Increased height multiplier
+        const freqRatio = i / displayBands;
+        
+        // Frequency-dependent scaling to balance bass vs mids/highs
+        let frequencyMultiplier;
+        if (freqRatio < 0.2) {
+          // Bass frequencies - reduce by 20%
+          frequencyMultiplier = 0.8;
+        } else if (freqRatio < 0.6) {
+          // Mid frequencies - boost by 30%
+          frequencyMultiplier = 1.3;
+        } else {
+          // High frequencies - boost by 40%
+          frequencyMultiplier = 1.4;
+        }
+        
+        const amplifiedValue = Math.pow(normalizedValue, 0.5) * frequencyMultiplier; // More sensitive power curve
+        const barHeight = amplifiedValue * rect.height * 1.2; // Much higher overall sensitivity
         
         // Update peak levels
         const currentPeak = peakLevelsRef.current[i];
@@ -144,19 +159,17 @@ export default function SpectrumAnalyzer({
           peakLevelsRef.current[i] = currentPeak * peakDecayRate;
         }
         
-        // Color based on frequency range
+        // Color based on frequency range with balanced response
         let color;
-        const freqRatio = i / displayBands;
-        
         if (freqRatio < 0.2) {
-          // Bass frequencies - blue/cyan
-          color = `hsl(${200 + (freqRatio * 40)}, 85%, ${45 + (amplifiedValue * 35)}%)`;
+          // Bass frequencies - blue/cyan (toned down since reduced)
+          color = `hsl(${200 + (freqRatio * 40)}, 80%, ${40 + (amplifiedValue * 40)}%)`;
         } else if (freqRatio < 0.6) {
-          // Mid frequencies - green/yellow
-          color = `hsl(${120 - (freqRatio * 80)}, 80%, ${40 + (amplifiedValue * 40)}%)`;
+          // Mid frequencies - green/yellow (brighter since boosted)
+          color = `hsl(${120 - (freqRatio * 80)}, 85%, ${45 + (amplifiedValue * 35)}%)`;
         } else {
-          // High frequencies - orange/red
-          color = `hsl(${35 - (freqRatio * 25)}, 90%, ${45 + (amplifiedValue * 30)}%)`;
+          // High frequencies - orange/red (brightest since most boosted)
+          color = `hsl(${35 - (freqRatio * 25)}, 95%, ${50 + (amplifiedValue * 25)}%)`;
         }
 
         // Draw main frequency bar

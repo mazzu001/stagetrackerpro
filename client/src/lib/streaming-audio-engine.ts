@@ -108,6 +108,28 @@ export class StreamingAudioEngine {
       track.audioElement.src = track.url;
       track.audioElement.preload = 'none'; // CRITICAL: No preloading
       track.audioElement.crossOrigin = 'anonymous';
+      track.audioElement.loop = false; // Prevent auto-loop
+      
+      // Add event listeners to debug stopping issue
+      track.audioElement.addEventListener('ended', () => {
+        console.log(`🚨 Track "${track.name}" ENDED at ${track.audioElement?.currentTime}s`);
+      });
+      
+      track.audioElement.addEventListener('pause', () => {
+        console.log(`⏸️ Track "${track.name}" PAUSED at ${track.audioElement?.currentTime}s`);
+      });
+      
+      track.audioElement.addEventListener('stalled', () => {
+        console.log(`🐌 Track "${track.name}" STALLED - buffering issue`);
+      });
+      
+      track.audioElement.addEventListener('suspend', () => {
+        console.log(`⏹️ Track "${track.name}" SUSPENDED - browser auto-paused`);
+      });
+      
+      track.audioElement.addEventListener('error', (e) => {
+        console.log(`❌ Track "${track.name}" ERROR:`, e);
+      });
       
       // Create audio nodes
       track.source = this.audioContext.createMediaElementSource(track.audioElement);

@@ -641,7 +641,6 @@ export default function TrackManager({
           </div>
         </div>
       </div>
-
       {/* Master Spectrum Analyzer */}
       <div className="p-2 border-b-2 border-gray-600">
         <SpectrumAnalyzer 
@@ -651,7 +650,6 @@ export default function TrackManager({
           className="w-full"
         />
       </div>
-
       {tracks.length === 0 ? (
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center text-gray-500">
@@ -673,7 +671,7 @@ export default function TrackManager({
                   {/* Channel Header */}
                   <div className="bg-gray-700 p-2 border-b border-gray-600">
                     <div className="text-center">
-                      <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold mx-auto mb-1">
+                      <div className="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-xs font-bold mx-auto mt-[-7px] mb-[-7px]">
                         {index + 1}
                       </div>
                       <div className="w-24 h-4">
@@ -685,7 +683,6 @@ export default function TrackManager({
                       </div>
                     </div>
                   </div>
-                  
                   {/* Balance Control (Pan) */}
                   <div className="px-2 py-1">
                     <div className="text-center text-xs text-gray-400 mb-1">PAN</div>
@@ -708,7 +705,6 @@ export default function TrackManager({
                       </div>
                     </div>
                   </div>
-                  
                   {/* Volume Fader and VU Meter Side by Side */}
                   <div className="flex-1 px-2 py-2 flex flex-col items-center">
                     <div className="text-center text-xs text-gray-400 mb-2">LEVEL</div>
@@ -738,7 +734,6 @@ export default function TrackManager({
                       {localValues.volume}%
                     </div>
                   </div>
-                  
                   {/* Control Buttons */}
                   <div className="p-2 space-y-1 border-t border-gray-600">
                     <Button

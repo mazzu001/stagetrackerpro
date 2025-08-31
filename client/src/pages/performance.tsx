@@ -700,9 +700,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setIsTrackManagerOpen(true)} data-testid="menuitem-track-manager">
-                  <FileAudio className="h-4 w-4 mr-2" />
-                  Track Manager
+                <DropdownMenuItem onClick={() => window.open('https://www.youtube.com/channel/UCV6QdegSAG-YgxvXoFTsRVw', '_blank')} data-testid="menuitem-youtube-tutorials">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  YouTube Tutorials
                 </DropdownMenuItem>
 
                 {userType === 'professional' && (

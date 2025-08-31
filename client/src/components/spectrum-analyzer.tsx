@@ -52,6 +52,13 @@ export default function SpectrumAnalyzer({
     // Non-interfering connection to audio engine
     let analyzer: AnalyserNode | null = null;
     
+    console.log('🔍 Spectrum analyzer received:', {
+      hasAudioEngine: !!audioEngine,
+      audioEngineType: typeof audioEngine,
+      isPlaying,
+      engineMethods: audioEngine ? Object.getOwnPropertyNames(audioEngine) : []
+    });
+
     // Only try to connect if we have a proper audio engine
     if (audioEngine && typeof audioEngine.getState === 'function' && typeof audioEngine.getAudioContext === 'function') {
       try {

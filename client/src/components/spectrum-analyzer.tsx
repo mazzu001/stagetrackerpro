@@ -67,7 +67,7 @@ export default function SpectrumAnalyzer({
           analyzer = audioContext.createAnalyser();
           if (analyzer) {
             analyzer.fftSize = 1024;
-            analyzer.smoothingTimeConstant = 0.6; // More responsive
+            analyzer.smoothingTimeConstant = 0.85; // Much smoother, less blinking
             analyzer.minDecibels = -70; // Higher sensitivity
             analyzer.maxDecibels = -5; // Better range
             

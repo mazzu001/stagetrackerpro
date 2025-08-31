@@ -52,18 +52,14 @@ export default function SpectrumAnalyzer({
     // Non-interfering connection to audio engine
     let analyzer: AnalyserNode | null = null;
     
-    console.log('🔍 Spectrum analyzer received:', {
-      hasAudioEngine: !!audioEngine,
-      audioEngineType: typeof audioEngine,
-      isPlaying,
-      engineMethods: audioEngine ? Object.getOwnPropertyNames(audioEngine) : []
-    });
-
-    // Only try to connect if we have a proper audio engine
-    if (audioEngine && typeof audioEngine.getState === 'function' && typeof audioEngine.getAudioContext === 'function') {
+    // Access the actual audio engine from the hook object
+    const actualEngine = audioEngine?.audioEngine;
+    
+    // Only try to connect if we have the actual StreamingAudioEngine instance
+    if (actualEngine && typeof actualEngine.getState === 'function' && typeof actualEngine.getAudioContext === 'function') {
       try {
-        const engineState = audioEngine.getState();
-        const audioContext = audioEngine.getAudioContext();
+        const engineState = actualEngine.getState();
+        const audioContext = actualEngine.getAudioContext();
         
         if (engineState?.masterGainNode && audioContext && audioContext.state === 'running') {
           analyzer = audioContext.createAnalyser();
@@ -87,7 +83,7 @@ export default function SpectrumAnalyzer({
             splitter.connect(analyzer);
             
             analyzerRef.current = analyzer;
-            console.log('🎛️ Spectrum analyzer tapped into audio flow');
+            console.log('🎛️ Spectrum analyzer connected to master mix');
           }
         } else {
           console.log('🔍 Audio engine not ready for spectrum analyzer');

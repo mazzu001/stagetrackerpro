@@ -368,10 +368,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
     }}>
       
 
-      {/* Incoming MIDI Display */}
-      <div className="px-6 py-3 bg-gray-900/50 border-b border-gray-700">
-        <IncomingMIDIDisplay maxMessages={5} />
-      </div>
+      
 
       {/* Lyrics Container */}
       <div 

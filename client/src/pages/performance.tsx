@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb, Volume2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -28,6 +28,7 @@ import type { SongWithTracks } from "@shared/schema";
 import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
 import { USBMidiManager } from "@/components/USBMidiManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
+import { useRef } from "react";
 
 interface PerformanceProps {
   userType: UserType;
@@ -61,6 +62,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
+  const [isMidiListening, setIsMidiListening] = useState(false);
+  const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
 
   const { toast } = useToast();
@@ -623,7 +626,134 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
+  // Convert raw MIDI data to bracket format
+  const formatMIDIDataToBracket = (data: number[]): string | null => {
+    if (data.length < 2) return null;
+    
+    const status = data[0];
+    const channel = (status & 0x0F) + 1; // Convert to 1-based channel
+    const messageType = status & 0xF0;
+    
+    switch (messageType) {
+      case 0xC0: // Program Change
+        if (data.length >= 2) {
+          const program = data[1];
+          return `[[PC:${program}:${channel}]]`;
+        }
+        break;
+      case 0xB0: // Control Change
+        if (data.length >= 3) {
+          const controller = data[1];
+          const value = data[2];
+          return `[[CC:${controller}:${value}:${channel}]]`;
+        }
+        break;
+      case 0x90: // Note On
+        if (data.length >= 3) {
+          const note = data[1];
+          const velocity = data[2];
+          return `[[NOTE:${note}:${velocity}:${channel}]]`;
+        }
+        break;
+    }
+    
+    return null;
+  };
 
+  // Handle incoming MIDI messages for insertion
+  const handleIncomingMIDIMessage = useCallback((event: any) => {
+    if (!isMidiListening || !lyricsTextareaRef.current) return;
+    
+    const midiData = Array.from(event.data) as number[];
+    const bracketFormat = formatMIDIDataToBracket(midiData);
+    
+    if (bracketFormat) {
+      const textarea = lyricsTextareaRef.current;
+      const startPos = textarea.selectionStart;
+      const endPos = textarea.selectionEnd;
+      const currentValue = textarea.value;
+      
+      // Insert MIDI command, replacing any selected text
+      const newValue = currentValue.substring(0, startPos) + bracketFormat + currentValue.substring(endPos);
+      
+      // Update both DOM and React state
+      textarea.value = newValue;
+      setLyricsText(newValue);
+      
+      // Position cursor after inserted command
+      const newCursorPos = startPos + bracketFormat.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+      textarea.focus();
+      
+      console.log('🎵 Inserted MIDI command:', bracketFormat);
+      
+      toast({
+        title: "MIDI Command Inserted",
+        description: bracketFormat,
+      });
+    }
+  }, [isMidiListening, toast]);
+
+  // Toggle MIDI listening mode
+  const handleToggleMidiListen = useCallback(async () => {
+    if (!isMidiConnected) {
+      toast({
+        title: "MIDI Not Connected",
+        description: "Please connect a MIDI device first",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsMidiListening(prev => !prev);
+    
+    if (!isMidiListening) {
+      // Starting to listen
+      toast({
+        title: "MIDI Listen Active",
+        description: "Play MIDI to insert commands at cursor position",
+      });
+    } else {
+      // Stopping listen
+      toast({
+        title: "MIDI Listen Stopped",
+        description: "No longer capturing MIDI input",
+      });
+    }
+  }, [isMidiConnected, isMidiListening, toast]);
+
+  // Set up MIDI input listeners when listening mode is active
+  useEffect(() => {
+    if (!isMidiListening) return;
+
+    let midiAccess: any = null;
+    
+    const setupMIDIListeners = async () => {
+      try {
+        midiAccess = await navigator.requestMIDIAccess();
+        
+        // Add listeners to all input devices
+        midiAccess.inputs.forEach((input: any) => {
+          input.addEventListener('midimessage', handleIncomingMIDIMessage);
+          console.log('🎵 Added MIDI listener to:', input.name);
+        });
+        
+      } catch (error) {
+        console.error('❌ Failed to set up MIDI listeners:', error);
+        setIsMidiListening(false);
+      }
+    };
+
+    setupMIDIListeners();
+    
+    return () => {
+      if (midiAccess) {
+        midiAccess.inputs.forEach((input: any) => {
+          input.removeEventListener('midimessage', handleIncomingMIDIMessage);
+        });
+      }
+    };
+  }, [isMidiListening, handleIncomingMIDIMessage]);
 
   const toggleFullscreen = useCallback(async () => {
     try {
@@ -1148,16 +1278,28 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 )}
                 {isSearchingLyrics ? 'Searching...' : 'Search Online'}
               </Button>
+              <Button
+                variant={isMidiListening ? "default" : "outline"}
+                size="sm"
+                onClick={handleToggleMidiListen}
+                disabled={!isMidiConnected}
+                data-testid="button-midi-listen"
+                className="h-8 px-3"
+              >
+                <Volume2 className="w-3 h-3 mr-1" />
+                {isMidiListening ? 'Stop Listen' : 'MIDI Listen'}
+              </Button>
             </div>
           </div>
 
           {/* Lyrics Editor Content */}
           <div className="flex-1 overflow-hidden">
             <Textarea
+              ref={lyricsTextareaRef}
               id="lyrics"
               value={lyricsText}
               onChange={(e) => setLyricsText(e.target.value)}
-              placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and add MIDI commands with <!-- MIDI: Program Change 1 -->"
+              placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and add MIDI commands with [[PC:1:1]] or use MIDI Listen button"
               className="w-full h-full resize-none font-mono text-sm border border-gray-600 bg-background"
               data-testid="textarea-lyrics"
             />

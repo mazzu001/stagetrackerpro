@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Edit, ChevronUp, ChevronDown } from "lucide-react";
+import { IncomingMIDIDisplay } from "./incoming-midi-display";
 
 interface LyricsLine {
   timestamp: number; // in seconds
@@ -366,6 +367,11 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
       contain: 'layout style paint'
     }}>
       
+
+      {/* Incoming MIDI Display */}
+      <div className="px-6 py-3 bg-gray-900/50 border-b border-gray-700">
+        <IncomingMIDIDisplay maxMessages={5} />
+      </div>
 
       {/* Lyrics Container */}
       <div 

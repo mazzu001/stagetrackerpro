@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb, Headphones } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -61,8 +61,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
-  const [isMidiListening, setIsMidiListening] = useState(false);
-  const [lyricsTextareaRef, setLyricsTextareaRef] = useState<HTMLTextAreaElement | null>(null);
 
 
   const { toast } = useToast();
@@ -386,97 +384,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       });
     }
   }, [selectedSong, lyricsText, user?.email, toast]);
-
-  // Format MIDI bytes to bracket format
-  const formatMIDIToBracket = (data: Uint8Array): string => {
-    const bytes = Array.from(data);
-    if (bytes.length === 0) return '';
-    
-    const status = bytes[0];
-    const channel = (status & 0x0F) + 1; // Convert to 1-based channel
-    const command = status & 0xF0;
-    
-    switch (command) {
-      case 0x80: // Note Off
-        return `[[NOTE_OFF:${bytes[1]}:${bytes[2]}:${channel}]]`;
-      case 0x90: // Note On
-        return `[[NOTE:${bytes[1]}:${bytes[2]}:${channel}]]`;
-      case 0xB0: // Control Change
-        return `[[CC:${bytes[1]}:${bytes[2]}:${channel}]]`;
-      case 0xC0: // Program Change
-        return `[[PC:${bytes[1]}:${channel}]]`;
-      case 0xE0: // Pitch Bend
-        const pitchValue = (bytes[2] << 7) | bytes[1];
-        return `[[PITCH:${pitchValue}:${channel}]]`;
-      default:
-        return `[[RAW:${bytes.map(b => b.toString(16).padStart(2, '0')).join(':')}]]`;
-    }
-  };
-
-  // Insert text at cursor position in textarea
-  const insertAtCursor = (text: string) => {
-    if (!lyricsTextareaRef) return;
-    
-    const textarea = lyricsTextareaRef;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    
-    const currentValue = lyricsText;
-    const newValue = currentValue.substring(0, start) + text + currentValue.substring(end);
-    
-    setLyricsText(newValue);
-    
-    // Restore cursor position after the inserted text
-    setTimeout(() => {
-      const newPosition = start + text.length;
-      textarea.setSelectionRange(newPosition, newPosition);
-      textarea.focus();
-    }, 0);
-  };
-
-  // Toggle MIDI listening mode
-  const toggleMIDIListen = useCallback(() => {
-    if (!globalMidi.isConnected) {
-      toast({
-        title: "MIDI Not Available",
-        description: "Please connect a MIDI device first",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    if (isMidiListening) {
-      // Stop listening
-      (window as any).midiListenActive = false;
-      (window as any).midiListenInsertFunction = null;
-      setIsMidiListening(false);
-      
-      toast({
-        title: "MIDI Listen Stopped",
-        description: "No longer capturing MIDI commands",
-      });
-    } else {
-      // Start listening
-      (window as any).midiListenActive = true;
-      (window as any).midiListenInsertFunction = insertAtCursor;
-      (window as any).midiListenFormatFunction = formatMIDIToBracket;
-      setIsMidiListening(true);
-      
-      toast({
-        title: "MIDI Listen Active",
-        description: "Play MIDI notes/controls to insert commands into lyrics",
-      });
-    }
-  }, [globalMidi.isConnected, isMidiListening, toast]);
-
-  // Clean up MIDI listening when dialog closes
-  useEffect(() => {
-    if (!isEditLyricsOpen && isMidiListening) {
-      (window as any).midiListenActive = false;
-      (window as any).midiListenInsertFunction = null;
-      setIsMidiListening(false);
-    }
-  }, [isEditLyricsOpen, isMidiListening]);
 
   const handleSearchLyrics = async () => {
     if (!selectedSong) {
@@ -1241,17 +1148,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 )}
                 {isSearchingLyrics ? 'Searching...' : 'Search Online'}
               </Button>
-              <Button
-                variant={isMidiListening ? "default" : "outline"}
-                size="sm"
-                onClick={toggleMIDIListen}
-                disabled={!globalMidi.isConnected}
-                data-testid="button-midi-listen"
-                className="h-8 px-3"
-              >
-                <Headphones className="w-3 h-3 mr-1" />
-                {isMidiListening ? 'Listening...' : 'MIDI Listen'}
-              </Button>
             </div>
           </div>
 
@@ -1259,10 +1155,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           <div className="flex-1 overflow-hidden">
             <Textarea
               id="lyrics"
-              ref={setLyricsTextareaRef}
               value={lyricsText}
               onChange={(e) => setLyricsText(e.target.value)}
-              placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and MIDI commands like [[CC:7:64:1]]"
+              placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and add MIDI commands with <!-- MIDI: Program Change 1 -->"
               className="w-full h-full resize-none font-mono text-sm border border-gray-600 bg-background"
               data-testid="textarea-lyrics"
             />

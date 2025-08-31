@@ -499,14 +499,6 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     if (midiCommand) {
       addMidiMessage(midiCommand);
     }
-    
-    // Check if MIDI listen mode is active and insert into lyrics
-    if ((window as any).midiListenActive && (window as any).midiListenFormatFunction && (window as any).midiListenInsertFunction) {
-      const midiCommand = (window as any).midiListenFormatFunction(data);
-      if (midiCommand) {
-        (window as any).midiListenInsertFunction(midiCommand);
-      }
-    }
   };
 
   // Parse MIDI message into readable format

@@ -62,7 +62,7 @@ export default function SpectrumAnalyzer({
               
               // Bar visualization settings
               gradient: 'prism',
-              barSpace: 0.2,
+              barSpace: 0, // Remove gaps between bars
               showScaleX: false,
               showScaleY: false,
               

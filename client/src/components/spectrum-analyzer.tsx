@@ -76,7 +76,11 @@ export default function SpectrumAnalyzer({
             // Insert the splitter/merger between master gain and destination
             engineState.masterGainNode.disconnect();
             engineState.masterGainNode.connect(splitter);
-            splitter.connect(merger);
+            
+            // Connect both left and right channels through the merger
+            splitter.connect(merger, 0, 0); // Left channel: splitter output 0 → merger input 0
+            splitter.connect(merger, 1, 1); // Right channel: splitter output 1 → merger input 1
+            
             merger.connect(audioContext.destination);
             
             // Connect analyzer to the splitter for monitoring

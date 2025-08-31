@@ -49,72 +49,75 @@ export default function SpectrumAnalyzer({
     canvas.height = rect.height * devicePixelRatio;
     ctx.scale(devicePixelRatio, devicePixelRatio);
 
-    // Connect to the real audio engine
+    // Smart audio detection and connection
     let analyzer: AnalyserNode | null = null;
+    let audioContext: AudioContext | null = null;
     
     try {
-      console.log('🔍 Spectrum analyzer debug:', {
-        hasAudioEngine: !!audioEngine,
-        isPlaying,
-        audioEngineType: typeof audioEngine,
-        audioEngineMethods: audioEngine ? Object.getOwnPropertyNames(Object.getPrototypeOf(audioEngine)) : []
-      });
-
+      // First try: Connect to audio engine if available
       if (audioEngine && typeof audioEngine.getState === 'function' && typeof audioEngine.getAudioContext === 'function') {
         const engineState = audioEngine.getState();
-        const audioContext = audioEngine.getAudioContext();
+        audioContext = audioEngine.getAudioContext();
         
-        console.log('🔍 Engine state debug:', {
-          hasState: !!engineState,
-          hasMasterGain: !!engineState?.masterGainNode,
-          hasAudioContext: !!audioContext,
-          tracksCount: engineState?.tracks?.length || 0,
-          hasLoadedTracks: engineState?.tracks?.some((t: any) => t.audioElement) || false
-        });
-        
-        if (engineState?.masterGainNode && audioContext && audioContext.state === 'running') {
+        if (engineState?.masterGainNode && audioContext) {
           analyzer = audioContext.createAnalyser();
           analyzer.fftSize = 1024;
           analyzer.smoothingTimeConstant = 0.7;
           analyzer.minDecibels = -90;
           analyzer.maxDecibels = -10;
           
-          // Connect to master output to analyze real music
           engineState.masterGainNode.connect(analyzer);
           analyzerRef.current = analyzer;
-          console.log('🎛️ Spectrum analyzer connected to master gain node');
-          
-          // Also try to connect to individual tracks for better signal
-          if (engineState.tracks && engineState.tracks.length > 0) {
-            engineState.tracks.forEach((track: any, index: number) => {
-              if (track.source && track.gainNode) {
-                try {
-                  // Create additional analyzer for each track
-                  const trackAnalyzer = audioContext.createAnalyser();
-                  trackAnalyzer.fftSize = 1024;
-                  track.gainNode.connect(trackAnalyzer);
-                  trackAnalyzer.connect(audioContext.destination);
-                  console.log(`📊 Connected spectrum to track ${index + 1}: ${track.name}`);
-                } catch (e) {
-                  console.log(`⚠️ Could not connect to track ${index + 1}:`, e);
-                }
-              }
-            });
-          }
-        } else {
-          console.log('🔍 Cannot connect spectrum analyzer:', {
-            noMasterGain: !engineState?.masterGainNode,
-            noAudioContext: !audioContext,
-            audioContextState: audioContext?.state
-          });
-          return;
+          console.log('🎛️ Spectrum analyzer connected to audio engine');
         }
-      } else {
-        console.log('🔍 Audio engine methods not available');
-        return;
+      }
+      
+      // Second try: Find and connect to playing HTML audio elements
+      if (!analyzer) {
+        audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        analyzer = audioContext.createAnalyser();
+        analyzer.fftSize = 1024;
+        analyzer.smoothingTimeConstant = 0.7;
+        analyzer.minDecibels = -90;
+        analyzer.maxDecibels = -10;
+        
+        // Look for any playing audio elements
+        const audioElements = document.querySelectorAll('audio');
+        let connectedToAudio = false;
+        
+        audioElements.forEach((audio, index) => {
+          if (!audio.paused && !audio.muted && audio.currentTime > 0) {
+            try {
+              const source = audioContext!.createMediaElementSource(audio);
+              source.connect(analyzer!);
+              analyzer!.connect(audioContext!.destination);
+              connectedToAudio = true;
+              console.log(`🎛️ Spectrum analyzer connected to audio element ${index + 1}`);
+            } catch (e) {
+              // Audio element might already have a source
+              console.log(`⚠️ Could not connect to audio element ${index + 1}:`, e);
+            }
+          }
+        });
+        
+        if (!connectedToAudio) {
+          // Create oscillator as visual feedback that spectrum is ready
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+          gainNode.gain.value = 0; // Silent
+          
+          oscillator.connect(gainNode);
+          gainNode.connect(analyzer);
+          oscillator.frequency.value = 440;
+          oscillator.start();
+          
+          console.log('🎛️ Spectrum analyzer ready (waiting for audio)');
+        }
+        
+        analyzerRef.current = analyzer;
       }
     } catch (error) {
-      console.error('❌ Could not connect spectrum analyzer:', error);
+      console.error('❌ Could not create spectrum analyzer:', error);
       return;
     }
 
@@ -182,7 +185,7 @@ export default function SpectrumAnalyzer({
       }
       analyzerRef.current = null;
     };
-  }, [isPlaying, height]);
+  }, [audioEngine, isPlaying, height]);
 
   return (
     <div className={`bg-black rounded-lg border-2 border-gray-700 overflow-hidden ${className}`}>

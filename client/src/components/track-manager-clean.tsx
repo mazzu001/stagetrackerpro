@@ -11,7 +11,8 @@ import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import StereoVUMeter from "@/components/stereo-vu-meter";
-import SpectrumAnalyzer from "@/components/spectrum-analyzer";
+import SpectrumAnalyzer, { defaultSettings } from "@/components/spectrum-analyzer";
+import SpectrumControls, { SpectrumSettings } from "@/components/spectrum-controls";
 import ScrollingText from "@/components/scrolling-text";
 
 
@@ -53,6 +54,8 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
+  const [spectrumSettings, setSpectrumSettings] = useState<SpectrumSettings>(defaultSettings);
+  const [showSpectrumControls, setShowSpectrumControls] = useState(false);
 
   // Recording state
   // Recording features removed for simplicity
@@ -642,13 +645,37 @@ export default function TrackManager({
         </div>
       </div>
       {/* Master Spectrum Analyzer */}
-      <div className="p-2 border-b-2 border-gray-600">
+      <div className="p-2 border-b-2 border-gray-600 space-y-2">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium text-gray-300">Spectrum Analyzer</span>
+          <Button
+            onClick={() => setShowSpectrumControls(!showSpectrumControls)}
+            variant="outline"
+            size="sm"
+            className="text-xs h-6"
+            data-testid="button-spectrum-controls"
+          >
+            {showSpectrumControls ? 'Hide' : 'Settings'}
+          </Button>
+        </div>
+        
         <SpectrumAnalyzer 
           audioEngine={audioEngine}
           isPlaying={isPlaying}
           height={80}
           className="w-full"
+          settings={spectrumSettings}
         />
+        
+        {showSpectrumControls && (
+          <div className="mt-2">
+            <SpectrumControls
+              settings={spectrumSettings}
+              onSettingsChange={setSpectrumSettings}
+              onReset={() => setSpectrumSettings(defaultSettings)}
+            />
+          </div>
+        )}
       </div>
       {tracks.length === 0 ? (
         <div className="flex-1 flex items-center justify-center">

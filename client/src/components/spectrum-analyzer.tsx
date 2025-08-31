@@ -1,22 +1,66 @@
 import { useEffect, useRef, useState } from "react";
 import AudioMotionAnalyzer from "audiomotion-analyzer";
+import { SpectrumSettings } from "./spectrum-controls";
 
 interface SpectrumAnalyzerProps {
   audioEngine?: any;
   isPlaying?: boolean;
   className?: string;
   height?: number;
+  settings?: SpectrumSettings;
 }
+
+// Default settings for the spectrum analyzer
+export const defaultSettings: SpectrumSettings = {
+  minDecibels: -100,
+  maxDecibels: -80,
+  minFreq: 300,
+  maxFreq: 16000,
+  mode: 10,
+  smoothing: 0.6,
+  gradient: 'prism',
+  showPeaks: true,
+  peakFadeTime: 2000,
+  lineWidth: 2,
+  fillAlpha: 0.3,
+  fftSize: 2048
+};
 
 export default function SpectrumAnalyzer({ 
   audioEngine, 
   isPlaying = false, 
   className = "",
-  height = 120 
+  height = 120,
+  settings = defaultSettings
 }: SpectrumAnalyzerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const analyzerRef = useRef<AudioMotionAnalyzer | null>(null);
   const [isActive, setIsActive] = useState(false);
+
+  // Update analyzer settings when props change
+  useEffect(() => {
+    if (analyzerRef.current && isActive) {
+      const analyzer = analyzerRef.current;
+      try {
+        // Update all configurable settings
+        analyzer.minDecibels = settings.minDecibels;
+        analyzer.maxDecibels = settings.maxDecibels;
+        analyzer.minFreq = settings.minFreq;
+        analyzer.maxFreq = settings.maxFreq;
+        analyzer.mode = settings.mode;
+        analyzer.smoothing = settings.smoothing;
+        analyzer.gradient = settings.gradient;
+        analyzer.showPeaks = settings.showPeaks;
+        analyzer.peakFadeTime = settings.peakFadeTime;
+        analyzer.lineWidth = settings.lineWidth;
+        analyzer.fillAlpha = settings.fillAlpha;
+        
+        console.log(`🎛️ Updated spectrum analyzer: ${settings.minDecibels}dB to ${settings.maxDecibels}dB, ${settings.minFreq}Hz-${settings.maxFreq}Hz, mode ${settings.mode}`);
+      } catch (error) {
+        console.warn('⚠️ Could not update spectrum settings:', error);
+      }
+    }
+  }, [settings, isActive]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -40,30 +84,29 @@ export default function SpectrumAnalyzer({
               audioCtx: audioContext,
               connectSpeakers: false, // Don't interfere with audio
               
-              // Simple, working settings
+              // Dynamic settings from props
               height: height,
-              fftSize: 2048, // Lighter processing
+              fftSize: settings.fftSize,
               
-              // Professional appearance
-              mode: 10, // Line graph - smooth and responsive
-              showPeaks: true,
-              peakFadeTime: 2000, // 2 second peak fade
-              peakHoldTime: 1000, // 1 second hold
+              // Visualization settings
+              mode: settings.mode,
+              showPeaks: settings.showPeaks,
+              peakFadeTime: settings.peakFadeTime,
+              peakHoldTime: 1000, // Keep stable
               
-              // Frequency range - full range for proper weighting
-              minFreq: 60,  // Include all frequencies
-              maxFreq: 16000, // Standard high-freq range
+              // Frequency range
+              minFreq: settings.minFreq,
+              maxFreq: settings.maxFreq,
               
-              // Lower overall levels, then boost mids/highs
-              minDecibels: -100, // Much lower overall levels
-              maxDecibels: -80,  // Compressed range
-              smoothing: 0.6,    // More responsive
-              ansiBands: true,   // ANSI bands emphasize mids/highs
+              // Sensitivity range
+              minDecibels: settings.minDecibels,
+              maxDecibels: settings.maxDecibels,
+              smoothing: settings.smoothing,
               
-              // Line graph visual settings
-              gradient: 'prism',
-              lineWidth: 2,
-              fillAlpha: 0.3,
+              // Visual appearance
+              gradient: settings.gradient,
+              lineWidth: settings.lineWidth,
+              fillAlpha: settings.fillAlpha,
               showScaleX: false,
               showScaleY: false,
               

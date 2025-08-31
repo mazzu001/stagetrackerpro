@@ -28,6 +28,8 @@ import type { SongWithTracks } from "@shared/schema";
 import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
 import { USBMidiManager } from "@/components/USBMidiManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
+import SpectrumControls, { SpectrumSettings } from "@/components/spectrum-controls";
+import { defaultSettings } from "@/components/spectrum-analyzer";
 
 interface PerformanceProps {
   userType: UserType;
@@ -61,7 +63,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
-
+  const [spectrumSettings, setSpectrumSettings] = useState<SpectrumSettings>(defaultSettings);
+  const [showSpectrumControls, setShowSpectrumControls] = useState(false);
 
   const { toast } = useToast();
 

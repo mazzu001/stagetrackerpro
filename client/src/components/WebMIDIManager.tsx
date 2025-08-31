@@ -225,6 +225,11 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
     console.log('🎵 Received MIDI:', hexString);
     
     setMidiMessages(prev => [message, ...prev.slice(0, 9)]);
+    
+    // Dispatch global event for MIDI listening features
+    window.dispatchEvent(new CustomEvent('midiMessageReceived', {
+      detail: { data: event.data, timestamp: event.timestamp }
+    }));
   };
 
   // Connect to output device

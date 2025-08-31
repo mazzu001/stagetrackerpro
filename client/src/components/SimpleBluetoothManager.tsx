@@ -499,6 +499,11 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
     if (midiCommand) {
       addMidiMessage(midiCommand);
     }
+    
+    // Dispatch global event for MIDI listening features
+    window.dispatchEvent(new CustomEvent('midiMessageReceived', {
+      detail: { data: data, timestamp: Date.now() }
+    }));
   };
 
   // Parse MIDI message into readable format

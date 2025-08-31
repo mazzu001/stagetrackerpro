@@ -452,7 +452,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Toggle MIDI listening mode
   const toggleMIDIListen = useCallback(async () => {
-    if (!globalMidi.midiAccess) {
+    if (!globalMidi.isConnected) {
       toast({
         title: "MIDI Not Available",
         description: "Please connect a MIDI device first",
@@ -462,10 +462,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     if (isMidiListening) {
-      // Stop listening - remove listeners from all input devices
-      globalMidi.midiAccess.inputs.forEach((input: any) => {
-        input.onmidimessage = null;
-      });
+      // Stop listening - remove our event listener
+      window.removeEventListener('midiMessageReceived', handleMIDIListen);
       setIsMidiListening(false);
       
       toast({
@@ -473,10 +471,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         description: "No longer capturing MIDI commands",
       });
     } else {
-      // Start listening - add listeners to all input devices
-      globalMidi.midiAccess.inputs.forEach((input: any) => {
-        input.onmidimessage = handleMIDIListen;
-      });
+      // Start listening - add our event listener
+      window.addEventListener('midiMessageReceived', handleMIDIListen);
       setIsMidiListening(true);
       
       toast({
@@ -484,20 +480,16 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         description: "Play MIDI notes/controls to insert commands into lyrics",
       });
     }
-  }, [globalMidi.midiAccess, isMidiListening, lyricsText, lyricsTextareaRef, toast]);
+  }, [isMidiListening, toast]);
 
   // Clean up MIDI listening when dialog closes
   useEffect(() => {
     if (!isEditLyricsOpen && isMidiListening) {
       // Stop MIDI listening when dialog closes
-      if (globalMidi.midiAccess) {
-        globalMidi.midiAccess.inputs.forEach((input: any) => {
-          input.onmidimessage = null;
-        });
-      }
+      window.removeEventListener('midiMessageReceived', handleMIDIListen);
       setIsMidiListening(false);
     }
-  }, [isEditLyricsOpen, isMidiListening, globalMidi.midiAccess]);
+  }, [isEditLyricsOpen, isMidiListening]);
 
   const handleSearchLyrics = async () => {
     if (!selectedSong) {
@@ -1266,7 +1258,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 variant={isMidiListening ? "default" : "outline"}
                 size="sm"
                 onClick={toggleMIDIListen}
-                disabled={!globalMidi.midiAccess}
+                disabled={!globalMidi.isConnected}
                 data-testid="button-midi-listen"
                 className="h-8 px-3"
               >

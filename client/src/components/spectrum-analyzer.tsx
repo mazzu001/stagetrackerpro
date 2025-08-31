@@ -53,29 +53,65 @@ export default function SpectrumAnalyzer({
     let analyzer: AnalyserNode | null = null;
     
     try {
-      // Try to connect to the actual audio engine
-      if (audioEngine && audioEngine.getState && audioEngine.getAudioContext) {
+      console.log('🔍 Spectrum analyzer debug:', {
+        hasAudioEngine: !!audioEngine,
+        isPlaying,
+        audioEngineType: typeof audioEngine,
+        audioEngineMethods: audioEngine ? Object.getOwnPropertyNames(Object.getPrototypeOf(audioEngine)) : []
+      });
+
+      if (audioEngine && typeof audioEngine.getState === 'function' && typeof audioEngine.getAudioContext === 'function') {
         const engineState = audioEngine.getState();
         const audioContext = audioEngine.getAudioContext();
         
-        if (engineState?.masterGainNode && audioContext) {
+        console.log('🔍 Engine state debug:', {
+          hasState: !!engineState,
+          hasMasterGain: !!engineState?.masterGainNode,
+          hasAudioContext: !!audioContext,
+          tracksCount: engineState?.tracks?.length || 0,
+          hasLoadedTracks: engineState?.tracks?.some((t: any) => t.audioElement) || false
+        });
+        
+        if (engineState?.masterGainNode && audioContext && audioContext.state === 'running') {
           analyzer = audioContext.createAnalyser();
-          analyzer.fftSize = 512;
-          analyzer.smoothingTimeConstant = 0.8;
+          analyzer.fftSize = 1024;
+          analyzer.smoothingTimeConstant = 0.7;
           analyzer.minDecibels = -90;
           analyzer.maxDecibels = -10;
           
           // Connect to master output to analyze real music
           engineState.masterGainNode.connect(analyzer);
           analyzerRef.current = analyzer;
-          console.log('🎛️ Spectrum analyzer connected to real audio');
+          console.log('🎛️ Spectrum analyzer connected to master gain node');
+          
+          // Also try to connect to individual tracks for better signal
+          if (engineState.tracks && engineState.tracks.length > 0) {
+            engineState.tracks.forEach((track: any, index: number) => {
+              if (track.source && track.gainNode) {
+                try {
+                  // Create additional analyzer for each track
+                  const trackAnalyzer = audioContext.createAnalyser();
+                  trackAnalyzer.fftSize = 1024;
+                  track.gainNode.connect(trackAnalyzer);
+                  trackAnalyzer.connect(audioContext.destination);
+                  console.log(`📊 Connected spectrum to track ${index + 1}: ${track.name}`);
+                } catch (e) {
+                  console.log(`⚠️ Could not connect to track ${index + 1}:`, e);
+                }
+              }
+            });
+          }
         } else {
-          console.log('🔍 No audio tracks loaded yet');
-          return; // No audio to analyze
+          console.log('🔍 Cannot connect spectrum analyzer:', {
+            noMasterGain: !engineState?.masterGainNode,
+            noAudioContext: !audioContext,
+            audioContextState: audioContext?.state
+          });
+          return;
         }
       } else {
-        console.log('🔍 Audio engine not ready for spectrum analysis');
-        return; // No audio engine available
+        console.log('🔍 Audio engine methods not available');
+        return;
       }
     } catch (error) {
       console.error('❌ Could not connect spectrum analyzer:', error);

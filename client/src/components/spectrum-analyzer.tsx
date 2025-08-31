@@ -44,8 +44,8 @@ export default function SpectrumAnalyzer({
               height: height,
               fftSize: 2048, // Lighter processing
               
-              // Professional appearance
-              mode: 10, // Line graph - smooth and responsive
+              // Professional appearance  
+              mode: 3, // 1/8 octave bands - better frequency balance
               showPeaks: true,
               peakFadeTime: 2000, // 2 second peak fade
               peakHoldTime: 1000, // 1 second hold
@@ -53,17 +53,16 @@ export default function SpectrumAnalyzer({
               // Frequency range - include bass but balanced
               minFreq: 60,  // Include bass frequencies
               maxFreq: 16000, // Standard high-freq range
-              frequencyScale: 'mel', // Mel scale reduces bass emphasis
+              frequencyScale: 'bark', // Bark scale for better bass balance
               
               // Audio-safe settings - won't affect music quality
               minDecibels: -90,
               maxDecibels: -60,
               smoothing: 0.8,
               
-              // Line graph visual settings
+              // Bar visualization settings
               gradient: 'prism',
-              lineWidth: 2,
-              fillAlpha: 0.3,
+              barSpace: 0.2,
               showScaleX: false,
               showScaleY: false,
               

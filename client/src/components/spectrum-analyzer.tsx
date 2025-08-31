@@ -47,51 +47,52 @@ export default function SpectrumAnalyzer({
         const audioContext = actualEngine.getAudioContext();
         
         if (engineState?.masterGainNode && audioContext && audioContext.state === 'running') {
-          // Create professional spectrum analyzer
+          // Create professional spectrum analyzer with correct source connection
           const analyzer = new AudioMotionAnalyzer(container, {
-            // Connect to master gain node
+            // Use existing audio context
             audioCtx: audioContext,
+            source: engineState.masterGainNode, // Connect directly to master gain
             connectSpeakers: false, // Don't interfere with existing audio flow
             
-            // Professional settings
-            mode: 2, // 1/3 octave bands (professional mixing console style)
+            // Professional settings for better visibility
+            mode: 4, // 1/6 octave bands (more detailed)
             fftSize: 8192, // High resolution
             smoothing: 0.7, // Balanced smoothing
             
             // Visual settings
             height: height,
             showBgColor: true,
-            bgAlpha: 0.1,
+            bgAlpha: 0.2,
             showPeaks: true, // Enable falling peak lines
+            peakFadeTime: 1500, // Slower peak fade (1.5 seconds)
+            peakHoldTime: 800, // Hold peaks longer
             showScaleX: false,
             showScaleY: false,
             
             // Frequency response
-            minFreq: 20, // Audible bass
-            maxFreq: 20000, // Audible high
+            minFreq: 30, // Focus on musical content
+            maxFreq: 16000, // Good range for music
             
             // Color gradient - professional look
-            gradient: 'steelblue',
+            gradient: 'prism',
             
-            // Enhanced sensitivity 
-            minDecibels: -70, // Higher sensitivity
-            maxDecibels: -10, // Better range
+            // Enhanced sensitivity for better levels
+            minDecibels: -75, // Higher sensitivity
+            maxDecibels: -15, // Better dynamic range
             
-            // Professional features
-            barSpace: 0.1,
-            ledBars: false, // Smooth bars, not LED
+            // Professional mixing console appearance
+            barSpace: 0.15,
+            ledBars: false, // Smooth bars
             lumiBars: false, // Standard bars
-            reflexRatio: 0, // No reflection for clean look
+            reflexRatio: 0, // Clean look
             
-            // Responsive design
-            useCanvas: true // Better performance
+            // Performance
+            useCanvas: true,
+            start: true // Auto-start
           });
           
-          // Connect to our audio engine
-          analyzer.connectInput(engineState.masterGainNode);
-          
           analyzerRef.current = analyzer;
-          console.log('🎛️ Professional spectrum analyzer connected');
+          console.log('🎛️ Professional spectrum analyzer connected with enhanced levels');
           
         } else {
           console.log('🔍 Audio engine not ready for spectrum analyzer');

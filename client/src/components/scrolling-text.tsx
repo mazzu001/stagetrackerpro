@@ -31,11 +31,7 @@ export default function ScrollingText({ text, className = "", speed = 2 }: Scrol
     >
       <div
         ref={textRef}
-        className={`whitespace-nowrap ${
-          shouldScroll 
-            ? 'animate-marquee' 
-            : ''
-        }`}
+        className="whitespace-nowrap animate-marquee pt-[0px] pb-[0px] mt-[7px] mb-[7px]"
         style={{
           animationDuration: shouldScroll ? `${Math.max(3, text.length / speed)}s` : undefined
         }}

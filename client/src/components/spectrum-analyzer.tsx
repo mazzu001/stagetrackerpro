@@ -49,37 +49,36 @@ export default function SpectrumAnalyzer({
     canvas.height = rect.height * devicePixelRatio;
     ctx.scale(devicePixelRatio, devicePixelRatio);
 
-    // Create a simple fallback spectrum analyzer
+    // Connect to the real audio engine
     let analyzer: AnalyserNode | null = null;
-    let audioContext: AudioContext | null = null;
     
     try {
-      // Try to get audio context from different sources
-      if (window.AudioContext || (window as any).webkitAudioContext) {
-        audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-        analyzer = audioContext.createAnalyser();
-        analyzer.fftSize = 512;
-        analyzer.smoothingTimeConstant = 0.8;
-        analyzer.minDecibels = -90;
-        analyzer.maxDecibels = -10;
+      // Try to connect to the actual audio engine
+      if (audioEngine && audioEngine.getState && audioEngine.getAudioContext) {
+        const engineState = audioEngine.getState();
+        const audioContext = audioEngine.getAudioContext();
         
-        // Create a simple noise generator for demo purposes when no real audio
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        gainNode.gain.value = 0.01; // Very low volume
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(analyzer);
-        analyzer.connect(audioContext.destination);
-        
-        oscillator.frequency.value = 440;
-        oscillator.start();
-        
-        analyzerRef.current = analyzer;
-        console.log('🎛️ Fallback spectrum analyzer created');
+        if (engineState?.masterGainNode && audioContext) {
+          analyzer = audioContext.createAnalyser();
+          analyzer.fftSize = 512;
+          analyzer.smoothingTimeConstant = 0.8;
+          analyzer.minDecibels = -90;
+          analyzer.maxDecibels = -10;
+          
+          // Connect to master output to analyze real music
+          engineState.masterGainNode.connect(analyzer);
+          analyzerRef.current = analyzer;
+          console.log('🎛️ Spectrum analyzer connected to real audio');
+        } else {
+          console.log('🔍 No audio tracks loaded yet');
+          return; // No audio to analyze
+        }
+      } else {
+        console.log('🔍 Audio engine not ready for spectrum analysis');
+        return; // No audio engine available
       }
     } catch (error) {
-      console.error('❌ Could not create fallback spectrum analyzer:', error);
+      console.error('❌ Could not connect spectrum analyzer:', error);
       return;
     }
 
@@ -134,8 +133,16 @@ export default function SpectrumAnalyzer({
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
-      if (audioContext && audioContext.state !== 'closed') {
-        audioContext.close();
+      // Disconnect from master gain node
+      try {
+        if (analyzer && audioEngine && audioEngine.getState) {
+          const engineState = audioEngine.getState();
+          if (engineState?.masterGainNode) {
+            engineState.masterGainNode.disconnect(analyzer);
+          }
+        }
+      } catch (error) {
+        // Ignore cleanup errors
       }
       analyzerRef.current = null;
     };

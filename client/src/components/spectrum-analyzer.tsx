@@ -62,13 +62,16 @@ export default function SpectrumAnalyzer({
             peakFadeTime: 2000, // 2 second peak fade
             peakHoldTime: 1000, // 1 second hold
             
-            // Enhanced sensitivity - much higher levels
-            minDecibels: -90,
-            maxDecibels: -10,
+            // Maximum sensitivity settings
+            minDecibels: -100,
+            maxDecibels: 0,
+            linearBoost: 4, // 4x amplitude boost
+            volume: 3, // 3x volume boost
+            smoothing: 0.4, // Less smoothing for more responsiveness
             
             // Visual settings
             gradient: 'rainbow',
-            barSpace: 0.2,
+            barSpace: 0.15,
             showScaleX: false,
             showScaleY: false,
             

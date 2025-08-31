@@ -63,8 +63,8 @@ export default function SpectrumAnalyzer({
             peakHoldTime: 1000, // 1 second hold
             
             // Audio-safe settings - won't affect music quality
-            minDecibels: -60,
-            maxDecibels: -5,
+            minDecibels: -90,
+            maxDecibels: -60,
             smoothing: 0.8,
             
             // Line graph visual settings

@@ -17,6 +17,8 @@ export default function SpectrumAnalyzer({
   const animationRef = useRef<number>();
   const [isActive, setIsActive] = useState(false);
   const analyzerRef = useRef<AnalyserNode | null>(null);
+  const peakLevelsRef = useRef<number[]>([]);
+  const peakDecayRate = 0.95; // How fast peaks fall (0.95 = slow decay)
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -65,9 +67,9 @@ export default function SpectrumAnalyzer({
           analyzer = audioContext.createAnalyser();
           if (analyzer) {
             analyzer.fftSize = 1024;
-            analyzer.smoothingTimeConstant = 0.7;
-            analyzer.minDecibels = -90;
-            analyzer.maxDecibels = -10;
+            analyzer.smoothingTimeConstant = 0.6; // More responsive
+            analyzer.minDecibels = -70; // Higher sensitivity
+            analyzer.maxDecibels = -5; // Better range
             
             // Create a splitter to tap audio without disrupting flow
             const splitter = audioContext.createChannelSplitter(2);
@@ -106,6 +108,12 @@ export default function SpectrumAnalyzer({
 
     const bufferLength = analyzer.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
+    const displayBands = Math.floor(bufferLength * 0.4); // Show audible frequency range
+    
+    // Initialize peak levels array
+    if (peakLevelsRef.current.length === 0) {
+      peakLevelsRef.current = new Array(displayBands).fill(0);
+    }
 
     const draw = () => {
       if (!isPlaying || !analyzer) return;
@@ -113,53 +121,54 @@ export default function SpectrumAnalyzer({
       analyzer.getByteFrequencyData(dataArray);
 
       // Clear canvas with dark background
-      ctx.fillStyle = 'rgba(16, 24, 32, 0.2)';
+      ctx.fillStyle = 'rgba(16, 24, 32, 0.3)';
       ctx.fillRect(0, 0, rect.width, rect.height);
 
-      // Calculate total energy to see if we're getting audio data
-      let totalEnergy = 0;
-      for (let i = 0; i < bufferLength; i++) {
-        totalEnergy += dataArray[i];
-      }
-      
-      // Debug audio data every few frames
-      if (Math.random() < 0.01) { // Log ~1% of frames to avoid spam
-        console.log('🎵 Audio data:', {
-          totalEnergy,
-          maxValue: Math.max(...Array.from(dataArray)),
-          avgValue: totalEnergy / bufferLength,
-          sampleValues: [dataArray[0], dataArray[10], dataArray[50], dataArray[100]]
-        });
-      }
-
-      // Draw frequency bars
-      const barWidth = rect.width / (bufferLength * 0.4); // Show more frequency range
+      // Draw frequency bars with peak lines
+      const barWidth = rect.width / displayBands;
       let x = 0;
 
-      for (let i = 0; i < bufferLength * 0.4; i++) {
-        const barHeight = (dataArray[i] / 255) * rect.height * 0.8;
+      for (let i = 0; i < displayBands; i++) {
+        // Enhanced bar height calculation for better visibility
+        const rawValue = dataArray[i];
+        const normalizedValue = rawValue / 255;
+        const amplifiedValue = Math.pow(normalizedValue, 0.7); // Power curve for better visibility
+        const barHeight = amplifiedValue * rect.height * 0.85; // Increased height multiplier
         
-        // Add minimum bar height for visual feedback
-        const minBarHeight = 2;
-        const finalBarHeight = Math.max(barHeight, dataArray[i] > 0 ? minBarHeight : 0);
+        // Update peak levels
+        const currentPeak = peakLevelsRef.current[i];
+        if (barHeight > currentPeak) {
+          peakLevelsRef.current[i] = barHeight;
+        } else {
+          // Peak decay - slowly fall down
+          peakLevelsRef.current[i] = currentPeak * peakDecayRate;
+        }
         
         // Color based on frequency range
         let color;
-        const freqRatio = i / (bufferLength * 0.4);
+        const freqRatio = i / displayBands;
         
         if (freqRatio < 0.2) {
           // Bass frequencies - blue/cyan
-          color = `hsl(${200 + (freqRatio * 40)}, 80%, ${40 + (finalBarHeight / rect.height) * 40}%)`;
+          color = `hsl(${200 + (freqRatio * 40)}, 85%, ${45 + (amplifiedValue * 35)}%)`;
         } else if (freqRatio < 0.6) {
           // Mid frequencies - green/yellow
-          color = `hsl(${120 - (freqRatio * 80)}, 70%, ${35 + (finalBarHeight / rect.height) * 45}%)`;
+          color = `hsl(${120 - (freqRatio * 80)}, 80%, ${40 + (amplifiedValue * 40)}%)`;
         } else {
           // High frequencies - orange/red
-          color = `hsl(${35 - (freqRatio * 25)}, 85%, ${40 + (finalBarHeight / rect.height) * 35}%)`;
+          color = `hsl(${35 - (freqRatio * 25)}, 90%, ${45 + (amplifiedValue * 30)}%)`;
         }
 
+        // Draw main frequency bar
         ctx.fillStyle = color;
-        ctx.fillRect(x, rect.height - finalBarHeight, barWidth - 1, finalBarHeight);
+        ctx.fillRect(x, rect.height - barHeight, barWidth - 1, barHeight);
+        
+        // Draw falling peak line
+        const peakHeight = peakLevelsRef.current[i];
+        if (peakHeight > 2) {
+          ctx.fillStyle = `hsl(${freqRatio < 0.2 ? 220 : freqRatio < 0.6 ? 60 : 15}, 100%, 85%)`;
+          ctx.fillRect(x, rect.height - peakHeight - 2, barWidth - 1, 2);
+        }
         
         x += barWidth;
       }

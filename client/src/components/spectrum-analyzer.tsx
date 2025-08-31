@@ -50,8 +50,8 @@ export default function SpectrumAnalyzer({
               peakFadeTime: 2000, // 2 second peak fade
               peakHoldTime: 1000, // 1 second hold
               
-              // Frequency range - reduce bass emphasis
-              minFreq: 80,  // Start higher to reduce bass dominance
+              // Frequency range - reduce bass emphasis further
+              minFreq: 150,  // Cut out more bass frequencies
               maxFreq: 16000, // Standard high-freq range
               
               // Audio-safe settings - won't affect music quality

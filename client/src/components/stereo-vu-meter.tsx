@@ -127,7 +127,7 @@ export default function StereoVUMeter({
           {Array.from({ length: segments }, (_, index) => (
             <div
               key={index}
-              className={`w-3 h-1 rounded-sm ${getSegmentColor(index)} shadow-sm`}
+              className="w-3 h-1 rounded-sm bg-gray-700 shadow-sm ml-[0px] mr-[0px] pl-[0px] pr-[0px] mt-[2px] mb-[2px] pt-[3px] pb-[3px]"
               style={{
                 opacity: index < activeSegments || index === peakSegment - 1 ? 1 : 0.3,
                 boxShadow: (index < activeSegments || index === peakSegment - 1) ? 

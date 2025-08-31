@@ -44,25 +44,25 @@ export default function SpectrumAnalyzer({
               height: height,
               fftSize: 2048, // Lighter processing
               
-              // Professional appearance  
-              mode: 0, // Discrete frequencies - precise control
+              // Professional appearance
+              mode: 10, // Line graph - smooth and responsive
               showPeaks: true,
               peakFadeTime: 2000, // 2 second peak fade
               peakHoldTime: 1000, // 1 second hold
               
-              // Frequency range - balanced distribution
-              minFreq: 100,  // Reduce bass range
-              maxFreq: 12000, // Focus on musical content
-              frequencyScale: 'log', // Standard logarithmic scale
+              // Frequency range - minimal bass frequencies
+              minFreq: 300,  // Cut out most bass frequencies  
+              maxFreq: 16000, // Standard high-freq range
               
               // Audio-safe settings - won't affect music quality
               minDecibels: -90,
               maxDecibels: -60,
               smoothing: 0.8,
               
-              // Bar visualization settings
+              // Line graph visual settings
               gradient: 'prism',
-              barSpace: 0, // Remove gaps between bars
+              lineWidth: 2,
+              fillAlpha: 0.3,
               showScaleX: false,
               showScaleY: false,
               

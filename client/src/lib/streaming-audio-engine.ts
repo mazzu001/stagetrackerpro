@@ -357,16 +357,16 @@ export class StreamingAudioEngine {
     const startBin = Math.floor(bufferLength * 0.02); // Skip only sub-bass (below ~20Hz)
     const endBin = Math.floor(bufferLength * 0.95);   // Use almost full frequency range
     
-    // Calculate weighted average with enhanced bass boost and reduced mid/high frequencies
+    // Calculate weighted average with balanced frequency representation
     let sum = 0;
     let weightedCount = 0;
     for (let i = startBin; i < endBin; i++) {
-      // Enhanced bass frequency weighting for VU meters
+      // Balanced frequency weighting - no extreme bass boost
       let weight = 1.0;
-      if (i < bufferLength * 0.08) weight = 20.0; // Maximum boost for kick/sub-bass (20-80 Hz)
-      else if (i < bufferLength * 0.2) weight = 20.0; // Maximum boost for bass (80-400 Hz)
-      else if (i < bufferLength * 0.4) weight = 1.26; // Reduced mids by 10% (was 1.4)
-      else weight = 0.99; // Reduced highs by 10% (was 1.1)
+      if (i < bufferLength * 0.08) weight = 2.0; // Gentle boost for kick/sub-bass (20-80 Hz)
+      else if (i < bufferLength * 0.2) weight = 1.8; // Mild boost for bass (80-400 Hz)
+      else if (i < bufferLength * 0.4) weight = 1.2; // Slight mid boost
+      else weight = 1.1; // Slight high boost
       
       sum += dataArray[i] * weight;
       weightedCount += weight;

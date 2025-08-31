@@ -500,10 +500,13 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
       addMidiMessage(midiCommand);
     }
     
-    // Dispatch global event for MIDI listening features
-    window.dispatchEvent(new CustomEvent('midiMessageReceived', {
-      detail: { data: data, timestamp: Date.now() }
-    }));
+    // Check if MIDI listen mode is active and insert into lyrics
+    if ((window as any).midiListenActive && (window as any).midiListenFormatFunction && (window as any).midiListenInsertFunction) {
+      const midiCommand = (window as any).midiListenFormatFunction(data);
+      if (midiCommand) {
+        (window as any).midiListenInsertFunction(midiCommand);
+      }
+    }
   };
 
   // Parse MIDI message into readable format

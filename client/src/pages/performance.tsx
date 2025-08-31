@@ -434,24 +434,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }, 0);
   };
 
-  // Handle MIDI message while listening
-  const handleMIDIListen = (event: any) => {
-    if (!isMidiListening) return;
-    
-    const midiCommand = formatMIDIToBracket(event.data);
-    if (midiCommand) {
-      console.log('🎵 MIDI Listen captured:', midiCommand);
-      insertAtCursor(midiCommand);
-      
-      toast({
-        title: "MIDI Command Captured",
-        description: `Inserted ${midiCommand} into lyrics`,
-      });
-    }
-  };
-
   // Toggle MIDI listening mode
-  const toggleMIDIListen = useCallback(async () => {
+  const toggleMIDIListen = useCallback(() => {
     if (!globalMidi.isConnected) {
       toast({
         title: "MIDI Not Available",
@@ -462,8 +446,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     if (isMidiListening) {
-      // Stop listening - remove our event listener
-      window.removeEventListener('midiMessageReceived', handleMIDIListen);
+      // Stop listening
+      (window as any).midiListenActive = false;
+      (window as any).midiListenInsertFunction = null;
       setIsMidiListening(false);
       
       toast({
@@ -471,8 +456,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         description: "No longer capturing MIDI commands",
       });
     } else {
-      // Start listening - add our event listener
-      window.addEventListener('midiMessageReceived', handleMIDIListen);
+      // Start listening
+      (window as any).midiListenActive = true;
+      (window as any).midiListenInsertFunction = insertAtCursor;
+      (window as any).midiListenFormatFunction = formatMIDIToBracket;
       setIsMidiListening(true);
       
       toast({
@@ -480,13 +467,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         description: "Play MIDI notes/controls to insert commands into lyrics",
       });
     }
-  }, [isMidiListening, toast]);
+  }, [globalMidi.isConnected, isMidiListening, toast]);
 
   // Clean up MIDI listening when dialog closes
   useEffect(() => {
     if (!isEditLyricsOpen && isMidiListening) {
-      // Stop MIDI listening when dialog closes
-      window.removeEventListener('midiMessageReceived', handleMIDIListen);
+      (window as any).midiListenActive = false;
+      (window as any).midiListenInsertFunction = null;
       setIsMidiListening(false);
     }
   }, [isEditLyricsOpen, isMidiListening]);

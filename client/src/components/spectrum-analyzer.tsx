@@ -50,14 +50,15 @@ export default function SpectrumAnalyzer({
               peakFadeTime: 2000, // 2 second peak fade
               peakHoldTime: 1000, // 1 second hold
               
-              // Frequency range - minimal bass frequencies
-              minFreq: 300,  // Cut out most bass frequencies  
+              // Frequency range - full range for proper weighting
+              minFreq: 60,  // Include all frequencies
               maxFreq: 16000, // Standard high-freq range
               
-              // Audio-safe settings - won't affect music quality
-              minDecibels: -90,
-              maxDecibels: -60,
-              smoothing: 0.8,
+              // Lower overall levels, then boost mids/highs
+              minDecibels: -100, // Much lower overall levels
+              maxDecibels: -80,  // Compressed range
+              smoothing: 0.6,    // More responsive
+              ansiBands: true,   // ANSI bands emphasize mids/highs
               
               // Line graph visual settings
               gradient: 'prism',

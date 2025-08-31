@@ -707,7 +707,7 @@ export default function TrackManager({
                   </div>
                   {/* Volume Fader and VU Meter Side by Side */}
                   <div className="flex-1 px-2 py-2 flex flex-col items-center">
-                    <div className="text-center text-xs text-gray-400 mb-2">LEVEL</div>
+                    <div className="text-center text-xs text-gray-400 mt-[-22px] mb-[-22px]">LEVEL</div>
                     <div className="flex-1 flex items-center justify-center gap-2">
                       {/* Vertical Volume Fader */}
                       <div className="h-32 relative flex items-center">

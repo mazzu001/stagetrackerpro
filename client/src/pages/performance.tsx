@@ -252,8 +252,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       
       try {
         const songs = LocalSongStorage.getAllSongs(user.email);
-        setAllSongs(songs);
-        console.log(`📋 Loaded ${songs.length} songs from local storage`);
+        // Sort songs alphabetically by title
+        const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
+        setAllSongs(sortedSongs);
+        console.log(`📋 Loaded ${sortedSongs.length} songs from local storage (alphabetically sorted)`);
       } catch (error) {
         console.error('❌ Failed to load songs:', error);
         toast({
@@ -272,7 +274,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     
     try {
       const songs = LocalSongStorage.getAllSongs(user.email);
-      setAllSongs(songs);
+      // Sort songs alphabetically by title
+      const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
+      setAllSongs(sortedSongs);
     } catch (error) {
       console.error('Failed to refresh songs:', error);
     }
@@ -333,7 +337,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         lyrics: '',
         waveformData: null
       });
-      setAllSongs(prev => [newSong, ...prev]);
+      setAllSongs(prev => [...prev, newSong].sort((a, b) => a.title.localeCompare(b.title)));
       setSongTitle("");
       setSongArtist("");
       setIsAddSongOpen(false);
@@ -900,54 +904,81 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             </div>
           </div>
           <div className="flex-1 overflow-y-auto">
-            {allSongs.map((song) => (
-              <div
-                key={song.id}
-                className={`p-2 md:p-4 border-b border-gray-700 transition-colors touch-target cursor-pointer hover:bg-gray-700 pt-[8px] pb-[8px] ${
-                  selectedSongId === song.id
-                    ? 'bg-primary/20 border-l-4 border-l-primary'
-                    : 'bg-transparent border-l-4 border-l-transparent hover:border-l-gray-600'
-                }`}
-                onClick={() => !isPlaying && setSelectedSongId(song.id)}
-                data-testid={`song-item-${song.id}`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className="font-medium text-sm md:text-base truncate mr-2">{song.title}</div>
-                  <button
-                    className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
-                      isPlaying 
-                        ? 'bg-gray-600 cursor-not-allowed opacity-50' 
-                        : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (!isPlaying) {
-                        setSelectedSongId(song.id);
-                        setIsTrackManagerOpen(true);
-                      }
-                    }}
-                    disabled={isPlaying}
-                    data-testid={`button-tracks-${song.id}`}
-                  >
-                    {song.tracks ? song.tracks.length : 0} tracks
-                  </button>
-                </div>
-                <div className="text-xs md:text-sm text-gray-400 truncate">{song.artist}</div>
-                <div className="flex items-center justify-between">
-                  <div className="text-xs text-gray-500">
-                    {song.duration > 0 ? `${Math.floor(song.duration / 60)}:${Math.floor(song.duration % 60).toString().padStart(2, '0')}` : '0:00'}
+            {(() => {
+              // Group songs by first letter
+              const groupedSongs = allSongs.reduce((groups, song) => {
+                const firstLetter = song.title.charAt(0).toUpperCase();
+                if (!groups[firstLetter]) {
+                  groups[firstLetter] = [];
+                }
+                groups[firstLetter].push(song);
+                return groups;
+              }, {} as Record<string, typeof allSongs>);
+
+              // Create sorted array of letters
+              const sortedLetters = Object.keys(groupedSongs).sort();
+
+              return sortedLetters.map(letter => (
+                <div key={letter}>
+                  {/* Letter separator */}
+                  <div className="px-2 md:px-4 py-1 bg-gray-800/50 border-b border-gray-600">
+                    <div className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                      {letter}
+                    </div>
                   </div>
-                  {selectedSongId === song.id && (
-                    <StereoVUMeter
-                      leftLevel={masterStereoLevels.left}
-                      rightLevel={masterStereoLevels.right}
-                      isPlaying={isPlaying}
-                      className="flex-shrink-0"
-                    />
-                  )}
+                  
+                  {/* Songs for this letter */}
+                  {groupedSongs[letter].map((song) => (
+                    <div
+                      key={song.id}
+                      className={`p-2 md:p-4 border-b border-gray-700 transition-colors touch-target cursor-pointer hover:bg-gray-700 pt-[8px] pb-[8px] ${
+                        selectedSongId === song.id
+                          ? 'bg-primary/20 border-l-4 border-l-primary'
+                          : 'bg-transparent border-l-4 border-l-transparent hover:border-l-gray-600'
+                      }`}
+                      onClick={() => !isPlaying && setSelectedSongId(song.id)}
+                      data-testid={`song-item-${song.id}`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="font-medium text-sm md:text-base truncate mr-2">{song.title}</div>
+                        <button
+                          className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
+                            isPlaying 
+                              ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                              : 'bg-gray-700 hover:bg-gray-600'
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (!isPlaying) {
+                              setSelectedSongId(song.id);
+                              setIsTrackManagerOpen(true);
+                            }
+                          }}
+                          disabled={isPlaying}
+                          data-testid={`button-tracks-${song.id}`}
+                        >
+                          {song.tracks ? song.tracks.length : 0} tracks
+                        </button>
+                      </div>
+                      <div className="text-xs md:text-sm text-gray-400 truncate">{song.artist}</div>
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-gray-500">
+                          {song.duration > 0 ? `${Math.floor(song.duration / 60)}:${Math.floor(song.duration % 60).toString().padStart(2, '0')}` : '0:00'}
+                        </div>
+                        {selectedSongId === song.id && (
+                          <StereoVUMeter
+                            leftLevel={masterStereoLevels.left}
+                            rightLevel={masterStereoLevels.right}
+                            isPlaying={isPlaying}
+                            className="flex-shrink-0"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            ))}
+              ));
+            })()}
             {allSongs.length === 0 && (
               <div className="p-4 text-center text-gray-400">
                 <Music className="w-8 h-8 mx-auto mb-2 opacity-50" />

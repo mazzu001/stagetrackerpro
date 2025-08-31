@@ -27,6 +27,7 @@ import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import type { SongWithTracks } from "@shared/schema";
 import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
 import { USBMidiManager } from "@/components/USBMidiManager";
+import { MIDIMessageMonitor } from "@/components/midi-message-monitor";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
 
 interface PerformanceProps {
@@ -1255,17 +1256,25 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             </div>
           </div>
 
-          {/* Lyrics Editor Content */}
-          <div className="flex-1 overflow-hidden">
-            <Textarea
-              id="lyrics"
-              ref={setLyricsTextareaRef}
-              value={lyricsText}
-              onChange={(e) => setLyricsText(e.target.value)}
-              placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and MIDI commands like [[CC:7:64:1]]"
-              className="w-full h-full resize-none font-mono text-sm border border-gray-600 bg-background"
-              data-testid="textarea-lyrics"
-            />
+          {/* Lyrics Editor Content - Split Layout */}
+          <div className="flex-1 overflow-hidden flex gap-3">
+            {/* Lyrics Text Area */}
+            <div className="flex-1 overflow-hidden">
+              <Textarea
+                id="lyrics"
+                ref={setLyricsTextareaRef}
+                value={lyricsText}
+                onChange={(e) => setLyricsText(e.target.value)}
+                placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and MIDI commands like [[CC:7:64:1]]"
+                className="w-full h-full resize-none font-mono text-sm border border-gray-600 bg-background"
+                data-testid="textarea-lyrics"
+              />
+            </div>
+            
+            {/* MIDI Message Monitor */}
+            <div className="w-80 overflow-hidden">
+              <MIDIMessageMonitor className="h-full" />
+            </div>
           </div>
 
           {/* Compact Action Buttons */}

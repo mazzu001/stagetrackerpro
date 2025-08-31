@@ -270,6 +270,15 @@ const sendMIDICommand = async (command: string): Promise<boolean> => {
   try {
     console.log('🎵 Sending global MIDI:', command, '→', Array.from(midiBytes).map(b => `0x${b.toString(16).padStart(2, '0')}`).join(' '));
     globalSelectedOutput.send(midiBytes);
+    
+    // Dispatch event for MIDI message monitor
+    window.dispatchEvent(new CustomEvent('midiMessageSent', {
+      detail: {
+        data: midiBytes,
+        command: command
+      }
+    }));
+    
     return true;
     
   } catch (error) {

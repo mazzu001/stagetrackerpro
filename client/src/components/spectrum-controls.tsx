@@ -54,191 +54,200 @@ export default function SpectrumControls({ settings, onSettingsChange, onReset }
   };
 
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader>
+    <Card className="w-full">
+      <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">🎛️ Spectrum Analyzer Controls</CardTitle>
-          <Button onClick={onReset} variant="outline" size="sm" data-testid="button-reset-spectrum">
-            Reset to Default
+          <CardTitle className="text-sm">🎛️ Spectrum Controls</CardTitle>
+          <Button onClick={onReset} variant="outline" size="sm" className="text-xs h-6" data-testid="button-reset-spectrum">
+            Reset
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-3 pt-0">
         
-        {/* Sensitivity Range */}
-        <div className="space-y-4">
-          <h3 className="font-semibold text-sm">📊 Sensitivity Range</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label className="text-xs">Min Level (dB): {settings.minDecibels}</Label>
-              <Slider
-                value={[settings.minDecibels]}
-                onValueChange={([value]) => updateSetting('minDecibels', value)}
-                min={-120}
-                max={-40}
-                step={5}
-                data-testid="slider-min-decibels"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label className="text-xs">Max Level (dB): {settings.maxDecibels}</Label>
-              <Slider
-                value={[settings.maxDecibels]}
-                onValueChange={([value]) => updateSetting('maxDecibels', value)}
-                min={-80}
-                max={0}
-                step={5}
-                data-testid="slider-max-decibels"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Frequency Range */}
-        <div className="space-y-4">
-          <h3 className="font-semibold text-sm">🎵 Frequency Range</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label className="text-xs">Min Frequency (Hz): {settings.minFreq}</Label>
-              <Slider
-                value={[settings.minFreq]}
-                onValueChange={([value]) => updateSetting('minFreq', value)}
-                min={20}
-                max={500}
-                step={10}
-                data-testid="slider-min-freq"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label className="text-xs">Max Frequency (Hz): {settings.maxFreq}</Label>
-              <Slider
-                value={[settings.maxFreq]}
-                onValueChange={([value]) => updateSetting('maxFreq', value)}
-                min={8000}
-                max={22000}
-                step={1000}
-                data-testid="slider-max-freq"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Visualization Mode */}
-        <div className="space-y-2">
-          <Label className="text-xs">🎨 Visualization Mode</Label>
-          <Select 
-            value={settings.mode.toString()} 
-            onValueChange={(value) => updateSetting('mode', parseInt(value))}
-          >
-            <SelectTrigger data-testid="select-visualization-mode">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {modeOptions.map(option => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Visual Settings */}
-        <div className="space-y-4">
-          <h3 className="font-semibold text-sm">🎨 Visual Settings</h3>
+        {/* Compact 4-column grid for main controls */}
+        <div className="grid grid-cols-4 gap-2 text-xs">
           
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label className="text-xs">Smoothing: {settings.smoothing.toFixed(1)}</Label>
-              <Slider
-                value={[settings.smoothing]}
-                onValueChange={([value]) => updateSetting('smoothing', value)}
-                min={0.1}
-                max={1.0}
-                step={0.1}
-                data-testid="slider-smoothing"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label className="text-xs">Line Width: {settings.lineWidth}</Label>
-              <Slider
-                value={[settings.lineWidth]}
-                onValueChange={([value]) => updateSetting('lineWidth', value)}
-                min={1}
-                max={5}
-                step={1}
-                data-testid="slider-line-width"
-              />
-            </div>
+          {/* Min Level */}
+          <div className="space-y-1">
+            <Label className="text-[10px] leading-tight">Min Level<br/>{settings.minDecibels}dB</Label>
+            <Slider
+              value={[settings.minDecibels]}
+              onValueChange={([value]) => updateSetting('minDecibels', value)}
+              min={-120}
+              max={-40}
+              step={5}
+              className="h-2"
+              data-testid="slider-min-decibels"
+            />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label className="text-xs">Fill Alpha: {settings.fillAlpha.toFixed(1)}</Label>
-              <Slider
-                value={[settings.fillAlpha]}
-                onValueChange={([value]) => updateSetting('fillAlpha', value)}
-                min={0.0}
-                max={1.0}
-                step={0.1}
-                data-testid="slider-fill-alpha"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label className="text-xs">Peak Fade (ms): {settings.peakFadeTime}</Label>
-              <Slider
-                value={[settings.peakFadeTime]}
-                onValueChange={([value]) => updateSetting('peakFadeTime', value)}
-                min={500}
-                max={5000}
-                step={500}
-                data-testid="slider-peak-fade"
-              />
-            </div>
+          {/* Max Level */}
+          <div className="space-y-1">
+            <Label className="text-[10px] leading-tight">Max Level<br/>{settings.maxDecibels}dB</Label>
+            <Slider
+              value={[settings.maxDecibels]}
+              onValueChange={([value]) => updateSetting('maxDecibels', value)}
+              min={-80}
+              max={0}
+              step={5}
+              className="h-2"
+              data-testid="slider-max-decibels"
+            />
           </div>
-        </div>
 
-        {/* Color Gradient */}
-        <div className="space-y-2">
-          <Label className="text-xs">🌈 Color Gradient</Label>
-          <Select 
-            value={settings.gradient} 
-            onValueChange={(value) => updateSetting('gradient', value)}
-          >
-            <SelectTrigger data-testid="select-gradient">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {gradientOptions.map(gradient => (
-                <SelectItem key={gradient} value={gradient}>
-                  {gradient.charAt(0).toUpperCase() + gradient.slice(1)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+          {/* Min Frequency */}
+          <div className="space-y-1">
+            <Label className="text-[10px] leading-tight">Min Freq<br/>{settings.minFreq}Hz</Label>
+            <Slider
+              value={[settings.minFreq]}
+              onValueChange={([value]) => updateSetting('minFreq', value)}
+              min={20}
+              max={500}
+              step={10}
+              className="h-2"
+              data-testid="slider-min-freq"
+            />
+          </div>
 
-        {/* Toggles */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <Label className="text-xs">Show Peak Lines</Label>
-            <Switch
-              checked={settings.showPeaks}
-              onCheckedChange={(checked) => updateSetting('showPeaks', checked)}
-              data-testid="switch-show-peaks"
+          {/* Max Frequency */}
+          <div className="space-y-1">
+            <Label className="text-[10px] leading-tight">Max Freq<br/>{settings.maxFreq/1000}kHz</Label>
+            <Slider
+              value={[settings.maxFreq]}
+              onValueChange={([value]) => updateSetting('maxFreq', value)}
+              min={8000}
+              max={22000}
+              step={1000}
+              className="h-2"
+              data-testid="slider-max-freq"
             />
           </div>
         </div>
 
-        {/* Live Values Display */}
-        <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded text-xs space-y-1">
-          <div className="font-semibold">📋 Current Settings:</div>
-          <div>Range: {settings.minDecibels}dB to {settings.maxDecibels}dB ({settings.maxDecibels - settings.minDecibels}dB total)</div>
-          <div>Frequency: {settings.minFreq}Hz to {settings.maxFreq}Hz</div>
-          <div>Mode: {modeOptions.find(m => m.value === settings.mode.toString())?.label}</div>
-          <div>Gradient: {settings.gradient}</div>
+        {/* Second row - 4 more controls */}
+        <div className="grid grid-cols-4 gap-2 text-xs">
+          
+          {/* Smoothing */}
+          <div className="space-y-1">
+            <Label className="text-[10px] leading-tight">Smoothing<br/>{settings.smoothing.toFixed(1)}</Label>
+            <Slider
+              value={[settings.smoothing]}
+              onValueChange={([value]) => updateSetting('smoothing', value)}
+              min={0.1}
+              max={1.0}
+              step={0.1}
+              className="h-2"
+              data-testid="slider-smoothing"
+            />
+          </div>
+          
+          {/* Line Width */}
+          <div className="space-y-1">
+            <Label className="text-[10px] leading-tight">Line Width<br/>{settings.lineWidth}px</Label>
+            <Slider
+              value={[settings.lineWidth]}
+              onValueChange={([value]) => updateSetting('lineWidth', value)}
+              min={1}
+              max={5}
+              step={1}
+              className="h-2"
+              data-testid="slider-line-width"
+            />
+          </div>
+
+          {/* Fill Alpha */}
+          <div className="space-y-1">
+            <Label className="text-[10px] leading-tight">Fill Alpha<br/>{settings.fillAlpha.toFixed(1)}</Label>
+            <Slider
+              value={[settings.fillAlpha]}
+              onValueChange={([value]) => updateSetting('fillAlpha', value)}
+              min={0.0}
+              max={1.0}
+              step={0.1}
+              className="h-2"
+              data-testid="slider-fill-alpha"
+            />
+          </div>
+          
+          {/* Peak Fade */}
+          <div className="space-y-1">
+            <Label className="text-[10px] leading-tight">Peak Fade<br/>{settings.peakFadeTime/1000}s</Label>
+            <Slider
+              value={[settings.peakFadeTime]}
+              onValueChange={([value]) => updateSetting('peakFadeTime', value)}
+              min={500}
+              max={5000}
+              step={500}
+              className="h-2"
+              data-testid="slider-peak-fade"
+            />
+          </div>
+        </div>
+
+        {/* Third row - dropdowns and toggles */}
+        <div className="grid grid-cols-3 gap-2 text-xs">
+          
+          {/* Visualization Mode */}
+          <div className="space-y-1">
+            <Label className="text-[10px]">Mode</Label>
+            <Select 
+              value={settings.mode.toString()} 
+              onValueChange={(value) => updateSetting('mode', parseInt(value))}
+            >
+              <SelectTrigger className="h-6 text-[10px]" data-testid="select-visualization-mode">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="text-xs">
+                {modeOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value} className="text-xs">
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Color Gradient */}
+          <div className="space-y-1">
+            <Label className="text-[10px]">Gradient</Label>
+            <Select 
+              value={settings.gradient} 
+              onValueChange={(value) => updateSetting('gradient', value)}
+            >
+              <SelectTrigger className="h-6 text-[10px]" data-testid="select-gradient">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="text-xs">
+                {gradientOptions.map(gradient => (
+                  <SelectItem key={gradient} value={gradient} className="text-xs">
+                    {gradient.charAt(0).toUpperCase() + gradient.slice(1)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Show Peaks Toggle */}
+          <div className="space-y-1">
+            <Label className="text-[10px]">Show Peaks</Label>
+            <div className="flex items-center h-6">
+              <Switch
+                checked={settings.showPeaks}
+                onCheckedChange={(checked) => updateSetting('showPeaks', checked)}
+                className="scale-75"
+                data-testid="switch-show-peaks"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Current values display - ultra compact */}
+        <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded text-[9px] leading-tight">
+          <div className="grid grid-cols-2 gap-1">
+            <div>Range: {settings.minDecibels} to {settings.maxDecibels}dB ({settings.maxDecibels - settings.minDecibels}dB)</div>
+            <div>Freq: {settings.minFreq}Hz to {settings.maxFreq/1000}kHz</div>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -18,7 +18,7 @@ export default function SpectrumAnalyzer({
   const [isActive, setIsActive] = useState(false);
   const analyzerRef = useRef<AnalyserNode | null>(null);
   const peakLevelsRef = useRef<number[]>([]);
-  const peakDecayRate = 0.95; // How fast peaks fall (0.95 = slow decay)
+  const peakDecayRate = 0.98; // How fast peaks fall (0.98 = very slow decay)
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -137,14 +137,14 @@ export default function SpectrumAnalyzer({
         // Frequency-dependent scaling to balance bass vs mids/highs
         let frequencyMultiplier;
         if (freqRatio < 0.2) {
-          // Bass frequencies - reduce by 20%
+          // Bass frequencies - keep current level (good balance)
           frequencyMultiplier = 0.8;
         } else if (freqRatio < 0.6) {
-          // Mid frequencies - boost by 30%
-          frequencyMultiplier = 1.3;
+          // Mid frequencies - boost much more for visibility
+          frequencyMultiplier = 2.2;
         } else {
-          // High frequencies - boost by 40%
-          frequencyMultiplier = 1.4;
+          // High frequencies - boost even more for sparkle
+          frequencyMultiplier = 2.8;
         }
         
         const amplifiedValue = Math.pow(normalizedValue, 0.5) * frequencyMultiplier; // More sensitive power curve

@@ -50,9 +50,10 @@ export default function SpectrumAnalyzer({
               peakFadeTime: 2000, // 2 second peak fade
               peakHoldTime: 1000, // 1 second hold
               
-              // Frequency range - minimal bass frequencies
-              minFreq: 300,  // Cut out most bass frequencies  
+              // Frequency range - include bass but balanced
+              minFreq: 60,  // Include bass frequencies
               maxFreq: 16000, // Standard high-freq range
+              frequencyScale: 'mel', // Mel scale reduces bass emphasis
               
               // Audio-safe settings - won't affect music quality
               minDecibels: -90,

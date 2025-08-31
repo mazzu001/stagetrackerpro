@@ -45,15 +45,15 @@ export default function SpectrumAnalyzer({
               fftSize: 2048, // Lighter processing
               
               // Professional appearance  
-              mode: 3, // 1/8 octave bands - better frequency balance
+              mode: 0, // Discrete frequencies - precise control
               showPeaks: true,
               peakFadeTime: 2000, // 2 second peak fade
               peakHoldTime: 1000, // 1 second hold
               
-              // Frequency range - include bass but balanced
-              minFreq: 60,  // Include bass frequencies
-              maxFreq: 16000, // Standard high-freq range
-              frequencyScale: 'bark', // Bark scale for better bass balance
+              // Frequency range - balanced distribution
+              minFreq: 100,  // Reduce bass range
+              maxFreq: 12000, // Focus on musical content
+              frequencyScale: 'log', // Standard logarithmic scale
               
               // Audio-safe settings - won't affect music quality
               minDecibels: -90,

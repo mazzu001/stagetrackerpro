@@ -28,8 +28,6 @@ import type { SongWithTracks } from "@shared/schema";
 import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
 import { USBMidiManager } from "@/components/USBMidiManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
-import SpectrumControls, { SpectrumSettings } from "@/components/spectrum-controls";
-import { defaultSettings } from "@/components/spectrum-analyzer";
 
 interface PerformanceProps {
   userType: UserType;
@@ -63,8 +61,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
-  const [spectrumSettings, setSpectrumSettings] = useState<SpectrumSettings>(defaultSettings);
-  const [showSpectrumControls, setShowSpectrumControls] = useState(false);
+
 
   const { toast } = useToast();
 
@@ -1164,7 +1161,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
       {/* Track Manager Dialog */}
       <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh]" data-testid="dialog-track-manager">
+        <DialogContent className="max-w-6xl max-h-[90vh]" data-testid="dialog-track-manager">
           <DialogHeader>
           </DialogHeader>
           {selectedSong && (
@@ -1186,7 +1183,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               isPlaying={isPlaying}
               isLoadingTracks={isLoadingTracks}
               audioLevels={audioLevels}
-              audioEngine={audioEngine}
               data-testid="track-manager"
             />
           )}

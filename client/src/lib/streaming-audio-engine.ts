@@ -108,28 +108,6 @@ export class StreamingAudioEngine {
       track.audioElement.src = track.url;
       track.audioElement.preload = 'none'; // CRITICAL: No preloading
       track.audioElement.crossOrigin = 'anonymous';
-      track.audioElement.loop = false; // Prevent auto-loop
-      
-      // Add event listeners to debug stopping issue
-      track.audioElement.addEventListener('ended', () => {
-        console.log(`🚨 Track "${track.name}" ENDED at ${track.audioElement?.currentTime}s`);
-      });
-      
-      track.audioElement.addEventListener('pause', () => {
-        console.log(`⏸️ Track "${track.name}" PAUSED at ${track.audioElement?.currentTime}s`);
-      });
-      
-      track.audioElement.addEventListener('stalled', () => {
-        console.log(`🐌 Track "${track.name}" STALLED - buffering issue`);
-      });
-      
-      track.audioElement.addEventListener('suspend', () => {
-        console.log(`⏹️ Track "${track.name}" SUSPENDED - browser auto-paused`);
-      });
-      
-      track.audioElement.addEventListener('error', (e) => {
-        console.log(`❌ Track "${track.name}" ERROR:`, e);
-      });
       
       // Create audio nodes
       track.source = this.audioContext.createMediaElementSource(track.audioElement);
@@ -279,8 +257,7 @@ export class StreamingAudioEngine {
       track.volume = volume;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        // Convert 0-100 volume to 0-1 gain range
-        track.gainNode.gain.value = volume / 100;
+        track.gainNode.gain.value = volume;
       }
     }
   }
@@ -291,8 +268,7 @@ export class StreamingAudioEngine {
       track.isMuted = !track.isMuted;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        // Convert 0-100 volume to 0-1 gain range when unmuting
-        track.gainNode.gain.value = track.isMuted ? 0 : track.volume / 100;
+        track.gainNode.gain.value = track.isMuted ? 0 : track.volume;
       }
     }
   }
@@ -311,8 +287,7 @@ export class StreamingAudioEngine {
       track.balance = balance;
       this.ensureTrackAudioNodes(track);
       if (track.panNode) {
-        // Convert -100 to +100 balance to -1 to +1 pan range
-        track.panNode.pan.value = balance / 100;
+        track.panNode.pan.value = balance;
       }
     }
   }
@@ -324,8 +299,7 @@ export class StreamingAudioEngine {
       this.ensureTrackAudioNodes(track);
       const shouldMute = hasSoloTracks && !track.isSolo;
       if (track.gainNode) {
-        // Convert 0-100 volume to 0-1 gain range when not muted
-        track.gainNode.gain.value = shouldMute ? 0 : track.volume / 100;
+        track.gainNode.gain.value = shouldMute ? 0 : track.volume;
       }
     });
   }
@@ -357,16 +331,16 @@ export class StreamingAudioEngine {
     const startBin = Math.floor(bufferLength * 0.02); // Skip only sub-bass (below ~20Hz)
     const endBin = Math.floor(bufferLength * 0.95);   // Use almost full frequency range
     
-    // Calculate weighted average with balanced frequency representation
+    // Calculate weighted average with enhanced bass boost and reduced mid/high frequencies
     let sum = 0;
     let weightedCount = 0;
     for (let i = startBin; i < endBin; i++) {
-      // Balanced frequency weighting - no extreme bass boost
+      // Enhanced bass frequency weighting for VU meters
       let weight = 1.0;
-      if (i < bufferLength * 0.08) weight = 2.0; // Gentle boost for kick/sub-bass (20-80 Hz)
-      else if (i < bufferLength * 0.2) weight = 1.8; // Mild boost for bass (80-400 Hz)
-      else if (i < bufferLength * 0.4) weight = 1.2; // Slight mid boost
-      else weight = 1.1; // Slight high boost
+      if (i < bufferLength * 0.08) weight = 20.0; // Maximum boost for kick/sub-bass (20-80 Hz)
+      else if (i < bufferLength * 0.2) weight = 20.0; // Maximum boost for bass (80-400 Hz)
+      else if (i < bufferLength * 0.4) weight = 1.26; // Reduced mids by 10% (was 1.4)
+      else weight = 0.99; // Reduced highs by 10% (was 1.1)
       
       sum += dataArray[i] * weight;
       weightedCount += weight;
@@ -433,10 +407,6 @@ export class StreamingAudioEngine {
 
   getState(): StreamingAudioEngineState {
     return { ...this.state };
-  }
-
-  getAudioContext(): AudioContext {
-    return this.audioContext;
   }
 
   get isLoading(): boolean {

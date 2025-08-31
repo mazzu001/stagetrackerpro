@@ -282,7 +282,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     isMidiConnected,
     masterVolume,
     isLoadingTracks,
-    audioEngine: audioEngineRef.current,
     play,
     pause,
     stop,

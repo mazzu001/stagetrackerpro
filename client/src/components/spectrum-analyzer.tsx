@@ -18,7 +18,9 @@ export default function SpectrumAnalyzer({
   const [isActive, setIsActive] = useState(false);
   const analyzerRef = useRef<AnalyserNode | null>(null);
   const peakLevelsRef = useRef<number[]>([]);
+  const mainLevelsRef = useRef<number[]>([]); // For slower main bar decay
   const peakDecayRate = 0.98; // How fast peaks fall (0.98 = very slow decay)
+  const mainDecayRate = 0.96; // How fast main bars fall (much slower decay)
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -67,7 +69,7 @@ export default function SpectrumAnalyzer({
           analyzer = audioContext.createAnalyser();
           if (analyzer) {
             analyzer.fftSize = 1024;
-            analyzer.smoothingTimeConstant = 0.85; // Much smoother, less blinking
+            analyzer.smoothingTimeConstant = 0.75; // Balanced response
             analyzer.minDecibels = -70; // Higher sensitivity
             analyzer.maxDecibels = -5; // Better range
             
@@ -110,9 +112,10 @@ export default function SpectrumAnalyzer({
     const dataArray = new Uint8Array(bufferLength);
     const displayBands = Math.floor(bufferLength * 0.4); // Show audible frequency range
     
-    // Initialize peak levels array
+    // Initialize peak and main levels arrays
     if (peakLevelsRef.current.length === 0) {
       peakLevelsRef.current = new Array(displayBands).fill(0);
+      mainLevelsRef.current = new Array(displayBands).fill(0);
     }
 
     const draw = () => {
@@ -140,22 +143,34 @@ export default function SpectrumAnalyzer({
           // Bass frequencies - keep current level (good balance)
           frequencyMultiplier = 0.8;
         } else if (freqRatio < 0.6) {
-          // Mid frequencies - boost much more for visibility
-          frequencyMultiplier = 2.2;
+          // Mid frequencies - boost much more for visibility  
+          frequencyMultiplier = 3.5;
         } else {
           // High frequencies - boost even more for sparkle
-          frequencyMultiplier = 2.8;
+          frequencyMultiplier = 4.2;
         }
         
-        const amplifiedValue = Math.pow(normalizedValue, 0.5) * frequencyMultiplier; // More sensitive power curve
-        const barHeight = amplifiedValue * rect.height * 1.2; // Much higher overall sensitivity
+        const amplifiedValue = Math.pow(normalizedValue, 0.3) * frequencyMultiplier; // Maximum sensitivity
+        const instantBarHeight = amplifiedValue * rect.height * 2.5; // Very high sensitivity
+        
+        // Update main levels with slower decay
+        const currentMain = mainLevelsRef.current[i];
+        let barHeight;
+        if (instantBarHeight > currentMain) {
+          barHeight = instantBarHeight;
+          mainLevelsRef.current[i] = instantBarHeight;
+        } else {
+          // Main bar decay - fall slower than real-time
+          barHeight = currentMain * mainDecayRate;
+          mainLevelsRef.current[i] = barHeight;
+        }
         
         // Update peak levels
         const currentPeak = peakLevelsRef.current[i];
         if (barHeight > currentPeak) {
           peakLevelsRef.current[i] = barHeight;
         } else {
-          // Peak decay - slowly fall down
+          // Peak decay - very slow fall
           peakLevelsRef.current[i] = currentPeak * peakDecayRate;
         }
         

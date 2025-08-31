@@ -225,6 +225,14 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
     console.log('🎵 Received MIDI:', hexString);
     
     setMidiMessages(prev => [message, ...prev.slice(0, 9)]);
+    
+    // Check if MIDI listen mode is active and insert into lyrics
+    if ((window as any).midiListenActive && (window as any).midiListenFormatFunction && (window as any).midiListenInsertFunction) {
+      const midiCommand = (window as any).midiListenFormatFunction(event.data);
+      if (midiCommand) {
+        (window as any).midiListenInsertFunction(midiCommand);
+      }
+    }
   };
 
   // Connect to output device

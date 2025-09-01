@@ -84,13 +84,9 @@ export default function CompactTransportControls({
         </Button>
       </div>
 
-      {/* Time Display and MIDI Status */}
+      {/* Time Display */}
       <div className="flex justify-between items-center text-xs text-gray-400 mt-3">
         <span className="font-mono">{formatTime(currentTime)}</span>
-        <div className="flex items-center space-x-1">
-          <span className="text-xs">MIDI</span>
-          <div className={`w-1.5 h-1.5 rounded-full ${isMidiConnected ? 'bg-secondary animate-pulse' : 'bg-gray-500'}`} />
-        </div>
         <span className="font-mono">{formatTime(duration)}</span>
       </div>
     </div>

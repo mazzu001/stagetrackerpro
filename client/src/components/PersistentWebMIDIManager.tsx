@@ -29,28 +29,13 @@ export function PersistentWebMIDIManager() {
 
   // Refresh available devices - MINIMAL, NO REPEATED CALLS
   const refreshDevices = async () => {
-    console.log('🔄 PersistentWebMIDIManager: Starting device refresh...');
     setIsRefreshing(true);
     try {
-      // First refresh the global MIDI system to scan for devices
-      console.log('🔄 PersistentWebMIDIManager: Calling globalMidi.refreshDevices()...');
-      await globalMidi.refreshDevices();
-      
-      // Then get the available devices
-      console.log('🔄 PersistentWebMIDIManager: Getting available outputs...');
       const outputs = globalMidi.getAvailableOutputs();
-      
       setAvailableOutputs(outputs);
-      console.log('🔄 PersistentWebMIDIManager: Refreshed MIDI devices:', outputs.length, 'outputs found');
-      
-      if (outputs.length === 0) {
-        console.log('⚠️ PersistentWebMIDIManager: No MIDI devices detected. Check if:');
-        console.log('⚠️ 1. Bluetooth MIDI devices are paired and connected to computer');
-        console.log('⚠️ 2. Browser has MIDI permissions');
-        console.log('⚠️ 3. Devices appear in system MIDI settings');
-      }
+      console.log('🔄 Refreshed MIDI devices:', outputs.length, 'outputs found');
     } catch (error) {
-      console.error('❌ PersistentWebMIDIManager: Failed to refresh devices:', error);
+      console.error('❌ Failed to refresh devices:', error);
     } finally {
       setIsRefreshing(false);
     }
@@ -260,18 +245,11 @@ export function PersistentWebMIDIManager() {
                     </Badge>
                     <Button
                       size="sm"
-                      onClick={() => {
-                        const isCurrentlyConnected = globalMidi.isDeviceConnected(device.id, 'output');
-                        if (isCurrentlyConnected) {
-                          globalMidi.disconnectFromDevice(device.id);
-                        } else {
-                          connectToOutput(device.id);
-                        }
-                      }}
+                      onClick={() => connectToOutput(device.id)}
                       disabled={device.state !== 'connected'}
-                      variant={globalMidi.isDeviceConnected(device.id, 'output') ? 'default' : 'outline'}
+                      variant={globalMidi.isConnected && globalMidi.deviceName === device.name ? 'default' : 'outline'}
                     >
-                      {globalMidi.isDeviceConnected(device.id, 'output') ? 'Disconnect' : 'Connect'}
+                      {globalMidi.isConnected && globalMidi.deviceName === device.name ? 'Connected' : 'Connect'}
                     </Button>
                   </div>
                 </div>

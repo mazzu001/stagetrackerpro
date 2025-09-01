@@ -1124,7 +1124,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               isPlaying={isPlaying}
               currentTime={currentTime}
               duration={duration}
-              progress={currentTime / duration * 100}
+              progress={duration > 0 ? (currentTime / duration * 100) : 0}
               isMidiConnected={isMidiConnected}
               onPlay={play}
               onPause={pause}
@@ -1177,7 +1177,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   isPlaying={isPlaying}
                   currentTime={currentTime}
                   duration={duration}
-                  progress={currentTime / duration * 100}
+                  progress={duration > 0 ? (currentTime / duration * 100) : 0}
                   isMidiConnected={isMidiConnected}
                   onPlay={handlePlay}
                   onPause={handlePause}

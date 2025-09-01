@@ -125,11 +125,16 @@ export function WaveformVisualizer({
       
       // Determine color based on playback position and activity
       let color;
-      if (timeAtPosition <= currentTime && isPlaying) {
-        // Played portion - use dynamic color based on current audio levels
-        const avgLevel = Object.values(audioLevels).reduce((sum, level) => sum + level, 0) / Object.keys(audioLevels).length || 0;
-        const intensity = Math.min(1, avgLevel / 50 + 0.3);
-        color = `rgba(34, 197, 94, ${intensity})`; // Green with variable intensity
+      if (timeAtPosition <= currentTime) {
+        if (isPlaying) {
+          // Played portion while playing - use dynamic green based on audio levels
+          const avgLevel = Object.values(audioLevels).reduce((sum, level) => sum + level, 0) / Object.keys(audioLevels).length || 0;
+          const intensity = Math.min(1, avgLevel / 50 + 0.3);
+          color = `rgba(34, 197, 94, ${intensity})`; // Green with variable intensity
+        } else {
+          // Played portion while paused - blue hue
+          color = `rgba(59, 130, 246, 0.7)`; // Blue for played portions when paused
+        }
       } else if (timeAtPosition <= currentTime + 5 && isPlaying) {
         // Upcoming section (next 5 seconds) - blue hint
         const proximity = 1 - (timeAtPosition - currentTime) / 5;
@@ -145,18 +150,25 @@ export function WaveformVisualizer({
       ctx.fillRect(x, centerY - barHeight / 2, Math.max(1, barWidth - 0.5), barHeight);
     });
 
-    // Draw progress line
-    if (isPlaying && duration > 0) {
-      const progressX = (currentTime / duration) * width;
+    // Draw position line (always visible)
+    if (duration > 0) {
+      const positionX = (currentTime / duration) * width;
       
-      // Progress line with glow effect
-      ctx.shadowColor = 'rgba(34, 197, 94, 0.8)';
-      ctx.shadowBlur = 4;
-      ctx.strokeStyle = 'rgba(34, 197, 94, 0.9)';
+      // Position line - green when playing, white when paused
+      if (isPlaying) {
+        ctx.shadowColor = 'rgba(34, 197, 94, 0.8)';
+        ctx.shadowBlur = 4;
+        ctx.strokeStyle = 'rgba(34, 197, 94, 0.9)';
+      } else {
+        ctx.shadowColor = 'rgba(255, 255, 255, 0.6)';
+        ctx.shadowBlur = 3;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+      }
+      
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.moveTo(progressX, 0);
-      ctx.lineTo(progressX, height);
+      ctx.moveTo(positionX, 0);
+      ctx.lineTo(positionX, height);
       ctx.stroke();
       
       // Reset shadow

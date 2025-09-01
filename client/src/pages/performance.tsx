@@ -802,6 +802,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               currentTime={currentTime}
               isPlaying={isPlaying}
               audioLevels={audioLevels}
+              onSeek={seek}
               data-testid="header-waveform-visualizer"
             />
           </div>

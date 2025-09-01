@@ -8,6 +8,7 @@ interface WaveformVisualizerProps {
   isPlaying: boolean;
   audioLevels?: Record<string, number>;
   className?: string;
+  onSeek?: (time: number) => void;
 }
 
 export function WaveformVisualizer({ 
@@ -15,12 +16,14 @@ export function WaveformVisualizer({
   currentTime, 
   isPlaying, 
   audioLevels = {},
-  className = ""
+  className = "",
+  onSeek
 }: WaveformVisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number>();
   const [waveformData, setWaveformData] = useState<number[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
   // Cache and waveform generation is now handled by waveformGenerator utility
 
@@ -131,8 +134,10 @@ export function WaveformVisualizer({
         const proximity = 1 - (timeAtPosition - currentTime) / 5;
         color = `rgba(59, 130, 246, ${proximity * 0.4})`; // Blue with fade
       } else {
-        // Unplayed portion - gray
-        color = 'rgba(71, 85, 105, 0.6)'; // slate-600
+        // Unplayed portion - gray, with subtle highlight when hovering and interactive
+        const isInteractive = !isPlaying && onSeek && waveformData.length > 0;
+        const baseOpacity = isInteractive && isHovering ? 0.8 : 0.6;
+        color = `rgba(71, 85, 105, ${baseOpacity})`; // slate-600
       }
 
       ctx.fillStyle = color;
@@ -193,14 +198,45 @@ export function WaveformVisualizer({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [song, currentTime, isPlaying, audioLevels, waveformData]);
+  }, [song, currentTime, isPlaying, audioLevels, waveformData, isHovering]);
 
   // Redraw when not playing but data changes
   useEffect(() => {
     if (!isPlaying) {
       draw();
     }
-  }, [song, currentTime, waveformData]);
+  }, [song, currentTime, waveformData, isHovering]);
+
+  // Handle click/touch events for seeking (only when not playing)
+  const handleCanvasInteraction = (event: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (!song || !onSeek || isPlaying || waveformData.length === 0) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    let clientX: number;
+
+    // Handle both mouse and touch events
+    if ('touches' in event) {
+      if (event.touches.length === 0) return;
+      clientX = event.touches[0].clientX;
+    } else {
+      clientX = event.clientX;
+    }
+
+    // Calculate position relative to canvas
+    const x = clientX - rect.left;
+    const canvasWidth = rect.width;
+    
+    // Convert X position to time
+    const position = Math.max(0, Math.min(1, x / canvasWidth));
+    const duration = song.duration || 240;
+    const seekTime = position * duration;
+    
+    // Call the seek function
+    onSeek(seekTime);
+  };
 
   if (!song || song.tracks.length === 0) {
     return (
@@ -219,7 +255,15 @@ export function WaveformVisualizer({
         width={400}
         height={60}
         className="w-full h-full"
-        style={{ display: 'block', height: '60px' }}
+        style={{ 
+          display: 'block', 
+          height: '60px',
+          cursor: !isPlaying && song && waveformData.length > 0 && onSeek ? 'pointer' : 'default'
+        }}
+        onClick={handleCanvasInteraction}
+        onTouchStart={handleCanvasInteraction}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
       />
     </div>
   );

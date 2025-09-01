@@ -34,7 +34,7 @@ export default function CompactTransportControls({
 
 
   return (
-    <div className="bg-surface border border-gray-700 rounded-lg p-3 w-full">
+    <div className="bg-surface border border-gray-700 rounded-lg p-3 w-full mt-[-8px] mb-[-8px] pt-[9px] pb-[9px] pl-[19px] pr-[19px] ml-[0px] mr-[0px]">
       {/* Transport Controls Row */}
       <div className="flex items-center justify-center space-x-4 md:space-x-2 pt-[0px] pb-[0px] mt-[-11px] mb-[-11px]">
         <Button

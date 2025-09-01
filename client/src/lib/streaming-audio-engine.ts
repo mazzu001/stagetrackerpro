@@ -109,6 +109,14 @@ export class StreamingAudioEngine {
       track.audioElement.preload = 'none'; // CRITICAL: No preloading
       track.audioElement.crossOrigin = 'anonymous';
       
+      // Add ended event listener for backup end detection
+      track.audioElement.addEventListener('ended', () => {
+        if (this.state.isPlaying) {
+          console.log(`🔄 Audio element ended event triggered for ${track.name}, auto-restarting`);
+          this.stop(); // Reset to beginning
+        }
+      });
+      
       // Create audio nodes
       track.source = this.audioContext.createMediaElementSource(track.audioElement);
       track.gainNode = this.audioContext.createGain();
@@ -380,9 +388,10 @@ export class StreamingAudioEngine {
           const currentTime = firstTrack.audioElement.currentTime;
           this.state.currentTime = currentTime;
           
-          // Check if song has reached its end
-          if (this.state.duration > 0 && currentTime >= this.state.duration) {
-            console.log(`🔄 Song ended automatically, resetting to beginning`);
+          // Check if song has reached its end (with tolerance for timing precision)
+          const tolerance = 0.1; // 100ms tolerance to catch songs that end slightly early
+          if (this.state.duration > 0 && currentTime >= (this.state.duration - tolerance)) {
+            console.log(`🔄 Song ended automatically at ${currentTime.toFixed(2)}s (duration: ${this.state.duration.toFixed(2)}s), resetting to beginning`);
             this.stop(); // This will reset currentTime to 0 and stop playback
             return; // Exit early since stop() already calls notifyListeners()
           }

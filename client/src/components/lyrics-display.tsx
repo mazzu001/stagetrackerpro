@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Edit, ChevronUp, ChevronDown } from "lucide-react";
-import { IncomingMIDIDisplay } from "./incoming-midi-display";
 
 interface LyricsLine {
   timestamp: number; // in seconds

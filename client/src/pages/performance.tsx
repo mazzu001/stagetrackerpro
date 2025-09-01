@@ -1125,12 +1125,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               isPlaying={isPlaying}
               currentTime={currentTime}
               duration={duration}
-              progress={duration > 0 ? (currentTime / duration * 100) : 0}
               isMidiConnected={isMidiConnected}
               onPlay={play}
               onPause={pause}
               onStop={stop}
-              onSeek={handleSeek}
             />
           </div>
         </div>
@@ -1178,12 +1176,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   isPlaying={isPlaying}
                   currentTime={currentTime}
                   duration={duration}
-                  progress={duration > 0 ? (currentTime / duration * 100) : 0}
                   isMidiConnected={isMidiConnected}
                   onPlay={handlePlay}
                   onPause={handlePause}
                   onStop={handleStop}
-                  onSeek={handleSeek}
                 />
                 
                 {/* Mobile Manual MIDI Send */}

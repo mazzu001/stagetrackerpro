@@ -11,24 +11,20 @@ interface CompactTransportControlsProps {
   isPlaying: boolean;
   currentTime: number;
   duration: number;
-  progress: number;
   isMidiConnected: boolean;
   onPlay: () => void;
   onPause: () => void;
   onStop: () => void;
-  onSeek: (time: number) => void;
 }
 
 export default function CompactTransportControls({
   isPlaying,
   currentTime,
   duration,
-  progress,
   isMidiConnected,
   onPlay,
   onPause,
-  onStop,
-  onSeek
+  onStop
 }: CompactTransportControlsProps) {
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -36,18 +32,11 @@ export default function CompactTransportControls({
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const percentage = clickX / rect.width;
-    const newTime = percentage * duration;
-    onSeek(newTime);
-  };
 
   return (
     <div className="bg-surface border border-gray-700 rounded-lg p-3 w-full">
       {/* Transport Controls Row */}
-      <div className="flex items-center justify-center space-x-4 md:space-x-2 mb-3">
+      <div className="flex items-center justify-center space-x-4 md:space-x-2">
         <Button
           variant="ghost"
           size="sm"
@@ -94,47 +83,15 @@ export default function CompactTransportControls({
           <SkipForward className="w-5 h-5 md:w-4 md:h-4" />
         </Button>
       </div>
-      
-      {/* Progress Bar - Mobile only */}
-      <div className="space-y-2 md:hidden">
-        <div 
-          className="w-full bg-gray-700 rounded-full h-2 cursor-pointer group touch-target"
-          onClick={handleProgressClick}
-          data-testid="progress-bar"
-        >
-          <div 
-            className={`bg-secondary h-2 rounded-full group-hover:bg-green-400 ${
-              isPlaying ? '' : 'transition-all duration-100'
-            }`}
-            style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
-          />
+
+      {/* Time Display and MIDI Status */}
+      <div className="flex justify-between items-center text-xs text-gray-400 mt-3">
+        <span className="font-mono">{formatTime(currentTime)}</span>
+        <div className="flex items-center space-x-1">
+          <span className="text-xs">MIDI</span>
+          <div className={`w-1.5 h-1.5 rounded-full ${isMidiConnected ? 'bg-secondary animate-pulse' : 'bg-gray-500'}`} />
         </div>
-      </div>
-      
-      {/* Progress Bar - Desktop only (thin) */}
-      <div className="space-y-2 hidden md:block">
-        <div 
-          className="w-full bg-gray-700 rounded-full h-1 cursor-pointer group"
-          onClick={handleProgressClick}
-          data-testid="progress-bar-desktop"
-        >
-          <div 
-            className={`bg-secondary h-1 rounded-full group-hover:bg-green-400 ${
-              isPlaying ? '' : 'transition-all duration-100'
-            }`}
-            style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
-          />
-        </div>
-        
-        {/* Time Display */}
-        <div className="flex justify-between items-center text-xs text-gray-400">
-          <span className="font-mono">{formatTime(currentTime)}</span>
-          <div className="flex items-center space-x-1">
-            <span className="text-xs">MIDI</span>
-            <div className={`w-1.5 h-1.5 rounded-full ${isMidiConnected ? 'bg-secondary animate-pulse' : 'bg-gray-500'}`} />
-          </div>
-          <span className="font-mono">{formatTime(duration)}</span>
-        </div>
+        <span className="font-mono">{formatTime(duration)}</span>
       </div>
     </div>
   );

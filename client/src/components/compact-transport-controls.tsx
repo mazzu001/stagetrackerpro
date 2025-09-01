@@ -36,7 +36,7 @@ export default function CompactTransportControls({
   return (
     <div className="bg-surface border border-gray-700 rounded-lg p-3 w-full">
       {/* Transport Controls Row */}
-      <div className="flex items-center justify-center space-x-4 md:space-x-2">
+      <div className="flex items-center justify-center space-x-4 md:space-x-2 pt-[0px] pb-[0px] mt-[-11px] mb-[-11px]">
         <Button
           variant="ghost"
           size="sm"
@@ -83,7 +83,6 @@ export default function CompactTransportControls({
           <SkipForward className="w-5 h-5 md:w-4 md:h-4" />
         </Button>
       </div>
-
       {/* Time Display */}
       <div className="flex justify-between items-center text-xs text-gray-400 mt-3">
         <span className="font-mono">{formatTime(currentTime)}</span>

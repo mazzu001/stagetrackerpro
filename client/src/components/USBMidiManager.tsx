@@ -42,11 +42,12 @@ export function USBMidiManager() {
   // Use global Web MIDI system for persistent connections
   const { 
     isConnected: globalIsConnected, 
-    deviceName: globalDeviceName, 
+    deviceName: globalDeviceNames, 
     sendCommand: globalSendCommand, 
     connectToDevice: globalConnectToDevice, 
     refreshDevices, 
-    getAvailableOutputs 
+    getAvailableOutputs,
+    isDeviceConnected 
   } = useGlobalWebMIDI();
   
   // Local UI state
@@ -71,7 +72,12 @@ export function USBMidiManager() {
     try {
       await refreshDevices();
       const availableOutputs = getAvailableOutputs();
-      setOutputDevices(availableOutputs);
+      // Map to include port property (null for compatibility)
+      const devicesWithPort = availableOutputs.map(device => ({
+        ...device,
+        port: null // USB Manager doesn't use the actual port object
+      }));
+      setOutputDevices(devicesWithPort);
     } catch (error) {
       console.error('Failed to load MIDI devices:', error);
       toast({
@@ -103,7 +109,7 @@ export function USBMidiManager() {
       if (success) {
         toast({
           title: "MIDI Connected",
-          description: `Connected to ${globalDeviceName}`,
+          description: `Connected to ${globalDeviceNames || 'device'}`,
         });
       } else {
         throw new Error('Connection failed');
@@ -116,7 +122,7 @@ export function USBMidiManager() {
         variant: "destructive",
       });
     }
-  }, [selectedOutputId, globalConnectToDevice, globalDeviceName, toast]);
+  }, [selectedOutputId, globalConnectToDevice, globalDeviceNames, toast]);
 
   // Send MIDI command using global system
   const sendMIDICommand = useCallback(async () => {
@@ -259,7 +265,7 @@ export function USBMidiManager() {
               </p>
               <p className="text-sm text-muted-foreground">
                 {globalIsConnected 
-                  ? globalDeviceName
+                  ? globalDeviceNames || 'Connected devices'
                   : 'No active MIDI connection'
                 }
               </p>

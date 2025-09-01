@@ -245,11 +245,18 @@ export function PersistentWebMIDIManager() {
                     </Badge>
                     <Button
                       size="sm"
-                      onClick={() => connectToOutput(device.id)}
+                      onClick={() => {
+                        const isCurrentlyConnected = globalMidi.isDeviceConnected(device.id, 'output');
+                        if (isCurrentlyConnected) {
+                          globalMidi.disconnectFromDevice(device.id);
+                        } else {
+                          connectToOutput(device.id);
+                        }
+                      }}
                       disabled={device.state !== 'connected'}
-                      variant={globalMidi.isConnected && globalMidi.deviceName === device.name ? 'default' : 'outline'}
+                      variant={globalMidi.isDeviceConnected(device.id, 'output') ? 'default' : 'outline'}
                     >
-                      {globalMidi.isConnected && globalMidi.deviceName === device.name ? 'Connected' : 'Connect'}
+                      {globalMidi.isDeviceConnected(device.id, 'output') ? 'Disconnect' : 'Connect'}
                     </Button>
                   </div>
                 </div>

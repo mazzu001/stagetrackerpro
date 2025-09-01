@@ -31,6 +31,9 @@ export function PersistentWebMIDIManager() {
   const refreshDevices = async () => {
     setIsRefreshing(true);
     try {
+      // First refresh the global MIDI system to scan for devices
+      await globalMidi.refreshDevices();
+      // Then get the available devices
       const outputs = globalMidi.getAvailableOutputs();
       setAvailableOutputs(outputs);
       console.log('🔄 Refreshed MIDI devices:', outputs.length, 'outputs found');

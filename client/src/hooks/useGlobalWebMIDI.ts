@@ -181,7 +181,26 @@ const attemptAutoReconnect = async (): Promise<boolean> => {
       if (!globalSelectedInputs.find(i => i.id === input.id)) {
         globalSelectedInputs.push(input);
         globalConnectedInputDeviceNames.push(input.name || 'Unknown Input Device');
-        input.onmidimessage = handleIncomingMIDI;
+        
+        // Set up message listener for this specific device
+        const deviceName = input.name || 'Unknown Input Device';
+        input.onmidimessage = (event: MIDIMessageEvent) => {
+          if (event.data && event.data.length > 0) {
+            const command = formatIncomingMIDI(event.data);
+            if (command) {
+              console.log('📨 Incoming MIDI:', command, 'from', deviceName);
+              
+              // Dispatch event for components to listen to
+              window.dispatchEvent(new CustomEvent('incomingMIDI', {
+                detail: {
+                  command,
+                  timestamp: Date.now(),
+                  deviceName: deviceName
+                }
+              }));
+            }
+          }
+        };
       }
       
       console.log('✅ Auto-reconnected to MIDI input device:', input.name);
@@ -256,31 +275,55 @@ const initializeWebMIDI = async (): Promise<boolean> => {
 
 // Get available MIDI output devices - NO LOOPS, return array directly
 const getAvailableOutputs = (): MIDIDevice[] => {
-  if (!globalMidiAccess) return [];
+  if (!globalMidiAccess) {
+    console.log('⚠️ getAvailableOutputs: globalMidiAccess not initialized');
+    return [];
+  }
+  
+  console.log('🔍 Scanning for MIDI output devices...');
+  console.log('🔍 globalMidiAccess.outputs.size:', globalMidiAccess.outputs.size);
   
   // Convert to array without loops
-  return Array.from(globalMidiAccess.outputs.values()).map((output: MIDIOutput) => ({
-    id: output.id,
-    name: output.name || 'Unknown Device',
-    manufacturer: output.manufacturer || 'Unknown',
-    state: output.state,
-    type: 'output' as const,
-    connection: output.connection
-  }));
+  const devices = Array.from(globalMidiAccess.outputs.values()).map((output: MIDIOutput) => {
+    console.log('🎵 Found output device:', output.name, 'state:', output.state, 'connection:', output.connection);
+    return {
+      id: output.id,
+      name: output.name || 'Unknown Device',
+      manufacturer: output.manufacturer || 'Unknown',
+      state: output.state,
+      type: 'output' as const,
+      connection: output.connection
+    };
+  });
+  
+  console.log('🔍 Total output devices found:', devices.length);
+  return devices;
 };
 
 // Get available MIDI input devices
 const getAvailableInputs = (): MIDIDevice[] => {
-  if (!globalMidiAccess) return [];
+  if (!globalMidiAccess) {
+    console.log('⚠️ getAvailableInputs: globalMidiAccess not initialized');
+    return [];
+  }
   
-  return Array.from(globalMidiAccess.inputs.values()).map((input: MIDIInput) => ({
-    id: input.id,
-    name: input.name || 'Unknown Device',
-    manufacturer: input.manufacturer || 'Unknown',
-    state: input.state,
-    type: 'input' as const,
-    connection: input.connection
-  }));
+  console.log('🔍 Scanning for MIDI input devices...');
+  console.log('🔍 globalMidiAccess.inputs.size:', globalMidiAccess.inputs.size);
+  
+  const devices = Array.from(globalMidiAccess.inputs.values()).map((input: MIDIInput) => {
+    console.log('🎵 Found input device:', input.name, 'state:', input.state, 'connection:', input.connection);
+    return {
+      id: input.id,
+      name: input.name || 'Unknown Device',
+      manufacturer: input.manufacturer || 'Unknown',
+      state: input.state,
+      type: 'input' as const,
+      connection: input.connection
+    };
+  });
+  
+  console.log('🔍 Total input devices found:', devices.length);
+  return devices;
 };
 
 // Connect to a specific device (adds to array, doesn't replace)
@@ -421,24 +464,7 @@ const formatIncomingMIDI = (data: Uint8Array): string => {
   return '';
 };
 
-// Handle incoming MIDI message
-const handleIncomingMIDI = (deviceName: string) => (event: MIDIMessageEvent) => {
-  if (event.data && event.data.length > 0) {
-    const command = formatIncomingMIDI(event.data);
-    if (command) {
-      console.log('📨 Incoming MIDI:', command, 'from', deviceName);
-      
-      // Dispatch event for components to listen to
-      window.dispatchEvent(new CustomEvent('incomingMIDI', {
-        detail: {
-          command,
-          timestamp: Date.now(),
-          deviceName: deviceName
-        }
-      }));
-    }
-  }
-};
+// Removed handleIncomingMIDI - now using inline handlers for each device
 
 // Connect to input device (adds to array, doesn't replace)
 const connectToInputDevice = async (deviceId: string): Promise<boolean> => {
@@ -467,7 +493,24 @@ const connectToInputDevice = async (deviceId: string): Promise<boolean> => {
     globalConnectedInputDeviceNames.push(input.name || 'Unknown Input Device');
     
     // Set up message listener for this specific device
-    input.onmidimessage = handleIncomingMIDI(input.name || 'Unknown Input Device');
+    const deviceName = input.name || 'Unknown Input Device';
+    input.onmidimessage = (event: MIDIMessageEvent) => {
+      if (event.data && event.data.length > 0) {
+        const command = formatIncomingMIDI(event.data);
+        if (command) {
+          console.log('📨 Incoming MIDI:', command, 'from', deviceName);
+          
+          // Dispatch event for components to listen to
+          window.dispatchEvent(new CustomEvent('incomingMIDI', {
+            detail: {
+              command,
+              timestamp: Date.now(),
+              deviceName: deviceName
+            }
+          }));
+        }
+      }
+    };
     
     // Save all connected devices
     saveConnectedDevices();

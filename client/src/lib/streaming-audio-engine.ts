@@ -30,6 +30,7 @@ export class StreamingAudioEngine {
   private listeners: Set<() => void> = new Set();
   private updateInterval: number | null = null;
   private syncTimeouts: number[] = [];
+  private onSongEndCallback: (() => void) | null = null;
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -112,8 +113,13 @@ export class StreamingAudioEngine {
       // Add ended event listener for backup end detection
       track.audioElement.addEventListener('ended', () => {
         if (this.state.isPlaying) {
-          console.log(`🔄 Audio element ended event triggered for ${track.name}, auto-restarting`);
-          this.stop(); // Reset to beginning
+          console.log(`🔄 Audio element ended event triggered for ${track.name}, triggering callback`);
+          // Use callback if available (same path as stop button), otherwise fall back to direct stop
+          if (this.onSongEndCallback) {
+            this.onSongEndCallback();
+          } else {
+            this.stop();
+          }
         }
       });
       
@@ -376,6 +382,11 @@ export class StreamingAudioEngine {
     return combinedLevels;
   }
 
+  // Set callback for when song ends automatically
+  setOnSongEndCallback(callback: (() => void) | null) {
+    this.onSongEndCallback = callback;
+  }
+
   // Time tracking for smooth playback
   private startTimeTracking() {
     this.stopTimeTracking(); // Clear any existing interval
@@ -391,9 +402,14 @@ export class StreamingAudioEngine {
           // Check if song has reached its end (with tolerance for timing precision)
           const tolerance = 0.1; // 100ms tolerance to catch songs that end slightly early
           if (this.state.duration > 0 && currentTime >= (this.state.duration - tolerance)) {
-            console.log(`🔄 Song ended automatically at ${currentTime.toFixed(2)}s (duration: ${this.state.duration.toFixed(2)}s), resetting to beginning`);
-            this.stop(); // This will reset currentTime to 0 and stop playback
-            return; // Exit early since stop() already calls notifyListeners()
+            console.log(`🔄 Song ended automatically at ${currentTime.toFixed(2)}s (duration: ${this.state.duration.toFixed(2)}s), triggering callback`);
+            // Use callback if available (same path as stop button), otherwise fall back to direct stop
+            if (this.onSongEndCallback) {
+              this.onSongEndCallback();
+            } else {
+              this.stop();
+            }
+            return; // Exit early
           }
           
           this.notifyListeners();

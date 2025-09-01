@@ -35,11 +35,25 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   const audioEngineRef = useRef<StreamingAudioEngine | null>(null);
   const animationFrameRef = useRef<number>();
 
+  const stop = useCallback(() => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.stop();
+      setIsPlaying(false);
+      setCurrentTime(0);
+    }
+  }, []);
+
   // Initialize audio engine
   useEffect(() => {
     const initAudioEngine = async () => {
       try {
         audioEngineRef.current = new StreamingAudioEngine();
+        
+        // Set up callback for automatic song end (same path as stop button)
+        audioEngineRef.current.setOnSongEndCallback(() => {
+          console.log('🔄 Song ended automatically - using same path as stop button');
+          stop();
+        });
         
         // Set up state listener for duration updates
         const unsubscribe = audioEngineRef.current.subscribe(() => {
@@ -82,7 +96,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, []);
+  }, [stop]);
 
   // Set up song and load tracks for streaming playback
   useEffect(() => {
@@ -218,14 +232,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     if (audioEngineRef.current) {
       audioEngineRef.current.pause();
       setIsPlaying(false);
-    }
-  }, []);
-
-  const stop = useCallback(() => {
-    if (audioEngineRef.current) {
-      audioEngineRef.current.stop();
-      setIsPlaying(false);
-      setCurrentTime(0);
     }
   }, []);
 

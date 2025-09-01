@@ -379,6 +379,14 @@ export class StreamingAudioEngine {
         if (firstTrack.audioElement) {
           const currentTime = firstTrack.audioElement.currentTime;
           this.state.currentTime = currentTime;
+          
+          // Check if song has reached its end
+          if (this.state.duration > 0 && currentTime >= this.state.duration) {
+            console.log(`🔄 Song ended automatically, resetting to beginning`);
+            this.stop(); // This will reset currentTime to 0 and stop playback
+            return; // Exit early since stop() already calls notifyListeners()
+          }
+          
           this.notifyListeners();
         }
       }

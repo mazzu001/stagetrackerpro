@@ -24,6 +24,7 @@ export function WaveformVisualizer({
   const [waveformData, setWaveformData] = useState<number[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [previewPosition, setPreviewPosition] = useState<number | null>(null);
 
   // Cache and waveform generation is now handled by waveformGenerator utility
 
@@ -162,6 +163,26 @@ export function WaveformVisualizer({
       ctx.shadowBlur = 0;
     }
 
+    // Draw preview line when hovering (only when interactive)
+    if (!isPlaying && previewPosition !== null && onSeek && waveformData.length > 0) {
+      const previewX = previewPosition * width;
+      
+      // Preview line with subtle glow
+      ctx.shadowColor = 'rgba(59, 130, 246, 0.6)';
+      ctx.shadowBlur = 3;
+      ctx.strokeStyle = 'rgba(59, 130, 246, 0.8)'; // Blue preview line
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]); // Dashed line to differentiate from progress
+      ctx.beginPath();
+      ctx.moveTo(previewX, 0);
+      ctx.lineTo(previewX, height);
+      ctx.stroke();
+      
+      // Reset line dash and shadow
+      ctx.setLineDash([]);
+      ctx.shadowBlur = 0;
+    }
+
     // Draw time indicators
     if (duration > 0) {
       ctx.fillStyle = 'rgba(148, 163, 184, 0.7)'; // slate-400
@@ -198,28 +219,26 @@ export function WaveformVisualizer({
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [song, currentTime, isPlaying, audioLevels, waveformData, isHovering]);
+  }, [song, currentTime, isPlaying, audioLevels, waveformData, isHovering, previewPosition]);
 
   // Redraw when not playing but data changes
   useEffect(() => {
     if (!isPlaying) {
       draw();
     }
-  }, [song, currentTime, waveformData, isHovering]);
+  }, [song, currentTime, waveformData, isHovering, previewPosition]);
 
-  // Handle click/touch events for seeking (only when not playing)
-  const handleCanvasInteraction = (event: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    if (!song || !onSeek || isPlaying || waveformData.length === 0) return;
-
+  // Calculate position from mouse/touch coordinates
+  const getPositionFromEvent = (event: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement> | MouseEvent | TouchEvent) => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !song) return null;
 
     const rect = canvas.getBoundingClientRect();
     let clientX: number;
 
     // Handle both mouse and touch events
     if ('touches' in event) {
-      if (event.touches.length === 0) return;
+      if (event.touches.length === 0) return null;
       clientX = event.touches[0].clientX;
     } else {
       clientX = event.clientX;
@@ -229,12 +248,43 @@ export function WaveformVisualizer({
     const x = clientX - rect.left;
     const canvasWidth = rect.width;
     
-    // Convert X position to time
-    const position = Math.max(0, Math.min(1, x / canvasWidth));
+    // Convert X position to normalized position (0-1)
+    return Math.max(0, Math.min(1, x / canvasWidth));
+  };
+
+  // Handle mouse movement for preview
+  const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!song || !onSeek || isPlaying || waveformData.length === 0) {
+      setPreviewPosition(null);
+      return;
+    }
+
+    const position = getPositionFromEvent(event);
+    setPreviewPosition(position);
+  };
+
+  // Handle touch movement for preview
+  const handleTouchMove = (event: React.TouchEvent<HTMLCanvasElement>) => {
+    if (!song || !onSeek || isPlaying || waveformData.length === 0) {
+      setPreviewPosition(null);
+      return;
+    }
+
+    event.preventDefault(); // Prevent scrolling while dragging
+    const position = getPositionFromEvent(event);
+    setPreviewPosition(position);
+  };
+
+  // Handle click/touch events for seeking
+  const handleCanvasInteraction = (event: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    if (!song || !onSeek || isPlaying || waveformData.length === 0) return;
+
+    const position = getPositionFromEvent(event);
+    if (position === null) return;
+    
+    // Convert position to time and seek
     const duration = song.duration || 240;
     const seekTime = position * duration;
-    
-    // Call the seek function
     onSeek(seekTime);
   };
 
@@ -262,8 +312,14 @@ export function WaveformVisualizer({
         }}
         onClick={handleCanvasInteraction}
         onTouchStart={handleCanvasInteraction}
+        onMouseMove={handleMouseMove}
+        onTouchMove={handleTouchMove}
         onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
+        onMouseLeave={() => {
+          setIsHovering(false);
+          setPreviewPosition(null);
+        }}
+        onTouchEnd={() => setPreviewPosition(null)}
       />
     </div>
   );

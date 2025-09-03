@@ -583,6 +583,47 @@ export default function TrackManager({
           Tracks ({tracks.length}/6)
         </h3>
         
+        {/* Global Pitch Control - positioned between title and buttons */}
+        {tracks.length > 0 && (
+          <div className="flex items-center gap-4 mx-4">
+            <div className="flex items-center gap-2">
+              <Music className="h-4 w-4 text-orange-500" />
+              <span className="text-sm font-medium">Pitch</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 w-6">-4</span>
+              <Slider
+                value={[globalPitch]}
+                onValueChange={(value) => {
+                  setGlobalPitch(value[0]);
+                  onPitchChange?.(value[0]);
+                }}
+                min={-4}
+                max={4}
+                step={1}
+                className="w-20"
+                data-testid="slider-global-pitch"
+              />
+              <span className="text-xs text-gray-500 w-6">+4</span>
+              <span className="text-sm font-mono w-10 text-center">
+                {globalPitch > 0 ? `+${globalPitch}` : globalPitch}
+              </span>
+            </div>
+            <Button
+              onClick={() => {
+                setGlobalPitch(0);
+                onPitchChange?.(0);
+              }}
+              variant="outline"
+              size="sm"
+              className="text-xs h-7"
+              data-testid="button-reset-pitch"
+            >
+              Reset
+            </Button>
+          </div>
+        )}
+        
         <div className="flex gap-2">
           {tracks.length > 0 && (
             <Button
@@ -648,53 +689,6 @@ export default function TrackManager({
         </div>
       </div>
 
-      {/* Global Pitch Control */}
-      {tracks.length > 0 && (
-        <Card className="mb-4">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Music className="h-4 w-4 text-orange-500" />
-                <span className="text-sm font-medium">Global Pitch</span>
-              </div>
-              <div className="flex-1 flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-8">-4</span>
-                <Slider
-                  value={[globalPitch]}
-                  onValueChange={(value) => {
-                    setGlobalPitch(value[0]);
-                    onPitchChange?.(value[0]);
-                  }}
-                  min={-4}
-                  max={4}
-                  step={1}
-                  className="flex-1"
-                  data-testid="slider-global-pitch"
-                />
-                <span className="text-xs text-gray-500 w-8">+4</span>
-                <span className="text-sm font-mono w-12 text-center">
-                  {globalPitch > 0 ? `+${globalPitch}` : globalPitch}
-                </span>
-              </div>
-              <Button
-                onClick={() => {
-                  setGlobalPitch(0);
-                  onPitchChange?.(0);
-                }}
-                variant="outline"
-                size="sm"
-                className="text-xs"
-                data-testid="button-reset-pitch"
-              >
-                Reset
-              </Button>
-            </div>
-            <div className="mt-2 text-xs text-gray-500">
-              Adjust pitch by semitones (affects all tracks simultaneously)
-            </div>
-          </CardContent>
-        </Card>
-      )}
 
       {tracks.length === 0 ? (
         <Card>

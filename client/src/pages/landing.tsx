@@ -31,7 +31,7 @@ export default function Landing() {
             <div className="relative w-full h-0 pb-[56.25%] rounded-lg overflow-hidden shadow-2xl">
               <iframe
                 className="absolute top-0 left-0 w-full h-full"
-                src="https://www.youtube.com/embed/y76YiXaUrqY"
+                src="https://www.youtube.com/embed/-dfiVXaDc4Q"
                 title="StageTracker Pro Demo"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

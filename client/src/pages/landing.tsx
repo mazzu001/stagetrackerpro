@@ -72,28 +72,30 @@ export default function Landing() {
         {/* Login Section */}
         <Card className="max-w-md mx-auto bg-slate-800/70 border-slate-600">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl text-white">Get Started</CardTitle>
+            <CardTitle className="text-2xl text-white">Start Your FREE Trial</CardTitle>
             <CardDescription className="text-gray-400">
-              Sign in to access your personal music collection
+              <span className="text-green-400 font-semibold">✓ No Credit Card Required</span><br/>
+              <span className="text-green-400 font-semibold">✓ 2 Free Songs Included</span><br/>
+              <span className="text-green-400 font-semibold">✓ Instant Access</span>
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Button 
               onClick={() => setIsLoginOpen(true)}
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold"
               size="lg"
-              data-testid="button-login"
+              data-testid="button-signup"
             >
-              Sign In
+              🚀 Start FREE Trial - No Credit Card!
             </Button>
             <Button 
               onClick={() => setIsLoginOpen(true)}
               variant="outline"
               className="w-full border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white"
               size="lg"
-              data-testid="button-signup"
+              data-testid="button-login"
             >
-              Sign Up
+              Already Have an Account? Sign In
             </Button>
 
           </CardContent>
@@ -107,9 +109,24 @@ export default function Landing() {
 
         {/* Trial Info */}
         <div className="text-center mt-12">
-          <p className="text-gray-400">
-            Start with 2 free songs • $4.99/month for unlimited songs
-          </p>
+          <div className="bg-gradient-to-r from-green-600/20 to-blue-600/20 border border-green-500/30 rounded-lg p-6 max-w-2xl mx-auto">
+            <h3 className="text-xl font-bold text-white mb-3">🎉 100% FREE to Get Started</h3>
+            <div className="grid md:grid-cols-2 gap-4 text-sm">
+              <div className="text-green-400">
+                <p className="font-semibold">✓ No Credit Card Required</p>
+                <p className="font-semibold">✓ No Hidden Fees</p>
+                <p className="font-semibold">✓ Cancel Anytime</p>
+              </div>
+              <div className="text-blue-400">
+                <p className="font-semibold">✓ 2 Free Songs Forever</p>
+                <p className="font-semibold">✓ Full MIDI Features</p>
+                <p className="font-semibold">✓ Offline Performance</p>
+              </div>
+            </div>
+            <p className="text-gray-300 mt-4 text-sm">
+              Upgrade to unlimited songs for just $4.99/month when you're ready
+            </p>
+          </div>
         </div>
       </div>
     </div>

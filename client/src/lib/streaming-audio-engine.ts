@@ -450,30 +450,46 @@ export class StreamingAudioEngine {
   // Speed control methods removed - focusing only on pitch
 
   private async updateTrackPitch(audioElement: HTMLAudioElement) {
-    // SIMPLE PITCH SHIFTING: Use playbackRate with Web Audio API formula
-    // Based on: https://zpl.fi/pitch-shifting-in-web-audio-api/
+    // DEBUG: Check if this function is even being called
+    console.log(`🔍 updateTrackPitch called with ${this.globalPitchSemitones} semitones`);
     
     const track = this.state.tracks.find(t => t.audioElement === audioElement);
-    if (!track) return;
+    if (!track) {
+      console.log(`❌ No track found for audio element`);
+      return;
+    }
     
     try {
-      console.log(`🎵 Applying pitch shift: ${this.globalPitchSemitones} semitones`);
+      console.log(`🔍 BEFORE: audioElement.playbackRate = ${audioElement.playbackRate}`);
+      console.log(`🔍 Current audio element:`, audioElement.src);
+      console.log(`🔍 Audio element paused:`, audioElement.paused);
       
       if (this.globalPitchSemitones === 0) {
         // Reset to normal playback
         audioElement.playbackRate = 1.0;
-        console.log(`🎵 Pitch reset to normal (1.0x playback rate)`);
+        console.log(`✅ RESET: playbackRate set to 1.0`);
+        console.log(`🔍 AFTER RESET: audioElement.playbackRate = ${audioElement.playbackRate}`);
         return;
       }
 
       // Use the Web Audio API formula: playbackRate = 2^(semitones/12)
-      // This changes BOTH pitch and tempo together (like a turntable)
       const playbackRate = Math.pow(2, this.globalPitchSemitones / 12);
+      
+      console.log(`🔍 CALCULATED: playbackRate should be ${playbackRate.toFixed(3)}`);
+      
+      // Apply the playback rate
       audioElement.playbackRate = playbackRate;
       
-      console.log(`🎵 Pitch shift applied: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
-      console.log(`🎵 Playback rate: ${playbackRate.toFixed(3)}x`);
-      console.log(`ℹ️ Note: This approach changes both pitch AND tempo (like vinyl speed)`);
+      console.log(`🔍 AFTER: audioElement.playbackRate = ${audioElement.playbackRate}`);
+      console.log(`🎵 Applied ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
+      console.log(`⚠️ This SHOULD change both pitch AND speed together!`);
+      
+      // Double-check it was set correctly
+      if (Math.abs(audioElement.playbackRate - playbackRate) > 0.001) {
+        console.error(`❌ PlaybackRate not set correctly! Expected: ${playbackRate}, Got: ${audioElement.playbackRate}`);
+      } else {
+        console.log(`✅ PlaybackRate set correctly: ${audioElement.playbackRate}`);
+      }
       
     } catch (error) {
       console.error(`❌ Pitch shift failed:`, error);

@@ -1,5 +1,5 @@
-// Clean pitch shifter using simple delay modulation
-// Optimized for minimal distortion and artifacts
+// Proper pitch shifter using time-stretching and resampling
+// This actually changes pitch by adjusting playback speed
 
 class PitchShifterProcessor extends AudioWorkletProcessor {
   constructor() {
@@ -7,24 +7,39 @@ class PitchShifterProcessor extends AudioWorkletProcessor {
     
     this.pitchRatio = 1.0;
     
-    // Simple delay line for clean processing
-    this.delayBufferSize = 2048;
-    this.delayBuffer = new Float32Array(this.delayBufferSize);
-    this.writeIndex = 0;
+    // Larger buffer for better quality pitch shifting
+    this.bufferSize = 8192;
+    this.inputBuffer = new Float32Array(this.bufferSize);
+    this.outputBuffer = new Float32Array(this.bufferSize);
     
-    // Smooth parameter changes
-    this.currentRatio = 1.0;
-    this.targetRatio = 1.0;
-    this.smoothingFactor = 0.99;
+    // Read/write positions
+    this.writePos = 0;
+    this.readPos = 0.0; // Float for fractional positions
+    
+    // Grain processing for smooth pitch shifts
+    this.grainSize = 1024;
+    this.hopSize = 256;
+    this.grainIndex = 0;
+    
+    // Window function for smooth grain blending
+    this.window = new Float32Array(this.grainSize);
+    for (let i = 0; i < this.grainSize; i++) {
+      this.window[i] = 0.5 * (1 - Math.cos(2 * Math.PI * i / this.grainSize));
+    }
+    
+    // Output grain buffer
+    this.currentGrain = new Float32Array(this.grainSize);
+    this.grainOutput = 0;
     
     this.port.onmessage = (event) => {
       if (event.data.type === 'pitchRatio') {
-        this.targetRatio = Math.max(0.5, Math.min(2.0, event.data.value));
-        console.log(`🎵 Target pitch ratio: ${this.targetRatio.toFixed(3)}`);
+        const newRatio = Math.max(0.5, Math.min(2.0, event.data.value));
+        this.pitchRatio = newRatio;
+        console.log(`🎵 Pitch ratio: ${newRatio.toFixed(3)} (${((newRatio - 1) * 12).toFixed(1)} semitones)`);
       }
     };
     
-    console.log('🎵 Clean pitch shifter initialized');
+    console.log('🎵 Time-stretching pitch shifter initialized');
   }
   
   process(inputs, outputs) {
@@ -38,21 +53,21 @@ class PitchShifterProcessor extends AudioWorkletProcessor {
     
     if (!inputChannel || !outputChannel) return true;
     
-    // Smooth parameter changes to avoid clicks
-    this.currentRatio += (this.targetRatio - this.currentRatio) * (1 - this.smoothingFactor);
-    
+    // Fill input buffer
     for (let i = 0; i < inputChannel.length; i++) {
-      // Write input to delay buffer
-      this.delayBuffer[this.writeIndex] = inputChannel[i];
-      this.writeIndex = (this.writeIndex + 1) % this.delayBufferSize;
-      
-      if (Math.abs(this.currentRatio - 1.0) < 0.01) {
-        // No pitch change - clean passthrough with minimal delay
-        const readIndex = (this.writeIndex - 128 + this.delayBufferSize) % this.delayBufferSize;
-        outputChannel[i] = this.delayBuffer[readIndex];
+      this.inputBuffer[this.writePos] = inputChannel[i];
+      this.writePos = (this.writePos + 1) % this.bufferSize;
+    }
+    
+    // Generate output
+    for (let i = 0; i < outputChannel.length; i++) {
+      if (Math.abs(this.pitchRatio - 1.0) < 0.01) {
+        // No pitch change - direct passthrough with small delay
+        const delayedPos = (this.writePos - 1024 + this.bufferSize) % this.bufferSize;
+        outputChannel[i] = this.inputBuffer[delayedPos];
       } else {
-        // Apply gentle pitch shifting
-        outputChannel[i] = this.processCleanPitch(i);
+        // Apply pitch shifting
+        outputChannel[i] = this.getPitchShiftedSample();
       }
     }
     
@@ -66,35 +81,59 @@ class PitchShifterProcessor extends AudioWorkletProcessor {
     return true;
   }
   
-  processCleanPitch(sampleIndex) {
-    // Use simple frequency modulation approach
-    const baseDelay = 256; // Base delay in samples
-    const modulationDepth = 64; // Modulation depth
+  getPitchShiftedSample() {
+    // Process grains when needed
+    if (this.grainOutput >= this.grainSize) {
+      this.generateGrain();
+      this.grainOutput = 0;
+    }
     
-    // Calculate modulation based on pitch ratio
-    const pitchFactor = (this.currentRatio - 1.0) * modulationDepth;
-    const modulation = Math.sin(sampleIndex * 0.01) * pitchFactor;
+    // Get sample from current grain
+    const sample = this.currentGrain[this.grainOutput];
+    this.grainOutput++;
     
-    // Calculate read position with modulation
-    let readDelay = baseDelay + modulation;
-    if (readDelay < 1) readDelay = 1;
-    if (readDelay >= this.delayBufferSize - 1) readDelay = this.delayBufferSize - 2;
+    return sample;
+  }
+  
+  generateGrain() {
+    // Clear the grain
+    this.currentGrain.fill(0);
     
-    const readIndex = (this.writeIndex - Math.floor(readDelay) + this.delayBufferSize) % this.delayBufferSize;
+    // Extract grain from input buffer at current read position
+    for (let i = 0; i < this.grainSize; i++) {
+      // Calculate source position
+      const sourceIndex = this.readPos + (i / this.pitchRatio);
+      
+      // Ensure we don't read beyond available data
+      const maxReadPos = this.writePos - this.grainSize - 1;
+      if (sourceIndex > maxReadPos) break;
+      
+      // Get integer and fractional parts
+      const intIndex = Math.floor(sourceIndex);
+      const fracPart = sourceIndex - intIndex;
+      
+      // Get buffer positions
+      const pos1 = (intIndex + this.bufferSize) % this.bufferSize;
+      const pos2 = (intIndex + 1 + this.bufferSize) % this.bufferSize;
+      
+      // Linear interpolation
+      const sample1 = this.inputBuffer[pos1];
+      const sample2 = this.inputBuffer[pos2];
+      const interpolated = sample1 * (1 - fracPart) + sample2 * fracPart;
+      
+      // Apply window and store
+      this.currentGrain[i] = interpolated * this.window[i];
+    }
     
-    // Simple linear interpolation
-    const fraction = readDelay - Math.floor(readDelay);
-    const nextIndex = (readIndex + 1) % this.delayBufferSize;
+    // Advance read position
+    this.readPos += this.hopSize / this.pitchRatio;
     
-    const sample1 = this.delayBuffer[readIndex];
-    const sample2 = this.delayBuffer[nextIndex];
-    
-    const interpolated = sample1 * (1 - fraction) + sample2 * fraction;
-    
-    // Apply gentle filtering to reduce artifacts
-    return interpolated * 0.7; // Reduce gain to prevent clipping
+    // Keep read position within bounds
+    if (this.readPos >= this.bufferSize - this.grainSize) {
+      this.readPos = 0;
+    }
   }
 }
 
-// Register the clean processor
+// Register the proper pitch shifter
 registerProcessor('pitch-shifter', PitchShifterProcessor);

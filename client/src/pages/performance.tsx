@@ -225,6 +225,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     updateTrackMute,
     updateTrackSolo,
     updateGlobalPitch,
+    updateGlobalSpeed,
     isAudioEngineOnline,
     masterStereoLevels,
     audioLevels

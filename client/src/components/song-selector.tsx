@@ -395,32 +395,32 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
             Import
           </Button>
         </div>
-      </div>
-      
-      {/* Multi-select controls */}
-      <div className="flex items-center space-x-3 mb-4">
-        <Checkbox 
-          id="multi-select" 
-          checked={isMultiSelectMode}
-          onCheckedChange={handleMultiSelectToggle}
-          data-testid="checkbox-multi-select"
-          className="h-5 w-5"
-        />
-        <Label htmlFor="multi-select" className="text-sm text-gray-300 cursor-pointer font-medium">
-          Select multiple songs to delete
-        </Label>
-        {selectedSongs.size > 0 && (
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={handleDeleteSelectedSongs}
-            className="ml-auto"
-            data-testid="button-delete-selected"
-          >
-            <Trash2 className="w-4 h-4 mr-1" />
-            Delete {selectedSongs.size} Song{selectedSongs.size !== 1 ? 's' : ''}
-          </Button>
-        )}
+        
+        {/* Multi-select controls right below buttons */}
+        <div className="flex items-center space-x-3 mt-3">
+          <Checkbox 
+            id="multi-select" 
+            checked={isMultiSelectMode}
+            onCheckedChange={handleMultiSelectToggle}
+            data-testid="checkbox-multi-select"
+            className="h-5 w-5"
+          />
+          <Label htmlFor="multi-select" className="text-sm text-gray-300 cursor-pointer font-medium">
+            Select multiple songs to delete
+          </Label>
+          {selectedSongs.size > 0 && (
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleDeleteSelectedSongs}
+              className="ml-auto"
+              data-testid="button-delete-selected"
+            >
+              <Trash2 className="w-4 h-4 mr-1" />
+              Delete {selectedSongs.size} Song{selectedSongs.size !== 1 ? 's' : ''}
+            </Button>
+          )}
+        </div>
       </div>
       
       {songs.length === 0 ? (

@@ -277,7 +277,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, []);
 
-
   return {
     isPlaying,
     currentTime,
@@ -297,6 +296,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     updateTrackBalance,
     updateTrackMute,
     updateTrackSolo,
-    updateMasterVolume,
+    updateMasterVolume
   };
 }

@@ -249,7 +249,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         setProcessedTimestamps(prev => new Set(Array.from(prev).concat(timestamp)));
       }
     }
-  }, [currentTime, song?.lyrics, onMidiCommand]);
+  }, [currentTime, song?.lyrics, onMidiCommand, processedTimestamps]);
   
   // Execute non-timestamped MIDI commands when song changes
   useEffect(() => {

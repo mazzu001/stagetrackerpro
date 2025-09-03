@@ -22,7 +22,6 @@ interface TrackManagerProps {
   onTrackMuteToggle?: (trackId: string) => void;
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
-  // Pitch and speed control removed
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
@@ -37,7 +36,6 @@ export default function TrackManager({
   onTrackMuteToggle, 
   onTrackSoloToggle, 
   onTrackBalanceChange,
-  // onSpeedChange removed
   audioLevels = {},
   isPlaying = false,
   isLoadingTracks = false,
@@ -51,7 +49,6 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
-  // Pitch and speed control removed
 
   // Recording state
   // Recording features removed for simplicity
@@ -598,7 +595,6 @@ export default function TrackManager({
           </div>
           
         </div>
-        
         
         <div className="flex items-center gap-2">
           {/* Play/Pause button - only show if callbacks provided */}

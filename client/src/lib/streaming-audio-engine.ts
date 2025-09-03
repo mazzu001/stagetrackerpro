@@ -1,5 +1,4 @@
 // Streaming audio engine with lazy initialization to prevent UI blocking
-// Pitch shifting libraries removed - focusing on streaming audio only
 
 export interface StreamingTrack {
   id: string;
@@ -10,7 +9,6 @@ export interface StreamingTrack {
   gainNode: GainNode | null;
   panNode: StereoPannerNode | null;
   analyzerNode: AnalyserNode | null;
-  // Pitch shifting removed
   volume: number;
   balance: number;
   isMuted: boolean;
@@ -24,7 +22,6 @@ export interface StreamingAudioEngineState {
   tracks: StreamingTrack[];
   masterVolume: number;
   masterGainNode: GainNode | null;
-  masterOutputNode: GainNode | null;
 }
 
 export class StreamingAudioEngine {
@@ -45,96 +42,25 @@ export class StreamingAudioEngine {
       tracks: [],
       masterVolume: 0.8,
       masterGainNode: null,
-      masterOutputNode: null,
     };
-    this.setupMasterOutput();
+    this.setupMasterGain();
   }
 
-  // Tone.js initialization removed
-
-  private setupMasterOutput() {
-    // Create master gain node (for volume control)
+  private setupMasterGain() {
     this.state.masterGainNode = this.audioContext.createGain();
+    this.state.masterGainNode.connect(this.audioContext.destination);
     this.state.masterGainNode.gain.value = this.state.masterVolume;
-    
-    // Create master output node
-    this.state.masterOutputNode = this.audioContext.createGain();
-    
-    // Simple and reliable audio routing
-    this.state.masterGainNode.connect(this.state.masterOutputNode);
-    this.state.masterOutputNode.connect(this.audioContext.destination);
-    
-    console.log('🎵 Master output initialized');
-  }
-
-  // Check for processed track versions with different pitch settings
-  private async checkForProcessedVersions(trackData: Array<{ id: string; name: string; url: string }>): Promise<Array<{ id: string; name: string; url: string }>> {
-    console.log('🎵 Checking for processed track versions...');
-    
-    let browserFS: any;
-    try {
-      const { BrowserFileSystem } = await import('../lib/browser-file-system');
-      browserFS = BrowserFileSystem.getInstance();
-      if (!browserFS) {
-        console.log('⚠️ Browser file system not available, using original tracks');
-        return trackData;
-      }
-      
-      // Ensure the database is initialized
-      await browserFS.initialize();
-    } catch (error) {
-      console.log('⚠️ Browser file system not available, using original tracks');
-      return trackData;
-    }
-
-    const tracksToLoad = [];
-    
-    for (const track of trackData) {
-      let trackToUse = track;
-      
-      // Check for processed versions (±1 to ±4 semitones)
-      const pitchVariations = ['+4ST', '+3ST', '+2ST', '+1ST', '-1ST', '-2ST', '-3ST', '-4ST'];
-      
-      for (const variation of pitchVariations) {
-        const processedTrackId = `${track.id}_${variation}`;
-        
-        try {
-          const processedFile = await browserFS.getAudioFile(processedTrackId);
-          if (processedFile) {
-            const processedUrl = URL.createObjectURL(processedFile);
-            trackToUse = {
-              id: track.id, // Keep original ID for compatibility
-              name: `${track.name} (${variation})`,
-              url: processedUrl
-            };
-            console.log(`✅ Found processed version: ${track.name} (${variation})`);
-            break; // Use the first processed version found
-          }
-        } catch (error) {
-          // Processed version doesn't exist, continue checking
-        }
-      }
-      
-      tracksToLoad.push(trackToUse);
-    }
-    
-    console.log(`🎵 Track processing check complete: ${tracksToLoad.length} tracks ready`);
-    return tracksToLoad;
   }
 
   // Instant track loading with deferred audio node creation
-  // Now checks for processed (pitch-shifted) versions first
-  async loadTracks(trackData: Array<{ id: string; name: string; url: string }>) {
-    console.log(`🚀 Streaming load: ${trackData.length} tracks (deferred setup with pitch processing check)`);
+  loadTracks(trackData: Array<{ id: string; name: string; url: string }>) {
+    console.log(`🚀 Streaming load: ${trackData.length} tracks (deferred setup)`);
     
     // Clear existing tracks first
     this.clearTracks();
     
-    // Check for processed versions of tracks
-    const tracksToLoad = await this.checkForProcessedVersions(trackData);
-    
     // Create lightweight track references without audio nodes yet
-    const tracks = tracksToLoad.map(track => ({
+    const tracks = trackData.map(track => ({
       id: track.id,
       name: track.name,
       url: track.url,
@@ -143,7 +69,6 @@ export class StreamingAudioEngine {
       gainNode: null as GainNode | null,
       panNode: null as StereoPannerNode | null,
       analyzerNode: null as AnalyserNode | null,
-      // Pitch shifting node removed
       volume: 1,
       balance: 0,
       isMuted: false,
@@ -218,8 +143,6 @@ export class StreamingAudioEngine {
         track.audioElement.src = track.url;
         track.audioElement.preload = 'none'; // CRITICAL: No preloading
         track.audioElement.crossOrigin = 'anonymous';
-        
-        
       } catch (srcError) {
         console.error(`❌ Failed to set audio src for ${track.name}:`, srcError);
         track.audioElement = null;
@@ -269,7 +192,6 @@ export class StreamingAudioEngine {
         track.gainNode = null;
         track.panNode = null;
         track.analyzerNode = null;
-        // Pitch shifting cleanup removed
       }
       
     } catch (error) {
@@ -478,8 +400,6 @@ export class StreamingAudioEngine {
       this.state.masterGainNode.gain.value = volume;
     }
   }
-
-
 
   getTrackLevels(trackId: string): { left: number; right: number } {
     const track = this.state.tracks.find(t => t.id === trackId);

@@ -21,7 +21,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
-  const [swipeStates, setSwipeStates] = useState<Record<string, { deltaX: number; isDeleting: boolean }>>();
+  const [swipeStates, setSwipeStates] = useState<Record<string, { deltaX: number; isDeleting: boolean }>>({});
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const [newSong, setNewSong] = useState<InsertSong>({
     userId: "", // Will be set when creating
@@ -210,6 +210,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   // Touch handlers for swipe-to-delete
   const handleTouchStart = (e: React.TouchEvent, songId: string) => {
     e.stopPropagation(); // Prevent triggering onClick
+    console.log('🎯 SWIPE DEBUG: Touch start on song:', songId);
     const touch = e.touches[0];
     setTouchStart({ x: touch.clientX, y: touch.clientY });
     setSwipeStates(prev => ({ ...prev, [songId]: { deltaX: 0, isDeleting: false } }));
@@ -218,6 +219,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   const handleTouchMove = (e: React.TouchEvent, songId: string) => {
     if (!touchStart) return;
     e.preventDefault(); // Prevent scrolling while swiping
+    console.log('👆 SWIPE DEBUG: Touch move on song:', songId);
     
     const touch = e.touches[0];
     const deltaX = touch.clientX - touchStart.x;
@@ -236,7 +238,8 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   };
 
   const handleTouchEnd = (e: React.TouchEvent, songId: string, songTitle: string) => {
-    if (!touchStart || !swipeStates?.[songId]) return;
+    console.log('🏁 SWIPE DEBUG: Touch end on song:', songId);
+    if (!touchStart || !swipeStates[songId]) return;
     
     const state = swipeStates[songId];
     
@@ -251,7 +254,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
     // Reset swipe state
     setTouchStart(null);
     setSwipeStates(prev => {
-      if (!prev) return prev;
+      // No need to check prev since it's always defined
       const newState = { ...prev };
       delete newState[songId];
       return newState;
@@ -260,7 +263,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
 
   const handleCardClick = (e: React.MouseEvent, songId: string) => {
     // Don't trigger selection if currently swiping
-    const swipeState = swipeStates?.[songId];
+    const swipeState = swipeStates[songId];
     if (swipeState && swipeState.deltaX > 10) {
       e.preventDefault();
       return;
@@ -420,7 +423,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {songs.map((song) => {
-            const swipeState = swipeStates?.[song.id];
+            const swipeState = swipeStates[song.id];
             const transform = swipeState ? `translateX(${swipeState.deltaX}px)` : 'translateX(0px)';
             const isBeingDeleted = swipeState?.isDeleting || false;
             

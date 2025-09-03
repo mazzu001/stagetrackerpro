@@ -1,7 +1,5 @@
 // Streaming audio engine with lazy initialization to prevent UI blocking
-import * as Tone from 'tone';
-
-// SoundTouchJS removed for now - using Tone.js for pitch shifting
+// Pitch shifting libraries removed - focusing on streaming audio only
 
 export interface StreamingTrack {
   id: string;
@@ -12,10 +10,7 @@ export interface StreamingTrack {
   gainNode: GainNode | null;
   panNode: StereoPannerNode | null;
   analyzerNode: AnalyserNode | null;
-  pitchShiftNode: Tone.PitchShift | null;
-  // For true pitch-only shifting with detune
-  audioBuffer: AudioBuffer | null;
-  bufferSource: AudioBufferSourceNode | null;
+  // Pitch shifting removed
   volume: number;
   balance: number;
   isMuted: boolean;
@@ -39,9 +34,7 @@ export class StreamingAudioEngine {
   private syncTimeouts: number[] = [];
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
-  private globalPitchSemitones: number = 0;
-  // Speed control removed - focusing only on pitch shifting
-  private toneInitialized: boolean = false;
+  // Pitch and speed control removed
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -54,21 +47,10 @@ export class StreamingAudioEngine {
       masterGainNode: null,
     };
     this.setupMasterGain();
-    this.initializeTone();
+    // Tone.js initialization removed
   }
 
-  private async initializeTone() {
-    try {
-      // Connect Tone.js to our existing AudioContext
-      await Tone.setContext(this.audioContext);
-      await Tone.start();
-      this.toneInitialized = true;
-      console.log('🎵 Tone.js initialized for pitch shifting');
-    } catch (error) {
-      console.warn('⚠️ Failed to initialize Tone.js:', error);
-      this.toneInitialized = false;
-    }
-  }
+  // Tone.js initialization removed
 
   private setupMasterGain() {
     this.state.masterGainNode = this.audioContext.createGain();
@@ -93,10 +75,7 @@ export class StreamingAudioEngine {
       gainNode: null as GainNode | null,
       panNode: null as StereoPannerNode | null,
       analyzerNode: null as AnalyserNode | null,
-      pitchShiftNode: null as Tone.PitchShift | null,
-      // For detune-based pitch shifting
-      audioBuffer: null as AudioBuffer | null,
-      bufferSource: null as AudioBufferSourceNode | null,
+      // Pitch shifting node removed
       volume: 1,
       balance: 0,
       isMuted: false,
@@ -172,8 +151,6 @@ export class StreamingAudioEngine {
         track.audioElement.preload = 'none'; // CRITICAL: No preloading
         track.audioElement.crossOrigin = 'anonymous';
         
-        // Apply current pitch setting
-        this.updateTrackPitch(track.audioElement);
       } catch (srcError) {
         console.error(`❌ Failed to set audio src for ${track.name}:`, srcError);
         track.audioElement = null;
@@ -223,7 +200,7 @@ export class StreamingAudioEngine {
         track.gainNode = null;
         track.panNode = null;
         track.analyzerNode = null;
-        track.pitchShiftNode = null;
+        // Pitch shifting cleanup removed
       }
       
     } catch (error) {
@@ -433,50 +410,6 @@ export class StreamingAudioEngine {
     }
   }
 
-  // Pitch control methods
-  setGlobalPitch(semitones: number) {
-    this.globalPitchSemitones = Math.max(-4, Math.min(4, semitones)); // Clamp to -4 to +4 range
-    
-    // Apply to all tracks
-    this.state.tracks.forEach(async (track) => {
-      if (track.audioElement) {
-        await this.updateTrackPitch(track.audioElement);
-      }
-    });
-    
-    console.log(`🎵 Global pitch set to ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
-  }
-
-  getGlobalPitch(): number {
-    return this.globalPitchSemitones;
-  }
-
-  // Speed control methods removed - focusing only on pitch
-
-  private async updateTrackPitch(audioElement: HTMLAudioElement) {
-    // STREAMING-COMPATIBLE PITCH CONTROL
-    // Uses playbackRate - changes both pitch AND tempo (like vinyl speed changes)
-    // This preserves streaming audio while providing musical key changes
-    
-    const track = this.state.tracks.find(t => t.audioElement === audioElement);
-    if (!track) return;
-    
-    try {
-      // Calculate playback rate using the Web Audio API formula
-      const playbackRate = this.globalPitchSemitones === 0 
-        ? 1.0 
-        : Math.pow(2, this.globalPitchSemitones / 12);
-      
-      // Apply to the streaming audio element
-      audioElement.playbackRate = playbackRate;
-      
-      console.log(`🎵 Key & Tempo shift: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (${playbackRate.toFixed(3)}x speed)`);
-      
-    } catch (error) {
-      console.error(`❌ Pitch shift failed:`, error);
-      audioElement.playbackRate = 1.0;
-    }
-  }
 
   getTrackLevels(trackId: string): { left: number; right: number } {
     const track = this.state.tracks.find(t => t.id === trackId);

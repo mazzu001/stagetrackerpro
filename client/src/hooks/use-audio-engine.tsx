@@ -277,20 +277,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, []);
 
-  const updateGlobalPitch = useCallback((semitones: number) => {
-    if (audioEngineRef.current) {
-      audioEngineRef.current.setGlobalPitch(semitones);
-    }
-  }, []);
-
-  const getGlobalPitch = useCallback((): number => {
-    if (audioEngineRef.current) {
-      return audioEngineRef.current.getGlobalPitch();
-    }
-    return 0;
-  }, []);
-
-  // Speed control functions removed - focusing only on pitch
+  // Pitch and speed control functions removed
 
   return {
     isPlaying,
@@ -312,8 +299,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     updateTrackMute,
     updateTrackSolo,
     updateMasterVolume,
-    updateGlobalPitch,
-    getGlobalPitch,
-    // Speed control functions removed
+    // Pitch and speed control functions removed
   };
 }

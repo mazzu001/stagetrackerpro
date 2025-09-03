@@ -22,8 +22,7 @@ interface TrackManagerProps {
   onTrackMuteToggle?: (trackId: string) => void;
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
-  onPitchChange?: (semitones: number) => void;
-  // Speed control removed - focusing only on pitch shifting
+  // Pitch and speed control removed
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
@@ -38,7 +37,6 @@ export default function TrackManager({
   onTrackMuteToggle, 
   onTrackSoloToggle, 
   onTrackBalanceChange,
-  onPitchChange,
   // onSpeedChange removed
   audioLevels = {},
   isPlaying = false,
@@ -53,8 +51,7 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
-  const [globalPitch, setGlobalPitch] = useState<number>(0); // -4 to +4 semitones
-  // Global speed removed - only using pitch control
+  // Pitch and speed control removed
 
   // Recording state
   // Recording features removed for simplicity
@@ -602,51 +599,6 @@ export default function TrackManager({
           
         </div>
         
-        {/* Global Pitch and Speed Controls - positioned between title and buttons */}
-        {tracks.length > 0 && (
-          <div className="flex items-center gap-6 mx-4">
-            {/* Pitch Control */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1">
-                <Music className="h-4 w-4 text-orange-500" />
-                <span className="text-sm font-medium">Key & Tempo</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-6">-4</span>
-                <Slider
-                  value={[globalPitch]}
-                  onValueChange={(value) => {
-                    setGlobalPitch(value[0]);
-                    onPitchChange?.(value[0]);
-                  }}
-                  min={-4}
-                  max={4}
-                  step={1}
-                  className="w-16"
-                  data-testid="slider-global-pitch"
-                />
-                <span className="text-xs text-gray-500 w-6">+4</span>
-                <span className="text-sm font-mono w-8 text-center text-orange-500">
-                  {globalPitch > 0 ? `+${globalPitch}` : globalPitch}
-                </span>
-              </div>
-              <Button
-                onClick={() => {
-                  setGlobalPitch(0);
-                  onPitchChange?.(0);
-                }}
-                variant="outline"
-                size="sm"
-                className="text-xs h-6 px-2"
-                data-testid="button-reset-pitch"
-              >
-                Reset
-              </Button>
-            </div>
-            
-            {/* Speed control removed - focusing only on pitch */}
-          </div>
-        )}
         
         <div className="flex items-center gap-2">
           {/* Play/Pause button - only show if callbacks provided */}

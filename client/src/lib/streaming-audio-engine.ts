@@ -462,36 +462,32 @@ export class StreamingAudioEngine {
   }
 
   private async updateTrackPitch(audioElement: HTMLAudioElement) {
-    // Speed control is separate - keep playback rate for speed only
-    audioElement.playbackRate = this.globalSpeedMultiplier;
-    
     // Find the track that corresponds to this audio element
     const track = this.state.tracks.find(t => t.audioElement === audioElement);
     if (!track) return;
     
     try {
-      this.ensureTrackAudioNodes(track);
+      // Calculate pitch adjustment using musical semitone formula
+      const pitchRatio = this.globalPitchSemitones === 0 ? 1.0 : Math.pow(2, this.globalPitchSemitones / 12);
       
-      // For now, use a simple approach: just log the pitch change
-      // True pitch shifting without tempo change requires complex audio processing
-      // that can disrupt playback. We'll implement a basic version that keeps audio playing.
+      // Combine pitch and speed adjustments
+      const finalPlaybackRate = pitchRatio * this.globalSpeedMultiplier;
+      
+      // Apply the combined rate
+      audioElement.playbackRate = finalPlaybackRate;
       
       if (this.globalPitchSemitones === 0) {
-        console.log(`🎵 Pitch reset to normal (0 semitones)`);
-        // No pitch adjustment needed
-        return;
+        console.log(`🎵 Pitch reset to normal (0 semitones), speed: ${this.globalSpeedMultiplier}x`);
       } else {
-        console.log(`🎵 Pitch adjustment: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
-        console.log(`⚠️ Note: Professional pitch shifting requires advanced audio processing.`);
-        console.log(`⚠️ For true pitch-without-tempo, consider using dedicated hardware or advanced plugins.`);
-        
-        // Keep the audio playing - don't disrupt the connection
-        // In a real implementation, we would use sophisticated pitch shifting algorithms
-        // For now, we acknowledge the pitch change but keep audio flowing normally
+        console.log(`🎵 Pitch: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (ratio: ${pitchRatio.toFixed(3)})`);
+        console.log(`🎵 Combined rate: ${finalPlaybackRate.toFixed(3)}x (pitch: ${pitchRatio.toFixed(3)}x + speed: ${this.globalSpeedMultiplier}x)`);
+        console.log(`ℹ️ Note: This approach changes both pitch and tempo together`);
       }
       
     } catch (error) {
-      console.warn(`⚠️ Failed to process pitch adjustment:`, error);
+      console.warn(`⚠️ Failed to apply pitch adjustment:`, error);
+      // Fallback to speed only
+      audioElement.playbackRate = this.globalSpeedMultiplier;
     }
   }
 

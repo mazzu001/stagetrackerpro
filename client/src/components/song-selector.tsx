@@ -270,37 +270,13 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
 
   return (
     <div className="bg-surface rounded-xl p-6 border border-gray-700">
-      <div className="flex items-center justify-between mb-4">
-        <div>
-          <h2 className="text-xl font-semibold flex items-center mb-2">
+      <div className="mb-4">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-xl font-semibold flex items-center">
             <ListMusic className="mr-2 text-primary w-5 h-5" />
-            Song Selection
+            Songs
           </h2>
-          <div className="flex items-center space-x-2">
-            <Checkbox 
-              id="multi-select" 
-              checked={isMultiSelectMode}
-              onCheckedChange={handleMultiSelectToggle}
-              data-testid="checkbox-multi-select"
-            />
-            <Label htmlFor="multi-select" className="text-sm text-gray-400 cursor-pointer">
-              Select multiple songs to delete
-            </Label>
-            {selectedSongs.size > 0 && (
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={handleDeleteSelectedSongs}
-                className="ml-4"
-                data-testid="button-delete-selected"
-              >
-                <Trash2 className="w-4 h-4 mr-1" />
-                Delete {selectedSongs.size} Song{selectedSongs.size !== 1 ? 's' : ''}
-              </Button>
-            )}
-          </div>
-        </div>
-        <div className="flex space-x-2">
+          <div className="flex space-x-2">
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
               <Button 
@@ -421,11 +397,37 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
         </div>
       </div>
       
+      {/* Multi-select controls */}
+      <div className="flex items-center space-x-3 mb-4">
+        <Checkbox 
+          id="multi-select" 
+          checked={isMultiSelectMode}
+          onCheckedChange={handleMultiSelectToggle}
+          data-testid="checkbox-multi-select"
+          className="h-5 w-5"
+        />
+        <Label htmlFor="multi-select" className="text-sm text-gray-300 cursor-pointer font-medium">
+          Select multiple songs to delete
+        </Label>
+        {selectedSongs.size > 0 && (
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={handleDeleteSelectedSongs}
+            className="ml-auto"
+            data-testid="button-delete-selected"
+          >
+            <Trash2 className="w-4 h-4 mr-1" />
+            Delete {selectedSongs.size} Song{selectedSongs.size !== 1 ? 's' : ''}
+          </Button>
+        )}
+      </div>
+      
       {songs.length === 0 ? (
         <div className="text-center py-8 text-gray-400">
           <ListMusic className="w-12 h-12 mx-auto mb-4 opacity-50" />
           <p>No songs available. Add your first song to get started.</p>
-          <p className="text-sm mt-2 opacity-60">💡 Tip: Once you have songs, swipe right on any song to delete it</p>
+          <p className="text-sm mt-2 opacity-60">💡 Tip: Once you have songs, use the checkbox above to select multiple songs for deletion</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

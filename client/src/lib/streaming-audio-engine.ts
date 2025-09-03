@@ -24,6 +24,8 @@ export interface StreamingAudioEngineState {
   tracks: StreamingTrack[];
   masterVolume: number;
   masterGainNode: GainNode | null;
+  masterPitchSemitones: number;
+  masterOutputNode: GainNode | null;
 }
 
 export class StreamingAudioEngine {
@@ -34,7 +36,10 @@ export class StreamingAudioEngine {
   private syncTimeouts: number[] = [];
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
-  // Pitch and speed control removed
+  // Master output pitch shifting
+  private masterOutputBuffer: AudioBuffer | null = null;
+  private masterOutputSource: AudioBufferSourceNode | null = null;
+  private masterPitchShiftNode: GainNode | null = null;
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -45,17 +50,30 @@ export class StreamingAudioEngine {
       tracks: [],
       masterVolume: 0.8,
       masterGainNode: null,
+      masterPitchSemitones: 0,
+      masterOutputNode: null,
     };
-    this.setupMasterGain();
-    // Tone.js initialization removed
+    this.setupMasterOutput();
+    // Master output pitch shifting initialized
   }
 
   // Tone.js initialization removed
 
-  private setupMasterGain() {
+  private setupMasterOutput() {
+    // Create master gain node (for volume control)
     this.state.masterGainNode = this.audioContext.createGain();
-    this.state.masterGainNode.connect(this.audioContext.destination);
     this.state.masterGainNode.gain.value = this.state.masterVolume;
+    
+    // Create master output node (for pitch shifting)
+    this.state.masterOutputNode = this.audioContext.createGain();
+    this.masterPitchShiftNode = this.audioContext.createGain();
+    
+    // Audio routing: tracks -> masterGainNode -> masterPitchShiftNode -> masterOutputNode -> destination
+    this.state.masterGainNode.connect(this.masterPitchShiftNode);
+    this.masterPitchShiftNode.connect(this.state.masterOutputNode);
+    this.state.masterOutputNode.connect(this.audioContext.destination);
+    
+    console.log('🎵 Master output with pitch shifting initialized');
   }
 
   // Instant track loading with deferred audio node creation
@@ -150,6 +168,9 @@ export class StreamingAudioEngine {
         track.audioElement.src = track.url;
         track.audioElement.preload = 'none'; // CRITICAL: No preloading
         track.audioElement.crossOrigin = 'anonymous';
+        
+        // Apply current master pitch setting
+        this.updateTrackPlaybackRate(track.audioElement);
         
       } catch (srcError) {
         console.error(`❌ Failed to set audio src for ${track.name}:`, srcError);
@@ -407,6 +428,40 @@ export class StreamingAudioEngine {
     this.state.masterVolume = volume;
     if (this.state.masterGainNode) {
       this.state.masterGainNode.gain.value = volume;
+    }
+  }
+
+  // Master output pitch shifting (vinyl-style: changes both pitch and tempo)
+  setMasterPitch(semitones: number) {
+    this.state.masterPitchSemitones = Math.max(-4, Math.min(4, semitones)); // Clamp to -4 to +4 range
+    
+    // Apply playback rate change to all tracks for master pitch shifting
+    this.state.tracks.forEach(track => {
+      if (track.audioElement) {
+        this.updateTrackPlaybackRate(track.audioElement);
+      }
+    });
+    
+    console.log(`🎵 Master Pitch: ${this.state.masterPitchSemitones > 0 ? '+' : ''}${this.state.masterPitchSemitones} semitones (vinyl-style pitch+tempo)`);
+  }
+
+  getMasterPitch(): number {
+    return this.state.masterPitchSemitones;
+  }
+
+  private updateTrackPlaybackRate(audioElement: HTMLAudioElement) {
+    try {
+      // Calculate playback rate using the Web Audio API formula
+      const playbackRate = this.state.masterPitchSemitones === 0 
+        ? 1.0 
+        : Math.pow(2, this.state.masterPitchSemitones / 12);
+      
+      // Apply to the streaming audio element
+      audioElement.playbackRate = playbackRate;
+      
+    } catch (error) {
+      console.error(`❌ Master pitch shift failed:`, error);
+      audioElement.playbackRate = 1.0;
     }
   }
 

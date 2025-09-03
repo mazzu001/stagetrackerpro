@@ -21,6 +21,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb, Volume2 } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -63,6 +64,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
+  const [masterPitch, setMasterPitch] = useState(0); // -4 to +4 semitones
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
 
@@ -220,6 +222,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     isLoadingTracks,
     masterVolume,
     updateMasterVolume,
+    updateMasterPitch,
+    getMasterPitch,
     updateTrackVolume,
     updateTrackBalance,
     updateTrackMute,
@@ -238,6 +242,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const toggleTrackSolo = useCallback((trackId: string) => {
     updateTrackSolo(trackId);
   }, [updateTrackSolo]);
+
+  // Master pitch control handler
+  const handleMasterPitchChange = useCallback((value: number[]) => {
+    const semitones = value[0];
+    setMasterPitch(semitones);
+    updateMasterPitch(semitones);
+  }, [updateMasterPitch]);
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
@@ -1144,18 +1155,62 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
               </h2>
               
+              {/* Master Pitch Control */}
+              {selectedSong && (
+                <div className="flex items-center gap-2 mx-3">
+                  <span className="text-xs text-gray-400 whitespace-nowrap">Pitch:</span>
+                  <div className="w-20">
+                    <Slider
+                      value={[masterPitch]}
+                      onValueChange={handleMasterPitchChange}
+                      min={-4}
+                      max={4}
+                      step={1}
+                      className="w-full"
+                      data-testid="slider-master-pitch"
+                    />
+                  </div>
+                  <span className="text-xs text-gray-400 w-8 text-center">
+                    {masterPitch > 0 ? `+${masterPitch}` : masterPitch}
+                  </span>
+                </div>
+              )}
+              
               {/* Lyrics Controls */}
               {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
             
             {/* Mobile Header with Controls */}
-            <div className="p-2 border-b border-gray-700 bg-surface flex items-center justify-between md:hidden flex-shrink-0">
-              <h2 className="text-sm font-semibold truncate mr-2 flex-1">
-                {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
-              </h2>
+            <div className="p-2 border-b border-gray-700 bg-surface md:hidden flex-shrink-0">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-sm font-semibold truncate mr-2 flex-1">
+                  {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
+                </h2>
+                
+                {/* Mobile Lyrics Controls */}
+                {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
+              </div>
               
-              {/* Mobile Lyrics Controls */}
-              {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
+              {/* Mobile Master Pitch Control */}
+              {selectedSong && (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-400 whitespace-nowrap">Pitch:</span>
+                  <div className="flex-1 max-w-24">
+                    <Slider
+                      value={[masterPitch]}
+                      onValueChange={handleMasterPitchChange}
+                      min={-4}
+                      max={4}
+                      step={1}
+                      className="w-full"
+                      data-testid="slider-master-pitch-mobile"
+                    />
+                  </div>
+                  <span className="text-xs text-gray-400 w-8 text-center">
+                    {masterPitch > 0 ? `+${masterPitch}` : masterPitch}
+                  </span>
+                </div>
+              )}
             </div>
             
             {/* Lyrics Area - Takes remaining space but leaves room for transport */}

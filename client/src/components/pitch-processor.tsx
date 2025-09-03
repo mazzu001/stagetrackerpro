@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Play, Pause, CheckCircle, AlertCircle, RotateCcw } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { BrowserFileSystem } from '@/lib/browser-file-system';
 import type { SongWithTracks } from '@shared/schema';
 
 interface PitchProcessorProps {
@@ -58,10 +59,13 @@ export function PitchProcessor({ song, onProcessingComplete }: PitchProcessorPro
       ));
 
       // Get audio file from browser file system
-      const browserFS = (window as any).browserFileSystem;
+      const browserFS = BrowserFileSystem.getInstance();
       if (!browserFS) {
-        throw new Error('Browser file system not initialized');
+        throw new Error('Browser file system not available');
       }
+      
+      // Ensure the database is initialized
+      await browserFS.initialize();
 
       const audioFile = await browserFS.getAudioFile(track.id);
       if (!audioFile) {

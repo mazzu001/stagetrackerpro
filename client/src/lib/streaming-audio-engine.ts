@@ -71,8 +71,18 @@ export class StreamingAudioEngine {
   private async checkForProcessedVersions(trackData: Array<{ id: string; name: string; url: string }>): Promise<Array<{ id: string; name: string; url: string }>> {
     console.log('🎵 Checking for processed track versions...');
     
-    const browserFS = (window as any).browserFileSystem;
-    if (!browserFS) {
+    let browserFS: any;
+    try {
+      const { BrowserFileSystem } = await import('../lib/browser-file-system');
+      browserFS = BrowserFileSystem.getInstance();
+      if (!browserFS) {
+        console.log('⚠️ Browser file system not available, using original tracks');
+        return trackData;
+      }
+      
+      // Ensure the database is initialized
+      await browserFS.initialize();
+    } catch (error) {
       console.log('⚠️ Browser file system not available, using original tracks');
       return trackData;
     }

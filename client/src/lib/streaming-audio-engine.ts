@@ -450,108 +450,35 @@ export class StreamingAudioEngine {
   // Speed control methods removed - focusing only on pitch
 
   private async updateTrackPitch(audioElement: HTMLAudioElement) {
-    // This method now focuses ONLY on pitch shifting (no speed/tempo control)
+    // SIMPLE PITCH SHIFTING: Use playbackRate with Web Audio API formula
+    // Based on: https://zpl.fi/pitch-shifting-in-web-audio-api/
     
     const track = this.state.tracks.find(t => t.audioElement === audioElement);
     if (!track) return;
     
     try {
-      if (!this.toneInitialized) {
-        console.warn('⚠️ Tone.js not initialized, pitch shifting unavailable');
-        return;
-      }
-
-      this.ensureTrackAudioNodes(track);
+      console.log(`🎵 Applying pitch shift: ${this.globalPitchSemitones} semitones`);
       
       if (this.globalPitchSemitones === 0) {
-        // No pitch shift - clean up and use direct connection
-        if (track.pitchShiftNode) {
-          try {
-            track.pitchShiftNode.disconnect();
-            track.pitchShiftNode.dispose();
-            track.pitchShiftNode = null;
-          } catch (e) {
-            // Ignore cleanup errors
-          }
-        }
-        
-        // Direct connection: source -> gain (normal playback)
-        if (track.source && track.gainNode) {
-          try {
-            track.source.disconnect();
-            track.source.connect(track.gainNode);
-          } catch (e) {
-            // Connection might already exist
-          }
-        }
-        
-        console.log(`🎵 Pitch reset to normal (0 semitones)`);
+        // Reset to normal playback
+        audioElement.playbackRate = 1.0;
+        console.log(`🎵 Pitch reset to normal (1.0x playback rate)`);
         return;
       }
 
-      // Create Tone.js pitch shifter for true pitch-only shifting
-      if (!track.pitchShiftNode) {
-        try {
-          console.log(`🎵 Creating pitch shifter for ${this.globalPitchSemitones} semitones`);
-          
-          // Create the pitch shifter with proper settings
-          track.pitchShiftNode = new Tone.PitchShift({
-            pitch: this.globalPitchSemitones,
-            windowSize: 0.03, // Smaller window for better real-time response
-            overlap: 4,
-            feedback: 0
-          });
-          
-          // IMPORTANT: Start Tone.js audio context if not running
-          if (Tone.getContext().state !== 'running') {
-            await Tone.start();
-            console.log('🎵 Tone.js context started');
-          }
-          
-          // Route audio: source -> pitch shifter -> destination
-          if (track.source && track.gainNode) {
-            try {
-              track.source.disconnect();
-              
-              // Connect source to pitch shifter
-              track.source.connect(track.pitchShiftNode.input);
-              
-              // Connect pitch shifter to our gain node and main destination
-              track.pitchShiftNode.connect(track.gainNode);
-              track.pitchShiftNode.toDestination();
-              
-              console.log(`✅ Pitch shifter connected: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
-            } catch (routingError) {
-              console.warn('⚠️ Pitch shifter routing failed:', routingError);
-              // Fallback to direct connection
-              track.source.connect(track.gainNode);
-            }
-          }
-          
-        } catch (error) {
-          console.error('❌ Failed to create pitch shifter:', error);
-          // Fallback to direct connection
-          if (track.source && track.gainNode) {
-            track.source.connect(track.gainNode);
-          }
-        }
-      } else {
-        // Update existing pitch shifter
-        track.pitchShiftNode.pitch = this.globalPitchSemitones;
-        console.log(`🎵 Pitch updated: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
-      }
+      // Use the Web Audio API formula: playbackRate = 2^(semitones/12)
+      // This changes BOTH pitch and tempo together (like a turntable)
+      const playbackRate = Math.pow(2, this.globalPitchSemitones / 12);
+      audioElement.playbackRate = playbackRate;
+      
+      console.log(`🎵 Pitch shift applied: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
+      console.log(`🎵 Playback rate: ${playbackRate.toFixed(3)}x`);
+      console.log(`ℹ️ Note: This approach changes both pitch AND tempo (like vinyl speed)`);
       
     } catch (error) {
-      console.error(`❌ Pitch processing failed:`, error);
-      // Ensure audio keeps playing normally
-      if (track.source && track.gainNode) {
-        try {
-          track.source.disconnect();
-          track.source.connect(track.gainNode);
-        } catch (e) {
-          // Ignore connection errors
-        }
-      }
+      console.error(`❌ Pitch shift failed:`, error);
+      // Reset to normal if failed
+      audioElement.playbackRate = 1.0;
     }
   }
 

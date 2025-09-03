@@ -8,6 +8,7 @@ import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
 import TrackManager from "@/components/track-manager-clean";
 import StereoVUMeter from "@/components/stereo-vu-meter";
+import { PitchProcessor } from "@/components/pitch-processor";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
 
 import { useAudioEngine } from "@/hooks/use-audio-engine";
@@ -21,6 +22,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb, Volume2 } from "lucide-react";
+import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
@@ -63,6 +65,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
+  const [isPitchProcessorOpen, setIsPitchProcessorOpen] = useState(false);
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
 
@@ -224,6 +227,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     updateTrackBalance,
     updateTrackMute,
     updateTrackSolo,
+    // Pitch and speed control removed
     isAudioEngineOnline,
     masterStereoLevels,
     audioLevels
@@ -237,6 +241,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const toggleTrackSolo = useCallback((trackId: string) => {
     updateTrackSolo(trackId);
   }, [updateTrackSolo]);
+
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
@@ -835,11 +840,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   <ExternalLink className="h-4 w-4 mr-2" />
                   YouTube Tutorials
                 </DropdownMenuItem>
-                
-                <DropdownMenuItem onClick={() => setLocation('/streaming-demo')} data-testid="menuitem-pitch-shifter-demo">
-                  <Zap className="h-4 w-4 mr-2" />
-                  Pitch Shifter Demo
-                </DropdownMenuItem>
 
                 {userType === 'professional' && (
                   <DropdownMenuItem onClick={() => setIsUSBMidiOpen(true)} data-testid="menuitem-usb-midi">
@@ -1077,24 +1077,44 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                     >
                       <div className="flex items-center justify-between">
                         <div className="font-medium text-sm md:text-base truncate mr-2">{song.title}</div>
-                        <button
-                          className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
-                            isPlaying 
-                              ? 'bg-gray-600 cursor-not-allowed opacity-50' 
-                              : 'bg-gray-700 hover:bg-gray-600'
-                          }`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (!isPlaying) {
-                              setSelectedSongId(song.id);
-                              setIsTrackManagerOpen(true);
-                            }
-                          }}
-                          disabled={isPlaying}
-                          data-testid={`button-tracks-${song.id}`}
-                        >
-                          {song.tracks ? song.tracks.length : 0} tracks
-                        </button>
+                        <div className="flex gap-1">
+                          <button
+                            className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
+                              isPlaying 
+                                ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                                : 'bg-gray-700 hover:bg-gray-600'
+                            }`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (!isPlaying) {
+                                setSelectedSongId(song.id);
+                                setIsTrackManagerOpen(true);
+                              }
+                            }}
+                            disabled={isPlaying}
+                            data-testid={`button-tracks-${song.id}`}
+                          >
+                            {song.tracks ? song.tracks.length : 0} tracks
+                          </button>
+                          <button
+                            className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
+                              isPlaying 
+                                ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                                : 'bg-blue-700 hover:bg-blue-600'
+                            }`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (!isPlaying) {
+                                setSelectedSongId(song.id);
+                                setIsPitchProcessorOpen(true);
+                              }
+                            }}
+                            disabled={isPlaying}
+                            data-testid={`button-pitch-${song.id}`}
+                          >
+                            🎵 Pitch
+                          </button>
+                        </div>
                       </div>
                       <div className="text-xs md:text-sm text-gray-400 truncate">{song.artist}</div>
                       <div className="flex items-center justify-between">
@@ -1148,18 +1168,22 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
               </h2>
               
+              
               {/* Lyrics Controls */}
               {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
             
             {/* Mobile Header with Controls */}
-            <div className="p-2 border-b border-gray-700 bg-surface flex items-center justify-between md:hidden flex-shrink-0">
-              <h2 className="text-sm font-semibold truncate mr-2 flex-1">
-                {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
-              </h2>
+            <div className="p-2 border-b border-gray-700 bg-surface md:hidden flex-shrink-0">
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-sm font-semibold truncate mr-2 flex-1">
+                  {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
+                </h2>
+                
+                {/* Mobile Lyrics Controls */}
+                {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
+              </div>
               
-              {/* Mobile Lyrics Controls */}
-              {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
             </div>
             
             {/* Lyrics Area - Takes remaining space but leaves room for transport */}
@@ -1353,6 +1377,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               onTrackMuteToggle={toggleTrackMute}
               onTrackSoloToggle={toggleTrackSolo}
               onTrackBalanceChange={updateTrackBalance}
+              // Pitch and speed control removed
               onPlay={play}
               onPause={pause}
               isPlaying={isPlaying}
@@ -1393,6 +1418,26 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Pitch Processor Dialog */}
+      <Dialog open={isPitchProcessorOpen} onOpenChange={setIsPitchProcessorOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Offline Pitch Processor</DialogTitle>
+            <p className="text-sm text-muted-foreground">
+              Process tracks offline with pitch shifting while maintaining streaming playback
+            </p>
+          </DialogHeader>
+          <PitchProcessor 
+            song={selectedSong as any}
+            onProcessingComplete={() => {
+              // Refresh the song data if needed
+              console.log('🎵 Pitch processing completed, refreshing song list');
+              // The processed tracks are already stored, just refresh the UI
+            }}
+          />
+        </DialogContent>
+      </Dialog>
 
     </div>
   );

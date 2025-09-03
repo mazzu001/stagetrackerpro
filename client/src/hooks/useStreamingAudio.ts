@@ -32,7 +32,6 @@ interface UseStreamingAudioReturn {
   toggleTrackSolo: (trackId: string) => void;
   setTrackBalance: (trackId: string, balance: number) => void;
   setMasterVolume: (volume: number) => void;
-  setPitchShift: (pitchRatio: number) => void;
   
   // Audio levels for VU meters
   getTrackLevels: (trackId: string) => { left: number; right: number };
@@ -176,10 +175,6 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
     streamingEngine.setMasterVolume(volume / 100);
   }, [streamingEngine]);
 
-  const setPitchShift = useCallback((pitchRatio: number) => {
-    streamingEngine.setPitchShift(pitchRatio);
-  }, [streamingEngine]);
-
   const getTrackLevels = useCallback((trackId: string) => {
     return streamingEngine.getTrackLevels(trackId);
   }, [streamingEngine]);
@@ -210,7 +205,6 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
     toggleTrackSolo,
     setTrackBalance,
     setMasterVolume,
-    setPitchShift,
     
     // Audio levels
     getTrackLevels,

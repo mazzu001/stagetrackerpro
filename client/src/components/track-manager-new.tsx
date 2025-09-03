@@ -28,6 +28,7 @@ interface TrackManagerProps {
   onTrackMuteToggle?: (trackId: string) => void;
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
+  onPitchChange?: (semitones: number) => void;
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
@@ -43,6 +44,7 @@ export default function TrackManager({
   onTrackMuteToggle, 
   onTrackSoloToggle, 
   onTrackBalanceChange,
+  onPitchChange,
   audioLevels = {},
   isPlaying = false,
   isLoadingTracks = false,
@@ -59,6 +61,7 @@ export default function TrackManager({
   const [totalFiles, setTotalFiles] = useState(0);
   const [currentFileName, setCurrentFileName] = useState("");
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
+  const [globalPitch, setGlobalPitch] = useState<number>(0); // -4 to +4 semitones
 
   const { toast } = useToast();
   const { user } = useLocalAuth();
@@ -580,6 +583,47 @@ export default function TrackManager({
           Tracks ({tracks.length}/6)
         </h3>
         
+        {/* Global Pitch Control - positioned between title and buttons */}
+        {tracks.length > 0 && (
+          <div className="flex items-center gap-4 mx-4">
+            <div className="flex items-center gap-2">
+              <Music className="h-4 w-4 text-orange-500" />
+              <span className="text-sm font-medium">Pitch</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-gray-500 w-6">-4</span>
+              <Slider
+                value={[globalPitch]}
+                onValueChange={(value) => {
+                  setGlobalPitch(value[0]);
+                  onPitchChange?.(value[0]);
+                }}
+                min={-4}
+                max={4}
+                step={1}
+                className="w-20"
+                data-testid="slider-global-pitch"
+              />
+              <span className="text-xs text-gray-500 w-6">+4</span>
+              <span className="text-sm font-mono w-10 text-center">
+                {globalPitch > 0 ? `+${globalPitch}` : globalPitch}
+              </span>
+            </div>
+            <Button
+              onClick={() => {
+                setGlobalPitch(0);
+                onPitchChange?.(0);
+              }}
+              variant="outline"
+              size="sm"
+              className="text-xs h-7"
+              data-testid="button-reset-pitch"
+            >
+              Reset
+            </Button>
+          </div>
+        )}
+        
         <div className="flex gap-2">
           {tracks.length > 0 && (
             <Button
@@ -644,6 +688,7 @@ export default function TrackManager({
           )}
         </div>
       </div>
+
 
       {tracks.length === 0 ? (
         <Card>

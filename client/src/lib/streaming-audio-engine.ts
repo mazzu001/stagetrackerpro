@@ -1,4 +1,5 @@
 // Streaming audio engine with lazy initialization to prevent UI blocking
+// Pitch shifting libraries removed - focusing on streaming audio only
 
 export interface StreamingTrack {
   id: string;
@@ -9,6 +10,7 @@ export interface StreamingTrack {
   gainNode: GainNode | null;
   panNode: StereoPannerNode | null;
   analyzerNode: AnalyserNode | null;
+  // Pitch shifting removed
   volume: number;
   balance: number;
   isMuted: boolean;
@@ -22,7 +24,7 @@ export interface StreamingAudioEngineState {
   tracks: StreamingTrack[];
   masterVolume: number;
   masterGainNode: GainNode | null;
-  pitchShifterNode: AudioWorkletNode | null;
+  masterOutputNode: GainNode | null;
 }
 
 export class StreamingAudioEngine {
@@ -43,48 +45,96 @@ export class StreamingAudioEngine {
       tracks: [],
       masterVolume: 0.8,
       masterGainNode: null,
-      pitchShifterNode: null,
+      masterOutputNode: null,
     };
-    this.setupMasterGain();
+    this.setupMasterOutput();
   }
 
-  private async setupMasterGain() {
+  // Tone.js initialization removed
+
+  private setupMasterOutput() {
+    // Create master gain node (for volume control)
     this.state.masterGainNode = this.audioContext.createGain();
     this.state.masterGainNode.gain.value = this.state.masterVolume;
     
-    // Set up pitch shifter
-    await this.setupPitchShifter();
+    // Create master output node
+    this.state.masterOutputNode = this.audioContext.createGain();
+    
+    // Simple and reliable audio routing
+    this.state.masterGainNode.connect(this.state.masterOutputNode);
+    this.state.masterOutputNode.connect(this.audioContext.destination);
+    
+    console.log('🎵 Master output initialized');
   }
 
-  private async setupPitchShifter() {
+  // Check for processed track versions with different pitch settings
+  private async checkForProcessedVersions(trackData: Array<{ id: string; name: string; url: string }>): Promise<Array<{ id: string; name: string; url: string }>> {
+    console.log('🎵 Checking for processed track versions...');
+    
+    let browserFS: any;
     try {
-      // Load the pitch shifter worklet
-      await this.audioContext.audioWorklet.addModule('/pitch-shifter-worklet.js');
+      const { BrowserFileSystem } = await import('../lib/browser-file-system');
+      browserFS = BrowserFileSystem.getInstance();
+      if (!browserFS) {
+        console.log('⚠️ Browser file system not available, using original tracks');
+        return trackData;
+      }
       
-      // Create pitch shifter node
-      this.state.pitchShifterNode = new AudioWorkletNode(this.audioContext, 'pitch-shifter');
-      
-      // Connect audio chain: masterGain → pitchShifter → destination
-      this.state.masterGainNode!.connect(this.state.pitchShifterNode);
-      this.state.pitchShifterNode.connect(this.audioContext.destination);
-      
-      console.log('🎵 Pitch shifter initialized and connected');
+      // Ensure the database is initialized
+      await browserFS.initialize();
     } catch (error) {
-      console.warn('⚠️ Failed to load pitch shifter, falling back to direct connection:', error);
-      // Fallback: connect master gain directly to destination
-      this.state.masterGainNode!.connect(this.audioContext.destination);
+      console.log('⚠️ Browser file system not available, using original tracks');
+      return trackData;
     }
+
+    const tracksToLoad = [];
+    
+    for (const track of trackData) {
+      let trackToUse = track;
+      
+      // Check for processed versions (±1 to ±4 semitones)
+      const pitchVariations = ['+4ST', '+3ST', '+2ST', '+1ST', '-1ST', '-2ST', '-3ST', '-4ST'];
+      
+      for (const variation of pitchVariations) {
+        const processedTrackId = `${track.id}_${variation}`;
+        
+        try {
+          const processedFile = await browserFS.getAudioFile(processedTrackId);
+          if (processedFile) {
+            const processedUrl = URL.createObjectURL(processedFile);
+            trackToUse = {
+              id: track.id, // Keep original ID for compatibility
+              name: `${track.name} (${variation})`,
+              url: processedUrl
+            };
+            console.log(`✅ Found processed version: ${track.name} (${variation})`);
+            break; // Use the first processed version found
+          }
+        } catch (error) {
+          // Processed version doesn't exist, continue checking
+        }
+      }
+      
+      tracksToLoad.push(trackToUse);
+    }
+    
+    console.log(`🎵 Track processing check complete: ${tracksToLoad.length} tracks ready`);
+    return tracksToLoad;
   }
 
   // Instant track loading with deferred audio node creation
-  loadTracks(trackData: Array<{ id: string; name: string; url: string }>) {
-    console.log(`🚀 Streaming load: ${trackData.length} tracks (deferred setup)`);
+  // Now checks for processed (pitch-shifted) versions first
+  async loadTracks(trackData: Array<{ id: string; name: string; url: string }>) {
+    console.log(`🚀 Streaming load: ${trackData.length} tracks (deferred setup with pitch processing check)`);
     
     // Clear existing tracks first
     this.clearTracks();
     
+    // Check for processed versions of tracks
+    const tracksToLoad = await this.checkForProcessedVersions(trackData);
+    
     // Create lightweight track references without audio nodes yet
-    const tracks = trackData.map(track => ({
+    const tracks = tracksToLoad.map(track => ({
       id: track.id,
       name: track.name,
       url: track.url,
@@ -93,6 +143,7 @@ export class StreamingAudioEngine {
       gainNode: null as GainNode | null,
       panNode: null as StereoPannerNode | null,
       analyzerNode: null as AnalyserNode | null,
+      // Pitch shifting node removed
       volume: 1,
       balance: 0,
       isMuted: false,
@@ -167,6 +218,8 @@ export class StreamingAudioEngine {
         track.audioElement.src = track.url;
         track.audioElement.preload = 'none'; // CRITICAL: No preloading
         track.audioElement.crossOrigin = 'anonymous';
+        
+        
       } catch (srcError) {
         console.error(`❌ Failed to set audio src for ${track.name}:`, srcError);
         track.audioElement = null;
@@ -216,6 +269,7 @@ export class StreamingAudioEngine {
         track.gainNode = null;
         track.panNode = null;
         track.analyzerNode = null;
+        // Pitch shifting cleanup removed
       }
       
     } catch (error) {
@@ -425,15 +479,7 @@ export class StreamingAudioEngine {
     }
   }
 
-  setPitchShift(pitchRatio: number) {
-    if (this.state.pitchShifterNode) {
-      this.state.pitchShifterNode.port.postMessage({
-        type: 'pitchRatio',
-        value: pitchRatio
-      });
-      console.log(`🎵 Pitch shift set to ${pitchRatio.toFixed(3)} (${((pitchRatio - 1) * 12).toFixed(1)} semitones)`);
-    }
-  }
+
 
   getTrackLevels(trackId: string): { left: number; right: number } {
     const track = this.state.tracks.find(t => t.id === trackId);
@@ -626,14 +672,6 @@ export class StreamingAudioEngine {
     this.stopTimeTracking();
     this.clearTracks();
     this.clearAllTimeouts();
-    
-    if (this.state.pitchShifterNode) {
-      try {
-        this.state.pitchShifterNode.disconnect();
-      } catch (e) {
-        // Node might already be disconnected
-      }
-    }
     
     if (this.state.masterGainNode) {
       try {

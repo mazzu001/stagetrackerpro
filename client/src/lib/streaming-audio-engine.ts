@@ -462,32 +462,95 @@ export class StreamingAudioEngine {
   }
 
   private async updateTrackPitch(audioElement: HTMLAudioElement) {
-    // Find the track that corresponds to this audio element
+    // Speed control is handled separately - only handle pitch here
+    audioElement.playbackRate = this.globalSpeedMultiplier; // Speed only
+    
     const track = this.state.tracks.find(t => t.audioElement === audioElement);
     if (!track) return;
     
     try {
-      // Calculate pitch adjustment using musical semitone formula
-      const pitchRatio = this.globalPitchSemitones === 0 ? 1.0 : Math.pow(2, this.globalPitchSemitones / 12);
-      
-      // Combine pitch and speed adjustments
-      const finalPlaybackRate = pitchRatio * this.globalSpeedMultiplier;
-      
-      // Apply the combined rate
-      audioElement.playbackRate = finalPlaybackRate;
+      if (!this.toneInitialized) {
+        console.warn('⚠️ Tone.js not initialized, pitch shifting unavailable');
+        return;
+      }
+
+      this.ensureTrackAudioNodes(track);
       
       if (this.globalPitchSemitones === 0) {
-        console.log(`🎵 Pitch reset to normal (0 semitones), speed: ${this.globalSpeedMultiplier}x`);
+        // No pitch shift - remove pitch shifter and connect directly
+        if (track.pitchShiftNode) {
+          try {
+            track.pitchShiftNode.disconnect();
+            track.pitchShiftNode.dispose();
+            track.pitchShiftNode = null;
+          } catch (e) {
+            // Ignore errors during cleanup
+          }
+        }
+        
+        // Ensure direct connection: source -> gain
+        if (track.source && track.gainNode) {
+          try {
+            track.source.disconnect();
+            track.source.connect(track.gainNode);
+          } catch (e) {
+            // Connection might already exist
+          }
+        }
+        
+        console.log(`🎵 Pitch reset to 0 semitones (tempo unchanged)`);
+        return;
+      }
+
+      // Create or update Tone.js pitch shifter for true pitch-only shifting
+      if (!track.pitchShiftNode) {
+        // Create the pitch shifter with correct options
+        track.pitchShiftNode = new Tone.PitchShift({
+          pitch: this.globalPitchSemitones,
+          windowSize: 0.1, // Balance between quality and latency
+          feedback: 0
+        });
+        
+        // Route audio through pitch shifter using proper Tone.js connection
+        if (track.source && track.gainNode) {
+          try {
+            // Disconnect direct connection
+            track.source.disconnect();
+            
+            // Create a Tone.js compatible connection
+            // Use Tone.js Player or direct Web Audio routing
+            const toneGain = new Tone.Gain(track.volume);
+            
+            // Connect Web Audio source to Tone.js pitch shifter
+            // Note: This requires careful context management
+            track.source.connect(track.pitchShiftNode.input);
+            track.pitchShiftNode.connect(toneGain.input);
+            toneGain.connect(track.gainNode);
+            
+            console.log(`🎵 Pitch shifter created: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (tempo preserved)`);
+          } catch (error) {
+            console.warn('⚠️ Failed to route through pitch shifter:', error);
+            // Fallback to direct connection
+            track.source.connect(track.gainNode);
+          }
+        }
       } else {
-        console.log(`🎵 Pitch: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (ratio: ${pitchRatio.toFixed(3)})`);
-        console.log(`🎵 Combined rate: ${finalPlaybackRate.toFixed(3)}x (pitch: ${pitchRatio.toFixed(3)}x + speed: ${this.globalSpeedMultiplier}x)`);
-        console.log(`ℹ️ Note: This approach changes both pitch and tempo together`);
+        // Update existing pitch shifter
+        track.pitchShiftNode.pitch = this.globalPitchSemitones;
+        console.log(`🎵 Updated pitch: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (tempo preserved)`);
       }
       
     } catch (error) {
-      console.warn(`⚠️ Failed to apply pitch adjustment:`, error);
-      // Fallback to speed only
-      audioElement.playbackRate = this.globalSpeedMultiplier;
+      console.warn(`⚠️ Pitch shift failed:`, error);
+      // Ensure audio keeps playing normally
+      if (track.source && track.gainNode) {
+        try {
+          track.source.disconnect();
+          track.source.connect(track.gainNode);
+        } catch (e) {
+          // Ignore connection errors
+        }
+      }
     }
   }
 

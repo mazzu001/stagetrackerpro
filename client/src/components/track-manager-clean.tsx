@@ -23,7 +23,7 @@ interface TrackManagerProps {
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
   onPitchChange?: (semitones: number) => void;
-  onSpeedChange?: (multiplier: number) => void;
+  // Speed control removed - focusing only on pitch shifting
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
@@ -39,7 +39,7 @@ export default function TrackManager({
   onTrackSoloToggle, 
   onTrackBalanceChange,
   onPitchChange,
-  onSpeedChange,
+  // onSpeedChange removed
   audioLevels = {},
   isPlaying = false,
   isLoadingTracks = false,
@@ -54,7 +54,7 @@ export default function TrackManager({
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
   const [globalPitch, setGlobalPitch] = useState<number>(0); // -4 to +4 semitones
-  const [globalSpeed, setGlobalSpeed] = useState<number>(1.0); // 0.5x to 2.0x speed
+  // Global speed removed - only using pitch control
 
   // Recording state
   // Recording features removed for simplicity
@@ -644,44 +644,7 @@ export default function TrackManager({
               </Button>
             </div>
             
-            {/* Speed Control */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1">
-                <Music className="h-4 w-4 text-blue-500" />
-                <span className="text-sm font-medium">Speed</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500 w-8">0.5x</span>
-                <Slider
-                  value={[globalSpeed]}
-                  onValueChange={(value) => {
-                    setGlobalSpeed(value[0]);
-                    onSpeedChange?.(value[0]);
-                  }}
-                  min={0.5}
-                  max={2.0}
-                  step={0.1}
-                  className="w-16"
-                  data-testid="slider-global-speed"
-                />
-                <span className="text-xs text-gray-500 w-8">2.0x</span>
-                <span className="text-sm font-mono w-10 text-center text-blue-500">
-                  {globalSpeed.toFixed(1)}x
-                </span>
-              </div>
-              <Button
-                onClick={() => {
-                  setGlobalSpeed(1.0);
-                  onSpeedChange?.(1.0);
-                }}
-                variant="outline"
-                size="sm"
-                className="text-xs h-6 px-2"
-                data-testid="button-reset-speed"
-              >
-                Reset
-              </Button>
-            </div>
+            {/* Speed control removed - focusing only on pitch */}
           </div>
         )}
         

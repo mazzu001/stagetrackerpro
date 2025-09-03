@@ -225,7 +225,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     updateTrackMute,
     updateTrackSolo,
     updateGlobalPitch,
-    updateGlobalSpeed,
+    // updateGlobalSpeed removed - focusing only on pitch
     isAudioEngineOnline,
     masterStereoLevels,
     audioLevels
@@ -1351,7 +1351,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               onTrackSoloToggle={toggleTrackSolo}
               onTrackBalanceChange={updateTrackBalance}
               onPitchChange={updateGlobalPitch}
-              onSpeedChange={updateGlobalSpeed}
+              // onSpeedChange removed - focusing only on pitch
               onPlay={play}
               onPause={pause}
               isPlaying={isPlaying}

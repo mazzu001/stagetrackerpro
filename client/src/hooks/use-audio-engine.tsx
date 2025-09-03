@@ -290,18 +290,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     return 0;
   }, []);
 
-  const updateGlobalSpeed = useCallback((multiplier: number) => {
-    if (audioEngineRef.current) {
-      audioEngineRef.current.setGlobalSpeed(multiplier);
-    }
-  }, []);
-
-  const getGlobalSpeed = useCallback((): number => {
-    if (audioEngineRef.current) {
-      return audioEngineRef.current.getGlobalSpeed();
-    }
-    return 1.0;
-  }, []);
+  // Speed control functions removed - focusing only on pitch
 
   return {
     isPlaying,
@@ -325,7 +314,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     updateMasterVolume,
     updateGlobalPitch,
     getGlobalPitch,
-    updateGlobalSpeed,
-    getGlobalSpeed
+    // Speed control functions removed
   };
 }

@@ -38,7 +38,7 @@ export class StreamingAudioEngine {
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
   private globalPitchSemitones: number = 0;
-  private globalSpeedMultiplier: number = 1.0;
+  // Speed control removed - focusing only on pitch shifting
   private toneInitialized: boolean = false;
 
   constructor() {
@@ -447,28 +447,10 @@ export class StreamingAudioEngine {
     return this.globalPitchSemitones;
   }
 
-  // Separate speed control methods
-  setGlobalSpeed(multiplier: number) {
-    this.globalSpeedMultiplier = Math.max(0.5, Math.min(2.0, multiplier)); // Clamp to 0.5x - 2.0x range
-    
-    // Apply to all tracks via playbackRate (affects tempo only)
-    this.state.tracks.forEach(track => {
-      if (track.audioElement) {
-        track.audioElement.playbackRate = this.globalSpeedMultiplier;
-      }
-    });
-    
-    console.log(`🎵 Global speed set to ${this.globalSpeedMultiplier.toFixed(2)}x`);
-  }
-
-  getGlobalSpeed(): number {
-    return this.globalSpeedMultiplier;
-  }
+  // Speed control methods removed - focusing only on pitch
 
   private async updateTrackPitch(audioElement: HTMLAudioElement) {
-    // CRITICAL: Speed control is handled separately - this only handles pitch
-    // Do NOT modify playbackRate here - it affects both pitch AND tempo
-    // Speed control is handled in setGlobalSpeed method
+    // This method now focuses ONLY on pitch shifting (no speed/tempo control)
     
     const track = this.state.tracks.find(t => t.audioElement === audioElement);
     if (!track) return;
@@ -493,7 +475,7 @@ export class StreamingAudioEngine {
           }
         }
         
-        // Direct connection: source -> gain
+        // Direct connection: source -> gain (normal playback)
         if (track.source && track.gainNode) {
           try {
             track.source.disconnect();
@@ -503,36 +485,51 @@ export class StreamingAudioEngine {
           }
         }
         
-        console.log(`🎵 Pitch reset to 0 semitones (tempo unchanged)`);
+        console.log(`🎵 Pitch reset to normal (0 semitones)`);
         return;
       }
 
-      // Create or update Tone.js pitch shifter for actual pitch shifting
+      // Create Tone.js pitch shifter for true pitch-only shifting
       if (!track.pitchShiftNode) {
         try {
-          // Create the pitch shifter
+          console.log(`🎵 Creating pitch shifter for ${this.globalPitchSemitones} semitones`);
+          
+          // Create the pitch shifter with proper settings
           track.pitchShiftNode = new Tone.PitchShift({
             pitch: this.globalPitchSemitones,
-            windowSize: 0.1,
+            windowSize: 0.03, // Smaller window for better real-time response
+            overlap: 4,
             feedback: 0
           });
           
-          // Route through pitch shifter: source -> pitch shifter -> gain
-          if (track.source && track.gainNode) {
-            track.source.disconnect();
-            
-            // Route audio through pitch shifter
-            // Connect Web Audio source to Tone.js pitch shifter input
-            track.source.connect(track.pitchShiftNode.input);
-            
-            // Connect Tone.js pitch shifter to destination
-            // Since mixing Tone.js and Web Audio can be complex, use Tone's output
-            track.pitchShiftNode.toDestination();
+          // IMPORTANT: Start Tone.js audio context if not running
+          if (Tone.getContext().state !== 'running') {
+            await Tone.start();
+            console.log('🎵 Tone.js context started');
           }
           
-          console.log(`🎵 Pitch shifter active: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (tempo preserved)`);
+          // Route audio: source -> pitch shifter -> destination
+          if (track.source && track.gainNode) {
+            try {
+              track.source.disconnect();
+              
+              // Connect source to pitch shifter
+              track.source.connect(track.pitchShiftNode.input);
+              
+              // Connect pitch shifter to our gain node and main destination
+              track.pitchShiftNode.connect(track.gainNode);
+              track.pitchShiftNode.toDestination();
+              
+              console.log(`✅ Pitch shifter connected: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
+            } catch (routingError) {
+              console.warn('⚠️ Pitch shifter routing failed:', routingError);
+              // Fallback to direct connection
+              track.source.connect(track.gainNode);
+            }
+          }
+          
         } catch (error) {
-          console.warn('⚠️ Failed to create pitch shifter:', error);
+          console.error('❌ Failed to create pitch shifter:', error);
           // Fallback to direct connection
           if (track.source && track.gainNode) {
             track.source.connect(track.gainNode);
@@ -541,11 +538,11 @@ export class StreamingAudioEngine {
       } else {
         // Update existing pitch shifter
         track.pitchShiftNode.pitch = this.globalPitchSemitones;
-        console.log(`🎵 Pitch updated: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (tempo preserved)`);
+        console.log(`🎵 Pitch updated: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
       }
       
     } catch (error) {
-      console.warn(`⚠️ Pitch shift failed:`, error);
+      console.error(`❌ Pitch processing failed:`, error);
       // Ensure audio keeps playing normally
       if (track.source && track.gainNode) {
         try {

@@ -222,6 +222,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   };
 
   const handleMouseDown = (e: React.MouseEvent, songId: string) => {
+    console.log('🖱️ MOUSE DOWN on song:', songId, 'at', e.clientX, e.clientY);
     e.stopPropagation(); // Prevent triggering onClick
     e.preventDefault(); // Prevent text selection
     setIsDragging(true);
@@ -230,10 +231,14 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   };
 
   const handleMove = (clientX: number, clientY: number, songId: string, eventType: string) => {
-    if (!touchStart) return;
+    if (!touchStart) {
+      console.log('❌ No touchStart in handleMove');
+      return;
+    }
     
     const deltaX = clientX - touchStart.x;
     const deltaY = Math.abs(clientY - touchStart.y);
+    console.log(`📏 ${eventType} MOVE - deltaX: ${deltaX}, deltaY: ${deltaY}`);
     
     // Only allow horizontal swipes (avoid conflicts with vertical scrolling)
     if (deltaY < 30) {
@@ -255,6 +260,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
 
   // Global mouse move handler for proper drag support
   const handleGlobalMouseMove = (e: MouseEvent) => {
+    console.log('🖱️ GLOBAL MOUSE MOVE - isDragging:', isDragging, 'currentSong:', currentDragSong);
     if (!isDragging || !currentDragSong) return;
     e.preventDefault();
     handleMove(e.clientX, e.clientY, currentDragSong, 'Mouse');
@@ -316,6 +322,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   // Set up global event listeners for proper mouse drag support
   useEffect(() => {
     if (isDragging) {
+      console.log('✅ Adding global listeners - isDragging:', isDragging, 'currentSong:', currentDragSong);
       document.addEventListener('mousemove', handleGlobalMouseMove);
       document.addEventListener('mouseup', handleGlobalMouseUp);
     } else {

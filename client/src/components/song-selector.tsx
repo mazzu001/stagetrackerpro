@@ -21,7 +21,6 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
-  const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
   const [selectedSongs, setSelectedSongs] = useState<Set<string>>(new Set());
   const [newSong, setNewSong] = useState<InsertSong>({
     userId: "", // Will be set when creating
@@ -207,12 +206,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Multi-select handlers
-  const handleMultiSelectToggle = () => {
-    setIsMultiSelectMode(!isMultiSelectMode);
-    setSelectedSongs(new Set()); // Clear selections when toggling mode
-  };
-
+  // Checkbox handlers
   const handleSongCheckboxChange = (songId: string, checked: boolean) => {
     const newSelected = new Set(selectedSongs);
     if (checked) {
@@ -237,7 +231,6 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
         }
       }
       setSelectedSongs(new Set());
-      setIsMultiSelectMode(false);
     }
   };
 
@@ -245,12 +238,12 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
 
 
   const handleCardClick = (e: React.MouseEvent, songId: string) => {
-    // Don't load song in multi-select mode
-    if (isMultiSelectMode) {
-      e.preventDefault();
-      return;
-    }
     onSongSelect(songId);
+  };
+  
+  const handleCheckboxClick = (e: React.MouseEvent) => {
+    // Prevent song selection when clicking checkbox
+    e.stopPropagation();
   };
 
   if (isLoading) {
@@ -396,38 +389,27 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
           </Button>
         </div>
         
-        {/* Multi-select controls right below buttons */}
-        <div className="flex items-center space-x-3 mt-3">
-          <Checkbox 
-            id="multi-select" 
-            checked={isMultiSelectMode}
-            onCheckedChange={handleMultiSelectToggle}
-            data-testid="checkbox-multi-select"
-            className="h-5 w-5"
-          />
-          <Label htmlFor="multi-select" className="text-sm text-gray-300 cursor-pointer font-medium">
-            Select multiple songs to delete
-          </Label>
-          {selectedSongs.size > 0 && (
+        {/* Delete selected songs button */}
+        {selectedSongs.size > 0 && (
+          <div className="flex justify-end mt-3">
             <Button
               variant="destructive"
               size="sm"
               onClick={handleDeleteSelectedSongs}
-              className="ml-auto"
               data-testid="button-delete-selected"
             >
               <Trash2 className="w-4 h-4 mr-1" />
-              Delete {selectedSongs.size} Song{selectedSongs.size !== 1 ? 's' : ''}
+              Delete {selectedSongs.size} Selected Song{selectedSongs.size !== 1 ? 's' : ''}
             </Button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
       
       {songs.length === 0 ? (
         <div className="text-center py-8 text-gray-400">
           <ListMusic className="w-12 h-12 mx-auto mb-4 opacity-50" />
           <p>No songs available. Add your first song to get started.</p>
-          <p className="text-sm mt-2 opacity-60">💡 Tip: Once you have songs, use the checkbox above to select multiple songs for deletion</p>
+          <p className="text-sm mt-2 opacity-60">💡 Tip: Check the boxes on songs to select them for deletion</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -441,20 +423,19 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                   selectedSongId === song.id
                     ? 'bg-gray-800 border-2 border-primary'
                     : 'bg-gray-800 border border-gray-600 hover:bg-gray-750'
-                } ${isMultiSelectMode ? 'cursor-default' : 'cursor-pointer'}`}
+                } cursor-pointer`}
                 onClick={(e) => handleCardClick(e, song.id)}
                 data-testid={`song-card-${song.id}`}
               >
                 <div className="p-3">
                   <div className="flex items-center justify-between mb-1">
-                    {isMultiSelectMode && (
-                      <Checkbox
-                        checked={selectedSongs.has(song.id)}
-                        onCheckedChange={(checked) => handleSongCheckboxChange(song.id, checked as boolean)}
-                        className="mr-3"
-                        data-testid={`checkbox-song-${song.id}`}
-                      />
-                    )}
+                    <Checkbox
+                      checked={selectedSongs.has(song.id)}
+                      onCheckedChange={(checked) => handleSongCheckboxChange(song.id, checked as boolean)}
+                      onClick={handleCheckboxClick}
+                      className="mr-3"
+                      data-testid={`checkbox-song-${song.id}`}
+                    />
                     <h3 className="font-medium truncate">{song.title}</h3>
                     <span className={`text-xs px-2 py-0.5 rounded ${
                       selectedSongId === song.id

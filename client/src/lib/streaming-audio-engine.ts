@@ -24,7 +24,6 @@ export interface StreamingAudioEngineState {
   tracks: StreamingTrack[];
   masterVolume: number;
   masterGainNode: GainNode | null;
-  masterPitchSemitones: number;
   masterOutputNode: GainNode | null;
 }
 
@@ -36,9 +35,6 @@ export class StreamingAudioEngine {
   private syncTimeouts: number[] = [];
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
-  // Master output pitch shifting with Tone.js
-  private tonePitchShift: any = null; // Tone.js PitchShift effect
-  private toneOutputNode: any = null; // Tone.js output node
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -49,11 +45,9 @@ export class StreamingAudioEngine {
       tracks: [],
       masterVolume: 0.8,
       masterGainNode: null,
-      masterPitchSemitones: 0,
       masterOutputNode: null,
     };
     this.setupMasterOutput();
-    // Master output pitch shifting initialized
   }
 
   // Tone.js initialization removed
@@ -66,11 +60,11 @@ export class StreamingAudioEngine {
     // Create master output node
     this.state.masterOutputNode = this.audioContext.createGain();
     
-    // Simple and reliable audio routing for vinyl-style pitch shifting
+    // Simple and reliable audio routing
     this.state.masterGainNode.connect(this.state.masterOutputNode);
     this.state.masterOutputNode.connect(this.audioContext.destination);
     
-    console.log('🎵 Master output with vinyl-style pitch shifting initialized');
+    console.log('🎵 Master output initialized');
   }
 
   // Instant track loading with deferred audio node creation
@@ -166,8 +160,6 @@ export class StreamingAudioEngine {
         track.audioElement.preload = 'none'; // CRITICAL: No preloading
         track.audioElement.crossOrigin = 'anonymous';
         
-        // Apply current master pitch setting to new tracks
-        this.updateTrackPlaybackRate(track.audioElement);
         
       } catch (srcError) {
         console.error(`❌ Failed to set audio src for ${track.name}:`, srcError);
@@ -428,36 +420,6 @@ export class StreamingAudioEngine {
     }
   }
 
-  // Master output pitch shifting (vinyl-style: changes both pitch and tempo together)
-  setMasterPitch(semitones: number) {
-    this.state.masterPitchSemitones = Math.max(-4, Math.min(4, semitones)); // Clamp to -4 to +4 range
-    
-    // Calculate playback rate from semitones
-    const playbackRate = Math.pow(2, semitones / 12);
-    
-    // Apply playback rate to all active tracks for master pitch shifting
-    this.state.tracks.forEach(track => {
-      if (track.audioElement) {
-        track.audioElement.playbackRate = playbackRate;
-      }
-    });
-    
-    console.log(`🎵 Master Pitch: ${this.state.masterPitchSemitones > 0 ? '+' : ''}${this.state.masterPitchSemitones} semitones (vinyl-style: pitch + tempo, rate: ${playbackRate.toFixed(3)}x)`);
-  }
-
-  getMasterPitch(): number {
-    return this.state.masterPitchSemitones;
-  }
-
-  private updateTrackPlaybackRate(audioElement: HTMLAudioElement) {
-    try {
-      const playbackRate = Math.pow(2, this.state.masterPitchSemitones / 12);
-      audioElement.playbackRate = playbackRate;
-    } catch (error) {
-      console.error(`❌ Failed to apply pitch shift to track:`, error);
-      audioElement.playbackRate = 1.0;
-    }
-  }
 
 
   getTrackLevels(trackId: string): { left: number; right: number } {

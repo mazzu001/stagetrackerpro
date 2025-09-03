@@ -277,19 +277,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, []);
 
-  // Master output pitch shifting
-  const updateMasterPitch = useCallback((semitones: number) => {
-    if (audioEngineRef.current) {
-      audioEngineRef.current.setMasterPitch(semitones);
-    }
-  }, []);
-
-  const getMasterPitch = useCallback((): number => {
-    if (audioEngineRef.current) {
-      return audioEngineRef.current.getMasterPitch();
-    }
-    return 0;
-  }, []);
 
   return {
     isPlaying,
@@ -311,7 +298,5 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     updateTrackMute,
     updateTrackSolo,
     updateMasterVolume,
-    updateMasterPitch,
-    getMasterPitch,
   };
 }

@@ -64,7 +64,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
-  const [masterPitch, setMasterPitch] = useState(0); // -4 to +4 semitones
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
 
@@ -222,8 +221,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     isLoadingTracks,
     masterVolume,
     updateMasterVolume,
-    updateMasterPitch,
-    getMasterPitch,
     updateTrackVolume,
     updateTrackBalance,
     updateTrackMute,
@@ -243,12 +240,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     updateTrackSolo(trackId);
   }, [updateTrackSolo]);
 
-  // Master pitch control handler
-  const handleMasterPitchChange = useCallback((value: number[]) => {
-    const semitones = value[0];
-    setMasterPitch(semitones);
-    updateMasterPitch(semitones);
-  }, [updateMasterPitch]);
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
@@ -1155,26 +1146,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 {selectedSong ? `${selectedSong.title} - ${selectedSong.artist}` : 'Select a song'}
               </h2>
               
-              {/* Master Pitch Control */}
-              {selectedSong && (
-                <div className="flex items-center gap-2 mx-3">
-                  <span className="text-xs text-gray-400 whitespace-nowrap">Pitch:</span>
-                  <div className="w-20">
-                    <Slider
-                      value={[masterPitch]}
-                      onValueChange={handleMasterPitchChange}
-                      min={-4}
-                      max={4}
-                      step={1}
-                      className="w-full"
-                      data-testid="slider-master-pitch"
-                    />
-                  </div>
-                  <span className="text-xs text-gray-400 w-8 text-center">
-                    {masterPitch > 0 ? `+${masterPitch}` : masterPitch}
-                  </span>
-                </div>
-              )}
               
               {/* Lyrics Controls */}
               {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
@@ -1191,26 +1162,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 {selectedSong && <LyricsControls onEditLyrics={handleEditLyrics} song={selectedSong} />}
               </div>
               
-              {/* Mobile Master Pitch Control */}
-              {selectedSong && (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-gray-400 whitespace-nowrap">Pitch:</span>
-                  <div className="flex-1 max-w-24">
-                    <Slider
-                      value={[masterPitch]}
-                      onValueChange={handleMasterPitchChange}
-                      min={-4}
-                      max={4}
-                      step={1}
-                      className="w-full"
-                      data-testid="slider-master-pitch-mobile"
-                    />
-                  </div>
-                  <span className="text-xs text-gray-400 w-8 text-center">
-                    {masterPitch > 0 ? `+${masterPitch}` : masterPitch}
-                  </span>
-                </div>
-              )}
             </div>
             
             {/* Lyrics Area - Takes remaining space but leaves room for transport */}

@@ -277,6 +277,19 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, []);
 
+  const updateGlobalPitch = useCallback((semitones: number) => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.setGlobalPitch(semitones);
+    }
+  }, []);
+
+  const getGlobalPitch = useCallback((): number => {
+    if (audioEngineRef.current) {
+      return audioEngineRef.current.getGlobalPitch();
+    }
+    return 0;
+  }, []);
+
   return {
     isPlaying,
     currentTime,
@@ -296,6 +309,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     updateTrackBalance,
     updateTrackMute,
     updateTrackSolo,
-    updateMasterVolume
+    updateMasterVolume,
+    updateGlobalPitch,
+    getGlobalPitch
   };
 }

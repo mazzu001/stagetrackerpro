@@ -28,6 +28,7 @@ interface TrackManagerProps {
   onTrackMuteToggle?: (trackId: string) => void;
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
+  onPitchChange?: (semitones: number) => void;
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
@@ -43,6 +44,7 @@ export default function TrackManager({
   onTrackMuteToggle, 
   onTrackSoloToggle, 
   onTrackBalanceChange,
+  onPitchChange,
   audioLevels = {},
   isPlaying = false,
   isLoadingTracks = false,
@@ -59,6 +61,7 @@ export default function TrackManager({
   const [totalFiles, setTotalFiles] = useState(0);
   const [currentFileName, setCurrentFileName] = useState("");
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
+  const [globalPitch, setGlobalPitch] = useState<number>(0); // -4 to +4 semitones
 
   const { toast } = useToast();
   const { user } = useLocalAuth();
@@ -644,6 +647,54 @@ export default function TrackManager({
           )}
         </div>
       </div>
+
+      {/* Global Pitch Control */}
+      {tracks.length > 0 && (
+        <Card className="mb-4">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Music className="h-4 w-4 text-orange-500" />
+                <span className="text-sm font-medium">Global Pitch</span>
+              </div>
+              <div className="flex-1 flex items-center gap-2">
+                <span className="text-xs text-gray-500 w-8">-4</span>
+                <Slider
+                  value={[globalPitch]}
+                  onValueChange={(value) => {
+                    setGlobalPitch(value[0]);
+                    onPitchChange?.(value[0]);
+                  }}
+                  min={-4}
+                  max={4}
+                  step={1}
+                  className="flex-1"
+                  data-testid="slider-global-pitch"
+                />
+                <span className="text-xs text-gray-500 w-8">+4</span>
+                <span className="text-sm font-mono w-12 text-center">
+                  {globalPitch > 0 ? `+${globalPitch}` : globalPitch}
+                </span>
+              </div>
+              <Button
+                onClick={() => {
+                  setGlobalPitch(0);
+                  onPitchChange?.(0);
+                }}
+                variant="outline"
+                size="sm"
+                className="text-xs"
+                data-testid="button-reset-pitch"
+              >
+                Reset
+              </Button>
+            </div>
+            <div className="mt-2 text-xs text-gray-500">
+              Adjust pitch by semitones (affects all tracks simultaneously)
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {tracks.length === 0 ? (
         <Card>

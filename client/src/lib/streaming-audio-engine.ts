@@ -32,6 +32,7 @@ export class StreamingAudioEngine {
   private syncTimeouts: number[] = [];
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
+  private globalPitchSemitones: number = 0;
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -143,6 +144,9 @@ export class StreamingAudioEngine {
         track.audioElement.src = track.url;
         track.audioElement.preload = 'none'; // CRITICAL: No preloading
         track.audioElement.crossOrigin = 'anonymous';
+        
+        // Apply current pitch setting
+        this.updateTrackPitch(track.audioElement);
       } catch (srcError) {
         console.error(`❌ Failed to set audio src for ${track.name}:`, srcError);
         track.audioElement = null;
@@ -398,6 +402,36 @@ export class StreamingAudioEngine {
     this.state.masterVolume = volume;
     if (this.state.masterGainNode) {
       this.state.masterGainNode.gain.value = volume;
+    }
+  }
+
+  // Pitch control methods
+  setGlobalPitch(semitones: number) {
+    this.globalPitchSemitones = Math.max(-4, Math.min(4, semitones)); // Clamp to -4 to +4 range
+    
+    // Apply to all tracks
+    this.state.tracks.forEach(track => {
+      if (track.audioElement) {
+        this.updateTrackPitch(track.audioElement);
+      }
+    });
+    
+    console.log(`🎵 Global pitch set to ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
+  }
+
+  getGlobalPitch(): number {
+    return this.globalPitchSemitones;
+  }
+
+  private updateTrackPitch(audioElement: HTMLAudioElement) {
+    // Convert semitones to playback rate using the formula: rate = 2^(semitones/12)
+    const playbackRate = Math.pow(2, this.globalPitchSemitones / 12);
+    
+    try {
+      audioElement.playbackRate = playbackRate;
+      // Note: This changes both pitch and tempo, which is typical for live performance
+    } catch (error) {
+      console.warn(`⚠️ Failed to set playback rate:`, error);
     }
   }
 

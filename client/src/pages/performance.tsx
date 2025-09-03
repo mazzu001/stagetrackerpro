@@ -224,6 +224,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     updateTrackBalance,
     updateTrackMute,
     updateTrackSolo,
+    updateGlobalPitch,
     isAudioEngineOnline,
     masterStereoLevels,
     audioLevels
@@ -1348,6 +1349,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               onTrackMuteToggle={toggleTrackMute}
               onTrackSoloToggle={toggleTrackSolo}
               onTrackBalanceChange={updateTrackBalance}
+              onPitchChange={updateGlobalPitch}
               onPlay={play}
               onPause={pause}
               isPlaying={isPlaying}

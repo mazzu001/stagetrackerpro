@@ -36,13 +36,9 @@ export class StreamingAudioEngine {
   private syncTimeouts: number[] = [];
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
-  // Master output pitch shifting
-  private masterOutputBuffer: AudioBuffer | null = null;
-  private masterOutputSource: AudioBufferSourceNode | null = null;
-  private masterPitchShiftNode: GainNode | null = null;
-  private pitchDelayNode: DelayNode | null = null;
-  private pitchOscillator: OscillatorNode | null = null;
-  private pitchGainNode: GainNode | null = null;
+  // Master output pitch shifting with Tone.js
+  private tonePitchShift: any = null; // Tone.js PitchShift effect
+  private toneOutputNode: any = null; // Tone.js output node
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -67,32 +63,14 @@ export class StreamingAudioEngine {
     this.state.masterGainNode = this.audioContext.createGain();
     this.state.masterGainNode.gain.value = this.state.masterVolume;
     
-    // Create pitch shifting nodes
-    this.pitchDelayNode = this.audioContext.createDelay(0.1);
-    this.pitchGainNode = this.audioContext.createGain();
-    this.pitchOscillator = this.audioContext.createOscillator();
-    
     // Create master output node
     this.state.masterOutputNode = this.audioContext.createGain();
     
-    // Set up pitch shifter parameters
-    this.pitchDelayNode.delayTime.value = 0.01; // 10ms delay for pitch shifting
-    this.pitchGainNode.gain.value = 0.5; // Mix level for pitch effect
-    this.pitchOscillator.frequency.value = 0; // Start with no pitch shift
-    this.pitchOscillator.type = 'triangle';
-    
-    // Audio routing: tracks -> masterGainNode -> [pitch shifter] -> masterOutputNode -> destination
-    this.state.masterGainNode.connect(this.pitchDelayNode);
-    this.state.masterGainNode.connect(this.state.masterOutputNode); // Direct path
-    this.pitchDelayNode.connect(this.pitchGainNode);
-    this.pitchGainNode.connect(this.state.masterOutputNode); // Pitch-shifted path
+    // Simple and reliable audio routing for vinyl-style pitch shifting
+    this.state.masterGainNode.connect(this.state.masterOutputNode);
     this.state.masterOutputNode.connect(this.audioContext.destination);
     
-    // Connect pitch modulation
-    this.pitchOscillator.connect(this.pitchDelayNode.delayTime);
-    this.pitchOscillator.start();
-    
-    console.log('🎵 Master output with Web Audio pitch shifting initialized');
+    console.log('🎵 Master output with vinyl-style pitch shifting initialized');
   }
 
   // Instant track loading with deferred audio node creation
@@ -188,7 +166,8 @@ export class StreamingAudioEngine {
         track.audioElement.preload = 'none'; // CRITICAL: No preloading
         track.audioElement.crossOrigin = 'anonymous';
         
-        // Note: Master pitch is now applied at the output level, not per-track
+        // Apply current master pitch setting to new tracks
+        this.updateTrackPlaybackRate(track.audioElement);
         
       } catch (srcError) {
         console.error(`❌ Failed to set audio src for ${track.name}:`, srcError);
@@ -449,37 +428,35 @@ export class StreamingAudioEngine {
     }
   }
 
-  // Master output pitch shifting (pitch only, preserves tempo)
+  // Master output pitch shifting (vinyl-style: changes both pitch and tempo together)
   setMasterPitch(semitones: number) {
     this.state.masterPitchSemitones = Math.max(-4, Math.min(4, semitones)); // Clamp to -4 to +4 range
     
-    if (this.pitchOscillator && this.pitchGainNode) {
-      try {
-        // Calculate pitch shift frequency (simple approach)
-        const pitchShiftHz = semitones * 2; // 2Hz per semitone for modulation
-        
-        // Apply pitch shifting via modulated delay
-        this.pitchOscillator.frequency.setValueAtTime(
-          Math.abs(pitchShiftHz), 
-          this.audioContext.currentTime
-        );
-        
-        // Adjust mix level based on pitch amount
-        const mixLevel = Math.abs(semitones) > 0 ? 0.3 + (Math.abs(semitones) * 0.1) : 0;
-        this.pitchGainNode.gain.setValueAtTime(
-          mixLevel,
-          this.audioContext.currentTime
-        );
-        
-        console.log(`🎵 Master Pitch: ${this.state.masterPitchSemitones > 0 ? '+' : ''}${this.state.masterPitchSemitones} semitones (pitch-only, preserves tempo)`);
-      } catch (error) {
-        console.error(`❌ Pitch shifting failed:`, error);
+    // Calculate playback rate from semitones
+    const playbackRate = Math.pow(2, semitones / 12);
+    
+    // Apply playback rate to all active tracks for master pitch shifting
+    this.state.tracks.forEach(track => {
+      if (track.audioElement) {
+        track.audioElement.playbackRate = playbackRate;
       }
-    }
+    });
+    
+    console.log(`🎵 Master Pitch: ${this.state.masterPitchSemitones > 0 ? '+' : ''}${this.state.masterPitchSemitones} semitones (vinyl-style: pitch + tempo, rate: ${playbackRate.toFixed(3)}x)`);
   }
 
   getMasterPitch(): number {
     return this.state.masterPitchSemitones;
+  }
+
+  private updateTrackPlaybackRate(audioElement: HTMLAudioElement) {
+    try {
+      const playbackRate = Math.pow(2, this.state.masterPitchSemitones / 12);
+      audioElement.playbackRate = playbackRate;
+    } catch (error) {
+      console.error(`❌ Failed to apply pitch shift to track:`, error);
+      audioElement.playbackRate = 1.0;
+    }
   }
 
 

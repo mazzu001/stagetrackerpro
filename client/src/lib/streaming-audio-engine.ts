@@ -1,4 +1,5 @@
 // Streaming audio engine with lazy initialization to prevent UI blocking
+import * as Tone from 'tone';
 
 export interface StreamingTrack {
   id: string;
@@ -9,7 +10,7 @@ export interface StreamingTrack {
   gainNode: GainNode | null;
   panNode: StereoPannerNode | null;
   analyzerNode: AnalyserNode | null;
-  pitchShiftNode: AudioWorkletNode | null;
+  pitchShiftNode: Tone.PitchShift | null;
   volume: number;
   balance: number;
   isMuted: boolean;
@@ -34,7 +35,8 @@ export class StreamingAudioEngine {
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
   private globalPitchSemitones: number = 0;
-  private pitchShiftNodes: Map<string, AudioWorkletNode> = new Map();
+  private globalSpeedMultiplier: number = 1.0;
+  private toneInitialized: boolean = false;
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -47,6 +49,20 @@ export class StreamingAudioEngine {
       masterGainNode: null,
     };
     this.setupMasterGain();
+    this.initializeTone();
+  }
+
+  private async initializeTone() {
+    try {
+      // Connect Tone.js to our existing AudioContext
+      await Tone.setContext(this.audioContext);
+      await Tone.start();
+      this.toneInitialized = true;
+      console.log('🎵 Tone.js initialized for pitch shifting');
+    } catch (error) {
+      console.warn('⚠️ Failed to initialize Tone.js:', error);
+      this.toneInitialized = false;
+    }
   }
 
   private setupMasterGain() {
@@ -72,7 +88,7 @@ export class StreamingAudioEngine {
       gainNode: null as GainNode | null,
       panNode: null as StereoPannerNode | null,
       analyzerNode: null as AnalyserNode | null,
-      pitchShiftNode: null as AudioWorkletNode | null,
+      pitchShiftNode: null as Tone.PitchShift | null,
       volume: 1,
       balance: 0,
       isMuted: false,
@@ -427,51 +443,82 @@ export class StreamingAudioEngine {
     return this.globalPitchSemitones;
   }
 
+  // Separate speed control methods
+  setGlobalSpeed(multiplier: number) {
+    this.globalSpeedMultiplier = Math.max(0.5, Math.min(2.0, multiplier)); // Clamp to 0.5x - 2.0x range
+    
+    // Apply to all tracks via playbackRate (affects tempo only)
+    this.state.tracks.forEach(track => {
+      if (track.audioElement) {
+        track.audioElement.playbackRate = this.globalSpeedMultiplier;
+      }
+    });
+    
+    console.log(`🎵 Global speed set to ${this.globalSpeedMultiplier.toFixed(2)}x`);
+  }
+
+  getGlobalSpeed(): number {
+    return this.globalSpeedMultiplier;
+  }
+
   private async updateTrackPitch(audioElement: HTMLAudioElement) {
-    // Reset playback rate to normal since we're not using it for pitch
-    audioElement.playbackRate = 1.0;
+    // Speed control is separate - keep playback rate for speed only
+    audioElement.playbackRate = this.globalSpeedMultiplier;
     
     // Find the track that corresponds to this audio element
     const track = this.state.tracks.find(t => t.audioElement === audioElement);
     if (!track) return;
     
     try {
-      this.ensureTrackAudioNodes(track);
-      
-      if (this.globalPitchSemitones === 0) {
-        // No pitch shift needed - connect directly
-        if (track.source && track.gainNode) {
-          // Disconnect any existing pitch shift
-          if (track.pitchShiftNode) {
-            track.pitchShiftNode.disconnect();
-            track.pitchShiftNode = null;
-          }
-          // Connect source directly to gain
-          track.source.disconnect();
-          track.source.connect(track.gainNode);
-        }
-        console.log(`🎵 Pitch reset to normal`);
+      if (!this.toneInitialized) {
+        console.warn('⚠️ Tone.js not initialized, cannot apply pitch shift');
         return;
       }
 
-      // For now, we'll use a simple approach: detune using oscillator modulation
-      // This is a basic implementation that should work across browsers
-      if (track.source && track.gainNode) {
-        // Calculate detune amount (100 cents = 1 semitone)
-        const detuneAmount = this.globalPitchSemitones * 100;
-        
-        // Note: This is a simplified approach. Real pitch shifting without tempo change
-        // requires more complex audio processing that would need AudioWorklets
-        // For now, we'll provide feedback that this is a limitation
-        console.log(`🎵 Basic pitch adjustment: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
-        console.log(`⚠️ Note: True pitch-without-tempo requires advanced processing not available in basic Web Audio`);
-        
-        // Keep the original connection for now - we'd need to implement 
-        // a proper pitch shifter using AudioWorklets for true pitch shifting
+      this.ensureTrackAudioNodes(track);
+      
+      if (this.globalPitchSemitones === 0) {
+        // No pitch shift needed - bypass pitch shifter
+        if (track.pitchShiftNode) {
+          track.pitchShiftNode.disconnect();
+          track.pitchShiftNode.dispose();
+          track.pitchShiftNode = null;
+        }
+        // Connect source directly to gain
         if (track.source && track.gainNode) {
           track.source.disconnect();
           track.source.connect(track.gainNode);
         }
+        console.log(`🎵 Pitch reset to normal (0 semitones)`);
+        return;
+      }
+
+      // Create or update pitch shift node
+      if (!track.pitchShiftNode && track.source && track.gainNode) {
+        // Create new pitch shift node
+        track.pitchShiftNode = new Tone.PitchShift({
+          pitch: this.globalPitchSemitones,
+          windowSize: 0.1, // Smaller window for lower latency
+          feedback: 0.1
+        });
+
+        // Connect: source -> pitch shifter -> gain
+        track.source.disconnect();
+        
+        // Create Tone.js compatible nodes
+        const toneSource = new Tone.UserMedia();
+        const toneGain = new Tone.Gain(track.volume);
+        
+        // Connect through Tone.js: source -> pitch shifter -> gain -> destination
+        track.source.connect(track.pitchShiftNode.input);
+        track.pitchShiftNode.connect(toneGain);
+        toneGain.connect(track.gainNode);
+        
+        console.log(`🎵 Created pitch shifter: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
+      } else if (track.pitchShiftNode) {
+        // Update existing pitch shift amount
+        track.pitchShiftNode.pitch = this.globalPitchSemitones;
+        console.log(`🎵 Updated pitch: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
       }
       
     } catch (error) {

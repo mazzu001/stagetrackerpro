@@ -290,6 +290,19 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     return 0;
   }, []);
 
+  const updateGlobalSpeed = useCallback((multiplier: number) => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.setGlobalSpeed(multiplier);
+    }
+  }, []);
+
+  const getGlobalSpeed = useCallback((): number => {
+    if (audioEngineRef.current) {
+      return audioEngineRef.current.getGlobalSpeed();
+    }
+    return 1.0;
+  }, []);
+
   return {
     isPlaying,
     currentTime,
@@ -311,6 +324,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     updateTrackSolo,
     updateMasterVolume,
     updateGlobalPitch,
-    getGlobalPitch
+    getGlobalPitch,
+    updateGlobalSpeed,
+    getGlobalSpeed
   };
 }

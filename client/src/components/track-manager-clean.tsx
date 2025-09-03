@@ -23,6 +23,7 @@ interface TrackManagerProps {
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
   onPitchChange?: (semitones: number) => void;
+  onSpeedChange?: (multiplier: number) => void;
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
@@ -38,6 +39,7 @@ export default function TrackManager({
   onTrackSoloToggle, 
   onTrackBalanceChange,
   onPitchChange,
+  onSpeedChange,
   audioLevels = {},
   isPlaying = false,
   isLoadingTracks = false,
@@ -52,6 +54,7 @@ export default function TrackManager({
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
   const [globalPitch, setGlobalPitch] = useState<number>(0); // -4 to +4 semitones
+  const [globalSpeed, setGlobalSpeed] = useState<number>(1.0); // 0.5x to 2.0x speed
 
   // Recording state
   // Recording features removed for simplicity
@@ -599,44 +602,86 @@ export default function TrackManager({
           
         </div>
         
-        {/* Global Pitch Control - positioned between title and buttons */}
+        {/* Global Pitch and Speed Controls - positioned between title and buttons */}
         {tracks.length > 0 && (
-          <div className="flex items-center gap-4 mx-4">
-            <div className="flex items-center gap-2">
-              <Music className="h-4 w-4 text-orange-500" />
-              <span className="text-sm font-medium">Pitch</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500 w-6">-4</span>
-              <Slider
-                value={[globalPitch]}
-                onValueChange={(value) => {
-                  setGlobalPitch(value[0]);
-                  onPitchChange?.(value[0]);
+          <div className="flex items-center gap-6 mx-4">
+            {/* Pitch Control */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <Music className="h-4 w-4 text-orange-500" />
+                <span className="text-sm font-medium">Pitch</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500 w-6">-4</span>
+                <Slider
+                  value={[globalPitch]}
+                  onValueChange={(value) => {
+                    setGlobalPitch(value[0]);
+                    onPitchChange?.(value[0]);
+                  }}
+                  min={-4}
+                  max={4}
+                  step={1}
+                  className="w-16"
+                  data-testid="slider-global-pitch"
+                />
+                <span className="text-xs text-gray-500 w-6">+4</span>
+                <span className="text-sm font-mono w-8 text-center text-orange-500">
+                  {globalPitch > 0 ? `+${globalPitch}` : globalPitch}
+                </span>
+              </div>
+              <Button
+                onClick={() => {
+                  setGlobalPitch(0);
+                  onPitchChange?.(0);
                 }}
-                min={-4}
-                max={4}
-                step={1}
-                className="w-20"
-                data-testid="slider-global-pitch"
-              />
-              <span className="text-xs text-gray-500 w-6">+4</span>
-              <span className="text-sm font-mono w-10 text-center">
-                {globalPitch > 0 ? `+${globalPitch}` : globalPitch}
-              </span>
+                variant="outline"
+                size="sm"
+                className="text-xs h-6 px-2"
+                data-testid="button-reset-pitch"
+              >
+                Reset
+              </Button>
             </div>
-            <Button
-              onClick={() => {
-                setGlobalPitch(0);
-                onPitchChange?.(0);
-              }}
-              variant="outline"
-              size="sm"
-              className="text-xs h-7"
-              data-testid="button-reset-pitch"
-            >
-              Reset
-            </Button>
+            
+            {/* Speed Control */}
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <Music className="h-4 w-4 text-blue-500" />
+                <span className="text-sm font-medium">Speed</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-gray-500 w-8">0.5x</span>
+                <Slider
+                  value={[globalSpeed]}
+                  onValueChange={(value) => {
+                    setGlobalSpeed(value[0]);
+                    onSpeedChange?.(value[0]);
+                  }}
+                  min={0.5}
+                  max={2.0}
+                  step={0.1}
+                  className="w-16"
+                  data-testid="slider-global-speed"
+                />
+                <span className="text-xs text-gray-500 w-8">2.0x</span>
+                <span className="text-sm font-mono w-10 text-center text-blue-500">
+                  {globalSpeed.toFixed(1)}x
+                </span>
+              </div>
+              <Button
+                onClick={() => {
+                  setGlobalSpeed(1.0);
+                  onSpeedChange?.(1.0);
+                }}
+                variant="outline"
+                size="sm"
+                className="text-xs h-6 px-2"
+                data-testid="button-reset-speed"
+              >
+                Reset
+              </Button>
+            </div>
           </div>
         )}
         

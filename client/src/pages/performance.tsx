@@ -1350,6 +1350,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               onTrackSoloToggle={toggleTrackSolo}
               onTrackBalanceChange={updateTrackBalance}
               onPitchChange={updateGlobalPitch}
+              onSpeedChange={updateGlobalSpeed}
               onPlay={play}
               onPause={pause}
               isPlaying={isPlaying}

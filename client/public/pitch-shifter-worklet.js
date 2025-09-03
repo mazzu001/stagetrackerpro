@@ -1,5 +1,5 @@
-// Simple, low-latency pitch shifter Audio Worklet
-// Optimized for clean, real-time pitch shifting without delay artifacts
+// Effective pitch shifter using variable playback rate
+// Simple but functional approach for real-time pitch shifting
 
 class PitchShifterProcessor extends AudioWorkletProcessor {
   constructor() {
@@ -7,34 +7,30 @@ class PitchShifterProcessor extends AudioWorkletProcessor {
     
     this.pitchRatio = 1.0;
     
-    // Minimal buffering for low latency
-    this.bufferSize = 512;
+    // Circular buffer for pitch shifting
+    this.bufferSize = 4096;  // Larger buffer for better quality
     this.buffer = new Float32Array(this.bufferSize);
     this.writeIndex = 0;
-    this.readIndex = 0;
+    this.readPosition = 0;  // Floating point read position
     
-    // Simple windowing
-    this.windowSize = 256;
-    this.window = new Float32Array(this.windowSize);
-    for (let i = 0; i < this.windowSize; i++) {
-      this.window[i] = 0.5 * (1 - Math.cos(2 * Math.PI * i / this.windowSize));
-    }
-    
-    // Overlap buffers
-    this.overlapBuffer = new Float32Array(this.windowSize);
-    this.grainBuffer = new Float32Array(this.windowSize);
+    // Crossfade parameters for smooth transitions
+    this.crossfadeLength = 128;
+    this.grainLength = 1024;
+    this.grainOverlap = 512;
     
     // Processing state
-    this.grainPosition = 0;
-    this.outputPosition = 0;
+    this.outputGrain = new Float32Array(this.grainLength);
+    this.grainIndex = 0;
+    this.grainReady = false;
     
     this.port.onmessage = (event) => {
       if (event.data.type === 'pitchRatio') {
-        this.pitchRatio = Math.max(0.5, Math.min(2.0, event.data.value)); // Limit range to reduce artifacts
+        this.pitchRatio = Math.max(0.5, Math.min(2.0, event.data.value));
+        console.log(`🎵 Pitch ratio set to: ${this.pitchRatio.toFixed(3)}`);
       }
     };
     
-    console.log('🎵 Low-latency pitch shifter initialized');
+    console.log('🎵 Variable-rate pitch shifter initialized');
   }
   
   process(inputs, outputs) {
@@ -48,15 +44,20 @@ class PitchShifterProcessor extends AudioWorkletProcessor {
     
     if (!inputChannel || !outputChannel) return true;
     
-    // Process each sample with minimal latency
+    // Fill input buffer
     for (let i = 0; i < inputChannel.length; i++) {
-      // Simple direct processing for minimal delay
+      this.buffer[this.writeIndex] = inputChannel[i];
+      this.writeIndex = (this.writeIndex + 1) % this.bufferSize;
+    }
+    
+    // Generate output with pitch shifting
+    for (let i = 0; i < outputChannel.length; i++) {
       if (Math.abs(this.pitchRatio - 1.0) < 0.01) {
         // No pitch change - direct passthrough
-        outputChannel[i] = inputChannel[i];
+        outputChannel[i] = this.getDelayedSample(128); // Small fixed delay
       } else {
-        // Apply pitch shift with minimal buffering
-        outputChannel[i] = this.processSimplePitch(inputChannel[i]);
+        // Apply pitch shifting
+        outputChannel[i] = this.getPitchShiftedSample();
       }
     }
     
@@ -70,29 +71,43 @@ class PitchShifterProcessor extends AudioWorkletProcessor {
     return true;
   }
   
-  processSimplePitch(sample) {
-    // Store input sample
-    this.buffer[this.writeIndex] = sample;
-    this.writeIndex = (this.writeIndex + 1) % this.bufferSize;
+  getDelayedSample(delaySamples) {
+    const readIndex = (this.writeIndex - delaySamples - 1 + this.bufferSize) % this.bufferSize;
+    return this.buffer[readIndex];
+  }
+  
+  getPitchShiftedSample() {
+    // Variable playback rate for pitch shifting
+    // Higher pitch = read faster, lower pitch = read slower
+    const readSpeed = this.pitchRatio;
     
-    // Calculate read position based on pitch ratio
-    const readOffset = (this.pitchRatio - 1.0) * 64; // Small offset for pitch change
-    let readPos = this.writeIndex - 64 - readOffset; // Fixed delay of 64 samples (~1.3ms at 48kHz)
+    // Advance read position at the adjusted rate
+    this.readPosition += readSpeed;
     
-    if (readPos < 0) readPos += this.bufferSize;
-    if (readPos >= this.bufferSize) readPos -= this.bufferSize;
+    // Keep read position within bounds and handle wraparound
+    if (this.readPosition >= this.bufferSize) {
+      this.readPosition -= this.bufferSize;
+    }
     
-    // Linear interpolation for smooth pitch shifting
-    const index = Math.floor(readPos);
-    const fraction = readPos - index;
+    // Calculate actual buffer read index (offset from write position)
+    const maxDelay = this.bufferSize * 0.75; // Stay safely behind write position
+    let readIndex = this.writeIndex - maxDelay + this.readPosition;
+    
+    // Handle wraparound
+    while (readIndex < 0) readIndex += this.bufferSize;
+    while (readIndex >= this.bufferSize) readIndex -= this.bufferSize;
+    
+    // Linear interpolation for smooth playback
+    const index = Math.floor(readIndex);
+    const fraction = readIndex - index;
     const nextIndex = (index + 1) % this.bufferSize;
     
-    const sample1 = this.buffer[index];
-    const sample2 = this.buffer[nextIndex];
+    const sample1 = this.buffer[index] || 0;
+    const sample2 = this.buffer[nextIndex] || 0;
     
     return sample1 * (1 - fraction) + sample2 * fraction;
   }
 }
 
-// Register the simplified processor
+// Register the improved processor
 registerProcessor('pitch-shifter', PitchShifterProcessor);

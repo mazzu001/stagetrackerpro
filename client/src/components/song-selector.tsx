@@ -524,11 +524,17 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                   transform,
                   transition: swipeState ? 'none' : 'transform 0.3s ease-out'
                 }}
-                onClick={(e) => handleCardClick(e, song.id)}
+                onClick={(e) => {
+                  console.log('🖱️ CLICK EVENT fired on song:', song.id);
+                  handleCardClick(e, song.id);
+                }}
                 onTouchStart={(e) => handleTouchStart(e, song.id)}
                 onTouchMove={(e) => handleTouchMove(e, song.id)}
                 onTouchEnd={(e) => handleTouchEnd(e, song.id, song.title)}
-                onMouseDown={(e) => handleMouseDown(e, song.id)}
+                onMouseDown={(e) => {
+                  console.log('🖱️ RAW MOUSE DOWN event fired on song:', song.id);
+                  handleMouseDown(e, song.id);
+                }}
                 onMouseMove={(e) => handleMouseMove(e, song.id)}
                 onMouseUp={(e) => handleMouseUp(e, song.id, song.title)}
                 data-testid={`song-card-${song.id}`}

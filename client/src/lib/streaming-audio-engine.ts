@@ -22,6 +22,7 @@ export interface StreamingAudioEngineState {
   tracks: StreamingTrack[];
   masterVolume: number;
   masterGainNode: GainNode | null;
+  pitchShifterNode: AudioWorkletNode | null;
 }
 
 export class StreamingAudioEngine {
@@ -42,14 +43,37 @@ export class StreamingAudioEngine {
       tracks: [],
       masterVolume: 0.8,
       masterGainNode: null,
+      pitchShifterNode: null,
     };
     this.setupMasterGain();
   }
 
-  private setupMasterGain() {
+  private async setupMasterGain() {
     this.state.masterGainNode = this.audioContext.createGain();
-    this.state.masterGainNode.connect(this.audioContext.destination);
     this.state.masterGainNode.gain.value = this.state.masterVolume;
+    
+    // Set up pitch shifter
+    await this.setupPitchShifter();
+  }
+
+  private async setupPitchShifter() {
+    try {
+      // Load the pitch shifter worklet
+      await this.audioContext.audioWorklet.addModule('/pitch-shifter-worklet.js');
+      
+      // Create pitch shifter node
+      this.state.pitchShifterNode = new AudioWorkletNode(this.audioContext, 'pitch-shifter');
+      
+      // Connect audio chain: masterGain → pitchShifter → destination
+      this.state.masterGainNode!.connect(this.state.pitchShifterNode);
+      this.state.pitchShifterNode.connect(this.audioContext.destination);
+      
+      console.log('🎵 Pitch shifter initialized and connected');
+    } catch (error) {
+      console.warn('⚠️ Failed to load pitch shifter, falling back to direct connection:', error);
+      // Fallback: connect master gain directly to destination
+      this.state.masterGainNode!.connect(this.audioContext.destination);
+    }
   }
 
   // Instant track loading with deferred audio node creation
@@ -401,6 +425,16 @@ export class StreamingAudioEngine {
     }
   }
 
+  setPitchShift(pitchRatio: number) {
+    if (this.state.pitchShifterNode) {
+      this.state.pitchShifterNode.port.postMessage({
+        type: 'pitchRatio',
+        value: pitchRatio
+      });
+      console.log(`🎵 Pitch shift set to ${pitchRatio.toFixed(3)} (${((pitchRatio - 1) * 12).toFixed(1)} semitones)`);
+    }
+  }
+
   getTrackLevels(trackId: string): { left: number; right: number } {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (!track) {
@@ -592,6 +626,14 @@ export class StreamingAudioEngine {
     this.stopTimeTracking();
     this.clearTracks();
     this.clearAllTimeouts();
+    
+    if (this.state.pitchShifterNode) {
+      try {
+        this.state.pitchShifterNode.disconnect();
+      } catch (e) {
+        // Node might already be disconnected
+      }
+    }
     
     if (this.state.masterGainNode) {
       try {

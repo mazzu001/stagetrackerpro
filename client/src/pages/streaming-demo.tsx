@@ -7,6 +7,7 @@ import { useStreamingAudio } from '@/hooks/useStreamingAudio';
 import { LocalSongStorage, type LocalSong } from '@/lib/local-song-storage';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { Play, Pause, RotateCcw, Zap, FileAudio, Clock, Loader2 } from 'lucide-react';
+import { PitchShiftControl } from '@/components/pitch-shift-control';
 
 export default function StreamingDemo() {
   const { user } = useLocalAuth();
@@ -257,6 +258,16 @@ export default function StreamingDemo() {
                   )}
                 </Button>
               </div>
+
+              {/* Pitch Control */}
+              {streamingAudio.isReady && (
+                <div className="mt-4">
+                  <PitchShiftControl 
+                    onPitchChange={streamingAudio.setPitchShift}
+                    disabled={!streamingAudio.isReady}
+                  />
+                </div>
+              )}
 
               {/* Stats */}
               <div className="space-y-2 text-sm">

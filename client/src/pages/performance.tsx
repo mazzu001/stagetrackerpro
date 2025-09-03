@@ -835,6 +835,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   <ExternalLink className="h-4 w-4 mr-2" />
                   YouTube Tutorials
                 </DropdownMenuItem>
+                
+                <DropdownMenuItem onClick={() => setLocation('/streaming-demo')} data-testid="menuitem-pitch-shifter-demo">
+                  <Zap className="h-4 w-4 mr-2" />
+                  Pitch Shifter Demo
+                </DropdownMenuItem>
 
                 {userType === 'professional' && (
                   <DropdownMenuItem onClick={() => setIsUSBMidiOpen(true)} data-testid="menuitem-usb-midi">

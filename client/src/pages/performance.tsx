@@ -8,6 +8,7 @@ import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
 import TrackManager from "@/components/track-manager-clean";
 import StereoVUMeter from "@/components/stereo-vu-meter";
+import { PitchProcessor } from "@/components/pitch-processor";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
 
 import { useAudioEngine } from "@/hooks/use-audio-engine";
@@ -64,6 +65,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
+  const [isPitchProcessorOpen, setIsPitchProcessorOpen] = useState(false);
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
 
@@ -1075,24 +1077,44 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                     >
                       <div className="flex items-center justify-between">
                         <div className="font-medium text-sm md:text-base truncate mr-2">{song.title}</div>
-                        <button
-                          className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
-                            isPlaying 
-                              ? 'bg-gray-600 cursor-not-allowed opacity-50' 
-                              : 'bg-gray-700 hover:bg-gray-600'
-                          }`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (!isPlaying) {
-                              setSelectedSongId(song.id);
-                              setIsTrackManagerOpen(true);
-                            }
-                          }}
-                          disabled={isPlaying}
-                          data-testid={`button-tracks-${song.id}`}
-                        >
-                          {song.tracks ? song.tracks.length : 0} tracks
-                        </button>
+                        <div className="flex gap-1">
+                          <button
+                            className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
+                              isPlaying 
+                                ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                                : 'bg-gray-700 hover:bg-gray-600'
+                            }`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (!isPlaying) {
+                                setSelectedSongId(song.id);
+                                setIsTrackManagerOpen(true);
+                              }
+                            }}
+                            disabled={isPlaying}
+                            data-testid={`button-tracks-${song.id}`}
+                          >
+                            {song.tracks ? song.tracks.length : 0} tracks
+                          </button>
+                          <button
+                            className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
+                              isPlaying 
+                                ? 'bg-gray-600 cursor-not-allowed opacity-50' 
+                                : 'bg-blue-700 hover:bg-blue-600'
+                            }`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (!isPlaying) {
+                                setSelectedSongId(song.id);
+                                setIsPitchProcessorOpen(true);
+                              }
+                            }}
+                            disabled={isPlaying}
+                            data-testid={`button-pitch-${song.id}`}
+                          >
+                            🎵 Pitch
+                          </button>
+                        </div>
                       </div>
                       <div className="text-xs md:text-sm text-gray-400 truncate">{song.artist}</div>
                       <div className="flex items-center justify-between">
@@ -1396,6 +1418,26 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Pitch Processor Dialog */}
+      <Dialog open={isPitchProcessorOpen} onOpenChange={setIsPitchProcessorOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Offline Pitch Processor</DialogTitle>
+            <p className="text-sm text-muted-foreground">
+              Process tracks offline with pitch shifting while maintaining streaming playback
+            </p>
+          </DialogHeader>
+          <PitchProcessor 
+            song={selectedSong as any}
+            onProcessingComplete={() => {
+              // Refresh the song data if needed
+              console.log('🎵 Pitch processing completed, refreshing song list');
+              // The processed tracks are already stored, just refresh the UI
+            }}
+          />
+        </DialogContent>
+      </Dialog>
 
     </div>
   );

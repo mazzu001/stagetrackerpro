@@ -67,15 +67,64 @@ export class StreamingAudioEngine {
     console.log('🎵 Master output initialized');
   }
 
+  // Check for processed track versions with different pitch settings
+  private async checkForProcessedVersions(trackData: Array<{ id: string; name: string; url: string }>): Promise<Array<{ id: string; name: string; url: string }>> {
+    console.log('🎵 Checking for processed track versions...');
+    
+    const browserFS = (window as any).browserFileSystem;
+    if (!browserFS) {
+      console.log('⚠️ Browser file system not available, using original tracks');
+      return trackData;
+    }
+
+    const tracksToLoad = [];
+    
+    for (const track of trackData) {
+      let trackToUse = track;
+      
+      // Check for processed versions (±1 to ±4 semitones)
+      const pitchVariations = ['+4ST', '+3ST', '+2ST', '+1ST', '-1ST', '-2ST', '-3ST', '-4ST'];
+      
+      for (const variation of pitchVariations) {
+        const processedTrackId = `${track.id}_${variation}`;
+        
+        try {
+          const processedFile = await browserFS.getAudioFile(processedTrackId);
+          if (processedFile) {
+            const processedUrl = URL.createObjectURL(processedFile);
+            trackToUse = {
+              id: track.id, // Keep original ID for compatibility
+              name: `${track.name} (${variation})`,
+              url: processedUrl
+            };
+            console.log(`✅ Found processed version: ${track.name} (${variation})`);
+            break; // Use the first processed version found
+          }
+        } catch (error) {
+          // Processed version doesn't exist, continue checking
+        }
+      }
+      
+      tracksToLoad.push(trackToUse);
+    }
+    
+    console.log(`🎵 Track processing check complete: ${tracksToLoad.length} tracks ready`);
+    return tracksToLoad;
+  }
+
   // Instant track loading with deferred audio node creation
-  loadTracks(trackData: Array<{ id: string; name: string; url: string }>) {
-    console.log(`🚀 Streaming load: ${trackData.length} tracks (deferred setup)`);
+  // Now checks for processed (pitch-shifted) versions first
+  async loadTracks(trackData: Array<{ id: string; name: string; url: string }>) {
+    console.log(`🚀 Streaming load: ${trackData.length} tracks (deferred setup with pitch processing check)`);
     
     // Clear existing tracks first
     this.clearTracks();
     
+    // Check for processed versions of tracks
+    const tracksToLoad = await this.checkForProcessedVersions(trackData);
+    
     // Create lightweight track references without audio nodes yet
-    const tracks = trackData.map(track => ({
+    const tracks = tracksToLoad.map(track => ({
       id: track.id,
       name: track.name,
       url: track.url,

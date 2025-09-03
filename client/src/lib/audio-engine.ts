@@ -592,12 +592,30 @@ class TrackController {
   // Background decode for waveforms (non-blocking)
   private async backgroundDecode(audioUrl: string): Promise<void> {
     try {
+      console.log(`🔄 Starting background decode for: ${this.track.name}`);
+      
       const response = await fetch(audioUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch audio: ${response.status} ${response.statusText}`);
+      }
+      
       const arrayBuffer = await response.arrayBuffer();
-      this.audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      if (arrayBuffer.byteLength === 0) {
+        throw new Error(`Empty audio file received`);
+      }
+      
+      // Add timeout for decodeAudioData to prevent hanging
+      const decodePromise = this.audioContext.decodeAudioData(arrayBuffer);
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Audio decode timeout')), 10000); // 10 second timeout
+      });
+      
+      this.audioBuffer = await Promise.race([decodePromise, timeoutPromise]) as AudioBuffer;
       console.log(`🎵 Background decode complete: ${this.track.name}`);
     } catch (error) {
-      console.warn(`Background decode failed: ${this.track.name}`, error);
+      console.warn(`⚠️ Background decode failed for ${this.track.name}:`, error);
+      // Don't crash - just continue without the decoded buffer
+      this.audioBuffer = null;
     }
   }
 

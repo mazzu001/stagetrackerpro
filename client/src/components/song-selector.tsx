@@ -238,7 +238,35 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
 
 
   const handleCardClick = (e: React.MouseEvent, songId: string) => {
-    onSongSelect(songId);
+    // Add comprehensive error handling to prevent crashes during song selection
+    try {
+      console.log(`🎵 Attempting to load song: ${songId}`);
+      
+      // Get song info for logging
+      const song = songs.find(s => s.id === songId);
+      const songName = song?.title || 'Unknown Song';
+      
+      console.log(`🔄 Loading song: "${songName}"`);
+      
+      // Wrap the song selection in a timeout to prevent hanging
+      const loadPromise = Promise.resolve(onSongSelect(songId));
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Song loading timeout')), 5000); // 5 second timeout
+      });
+      
+      Promise.race([loadPromise, timeoutPromise]).catch(error => {
+        console.error(`❌ Failed to load song "${songName}":`, error);
+        // Show user-friendly error message but don't crash
+        alert(`Unable to load "${songName}". This song may be corrupted. You can try deleting it using the checkbox.`);
+      });
+      
+    } catch (error) {
+      console.error(`❌ Critical error during song selection:`, error);
+      // Emergency fallback - show error but keep UI responsive
+      const song = songs.find(s => s.id === songId);
+      const songName = song?.title || 'Unknown Song';
+      alert(`Error loading "${songName}". The song may be corrupted. Use the checkbox to select and delete it.`);
+    }
   };
   
   const handleCheckboxClick = (e: React.MouseEvent) => {
@@ -270,7 +298,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
             Songs
           </h2>
           <div className="flex space-x-2">
-          <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
+            <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
               <Button 
                 className="bg-primary hover:bg-blue-700 px-4 py-2 text-sm"
@@ -387,7 +415,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
             <FolderOpen className="w-4 h-4 mr-1" />
             Import
           </Button>
-        </div>
+          </div>
         
         {/* Delete selected songs button */}
         {selectedSongs.size > 0 && (

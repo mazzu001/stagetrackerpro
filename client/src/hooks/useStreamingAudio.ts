@@ -96,17 +96,33 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
         }
       });
       
-      const trackData = (await Promise.all(trackDataPromises)).filter(Boolean);
+      const trackData = (await Promise.all(trackDataPromises)).filter(Boolean) as { id: string; name: string; url: string; }[];
       
       if (trackData.length === 0) {
         throw new Error('No valid audio URLs found for streaming');
       }
       
-      // EMERGENCY: Disable streaming to prevent crashes
-      console.warn('⚠️ Streaming engine disabled due to crash issues');
-      setIsReady(false);
-      setIsLoading(false);
-      return;
+      // Load tracks with enhanced error handling to prevent crashes
+      console.log(`🔧 Loading tracks with enhanced error handling for: "${song.title}"`);
+      
+      try {
+        await streamingEngine.loadTracks(trackData as any);
+        
+        // Set up automatic waveform generation in background
+        setTimeout(() => {
+          streamingEngine.autoGenerateWaveform(song).catch(error => {
+            console.warn(`⚠️ Waveform generation failed (non-critical):`, error);
+          });
+        }, 100);
+        
+        setIsReady(true);
+        console.log(`✅ Streaming ready for "${song.title}" - instant playback available`);
+      } catch (engineError) {
+        console.error(`❌ Streaming engine failed for "${song.title}":`, engineError);
+        // Don't crash - just mark as failed and continue
+        setIsReady(false);
+        throw new Error(`Failed to set up audio engine for "${song.title}". The song may be corrupted.`);
+      }
     } catch (error) {
       console.error('❌ Streaming load failed:', error);
       setIsReady(false);

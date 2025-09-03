@@ -91,11 +91,21 @@ export class StreamingAudioEngine {
     if (this.state.tracks.length > 0 && song) {
       console.log(`Starting automatic waveform generation for "${song.title}"...`);
       try {
-        const { waveformGenerator } = await import('./waveform-generator');
-        const waveformData = await waveformGenerator.generateWaveformFromSong(song);
+        // Add timeout for waveform generation
+        const waveformPromise = (async () => {
+          const { waveformGenerator } = await import('./waveform-generator');
+          return await waveformGenerator.generateWaveformFromSong(song);
+        })();
+        
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Waveform generation timeout')), 30000); // 30 second timeout
+        });
+        
+        const waveformData = await Promise.race([waveformPromise, timeoutPromise]) as any[];
         console.log(`📈 Waveform auto-generated for "${song.title}" (${waveformData.length} data points)`);
       } catch (error) {
-        console.error(`❌ Failed to auto-generate waveform for "${song.title}":`, error);
+        console.warn(`⚠️ Failed to auto-generate waveform for "${song.title}" (continuing without waveform):`, error);
+        // Don't crash - just continue without waveform
       }
     }
   }
@@ -105,11 +115,39 @@ export class StreamingAudioEngine {
     if (track.audioElement) return; // Already created
     
     try {
-      // Create audio element
+      // Create audio element with comprehensive error handling
       track.audioElement = new Audio();
-      track.audioElement.src = track.url;
-      track.audioElement.preload = 'none'; // CRITICAL: No preloading
-      track.audioElement.crossOrigin = 'anonymous';
+      
+      // Add comprehensive error handlers BEFORE setting src
+      const errorHandler = (e: Event) => {
+        console.warn(`⚠️ Audio error for ${track.name}:`, e.type, e);
+        // Don't crash - just mark track as failed and continue
+        track.audioElement = null;
+        this.notifyListeners();
+      };
+      
+      track.audioElement.addEventListener('error', errorHandler);
+      track.audioElement.addEventListener('abort', errorHandler);
+      track.audioElement.addEventListener('stalled', (e) => {
+        console.warn(`⚠️ Audio stalled for ${track.name}:`, e);
+        // Don't crash on stalled - just log it
+      });
+      
+      // Add load failure handler
+      track.audioElement.addEventListener('loadstart', () => {
+        console.log(`🔄 Loading started for ${track.name}`);
+      });
+      
+      // Set src with error handling
+      try {
+        track.audioElement.src = track.url;
+        track.audioElement.preload = 'none'; // CRITICAL: No preloading
+        track.audioElement.crossOrigin = 'anonymous';
+      } catch (srcError) {
+        console.error(`❌ Failed to set audio src for ${track.name}:`, srcError);
+        track.audioElement = null;
+        return; // Exit early if we can't set the source
+      }
       
       // Add ended event listener for backup end detection
       const endedHandler = () => {
@@ -128,25 +166,42 @@ export class StreamingAudioEngine {
       // Store reference for cleanup
       (track.audioElement as any).onended = endedHandler;
       
-      // Create audio nodes
-      track.source = this.audioContext.createMediaElementSource(track.audioElement);
-      track.gainNode = this.audioContext.createGain();
-      track.panNode = this.audioContext.createStereoPanner();
-      track.analyzerNode = this.audioContext.createAnalyser();
+      // Create audio nodes with error handling
+      try {
+        track.source = this.audioContext.createMediaElementSource(track.audioElement);
+        track.gainNode = this.audioContext.createGain();
+        track.panNode = this.audioContext.createStereoPanner();
+        track.analyzerNode = this.audioContext.createAnalyser();
+        
+        // Connect audio graph with error handling
+        track.source.connect(track.gainNode);
+        track.gainNode.connect(track.panNode);
+        track.panNode.connect(track.analyzerNode);
+        track.analyzerNode.connect(this.state.masterGainNode!);
+        
+        // Setup analyzer with better frequency resolution for responsive VU meters
+        track.analyzerNode.fftSize = 512; // Increased for better frequency analysis
+        track.analyzerNode.smoothingTimeConstant = 0.6; // Less smoothing for more responsive meters
+        
+        console.log(`🔧 Audio nodes created on demand for: ${track.name}`);
+      } catch (nodeError) {
+        console.error(`❌ Failed to create/connect audio nodes for ${track.name}:`, nodeError);
+        // Clean up partial audio element
+        track.audioElement = null;
+        track.source = null;
+        track.gainNode = null;
+        track.panNode = null;
+        track.analyzerNode = null;
+      }
       
-      // Connect audio graph
-      track.source.connect(track.gainNode);
-      track.gainNode.connect(track.panNode);
-      track.panNode.connect(track.analyzerNode);
-      track.analyzerNode.connect(this.state.masterGainNode!);
-      
-      // Setup analyzer with better frequency resolution for responsive VU meters
-      track.analyzerNode.fftSize = 512; // Increased for better frequency analysis
-      track.analyzerNode.smoothingTimeConstant = 0.6; // Less smoothing for more responsive meters
-      
-      console.log(`🔧 Audio nodes created on demand for: ${track.name}`);
     } catch (error) {
-      console.error(`Failed to create audio nodes for ${track.name}:`, error);
+      console.error(`❌ Critical error creating audio nodes for ${track.name}:`, error);
+      // Ensure clean state on failure
+      track.audioElement = null;
+      track.source = null;
+      track.gainNode = null;
+      track.panNode = null;
+      track.analyzerNode = null;
     }
   }
 
@@ -217,10 +272,17 @@ export class StreamingAudioEngine {
     // Start all tracks simultaneously
     const playPromises = this.state.tracks.map(track => {
       if (track.audioElement) {
-        track.audioElement.currentTime = this.state.currentTime;
-        return track.audioElement.play().catch(err => {
-          console.warn(`Failed to start streaming track ${track.name}:`, err);
-        });
+        try {
+          track.audioElement.currentTime = this.state.currentTime;
+          return track.audioElement.play().catch(err => {
+            console.warn(`⚠️ Failed to start streaming track ${track.name}:`, err);
+            // Don't crash - just skip this track and continue
+            return Promise.resolve();
+          });
+        } catch (error) {
+          console.warn(`⚠️ Error setting currentTime for ${track.name}:`, error);
+          return Promise.resolve();
+        }
       }
       return Promise.resolve();
     });

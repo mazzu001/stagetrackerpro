@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,10 +21,8 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
-  const [swipeStates, setSwipeStates] = useState<Record<string, { deltaX: number; isDeleting: boolean }>>({});
-  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [currentDragSong, setCurrentDragSong] = useState<string | null>(null);
+  const [isMultiSelectMode, setIsMultiSelectMode] = useState(false);
+  const [selectedSongs, setSelectedSongs] = useState<Set<string>>(new Set());
   const [newSong, setNewSong] = useState<InsertSong>({
     userId: "", // Will be set when creating
     title: "",
@@ -208,137 +207,46 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Touch/Mouse handlers for swipe-to-delete
-  const handleStart = (clientX: number, clientY: number, songId: string, eventType: string) => {
-    setTouchStart({ x: clientX, y: clientY });
-    setSwipeStates(prev => ({ ...prev, [songId]: { deltaX: 0, isDeleting: false } }));
+  // Multi-select handlers
+  const handleMultiSelectToggle = () => {
+    setIsMultiSelectMode(!isMultiSelectMode);
+    setSelectedSongs(new Set()); // Clear selections when toggling mode
   };
 
-  const handleTouchStart = (e: React.TouchEvent, songId: string) => {
-    e.stopPropagation(); // Prevent triggering onClick
-    const touch = e.touches[0];
-    handleStart(touch.clientX, touch.clientY, songId, 'Touch');
-  };
-
-  const handleMouseDown = (e: React.MouseEvent, songId: string) => {
-    console.log('🖱️ MOUSE DOWN on song:', songId, 'at', e.clientX, e.clientY);
-    e.stopPropagation(); // Prevent triggering onClick
-    e.preventDefault(); // Prevent text selection
-    setIsDragging(true);
-    setCurrentDragSong(songId);
-    handleStart(e.clientX, e.clientY, songId, 'Mouse');
-  };
-
-  const handleMove = (clientX: number, clientY: number, songId: string, eventType: string) => {
-    if (!touchStart) {
-      console.log('❌ No touchStart in handleMove');
-      return;
-    }
-    
-    const deltaX = clientX - touchStart.x;
-    const deltaY = Math.abs(clientY - touchStart.y);
-    console.log(`📏 ${eventType} MOVE - deltaX: ${deltaX}, deltaY: ${deltaY}`);
-    
-    // Only allow horizontal swipes (avoid conflicts with vertical scrolling)
-    if (deltaY < 30) {
-      setSwipeStates(prev => ({
-        ...prev,
-        [songId]: {
-          deltaX: Math.max(0, deltaX), // Only allow right swipes
-          isDeleting: deltaX > 150 // Delete threshold
-        }
-      }));
-    }
-  };
-
-  const handleTouchMove = (e: React.TouchEvent, songId: string) => {
-    e.preventDefault(); // Prevent scrolling while swiping
-    const touch = e.touches[0];
-    handleMove(touch.clientX, touch.clientY, songId, 'Touch');
-  };
-
-  // Global mouse move handler for proper drag support
-  const handleGlobalMouseMove = (e: MouseEvent) => {
-    console.log('🖱️ GLOBAL MOUSE MOVE - isDragging:', isDragging, 'currentSong:', currentDragSong);
-    if (!isDragging || !currentDragSong) return;
-    e.preventDefault();
-    handleMove(e.clientX, e.clientY, currentDragSong, 'Mouse');
-  };
-
-  // Global mouse up handler
-  const handleGlobalMouseUp = (e: MouseEvent) => {
-    if (!isDragging || !currentDragSong) return;
-    const song = songs.find(s => s.id === currentDragSong);
-    if (song) {
-      handleEnd(currentDragSong, song.title, 'Mouse');
-    }
-    setIsDragging(false);
-    setCurrentDragSong(null);
-  };
-
-  const handleMouseMove = (e: React.MouseEvent, songId: string) => {
-    // This is just for fallback - global handlers should handle most cases
-    if (!isDragging) return;
-    e.preventDefault();
-    handleMove(e.clientX, e.clientY, songId, 'Mouse');
-  };
-
-  const handleEnd = (songId: string, songTitle: string, eventType: string) => {
-    if (!touchStart || !swipeStates[songId]) return;
-    
-    const state = swipeStates[songId];
-    
-    // If swipe was long enough, delete the song
-    if (state.deltaX > 150) {
-      // Show confirmation for safety
-      if (window.confirm(`Delete "${songTitle}"? This action cannot be undone.`)) {
-        deleteSongMutation.mutate(songId);
-      }
-    }
-    
-    // Reset swipe state
-    setTouchStart(null);
-    setSwipeStates(prev => {
-      // No need to check prev since it's always defined
-      const newState = { ...prev };
-      delete newState[songId];
-      return newState;
-    });
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent, songId: string, songTitle: string) => {
-    handleEnd(songId, songTitle, 'Touch');
-  };
-
-  const handleMouseUp = (e: React.MouseEvent, songId: string, songTitle: string) => {
-    if (isDragging && currentDragSong === songId) {
-      handleEnd(songId, songTitle, 'Mouse');
-    }
-    setIsDragging(false);
-    setCurrentDragSong(null);
-  };
-
-  // Set up global event listeners for proper mouse drag support
-  useEffect(() => {
-    if (isDragging) {
-      console.log('✅ Adding global listeners - isDragging:', isDragging, 'currentSong:', currentDragSong);
-      document.addEventListener('mousemove', handleGlobalMouseMove);
-      document.addEventListener('mouseup', handleGlobalMouseUp);
+  const handleSongCheckboxChange = (songId: string, checked: boolean) => {
+    const newSelected = new Set(selectedSongs);
+    if (checked) {
+      newSelected.add(songId);
     } else {
-      document.removeEventListener('mousemove', handleGlobalMouseMove);
-      document.removeEventListener('mouseup', handleGlobalMouseUp);
+      newSelected.delete(songId);
     }
+    setSelectedSongs(newSelected);
+  };
 
-    return () => {
-      document.removeEventListener('mousemove', handleGlobalMouseMove);
-      document.removeEventListener('mouseup', handleGlobalMouseUp);
-    };
-  }, [isDragging, currentDragSong]);
+  const handleDeleteSelectedSongs = async () => {
+    const songTitles = songs.filter(s => selectedSongs.has(s.id)).map(s => s.title);
+    const confirmMsg = `Delete ${selectedSongs.size} song(s)?: ${songTitles.join(', ')}\n\nThis action cannot be undone.`;
+    
+    if (window.confirm(confirmMsg)) {
+      // Delete all selected songs
+      for (const songId of Array.from(selectedSongs)) {
+        try {
+          await deleteSongMutation.mutateAsync(songId);
+        } catch (error) {
+          console.error('Failed to delete song:', songId, error);
+        }
+      }
+      setSelectedSongs(new Set());
+      setIsMultiSelectMode(false);
+    }
+  };
+
+
+
 
   const handleCardClick = (e: React.MouseEvent, songId: string) => {
-    // Don't trigger selection if currently swiping
-    const swipeState = swipeStates[songId];
-    if (swipeState && swipeState.deltaX > 10) {
+    // Don't load song in multi-select mode
+    if (isMultiSelectMode) {
       e.preventDefault();
       return;
     }
@@ -363,10 +271,35 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   return (
     <div className="bg-surface rounded-xl p-6 border border-gray-700">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold flex items-center">
-          <ListMusic className="mr-2 text-primary w-5 h-5" />
-          Song Selection
-        </h2>
+        <div>
+          <h2 className="text-xl font-semibold flex items-center mb-2">
+            <ListMusic className="mr-2 text-primary w-5 h-5" />
+            Song Selection
+          </h2>
+          <div className="flex items-center space-x-2">
+            <Checkbox 
+              id="multi-select" 
+              checked={isMultiSelectMode}
+              onCheckedChange={handleMultiSelectToggle}
+              data-testid="checkbox-multi-select"
+            />
+            <Label htmlFor="multi-select" className="text-sm text-gray-400 cursor-pointer">
+              Select multiple songs to delete
+            </Label>
+            {selectedSongs.size > 0 && (
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={handleDeleteSelectedSongs}
+                className="ml-4"
+                data-testid="button-delete-selected"
+              >
+                <Trash2 className="w-4 h-4 mr-1" />
+                Delete {selectedSongs.size} Song{selectedSongs.size !== 1 ? 's' : ''}
+              </Button>
+            )}
+          </div>
+        </div>
         <div className="flex space-x-2">
           <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
             <DialogTrigger asChild>
@@ -497,50 +430,29 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {songs.map((song) => {
-            const swipeState = swipeStates[song.id];
-            const transform = swipeState ? `translateX(${swipeState.deltaX}px)` : 'translateX(0px)';
-            const isBeingDeleted = swipeState?.isDeleting || false;
             
             return (
-            <div key={song.id} className="relative overflow-hidden rounded-lg">
-              {/* Delete background that shows when swiping */}
-              <div className={`absolute inset-0 bg-red-600 flex items-center justify-end px-4 rounded-lg transition-opacity duration-200 ${
-(swipeState?.deltaX || 0) > 50 ? 'opacity-100' : 'opacity-0'
-              }`}>
-                <div className="flex items-center text-white font-medium">
-                  <Trash2 className="w-5 h-5 mr-2" />
-                  {isBeingDeleted ? 'Release to Delete' : 'Swipe to Delete'}
-                </div>
-              </div>
-              
-              {/* Song card wrapper with proper event handling */}
+            <div key={song.id} className="relative rounded-lg">
+              {/* Song card wrapper */}
               <div
-                className={`cursor-pointer transition-all duration-200 hover:shadow-lg relative z-10 rounded-lg ${
+                className={`transition-all duration-200 hover:shadow-lg rounded-lg ${
                   selectedSongId === song.id
                     ? 'bg-gray-800 border-2 border-primary'
                     : 'bg-gray-800 border border-gray-600 hover:bg-gray-750'
-                } ${isBeingDeleted ? 'bg-red-100 dark:bg-red-900' : ''}`}
-                style={{
-                  transform,
-                  transition: swipeState ? 'none' : 'transform 0.3s ease-out'
-                }}
-                onClick={(e) => {
-                  console.log('🖱️ CLICK EVENT fired on song:', song.id);
-                  handleCardClick(e, song.id);
-                }}
-                onTouchStart={(e) => handleTouchStart(e, song.id)}
-                onTouchMove={(e) => handleTouchMove(e, song.id)}
-                onTouchEnd={(e) => handleTouchEnd(e, song.id, song.title)}
-                onMouseDown={(e) => {
-                  console.log('🖱️ RAW MOUSE DOWN event fired on song:', song.id);
-                  handleMouseDown(e, song.id);
-                }}
-                onMouseMove={(e) => handleMouseMove(e, song.id)}
-                onMouseUp={(e) => handleMouseUp(e, song.id, song.title)}
+                } ${isMultiSelectMode ? 'cursor-default' : 'cursor-pointer'}`}
+                onClick={(e) => handleCardClick(e, song.id)}
                 data-testid={`song-card-${song.id}`}
               >
                 <div className="p-3">
                   <div className="flex items-center justify-between mb-1">
+                    {isMultiSelectMode && (
+                      <Checkbox
+                        checked={selectedSongs.has(song.id)}
+                        onCheckedChange={(checked) => handleSongCheckboxChange(song.id, checked as boolean)}
+                        className="mr-3"
+                        data-testid={`checkbox-song-${song.id}`}
+                      />
+                    )}
                     <h3 className="font-medium truncate">{song.title}</h3>
                     <span className={`text-xs px-2 py-0.5 rounded ${
                       selectedSongId === song.id

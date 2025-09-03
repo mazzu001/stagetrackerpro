@@ -30,6 +30,7 @@ export class StreamingAudioEngine {
   private listeners: Set<() => void> = new Set();
   private updateInterval: number | null = null;
   private syncTimeouts: number[] = [];
+  private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
 
   constructor() {
@@ -111,7 +112,7 @@ export class StreamingAudioEngine {
       track.audioElement.crossOrigin = 'anonymous';
       
       // Add ended event listener for backup end detection
-      track.audioElement.addEventListener('ended', () => {
+      const endedHandler = () => {
         if (this.state.isPlaying) {
           console.log(`🔄 Audio element ended event triggered for ${track.name}, triggering callback`);
           // Use callback if available (same path as stop button), otherwise fall back to direct stop
@@ -121,7 +122,11 @@ export class StreamingAudioEngine {
             this.stop();
           }
         }
-      });
+      };
+      
+      track.audioElement.addEventListener('ended', endedHandler);
+      // Store reference for cleanup
+      (track.audioElement as any).onended = endedHandler;
       
       // Create audio nodes
       track.source = this.audioContext.createMediaElementSource(track.audioElement);
@@ -153,7 +158,7 @@ export class StreamingAudioEngine {
     this.state.tracks.forEach(track => {
       this.ensureTrackAudioNodes(track);
       if (track.audioElement) {
-        track.audioElement.addEventListener('loadedmetadata', () => {
+        const metadataHandler = () => {
           if (this.state.tracks.length > 0) {
             const maxDuration = Math.max(...this.state.tracks.map(t => {
               return t.audioElement?.duration || 0;
@@ -164,13 +169,20 @@ export class StreamingAudioEngine {
               this.notifyListeners();
             }
           }
-        });
+        };
+        
+        track.audioElement.addEventListener('loadedmetadata', metadataHandler);
+        // Store reference for cleanup
+        (track.audioElement as any).onloadedmetadata = metadataHandler;
       }
     });
     
-    // Fallback: keep checking until we get a duration
+    // Fallback: keep checking until we get a duration (with timeout management)
+    let checkCount = 0;
+    const maxChecks = 50; // Maximum 5 seconds at 100ms intervals
+    
     const checkDuration = () => {
-      if (this.state.tracks.length > 0) {
+      if (this.state.tracks.length > 0 && checkCount < maxChecks) {
         const maxDuration = Math.max(...this.state.tracks.map(t => {
           return t.audioElement?.duration || 0;
         }));
@@ -179,7 +191,9 @@ export class StreamingAudioEngine {
           this.state.duration = maxDuration;
           this.notifyListeners();
         } else {
-          setTimeout(checkDuration, 100);
+          checkCount++;
+          const timeoutId = window.setTimeout(checkDuration, 100);
+          this.durationTimeouts.push(timeoutId);
         }
       }
     };
@@ -426,16 +440,69 @@ export class StreamingAudioEngine {
     
     this.syncTimeouts.forEach(timeout => clearTimeout(timeout));
     this.syncTimeouts = [];
+    this.clearAllTimeouts();
   }
 
   private clearTracks() {
     this.state.tracks.forEach(track => {
       if (track.audioElement) {
         track.audioElement.pause();
+        
+        // Remove all event listeners before clearing
+        track.audioElement.removeEventListener('ended', track.audioElement.onended as any);
+        track.audioElement.removeEventListener('loadedmetadata', track.audioElement.onloadedmetadata as any);
+        
+        // Disconnect audio nodes properly
+        if (track.source) {
+          try {
+            track.source.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        if (track.gainNode) {
+          try {
+            track.gainNode.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        if (track.panNode) {
+          try {
+            track.panNode.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        if (track.analyzerNode) {
+          try {
+            track.analyzerNode.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        
+        // Clear the audio element completely
         track.audioElement.src = '';
+        track.audioElement.load(); // Force garbage collection
       }
+      
+      // Clear all node references
+      track.audioElement = null;
+      track.source = null;
+      track.gainNode = null;
+      track.panNode = null;
+      track.analyzerNode = null;
     });
     this.state.tracks = [];
+    
+    // Clear any pending duration detection timeouts
+    this.clearAllTimeouts();
+  }
+
+  private clearAllTimeouts() {
+    this.durationTimeouts.forEach(timeout => clearTimeout(timeout));
+    this.durationTimeouts = [];
   }
 
   getState(): StreamingAudioEngineState {
@@ -462,9 +529,28 @@ export class StreamingAudioEngine {
   dispose() {
     this.stopTimeTracking();
     this.clearTracks();
+    this.clearAllTimeouts();
+    
     if (this.state.masterGainNode) {
-      this.state.masterGainNode.disconnect();
+      try {
+        this.state.masterGainNode.disconnect();
+      } catch (e) {
+        // Node might already be disconnected
+      }
     }
+    
+    // Force garbage collection for Edge browser
+    const isEdge = /Edg|Edge/.test(navigator.userAgent);
+    if (isEdge) {
+      console.log('📱 Edge browser: Forcing memory cleanup');
+      // Small delay to let cleanup complete
+      setTimeout(() => {
+        if ((window as any).gc) {
+          (window as any).gc();
+        }
+      }, 100);
+    }
+    
     if (this.audioContext.state !== 'closed') {
       this.audioContext.close();
     }

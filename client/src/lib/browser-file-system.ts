@@ -199,10 +199,13 @@ export class BrowserFileSystem {
       this.audioFiles.set(trackId, file);
       console.log(`✅ Memory cache updated for ${trackId}`);
 
-      // On mobile devices, clear memory cache immediately after storage to prevent memory overload
+      // On mobile devices and tablets (including Surface tablets), clear memory cache immediately after storage to prevent memory overload
       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      if (isMobile) {
-        console.log(`📱 Mobile device: clearing memory cache for ${trackId} to save memory`);
+      const isSurface = /Surface/i.test(navigator.userAgent);
+      const isEdge = /Edg|Edge/.test(navigator.userAgent);
+      if (isMobile || isSurface || (isEdge && /Windows/.test(navigator.userAgent))) {
+        const deviceType = isSurface ? 'Surface tablet' : isMobile ? 'Mobile device' : 'Edge on Windows';
+        console.log(`📱 ${deviceType}: clearing memory cache for ${trackId} to save memory`);
         this.audioFiles.delete(trackId);
       }
 

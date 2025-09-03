@@ -1,23 +1,7 @@
 // Streaming audio engine with lazy initialization to prevent UI blocking
 import * as Tone from 'tone';
 
-// Declare SoundTouchJS types
-declare module 'soundtouchjs' {
-  export class SoundTouch {
-    pitch: number;
-    tempo: number;
-    constructor();
-  }
-  
-  export class PitchShifter {
-    constructor(context: AudioContext, source: AudioBufferSourceNode, frameSize: number);
-    pitch: number;
-    tempo: number;
-    connect(destination: AudioNode): void;
-  }
-}
-
-import { SoundTouch, PitchShifter } from 'soundtouchjs';
+// SoundTouchJS removed for now - using Tone.js for pitch shifting
 
 export interface StreamingTrack {
   id: string;
@@ -29,8 +13,7 @@ export interface StreamingTrack {
   panNode: StereoPannerNode | null;
   analyzerNode: AnalyserNode | null;
   pitchShiftNode: Tone.PitchShift | null;
-  soundTouchProcessor: PitchShifter | null;
-  audioBuffer: AudioBuffer | null;
+  // Removed SoundTouch references for now
   volume: number;
   balance: number;
   isMuted: boolean;
@@ -109,8 +92,7 @@ export class StreamingAudioEngine {
       panNode: null as StereoPannerNode | null,
       analyzerNode: null as AnalyserNode | null,
       pitchShiftNode: null as Tone.PitchShift | null,
-      soundTouchProcessor: null as PitchShifter | null,
-      audioBuffer: null as AudioBuffer | null,
+      // Removed SoundTouch references
       volume: 1,
       balance: 0,
       isMuted: false,
@@ -492,10 +474,26 @@ export class StreamingAudioEngine {
     if (!track) return;
     
     try {
+      if (!this.toneInitialized) {
+        console.warn('⚠️ Tone.js not initialized, pitch shifting unavailable');
+        return;
+      }
+
       this.ensureTrackAudioNodes(track);
       
       if (this.globalPitchSemitones === 0) {
-        // No pitch shift - ensure direct connection for normal playback
+        // No pitch shift - clean up and use direct connection
+        if (track.pitchShiftNode) {
+          try {
+            track.pitchShiftNode.disconnect();
+            track.pitchShiftNode.dispose();
+            track.pitchShiftNode = null;
+          } catch (e) {
+            // Ignore cleanup errors
+          }
+        }
+        
+        // Direct connection: source -> gain
         if (track.source && track.gainNode) {
           try {
             track.source.disconnect();
@@ -509,27 +507,45 @@ export class StreamingAudioEngine {
         return;
       }
 
-      // For true pitch-only shifting, we need SoundTouchJS with AudioBuffer processing
-      // This is complex because our current system uses HTMLAudioElement streaming
-      
-      console.log(`🎵 Pitch request: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
-      console.log(`🎵 Current system: HTMLAudioElement streaming (tempo: ${this.globalSpeedMultiplier}x)`);
-      console.log(`⚠️ True pitch-only shifting requires SoundTouchJS with AudioBuffer conversion`);
-      console.log(`ℹ️ For live performance stability, pitch shifting is currently disabled`);
-      console.log(`ℹ️ Speed control works independently and preserves audio quality`);
-      
-      // Keep direct connection for audio stability
-      if (track.source && track.gainNode) {
+      // Create or update Tone.js pitch shifter for actual pitch shifting
+      if (!track.pitchShiftNode) {
         try {
-          track.source.disconnect();
-          track.source.connect(track.gainNode);
-        } catch (e) {
-          // Connection might already exist
+          // Create the pitch shifter
+          track.pitchShiftNode = new Tone.PitchShift({
+            pitch: this.globalPitchSemitones,
+            windowSize: 0.1,
+            feedback: 0
+          });
+          
+          // Route through pitch shifter: source -> pitch shifter -> gain
+          if (track.source && track.gainNode) {
+            track.source.disconnect();
+            
+            // Route audio through pitch shifter
+            // Connect Web Audio source to Tone.js pitch shifter input
+            track.source.connect(track.pitchShiftNode.input);
+            
+            // Connect Tone.js pitch shifter to destination
+            // Since mixing Tone.js and Web Audio can be complex, use Tone's output
+            track.pitchShiftNode.toDestination();
+          }
+          
+          console.log(`🎵 Pitch shifter active: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (tempo preserved)`);
+        } catch (error) {
+          console.warn('⚠️ Failed to create pitch shifter:', error);
+          // Fallback to direct connection
+          if (track.source && track.gainNode) {
+            track.source.connect(track.gainNode);
+          }
         }
+      } else {
+        // Update existing pitch shifter
+        track.pitchShiftNode.pitch = this.globalPitchSemitones;
+        console.log(`🎵 Pitch updated: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (tempo preserved)`);
       }
       
     } catch (error) {
-      console.warn(`⚠️ Pitch processing failed:`, error);
+      console.warn(`⚠️ Pitch shift failed:`, error);
       // Ensure audio keeps playing normally
       if (track.source && track.gainNode) {
         try {

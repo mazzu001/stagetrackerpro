@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -24,6 +24,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   const [swipeStates, setSwipeStates] = useState<Record<string, { deltaX: number; isDeleting: boolean }>>({});
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
+  const [currentDragSong, setCurrentDragSong] = useState<string | null>(null);
   const [newSong, setNewSong] = useState<InsertSong>({
     userId: "", // Will be set when creating
     title: "",
@@ -210,7 +211,6 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
 
   // Touch/Mouse handlers for swipe-to-delete
   const handleStart = (clientX: number, clientY: number, songId: string, eventType: string) => {
-    console.log(`🎯 SWIPE DEBUG: ${eventType} start on song:`, songId);
     setTouchStart({ x: clientX, y: clientY });
     setSwipeStates(prev => ({ ...prev, [songId]: { deltaX: 0, isDeleting: false } }));
   };
@@ -223,13 +223,14 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
 
   const handleMouseDown = (e: React.MouseEvent, songId: string) => {
     e.stopPropagation(); // Prevent triggering onClick
+    e.preventDefault(); // Prevent text selection
     setIsDragging(true);
+    setCurrentDragSong(songId);
     handleStart(e.clientX, e.clientY, songId, 'Mouse');
   };
 
   const handleMove = (clientX: number, clientY: number, songId: string, eventType: string) => {
     if (!touchStart) return;
-    console.log(`👆 SWIPE DEBUG: ${eventType} move on song:`, songId);
     
     const deltaX = clientX - touchStart.x;
     const deltaY = Math.abs(clientY - touchStart.y);
@@ -252,14 +253,32 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
     handleMove(touch.clientX, touch.clientY, songId, 'Touch');
   };
 
+  // Global mouse move handler for proper drag support
+  const handleGlobalMouseMove = (e: MouseEvent) => {
+    if (!isDragging || !currentDragSong) return;
+    e.preventDefault();
+    handleMove(e.clientX, e.clientY, currentDragSong, 'Mouse');
+  };
+
+  // Global mouse up handler
+  const handleGlobalMouseUp = (e: MouseEvent) => {
+    if (!isDragging || !currentDragSong) return;
+    const song = songs.find(s => s.id === currentDragSong);
+    if (song) {
+      handleEnd(currentDragSong, song.title, 'Mouse');
+    }
+    setIsDragging(false);
+    setCurrentDragSong(null);
+  };
+
   const handleMouseMove = (e: React.MouseEvent, songId: string) => {
-    if (!isDragging) return; // Only process if we're actually dragging
-    e.preventDefault(); // Prevent text selection while dragging
+    // This is just for fallback - global handlers should handle most cases
+    if (!isDragging) return;
+    e.preventDefault();
     handleMove(e.clientX, e.clientY, songId, 'Mouse');
   };
 
   const handleEnd = (songId: string, songTitle: string, eventType: string) => {
-    console.log(`🏁 SWIPE DEBUG: ${eventType} end on song:`, songId);
     if (!touchStart || !swipeStates[songId]) return;
     
     const state = swipeStates[songId];
@@ -287,9 +306,28 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   };
 
   const handleMouseUp = (e: React.MouseEvent, songId: string, songTitle: string) => {
+    if (isDragging && currentDragSong === songId) {
+      handleEnd(songId, songTitle, 'Mouse');
+    }
     setIsDragging(false);
-    handleEnd(songId, songTitle, 'Mouse');
+    setCurrentDragSong(null);
   };
+
+  // Set up global event listeners for proper mouse drag support
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleGlobalMouseMove);
+      document.addEventListener('mouseup', handleGlobalMouseUp);
+    } else {
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mouseup', handleGlobalMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mouseup', handleGlobalMouseUp);
+    };
+  }, [isDragging, currentDragSong]);
 
   const handleCardClick = (e: React.MouseEvent, songId: string) => {
     // Don't trigger selection if currently swiping

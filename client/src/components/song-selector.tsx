@@ -5,7 +5,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useUpgradePrompt } from "@/hooks/useSubscription";
 import { queryClient, apiRequest } from "@/lib/queryClient";
@@ -514,9 +513,9 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                 </div>
               </div>
               
-              {/* Song card */}
-              <Card
-                className={`cursor-pointer transition-all duration-200 hover:shadow-lg relative z-10 ${
+              {/* Song card wrapper with proper event handling */}
+              <div
+                className={`cursor-pointer transition-all duration-200 hover:shadow-lg relative z-10 rounded-lg ${
                   selectedSongId === song.id
                     ? 'bg-gray-800 border-2 border-primary'
                     : 'bg-gray-800 border border-gray-600 hover:bg-gray-750'
@@ -534,25 +533,25 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                 onMouseUp={(e) => handleMouseUp(e, song.id, song.title)}
                 data-testid={`song-card-${song.id}`}
               >
-              <CardContent className="p-3">
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="font-medium truncate">{song.title}</h3>
-                  <span className={`text-xs px-2 py-0.5 rounded ${
-                    selectedSongId === song.id
-                      ? 'bg-secondary/20 text-secondary'
-                      : 'bg-gray-600 text-gray-300'
-                  }`}>
-                    {selectedSongId === song.id ? 'LOADED' : 'READY'}
-                  </span>
+                <div className="p-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-medium truncate">{song.title}</h3>
+                    <span className={`text-xs px-2 py-0.5 rounded ${
+                      selectedSongId === song.id
+                        ? 'bg-secondary/20 text-secondary'
+                        : 'bg-gray-600 text-gray-300'
+                    }`}>
+                      {selectedSongId === song.id ? 'LOADED' : 'READY'}
+                    </span>
+                  </div>
+                  <div className="text-sm text-gray-400 space-y-0.5">
+                    <div>Artist: <span className="text-gray-300">{song.artist}</span></div>
+                    <div>Duration: <span className="text-gray-300">{formatDuration(song.duration)}</span></div>
+                    {song.bpm && <div>BPM: <span className="text-gray-300">{song.bpm}</span></div>}
+                    {song.key && <div>Key: <span className="text-gray-300">{song.key}</span></div>}
+                  </div>
                 </div>
-                <div className="text-sm text-gray-400 space-y-0.5">
-                  <div>Artist: <span className="text-gray-300">{song.artist}</span></div>
-                  <div>Duration: <span className="text-gray-300">{formatDuration(song.duration)}</span></div>
-                  {song.bpm && <div>BPM: <span className="text-gray-300">{song.bpm}</span></div>}
-                  {song.key && <div>Key: <span className="text-gray-300">{song.key}</span></div>}
-                </div>
-              </CardContent>
-              </Card>
+              </div>
             </div>
             );
           })}

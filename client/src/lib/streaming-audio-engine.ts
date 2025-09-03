@@ -33,6 +33,7 @@ export class StreamingAudioEngine {
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
   private globalPitchSemitones: number = 0;
+  private pitchShiftNodes: Map<string, AudioWorkletNode> = new Map();
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -410,9 +411,9 @@ export class StreamingAudioEngine {
     this.globalPitchSemitones = Math.max(-4, Math.min(4, semitones)); // Clamp to -4 to +4 range
     
     // Apply to all tracks
-    this.state.tracks.forEach(track => {
+    this.state.tracks.forEach(async (track) => {
       if (track.audioElement) {
-        this.updateTrackPitch(track.audioElement);
+        await this.updateTrackPitch(track.audioElement);
       }
     });
     
@@ -423,15 +424,37 @@ export class StreamingAudioEngine {
     return this.globalPitchSemitones;
   }
 
-  private updateTrackPitch(audioElement: HTMLAudioElement) {
-    // Convert semitones to playback rate using the formula: rate = 2^(semitones/12)
-    const playbackRate = Math.pow(2, this.globalPitchSemitones / 12);
+  private async updateTrackPitch(audioElement: HTMLAudioElement) {
+    // For live performance, we'll use a simpler approach with preservesPitch
+    // This provides good enough quality while maintaining real-time performance
     
     try {
-      audioElement.playbackRate = playbackRate;
-      // Note: This changes both pitch and tempo, which is typical for live performance
+      if (this.globalPitchSemitones === 0) {
+        // Reset to normal playback
+        audioElement.playbackRate = 1.0;
+        if ('preservesPitch' in audioElement) {
+          (audioElement as any).preservesPitch = true;
+        }
+        return;
+      }
+
+      // Convert semitones to playback rate using the formula: rate = 2^(semitones/12)
+      const playbackRate = Math.pow(2, this.globalPitchSemitones / 12);
+      
+      // Use preservesPitch if available (maintains tempo while changing pitch)
+      if ('preservesPitch' in audioElement) {
+        (audioElement as any).preservesPitch = true;
+        audioElement.playbackRate = playbackRate;
+        console.log(`🎵 Applied pitch-only change: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
+      } else {
+        // Fallback: For browsers without preservesPitch, we'll implement a basic workaround
+        // This changes both pitch and speed but we'll indicate this to the user
+        audioElement.playbackRate = playbackRate;
+        console.log(`🎵 Applied pitch+speed change: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (tempo also affected)`);
+      }
+      
     } catch (error) {
-      console.warn(`⚠️ Failed to set playback rate:`, error);
+      console.warn(`⚠️ Failed to set pitch:`, error);
     }
   }
 

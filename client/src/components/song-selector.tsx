@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useUpgradePrompt } from "@/hooks/useSubscription";
 import { queryClient, apiRequest } from "@/lib/queryClient";
-import { ListMusic, Plus, FolderOpen, Search, ExternalLink, Loader2 } from "lucide-react";
+import { ListMusic, Plus, FolderOpen, Search, ExternalLink, Loader2, Trash2 } from "lucide-react";
 import type { Song, InsertSong } from "@shared/schema";
 
 interface SongSelectorProps {
@@ -21,6 +21,8 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
+  const [swipeStates, setSwipeStates] = useState<Record<string, { deltaX: number; isDeleting: boolean }>>();
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
   const [newSong, setNewSong] = useState<InsertSong>({
     userId: "", // Will be set when creating
     title: "",
@@ -33,6 +35,36 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
 
   const { toast } = useToast();
   const { handleSongLimitExceeded } = useUpgradePrompt();
+  
+  // Delete song mutation
+  const deleteSongMutation = useMutation({
+    mutationFn: async (songId: string) => {
+      const response = await apiRequest('DELETE', `/api/songs/${songId}`);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to delete song');
+      }
+      return response.json();
+    },
+    onSuccess: (_, songId) => {
+      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+      // Clear selection if deleted song was selected
+      if (selectedSongId === songId) {
+        onSongSelect('');
+      }
+      toast({
+        title: "Song deleted",
+        description: "The song has been removed successfully."
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to delete song",
+        variant: "destructive"
+      });
+    }
+  });
 
   const { data: songsData = [], isLoading } = useQuery<Song[]>({
     queryKey: ['/api/songs']
@@ -47,8 +79,8 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       if (!response.ok) {
         const errorData = await response.json();
         const error = new Error(errorData.message || 'Failed to create song');
-        error.response = response;
-        error.data = errorData;
+        (error as any).response = response;
+        (error as any).data = errorData;
         throw error;
       }
       return response.json();
@@ -80,7 +112,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       
       // Check if response contains upgrade prompt
       try {
-        const errorResponse = await error.response?.json();
+        const errorResponse = await (error as any).response?.json();
         if (errorResponse?.error === 'song_limit_exceeded') {
           handleSongLimitExceeded();
           return;
@@ -173,6 +205,67 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Touch handlers for swipe-to-delete
+  const handleTouchStart = (e: React.TouchEvent, songId: string) => {
+    e.stopPropagation(); // Prevent triggering onClick
+    const touch = e.touches[0];
+    setTouchStart({ x: touch.clientX, y: touch.clientY });
+    setSwipeStates(prev => ({ ...prev, [songId]: { deltaX: 0, isDeleting: false } }));
+  };
+
+  const handleTouchMove = (e: React.TouchEvent, songId: string) => {
+    if (!touchStart) return;
+    e.preventDefault(); // Prevent scrolling while swiping
+    
+    const touch = e.touches[0];
+    const deltaX = touch.clientX - touchStart.x;
+    const deltaY = Math.abs(touch.clientY - touchStart.y);
+    
+    // Only allow horizontal swipes (avoid conflicts with vertical scrolling)
+    if (deltaY < 30) {
+      setSwipeStates(prev => ({
+        ...prev,
+        [songId]: {
+          deltaX: Math.max(0, deltaX), // Only allow right swipes
+          isDeleting: deltaX > 150 // Delete threshold
+        }
+      }));
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent, songId: string, songTitle: string) => {
+    if (!touchStart || !swipeStates?.[songId]) return;
+    
+    const state = swipeStates[songId];
+    
+    // If swipe was long enough, delete the song
+    if (state.deltaX > 150) {
+      // Show confirmation for safety
+      if (window.confirm(`Delete "${songTitle}"? This action cannot be undone.`)) {
+        deleteSongMutation.mutate(songId);
+      }
+    }
+    
+    // Reset swipe state
+    setTouchStart(null);
+    setSwipeStates(prev => {
+      if (!prev) return prev;
+      const newState = { ...prev };
+      delete newState[songId];
+      return newState;
+    });
+  };
+
+  const handleCardClick = (e: React.MouseEvent, songId: string) => {
+    // Don't trigger selection if currently swiping
+    const swipeState = swipeStates?.[songId];
+    if (swipeState && swipeState.deltaX > 10) {
+      e.preventDefault();
+      return;
+    }
+    onSongSelect(songId);
   };
 
   if (isLoading) {
@@ -322,20 +415,44 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
         <div className="text-center py-8 text-gray-400">
           <ListMusic className="w-12 h-12 mx-auto mb-4 opacity-50" />
           <p>No songs available. Add your first song to get started.</p>
+          <p className="text-sm mt-2 opacity-60">💡 Tip: Once you have songs, swipe right on any song to delete it</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {songs.map((song) => (
-            <Card
-              key={song.id}
-              className={`cursor-pointer transition-all duration-200 hover:shadow-lg ${
-                selectedSongId === song.id
-                  ? 'bg-gray-800 border-2 border-primary'
-                  : 'bg-gray-800 border border-gray-600 hover:bg-gray-750'
-              }`}
-              onClick={() => onSongSelect(song.id)}
-              data-testid={`song-card-${song.id}`}
-            >
+          {songs.map((song) => {
+            const swipeState = swipeStates?.[song.id];
+            const transform = swipeState ? `translateX(${swipeState.deltaX}px)` : 'translateX(0px)';
+            const isBeingDeleted = swipeState?.isDeleting || false;
+            
+            return (
+            <div key={song.id} className="relative overflow-hidden rounded-lg">
+              {/* Delete background that shows when swiping */}
+              <div className={`absolute inset-0 bg-red-600 flex items-center justify-end px-4 rounded-lg transition-opacity duration-200 ${
+(swipeState?.deltaX || 0) > 50 ? 'opacity-100' : 'opacity-0'
+              }`}>
+                <div className="flex items-center text-white font-medium">
+                  <Trash2 className="w-5 h-5 mr-2" />
+                  {isBeingDeleted ? 'Release to Delete' : 'Swipe to Delete'}
+                </div>
+              </div>
+              
+              {/* Song card */}
+              <Card
+                className={`cursor-pointer transition-all duration-200 hover:shadow-lg relative z-10 ${
+                  selectedSongId === song.id
+                    ? 'bg-gray-800 border-2 border-primary'
+                    : 'bg-gray-800 border border-gray-600 hover:bg-gray-750'
+                } ${isBeingDeleted ? 'bg-red-100 dark:bg-red-900' : ''}`}
+                style={{
+                  transform,
+                  transition: swipeState ? 'none' : 'transform 0.3s ease-out'
+                }}
+                onClick={(e) => handleCardClick(e, song.id)}
+                onTouchStart={(e) => handleTouchStart(e, song.id)}
+                onTouchMove={(e) => handleTouchMove(e, song.id)}
+                onTouchEnd={(e) => handleTouchEnd(e, song.id, song.title)}
+                data-testid={`song-card-${song.id}`}
+              >
               <CardContent className="p-3">
                 <div className="flex items-center justify-between mb-1">
                   <h3 className="font-medium truncate">{song.title}</h3>
@@ -354,8 +471,10 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                   {song.key && <div>Key: <span className="text-gray-300">{song.key}</span></div>}
                 </div>
               </CardContent>
-            </Card>
-          ))}
+              </Card>
+            </div>
+            );
+          })}
         </div>
       )}
     </div>

@@ -147,11 +147,18 @@ export function PitchProcessor({ song, onProcessingComplete }: PitchProcessorPro
       return true;
 
     } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error(`❌ Pitch processing failed for track ${track.name}:`, error);
+      console.error(`❌ Error details for ${track.name}:`, {
+        trackId: track.id,
+        trackName: track.name,
+        errorMessage,
+        errorStack: error instanceof Error ? error.stack : undefined
+      });
       
       setProcessingStatus(prev => prev.map(status => 
         status.trackId === track.id 
-          ? { ...status, status: 'error', errorMessage: error instanceof Error ? error.message : 'Unknown error' }
+          ? { ...status, status: 'error', errorMessage }
           : status
       ));
       
@@ -216,27 +223,34 @@ export function PitchProcessor({ song, onProcessingComplete }: PitchProcessorPro
 
     try {
       let completedTracks = 0;
+      let errorTracks = 0;
       const totalTracks = song.tracks.length;
+
+      console.log(`🎵 Starting pitch processing for ${totalTracks} tracks with ${pitchSemitones > 0 ? '+' : ''}${pitchSemitones} semitones`);
 
       // Process each track sequentially
       for (const track of song.tracks) {
+        console.log(`🎵 Processing track: ${track.name} (${track.id})`);
         const success = await processTrack(track, pitchSemitones);
         
         if (success) {
           completedTracks++;
+          console.log(`✅ Successfully processed: ${track.name}`);
+        } else {
+          errorTracks++;
+          console.log(`❌ Failed to process: ${track.name}`);
         }
         
         // Update overall progress
-        setOverallProgress((completedTracks / totalTracks) * 100);
+        setOverallProgress((completedTracks + errorTracks) / totalTracks * 100);
       }
 
-      const successCount = processingStatus.filter(s => s.status === 'completed').length;
-      const errorCount = processingStatus.filter(s => s.status === 'error').length;
+      console.log(`🎵 Processing complete: ${completedTracks}/${totalTracks} successful, ${errorTracks} errors`);
 
       toast({
         title: "Processing Complete",
-        description: `Successfully processed ${successCount} of ${totalTracks} tracks. ${errorCount > 0 ? `${errorCount} errors.` : ''}`,
-        variant: successCount === totalTracks ? "default" : "destructive"
+        description: `Successfully processed ${completedTracks} of ${totalTracks} tracks.${errorTracks > 0 ? ` ${errorTracks} failed.` : ''}`,
+        variant: completedTracks === totalTracks ? "default" : "destructive"
       });
 
       if (onProcessingComplete) {

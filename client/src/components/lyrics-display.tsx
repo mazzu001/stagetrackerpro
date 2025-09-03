@@ -121,6 +121,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
     
     const lines = lyricsText.split('\n');
     const parsedLines: LyricsLine[] = [];
+    let estimatedTime = 0; // For lines without timestamps
     
     for (const line of lines) {
       const trimmed = line.trim();
@@ -130,6 +131,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
       const timestampMatch = trimmed.match(/^\[(\d{1,2}):(\d{2})\]/);
       
       if (timestampMatch) {
+        // Line with timestamp
         const minutes = parseInt(timestampMatch[1]);
         const seconds = parseInt(timestampMatch[2]);
         const timestamp = minutes * 60 + seconds;
@@ -140,6 +142,18 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         
         if (text) {
           parsedLines.push({ timestamp, text });
+          estimatedTime = timestamp + 4; // Update estimated time for next non-timestamped line
+        }
+      } else {
+        // Line without timestamp - still include it with estimated timing
+        let text = trimmed;
+        
+        // Only remove MIDI commands (double brackets) from display, keep regular text
+        text = text.replace(/\[\[([^\]]+)\]\]/g, '').trim();
+        
+        if (text) {
+          parsedLines.push({ timestamp: estimatedTime, text });
+          estimatedTime += 4; // Increment by 4 seconds for next line
         }
       }
     }

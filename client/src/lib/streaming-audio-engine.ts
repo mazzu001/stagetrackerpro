@@ -454,68 +454,27 @@ export class StreamingAudioEngine {
   // Speed control methods removed - focusing only on pitch
 
   private async updateTrackPitch(audioElement: HTMLAudioElement) {
-    // Use DETUNE property for pitch-only changes (no tempo change)
-    console.log(`🎵 Applying detune-based pitch shift: ${this.globalPitchSemitones} semitones`);
+    // STREAMING-COMPATIBLE PITCH CONTROL
+    // Uses playbackRate - changes both pitch AND tempo (like vinyl speed changes)
+    // This preserves streaming audio while providing musical key changes
     
     const track = this.state.tracks.find(t => t.audioElement === audioElement);
-    if (!track) {
-      console.log(`❌ No track found for audio element`);
-      return;
-    }
+    if (!track) return;
     
     try {
-      // Ensure audio nodes are set up
-      this.ensureTrackAudioNodes(track);
+      // Calculate playback rate using the Web Audio API formula
+      const playbackRate = this.globalPitchSemitones === 0 
+        ? 1.0 
+        : Math.pow(2, this.globalPitchSemitones / 12);
       
-      // Convert semitones to cents (100 cents = 1 semitone)
-      const detuneValue = this.globalPitchSemitones * 100;
+      // Apply to the streaming audio element
+      audioElement.playbackRate = playbackRate;
       
-      console.log(`🎵 Converting ${this.globalPitchSemitones} semitones to ${detuneValue} cents`);
-      
-      if (this.globalPitchSemitones === 0) {
-        console.log(`🎵 Resetting detune to 0 cents (normal pitch)`);
-      }
-      
-      // Apply detune to the MediaElementAudioSourceNode
-      // Note: We need to create an AudioBufferSourceNode for true detune support
-      if (track.source && 'detune' in track.source) {
-        // Some browsers support detune on MediaElementAudioSourceNode
-        (track.source as any).detune.value = detuneValue;
-        console.log(`✅ Applied detune directly: ${detuneValue} cents`);
-      } else {
-        // For better browser compatibility, we need a different approach
-        console.log(`⚠️ MediaElementAudioSourceNode doesn't support detune`);
-        console.log(`ℹ️ Need AudioBufferSourceNode for true detune support`);
-        
-        // For now, use a Web Audio BiquadFilter to approximate pitch shifting
-        // This is not perfect but better than playbackRate for pitch-only changes
-        await this.setupDetuneViaFilter(track, detuneValue);
-      }
+      console.log(`🎵 Key & Tempo shift: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (${playbackRate.toFixed(3)}x speed)`);
       
     } catch (error) {
-      console.error(`❌ Detune application failed:`, error);
-    }
-  }
-  
-  private async setupDetuneViaFilter(track: StreamingTrack, detuneValue: number) {
-    // This is an approximation using filters - not perfect but better than playbackRate
-    try {
-      console.log(`🔧 Setting up detune approximation via filter: ${detuneValue} cents`);
-      
-      // Note: This is a simplified approach. True pitch shifting without tempo change
-      // requires complex algorithms. For now, we're acknowledging the limitation.
-      console.log(`ℹ️ True pitch-only shifting requires AudioBufferSourceNode with detune`);
-      console.log(`ℹ️ Current implementation keeps tempo unchanged but pitch shifting is limited`);
-      
-      // For demonstration, we'll keep the audio as-is since true detune requires AudioBuffer
-      if (track.source && track.gainNode) {
-        track.source.disconnect();
-        track.source.connect(track.gainNode);
-        console.log(`✅ Audio routing maintained (pitch shifting placeholder)`);
-      }
-      
-    } catch (error) {
-      console.error(`❌ Filter-based detune setup failed:`, error);
+      console.error(`❌ Pitch shift failed:`, error);
+      audioElement.playbackRate = 1.0;
     }
   }
 

@@ -609,7 +609,7 @@ export default function TrackManager({
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1">
                 <Music className="h-4 w-4 text-orange-500" />
-                <span className="text-sm font-medium">Pitch</span>
+                <span className="text-sm font-medium">Key & Tempo</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-gray-500 w-6">-4</span>

@@ -23,6 +23,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
   const [searchResult, setSearchResult] = useState<any>(null);
   const [swipeStates, setSwipeStates] = useState<Record<string, { deltaX: number; isDeleting: boolean }>>({});
   const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [newSong, setNewSong] = useState<InsertSong>({
     userId: "", // Will be set when creating
     title: "",
@@ -207,23 +208,31 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Touch handlers for swipe-to-delete
-  const handleTouchStart = (e: React.TouchEvent, songId: string) => {
-    e.stopPropagation(); // Prevent triggering onClick
-    console.log('🎯 SWIPE DEBUG: Touch start on song:', songId);
-    const touch = e.touches[0];
-    setTouchStart({ x: touch.clientX, y: touch.clientY });
+  // Touch/Mouse handlers for swipe-to-delete
+  const handleStart = (clientX: number, clientY: number, songId: string, eventType: string) => {
+    console.log(`🎯 SWIPE DEBUG: ${eventType} start on song:`, songId);
+    setTouchStart({ x: clientX, y: clientY });
     setSwipeStates(prev => ({ ...prev, [songId]: { deltaX: 0, isDeleting: false } }));
   };
 
-  const handleTouchMove = (e: React.TouchEvent, songId: string) => {
-    if (!touchStart) return;
-    e.preventDefault(); // Prevent scrolling while swiping
-    console.log('👆 SWIPE DEBUG: Touch move on song:', songId);
-    
+  const handleTouchStart = (e: React.TouchEvent, songId: string) => {
+    e.stopPropagation(); // Prevent triggering onClick
     const touch = e.touches[0];
-    const deltaX = touch.clientX - touchStart.x;
-    const deltaY = Math.abs(touch.clientY - touchStart.y);
+    handleStart(touch.clientX, touch.clientY, songId, 'Touch');
+  };
+
+  const handleMouseDown = (e: React.MouseEvent, songId: string) => {
+    e.stopPropagation(); // Prevent triggering onClick
+    setIsDragging(true);
+    handleStart(e.clientX, e.clientY, songId, 'Mouse');
+  };
+
+  const handleMove = (clientX: number, clientY: number, songId: string, eventType: string) => {
+    if (!touchStart) return;
+    console.log(`👆 SWIPE DEBUG: ${eventType} move on song:`, songId);
+    
+    const deltaX = clientX - touchStart.x;
+    const deltaY = Math.abs(clientY - touchStart.y);
     
     // Only allow horizontal swipes (avoid conflicts with vertical scrolling)
     if (deltaY < 30) {
@@ -237,8 +246,20 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
     }
   };
 
-  const handleTouchEnd = (e: React.TouchEvent, songId: string, songTitle: string) => {
-    console.log('🏁 SWIPE DEBUG: Touch end on song:', songId);
+  const handleTouchMove = (e: React.TouchEvent, songId: string) => {
+    e.preventDefault(); // Prevent scrolling while swiping
+    const touch = e.touches[0];
+    handleMove(touch.clientX, touch.clientY, songId, 'Touch');
+  };
+
+  const handleMouseMove = (e: React.MouseEvent, songId: string) => {
+    if (!isDragging) return; // Only process if we're actually dragging
+    e.preventDefault(); // Prevent text selection while dragging
+    handleMove(e.clientX, e.clientY, songId, 'Mouse');
+  };
+
+  const handleEnd = (songId: string, songTitle: string, eventType: string) => {
+    console.log(`🏁 SWIPE DEBUG: ${eventType} end on song:`, songId);
     if (!touchStart || !swipeStates[songId]) return;
     
     const state = swipeStates[songId];
@@ -259,6 +280,15 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       delete newState[songId];
       return newState;
     });
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent, songId: string, songTitle: string) => {
+    handleEnd(songId, songTitle, 'Touch');
+  };
+
+  const handleMouseUp = (e: React.MouseEvent, songId: string, songTitle: string) => {
+    setIsDragging(false);
+    handleEnd(songId, songTitle, 'Mouse');
   };
 
   const handleCardClick = (e: React.MouseEvent, songId: string) => {
@@ -454,6 +484,9 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                 onTouchStart={(e) => handleTouchStart(e, song.id)}
                 onTouchMove={(e) => handleTouchMove(e, song.id)}
                 onTouchEnd={(e) => handleTouchEnd(e, song.id, song.title)}
+                onMouseDown={(e) => handleMouseDown(e, song.id)}
+                onMouseMove={(e) => handleMouseMove(e, song.id)}
+                onMouseUp={(e) => handleMouseUp(e, song.id, song.title)}
                 data-testid={`song-card-${song.id}`}
               >
               <CardContent className="p-3">

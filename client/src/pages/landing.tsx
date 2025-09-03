@@ -21,6 +21,27 @@ export default function Landing() {
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">Professional live music performance application with multi-track audio for pre recorded backing tracks, MIDI sequencing, and synchronized lyrics display.</p>
         </div>
 
+        {/* Demo Video Section */}
+        <div className="mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-white mb-4">See StageTracker Pro in Action</h2>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto">Watch how professional musicians use StageTracker Pro for live performances with multi-track backing tracks and MIDI control.</p>
+          </div>
+          <div className="max-w-4xl mx-auto">
+            <div className="relative w-full h-0 pb-[56.25%] rounded-lg overflow-hidden shadow-2xl">
+              <iframe
+                className="absolute top-0 left-0 w-full h-full"
+                src="https://www.youtube.com/embed/y76YiXaUrqY"
+                title="StageTracker Pro Demo"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                data-testid="video-demo"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+
         {/* Features Grid */}
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           <Card className="bg-slate-800/50 border-slate-700">

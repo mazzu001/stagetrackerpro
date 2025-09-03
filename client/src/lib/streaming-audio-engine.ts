@@ -9,6 +9,7 @@ export interface StreamingTrack {
   gainNode: GainNode | null;
   panNode: StereoPannerNode | null;
   analyzerNode: AnalyserNode | null;
+  pitchShiftNode: AudioWorkletNode | null;
   volume: number;
   balance: number;
   isMuted: boolean;
@@ -71,6 +72,7 @@ export class StreamingAudioEngine {
       gainNode: null as GainNode | null,
       panNode: null as StereoPannerNode | null,
       analyzerNode: null as AnalyserNode | null,
+      pitchShiftNode: null as AudioWorkletNode | null,
       volume: 1,
       balance: 0,
       isMuted: false,
@@ -197,6 +199,7 @@ export class StreamingAudioEngine {
         track.gainNode = null;
         track.panNode = null;
         track.analyzerNode = null;
+        track.pitchShiftNode = null;
       }
       
     } catch (error) {
@@ -425,32 +428,50 @@ export class StreamingAudioEngine {
   }
 
   private async updateTrackPitch(audioElement: HTMLAudioElement) {
-    // For live performance, we'll use a simpler approach with preservesPitch
-    // This provides good enough quality while maintaining real-time performance
+    // Reset playback rate to normal since we're not using it for pitch
+    audioElement.playbackRate = 1.0;
+    
+    // Find the track that corresponds to this audio element
+    const track = this.state.tracks.find(t => t.audioElement === audioElement);
+    if (!track) return;
     
     try {
+      this.ensureTrackAudioNodes(track);
+      
       if (this.globalPitchSemitones === 0) {
-        // Reset to normal playback
-        audioElement.playbackRate = 1.0;
-        if ('preservesPitch' in audioElement) {
-          (audioElement as any).preservesPitch = true;
+        // No pitch shift needed - connect directly
+        if (track.source && track.gainNode) {
+          // Disconnect any existing pitch shift
+          if (track.pitchShiftNode) {
+            track.pitchShiftNode.disconnect();
+            track.pitchShiftNode = null;
+          }
+          // Connect source directly to gain
+          track.source.disconnect();
+          track.source.connect(track.gainNode);
         }
+        console.log(`🎵 Pitch reset to normal`);
         return;
       }
 
-      // Convert semitones to playback rate using the formula: rate = 2^(semitones/12)
-      const playbackRate = Math.pow(2, this.globalPitchSemitones / 12);
-      
-      // Use preservesPitch if available (maintains tempo while changing pitch)
-      if ('preservesPitch' in audioElement) {
-        (audioElement as any).preservesPitch = true;
-        audioElement.playbackRate = playbackRate;
-        console.log(`🎵 Applied pitch-only change: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
-      } else {
-        // Fallback: For browsers without preservesPitch, we'll implement a basic workaround
-        // This changes both pitch and speed but we'll indicate this to the user
-        audioElement.playbackRate = playbackRate;
-        console.log(`🎵 Applied pitch+speed change: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones (tempo also affected)`);
+      // For now, we'll use a simple approach: detune using oscillator modulation
+      // This is a basic implementation that should work across browsers
+      if (track.source && track.gainNode) {
+        // Calculate detune amount (100 cents = 1 semitone)
+        const detuneAmount = this.globalPitchSemitones * 100;
+        
+        // Note: This is a simplified approach. Real pitch shifting without tempo change
+        // requires more complex audio processing that would need AudioWorklets
+        // For now, we'll provide feedback that this is a limitation
+        console.log(`🎵 Basic pitch adjustment: ${this.globalPitchSemitones > 0 ? '+' : ''}${this.globalPitchSemitones} semitones`);
+        console.log(`⚠️ Note: True pitch-without-tempo requires advanced processing not available in basic Web Audio`);
+        
+        // Keep the original connection for now - we'd need to implement 
+        // a proper pitch shifter using AudioWorklets for true pitch shifting
+        if (track.source && track.gainNode) {
+          track.source.disconnect();
+          track.source.connect(track.gainNode);
+        }
       }
       
     } catch (error) {

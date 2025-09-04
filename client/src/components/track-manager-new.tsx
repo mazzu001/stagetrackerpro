@@ -183,6 +183,11 @@ export default function TrackManager({
     onPause();
   }, [onPause, clickTrackGenerator]);
 
+  // Debug: Log song prop
+  useEffect(() => {
+    console.log('🎯 TrackManager received song prop:', song ? `"${song.title}" (id: ${song.id})` : 'null/undefined');
+  }, [song]);
+
   // Load tracks from local storage
   useEffect(() => {
     if (song?.id && user?.email) {
@@ -764,13 +769,7 @@ export default function TrackManager({
       </div>
 
       {/* BPM and Click Track Controls */}
-      {/* Debug: Always show click track for now */}
-      <div className="bg-red-500/20 border border-red-400 rounded-lg p-2 mb-2">
-        <div className="text-xs text-red-300">
-          DEBUG: Song prop = {song ? `"${song.title}" (id: ${song.id})` : 'null/undefined'}
-        </div>
-      </div>
-      {true && (
+      {song && (
         <div className="bg-slate-800/30 border border-slate-600 rounded-lg p-4 mt-4">
           <div className="flex items-center gap-2 mb-3">
             <Clock className="h-4 w-4 text-orange-500" />

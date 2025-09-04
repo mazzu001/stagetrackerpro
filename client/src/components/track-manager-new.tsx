@@ -8,13 +8,10 @@ import { useToast } from "@/hooks/use-toast";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { LocalSongStorage } from "@/lib/local-song-storage";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
-import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle, Loader2, Clock } from "lucide-react";
+import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle, Loader2 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import VUMeter from "@/components/vu-meter";
 import { TrackRecovery } from "@/components/track-recovery";
-import { ClickTrackGenerator, type ClickTrackConfig } from "@/lib/click-track-generator";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 
 // Mobile detection utility
 const isMobileDevice = () => {
@@ -63,130 +60,13 @@ export default function TrackManager({
   const [currentFileName, setCurrentFileName] = useState("");
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
   
-  // Click track state
-  const [bpm, setBpm] = useState<number>(song?.bpm || 120);
-  const [clickTrackEnabled, setClickTrackEnabled] = useState(false);
-  const [countInMeasures, setCountInMeasures] = useState<1 | 2 | 3 | 4>(1);
-  const [clickVolume, setClickVolume] = useState(0.5);
-  const [clickTrackGenerator, setClickTrackGenerator] = useState<ClickTrackGenerator | null>(null);
 
   const { toast } = useToast();
   const { user } = useLocalAuth();
   const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
   const [tracks, setTracks] = useState<Track[]>([]);
 
-  // Save BPM to database with debouncing
-  const saveBPMToDatabase = useCallback(async (newBpm: number) => {
-    if (!song?.id || !user?.email) return;
 
-    try {
-      // Update song in local storage
-      const updatedSong = { ...song, bpm: newBpm };
-      LocalSongStorage.updateSong(user.email, song.id, { bpm: newBpm });
-      
-      // Trigger song update callback
-      onSongUpdate?.(updatedSong);
-      
-      console.log(`🎯 BPM saved: ${newBpm} for song "${song.title}"`);
-    } catch (error) {
-      console.error('Failed to save BPM:', error);
-      toast({
-        title: "Error",
-        description: "Failed to save BPM setting",
-        variant: "destructive",
-      });
-    }
-  }, [song, user?.email, onSongUpdate, toast]);
-
-  // Debounced BPM change handler
-  const handleBPMChange = useCallback((newBpm: number) => {
-    setBpm(newBpm);
-    
-    // Clear existing timeout
-    if (debounceTimeouts.current.bpm) {
-      clearTimeout(debounceTimeouts.current.bpm);
-    }
-    
-    // Set new timeout for saving
-    debounceTimeouts.current.bpm = setTimeout(() => {
-      saveBPMToDatabase(newBpm);
-    }, 1000); // Save 1 second after user stops typing
-  }, [saveBPMToDatabase]);
-
-  // Initialize click track generator
-  useEffect(() => {
-    const initClickTrack = async () => {
-      if (typeof window !== 'undefined' && !clickTrackGenerator) {
-        try {
-          const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-          const generator = new ClickTrackGenerator(audioContext);
-          setClickTrackGenerator(generator);
-          console.log('🎯 Click track generator initialized in track manager');
-        } catch (error) {
-          console.error('Failed to initialize click track:', error);
-        }
-      }
-    };
-    
-    initClickTrack();
-    
-    // Cleanup
-    return () => {
-      if (clickTrackGenerator) {
-        clickTrackGenerator.destroy();
-      }
-    };
-  }, [clickTrackGenerator]);
-
-  // Enhanced play function with click track support
-  const handlePlayWithClickTrack = useCallback(() => {
-    if (!onPlay) return;
-
-    // If click track is enabled and we have a generator
-    if (clickTrackEnabled && clickTrackGenerator && bpm > 0) {
-      const clickConfig: ClickTrackConfig = {
-        bpm,
-        countInMeasures,
-        volume: clickVolume,
-        enabled: true,
-        accentDownbeat: true
-      };
-
-      console.log(`🎯 Starting ${countInMeasures} measure count-in at ${bpm} BPM`);
-      
-      // Start count-in, then start song
-      clickTrackGenerator.startCountIn(clickConfig, () => {
-        // Count-in complete, start the actual song
-        onPlay();
-        
-        // Start continuous click track during playback
-        if (clickTrackEnabled) {
-          clickTrackGenerator.startContinuous(clickConfig);
-        }
-      });
-    } else {
-      // No click track, just start normally
-      onPlay();
-    }
-  }, [onPlay, clickTrackEnabled, clickTrackGenerator, bpm, countInMeasures, clickVolume]);
-
-  // Enhanced pause function with click track support
-  const handlePauseWithClickTrack = useCallback(() => {
-    if (!onPause) return;
-
-    // Stop click track if active
-    if (clickTrackGenerator) {
-      clickTrackGenerator.stop();
-    }
-    
-    // Pause the song
-    onPause();
-  }, [onPause, clickTrackGenerator]);
-
-  // Debug: Log song prop
-  useEffect(() => {
-    console.log('🎯 TrackManager received song prop:', song ? `"${song.title}" (id: ${song.id})` : 'null/undefined');
-  }, [song]);
 
   // Load tracks from local storage
   useEffect(() => {
@@ -706,13 +586,13 @@ export default function TrackManager({
         <div className="flex gap-2">
           {tracks.length > 0 && (
             <Button
-              onClick={isPlaying ? handlePauseWithClickTrack : handlePlayWithClickTrack}
+              onClick={isPlaying ? onPause : onPlay}
               variant={isPlaying ? "destructive" : "default"}
               size="sm"
               data-testid="button-play-pause"
             >
               {isPlaying ? <Pause className="h-4 w-4 mr-2" /> : <Play className="h-4 w-4 mr-2" />}
-              {isPlaying ? 'Pause' : (clickTrackEnabled ? `Play (${countInMeasures}M Count)` : 'Play')}
+              {isPlaying ? 'Pause' : 'Play'}
             </Button>
           )}
           
@@ -768,82 +648,6 @@ export default function TrackManager({
         </div>
       </div>
 
-      {/* BPM and Click Track Controls */}
-      {song && (
-        <div className="bg-slate-800/30 border border-slate-600 rounded-lg p-4 mt-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Clock className="h-4 w-4 text-orange-500" />
-            <span className="text-sm font-medium">Click Track</span>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {/* BPM Input */}
-            <div className="space-y-2">
-              <Label htmlFor="bpm-input" className="text-xs text-gray-400">BPM (Beats Per Minute)</Label>
-              <Input
-                id="bpm-input"
-                type="number"
-                min="60"
-                max="200"
-                value={bpm}
-                onChange={(e) => handleBPMChange(Number(e.target.value))}
-                className="h-8 text-sm"
-                data-testid="input-bpm"
-              />
-            </div>
-
-            {/* Click Track Enable Toggle */}
-            <div className="space-y-2">
-              <Label className="text-xs text-gray-400">Enable Click Track</Label>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  checked={clickTrackEnabled}
-                  onCheckedChange={setClickTrackEnabled}
-                  data-testid="switch-click-track"
-                />
-                <span className="text-xs text-gray-400">
-                  {clickTrackEnabled ? 'Enabled' : 'Disabled'}
-                </span>
-              </div>
-            </div>
-
-            {/* Count-in Selector */}
-            <div className="space-y-2">
-              <Label className="text-xs text-gray-400">Count-in (Measures)</Label>
-              <Select value={countInMeasures.toString()} onValueChange={(value) => setCountInMeasures(Number(value) as 1 | 2 | 3 | 4)}>
-                <SelectTrigger className="h-8" data-testid="select-count-in">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="1">1 Measure</SelectItem>
-                  <SelectItem value="2">2 Measures</SelectItem>
-                  <SelectItem value="3">3 Measures</SelectItem>
-                  <SelectItem value="4">4 Measures</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Click Volume Control */}
-            <div className="space-y-2">
-              <Label className="text-xs text-gray-400">Click Volume</Label>
-              <div className="flex items-center gap-2">
-                <Slider
-                  value={[clickVolume * 100]}
-                  onValueChange={(value) => setClickVolume(value[0] / 100)}
-                  min={0}
-                  max={100}
-                  step={5}
-                  className="flex-1"
-                  data-testid="slider-click-volume"
-                />
-                <span className="text-xs text-gray-400 w-8 text-right">
-                  {Math.round(clickVolume * 100)}%
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
 
       {tracks.length === 0 ? (

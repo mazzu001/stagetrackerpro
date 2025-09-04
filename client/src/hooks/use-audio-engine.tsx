@@ -104,11 +104,22 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     
     console.log(`🔄 Switching from ${currentEngineType} to ${requiredType} engine (pitch: ${newPitchOffset})`);
     
-    // Stop current engine
-    if (audioEngineRef.current && isPlaying) {
-      audioEngineRef.current.stop();
-      setIsPlaying(false);
+    // Completely stop and dispose of current engine first
+    if (audioEngineRef.current) {
+      try {
+        audioEngineRef.current.stop();
+        setIsPlaying(false);
+        setCurrentTime(0);
+        
+        // Give a brief moment for cleanup
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } catch (error) {
+        console.warn('Error stopping current engine:', error);
+      }
     }
+    
+    // Clear the current reference to prevent conflicts
+    audioEngineRef.current = null;
     
     // Switch engine reference
     if (requiredType === 'streaming') {
@@ -121,7 +132,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     setPitchOffset(newPitchOffset);
     
     // Reload tracks with new engine
-    if (song) {
+    if (song && audioEngineRef.current) {
       await loadTracksForCurrentEngine(song, newPitchOffset);
     }
   }, [currentEngineType, isPlaying, song]);
@@ -210,39 +221,51 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   // Animation loop for real-time updates
   useEffect(() => {
     const animate = () => {
-      if (audioEngineRef.current && song) {
-        const state = audioEngineRef.current.getState();
+      if (audioEngineRef.current && song && currentEngineType) {
+        try {
+          const state = audioEngineRef.current.getState();
+          
+          // Update track levels with error handling
+          const levels: Record<string, number> = {};
+          song.tracks.forEach(track => {
+            try {
+              let trackLevels;
+              if (currentEngineType === 'streaming' && audioEngineRef.current) {
+                trackLevels = (audioEngineRef.current as StreamingAudioEngine).getTrackLevels(track.id);
+              } else if (currentEngineType === 'preloaded' && audioEngineRef.current) {
+                trackLevels = (audioEngineRef.current as PreloadedAudioEngine).getVUMeterData(track.id);
+              } else {
+                trackLevels = { left: 0, right: 0 };
+              }
+              // Convert stereo levels to single level with reduced sensitivity
+              levels[track.id] = Math.max(trackLevels.left, trackLevels.right) * 30;
+            } catch (error) {
+              levels[track.id] = 0; // Default to 0 on error
+            }
+          });
+          setAudioLevels(levels);
         
-        // Update track levels
-        const levels: Record<string, number> = {};
-        song.tracks.forEach(track => {
-          let trackLevels;
-          if (currentEngineType === 'streaming') {
-            trackLevels = (audioEngineRef.current as StreamingAudioEngine).getTrackLevels(track.id);
-          } else {
-            trackLevels = (audioEngineRef.current as PreloadedAudioEngine).getVUMeterData(track.id);
+          // Get master levels based on engine type with error handling
+          let masterLevels = { left: 0, right: 0 };
+          try {
+            if (currentEngineType === 'streaming' && audioEngineRef.current) {
+              masterLevels = (audioEngineRef.current as StreamingAudioEngine).getMasterLevels();
+            } else if (currentEngineType === 'preloaded' && audioEngineRef.current && song.tracks.length > 0) {
+              // For preloaded engine, calculate combined levels from all tracks
+              const trackLevels = song.tracks.map(track => {
+                try {
+                  return (audioEngineRef.current as PreloadedAudioEngine).getVUMeterData(track.id);
+                } catch (error) {
+                  return { left: 0, right: 0 };
+                }
+              });
+              const combinedLeft = Math.max(0, ...trackLevels.map(tl => tl.left));
+              const combinedRight = Math.max(0, ...trackLevels.map(tl => tl.right));
+              masterLevels = { left: combinedLeft, right: combinedRight };
+            }
+          } catch (error) {
+            masterLevels = { left: 0, right: 0 };
           }
-          // Convert stereo levels to single level with reduced sensitivity
-          levels[track.id] = Math.max(trackLevels.left, trackLevels.right) * 30;
-        });
-        setAudioLevels(levels);
-        
-        // Get master levels based on engine type
-        let masterLevels;
-        if (currentEngineType === 'streaming') {
-          masterLevels = (audioEngineRef.current as StreamingAudioEngine).getMasterLevels();
-        } else {
-          // For preloaded engine, calculate combined levels from all tracks
-          const combinedLeft = Math.max(...song.tracks.map(track => {
-            const vuData = (audioEngineRef.current as PreloadedAudioEngine).getVUMeterData(track.id);
-            return vuData.left;
-          }));
-          const combinedRight = Math.max(...song.tracks.map(track => {
-            const vuData = (audioEngineRef.current as PreloadedAudioEngine).getVUMeterData(track.id);
-            return vuData.right;
-          }));
-          masterLevels = { left: combinedLeft, right: combinedRight };
-        }
         
         // Scale master levels for song list stereo VU meters
         const scaledLevels = {
@@ -251,26 +274,29 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         };
         setMasterStereoLevels(scaledLevels);
         
-        // Use audio engine's state to determine if we should update time
-        const engineIsPlaying = state.isPlaying;
-        if (engineIsPlaying) {
-          const time = state.currentTime;
-          setCurrentTime(time);
-          
-          // Simulate CPU usage fluctuation
-          setCpuUsage(20 + Math.random() * 10);
-          
-          // Auto-stop at end
-          if (time >= duration) {
-            console.log(`Auto-stopping playback - time: ${time.toFixed(2)}s, duration: ${duration}s`);
-            setIsPlaying(false);
-            setCurrentTime(duration);
+          // Use audio engine's state to determine if we should update time
+          const engineIsPlaying = state.isPlaying;
+          if (engineIsPlaying) {
+            const time = state.currentTime;
+            setCurrentTime(time);
+            
+            // Simulate CPU usage fluctuation
+            setCpuUsage(20 + Math.random() * 10);
+            
+            // Auto-stop at end
+            if (time >= duration) {
+              console.log(`Auto-stopping playback - time: ${time.toFixed(2)}s, duration: ${duration}s`);
+              setIsPlaying(false);
+              setCurrentTime(duration);
+            }
           }
-        }
-        
-        // Sync React state with audio engine state
-        if (isPlaying !== engineIsPlaying) {
-          setIsPlaying(engineIsPlaying);
+          
+          // Sync React state with audio engine state
+          if (isPlaying !== engineIsPlaying) {
+            setIsPlaying(engineIsPlaying);
+          }
+        } catch (error) {
+          console.warn('Animation loop error:', error);
         }
       }
       
@@ -287,7 +313,16 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   }, [isPlaying, duration, song, currentEngineType]);
 
   const play = useCallback(async () => {
-    if (!audioEngineRef.current || !song) return;
+    if (!audioEngineRef.current || !song) {
+      console.log('No audio engine or song available for playback');
+      return;
+    }
+    
+    // Ensure we're not already playing
+    if (isPlaying) {
+      console.log('Already playing, ignoring play request');
+      return;
+    }
     
     // Check if tracks are loaded based on engine type
     if (currentEngineType === 'streaming') {
@@ -304,13 +339,14 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
     
     try {
+      console.log(`▶️ Starting playback with ${currentEngineType} engine`);
       await audioEngineRef.current.play();
       setIsPlaying(true);
     } catch (error) {
       console.error('Failed to start playback:', error);
       setIsPlaying(false);
     }
-  }, [song, currentEngineType]);
+  }, [song, currentEngineType, isPlaying]);
 
   const pause = useCallback(() => {
     if (audioEngineRef.current) {
@@ -321,10 +357,19 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
 
   const seek = useCallback(async (time: number) => {
     if (audioEngineRef.current) {
-      audioEngineRef.current.seek(time);
+      if (currentEngineType === 'streaming') {
+        (audioEngineRef.current as StreamingAudioEngine).seek(time);
+      } else {
+        // PreloadedAudioEngine should have a seek method, add it if missing
+        if ('seek' in audioEngineRef.current) {
+          (audioEngineRef.current as any).seek(time);
+        } else {
+          console.warn('Seek not supported in preloaded engine yet');
+        }
+      }
       setCurrentTime(Math.round(time * 10) / 10);
     }
-  }, []);
+  }, [currentEngineType]);
 
   const updateTrackVolume = useCallback(async (trackId: string, volume: number) => {
     if (audioEngineRef.current) {

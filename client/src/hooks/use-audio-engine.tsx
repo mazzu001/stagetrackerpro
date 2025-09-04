@@ -43,6 +43,57 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, []);
 
+  // Click track control methods
+  const setClickTrackBpm = useCallback((bpm: number) => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.setClickTrackBpm(bpm);
+    }
+  }, []);
+
+  const setClickTrackEnabled = useCallback((enabled: boolean) => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.setClickTrackEnabled(enabled);
+    }
+  }, []);
+
+  const setClickTrackVolume = useCallback((volume: number) => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.setClickTrackVolume(volume);
+    }
+  }, []);
+
+  const setClickTrackCountIn = useCallback((measures: 1 | 2 | 3 | 4) => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.setClickTrackCountIn(measures);
+    }
+  }, []);
+
+  const setClickTrackAccent = useCallback((accent: boolean) => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.setClickTrackAccent(accent);
+    }
+  }, []);
+
+  const getClickTrackConfig = useCallback(() => {
+    if (audioEngineRef.current) {
+      return audioEngineRef.current.getClickTrackConfig();
+    }
+    return {
+      bpm: 120,
+      countInMeasures: 1 as 1 | 2 | 3 | 4,
+      volume: 0.5,
+      enabled: false,
+      accentDownbeat: true,
+    };
+  }, []);
+
+  const playWithCountIn = useCallback(() => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.playWithCountIn();
+      setIsPlaying(true);
+    }
+  }, []);
+
   // Initialize audio engine
   useEffect(() => {
     const initAudioEngine = async () => {
@@ -298,5 +349,13 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     updateTrackMute,
     updateTrackSolo,
     updateMasterVolume,
+    // Click track controls
+    setClickTrackBpm,
+    setClickTrackEnabled,
+    setClickTrackVolume,
+    setClickTrackCountIn,
+    setClickTrackAccent,
+    getClickTrackConfig,
+    playWithCountIn,
   };
 }

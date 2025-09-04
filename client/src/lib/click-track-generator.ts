@@ -22,8 +22,14 @@ export class ClickTrackGenerator {
   constructor(audioContext: AudioContext) {
     this.audioContext = audioContext;
     this.gainNode = this.audioContext.createGain();
-    this.gainNode.connect(this.audioContext.destination);
+    // Don't connect to destination by default - let the caller decide where to connect
     console.log('🎯 Click track generator initialized');
+  }
+
+  // Connect click track to a specific output (for master routing)
+  connectToOutput(outputNode: AudioNode): void {
+    this.gainNode.connect(outputNode);
+    console.log('🎯 Click track connected to master output');
   }
 
   // Generate professional metronome click sound

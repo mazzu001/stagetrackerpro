@@ -80,13 +80,27 @@ export class WaveformGenerator {
 
       // Process all tracks in parallel for comprehensive waveform
       const trackPromises = song.tracks.map(async (track) => {
-        const audioData = await audioStorage.getAudioFileData(track.id);
-        if (!audioData) {
-          console.log(`Skipping track ${track.name} - no audio data available`);
-          return null;
-        }
-
         try {
+          // Try to get audio URL first (this works with IndexedDB)
+          const audioUrl = await audioStorage.getAudioUrl(track.id);
+          if (!audioUrl) {
+            console.log(`Skipping track ${track.name} - no audio URL available`);
+            return null;
+          }
+
+          // Fetch audio data from the URL
+          const response = await fetch(audioUrl);
+          if (!response.ok) {
+            console.log(`Skipping track ${track.name} - failed to fetch audio data`);
+            return null;
+          }
+          
+          const audioData = await response.arrayBuffer();
+          if (!audioData) {
+            console.log(`Skipping track ${track.name} - no audio data in response`);
+            return null;
+          }
+
           if (!audioContext) {
             console.error('AudioContext not available for track processing');
             return null;

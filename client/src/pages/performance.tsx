@@ -290,14 +290,16 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Select song and load its tracks
   useEffect(() => {
-    if (!selectedSongId) return;
+    if (!selectedSongId || !user?.email) return;
 
-    const song = allSongs.find(s => s.id === selectedSongId);
+    // Get fresh song data from storage to avoid circular dependencies
+    const allSongsFromStorage = LocalSongStorage.getAllSongs(user.email);
+    const song = allSongsFromStorage.find(s => s.id === selectedSongId);
     if (!song) return;
 
     console.log(`🎵 Loading song: ${song.title}`);
     setSelectedSong(song);
-  }, [selectedSongId, allSongs]);
+  }, [selectedSongId, user?.email]);
 
   const handleSeek = useCallback((time: number) => {
     seek(time);

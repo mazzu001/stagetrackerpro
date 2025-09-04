@@ -71,6 +71,44 @@ export default function TrackManager({
   const [isDetectingBpm, setIsDetectingBpm] = useState(false);
   const [selectedTrackForBpm, setSelectedTrackForBpm] = useState<string>("");
 
+  // Sync local click track values with audio engine
+  useEffect(() => {
+    if (setClickTrackBpm) {
+      const bpm = parseFloat(localClickTrackBpm);
+      if (!isNaN(bpm) && bpm > 0) {
+        setClickTrackBpm(bpm);
+      }
+    }
+  }, [localClickTrackBpm, setClickTrackBpm]);
+
+  useEffect(() => {
+    if (setClickTrackEnabled) {
+      setClickTrackEnabled(localClickTrackEnabled);
+    }
+  }, [localClickTrackEnabled, setClickTrackEnabled]);
+
+  useEffect(() => {
+    if (setClickTrackBalance) {
+      setClickTrackBalance(localClickTrackBalance);
+    }
+  }, [localClickTrackBalance, setClickTrackBalance]);
+
+  useEffect(() => {
+    if (setClickTrackVolume) {
+      setClickTrackVolume(localClickTrackVolume / 100);
+    }
+  }, [localClickTrackVolume, setClickTrackVolume]);
+
+  // Recording state
+  // Recording features removed for simplicity
+
+  const { toast } = useToast();
+  const { user } = useLocalAuth();
+  const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
+
+  // Get tracks for the current song
+  const tracks = song?.tracks || [];
+
   // BPM detection functionality
   const detectBpmFromTrack = useCallback(async (trackId: string) => {
     if (!trackId || isDetectingBpm) return;
@@ -176,44 +214,6 @@ export default function TrackManager({
       setIsDetectingBpm(false);
     }
   }, [tracks, isDetectingBpm, toast]);
-
-  // Sync local click track values with audio engine
-  useEffect(() => {
-    if (setClickTrackBpm) {
-      const bpm = parseFloat(localClickTrackBpm);
-      if (!isNaN(bpm) && bpm > 0) {
-        setClickTrackBpm(bpm);
-      }
-    }
-  }, [localClickTrackBpm, setClickTrackBpm]);
-
-  useEffect(() => {
-    if (setClickTrackEnabled) {
-      setClickTrackEnabled(localClickTrackEnabled);
-    }
-  }, [localClickTrackEnabled, setClickTrackEnabled]);
-
-  useEffect(() => {
-    if (setClickTrackBalance) {
-      setClickTrackBalance(localClickTrackBalance);
-    }
-  }, [localClickTrackBalance, setClickTrackBalance]);
-
-  useEffect(() => {
-    if (setClickTrackVolume) {
-      setClickTrackVolume(localClickTrackVolume / 100);
-    }
-  }, [localClickTrackVolume, setClickTrackVolume]);
-
-  // Recording state
-  // Recording features removed for simplicity
-
-  const { toast } = useToast();
-  const { user } = useLocalAuth();
-  const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
-
-  // Get tracks for the current song
-  const tracks = song?.tracks || [];
 
   // Initialize local track values from song data
   useEffect(() => {

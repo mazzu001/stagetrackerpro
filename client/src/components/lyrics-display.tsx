@@ -249,11 +249,13 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         setProcessedTimestamps(prev => new Set(Array.from(prev).concat(timestamp)));
       }
     }
-  }, [currentTime, song?.lyrics, onMidiCommand]);
+  }, [currentTime, song?.id, song?.lyrics]);
   
   // Execute non-timestamped MIDI commands when song changes
   useEffect(() => {
-    executeNonTimestampedMidiCommands(song, onMidiCommand);
+    if (song?.id && onMidiCommand) {
+      executeNonTimestampedMidiCommands(song, onMidiCommand);
+    }
   }, [song?.id]);
 
   // Reset MIDI tracking when song changes

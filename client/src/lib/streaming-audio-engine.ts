@@ -684,6 +684,16 @@ export class StreamingAudioEngine {
     console.log(`🎯 Click track accent ${accent ? 'enabled' : 'disabled'}`);
   }
 
+  setClickTrackBalance(balance: number) {
+    // Store balance in click track config (add to interface if needed)
+    (this.state.clickTrackConfig as any).balance = Math.max(-1, Math.min(1, balance));
+    if (this.clickTrackGenerator) {
+      this.clickTrackGenerator.setBalance(balance);
+    }
+    this.notifyListeners();
+    console.log(`🎯 Click track balance set to: ${balance === 0 ? 'Center' : balance < 0 ? `${Math.abs(balance * 100).toFixed(0)}% Left` : `${(balance * 100).toFixed(0)}% Right`}`);
+  }
+
   getClickTrackConfig(): ClickTrackConfig {
     return { ...this.state.clickTrackConfig };
   }

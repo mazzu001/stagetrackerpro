@@ -12,6 +12,7 @@ export interface ClickTrackConfig {
 export class ClickTrackGenerator {
   private audioContext: AudioContext;
   private gainNode: GainNode;
+  private panNode: StereoPannerNode;
   private isPlaying: boolean = false;
   private clickInterval: number | null = null;
   private countInTimeout: number | null = null;
@@ -22,13 +23,17 @@ export class ClickTrackGenerator {
   constructor(audioContext: AudioContext) {
     this.audioContext = audioContext;
     this.gainNode = this.audioContext.createGain();
+    this.panNode = this.audioContext.createStereoPanner();
+    
+    // Connect gain -> pan -> output (will be connected to master later)
+    this.gainNode.connect(this.panNode);
     // Don't connect to destination by default - let the caller decide where to connect
     console.log('🎯 Click track generator initialized');
   }
 
   // Connect click track to a specific output (for master routing)
   connectToOutput(outputNode: AudioNode): void {
-    this.gainNode.connect(outputNode);
+    this.panNode.connect(outputNode);
     console.log('🎯 Click track connected to master output');
   }
 
@@ -153,10 +158,16 @@ export class ClickTrackGenerator {
     this.gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
   }
 
+  // Set click track balance (-1.0 left to 1.0 right)
+  setBalance(balance: number): void {
+    this.panNode.pan.setValueAtTime(Math.max(-1, Math.min(1, balance)), this.audioContext.currentTime);
+  }
+
   // Clean up resources
   destroy(): void {
     this.stop();
     this.gainNode.disconnect();
+    this.panNode.disconnect();
     console.log('🎯 Click track generator destroyed');
   }
 }

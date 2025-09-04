@@ -74,6 +74,12 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, []);
 
+  const setClickTrackBalance = useCallback((balance: number) => {
+    if (audioEngineRef.current) {
+      audioEngineRef.current.setClickTrackBalance(balance);
+    }
+  }, []);
+
   const getClickTrackConfig = useCallback(() => {
     if (audioEngineRef.current) {
       return audioEngineRef.current.getClickTrackConfig();
@@ -355,6 +361,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     setClickTrackVolume,
     setClickTrackCountIn,
     setClickTrackAccent,
+    setClickTrackBalance,
     getClickTrackConfig,
     playWithCountIn,
   };

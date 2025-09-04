@@ -10,6 +10,7 @@ interface LoginPopupProps {
   isOpen: boolean;
   onClose: () => void;
   onLogin: (userType: 'free' | 'paid', email: string) => void;
+  defaultTab?: 'signin' | 'signup';
 }
 
 // Beta testing account for demo access
@@ -18,7 +19,7 @@ const DEMO_USERS = {
   'mazzu001@hotmail.com': { password: 'demo123', type: 'paid' as const },
 };
 
-export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
+export function LoginPopup({ isOpen, onClose, onLogin, defaultTab = 'signin' }: LoginPopupProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -129,7 +130,7 @@ export function LoginPopup({ isOpen, onClose, onLogin }: LoginPopupProps) {
           <DialogTitle>Welcome to Live Performance Pro</DialogTitle>
         </DialogHeader>
 
-        <Tabs defaultValue="signin" className="w-full">
+        <Tabs defaultValue={defaultTab} className="w-full">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>

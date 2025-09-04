@@ -7,6 +7,7 @@ import { useLocalAuth } from '@/hooks/useLocalAuth';
 
 export default function Landing() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [loginMode, setLoginMode] = useState<'signin' | 'signup'>('signin');
   const { login } = useLocalAuth();
 
   return (
@@ -81,7 +82,10 @@ export default function Landing() {
           </CardHeader>
           <CardContent className="space-y-4">
             <Button 
-              onClick={() => setIsLoginOpen(true)}
+              onClick={() => {
+                setLoginMode('signup');
+                setIsLoginOpen(true);
+              }}
               className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold"
               size="lg"
               data-testid="button-signup"
@@ -89,7 +93,10 @@ export default function Landing() {
               🚀 Start FREE Trial - No Credit Card!
             </Button>
             <Button 
-              onClick={() => setIsLoginOpen(true)}
+              onClick={() => {
+                setLoginMode('signin');
+                setIsLoginOpen(true);
+              }}
               variant="outline"
               className="w-full border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white"
               size="lg"
@@ -105,6 +112,7 @@ export default function Landing() {
           isOpen={isLoginOpen}
           onClose={() => setIsLoginOpen(false)}
           onLogin={login}
+          defaultTab={loginMode}
         />
 
         {/* Trial Info */}

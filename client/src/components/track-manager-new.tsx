@@ -180,7 +180,9 @@ export default function TrackManager({
   // Handle mute toggle with local storage (no refetch needed - causes loading dialog)
   const handleMuteToggle = useCallback((trackId: string) => {
     if (song?.id && user?.email) {
-      const track = tracks.find(t => t.id === trackId);
+      // Get fresh track data from storage to avoid stale closures
+      const allTracks = LocalSongStorage.getTracks(user.email, song.id);
+      const track = allTracks.find(t => t.id === trackId);
       if (track) {
         const newMutedState = !track.isMuted;
         LocalSongStorage.updateTrack(user.email, song.id, trackId, { isMuted: newMutedState });
@@ -196,7 +198,9 @@ export default function TrackManager({
   // Handle solo toggle with local storage (no refetch needed - causes loading dialog)
   const handleSoloToggle = useCallback((trackId: string) => {
     if (song?.id && user?.email) {
-      const track = tracks.find(t => t.id === trackId);
+      // Get fresh track data from storage to avoid stale closures
+      const allTracks = LocalSongStorage.getTracks(user.email, song.id);
+      const track = allTracks.find(t => t.id === trackId);
       if (track) {
         const newSoloState = !track.isSolo;
         LocalSongStorage.updateTrack(user.email, song.id, trackId, { isSolo: newSoloState });

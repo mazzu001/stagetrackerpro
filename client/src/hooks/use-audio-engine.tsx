@@ -208,7 +208,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isPlaying, duration, song]);
+  }, [song?.id]);
 
   const play = useCallback(async () => {
     if (!audioEngineRef.current || !song) return;

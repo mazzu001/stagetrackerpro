@@ -6,7 +6,7 @@ import { LyricsDisplay } from "@/components/lyrics-display";
 import { LyricsControls } from "@/components/lyrics-controls";
 import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
-import TrackManager from "@/components/track-manager-clean";
+import TrackManager from "@/components/track-manager-new";
 import StereoVUMeter from "@/components/stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
 
@@ -219,13 +219,16 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     stop,
     seek,
     isLoadingTracks,
+    loadingProgress,
+    currentEngineType,
+    pitchOffset,
     masterVolume,
     updateMasterVolume,
     updateTrackVolume,
     updateTrackBalance,
     updateTrackMute,
     updateTrackSolo,
-    // Pitch and speed control removed
+    updatePitchOffset,
     isAudioEngineOnline,
     masterStereoLevels,
     audioLevels
@@ -1357,11 +1360,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               onTrackMuteToggle={toggleTrackMute}
               onTrackSoloToggle={toggleTrackSolo}
               onTrackBalanceChange={updateTrackBalance}
-              // Pitch and speed control removed
+              onPitchOffsetChange={updatePitchOffset}
               onPlay={play}
               onPause={pause}
               isPlaying={isPlaying}
               isLoadingTracks={isLoadingTracks}
+              loadingProgress={loadingProgress}
+              currentEngineType={currentEngineType}
+              pitchOffset={pitchOffset}
               audioLevels={audioLevels}
               data-testid="track-manager"
             />

@@ -227,7 +227,7 @@ export default function TrackManager({
     console.log(`Adding track "${trackName}" with file: ${audioFileName}`);
     
     try {
-      const newTrack = LocalSongStorage.addTrack(user.email, song.id, {
+      const trackData = {
         name: trackName,
         songId: song.id,
         trackNumber: tracks.length + 1,
@@ -240,9 +240,15 @@ export default function TrackManager({
         balance: 0,
         isMuted: false,
         isSolo: false
-      });
+      };
       
-      if (newTrack) {
+      const success = LocalSongStorage.addTrack(user.email, song.id, trackData);
+      
+      if (success) {
+        // Get the newly added track
+        const updatedTracks = LocalSongStorage.getTracks(user.email, song.id);
+        const newTrack = updatedTracks[updatedTracks.length - 1]; // Get last added track
+        
         // Store the file in audio storage system
         const audioStorage = AudioFileStorage.getInstance();
         await audioStorage.storeAudioFile(newTrack.id, file, newTrack, song.title);
@@ -257,7 +263,7 @@ export default function TrackManager({
         const updatedSong = LocalSongStorage.getSong(user.email, song.id);
         if (updatedSong && onSongUpdate) {
           console.log('Track data updated, refreshing song with', updatedSong.tracks.length, 'tracks');
-          onSongUpdate(updatedSong);
+          onSongUpdate({ ...updatedSong, userId: user.email } as any);
         }
         
         // Legacy callback for backward compatibility
@@ -302,7 +308,7 @@ export default function TrackManager({
         const updatedSong = LocalSongStorage.getSong(user.email, song.id);
         if (updatedSong && onSongUpdate) {
           console.log('Track deleted, refreshing song with', updatedSong.tracks.length, 'tracks');
-          onSongUpdate(updatedSong);
+          onSongUpdate({ ...updatedSong, userId: user.email } as any);
         }
         
         // Legacy callback for backward compatibility

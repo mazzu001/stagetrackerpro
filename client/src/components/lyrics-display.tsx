@@ -194,12 +194,16 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
 
   // Auto-send MIDI commands from timestamped lyrics - reads every line according to timestamps
   const [processedTimestamps, setProcessedTimestamps] = useState(new Set<number>());
+  const [parsedTimestampedLines, setParsedTimestampedLines] = useState<Array<{timestamp: number, line: string, originalLine: string}>>([]);
   
+  // Parse lyrics only when song changes (not on every render)
   useEffect(() => {
-    if (!song?.lyrics || !onMidiCommand) return;
+    if (!song?.lyrics) {
+      setParsedTimestampedLines([]);
+      return;
+    }
     
     console.log(`📋 Analyzing lyrics for song: ${song.title}`);
-    console.log(`📋 Lyrics content:`, song.lyrics);
     
     // Parse all lines with timestamps from lyrics
     const lines = song.lyrics.split('\n');
@@ -216,7 +220,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         const seconds = parseInt(timestampMatch[2]);
         const timestamp = minutes * 60 + seconds;
         
-        console.log(`⏰ Found timestamped line: [${minutes}:${String(seconds).padStart(2, '0')}] at ${timestamp}s -> "${trimmed}"`);
+        console.log(`⏰ Found timestamped line: [${minutes}:${seconds.toString().padStart(2, '0')}] at ${timestamp}s -> "${trimmed}"`);
         
         timestampedLines.push({
           timestamp,
@@ -227,9 +231,15 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
     }
     
     console.log(`📋 Total timestamped lines found: ${timestampedLines.length}`);
+    setParsedTimestampedLines(timestampedLines);
+  }, [song?.id]);
+  
+  // Process MIDI commands based on current time (separate from parsing)
+  useEffect(() => {
+    if (!onMidiCommand || parsedTimestampedLines.length === 0 || currentTime <= 0) return;
     
     // Read through each timestamped line according to current playback time
-    for (const { timestamp, line, originalLine } of timestampedLines) {
+    for (const { timestamp, line } of parsedTimestampedLines) {
       // If current time matches this timestamp (within 0.5 seconds) and we haven't processed it yet
       if (Math.abs(currentTime - timestamp) <= 0.5 && !processedTimestamps.has(timestamp)) {
         console.log(`📖 Reading timestamped line at ${timestamp}s: "${line}"`);
@@ -239,8 +249,6 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         if (midiMatches) {
           for (const midiCommand of midiMatches) {
             console.log(`🎵 Found MIDI command in timestamped line: ${midiCommand}`);
-            
-            // Use the exact footer send button functionality with this MIDI command
             onMidiCommand(midiCommand);
           }
         }
@@ -249,7 +257,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         setProcessedTimestamps(prev => new Set(Array.from(prev).concat(timestamp)));
       }
     }
-  }, [currentTime, song?.id, song?.lyrics]);
+  }, [currentTime, parsedTimestampedLines, onMidiCommand]);
   
   // Execute non-timestamped MIDI commands when song changes
   useEffect(() => {

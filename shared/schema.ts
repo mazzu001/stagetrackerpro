@@ -15,7 +15,6 @@ export const songs = sqliteTable("songs", {
   lyrics: text("lyrics"), // lyrics with timestamps
   waveformData: text("waveform_data"), // JSON array of waveform amplitudes
   waveformGenerated: integer("waveform_generated", { mode: 'boolean' }).default(false),
-  pitchOffset: integer("pitch_offset").default(0), // Semitones to shift (-12 to +12)
   createdAt: text("created_at").default(sql`(datetime('now'))`),
 });
 

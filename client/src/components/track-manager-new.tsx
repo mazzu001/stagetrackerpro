@@ -31,12 +31,8 @@ interface TrackManagerProps {
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
-  loadingProgress?: number;
-  currentEngineType?: 'streaming' | 'preloaded';
-  pitchOffset?: number;
   onPlay?: () => void;
   onPause?: () => void;
-  onPitchOffsetChange?: (pitchOffset: number) => void;
 }
 
 export default function TrackManager({ 
@@ -50,12 +46,8 @@ export default function TrackManager({
   audioLevels = {},
   isPlaying = false,
   isLoadingTracks = false,
-  loadingProgress = 0,
-  currentEngineType = 'streaming',
-  pitchOffset = 0,
   onPlay,
-  onPause,
-  onPitchOffsetChange
+  onPause
 }: TrackManagerProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
@@ -67,27 +59,20 @@ export default function TrackManager({
   const [totalFiles, setTotalFiles] = useState(0);
   const [currentFileName, setCurrentFileName] = useState("");
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
-  const [localPitchOffset, setLocalPitchOffset] = useState(0);
-  const [showPitchWarning, setShowPitchWarning] = useState(false);
 
   const { toast } = useToast();
   const { user } = useLocalAuth();
   const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
   const [tracks, setTracks] = useState<Track[]>([]);
 
-  // Load tracks from local storage and sync pitch offset
+  // Load tracks from local storage
   useEffect(() => {
     if (song?.id && user?.email) {
       const localTracks = LocalSongStorage.getTracks(user.email, song.id);
       setTracks(localTracks);
-      
-      // Sync local pitch offset with song's pitch offset
-      const songPitchOffset = song.pitchOffset || 0;
-      setLocalPitchOffset(songPitchOffset);
-      
-      console.log(`Track Manager: Found ${localTracks.length} tracks for song ${song.title} (ID: ${song.id}, pitch: ${songPitchOffset}):`, localTracks.map(t => t.name));
+      console.log(`Track Manager: Found ${localTracks.length} tracks for song ${song.title} (ID: ${song.id}):`, localTracks.map(t => t.name));
     }
-  }, [song?.id, user?.email, song?.title, song?.pitchOffset]);
+  }, [song?.id, user?.email, song?.title]);
 
   const refetchTracks = useCallback(() => {
     if (song?.id && user?.email) {
@@ -227,7 +212,7 @@ export default function TrackManager({
     console.log(`Adding track "${trackName}" with file: ${audioFileName}`);
     
     try {
-      const trackData = {
+      const newTrack = LocalSongStorage.addTrack(user.email, song.id, {
         name: trackName,
         songId: song.id,
         trackNumber: tracks.length + 1,
@@ -240,15 +225,9 @@ export default function TrackManager({
         balance: 0,
         isMuted: false,
         isSolo: false
-      };
+      });
       
-      const success = LocalSongStorage.addTrack(user.email, song.id, trackData);
-      
-      if (success) {
-        // Get the newly added track
-        const updatedTracks = LocalSongStorage.getTracks(user.email, song.id);
-        const newTrack = updatedTracks[updatedTracks.length - 1]; // Get last added track
-        
+      if (newTrack) {
         // Store the file in audio storage system
         const audioStorage = AudioFileStorage.getInstance();
         await audioStorage.storeAudioFile(newTrack.id, file, newTrack, song.title);
@@ -263,7 +242,7 @@ export default function TrackManager({
         const updatedSong = LocalSongStorage.getSong(user.email, song.id);
         if (updatedSong && onSongUpdate) {
           console.log('Track data updated, refreshing song with', updatedSong.tracks.length, 'tracks');
-          onSongUpdate({ ...updatedSong, userId: user.email } as any);
+          onSongUpdate(updatedSong);
         }
         
         // Legacy callback for backward compatibility
@@ -308,7 +287,7 @@ export default function TrackManager({
         const updatedSong = LocalSongStorage.getSong(user.email, song.id);
         if (updatedSong && onSongUpdate) {
           console.log('Track deleted, refreshing song with', updatedSong.tracks.length, 'tracks');
-          onSongUpdate({ ...updatedSong, userId: user.email } as any);
+          onSongUpdate(updatedSong);
         }
         
         // Legacy callback for backward compatibility
@@ -589,144 +568,18 @@ export default function TrackManager({
         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center rounded-lg">
           <div className="bg-surface border border-gray-700 rounded-lg p-6 text-center">
             <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-3"></div>
-            <h3 className="text-lg font-semibold mb-2">Processing Audio for Pitch Control...</h3>
-            <p className="text-sm text-gray-400">
-              Decoding audio data to enable pitch shifting ({Math.round(loadingProgress)}%)
-            </p>
-            <div className="w-full bg-gray-700 rounded-full h-2 mt-3">
-              <div 
-                className="bg-orange-500 h-2 rounded-full transition-all duration-300" 
-                style={{ width: `${loadingProgress}%` }}
-              ></div>
-            </div>
-            <p className="text-xs text-gray-500 mt-2">
-              This may take 8-15 seconds per track. Songs without pitch shifting load instantly.
-            </p>
+            <h3 className="text-lg font-semibold mb-2">Loading Tracks...</h3>
+            <p className="text-sm text-gray-400">Please wait while audio tracks are being loaded.</p>
+            <p className="text-xs text-gray-500 mt-1">This may take longer on mobile devices.</p>
           </div>
         </div>
       )}
-
-      {/* Pitch Warning Dialog */}
-      <Dialog open={showPitchWarning} onOpenChange={setShowPitchWarning}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-orange-500" />
-              Pitch Shifting Performance Notice
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="bg-orange-100 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-4">
-              <p className="text-sm text-orange-800 dark:text-orange-200">
-                <strong>Loading Time Warning:</strong> Using pitch shift requires audio processing and may slow load times between songs (8-15 seconds per track).
-              </p>
-            </div>
-            <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-              <p><strong>Fast Mode (0 semitones):</strong> Instant loading, streaming playback</p>
-              <p><strong>Pitch Mode (±1-12 semitones):</strong> Slower loading, full audio processing</p>
-            </div>
-            <div className="flex gap-2">
-              <Button 
-                onClick={() => {
-                  setShowPitchWarning(false);
-                  setLocalPitchOffset(0);
-                  if (onPitchOffsetChange) {
-                    onPitchOffsetChange(0);
-                    if (song && user?.email) {
-                      LocalSongStorage.updateSong(user.email, song.id, { pitchOffset: 0 });
-                    }
-                  }
-                }}
-                variant="outline" 
-                className="flex-1"
-              >
-                Keep Fast Mode
-              </Button>
-              <Button 
-                onClick={() => setShowPitchWarning(false)}
-                className="flex-1 bg-orange-600 hover:bg-orange-700"
-              >
-                Continue with Pitch Mode
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold flex items-center gap-2">
           <Music className="h-5 w-5" />
           Tracks ({tracks.length}/6)
         </h3>
         
-        {/* Pitch Control Section */}
-        {tracks.length > 0 && (
-          <div className="flex items-center gap-4 mx-4 my-3 p-3 bg-gray-800/50 rounded-lg border border-gray-700">
-            <div className="flex items-center gap-2">
-              <Music className="h-4 w-4 text-orange-500" />
-              <span className="text-sm font-medium">Pitch</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-gray-500 w-6">-12</span>
-              <Slider
-                value={[localPitchOffset]}
-                onValueChange={(value) => {
-                  const newPitchOffset = value[0];
-                  setLocalPitchOffset(newPitchOffset);
-                  
-                  // Show warning when switching away from zero
-                  if (newPitchOffset !== 0 && pitchOffset === 0) {
-                    setShowPitchWarning(true);
-                  }
-                  
-                  // Update pitch offset
-                  if (onPitchOffsetChange) {
-                    onPitchOffsetChange(newPitchOffset);
-                    
-                    // Update song in storage
-                    if (song && user?.email) {
-                      LocalSongStorage.updateSong(user.email, song.id, { pitchOffset: newPitchOffset });
-                    }
-                  }
-                }}
-                min={-12}
-                max={12}
-                step={1}
-                className="w-24"
-                data-testid="slider-pitch-offset"
-              />
-              <span className="text-xs text-gray-500 w-6">+12</span>
-              <span className="text-sm font-mono w-12 text-center">
-                {localPitchOffset > 0 ? `+${localPitchOffset}` : localPitchOffset}st
-              </span>
-            </div>
-            <Button
-              onClick={() => {
-                setLocalPitchOffset(0);
-                if (onPitchOffsetChange) {
-                  onPitchOffsetChange(0);
-                  if (song && user?.email) {
-                    LocalSongStorage.updateSong(user.email, song.id, { pitchOffset: 0 });
-                  }
-                }
-                setShowPitchWarning(false);
-              }}
-              variant="outline"
-              size="sm"
-              className="text-xs h-7"
-              data-testid="button-reset-pitch"
-            >
-              Reset
-            </Button>
-            
-            {/* Engine Type Indicator */}
-            <div className="flex items-center gap-2 ml-2">
-              <div className={`w-2 h-2 rounded-full ${currentEngineType === 'streaming' ? 'bg-green-500' : 'bg-orange-500'}`} />
-              <span className="text-xs text-gray-400">
-                {currentEngineType === 'streaming' ? 'Fast Mode' : 'Pitch Mode'}
-              </span>
-            </div>
-          </div>
-        )}
         
         <div className="flex gap-2">
           {tracks.length > 0 && (

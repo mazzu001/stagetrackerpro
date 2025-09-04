@@ -39,7 +39,6 @@ export default function SongSelector({ onSongSelect, selectedSongId }: SongSelec
   const [newSong, setNewSong] = useState({
     title: "",
     artist: "",
-    bpm: undefined as number | undefined,
     key: "",
     lyrics: "",
   });
@@ -84,7 +83,6 @@ export default function SongSelector({ onSongSelect, selectedSongId }: SongSelec
         const song = LocalSongStorage.createSong(userEmail, {
           title: songData.title.trim(),
           artist: songData.artist.trim(),
-          bpm: songData.bpm,
           key: songData.key || undefined,
           lyrics: songData.lyrics || undefined,
         });
@@ -97,7 +95,7 @@ export default function SongSelector({ onSongSelect, selectedSongId }: SongSelec
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/songs"] });
-      setNewSong({ title: "", artist: "", bpm: undefined, key: "", lyrics: "" });
+      setNewSong({ title: "", artist: "", key: "", lyrics: "" });
       setIsAddDialogOpen(false);
       toast({
         title: "Song Created",
@@ -304,17 +302,6 @@ export default function SongSelector({ onSongSelect, selectedSongId }: SongSelec
                     />
                   </div>
                   <div>
-                    <Label htmlFor="bpm">BPM (for click track)</Label>
-                    <Input
-                      id="bpm"
-                      type="number"
-                      value={newSong.bpm || ""}
-                      onChange={(e) => setNewSong({ ...newSong, bpm: parseInt(e.target.value) || undefined })}
-                      placeholder="120"
-                      data-testid="input-song-bpm"
-                    />
-                  </div>
-                  <div>
                     <Label htmlFor="key">Key</Label>
                     <Input
                       id="key"
@@ -444,7 +431,6 @@ export default function SongSelector({ onSongSelect, selectedSongId }: SongSelec
                     <div className="text-sm text-gray-400 space-y-0.5">
                       <div>Artist: <span className="text-gray-300">{song.artist}</span></div>
                       <div>Duration: <span className="text-gray-300">{formatDuration(song.duration)}</span></div>
-                      {song.bpm && <div>BPM: <span className="text-gray-300">{song.bpm}</span></div>}
                       {song.key && <div>Key: <span className="text-gray-300">{song.key}</span></div>}
                     </div>
                   </div>

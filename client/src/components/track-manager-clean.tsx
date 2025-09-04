@@ -24,6 +24,11 @@ interface TrackManagerProps {
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
   // Pitch and speed control removed
   audioLevels?: Record<string, number>;
+  // Click track props
+  setClickTrackBpm?: (bpm: number) => void;
+  setClickTrackEnabled?: (enabled: boolean) => void;
+  setClickTrackVolume?: (volume: number) => void;
+  setClickTrackBalance?: (balance: number) => void;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
   onPlay?: () => void;
@@ -42,7 +47,12 @@ export default function TrackManager({
   isPlaying = false,
   isLoadingTracks = false,
   onPlay,
-  onPause
+  onPause,
+  // Click track props
+  setClickTrackBpm,
+  setClickTrackEnabled,
+  setClickTrackVolume,
+  setClickTrackBalance,
 }: TrackManagerProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
@@ -52,6 +62,148 @@ export default function TrackManager({
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
   // Pitch and speed control removed
+  
+  // Click track state
+  const [localClickTrackBpm, setLocalClickTrackBpm] = useState<string>("120.000");
+  const [localClickTrackEnabled, setLocalClickTrackEnabled] = useState(false);
+  const [localClickTrackBalance, setLocalClickTrackBalance] = useState(0); // -1 (left) to 1 (right)
+  const [localClickTrackVolume, setLocalClickTrackVolume] = useState(50); // 0-100 percentage
+  const [isDetectingBpm, setIsDetectingBpm] = useState(false);
+  const [selectedTrackForBpm, setSelectedTrackForBpm] = useState<string>("");
+
+  // BPM detection functionality
+  const detectBpmFromTrack = useCallback(async (trackId: string) => {
+    if (!trackId || isDetectingBpm) return;
+    
+    setIsDetectingBpm(true);
+    try {
+      const track = tracks.find(t => t.id === trackId);
+      if (!track) {
+        toast({
+          title: "Track Not Found",
+          description: "Selected track could not be found",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Get audio file for the track
+      const audioFile = await AudioFileStorage.getAudioFile(track.id);
+      if (!audioFile) {
+        toast({
+          title: "Audio File Not Found", 
+          description: "Could not load audio file for BPM detection",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      // Create audio context for analysis
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const arrayBuffer = await audioFile.arrayBuffer();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+      
+      // Simple BPM detection using peak detection
+      const sampleRate = audioBuffer.sampleRate;
+      const channelData = audioBuffer.getChannelData(0);
+      const bufferLength = audioBuffer.length;
+      
+      // Analyze first 60 seconds for BPM detection
+      const maxAnalysisLength = Math.min(bufferLength, sampleRate * 60);
+      const analysisData = channelData.slice(0, maxAnalysisLength);
+      
+      // Find peaks and calculate intervals
+      const peaks: number[] = [];
+      const threshold = 0.3;
+      
+      for (let i = 1; i < analysisData.length - 1; i++) {
+        if (analysisData[i] > threshold && 
+            analysisData[i] > analysisData[i - 1] && 
+            analysisData[i] > analysisData[i + 1]) {
+          peaks.push(i);
+        }
+      }
+      
+      if (peaks.length < 10) {
+        toast({
+          title: "BPM Detection Failed",
+          description: "Could not detect enough beats in the audio",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      // Calculate intervals between peaks
+      const intervals: number[] = [];
+      for (let i = 1; i < peaks.length; i++) {
+        const interval = (peaks[i] - peaks[i - 1]) / sampleRate;
+        if (interval > 0.2 && interval < 2.0) { // Filter reasonable intervals
+          intervals.push(interval);
+        }
+      }
+      
+      if (intervals.length === 0) {
+        toast({
+          title: "BPM Detection Failed",
+          description: "Could not determine beat intervals",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      // Calculate average interval and convert to BPM
+      const avgInterval = intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
+      const detectedBpm = 60 / avgInterval;
+      
+      // Round to 3 decimal places
+      const roundedBpm = Math.round(detectedBpm * 1000) / 1000;
+      
+      setLocalClickTrackBpm(roundedBpm.toFixed(3));
+      
+      toast({
+        title: "BPM Detected",
+        description: `Detected BPM: ${roundedBpm.toFixed(3)} from track "${track.name}"`,
+      });
+      
+    } catch (error) {
+      console.error('BPM detection error:', error);
+      toast({
+        title: "BPM Detection Error",
+        description: "An error occurred while analyzing the track",
+        variant: "destructive"
+      });
+    } finally {
+      setIsDetectingBpm(false);
+    }
+  }, [tracks, isDetectingBpm, toast]);
+
+  // Sync local click track values with audio engine
+  useEffect(() => {
+    if (setClickTrackBpm) {
+      const bpm = parseFloat(localClickTrackBpm);
+      if (!isNaN(bpm) && bpm > 0) {
+        setClickTrackBpm(bpm);
+      }
+    }
+  }, [localClickTrackBpm, setClickTrackBpm]);
+
+  useEffect(() => {
+    if (setClickTrackEnabled) {
+      setClickTrackEnabled(localClickTrackEnabled);
+    }
+  }, [localClickTrackEnabled, setClickTrackEnabled]);
+
+  useEffect(() => {
+    if (setClickTrackBalance) {
+      setClickTrackBalance(localClickTrackBalance);
+    }
+  }, [localClickTrackBalance, setClickTrackBalance]);
+
+  useEffect(() => {
+    if (setClickTrackVolume) {
+      setClickTrackVolume(localClickTrackVolume / 100);
+    }
+  }, [localClickTrackVolume, setClickTrackVolume]);
 
   // Recording state
   // Recording features removed for simplicity
@@ -789,8 +941,139 @@ export default function TrackManager({
           })}
         </div>
       )}
-
-
+      
+      {/* Click Track Section */}
+      <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <Card className="border-2 border-dashed border-gray-300 dark:border-gray-600">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-semibold">🎯 Click Track</h3>
+                <div className="flex items-center gap-2">
+                  <Label className="text-sm text-gray-600">Enable</Label>
+                  <input
+                    type="checkbox"
+                    checked={localClickTrackEnabled}
+                    onChange={(e) => setLocalClickTrackEnabled(e.target.checked)}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    data-testid="checkbox-click-track-enable"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* BPM Input */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium">BPM (Beats Per Minute)</Label>
+                <Input
+                  type="number"
+                  value={localClickTrackBpm}
+                  onChange={(e) => setLocalClickTrackBpm(e.target.value)}
+                  step="0.001"
+                  min="30"
+                  max="300"
+                  placeholder="120.000"
+                  className="text-center"
+                  data-testid="input-click-track-bpm"
+                />
+                <p className="text-xs text-gray-500">3 decimal precision (e.g., 120.500)</p>
+              </div>
+              
+              {/* Volume Control */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm font-medium">Volume</Label>
+                  <span className="text-xs text-gray-500">{localClickTrackVolume}%</span>
+                </div>
+                <Slider
+                  value={[localClickTrackVolume]}
+                  onValueChange={(value) => setLocalClickTrackVolume(value[0])}
+                  min={0}
+                  max={100}
+                  step={1}
+                  className="flex-1"
+                  data-testid="slider-click-track-volume"
+                />
+              </div>
+              
+              {/* Balance Control */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label className="text-sm font-medium">Balance</Label>
+                  <span className="text-xs text-gray-500">
+                    {localClickTrackBalance === 0 ? 'Center' : 
+                     localClickTrackBalance < 0 ? `${Math.abs(localClickTrackBalance * 100).toFixed(0)}% Left` : 
+                     `${(localClickTrackBalance * 100).toFixed(0)}% Right`}
+                  </span>
+                </div>
+                <Slider
+                  value={[localClickTrackBalance]}
+                  onValueChange={(value) => setLocalClickTrackBalance(value[0])}
+                  min={-1}
+                  max={1}
+                  step={0.01}
+                  className="flex-1"
+                  data-testid="slider-click-track-balance"
+                />
+                <div className="flex justify-between text-xs text-gray-400">
+                  <span>Left</span>
+                  <span>Center</span>
+                  <span>Right</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* BPM Detection Section */}
+            <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+              <div className="flex items-center justify-between mb-3">
+                <Label className="text-sm font-medium">BPM Detection</Label>
+                <Button
+                  onClick={() => detectBpmFromTrack(selectedTrackForBpm)}
+                  disabled={!selectedTrackForBpm || isDetectingBpm || tracks.length === 0}
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                  data-testid="button-detect-bpm"
+                >
+                  {isDetectingBpm ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                      Analyzing...
+                    </>
+                  ) : (
+                    <>
+                      <Music className="w-4 h-4" />
+                      Detect BPM
+                    </>
+                  )}
+                </Button>
+              </div>
+              
+              {tracks.length > 0 ? (
+                <div className="space-y-2">
+                  <Label className="text-xs text-gray-600">Select track to analyze:</Label>
+                  <select
+                    value={selectedTrackForBpm}
+                    onChange={(e) => setSelectedTrackForBpm(e.target.value)}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                    data-testid="select-track-for-bpm"
+                  >
+                    <option value="">Choose a track...</option>
+                    {tracks.map((track, index) => (
+                      <option key={track.id} value={track.id}>
+                        Track {index + 1}: {track.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500">Add tracks to enable BPM detection</p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

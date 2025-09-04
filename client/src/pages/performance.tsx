@@ -66,11 +66,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isMidiListening, setIsMidiListening] = useState(false);
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
   
-  // Click track local state
-  const [localClickTrackEnabled, setLocalClickTrackEnabled] = useState(false);
-  const [localClickTrackVolume, setLocalClickTrackVolume] = useState(50);
-  const [localClickTrackCountIn, setLocalClickTrackCountIn] = useState<1 | 2 | 3 | 4>(1);
-  const [localClickTrackAccent, setLocalClickTrackAccent] = useState(true);
 
 
   const { toast } = useToast();
@@ -321,11 +316,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   const handlePlay = useCallback(() => {
     if (selectedSong && selectedSong.tracks && selectedSong.tracks.length > 0) {
-      if (localClickTrackEnabled) {
-        playWithCountIn();
-      } else {
-        play();
-      }
+      play();
     } else {
       toast({
         title: "No Tracks Available", 
@@ -333,24 +324,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         variant: "destructive"
       });
     }
-  }, [selectedSong, play, playWithCountIn, localClickTrackEnabled, toast]);
+  }, [selectedSong, play, toast]);
 
-  // Update click track settings when they change
-  useEffect(() => {
-    if (setClickTrackEnabled && setClickTrackVolume && setClickTrackCountIn && setClickTrackAccent) {
-      setClickTrackEnabled(localClickTrackEnabled);
-      setClickTrackVolume(localClickTrackVolume / 100);
-      setClickTrackCountIn(localClickTrackCountIn);
-      setClickTrackAccent(localClickTrackAccent);
-    }
-  }, [localClickTrackEnabled, localClickTrackVolume, localClickTrackCountIn, localClickTrackAccent, setClickTrackEnabled, setClickTrackVolume, setClickTrackCountIn, setClickTrackAccent]);
-
-  // Sync BPM with selected song
-  useEffect(() => {
-    if (selectedSong?.bpm && setClickTrackBpm) {
-      setClickTrackBpm(selectedSong.bpm);
-    }
-  }, [selectedSong?.bpm, setClickTrackBpm]);
 
   const handlePause = useCallback(() => {
     pause();
@@ -1173,76 +1148,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               onStop={stop}
             />
             
-            {/* Click Track Controls */}
-            {selectedSong?.bpm && (
-              <div className="mt-3 p-3 bg-gray-800/50 rounded-lg border border-gray-600">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-white flex items-center gap-2">
-                    <span>🎯</span>
-                    Click Track ({selectedSong.bpm} BPM)
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <label className="text-xs text-gray-300">Enable</label>
-                    <input
-                      type="checkbox"
-                      checked={localClickTrackEnabled}
-                      onChange={(e) => setLocalClickTrackEnabled(e.target.checked)}
-                      className="rounded border-gray-600 bg-gray-700 text-blue-500 focus:ring-blue-500"
-                      data-testid="checkbox-click-track-enable"
-                    />
-                  </div>
-                </div>
-                
-                {localClickTrackEnabled && (
-                  <div className="grid grid-cols-2 gap-3">
-                    {/* Volume Control */}
-                    <div>
-                      <label className="block text-xs text-gray-300 mb-1">Volume</label>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={localClickTrackVolume}
-                        onChange={(e) => setLocalClickTrackVolume(Number(e.target.value))}
-                        className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider-thumb"
-                        data-testid="slider-click-track-volume"
-                      />
-                      <div className="text-xs text-gray-400 mt-1">{localClickTrackVolume}%</div>
-                    </div>
-                    
-                    {/* Count-in Control */}
-                    <div>
-                      <label className="block text-xs text-gray-300 mb-1">Count-in</label>
-                      <select
-                        value={localClickTrackCountIn}
-                        onChange={(e) => setLocalClickTrackCountIn(Number(e.target.value) as 1 | 2 | 3 | 4)}
-                        className="w-full px-2 py-1 text-xs bg-gray-700 border border-gray-600 rounded text-white"
-                        data-testid="select-click-track-count-in"
-                      >
-                        <option value={1}>1 measure</option>
-                        <option value={2}>2 measures</option>
-                        <option value={3}>3 measures</option>
-                        <option value={4}>4 measures</option>
-                      </select>
-                    </div>
-                    
-                    {/* Accent Control */}
-                    <div className="col-span-2">
-                      <label className="flex items-center gap-2 text-xs text-gray-300">
-                        <input
-                          type="checkbox"
-                          checked={localClickTrackAccent}
-                          onChange={(e) => setLocalClickTrackAccent(e.target.checked)}
-                          className="rounded border-gray-600 bg-gray-700 text-blue-500 focus:ring-blue-500"
-                          data-testid="checkbox-click-track-accent"
-                        />
-                        Accent downbeat (louder first beat)
-                      </label>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
           </div>
         </div>
 
@@ -1299,68 +1204,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   onStop={handleStop}
                 />
                 
-                {/* Mobile Click Track Controls */}
-                {selectedSong?.bpm && (
-                  <div className="p-2 bg-gray-800/50 rounded border border-gray-600">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-medium text-white">🎯 Click ({selectedSong.bpm} BPM)</span>
-                      <input
-                        type="checkbox"
-                        checked={localClickTrackEnabled}
-                        onChange={(e) => setLocalClickTrackEnabled(e.target.checked)}
-                        className="rounded border-gray-600 bg-gray-700 text-blue-500 focus:ring-blue-500"
-                        data-testid="checkbox-click-track-enable-mobile"
-                      />
-                    </div>
-                    
-                    {localClickTrackEnabled && (
-                      <div className="grid grid-cols-3 gap-2 text-xs">
-                        {/* Volume */}
-                        <div>
-                          <label className="block text-gray-300 mb-1">Vol</label>
-                          <input
-                            type="range"
-                            min="0"
-                            max="100"
-                            value={localClickTrackVolume}
-                            onChange={(e) => setLocalClickTrackVolume(Number(e.target.value))}
-                            className="w-full h-1 bg-gray-700 rounded appearance-none cursor-pointer"
-                            data-testid="slider-click-track-volume-mobile"
-                          />
-                          <div className="text-gray-400">{localClickTrackVolume}%</div>
-                        </div>
-                        
-                        {/* Count-in */}
-                        <div>
-                          <label className="block text-gray-300 mb-1">Count</label>
-                          <select
-                            value={localClickTrackCountIn}
-                            onChange={(e) => setLocalClickTrackCountIn(Number(e.target.value) as 1 | 2 | 3 | 4)}
-                            className="w-full px-1 py-0.5 bg-gray-700 border border-gray-600 rounded text-white text-xs"
-                            data-testid="select-click-track-count-in-mobile"
-                          >
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                          </select>
-                        </div>
-                        
-                        {/* Accent */}
-                        <div>
-                          <label className="block text-gray-300 mb-1">Accent</label>
-                          <input
-                            type="checkbox"
-                            checked={localClickTrackAccent}
-                            onChange={(e) => setLocalClickTrackAccent(e.target.checked)}
-                            className="rounded border-gray-600 bg-gray-700 text-blue-500 focus:ring-blue-500 mt-1"
-                            data-testid="checkbox-click-track-accent-mobile"
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
                 
                 {/* Mobile Manual MIDI Send */}
                 <div className="flex items-center gap-2 pt-2 border-t border-gray-700">
@@ -1531,6 +1374,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               // Pitch and speed control removed
               onPlay={play}
               onPause={pause}
+              // Click track controls
+              setClickTrackBpm={setClickTrackBpm}
+              setClickTrackEnabled={setClickTrackEnabled}
+              setClickTrackVolume={setClickTrackVolume}
+              setClickTrackBalance={setClickTrackBalance}
               isPlaying={isPlaying}
               isLoadingTracks={isLoadingTracks}
               audioLevels={audioLevels}

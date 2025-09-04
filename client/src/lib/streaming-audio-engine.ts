@@ -1,8 +1,6 @@
 // Streaming audio engine with lazy initialization to prevent UI blocking
 // Pitch shifting libraries removed - focusing on streaming audio only
 
-import { ClickTrackGenerator, ClickTrackConfig } from './click-track-generator';
-
 export interface StreamingTrack {
   id: string;
   name: string;
@@ -27,7 +25,6 @@ export interface StreamingAudioEngineState {
   masterVolume: number;
   masterGainNode: GainNode | null;
   masterOutputNode: GainNode | null;
-  clickTrackConfig: ClickTrackConfig;
 }
 
 export class StreamingAudioEngine {
@@ -38,7 +35,6 @@ export class StreamingAudioEngine {
   private syncTimeouts: number[] = [];
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
-  private clickTrackGenerator: ClickTrackGenerator | null = null;
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -50,13 +46,6 @@ export class StreamingAudioEngine {
       masterVolume: 0.8,
       masterGainNode: null,
       masterOutputNode: null,
-      clickTrackConfig: {
-        bpm: 120,
-        countInMeasures: 1,
-        volume: 0.5,
-        enabled: false,
-        accentDownbeat: true,
-      },
     };
     this.setupMasterOutput();
   }
@@ -75,15 +64,7 @@ export class StreamingAudioEngine {
     this.state.masterGainNode.connect(this.state.masterOutputNode);
     this.state.masterOutputNode.connect(this.audioContext.destination);
     
-    // Initialize click track generator and connect to master output
-    this.clickTrackGenerator = new ClickTrackGenerator(this.audioContext);
-    // Connect click track to master output instead of directly to destination
-    if (this.state.masterOutputNode) {
-      this.clickTrackGenerator.connectToOutput(this.state.masterOutputNode);
-    }
-    
     console.log('🎵 Master output initialized');
-    console.log('🎯 Click track generator initialized and connected');
   }
 
   // Simplified track loading - no pitch processing
@@ -353,11 +334,6 @@ export class StreamingAudioEngine {
       }
     });
     
-    // Stop click track during pause
-    if (this.clickTrackGenerator) {
-      this.clickTrackGenerator.stop();
-    }
-    
     this.state.isPlaying = false;
     this.stopTimeTracking();
     this.notifyListeners();
@@ -372,11 +348,6 @@ export class StreamingAudioEngine {
         track.audioElement.currentTime = 0;
       }
     });
-    
-    // Stop click track
-    if (this.clickTrackGenerator) {
-      this.clickTrackGenerator.stop();
-    }
     
     this.state.isPlaying = false;
     this.state.currentTime = 0;
@@ -650,121 +621,10 @@ export class StreamingAudioEngine {
     this.listeners.forEach(listener => listener());
   }
 
-  // Click track control methods
-  setClickTrackBpm(bpm: number) {
-    this.state.clickTrackConfig.bpm = bpm;
-    this.notifyListeners();
-    console.log(`🎯 Click track BPM set to: ${bpm}`);
-  }
-
-  setClickTrackEnabled(enabled: boolean) {
-    this.state.clickTrackConfig.enabled = enabled;
-    this.notifyListeners();
-    console.log(`🎯 Click track ${enabled ? 'enabled' : 'disabled'}`);
-  }
-
-  setClickTrackVolume(volume: number) {
-    this.state.clickTrackConfig.volume = Math.max(0, Math.min(1, volume));
-    if (this.clickTrackGenerator) {
-      this.clickTrackGenerator.setVolume(this.state.clickTrackConfig.volume);
-    }
-    this.notifyListeners();
-    console.log(`🎯 Click track volume set to: ${Math.round(this.state.clickTrackConfig.volume * 100)}%`);
-  }
-
-  setClickTrackCountIn(measures: 1 | 2 | 3 | 4) {
-    this.state.clickTrackConfig.countInMeasures = measures;
-    this.notifyListeners();
-    console.log(`🎯 Click track count-in set to: ${measures} measures`);
-  }
-
-  setClickTrackAccent(accent: boolean) {
-    this.state.clickTrackConfig.accentDownbeat = accent;
-    this.notifyListeners();
-    console.log(`🎯 Click track accent ${accent ? 'enabled' : 'disabled'}`);
-  }
-
-  setClickTrackBalance(balance: number) {
-    // Store balance in click track config (add to interface if needed)
-    (this.state.clickTrackConfig as any).balance = Math.max(-1, Math.min(1, balance));
-    if (this.clickTrackGenerator) {
-      this.clickTrackGenerator.setBalance(balance);
-    }
-    this.notifyListeners();
-    console.log(`🎯 Click track balance set to: ${balance === 0 ? 'Center' : balance < 0 ? `${Math.abs(balance * 100).toFixed(0)}% Left` : `${(balance * 100).toFixed(0)}% Right`}`);
-  }
-
-  getClickTrackConfig(): ClickTrackConfig {
-    return { ...this.state.clickTrackConfig };
-  }
-
-  // Start playback with count-in support
-  async playWithCountIn() {
-    if (this.state.tracks.length === 0) return;
-    
-    // Resume audio context if suspended
-    if (this.audioContext.state === 'suspended') {
-      await this.audioContext.resume();
-    }
-
-    // Start click track if enabled
-    if (this.clickTrackGenerator && this.state.clickTrackConfig.enabled) {
-      if (this.state.currentTime === 0) {
-        console.log(`🎯 Starting count-in: ${this.state.clickTrackConfig.countInMeasures} measures at ${this.state.clickTrackConfig.bpm} BPM`);
-        this.clickTrackGenerator.startCountIn(this.state.clickTrackConfig, () => {
-          this.startTracksPlayback();
-        });
-        return; // Count-in will handle starting the tracks
-      } else {
-        // Resume with continuous click
-        this.clickTrackGenerator.startContinuous(this.state.clickTrackConfig);
-      }
-    }
-    
-    this.startTracksPlayback();
-  }
-
-  private async startTracksPlayback() {
-    // Ensure all tracks have audio nodes
-    this.state.tracks.forEach(track => this.ensureTrackAudioNodes(track));
-    
-    console.log(`▶️ Starting streaming playback: ${this.state.tracks.length} tracks`);
-    
-    // Start all tracks simultaneously
-    const playPromises = this.state.tracks.map(track => {
-      if (track.audioElement) {
-        try {
-          track.audioElement.currentTime = this.state.currentTime;
-          return track.audioElement.play().catch(err => {
-            console.warn(`⚠️ Failed to start streaming track ${track.name}:`, err);
-            return Promise.resolve();
-          });
-        } catch (error) {
-          console.warn(`⚠️ Error setting currentTime for ${track.name}:`, error);
-          return Promise.resolve();
-        }
-      }
-      return Promise.resolve();
-    });
-    
-    await Promise.all(playPromises);
-    
-    this.state.isPlaying = true;
-    this.startTimeTracking();
-    this.notifyListeners();
-    
-    console.log(`✅ Streaming playback started instantly`);
-  }
-
   dispose() {
     this.stopTimeTracking();
     this.clearTracks();
     this.clearAllTimeouts();
-    
-    // Clean up click track
-    if (this.clickTrackGenerator) {
-      this.clickTrackGenerator.destroy();
-    }
     
     if (this.state.masterGainNode) {
       try {

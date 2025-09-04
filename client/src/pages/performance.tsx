@@ -65,7 +65,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
-  
 
 
   const { toast } = useToast();
@@ -229,16 +228,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     // Pitch and speed control removed
     isAudioEngineOnline,
     masterStereoLevels,
-    audioLevels,
-    // Click track controls
-    setClickTrackBpm,
-    setClickTrackEnabled,
-    setClickTrackVolume,
-    setClickTrackBalance,
-    setClickTrackCountIn,
-    setClickTrackAccent,
-    getClickTrackConfig,
-    playWithCountIn
+    audioLevels
   } = audioEngine;
 
   // Create toggle functions for track manager compatibility
@@ -326,7 +316,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       });
     }
   }, [selectedSong, play, toast]);
-
 
   const handlePause = useCallback(() => {
     pause();
@@ -1144,11 +1133,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               currentTime={currentTime}
               duration={duration}
               isMidiConnected={isMidiConnected}
-              onPlay={handlePlay}
+              onPlay={play}
               onPause={pause}
               onStop={stop}
             />
-            
           </div>
         </div>
 
@@ -1204,7 +1192,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   onPause={handlePause}
                   onStop={handleStop}
                 />
-                
                 
                 {/* Mobile Manual MIDI Send */}
                 <div className="flex items-center gap-2 pt-2 border-t border-gray-700">
@@ -1375,11 +1362,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               // Pitch and speed control removed
               onPlay={play}
               onPause={pause}
-              // Click track controls
-              setClickTrackBpm={setClickTrackBpm}
-              setClickTrackEnabled={setClickTrackEnabled}
-              setClickTrackVolume={setClickTrackVolume}
-              setClickTrackBalance={setClickTrackBalance}
               isPlaying={isPlaying}
               isLoadingTracks={isLoadingTracks}
               audioLevels={audioLevels}

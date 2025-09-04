@@ -191,7 +191,7 @@ export default function TrackManager({
         );
       }
     }
-  }, [song?.id, user?.email, tracks, onTrackMuteToggle]);
+  }, [song?.id, user?.email, onTrackMuteToggle]);
 
   // Handle solo toggle with local storage (no refetch needed - causes loading dialog)
   const handleSoloToggle = useCallback((trackId: string) => {
@@ -207,7 +207,7 @@ export default function TrackManager({
         );
       }
     }
-  }, [song?.id, user?.email, tracks, onTrackSoloToggle]);
+  }, [song?.id, user?.email, onTrackSoloToggle]);
 
   const addTrack = async (audioFileName: string, trackName: string, file: File) => {
     if (!song?.id || !user?.email) throw new Error('No song selected or user not authenticated');

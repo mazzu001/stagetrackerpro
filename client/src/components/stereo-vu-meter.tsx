@@ -31,12 +31,12 @@ export default function StereoVUMeter({
     const animate = () => {
       setAnimatedLeftLevel(prev => {
         const diff = targetLevel - prev;
-        const step = diff * 0.9; // Faster response for more reactive meters
+        const step = diff * 0.5; // Optimized response rate
         return Math.abs(step) < 0.1 ? targetLevel : prev + step;
       });
     };
 
-    const interval = setInterval(animate, 6); // Faster update rate
+    const interval = setInterval(animate, 50); // Optimized update rate
     return () => clearInterval(interval);
   }, [leftLevel, isPlaying]);
 
@@ -53,12 +53,12 @@ export default function StereoVUMeter({
     const animate = () => {
       setAnimatedRightLevel(prev => {
         const diff = targetLevel - prev;
-        const step = diff * 0.9; // Faster response for more reactive meters
+        const step = diff * 0.5; // Optimized response rate
         return Math.abs(step) < 0.1 ? targetLevel : prev + step;
       });
     };
 
-    const interval = setInterval(animate, 6); // Faster update rate
+    const interval = setInterval(animate, 50); // Optimized update rate
     return () => clearInterval(interval);
   }, [rightLevel, isPlaying]);
 
@@ -68,9 +68,9 @@ export default function StereoVUMeter({
       setLeftPeak(animatedLeftLevel);
     } else {
       const decay = () => {
-        setLeftPeak(prev => Math.max(animatedLeftLevel, prev - 1.5)); // Faster decay for more dynamic peaks
+        setLeftPeak(prev => Math.max(animatedLeftLevel, prev - 0.8)); // Optimized decay rate
       };
-      const interval = setInterval(decay, 15); // More frequent updates
+      const interval = setInterval(decay, 100); // Optimized update rate
       return () => clearInterval(interval);
     }
   }, [animatedLeftLevel, leftPeak]);
@@ -81,9 +81,9 @@ export default function StereoVUMeter({
       setRightPeak(animatedRightLevel);
     } else {
       const decay = () => {
-        setRightPeak(prev => Math.max(animatedRightLevel, prev - 1.5)); // Faster decay for more dynamic peaks
+        setRightPeak(prev => Math.max(animatedRightLevel, prev - 0.8)); // Optimized decay rate
       };
-      const interval = setInterval(decay, 15); // More frequent updates
+      const interval = setInterval(decay, 100); // Optimized update rate
       return () => clearInterval(interval);
     }
   }, [animatedRightLevel, rightPeak]);

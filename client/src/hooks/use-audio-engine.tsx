@@ -184,8 +184,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
           // Simulate CPU usage fluctuation
           setCpuUsage(20 + Math.random() * 10);
           
-          // Auto-stop at end - add debug logging
-          if (time >= duration) {
+          // Auto-stop at end - only if duration is properly detected
+          if (duration > 0 && time >= duration) {
             console.log(`Auto-stopping playback - time: ${time.toFixed(2)}s, duration: ${duration}s`);
             setIsPlaying(false);
             setCurrentTime(duration);

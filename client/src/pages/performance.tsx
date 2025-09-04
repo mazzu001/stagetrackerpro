@@ -234,6 +234,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     setClickTrackBpm,
     setClickTrackEnabled,
     setClickTrackVolume,
+    setClickTrackBalance,
     setClickTrackCountIn,
     setClickTrackAccent,
     getClickTrackConfig,

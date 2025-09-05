@@ -299,8 +299,8 @@ export default function Dashboard() {
         {/* Main Dashboard Layout */}
         {!isHost && !isViewer && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            {/* Left Side - Broadcast Controls */}
-            <div className="space-y-4">
+            {/* Left Column - Broadcast Controls */}
+            <div className="lg:col-span-1 space-y-4">
               {/* Start Broadcast */}
               <Card>
                 <CardHeader>
@@ -364,27 +364,47 @@ export default function Dashboard() {
               </Card>
             </div>
 
-            {/* Right Side - User Profile */}
+            {/* Right Column - User Card */}
             <div className="lg:col-span-2">
-              <Card>
+              <Card className="h-fit">
                 <CardHeader>
-                  <CardTitle>User Profile</CardTitle>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="h-5 w-5" />
+                    User Profile
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Profile Photo Section */}
-                  <div className="flex items-center gap-4">
+                  {/* Profile Photo & Basic Info */}
+                  <div className="flex items-start gap-4">
                     <Avatar className="h-20 w-20">
                       <AvatarImage src={profilePhoto || undefined} />
                       <AvatarFallback>
                         <User className="h-8 w-8" />
                       </AvatarFallback>
                     </Avatar>
-                    <div className="space-y-2">
+                    <div className="flex-1 space-y-2">
+                      <div>
+                        <h3 className="text-lg font-semibold">{user.email}</h3>
+                        <div className="flex items-center gap-2 mt-1">
+                          {user.userType === 'professional' ? (
+                            <>
+                              <Crown className="h-4 w-4 text-yellow-500" />
+                              <Badge variant="secondary">Professional</Badge>
+                            </>
+                          ) : (
+                            <>
+                              <User className="h-4 w-4" />
+                              <Badge variant="secondary">{user.userType || 'Free'}</Badge>
+                            </>
+                          )}
+                        </div>
+                      </div>
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={isUploadingPhoto}
+                        className="w-fit"
                       >
                         {isUploadingPhoto ? (
                           <>
@@ -394,7 +414,7 @@ export default function Dashboard() {
                         ) : (
                           <>
                             <Upload className="h-4 w-4 mr-2" />
-                            Upload Photo
+                            Change Photo
                           </>
                         )}
                       </Button>
@@ -405,46 +425,15 @@ export default function Dashboard() {
                         accept="image/*"
                         className="hidden"
                       />
-                      <p className="text-xs text-gray-500">
-                        Upload a photo to personalize your experience
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* User Details */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label>Email</Label>
-                      <p className="text-lg">{user.email}</p>
-                    </div>
-                    <div>
-                      <Label>Account Type</Label>
-                      <div className="flex items-center gap-2">
-                        {user.userType === 'professional' ? (
-                          <>
-                            <Crown className="h-4 w-4 text-yellow-500" />
-                            <Badge variant="secondary" className="text-lg">
-                              Professional
-                            </Badge>
-                          </>
-                        ) : (
-                          <>
-                            <User className="h-4 w-4" />
-                            <Badge variant="secondary" className="text-lg">
-                              {user.userType || 'Free'}
-                            </Badge>
-                          </>
-                        )}
-                      </div>
                     </div>
                   </div>
 
                   {/* Permanent Broadcast ID - Professional Users Only */}
                   {permanentBroadcastId && (
-                    <div>
-                      <Label>Permanent Broadcast ID</Label>
-                      <div className="flex items-center gap-2 mt-1">
-                        <code className="bg-muted px-2 py-1 rounded text-sm flex-1">
+                    <div className="bg-muted/30 p-4 rounded-lg">
+                      <Label className="text-sm font-medium">Permanent Broadcast ID</Label>
+                      <div className="flex items-center gap-2 mt-2">
+                        <code className="bg-background px-3 py-1 rounded text-sm flex-1 font-mono">
                           {permanentBroadcastId}
                         </code>
                         <Button
@@ -455,39 +444,42 @@ export default function Dashboard() {
                           <Copy className="h-3 w-3" />
                         </Button>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
+                      <p className="text-xs text-muted-foreground mt-2">
                         Professional users get a permanent broadcast ID for consistent team access
                       </p>
                     </div>
                   )}
 
-                  {/* Subscription Actions */}
-                  <div className="flex items-center gap-4 pt-4 border-t">
-                    {user.userType !== 'professional' && (
-                      <Button
-                        variant="default"
-                        onClick={() => window.location.href = '/subscribe'}
-                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
-                      >
-                        <Crown className="h-4 w-4 mr-2" />
-                        {user.userType === 'free' ? 'Upgrade to Pro' : 'Upgrade to Professional'}
+                  {/* Account Actions */}
+                  <div className="space-y-3 pt-4 border-t">
+                    <h4 className="text-sm font-medium text-muted-foreground">Account Management</h4>
+                    <div className="flex flex-col sm:flex-row gap-2">
+                      {user.userType !== 'professional' && (
+                        <Button
+                          variant="default"
+                          onClick={() => window.location.href = '/subscribe'}
+                          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                        >
+                          <Crown className="h-4 w-4 mr-2" />
+                          {user.userType === 'free' ? 'Upgrade to Pro' : 'Upgrade to Professional'}
+                        </Button>
+                      )}
+                      
+                      {user.userType !== 'free' && (
+                        <Button
+                          variant="outline"
+                          onClick={() => window.location.href = '/unsubscribe'}
+                        >
+                          <X className="h-4 w-4 mr-2" />
+                          Manage Subscription
+                        </Button>
+                      )}
+                      
+                      <Button variant="outline" onClick={logout}>
+                        <LogOut className="h-4 w-4 mr-2" />
+                        Logout
                       </Button>
-                    )}
-                    
-                    {user.userType !== 'free' && (
-                      <Button
-                        variant="outline"
-                        onClick={() => window.location.href = '/unsubscribe'}
-                      >
-                        <X className="h-4 w-4 mr-2" />
-                        Manage Subscription
-                      </Button>
-                    )}
-                    
-                    <Button variant="outline" onClick={logout}>
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Logout
-                    </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

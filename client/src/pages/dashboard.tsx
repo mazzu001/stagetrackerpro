@@ -210,9 +210,9 @@ export default function Dashboard() {
         });
         setRoomIdToJoin('');
         
-        // Redirect to performance page after successful join
+        // Redirect to dedicated broadcast viewer page after successful join
         setTimeout(() => {
-          setLocation('/');
+          setLocation('/broadcast-viewer');
         }, 1000); // Small delay to let user see the success message
         
       } else {

@@ -1431,7 +1431,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             midiCommandSent={midiCommandSent}
             isHost={isHost}
             isViewer={isViewer}
-            currentRoom={currentRoom}
+            currentRoom={currentRoom?.name || null}
           />
           
           

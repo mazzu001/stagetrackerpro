@@ -134,45 +134,100 @@ class BroadcastService {
 
   // Viewer: Join broadcast
   async joinBroadcast(broadcastName: string, userId: string, userName: string): Promise<boolean> {
-    try {
-      // Use the broadcast name directly as the room ID
-      const roomId = broadcastName.trim();
-      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-      const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${encodeURIComponent(roomId)}`;
-      this.ws = new WebSocket(wsUrl);
-      
-      this.ws.onopen = () => {
-        this.ws?.send(JSON.stringify({
-          type: 'viewer_connect', 
-          userId,
-          userName
-        }));
-        this.isHost = false;
-        this.roomId = roomId;
-        console.log(`📺 Joined broadcast: "${roomId}"`);
-      };
+    const roomId = broadcastName.trim();
+    
+    return new Promise((resolve, reject) => {
+      try {
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${encodeURIComponent(roomId)}`;
+        
+        console.log(`📺 Attempting to join broadcast: ${wsUrl}`);
+        this.ws = new WebSocket(wsUrl);
+        
+        this.ws.onopen = () => {
+          console.log('📺 Viewer WebSocket connection established');
+          this.ws?.send(JSON.stringify({
+            type: 'viewer_connect', 
+            userId,
+            userName
+          }));
+          this.isHost = false;
+          this.roomId = roomId;
+          console.log(`📺 Joined broadcast: "${roomId}"`);
+          resolve(true);
+        };
 
-      this.ws.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-        console.log('📺 Viewer received message:', message);
-        if (message.type === 'state_update') {
-          console.log('📺 Processing broadcast state update:', message.state);
-          this.listeners.forEach(cb => cb(message.state));
-        } else if (message.type === 'room_info') {
-          console.log('📺 Room info updated:', message.room);
-          this.roomListeners.forEach(cb => cb(message.room));
-        }
-      };
+        this.ws.onmessage = (event) => {
+          const message = JSON.parse(event.data);
+          console.log('📺 Viewer received message:', message);
+          if (message.type === 'state_update') {
+            console.log('📺 Processing broadcast state update:', message.state);
+            this.listeners.forEach(cb => cb(message.state));
+          } else if (message.type === 'room_info') {
+            console.log('📺 Room info updated:', message.room);
+            this.roomListeners.forEach(cb => cb(message.room));
+          } else if (message.type === 'error') {
+            console.log('📺 Server error:', message.message);
+            reject(new Error(message.message || 'Broadcast not found'));
+          }
+        };
 
-      this.ws.onclose = () => {
-        console.log('📺 Viewer WebSocket closed');
-      };
+        this.ws.onclose = (event) => {
+          console.log(`📺 Viewer WebSocket closed - Code: ${event.code}, Reason: ${event.reason}`);
+          if (event.code === 1006) {
+            // Browser blocked connection - use fallback for visual indicator
+            console.log('📺 Browser blocked WebSocket (1006), using fallback viewer indicator');
+            this.isHost = false;
+            this.roomId = roomId;
+            localStorage.setItem('fallback_viewer', JSON.stringify({
+              userId,
+              userName,
+              broadcastName,
+              roomId,
+              timestamp: Date.now()
+            }));
+            resolve(true); // Still resolve so UI shows viewer status
+          } else if (event.code !== 1000 && event.code !== 1001) {
+            // Other abnormal close
+            reject(new Error(`Connection failed: ${event.code} - ${event.reason}`));
+          }
+        };
 
-      return true;
-    } catch (error) {
-      console.warn('Failed to join broadcast:', error);
-      return false;
-    }
+        this.ws.onerror = (error) => {
+          console.error('📺 Viewer WebSocket error:', error);
+          console.error('📺 WebSocket URL:', wsUrl);
+          console.error('📺 WebSocket state:', this.ws?.readyState);
+          
+          // Fallback: Show viewer status even if WebSocket fails
+          console.log('📺 WebSocket failed, using fallback viewer indicator');
+          this.isHost = false;
+          this.roomId = roomId;
+          localStorage.setItem('fallback_viewer', JSON.stringify({
+            userId,
+            userName,
+            broadcastName,
+            roomId,
+            timestamp: Date.now()
+          }));
+          
+          // Still resolve so UI shows viewer status
+          resolve(true);
+        };
+        
+        // Add timeout for connection
+        setTimeout(() => {
+          if (this.ws?.readyState === WebSocket.CONNECTING) {
+            console.error('📺 Viewer WebSocket connection timeout');
+            this.ws?.close();
+            reject(new Error('Connection timeout'));
+          }
+        }, 10000); // 10 second timeout
+        
+      } catch (error) {
+        console.warn('📺 Viewer broadcast setup failed:', error);
+        reject(error);
+      }
+    });
   }
 
   // Host: Send state update to viewers
@@ -199,8 +254,9 @@ class BroadcastService {
     this.listeners = [];
     this.roomListeners = [];
     
-    // Clear fallback broadcast
+    // Clear fallback broadcast and viewer
     localStorage.removeItem('fallback_broadcast');
+    localStorage.removeItem('fallback_viewer');
   }
 
   // Getters

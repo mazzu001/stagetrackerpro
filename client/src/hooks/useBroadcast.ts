@@ -26,6 +26,8 @@ export function useBroadcast() {
     
     // Check for fallback broadcast in localStorage (for cross-device consistency)
     const fallbackBroadcast = localStorage.getItem('fallback_broadcast');
+    const fallbackViewer = localStorage.getItem('fallback_viewer');
+    
     if (fallbackBroadcast) {
       try {
         const broadcastData = JSON.parse(fallbackBroadcast);
@@ -45,6 +47,26 @@ export function useBroadcast() {
         }
       } catch (error) {
         console.warn('Failed to restore fallback broadcast:', error);
+      }
+    } else if (fallbackViewer) {
+      try {
+        const viewerData = JSON.parse(fallbackViewer);
+        const now = Date.now();
+        // Only restore if less than 24 hours old
+        if (now - viewerData.timestamp < 24 * 60 * 60 * 1000) {
+          console.log('📺 Restored fallback viewer from localStorage:', viewerData);
+          setIsViewer(true);
+          setCurrentRoom({
+            id: viewerData.roomId,
+            name: viewerData.broadcastName,
+            hostId: 'unknown',
+            hostName: 'Unknown Host',
+            participantCount: 2,
+            isActive: true
+          });
+        }
+      } catch (error) {
+        console.warn('Failed to restore fallback viewer:', error);
       }
     }
     

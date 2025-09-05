@@ -97,6 +97,15 @@ export function useBroadcast() {
       setIsViewer(true);
       setIsHost(false);
       console.log('🎵 Set as viewer, isViewer:', true);
+      
+      // Persist viewer state in localStorage as backup
+      localStorage.setItem('broadcast_viewer_state', JSON.stringify({
+        isViewer: true,
+        broadcastName: roomId,
+        userId,
+        userName,
+        timestamp: Date.now()
+      }));
     }
     return success;
   }, []);
@@ -118,10 +127,11 @@ export function useBroadcast() {
     }
   }, [isHost]);
 
-  // Leave broadcast (host or viewer)
+  // Leave broadcast (host or viewer)  
   const leaveBroadcast = useCallback(() => {
     broadcastService.disconnect();
     setBroadcastState(null);
+    localStorage.removeItem('broadcast_viewer_state');
     setCurrentRoom(null);
     setIsHost(false);
     setIsViewer(false);

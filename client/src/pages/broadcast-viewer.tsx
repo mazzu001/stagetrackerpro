@@ -8,12 +8,16 @@ export default function BroadcastViewer() {
   const [, setLocation] = useLocation();
   const { isViewer, broadcastState, currentRoom, leaveBroadcast } = useBroadcast();
 
-  // Redirect if not viewing a broadcast
+  // Redirect if not viewing a broadcast - give time for connection to establish
   useEffect(() => {
-    if (!isViewer || !broadcastState) {
-      setLocation('/dashboard');
-    }
-  }, [isViewer, broadcastState, setLocation]);
+    const redirectTimer = setTimeout(() => {
+      if (!isViewer && !currentRoom) {
+        setLocation('/dashboard');
+      }
+    }, 2000); // Wait 2 seconds before redirecting
+
+    return () => clearTimeout(redirectTimer);
+  }, [isViewer, currentRoom, setLocation]);
 
   // Debug what we're receiving
   useEffect(() => {

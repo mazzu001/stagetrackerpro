@@ -1155,6 +1155,37 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </div>
       </div>
+      
+      {/* Broadcast Viewer Mode - Show lyrics from broadcast data */}
+      {showBroadcastViewerMode && (
+        <div className="bg-blue-50 dark:bg-blue-950 border-b border-blue-200 dark:border-blue-800 p-4 flex-shrink-0">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-lg font-bold text-blue-900 dark:text-blue-100 mb-2">
+              📺 Viewing Live Performance
+            </h2>
+            <h3 className="text-xl text-blue-800 dark:text-blue-200 mb-1">
+              {broadcastState?.songTitle}
+            </h3>
+            {broadcastState?.artist && (
+              <p className="text-blue-700 dark:text-blue-300 mb-2">
+                by {broadcastState.artist}
+              </p>
+            )}
+            <div className="text-sm text-blue-600 dark:text-blue-400 mb-4">
+              Position: {Math.floor(broadcastState?.position || 0)}s
+              {broadcastState?.duration && ` / ${Math.floor(broadcastState.duration)}s`}
+              {' • '}
+              Status: {broadcastState?.isPlaying ? '▶️ Playing' : '⏸️ Paused'}
+            </div>
+            <div className="bg-white dark:bg-slate-800 p-4 rounded-lg text-left max-h-96 overflow-y-auto">
+              <pre className="whitespace-pre-wrap text-sm font-mono">
+                {broadcastState?.lyrics}
+              </pre>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Main Content */}
       <div className="flex-1 flex min-h-0">
         {/* Left Sidebar - Song Selection */}

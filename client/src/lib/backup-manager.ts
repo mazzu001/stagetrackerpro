@@ -206,6 +206,9 @@ export class BackupManager {
     const existingSongs = LocalSongStorage.getAllSongs(userEmail);
     const existingTitles = new Set(existingSongs.map(s => s.title.toLowerCase()));
     
+    console.log(`🔍 Existing songs check: Found ${existingSongs.length} songs for user: ${userEmail}`);
+    console.log(`🔍 Existing titles:`, Array.from(existingTitles));
+    
     let importedSongs = 0;
     let importedTracks = 0;
     let skippedSongs = 0;
@@ -213,16 +216,25 @@ export class BackupManager {
     // Process each song from manifest
     for (const manifestSong of manifest.songs) {
       try {
+        console.log(`🎵 Processing manifest song: "${manifestSong.title}"`);
+        
         // Check for title conflicts and resolve with suffix
         let finalTitle = manifestSong.title;
         let counter = 1;
+        const originalTitle = manifestSong.title;
+        
+        console.log(`🔍 Checking if "${finalTitle.toLowerCase()}" exists in:`, Array.from(existingTitles));
+        
         while (existingTitles.has(finalTitle.toLowerCase())) {
           finalTitle = `${manifestSong.title} (Import ${counter})`;
           counter++;
+          console.log(`🔄 Title conflict, trying: "${finalTitle}"`);
         }
         
-        if (finalTitle !== manifestSong.title) {
-          console.log(`📝 Renamed "${manifestSong.title}" to "${finalTitle}" to avoid duplicate`);
+        if (finalTitle !== originalTitle) {
+          console.log(`📝 Renamed "${originalTitle}" to "${finalTitle}" to avoid duplicate`);
+        } else {
+          console.log(`✅ No conflict, using original title: "${finalTitle}"`);
         }
 
         // Read song data

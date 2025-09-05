@@ -138,8 +138,11 @@ export class BackupManager {
 
     console.log(`✅ Backup complete: ${songs.length} songs, ${totalTracks} tracks`);
     
-    // Generate zip file
-    return await zip.generateAsync({ type: 'blob' });
+    // Generate zip file with explicit MIME type for Android compatibility
+    return await zip.generateAsync({ 
+      type: 'blob',
+      mimeType: 'application/zip'
+    });
   }
 
   /**

@@ -191,15 +191,31 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       const backupManager = BackupManager.getInstance();
       const zipBlob = await backupManager.exportAllData(user.email);
       
-      // Create download link
-      const url = URL.createObjectURL(zipBlob);
+      // Create download with explicit MIME type for Android compatibility
+      const zipBlobWithMime = new Blob([zipBlob], { type: 'application/zip' });
+      const url = URL.createObjectURL(zipBlobWithMime);
       const link = document.createElement('a');
       link.href = url;
-      link.download = BackupManager.generateBackupFilename(user.email);
+      
+      // Generate Android-friendly filename
+      const filename = BackupManager.generateBackupFilename(user.email);
+      link.download = filename;
+      
+      // Better mobile download handling
+      link.style.display = 'none';
+      link.setAttribute('rel', 'noopener');
+      link.setAttribute('target', '_blank');
+      
       document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      
+      // Use setTimeout for better mobile compatibility
+      setTimeout(() => {
+        link.click();
+        setTimeout(() => {
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        }, 100);
+      }, 10);
       
       toast({
         title: "Export Complete",

@@ -32,18 +32,24 @@ export function useBroadcast() {
 
   // Host: Start broadcasting current performance state
   const startBroadcast = useCallback(async (userId: string, userName: string, broadcastName: string) => {
+    console.log('🎭 Starting broadcast:', { userId, userName, broadcastName });
     const roomId = await broadcastService.startBroadcast(userId, userName, broadcastName);
+    console.log('🎭 Broadcast started, roomId:', roomId);
     setIsHost(true);
     setIsViewer(false);
+    console.log('🎭 Set as host, isHost:', true);
     return roomId;
   }, []);
 
   // Viewer: Join someone's broadcast
   const joinBroadcast = useCallback(async (roomId: string, userId: string, userName: string) => {
+    console.log('🎵 Joining broadcast:', { roomId, userId, userName });
     const success = await broadcastService.joinBroadcast(roomId, userId, userName);
+    console.log('🎵 Join result:', success);
     if (success) {
       setIsViewer(true);
       setIsHost(false);
+      console.log('🎵 Set as viewer, isViewer:', true);
     }
     return success;
   }, []);
@@ -57,8 +63,11 @@ export function useBroadcast() {
     currentLyricLine?: string;
     waveformProgress: number;
   }) => {
+    console.log('🎭 sendPerformanceState called:', { isHost, currentState });
     if (isHost) {
       broadcastService.sendState(currentState);
+    } else {
+      console.log('🎭 Not sending - not host:', { isHost });
     }
   }, [isHost]);
 

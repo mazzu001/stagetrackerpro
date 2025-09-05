@@ -482,7 +482,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Broadcast host mode: Send performance state to viewers
   useEffect(() => {
-    if (!isHost || !selectedSong) return;
+    console.log('🎭 Broadcast host effect:', { isHost, selectedSong: !!selectedSong, selectedSongId });
+    
+    if (!isHost || !selectedSong) {
+      console.log('🎭 Not broadcasting - isHost:', isHost, 'selectedSong:', !!selectedSong);
+      return;
+    }
     
     // Send current performance state to all viewers
     const performanceState = {
@@ -494,6 +499,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       waveformProgress: duration > 0 ? currentTime / duration : 0
     };
     
+    console.log('🎭 Broadcasting performance state:', performanceState);
     sendPerformanceState(performanceState);
   }, [isHost, selectedSong, selectedSongId, currentTime, isPlaying, duration, sendPerformanceState]);
 

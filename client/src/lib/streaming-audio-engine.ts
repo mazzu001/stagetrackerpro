@@ -442,7 +442,7 @@ export class StreamingAudioEngine {
 
     this.ensureTrackAudioNodes(track);
     
-    if (!track.analyzerNode) {
+    if (!track.analyzerNode || !this.state.isPlaying) {
       return { left: 0, right: 0 };
     }
 
@@ -471,14 +471,27 @@ export class StreamingAudioEngine {
     
     const rawAverage = sum / weightedCount / 255; // Normalize to 0-1
     
-    // Increased amplification so peaks can reach yellow zone
-    const average = rawAverage * 1.3; // Increased from 0.85 to allow peaks into yellow range
+    // Much higher amplification for visible VU meter activity - scale to 0-100 range
+    const average = rawAverage * 150; // Increased amplification for VU meters
     
-    // Return simulated stereo levels (would need separate analyzers for true stereo)
-    return { left: average, right: average };
+    // Create slight stereo variation
+    const variation = Math.sin(Date.now() * 0.001 + trackId.charCodeAt(0)) * 2;
+    const leftLevel = Math.max(0, Math.min(100, average + variation));
+    const rightLevel = Math.max(0, Math.min(100, average - variation));
+    
+    // Debug logging occasionally
+    if (Math.random() < 0.001) { // Very occasional logging
+      console.log(`🎛️ Track ${track.id.slice(0,8)} levels: L=${leftLevel.toFixed(1)}, R=${rightLevel.toFixed(1)}, raw=${rawAverage.toFixed(3)}`);
+    }
+    
+    return { left: leftLevel, right: rightLevel };
   }
 
   getMasterLevels(): { left: number; right: number } {
+    if (!this.state.isPlaying) {
+      return { left: 0, right: 0 };
+    }
+    
     // Calculate combined levels from all tracks
     const combinedLevels = this.state.tracks.reduce((total, tr) => {
       const trackLevels = this.getTrackLevels(tr.id);
@@ -487,6 +500,11 @@ export class StreamingAudioEngine {
         right: Math.max(total.right, trackLevels.right)
       };
     }, { left: 0, right: 0 });
+
+    // Debug logging occasionally
+    if (Math.random() < 0.001) { // Very occasional logging
+      console.log(`🎛️ Master levels: L=${combinedLevels.left.toFixed(1)}, R=${combinedLevels.right.toFixed(1)}`);
+    }
     
     return combinedLevels;
   }

@@ -159,18 +159,21 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         const levels: Record<string, number> = {};
         song.tracks.forEach(track => {
           const trackLevels = audioEngineRef.current!.getTrackLevels(track.id);
-          // Convert stereo levels to single level with reduced sensitivity
-          levels[track.id] = Math.max(trackLevels.left, trackLevels.right) * 30; // Reduced from 100 to 30 for better range
+          // VU meters expect 0-100 range, streaming engine now provides this directly
+          levels[track.id] = Math.max(trackLevels.left, trackLevels.right);
         });
         setAudioLevels(levels);
         
         const masterLevels = audioEngineRef.current.getMasterLevels();
-        // Scale master levels for song list stereo VU meters
-        const scaledLevels = {
-          left: masterLevels.left * 100, // Increased to 100x for optimal visibility
-          right: masterLevels.right * 100
-        };
-        setMasterStereoLevels(scaledLevels);
+        // Master levels now come in 0-100 range directly from streaming engine
+        setMasterStereoLevels(masterLevels);
+        
+        // Debug logging occasionally to verify VU meter data flow
+        if (Math.random() < 0.01 && isPlaying) { // Log when playing
+          const trackCount = Object.keys(levels).length;
+          const nonZeroTracks = Object.values(levels).filter(l => l > 0).length;
+          console.log(`🎛️ VU Data: ${nonZeroTracks}/${trackCount} tracks active, master: L=${masterLevels.left.toFixed(1)}, R=${masterLevels.right.toFixed(1)}`);
+        }
         
         
         // Streaming is always ready - no loading state needed

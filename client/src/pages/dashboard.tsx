@@ -39,6 +39,14 @@ export default function Dashboard() {
   });
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   
+  // Inline editing states
+  const [editingField, setEditingField] = useState<string | null>(null);
+  const [editValues, setEditValues] = useState({
+    firstName: '',
+    lastName: '',
+    phone: ''
+  });
+  
   // Generate permanent broadcast ID for professional users
   const permanentBroadcastId = user?.userType === 'professional' 
     ? `PRO-${user.email.split('@')[0].toUpperCase().substring(0, 6)}-${user.email.length}${Date.now().toString().slice(-3)}`
@@ -61,39 +69,59 @@ export default function Dashboard() {
         });
         
         if (userResponse.ok) {
-          const userData = await userResponse.json();
-          // Set profile data from database
-          setProfileData({
-            firstName: userData.firstName || '',
-            lastName: userData.lastName || '',
-            phone: userData.phone || ''
-          });
-          
-          // Set profile photo
-          setProfilePhoto(userData.profilePhoto);
-          console.log('✅ User profile data loaded successfully');
-        } else {
-          // Fallback to loading photo separately if profile endpoint doesn't exist
-          const photoResponse = await fetch(`/api/profile-photo?email=${encodeURIComponent(user.email)}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-          });
-          
-          if (photoResponse.ok) {
-            const contentType = photoResponse.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-              const data = await photoResponse.json();
-              setProfilePhoto(data.profilePhoto);
-            }
+          const contentType = userResponse.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            const userData = await userResponse.json();
+            // Set profile data from database
+            const newProfileData = {
+              firstName: userData.firstName || '',
+              lastName: userData.lastName || '',
+              phone: userData.phone || ''
+            };
+            setProfileData(newProfileData);
+            setEditValues(newProfileData);
+            
+            // Set profile photo
+            setProfilePhoto(userData.profilePhoto);
+            console.log('✅ User profile data loaded successfully');
+          } else {
+            console.error('❌ Profile API returned non-JSON response');
+            // Fall back to photo-only loading
+            await loadPhotoOnly();
           }
+        } else {
+          console.error('❌ Profile API request failed:', userResponse.status);
+          // Fall back to photo-only loading
+          await loadPhotoOnly();
         }
       } catch (error) {
         console.error('Error loading user data:', error);
+        // Fall back to photo-only loading
+        await loadPhotoOnly();
       }
+    };
+
+    const loadPhotoOnly = async () => {
+      if (!user?.email) return;
+      
+      try {
+        // Load photo separately as fallback
+        const photoResponse = await fetch(`/api/profile-photo?email=${encodeURIComponent(user.email)}`, {
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        if (photoResponse.ok) {
+          const contentType = photoResponse.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            const data = await photoResponse.json();
+            setProfilePhoto(data.profilePhoto);
+          }
+        }
     };
 
     loadUserData();
@@ -263,6 +291,67 @@ export default function Dashboard() {
       });
     }
     setIsUpdatingProfile(false);
+  };
+
+  const handleFieldEdit = (field: string) => {
+    setEditingField(field);
+    setEditValues({
+      firstName: profileData.firstName,
+      lastName: profileData.lastName,
+      phone: profileData.phone
+    });
+  };
+
+  const handleFieldSave = async (field: string) => {
+    if (!user?.email) return;
+    
+    setIsUpdatingProfile(true);
+    try {
+      const updateData = { [field]: editValues[field as keyof typeof editValues] };
+      
+      const response = await fetch('/api/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          ...updateData,
+          userEmail: user.email
+        }),
+      });
+
+      if (response.ok) {
+        setProfileData(prev => ({ ...prev, [field]: editValues[field as keyof typeof editValues] }));
+        setEditingField(null);
+        toast({
+          title: `${field === 'firstName' ? 'First name' : field === 'lastName' ? 'Last name' : 'Phone'} updated`,
+          description: "Your profile has been updated successfully."
+        });
+      } else {
+        toast({
+          title: "Update failed",
+          description: "Failed to update profile. Please try again.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Update failed", 
+        description: "Failed to update profile. Please try again.",
+        variant: "destructive"
+      });
+    }
+    setIsUpdatingProfile(false);
+  };
+
+  const handleFieldCancel = () => {
+    setEditingField(null);
+    setEditValues({
+      firstName: profileData.firstName,
+      lastName: profileData.lastName,
+      phone: profileData.phone
+    });
   };
 
   // Load profile photo from user data
@@ -534,48 +623,133 @@ export default function Dashboard() {
                     </div>
                   </div>
 
-                  {/* Profile Form */}
+                  {/* Profile Information - Inline Editing */}
                   <div className="space-y-3">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <Label htmlFor="firstName" className="text-xs">First Name</Label>
-                        <Input
-                          id="firstName"
-                          value={profileData.firstName}
-                          onChange={(e) => setProfileData(prev => ({ ...prev, firstName: e.target.value }))}
-                          placeholder="First name"
-                          className="h-8 text-sm"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="lastName" className="text-xs">Last Name</Label>
-                        <Input
-                          id="lastName"
-                          value={profileData.lastName}
-                          onChange={(e) => setProfileData(prev => ({ ...prev, lastName: e.target.value }))}
-                          placeholder="Last name"
-                          className="h-8 text-sm"
-                        />
-                      </div>
-                    </div>
+                    {/* First Name */}
                     <div>
-                      <Label htmlFor="phone" className="text-xs">Phone</Label>
-                      <Input
-                        id="phone"
-                        value={profileData.phone}
-                        onChange={(e) => setProfileData(prev => ({ ...prev, phone: e.target.value }))}
-                        placeholder="Phone number"
-                        className="h-8 text-sm"
-                      />
+                      <Label className="text-xs text-muted-foreground">First Name</Label>
+                      {editingField === 'firstName' ? (
+                        <div className="flex items-center gap-2 mt-1">
+                          <Input
+                            value={editValues.firstName}
+                            onChange={(e) => setEditValues(prev => ({ ...prev, firstName: e.target.value }))}
+                            className="h-8 text-sm flex-1"
+                            placeholder="Enter first name"
+                            autoFocus
+                          />
+                          <Button 
+                            size="sm" 
+                            onClick={() => handleFieldSave('firstName')}
+                            disabled={isUpdatingProfile}
+                            className="h-8 px-2"
+                          >
+                            ✓
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={handleFieldCancel}
+                            className="h-8 px-2"
+                          >
+                            ✕
+                          </Button>
+                        </div>
+                      ) : (
+                        <div 
+                          onClick={() => handleFieldEdit('firstName')}
+                          className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
+                        >
+                          <span className="text-sm">
+                            {profileData.firstName || 'Click to add first name'}
+                          </span>
+                          {!profileData.firstName && <span className="text-muted-foreground text-sm ml-2">✎</span>}
+                        </div>
+                      )}
                     </div>
-                    <Button
-                      size="sm"
-                      onClick={handleUpdateProfile}
-                      disabled={isUpdatingProfile}
-                      className="h-7 text-xs w-full"
-                    >
-                      {isUpdatingProfile ? 'Saving...' : 'Save Profile'}
-                    </Button>
+
+                    {/* Last Name */}
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Last Name</Label>
+                      {editingField === 'lastName' ? (
+                        <div className="flex items-center gap-2 mt-1">
+                          <Input
+                            value={editValues.lastName}
+                            onChange={(e) => setEditValues(prev => ({ ...prev, lastName: e.target.value }))}
+                            className="h-8 text-sm flex-1"
+                            placeholder="Enter last name"
+                            autoFocus
+                          />
+                          <Button 
+                            size="sm" 
+                            onClick={() => handleFieldSave('lastName')}
+                            disabled={isUpdatingProfile}
+                            className="h-8 px-2"
+                          >
+                            ✓
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={handleFieldCancel}
+                            className="h-8 px-2"
+                          >
+                            ✕
+                          </Button>
+                        </div>
+                      ) : (
+                        <div 
+                          onClick={() => handleFieldEdit('lastName')}
+                          className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
+                        >
+                          <span className="text-sm">
+                            {profileData.lastName || 'Click to add last name'}
+                          </span>
+                          {!profileData.lastName && <span className="text-muted-foreground text-sm ml-2">✎</span>}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Phone */}
+                    <div>
+                      <Label className="text-xs text-muted-foreground">Phone</Label>
+                      {editingField === 'phone' ? (
+                        <div className="flex items-center gap-2 mt-1">
+                          <Input
+                            value={editValues.phone}
+                            onChange={(e) => setEditValues(prev => ({ ...prev, phone: e.target.value }))}
+                            className="h-8 text-sm flex-1"
+                            placeholder="Enter phone number"
+                            autoFocus
+                          />
+                          <Button 
+                            size="sm" 
+                            onClick={() => handleFieldSave('phone')}
+                            disabled={isUpdatingProfile}
+                            className="h-8 px-2"
+                          >
+                            ✓
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            onClick={handleFieldCancel}
+                            className="h-8 px-2"
+                          >
+                            ✕
+                          </Button>
+                        </div>
+                      ) : (
+                        <div 
+                          onClick={() => handleFieldEdit('phone')}
+                          className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
+                        >
+                          <span className="text-sm">
+                            {profileData.phone || 'Click to add phone number'}
+                          </span>
+                          {!profileData.phone && <span className="text-muted-foreground text-sm ml-2">✎</span>}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   {/* Permanent Broadcast ID - Professional Users Only */}

@@ -357,6 +357,40 @@ export default function Dashboard() {
     });
   };
 
+  // Phone number formatting utility
+  const formatPhoneNumber = (phone: string) => {
+    if (!phone) return '';
+    
+    // Remove all non-digits
+    const digits = phone.replace(/\D/g, '');
+    
+    // Format as (XXX) XXX-XXXX
+    if (digits.length === 10) {
+      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+    }
+    
+    // For other lengths, return as-is or with basic formatting
+    if (digits.length === 11 && digits[0] === '1') {
+      return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+    }
+    
+    return phone; // Return original if not standard format
+  };
+
+  const handlePhoneInput = (value: string) => {
+    // Allow input but format on the fly
+    const digits = value.replace(/\D/g, '');
+    let formatted = digits;
+    
+    if (digits.length >= 6) {
+      formatted = `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
+    } else if (digits.length >= 3) {
+      formatted = `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    }
+    
+    setEditValues(prev => ({ ...prev, phone: digits })); // Store raw digits
+  };
+
   // Load profile photo from user data
   useEffect(() => {
     if (user?.profilePhoto) {
@@ -721,11 +755,12 @@ export default function Dashboard() {
                       {editingField === 'phone' ? (
                         <div className="flex items-center gap-2 mt-1">
                           <Input
-                            value={editValues.phone}
-                            onChange={(e) => setEditValues(prev => ({ ...prev, phone: e.target.value }))}
+                            value={formatPhoneNumber(editValues.phone)}
+                            onChange={(e) => handlePhoneInput(e.target.value)}
                             className="h-8 text-sm flex-1"
-                            placeholder="Enter phone number"
+                            placeholder="(555) 123-4567"
                             autoFocus
+                            maxLength={14} // Max length for formatted phone
                           />
                           <Button 
                             size="sm" 
@@ -750,7 +785,7 @@ export default function Dashboard() {
                           className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
                         >
                           <span className="text-sm">
-                            {profileData.phone || 'Click to add phone number'}
+                            {formatPhoneNumber(profileData.phone) || 'Click to add phone number'}
                           </span>
                           {!profileData.phone && <span className="text-muted-foreground text-sm ml-2">✎</span>}
                         </div>

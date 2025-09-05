@@ -143,7 +143,7 @@ export default function ProfessionalStereoVUMeter({
             {label}
           </div>
         )}
-        <div className={`${containerClass} bg-black/30 p-1 rounded border border-gray-700`}>
+        <div className="flex space-x-0.5 bg-black/30 p-1 rounded border border-gray-700 pl-[17px] pr-[17px] ml-[2px] mr-[2px] mt-[0px] mb-[0px] pt-[3px] pb-[3px]">
           {Array.from({ length: segments }, (_, index) => (
             <div
               key={index}

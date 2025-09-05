@@ -4,6 +4,10 @@ interface StatusBarProps {
   midiDeviceName?: string;
   latency: number;
   midiCommandSent?: boolean;
+  // Broadcast status
+  isHost?: boolean;
+  isViewer?: boolean;
+  currentRoom?: string | null;
 }
 
 export default function StatusBar({ 
@@ -11,7 +15,10 @@ export default function StatusBar({
   isMidiConnected, 
   midiDeviceName,
   latency,
-  midiCommandSent = false
+  midiCommandSent = false,
+  isHost = false,
+  isViewer = false,
+  currentRoom = null
 }: StatusBarProps) {
   return (
     <div className="bg-surface rounded-xl p-4 border border-gray-700" data-testid="status-bar">
@@ -47,6 +54,20 @@ export default function StatusBar({
               Latency: <span className="text-secondary">{latency.toFixed(1)}ms</span>
             </span>
           </div>
+          {/* Broadcast Status Indicator */}
+          {(isHost || isViewer) && (
+            <div className="flex items-center space-x-2">
+              <div className={`w-3 h-3 rounded-full ${isHost ? 'bg-purple-500' : 'bg-blue-500'}`} />
+              <span className="text-sm">
+                Broadcast: <span className={isHost ? 'text-purple-400' : 'text-blue-400'}>
+                  {isHost ? '🎭 Broadcasting' : '📺 Viewing'}
+                </span>
+                {currentRoom && (
+                  <span className="text-gray-400 ml-1">("{currentRoom}")</span>
+                )}
+              </span>
+            </div>
+          )}
 
         </div>
         

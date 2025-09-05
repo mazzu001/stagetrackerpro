@@ -1429,6 +1429,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             midiDeviceName={selectedMidiDeviceName}
             latency={latency}
             midiCommandSent={midiCommandSent}
+            isHost={isHost}
+            isViewer={isViewer}
+            currentRoom={currentRoom}
           />
           
           

@@ -10,7 +10,7 @@ import { LocalSongStorage } from "@/lib/local-song-storage";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
-import VUMeter from "@/components/vu-meter";
+import ProfessionalVUMeter from "@/components/professional-vu-meter";
 import { TrackRecovery } from "@/components/track-recovery";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest, queryClient } from "@/lib/queryClient";
@@ -770,10 +770,11 @@ export default function TrackManager({
                         <div className="flex items-center space-x-3">
                           <h4 className="font-medium">{track.name}</h4>
                           {/* VU Meter */}
-                          <VUMeter 
+                          <ProfessionalVUMeter 
                             level={audioLevels[track.id] || 0}
                             isMuted={track.isMuted || false}
                             isPlaying={isPlaying}
+                            size="sm"
                             className="flex-shrink-0"
                           />
                         </div>

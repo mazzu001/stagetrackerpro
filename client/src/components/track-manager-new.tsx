@@ -10,7 +10,7 @@ import { LocalSongStorage } from "@/lib/local-song-storage";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle, Loader2 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
-import VUMeter from "@/components/vu-meter";
+import ProfessionalVUMeter from "@/components/professional-vu-meter";
 import { TrackRecovery } from "@/components/track-recovery";
 
 // Mobile detection utility
@@ -764,10 +764,11 @@ export default function TrackManager({
 
                         {/* VU Meter */}
                         <div className="col-span-2">
-                          <VUMeter
+                          <ProfessionalVUMeter
                             level={level}
                             isMuted={isMuted}
                             isPlaying={isPlaying}
+                            size="sm"
                           />
                         </div>
                       </div>
@@ -837,10 +838,11 @@ export default function TrackManager({
                         {/* Bottom row: VU Meter and Delete button - closer to balance slider */}
                         <div className="flex items-center gap-2 pt-0.5">
                           <div className="flex-1 min-w-0">
-                            <VUMeter
+                            <ProfessionalVUMeter
                               level={level}
                               isMuted={isMuted}
                               isPlaying={isPlaying}
+                              size="sm"
                               className="w-full"
                             />
                           </div>

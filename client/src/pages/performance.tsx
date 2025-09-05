@@ -7,7 +7,7 @@ import { LyricsControls } from "@/components/lyrics-controls";
 import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
 import TrackManager from "@/components/track-manager-clean";
-import StereoVUMeter from "@/components/stereo-vu-meter";
+import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
 
 import { useAudioEngine } from "@/hooks/use-audio-engine";
@@ -1270,10 +1270,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                           {song.duration > 0 ? `${Math.floor(song.duration / 60)}:${Math.floor(song.duration % 60).toString().padStart(2, '0')}` : '0:00'}
                         </div>
                         {selectedSongId === song.id && (
-                          <StereoVUMeter
+                          <ProfessionalStereoVUMeter
                             leftLevel={masterStereoLevels.left}
                             rightLevel={masterStereoLevels.right}
                             isPlaying={isPlaying}
+                            size="sm"
                             className="flex-shrink-0"
                           />
                         )}

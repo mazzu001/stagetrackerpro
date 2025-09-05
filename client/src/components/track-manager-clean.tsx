@@ -10,7 +10,7 @@ import { LocalSongStorage } from "@/lib/local-song-storage";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
-import StereoVUMeter from "@/components/stereo-vu-meter";
+import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
 
 
 import type { Track, SongWithTracks } from "@shared/schema";
@@ -701,10 +701,11 @@ export default function TrackManager({
                     </div>
                     
                     <div className="flex items-center gap-2">
-                      <StereoVUMeter 
+                      <ProfessionalStereoVUMeter 
                         leftLevel={level} 
                         rightLevel={level}
                         isPlaying={isPlaying}
+                        size="sm"
                         className="flex-shrink-0"
                       />
                       <Button

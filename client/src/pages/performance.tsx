@@ -1244,11 +1244,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                         <div className="font-medium text-sm md:text-base truncate mr-2">{song.title}</div>
                         <div className="flex gap-1">
                           <button
-                            className={`text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 ${
-                              isPlaying 
-                                ? 'bg-gray-600 cursor-not-allowed opacity-50' 
-                                : 'bg-gray-700 hover:bg-gray-600'
-                            }`}
+                            className="text-xs px-2 py-1 rounded transition-colors touch-target flex-shrink-0 bg-gray-700 hover:bg-gray-600 mt-[4px] mb-[4px] ml-[1px] mr-[1px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]"
                             onClick={(e) => {
                               e.stopPropagation();
                               if (!isPlaying) {

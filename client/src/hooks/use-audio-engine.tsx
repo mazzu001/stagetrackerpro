@@ -151,33 +151,10 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   // Animation loop for real-time updates
 
   useEffect(() => {
-    const animate = () => {
+    // Fast update for playback time (60fps)
+    const animateTime = () => {
       if (audioEngineRef.current && song) {
         const state = audioEngineRef.current.getState();
-        
-        // Update track levels
-        const levels: Record<string, number> = {};
-        song.tracks.forEach(track => {
-          const trackLevels = audioEngineRef.current!.getTrackLevels(track.id);
-          // VU meters expect 0-100 range, streaming engine now provides this directly
-          levels[track.id] = Math.max(trackLevels.left, trackLevels.right);
-        });
-        setAudioLevels(levels);
-        
-        const masterLevels = audioEngineRef.current.getMasterLevels();
-        // Master levels now come in 0-100 range directly from streaming engine
-        setMasterStereoLevels(masterLevels);
-        
-        // Always log VU meter data flow for debugging
-        if (isPlaying) {
-          const trackCount = Object.keys(levels).length;
-          const nonZeroTracks = Object.values(levels).filter(l => l > 0).length;
-          console.log(`🎛️ VU HOOK: ${nonZeroTracks}/${trackCount} tracks active, master: L=${masterLevels.left.toFixed(1)}, R=${masterLevels.right.toFixed(1)}`);
-          console.log(`🎛️ VU HOOK levels:`, levels);
-        }
-        
-        
-        // Streaming is always ready - no loading state needed
         
         // Use audio engine's state to determine if we should update time
         const engineIsPlaying = state.isPlaying;
@@ -202,17 +179,39 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         }
       }
       
-      animationFrameRef.current = requestAnimationFrame(animate);
+      animationFrameRef.current = requestAnimationFrame(animateTime);
     };
 
-    animationFrameRef.current = requestAnimationFrame(animate);
+    // Slower update for VU meters (20fps) to improve performance
+    const updateVUMeters = () => {
+      if (audioEngineRef.current && song && isPlaying) {
+        // Update track levels
+        const levels: Record<string, number> = {};
+        song.tracks.forEach(track => {
+          const trackLevels = audioEngineRef.current!.getTrackLevels(track.id);
+          // VU meters expect 0-100 range, streaming engine now provides this directly
+          levels[track.id] = Math.max(trackLevels.left, trackLevels.right);
+        });
+        setAudioLevels(levels);
+        
+        const masterLevels = audioEngineRef.current.getMasterLevels();
+        // Master levels now come in 0-100 range directly from streaming engine
+        setMasterStereoLevels(masterLevels);
+      }
+    };
+
+    animationFrameRef.current = requestAnimationFrame(animateTime);
+    
+    // Update VU meters at 20fps for better performance
+    const vuInterval = setInterval(updateVUMeters, 50);
     
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
+      clearInterval(vuInterval);
     };
-  }, [song?.id]);
+  }, [song?.id, isPlaying]);
 
   const play = useCallback(async () => {
     if (!audioEngineRef.current || !song) return;

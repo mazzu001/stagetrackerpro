@@ -44,6 +44,7 @@ export interface IStorage {
   
   // Profile photo management
   updateUserProfilePhoto(email: string, photoData: string): Promise<User | undefined>;
+  updateUserProfile(email: string, profileData: { firstName?: string; lastName?: string; phone?: string }): Promise<User | undefined>;
 
   // Legacy methods for compatibility (no-op in database mode)
   getAllData(): any;
@@ -120,6 +121,30 @@ export class DatabaseStorage implements IStorage {
       return user;
     } catch (error) {
       console.error(`❌ Error updating profile photo for ${email}:`, error);
+      throw error;
+    }
+  }
+
+  async updateUserProfile(email: string, profileData: { firstName?: string; lastName?: string; phone?: string }): Promise<User | undefined> {
+    try {
+      const updateData: any = {
+        updatedAt: new Date(),
+      };
+
+      if (profileData.firstName !== undefined) updateData.firstName = profileData.firstName;
+      if (profileData.lastName !== undefined) updateData.lastName = profileData.lastName;
+      if (profileData.phone !== undefined) updateData.phone = profileData.phone;
+
+      const [user] = await db
+        .update(users)
+        .set(updateData)
+        .where(eq(users.email, email))
+        .returning();
+      
+      console.log(`✅ Updated profile for user: ${email}`);
+      return user;
+    } catch (error) {
+      console.error(`❌ Error updating profile for ${email}:`, error);
       throw error;
     }
   }

@@ -31,18 +31,27 @@ export default function Dashboard() {
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
+  // Profile form state
+  const [profileData, setProfileData] = useState({
+    firstName: '',
+    lastName: '',
+    phone: ''
+  });
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+  
   // Generate permanent broadcast ID for professional users
   const permanentBroadcastId = user?.userType === 'professional' 
     ? `PRO-${user.email.split('@')[0].toUpperCase().substring(0, 6)}-${user.email.length}${Date.now().toString().slice(-3)}`
     : null;
 
-  // Load profile photo when component mounts
+  // Load profile photo and user data when component mounts
   useEffect(() => {
-    const loadProfilePhoto = async () => {
+    const loadUserData = async () => {
       if (!user?.email) return;
       
       try {
-        const response = await fetch(`/api/profile-photo?email=${encodeURIComponent(user.email)}`, {
+        // Load profile photo
+        const photoResponse = await fetch(`/api/profile-photo?email=${encodeURIComponent(user.email)}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -51,25 +60,28 @@ export default function Dashboard() {
           },
         });
         
-        if (response.ok) {
-          const contentType = response.headers.get('content-type');
+        if (photoResponse.ok) {
+          const contentType = photoResponse.headers.get('content-type');
           if (contentType && contentType.includes('application/json')) {
-            const data = await response.json();
+            const data = await photoResponse.json();
             setProfilePhoto(data.profilePhoto);
             console.log('✅ Profile photo loaded successfully');
-          } else {
-            console.error('❌ Profile photo API returned non-JSON response:', await response.text());
           }
-        } else {
-          console.error('❌ Profile photo API request failed:', response.status, await response.text());
         }
+
+        // Set profile data from user object
+        setProfileData({
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+          phone: user.phone || ''
+        });
       } catch (error) {
-        console.error('Error loading profile photo:', error);
+        console.error('Error loading user data:', error);
       }
     };
 
-    loadProfilePhoto();
-  }, [user?.email]);
+    loadUserData();
+  }, [user?.email, user?.firstName, user?.lastName, user?.phone]);
 
   const handleStartBroadcast = async () => {
     if (!user || !broadcastName.trim()) return;
@@ -194,6 +206,47 @@ export default function Dashboard() {
         }
       };
       reader.readAsDataURL(file);
+  };
+
+  const handleUpdateProfile = async () => {
+    if (!user?.email) return;
+    
+    setIsUpdatingProfile(true);
+    try {
+      const response = await fetch('/api/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          firstName: profileData.firstName,
+          lastName: profileData.lastName,
+          phone: profileData.phone,
+          userEmail: user.email
+        }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Profile updated",
+          description: "Your profile has been updated successfully."
+        });
+      } else {
+        toast({
+          title: "Update failed",
+          description: "Failed to update profile. Please try again.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Update failed", 
+        description: "Failed to update profile. Please try again.",
+        variant: "destructive"
+      });
+    }
+    setIsUpdatingProfile(false);
   };
 
   // Load profile photo from user data
@@ -463,6 +516,50 @@ export default function Dashboard() {
                         className="hidden"
                       />
                     </div>
+                  </div>
+
+                  {/* Profile Form */}
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <Label htmlFor="firstName" className="text-xs">First Name</Label>
+                        <Input
+                          id="firstName"
+                          value={profileData.firstName}
+                          onChange={(e) => setProfileData(prev => ({ ...prev, firstName: e.target.value }))}
+                          placeholder="First name"
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="lastName" className="text-xs">Last Name</Label>
+                        <Input
+                          id="lastName"
+                          value={profileData.lastName}
+                          onChange={(e) => setProfileData(prev => ({ ...prev, lastName: e.target.value }))}
+                          placeholder="Last name"
+                          className="h-8 text-sm"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <Label htmlFor="phone" className="text-xs">Phone</Label>
+                      <Input
+                        id="phone"
+                        value={profileData.phone}
+                        onChange={(e) => setProfileData(prev => ({ ...prev, phone: e.target.value }))}
+                        placeholder="Phone number"
+                        className="h-8 text-sm"
+                      />
+                    </div>
+                    <Button
+                      size="sm"
+                      onClick={handleUpdateProfile}
+                      disabled={isUpdatingProfile}
+                      className="h-7 text-xs w-full"
+                    >
+                      {isUpdatingProfile ? 'Saving...' : 'Save Profile'}
+                    </Button>
                   </div>
 
                   {/* Permanent Broadcast ID - Professional Users Only */}

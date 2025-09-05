@@ -78,6 +78,7 @@ export const users = pgTable("users", {
   email: varchar("email").unique(),
   firstName: varchar("first_name"),
   lastName: varchar("last_name"),
+  phone: varchar("phone"),
   profileImageUrl: varchar("profile_image_url"),
   profilePhoto: pgText("profile_photo"), // Base64 encoded image data
   subscriptionStatus: pgInteger("subscription_status").default(1), // 1 = free, 2 = premium, 3 = professional

@@ -176,10 +176,11 @@ export default function Dashboard() {
         setLocation('/');
       }, 1000); // Small delay to let user see the success message
       
-    } catch (error) {
+    } catch (error: any) {
+      console.error('📡 Broadcast start error:', error);
       toast({
         title: "Failed to start broadcast",
-        description: "Please try again",
+        description: error?.message || "Please check your network connection and try again",
         variant: "destructive"
       });
       setIsStarting(false); // Only reset if failed

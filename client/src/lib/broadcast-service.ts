@@ -48,9 +48,12 @@ class BroadcastService {
       try {
         const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
         const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${encodeURIComponent(roomId)}`;
+        
+        console.log(`📡 Attempting WebSocket connection to: ${wsUrl}`);
         this.ws = new WebSocket(wsUrl);
         
         this.ws.onopen = () => {
+          console.log('📡 WebSocket connection established');
           this.ws?.send(JSON.stringify({
             type: 'host_connect',
             userId,
@@ -65,22 +68,38 @@ class BroadcastService {
 
         this.ws.onmessage = (event) => {
           const message = JSON.parse(event.data);
+          console.log('📡 Received server message:', message);
           if (message.type === 'room_info') {
             this.roomListeners.forEach(cb => cb(message.room));
           }
         };
 
-        this.ws.onclose = () => {
-          console.log('📡 Host WebSocket closed');
+        this.ws.onclose = (event) => {
+          console.log(`📡 Host WebSocket closed - Code: ${event.code}, Reason: ${event.reason}`);
+          if (event.code !== 1000 && event.code !== 1001) {
+            // Abnormal close
+            reject(new Error(`WebSocket closed unexpectedly: ${event.code} - ${event.reason}`));
+          }
         };
 
         this.ws.onerror = (error) => {
           console.error('📡 Broadcast WebSocket error:', error);
-          reject(error);
+          console.error('📡 WebSocket URL:', wsUrl);
+          console.error('📡 WebSocket state:', this.ws?.readyState);
+          reject(new Error(`WebSocket connection failed: ${error.type || 'Unknown error'}`));
         };
         
+        // Add timeout for connection
+        setTimeout(() => {
+          if (this.ws?.readyState === WebSocket.CONNECTING) {
+            console.error('📡 WebSocket connection timeout');
+            this.ws?.close();
+            reject(new Error('WebSocket connection timeout'));
+          }
+        }, 10000); // 10 second timeout
+        
       } catch (error) {
-        console.warn('Broadcast WebSocket failed:', error);
+        console.warn('📡 Broadcast WebSocket setup failed:', error);
         reject(error);
       }
     });

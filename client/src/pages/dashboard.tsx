@@ -173,7 +173,7 @@ export default function Dashboard() {
       
       // Redirect to performance page after successful broadcast start
       setTimeout(() => {
-        setLocation('/performance');
+        setLocation('/');
       }, 1000); // Small delay to let user see the success message
       
     } catch (error) {
@@ -211,7 +211,7 @@ export default function Dashboard() {
         
         // Redirect to performance page after successful join
         setTimeout(() => {
-          setLocation('/performance');
+          setLocation('/');
         }, 1000); // Small delay to let user see the success message
         
       } else {

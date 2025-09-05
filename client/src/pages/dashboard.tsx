@@ -878,80 +878,8 @@ export default function Dashboard() {
                       )}
                     </div>
 
-                    {/* Custom Broadcast ID - Premium and Professional users */}
-                    {(user?.userType === 'premium' || user?.userType === 'professional') && (
-                      <div>
-                        <Label className="text-xs text-muted-foreground">Custom Broadcast ID</Label>
-                        {editingField === 'customBroadcastId' ? (
-                          <div className="flex items-center gap-2 mt-1">
-                            <Input
-                              value={editValues.customBroadcastId}
-                              onChange={(e) => {
-                                // Format: letters, numbers, hyphens only, max 20 chars
-                                const value = e.target.value.replace(/[^a-zA-Z0-9-]/g, '').substring(0, 20);
-                                setEditValues(prev => ({ ...prev, customBroadcastId: value }));
-                              }}
-                              className="h-8 text-sm flex-1"
-                              placeholder="MY-SHOW-2025"
-                              autoFocus
-                              maxLength={20}
-                            />
-                            <Button 
-                              size="sm" 
-                              onClick={() => handleFieldSave('customBroadcastId')}
-                              disabled={isUpdatingProfile}
-                              className="h-8 px-2"
-                            >
-                              ✓
-                            </Button>
-                            <Button 
-                              size="sm" 
-                              variant="outline" 
-                              onClick={handleFieldCancel}
-                              className="h-8 px-2"
-                            >
-                              ✕
-                            </Button>
-                          </div>
-                        ) : (
-                          <div 
-                            onClick={() => handleFieldEdit('customBroadcastId')}
-                            className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
-                          >
-                            <span className="text-sm">
-                              {profileData.customBroadcastId || 'Click to set your broadcast ID'}
-                            </span>
-                            {!profileData.customBroadcastId && <span className="text-muted-foreground text-sm ml-2">✎</span>}
-                          </div>
-                        )}
-                        <div className="text-xs text-muted-foreground mt-1">
-                          Others will use this ID to join your broadcasts
-                        </div>
-                      </div>
-                    )}
                   </div>
 
-                  {/* Broadcast ID Section */}
-                  {displayBroadcastId && (
-                    <div className="bg-muted/30 p-4 rounded-lg">
-                      <Label className="text-sm font-medium">Your Broadcast ID</Label>
-                      <div className="flex items-center gap-2 mt-2">
-                        <code className="bg-background px-3 py-1 rounded text-sm flex-1 font-mono">
-                          {displayBroadcastId}
-                        </code>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={copyPermanentId}
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        Professional users get a permanent broadcast ID for consistent team access
-                      </p>
-                    </div>
-                  )}
 
                   {/* Account Actions */}
                   <div className="space-y-3 pt-4 border-t">

@@ -103,9 +103,12 @@ class BroadcastService {
 
       this.ws.onmessage = (event) => {
         const message = JSON.parse(event.data);
+        console.log('📺 Viewer received message:', message);
         if (message.type === 'state_update') {
+          console.log('📺 Processing broadcast state update:', message.state);
           this.listeners.forEach(cb => cb(message.state));
         } else if (message.type === 'room_info') {
+          console.log('📺 Room info updated:', message.room);
           this.roomListeners.forEach(cb => cb(message.room));
         }
       };
@@ -124,10 +127,13 @@ class BroadcastService {
   // Host: Send state update to viewers
   sendState(state: BroadcastState) {
     if (this.isHost && this.ws && this.ws.readyState === WebSocket.OPEN) {
+      console.log('📡 Broadcasting state to viewers:', state);
       this.ws.send(JSON.stringify({
         type: 'state_update',
         state
       }));
+    } else {
+      console.log('📡 Not broadcasting - host:', this.isHost, 'ws ready:', this.ws?.readyState === WebSocket.OPEN);
     }
   }
 

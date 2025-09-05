@@ -81,20 +81,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   // Check if viewer has broadcast data but no local song
   const showBroadcastViewerMode = isViewer && broadcastState && broadcastState.lyrics && !selectedSong;
   
-  // Debug the viewer mode condition
-  useEffect(() => {
-    if (isViewer && broadcastState) {
-      console.log('📺 Viewer mode debug:', {
-        isViewer,
-        hasBroadcastState: !!broadcastState,
-        hasLyrics: !!broadcastState?.lyrics,
-        selectedSong: !!selectedSong,
-        showBroadcastViewerMode,
-        lyricsLength: broadcastState?.lyrics?.length || 0
-      });
-    }
-  }, [isViewer, broadcastState, selectedSong, showBroadcastViewerMode]);
-  
   // Debug broadcast state changes
   const [debugMessage, setDebugMessage] = useState('');
   useEffect(() => {

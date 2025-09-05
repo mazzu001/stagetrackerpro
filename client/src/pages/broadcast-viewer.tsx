@@ -15,6 +15,17 @@ export default function BroadcastViewer() {
     }
   }, [isViewer, broadcastState, setLocation]);
 
+  // Debug what we're receiving
+  useEffect(() => {
+    console.log('🖥️ BroadcastViewer state:', {
+      isViewer,
+      broadcastState,
+      hasLyrics: !!broadcastState?.lyrics,
+      lyricsLength: broadcastState?.lyrics?.length || 0,
+      songTitle: broadcastState?.songTitle
+    });
+  }, [isViewer, broadcastState]);
+
   const handleLeaveBroadcast = async () => {
     await leaveBroadcast();
     setLocation('/dashboard');
@@ -86,23 +97,74 @@ export default function BroadcastViewer() {
           </div>
         </div>
 
+        {/* Visual Waveform Display */}
+        <div className="max-w-5xl w-full mb-8">
+          <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-blue-200">Audio Waveform</h3>
+              <div className="text-sm text-blue-300">
+                {Math.floor(broadcastState.position || 0)}s / {Math.floor(broadcastState.duration || 0)}s
+              </div>
+            </div>
+            
+            {/* Waveform Visualization */}
+            <div className="relative h-20 bg-gray-900/50 rounded-lg overflow-hidden">
+              {/* Fake waveform bars */}
+              <div className="absolute inset-0 flex items-end justify-around px-1">
+                {Array.from({ length: 200 }, (_, i) => {
+                  const height = Math.random() * 60 + 10;
+                  const isActive = broadcastState.duration && broadcastState.position 
+                    ? (i / 200) <= (broadcastState.position / broadcastState.duration)
+                    : false;
+                  return (
+                    <div
+                      key={i}
+                      className={`w-0.5 transition-colors duration-300 ${
+                        isActive ? 'bg-blue-400' : 'bg-gray-600'
+                      }`}
+                      style={{ height: `${height}%` }}
+                    />
+                  );
+                })}
+              </div>
+              
+              {/* Position Indicator */}
+              {broadcastState.duration && (
+                <div
+                  className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg transition-all duration-300"
+                  style={{
+                    left: `${(broadcastState.position / broadcastState.duration) * 100}%`
+                  }}
+                >
+                  <div className="absolute -top-1 -left-2 w-4 h-4 bg-white rounded-full shadow-lg"></div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
         {/* Lyrics Display */}
-        {broadcastState.lyrics ? (
-          <div className="max-w-4xl w-full">
-            <h2 className="text-2xl font-semibold mb-4 text-blue-200">Lyrics</h2>
-            <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 max-h-96 overflow-y-auto">
-              <pre className="whitespace-pre-wrap text-lg leading-relaxed text-gray-100 font-mono">
-                {broadcastState.lyrics}
-              </pre>
-            </div>
-          </div>
-        ) : (
-          <div className="max-w-4xl w-full">
+        <div className="max-w-4xl w-full">
+          {broadcastState?.lyrics ? (
+            <>
+              <h2 className="text-2xl font-semibold mb-4 text-blue-200">Lyrics</h2>
+              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 max-h-96 overflow-y-auto">
+                <pre className="whitespace-pre-wrap text-lg leading-relaxed text-gray-100 font-mono">
+                  {broadcastState.lyrics}
+                </pre>
+              </div>
+            </>
+          ) : (
             <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-12 text-center">
-              <p className="text-xl text-gray-300">No lyrics available for this song</p>
+              <p className="text-xl text-gray-300">
+                {broadcastState?.songTitle ? 'No lyrics available for this song' : 'Waiting for broadcast data...'}
+              </p>
+              {!broadcastState && (
+                <p className="text-sm text-blue-400 mt-2">Connecting to broadcast...</p>
+              )}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* Footer */}

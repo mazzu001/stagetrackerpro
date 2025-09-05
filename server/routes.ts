@@ -265,7 +265,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           id: newUser.id, 
           email: newUser.email,
           userType: newUser.subscriptionStatus === 1 ? 'free' : 
-                   newUser.subscriptionStatus === 2 ? 'paid' : 'professional'
+                   newUser.subscriptionStatus === 2 ? 'premium' : 'professional'
         }
       });
     } catch (error: any) {
@@ -292,7 +292,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log('✅ User authenticated:', user.email);
       
       const userType = user.subscriptionStatus === 1 ? 'free' : 
-                      user.subscriptionStatus === 2 ? 'paid' : 'professional';
+                      user.subscriptionStatus === 2 ? 'premium' : 'professional';
       
       res.json({ 
         success: true, 

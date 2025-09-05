@@ -1086,7 +1086,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </div>
       </div>
-
       {/* Main Content */}
       <div className="flex-1 flex min-h-0">
         {/* Left Sidebar - Song Selection */}
@@ -1265,7 +1264,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                         </div>
                       </div>
                       <div className="text-xs md:text-sm text-gray-400 truncate">{song.artist}</div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between pt-[0px] pb-[0px] mt-[-8px] mb-[-8px]">
                         <div className="text-xs text-gray-500">
                           {song.duration > 0 ? `${Math.floor(song.duration / 60)}:${Math.floor(song.duration % 60).toString().padStart(2, '0')}` : '0:00'}
                         </div>
@@ -1386,8 +1385,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
         </div>
       </div>
-      
-
       {/* Status Bar & Manual MIDI Send - Desktop only */}
       <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 mobile-hidden">
         <div className="flex items-center justify-between gap-4">
@@ -1507,7 +1504,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </DialogContent>
       </Dialog>
-
       {/* Track Manager Dialog */}
       <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
         <DialogContent className="max-w-6xl max-h-[90vh]" data-testid="dialog-track-manager">
@@ -1538,7 +1534,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           )}
         </DialogContent>
       </Dialog>
-
       {/* Persistent Web MIDI Manager Dialog - Professional Users Only */}
       {userType === 'professional' && isBluetoothDevicesOpen && (
         <Dialog open={isBluetoothDevicesOpen} onOpenChange={setIsBluetoothDevicesOpen}>
@@ -1553,7 +1548,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </DialogContent>
         </Dialog>
       )}
-
       {/* USB MIDI Manager Dialog - Professional Users Only */}
       {userType === 'professional' && (
         <Dialog open={isUSBMidiOpen} onOpenChange={setIsUSBMidiOpen}>
@@ -1568,7 +1562,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </DialogContent>
         </Dialog>
       )}
-
       {/* Export Filename Dialog */}
       <Dialog open={isExportDialogOpen} onOpenChange={setIsExportDialogOpen}>
         <DialogContent className="sm:max-w-md">
@@ -1622,7 +1615,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </DialogContent>
       </Dialog>
-
       {/* Import Progress Dialog */}
       <Dialog open={isImporting} onOpenChange={() => {}}>
         <DialogContent className="sm:max-w-md" data-testid="dialog-import-progress">
@@ -1654,7 +1646,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </DialogContent>
       </Dialog>
-
       {/* Hidden file input for import */}
       <input
         ref={fileInputRef}
@@ -1664,7 +1655,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         onChange={handleFileSelected}
         data-testid="hidden-import-file-input"
       />
-
     </div>
   );
 }

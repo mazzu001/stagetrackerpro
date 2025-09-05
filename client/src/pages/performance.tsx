@@ -76,7 +76,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Optional broadcast integration - completely isolated
-  const { isHost, sendPerformanceState } = useBroadcast();
+  const { isHost, isViewer, broadcastState, sendPerformanceState } = useBroadcast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
 
@@ -449,6 +449,53 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     console.log(`🎵 Loading song: ${song.title}`);
     setSelectedSong(song);
   }, [selectedSongId, user?.email]);
+
+  // Broadcast viewer mode: Sync with broadcaster's performance state
+  useEffect(() => {
+    if (!isViewer || !broadcastState || !user?.email) return;
+    
+    console.log('📺 Broadcast viewer mode: Syncing with broadcaster state', broadcastState);
+    
+    // Sync current song if broadcaster changed it
+    if (broadcastState.currentSong && broadcastState.currentSong !== selectedSongId) {
+      console.log(`📺 Broadcaster changed song to: ${broadcastState.songTitle || broadcastState.currentSong}`);
+      setSelectedSongId(broadcastState.currentSong);
+    }
+    
+    // Sync playback position if significant difference
+    if (Math.abs(broadcastState.position - currentTime) > 1) {
+      console.log(`📺 Syncing playback position: ${broadcastState.position}s`);
+      seek(broadcastState.position);
+    }
+    
+    // Sync play/pause state
+    if (broadcastState.isPlaying !== isPlaying) {
+      console.log(`📺 Syncing playback state: ${broadcastState.isPlaying ? 'playing' : 'paused'}`);
+      if (broadcastState.isPlaying) {
+        play();
+      } else {
+        pause();
+      }
+    }
+    
+  }, [isViewer, broadcastState, selectedSongId, currentTime, isPlaying, user?.email, seek, play, pause]);
+
+  // Broadcast host mode: Send performance state to viewers
+  useEffect(() => {
+    if (!isHost || !selectedSong) return;
+    
+    // Send current performance state to all viewers
+    const performanceState = {
+      currentSong: selectedSongId,
+      songTitle: selectedSong.title,
+      position: currentTime,
+      isPlaying: isPlaying,
+      currentLyricLine: '', // TODO: Add current lyric line if available
+      waveformProgress: duration > 0 ? currentTime / duration : 0
+    };
+    
+    sendPerformanceState(performanceState);
+  }, [isHost, selectedSong, selectedSongId, currentTime, isPlaying, duration, sendPerformanceState]);
 
   const handleSeek = useCallback((time: number) => {
     seek(time);

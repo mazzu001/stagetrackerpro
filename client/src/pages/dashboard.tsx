@@ -45,11 +45,23 @@ export default function Dashboard() {
         const response = await fetch(`/api/profile-photo?email=${encodeURIComponent(user.email)}`, {
           method: 'GET',
           credentials: 'include',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
         });
         
         if (response.ok) {
-          const data = await response.json();
-          setProfilePhoto(data.profilePhoto);
+          const contentType = response.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            const data = await response.json();
+            setProfilePhoto(data.profilePhoto);
+            console.log('✅ Profile photo loaded successfully');
+          } else {
+            console.error('❌ Profile photo API returned non-JSON response:', await response.text());
+          }
+        } else {
+          console.error('❌ Profile photo API request failed:', response.status, await response.text());
         }
       } catch (error) {
         console.error('Error loading profile photo:', error);

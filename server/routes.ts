@@ -155,6 +155,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "User not found" });
       }
 
+      console.log(`📸 Getting profile photo for ${email}: ${user.profilePhoto ? 'Found' : 'None'}`);
+      
+      // Set proper content type for JSON response
+      res.setHeader('Content-Type', 'application/json');
       res.json({ profilePhoto: user.profilePhoto || null });
     } catch (error) {
       console.error('Error getting profile photo:', error);

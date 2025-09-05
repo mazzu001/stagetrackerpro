@@ -42,11 +42,12 @@ class BroadcastService {
 
   // Host: Start broadcasting
   async startBroadcast(userId: string, userName: string, broadcastName: string): Promise<string> {
-    const roomId = this.generateRoomId();
+    // Use the broadcast name directly as the room ID (no random generation)
+    const roomId = broadcastName.trim();
     
     try {
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-      const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${roomId}`;
+      const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${encodeURIComponent(roomId)}`;
       this.ws = new WebSocket(wsUrl);
       
       this.ws.onopen = () => {
@@ -58,7 +59,7 @@ class BroadcastService {
         }));
         this.isHost = true;
         this.roomId = roomId;
-        console.log(`📡 Started broadcasting room: ${roomId}`);
+        console.log(`📡 Started broadcasting: "${roomId}"`);
       };
 
       this.ws.onmessage = (event) => {
@@ -81,10 +82,12 @@ class BroadcastService {
   }
 
   // Viewer: Join broadcast
-  async joinBroadcast(roomId: string, userId: string, userName: string): Promise<boolean> {
+  async joinBroadcast(broadcastName: string, userId: string, userName: string): Promise<boolean> {
     try {
+      // Use the broadcast name directly as the room ID
+      const roomId = broadcastName.trim();
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-      const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${roomId}`;
+      const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${encodeURIComponent(roomId)}`;
       this.ws = new WebSocket(wsUrl);
       
       this.ws.onopen = () => {
@@ -95,7 +98,7 @@ class BroadcastService {
         }));
         this.isHost = false;
         this.roomId = roomId;
-        console.log(`📺 Joined broadcast room: ${roomId}`);
+        console.log(`📺 Joined broadcast: "${roomId}"`);
       };
 
       this.ws.onmessage = (event) => {
@@ -145,9 +148,7 @@ class BroadcastService {
   getIsHost() { return this.isHost; }
   getIsConnected() { return this.ws?.readyState === WebSocket.OPEN; }
 
-  private generateRoomId(): string {
-    return 'STAGE-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-  }
+  // No longer need to generate random IDs - we use user-provided names directly
 }
 
 // Singleton instance

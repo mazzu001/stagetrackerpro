@@ -167,7 +167,7 @@ export default function Dashboard() {
       const roomId = await startBroadcast(user.email, user.email, broadcastName);
       toast({
         title: "🎭 Broadcast Started!",
-        description: `Room ID: ${roomId}\nRedirecting to performance page...`
+        description: `"${broadcastName}" is now live!\nRedirecting to performance page...`
       });
       setBroadcastName('');
       
@@ -644,19 +644,19 @@ export default function Dashboard() {
                 <CardContent className="space-y-4">
                   <p className="text-sm text-gray-400">
                     {canJoin 
-                      ? "Enter a Room ID to view someone else's performance"
+                      ? "Enter the broadcast name to join someone's live performance"
                       : "Upgrade to Premium to join broadcasts"
                     }
                   </p>
                   {canJoin ? (
                     <>
                       <div>
-                        <Label htmlFor="room-id">Room ID</Label>
+                        <Label htmlFor="room-id">Broadcast Name</Label>
                         <Input
                           id="room-id"
-                          placeholder="STAGE-ABC123"
+                          placeholder="Tonight's Show"
                           value={roomIdToJoin}
-                          onChange={(e) => setRoomIdToJoin(e.target.value.toUpperCase())}
+                          onChange={(e) => setRoomIdToJoin(e.target.value)}
                         />
                       </div>
                       <Button 

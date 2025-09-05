@@ -24,6 +24,30 @@ export function useBroadcast() {
     // Check initial state
     setIsHost(broadcastService.getIsHost());
     
+    // Check for fallback broadcast in localStorage (for cross-device consistency)
+    const fallbackBroadcast = localStorage.getItem('fallback_broadcast');
+    if (fallbackBroadcast) {
+      try {
+        const broadcastData = JSON.parse(fallbackBroadcast);
+        const now = Date.now();
+        // Only restore if less than 24 hours old
+        if (now - broadcastData.timestamp < 24 * 60 * 60 * 1000) {
+          console.log('🎭 Restored fallback broadcast from localStorage:', broadcastData);
+          setIsHost(true);
+          setCurrentRoom({
+            id: broadcastData.roomId,
+            name: broadcastData.broadcastName,
+            hostId: broadcastData.userId,
+            hostName: broadcastData.userName,
+            participantCount: 1,
+            isActive: true
+          });
+        }
+      } catch (error) {
+        console.warn('Failed to restore fallback broadcast:', error);
+      }
+    }
+    
     return () => {
       unsubscribeState();
       unsubscribeRoom();

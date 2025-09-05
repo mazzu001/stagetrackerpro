@@ -385,7 +385,7 @@ export default function Dashboard() {
                     <div className="flex-1 space-y-2">
                       <div>
                         <h3 className="text-lg font-semibold">{user.email}</h3>
-                        <div className="flex items-center gap-2 mt-1">
+                        <div className="flex items-center gap-2 mt-1 text-left ml-[77px] mr-[77px]">
                           {user.userType === 'professional' ? (
                             <>
                               <Crown className="h-4 w-4 text-yellow-500" />

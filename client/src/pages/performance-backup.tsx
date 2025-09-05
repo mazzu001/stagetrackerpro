@@ -1235,7 +1235,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                       rightLevel={masterStereoLevels.right}
                       isPlaying={isPlaying}
                       size="sm"
-                      horizontal={true}
                       className="flex-shrink-0"
                     />
                   )}

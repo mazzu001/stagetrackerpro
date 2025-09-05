@@ -161,7 +161,7 @@ export default function ProfessionalStereoVUMeter({
 
   const containerClass = horizontal ? 
     'flex items-center space-x-3' : 
-    'flex flex-col space-y-1';
+    'flex flex-col space-y-0.5';
 
   return (
     <div className={`${containerClass} ${className}`}>

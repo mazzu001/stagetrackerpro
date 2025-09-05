@@ -706,7 +706,6 @@ export default function TrackManager({
                         rightLevel={level}
                         isPlaying={isPlaying}
                         size="sm"
-                        horizontal={true}
                         className="flex-shrink-0"
                       />
                       <Button

@@ -128,7 +128,10 @@ export default function Dashboard() {
               'Content-Type': 'application/json',
             },
             credentials: 'include',
-            body: JSON.stringify({ photoData: result }),
+            body: JSON.stringify({ 
+              photoData: result,
+              userEmail: user?.email  // Include email for local auth
+            }),
           });
 
           if (response.ok) {

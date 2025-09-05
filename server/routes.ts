@@ -102,17 +102,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Profile photo upload endpoint
-  app.put('/api/profile-photo', isAuthenticated, async (req: any, res) => {
+  // Profile photo upload endpoint (works with both local and Replit auth)
+  app.put('/api/profile-photo', async (req: any, res) => {
     try {
-      const { photoData } = req.body;
-      const userEmail = req.user.claims.email;
+      const { photoData, userEmail } = req.body;
       
-      if (!photoData || !userEmail) {
-        return res.status(400).json({ message: "Missing photo data or user email" });
+      if (!photoData) {
+        return res.status(400).json({ message: "Missing photo data" });
       }
 
-      const updatedUser = await storage.updateUserProfilePhoto(userEmail, photoData);
+      // For local auth, email comes from request body
+      // For Replit auth, email comes from session
+      let email = userEmail;
+      if (!email && req.user?.claims?.email) {
+        email = req.user.claims.email;
+      }
+      
+      if (!email) {
+        return res.status(400).json({ message: "Missing user email" });
+      }
+
+      const updatedUser = await storage.updateUserProfilePhoto(email, photoData);
       
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });

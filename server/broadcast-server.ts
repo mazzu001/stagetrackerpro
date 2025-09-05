@@ -26,14 +26,17 @@ class BroadcastServer {
   private wss: WebSocketServer;
 
   constructor(server: Server) {
-    // Create WebSocket server on /ws/broadcast path
+    // Create WebSocket server on /ws/broadcast path (handles subpaths)
     this.wss = new WebSocketServer({ 
-      server, 
-      path: '/ws/broadcast' 
+      server,
+      verifyClient: (info) => {
+        // Allow connections to /ws/broadcast/* paths
+        return info.req.url?.startsWith('/ws/broadcast/') || false;
+      }
     });
 
     this.wss.on('connection', this.handleConnection.bind(this));
-    console.log('📡 Broadcast WebSocket server initialized on /ws/broadcast');
+    console.log('📡 Broadcast WebSocket server initialized on /ws/broadcast/*');
   }
 
   private handleConnection(ws: WebSocket, request: any) {

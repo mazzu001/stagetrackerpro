@@ -236,6 +236,18 @@ export class WaveformGenerator {
       console.error('Failed to clear cached waveform:', error);
     }
   }
+
+  /**
+   * Set cached waveform data for a song (useful for imports)
+   */
+  setCachedWaveform(songId: string, waveformData: number[]): void {
+    try {
+      localStorage.setItem(this.getWaveformCacheKey(songId), JSON.stringify(waveformData));
+      console.log(`Set cached waveform for song: ${songId} (${waveformData.length} data points)`);
+    } catch (error) {
+      console.error('Failed to set cached waveform:', error);
+    }
+  }
 }
 
 // Export singleton instance

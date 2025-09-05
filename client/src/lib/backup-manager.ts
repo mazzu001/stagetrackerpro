@@ -220,14 +220,21 @@ export class BackupManager {
             continue; // Skip tracks without audio
           }
 
-          // Add track to song with final ID
+          // Add track to song with final ID (matching Track schema)
           finalTracks.push({
             id: finalTrackId,
             name: trackMapping.name,
-            volume: 1,
-            muted: false,
-            solo: false,
-            balance: 0
+            songId: finalSongId,
+            trackNumber: finalTracks.length + 1,
+            audioUrl: 'blob:stored', // Will be resolved by browser storage
+            localFileName: trackMapping.fileName,
+            audioData: null,
+            mimeType: 'audio/*',
+            fileSize: null,
+            volume: 100,
+            balance: 0,
+            isMuted: false,
+            isSolo: false
           });
         }
 

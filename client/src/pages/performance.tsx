@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb, Volume2 } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb, Volume2, Download, Upload, FolderOpen } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
@@ -30,6 +30,7 @@ import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager"
 import { USBMidiManager } from "@/components/USBMidiManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
 import { useRef } from "react";
+import { BackupManager } from "@/lib/backup-manager";
 
 interface PerformanceProps {
   userType: UserType;
@@ -64,7 +65,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
 
   const { toast } = useToast();
@@ -168,6 +172,97 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         description: "Failed to send MIDI command",
         variant: "destructive",
       });
+    }
+  };
+
+  // Export all data as zip file
+  const handleExportData = async () => {
+    if (!user?.email) {
+      toast({
+        title: "Export Failed",
+        description: "Please log in to export your data",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setIsExporting(true);
+      const backupManager = BackupManager.getInstance();
+      const zipBlob = await backupManager.exportAllData(user.email);
+      
+      // Create download link
+      const url = URL.createObjectURL(zipBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = BackupManager.generateBackupFilename(user.email);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      
+      toast({
+        title: "Export Complete",
+        description: "Your music library has been exported successfully",
+      });
+    } catch (error) {
+      console.error('Export failed:', error);
+      toast({
+        title: "Export Failed",
+        description: error instanceof Error ? error.message : "Failed to export data",
+        variant: "destructive",
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  // Import data from zip file
+  const handleImportData = () => {
+    if (!user?.email) {
+      toast({
+        title: "Import Failed",
+        description: "Please log in to import data",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Trigger file picker
+    fileInputRef.current?.click();
+  };
+
+  // Handle file selection for import
+  const handleFileSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !user?.email) return;
+
+    try {
+      setIsImporting(true);
+      const backupManager = BackupManager.getInstance();
+      await backupManager.importAllData(file, user.email);
+      
+      // Refresh the song list
+      const updatedSongs = LocalSongStorage.getAllSongs(user.email);
+      setAllSongs(updatedSongs.sort((a, b) => a.title.localeCompare(b.title)));
+      
+      toast({
+        title: "Import Complete",
+        description: "Your music library has been imported successfully",
+      });
+    } catch (error) {
+      console.error('Import failed:', error);
+      toast({
+        title: "Import Failed",
+        description: error instanceof Error ? error.message : "Failed to import data",
+        variant: "destructive",
+      });
+    } finally {
+      setIsImporting(false);
+      // Clear the input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     }
   };
 
@@ -849,6 +944,27 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 )}
 
                 <DropdownMenuSeparator />
+                
+                {/* Import/Export Section */}
+                <DropdownMenuItem onClick={handleExportData} disabled={isExporting || allSongs.length === 0} data-testid="menuitem-export-data">
+                  {isExporting ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <Download className="h-4 w-4 mr-2" />
+                  )}
+                  {isExporting ? 'Exporting...' : 'Export Library'}
+                </DropdownMenuItem>
+                
+                <DropdownMenuItem onClick={handleImportData} disabled={isImporting} data-testid="menuitem-import-data">
+                  {isImporting ? (
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  ) : (
+                    <Upload className="h-4 w-4 mr-2" />
+                  )}
+                  {isImporting ? 'Importing...' : 'Import Library'}
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={toggleFullscreen} data-testid="menuitem-fullscreen">
                   {isFullscreen ? (
                     <>
@@ -1401,6 +1517,15 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         </Dialog>
       )}
 
+      {/* Hidden file input for import */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".zip"
+        style={{ display: 'none' }}
+        onChange={handleFileSelected}
+        data-testid="hidden-import-file-input"
+      />
 
     </div>
   );

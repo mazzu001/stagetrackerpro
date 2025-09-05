@@ -14,6 +14,7 @@ import { useAudioEngine } from "@/hooks/use-audio-engine";
 
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -67,6 +68,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isMidiListening, setIsMidiListening] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [importProgress, setImportProgress] = useState(0);
+  const [importStatus, setImportStatus] = useState("");
   const [isExportDialogOpen, setIsExportDialogOpen] = useState(false);
   const [exportFilename, setExportFilename] = useState("");
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
@@ -274,8 +277,18 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
     try {
       setIsImporting(true);
+      setImportProgress(0);
+      setImportStatus("Reading backup file...");
+      
       const backupManager = BackupManager.getInstance();
-      await backupManager.importAllData(file, user.email);
+      
+      // Create progress callback
+      const onProgress = (progress: number, status: string) => {
+        setImportProgress(progress);
+        setImportStatus(status);
+      };
+      
+      await backupManager.importAllData(file, user.email, onProgress);
       
       // Refresh the song list
       const updatedSongs = LocalSongStorage.getAllSongs(user.email);
@@ -294,6 +307,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       });
     } finally {
       setIsImporting(false);
+      setImportProgress(0);
+      setImportStatus("");
       // Clear the input
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
@@ -1601,6 +1616,38 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   </>
                 )}
               </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Import Progress Dialog */}
+      <Dialog open={isImporting} onOpenChange={() => {}}>
+        <DialogContent className="sm:max-w-md" data-testid="dialog-import-progress">
+          <DialogHeader>
+            <DialogTitle>Importing Music Library</DialogTitle>
+            <p className="text-sm text-muted-foreground">
+              Please wait while your backup is being imported
+            </p>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span>Progress</span>
+                <span>{importProgress}%</span>
+              </div>
+              <Progress value={importProgress} className="w-full" data-testid="progress-import" />
+            </div>
+            {importStatus && (
+              <div className="text-sm text-muted-foreground">
+                <p data-testid="text-import-status">{importStatus}</p>
+              </div>
+            )}
+            <div className="flex justify-center">
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Do not close this window</span>
+              </div>
             </div>
           </div>
         </DialogContent>

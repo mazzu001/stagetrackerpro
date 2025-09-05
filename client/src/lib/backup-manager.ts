@@ -185,12 +185,14 @@ export class BackupManager {
   /**
    * Import all data from a zip file backup
    */
-  async importAllData(zipFile: File, userEmail: string): Promise<void> {
+  async importAllData(zipFile: File, userEmail: string, onProgress?: (progress: number, status: string) => void): Promise<void> {
     console.log(`📥 Starting complete backup import for user: ${userEmail}`);
     
+    onProgress?.(5, "Reading backup file...");
     const zip = await JSZip.loadAsync(zipFile);
     const browserFS = BrowserFileSystem.getInstance();
     
+    onProgress?.(10, "Parsing manifest...");
     // Read manifest
     const manifestFile = zip.file('manifest.json');
     if (!manifestFile) {
@@ -206,13 +208,16 @@ export class BackupManager {
     const existingSongs = LocalSongStorage.getAllSongs(userEmail);
     const existingTitles = new Set(existingSongs.map(s => s.title.toLowerCase()));
     
-    
     let importedSongs = 0;
     let importedTracks = 0;
     let skippedSongs = 0;
+    const totalSongs = manifest.songs.length;
+
+    onProgress?.(15, `Processing ${totalSongs} songs...`);
 
     // Process each song from manifest
-    for (const manifestSong of manifest.songs) {
+    for (let songIndex = 0; songIndex < manifest.songs.length; songIndex++) {
+      const manifestSong = manifest.songs[songIndex];
       try {
         // Check for title conflicts and resolve with suffix
         let finalTitle = manifestSong.title;
@@ -241,8 +246,15 @@ export class BackupManager {
         const finalTracks = [];
 
         // Process tracks
-        for (const trackMapping of manifestSong.tracks) {
+        for (let trackIndex = 0; trackIndex < manifestSong.tracks.length; trackIndex++) {
+          const trackMapping = manifestSong.tracks[trackIndex];
           const finalTrackId = crypto.randomUUID();
+          
+          // Update progress for track processing
+          const baseProgress = 15 + (songIndex / totalSongs) * 70;
+          const trackProgress = (trackIndex / manifestSong.tracks.length) * (70 / totalSongs);
+          const currentProgress = Math.round(baseProgress + trackProgress);
+          onProgress?.(currentProgress, `Importing "${manifestSong.title}" - ${trackMapping.name}...`);
           
           // Import audio file using the actual filename with extension
           const audioFile = zip.file(`audio/${trackMapping.fileName}`);
@@ -302,6 +314,7 @@ export class BackupManager {
           LocalSongStorage.saveSongs(userEmail, allSongs);
           
           // Import waveform if available
+          onProgress?.(85 + (songIndex / totalSongs) * 10, `Processing waveform for "${finalTitle}"...`);
           const waveformFile = zip.file(`waveforms/${manifestSong.newId}.json`);
           if (waveformFile) {
             try {
@@ -326,6 +339,7 @@ export class BackupManager {
       }
     }
 
+    onProgress?.(100, "Import complete!");
     console.log(`✅ Import complete: ${importedSongs} songs, ${importedTracks} tracks imported. ${skippedSongs} skipped.`);
     
     if (importedSongs === 0) {

@@ -50,8 +50,8 @@ export default function Dashboard() {
       if (!user?.email) return;
       
       try {
-        // Load profile photo
-        const photoResponse = await fetch(`/api/profile-photo?email=${encodeURIComponent(user.email)}`, {
+        // Load complete user profile data from database
+        const userResponse = await fetch(`/api/profile?email=${encodeURIComponent(user.email)}`, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -60,28 +60,44 @@ export default function Dashboard() {
           },
         });
         
-        if (photoResponse.ok) {
-          const contentType = photoResponse.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            const data = await photoResponse.json();
-            setProfilePhoto(data.profilePhoto);
-            console.log('✅ Profile photo loaded successfully');
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          // Set profile data from database
+          setProfileData({
+            firstName: userData.firstName || '',
+            lastName: userData.lastName || '',
+            phone: userData.phone || ''
+          });
+          
+          // Set profile photo
+          setProfilePhoto(userData.profilePhoto);
+          console.log('✅ User profile data loaded successfully');
+        } else {
+          // Fallback to loading photo separately if profile endpoint doesn't exist
+          const photoResponse = await fetch(`/api/profile-photo?email=${encodeURIComponent(user.email)}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+          });
+          
+          if (photoResponse.ok) {
+            const contentType = photoResponse.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+              const data = await photoResponse.json();
+              setProfilePhoto(data.profilePhoto);
+            }
           }
         }
-
-        // Set profile data from user object
-        setProfileData({
-          firstName: user.firstName || '',
-          lastName: user.lastName || '',
-          phone: user.phone || ''
-        });
       } catch (error) {
         console.error('Error loading user data:', error);
       }
     };
 
     loadUserData();
-  }, [user?.email, user?.firstName, user?.lastName, user?.phone]);
+  }, [user?.email]);
 
   const handleStartBroadcast = async () => {
     if (!user || !broadcastName.trim()) return;

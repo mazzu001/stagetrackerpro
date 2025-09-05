@@ -196,6 +196,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get user profile endpoint (works with both local and Replit auth)
+  app.get('/api/profile', async (req: any, res) => {
+    try {
+      // For local auth, email comes from query params
+      // For Replit auth, email comes from session
+      let email = req.query.email;
+      if (!email && req.user?.claims?.email) {
+        email = req.user.claims.email;
+      }
+      
+      if (!email) {
+        return res.status(400).json({ message: "Missing user email" });
+      }
+
+      const user = await storage.getUserByEmail(email);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      console.log(`📋 Getting profile for ${email}`);
+      
+      // Set proper content type for JSON response
+      res.setHeader('Content-Type', 'application/json');
+      res.json(user);
+    } catch (error) {
+      console.error('Error getting user profile:', error);
+      res.status(500).json({ message: 'Failed to get user profile' });
+    }
+  });
+
   // Email/password authentication endpoints for frontend
   app.post('/api/auth/register', async (req, res) => {
     try {

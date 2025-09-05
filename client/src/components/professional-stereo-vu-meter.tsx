@@ -159,9 +159,8 @@ export default function ProfessionalStereoVUMeter({
     );
   };
 
-  const containerClass = horizontal ? 
-    'flex items-center space-x-3' : 
-    'flex flex-col space-y-0.5';
+  // Always stack L and R vertically, but horizontal affects segment direction
+  const containerClass = 'flex flex-col space-y-0.5';
 
   return (
     <div className={`${containerClass} ${className}`}>

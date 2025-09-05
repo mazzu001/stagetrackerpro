@@ -105,11 +105,13 @@ export default function Dashboard() {
       return;
     }
 
-    // Check file size (limit to 2MB)
-    if (file.size > 2 * 1024 * 1024) {
+    // Check file size (limit to 2MB, but account for base64 encoding overhead ~33%)
+    const maxSizeBytes = 1.5 * 1024 * 1024; // 1.5MB raw file = ~2MB when base64 encoded
+    if (file.size > maxSizeBytes) {
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
       toast({
         title: "File too large",
-        description: "Please select an image smaller than 2MB to keep the database optimized.",
+        description: `Image is ${sizeMB}MB. Please select an image smaller than 1.5MB (becomes ~2MB when processed).`,
         variant: "destructive"
       });
       return;

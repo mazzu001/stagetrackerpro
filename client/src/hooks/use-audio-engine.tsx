@@ -202,8 +202,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
 
     animationFrameRef.current = requestAnimationFrame(animateTime);
     
-    // Update VU meters at 20fps for better performance
-    const vuInterval = setInterval(updateVUMeters, 50);
+    // Update VU meters at 40fps for responsive bouncing
+    const vuInterval = setInterval(updateVUMeters, 25);
     
     return () => {
       if (animationFrameRef.current) {

@@ -209,9 +209,9 @@ export class StreamingAudioEngine {
         track.panNode.connect(track.analyzerNode);
         track.analyzerNode.connect(this.state.masterGainNode!);
         
-        // Setup analyzer with better frequency resolution for responsive VU meters
-        track.analyzerNode.fftSize = 512; // Increased for better frequency analysis
-        track.analyzerNode.smoothingTimeConstant = 0.6; // Less smoothing for more responsive meters
+        // Setup analyzer for responsive bouncing VU meters
+        track.analyzerNode.fftSize = 512; // Good frequency resolution
+        track.analyzerNode.smoothingTimeConstant = 0.1; // Much less smoothing for dynamic bouncing
         
         console.log(`🔧 Audio nodes created on demand for: ${track.name}`);
       } catch (nodeError) {

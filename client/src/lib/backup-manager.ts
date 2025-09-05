@@ -213,11 +213,16 @@ export class BackupManager {
     // Process each song from manifest
     for (const manifestSong of manifest.songs) {
       try {
-        // Check for title conflicts (offer to skip duplicates)
-        if (existingTitles.has(manifestSong.title.toLowerCase())) {
-          console.warn(`⚠️ Song "${manifestSong.title}" already exists, skipping`);
-          skippedSongs++;
-          continue;
+        // Check for title conflicts and resolve with suffix
+        let finalTitle = manifestSong.title;
+        let counter = 1;
+        while (existingTitles.has(finalTitle.toLowerCase())) {
+          finalTitle = `${manifestSong.title} (Import ${counter})`;
+          counter++;
+        }
+        
+        if (finalTitle !== manifestSong.title) {
+          console.log(`📝 Renamed "${manifestSong.title}" to "${finalTitle}" to avoid duplicate`);
         }
 
         // Read song data
@@ -237,8 +242,8 @@ export class BackupManager {
         for (const trackMapping of manifestSong.tracks) {
           const finalTrackId = crypto.randomUUID();
           
-          // Import audio file
-          const audioFile = zip.file(`audio/${trackMapping.newId}.audio`);
+          // Import audio file using the actual filename with extension
+          const audioFile = zip.file(`audio/${trackMapping.fileName}`);
           if (audioFile) {
             try {
               const audioBlob = await audioFile.async('blob');
@@ -284,6 +289,7 @@ export class BackupManager {
           const finalSongData: LocalSong = {
             ...songData,
             id: finalSongId,
+            title: finalTitle, // Use the resolved title
             tracks: finalTracks,
             createdAt: new Date().toISOString() // Mark as newly imported
           };

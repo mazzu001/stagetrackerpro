@@ -146,6 +146,7 @@ class BroadcastService {
         
         this.ws.onopen = () => {
           console.log('📺 Viewer WebSocket connection established');
+          console.log('📺 Sending viewer_connect message:', { userId, userName, roomId });
           this.ws?.send(JSON.stringify({
             type: 'viewer_connect', 
             userId,

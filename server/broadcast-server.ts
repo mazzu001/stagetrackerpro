@@ -105,9 +105,12 @@ class BroadcastServer {
 
   private handleViewerConnect(ws: WebSocket, roomId: string, message: any) {
     const { userId, userName } = message;
+    console.log(`📺 Processing viewer_connect for room ${roomId}, user: ${userName}`);
+    
     const room = this.rooms.get(roomId);
 
     if (!room || !room.isActive) {
+      console.log(`❌ Room ${roomId} not found or not active`);
       ws.send(JSON.stringify({
         type: 'error',
         message: 'Room not found or not active'
@@ -117,7 +120,7 @@ class BroadcastServer {
     }
 
     room.viewers.set(userId, { ws, userId, userName });
-    console.log(`📺 Viewer ${userName} joined broadcast: ${roomId}`);
+    console.log(`✅ Viewer ${userName} joined broadcast: ${roomId}, total viewers: ${room.viewers.size}`);
 
     // Update room info for all participants
     this.sendRoomInfo(room);

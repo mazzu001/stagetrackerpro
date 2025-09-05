@@ -424,6 +424,75 @@ export class AudioEngine {
 
   private masterLevelCache: { left: number; right: number; lastUpdate: number } = { left: 0, right: 0, lastUpdate: 0 };
 
+  getTrackLevels(trackId: string): { left: number; right: number } {
+    const analyzer = this.analyzerNodes.get(trackId);
+    const track = this.tracks.get(trackId);
+    
+    if (!analyzer || !track || !this.isPlaying) {
+      return { left: 0, right: 0 };
+    }
+
+    const bufferLength = analyzer.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    analyzer.getByteFrequencyData(dataArray);
+    
+    // Calculate average across mid-range frequencies
+    let sum = 0;
+    const startBin = Math.floor(bufferLength * 0.1);
+    const endBin = Math.floor(bufferLength * 0.8);
+    
+    for (let i = startBin; i < endBin; i++) {
+      sum += dataArray[i];
+    }
+    
+    // Calculate RMS for more accurate level representation
+    let sum2 = 0;
+    for (let i = startBin; i < endBin; i++) {
+      const normalizedValue = dataArray[i] / 255;
+      sum2 += normalizedValue * normalizedValue;
+    }
+    const rms = Math.sqrt(sum2 / (endBin - startBin));
+    
+    // Apply scaling for track-specific sensitivity
+    const trackName = track.getTrackName()?.toLowerCase() || '';
+    let scalingFactor = 1.5; // Base scaling for track meters
+    
+    // Adjust sensitivity based on track type
+    if (trackName.includes('bass')) {
+      scalingFactor = 2.0; // Higher sensitivity for bass
+    } else if (trackName.includes('drum') || trackName.includes('kick') || trackName.includes('snare')) {
+      scalingFactor = 1.8; // Higher for drums
+    } else if (trackName.includes('click')) {
+      scalingFactor = 3.0; // Much higher for click tracks
+    }
+    
+    let baseLevel = rms * scalingFactor;
+    
+    // Apply compression for natural VU meter behavior
+    if (baseLevel > 0.1) {
+      baseLevel = 0.1 + (baseLevel - 0.1) * 0.5;
+    }
+    
+    // Convert to 0-100 scale
+    baseLevel = baseLevel * 100;
+    baseLevel = Math.max(0, Math.min(100, baseLevel));
+    
+    // Create slight stereo variation for visual interest
+    const now = performance.now();
+    const variation = Math.sin(now * 0.002 + trackId.charCodeAt(0)) * 1.5; // Unique variation per track
+    const leftLevel = Math.max(0, Math.min(100, baseLevel + variation));
+    const rightLevel = Math.max(0, Math.min(100, baseLevel - variation));
+    
+    return { 
+      left: leftLevel, 
+      right: rightLevel 
+    };
+  }
+
+  getMasterLevels(): { left: number; right: number } {
+    return this.getMasterStereoLevels();
+  }
+
   getMasterStereoLevels(): { left: number; right: number } {
     if (!this.masterAnalyzerNode || !this.isPlaying) {
       return { left: 0, right: 0 };

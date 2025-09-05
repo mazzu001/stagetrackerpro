@@ -1261,7 +1261,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                       </div>
                       <div className="text-xs md:text-sm text-gray-400 truncate mt-[-6px] mb-[-6px]">{song.artist}</div>
                       <div className="flex items-center justify-between pt-[0px] pb-[0px] mt-[-8px] mb-[-8px]">
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-500 mt-[8px] mb-[8px] ml-[0px] mr-[0px] pl-[0px] pr-[0px] pt-[-2px] pb-[-2px]">
                           {song.duration > 0 ? `${Math.floor(song.duration / 60)}:${Math.floor(song.duration % 60).toString().padStart(2, '0')}` : '0:00'}
                         </div>
                         {selectedSongId === song.id && (

@@ -189,14 +189,18 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         const levels: Record<string, number> = {};
         song.tracks.forEach(track => {
           const trackLevels = audioEngineRef.current!.getTrackLevels(track.id);
-          // VU meters expect 0-100 range, streaming engine now provides this directly
-          levels[track.id] = Math.max(trackLevels.left, trackLevels.right);
+          // Convert stereo levels to single level with original scaling
+          levels[track.id] = Math.max(trackLevels.left, trackLevels.right) * 30;
         });
         setAudioLevels(levels);
         
         const masterLevels = audioEngineRef.current.getMasterLevels();
-        // Master levels now come in 0-100 range directly from streaming engine
-        setMasterStereoLevels(masterLevels);
+        // Scale master levels for song list stereo VU meters (original scaling)
+        const scaledLevels = {
+          left: masterLevels.left * 100,
+          right: masterLevels.right * 100
+        };
+        setMasterStereoLevels(scaledLevels);
       }
     };
 

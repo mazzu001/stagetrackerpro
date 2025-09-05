@@ -209,9 +209,9 @@ export class StreamingAudioEngine {
         track.panNode.connect(track.analyzerNode);
         track.analyzerNode.connect(this.state.masterGainNode!);
         
-        // Setup analyzer for responsive bouncing VU meters
-        track.analyzerNode.fftSize = 512; // Good frequency resolution
-        track.analyzerNode.smoothingTimeConstant = 0.1; // Much less smoothing for dynamic bouncing
+        // Setup analyzer with original working settings
+        track.analyzerNode.fftSize = 512; 
+        track.analyzerNode.smoothingTimeConstant = 0.6; // Back to original working smoothing
         
         console.log(`🔧 Audio nodes created on demand for: ${track.name}`);
       } catch (nodeError) {
@@ -465,15 +465,10 @@ export class StreamingAudioEngine {
     
     const rawAverage = sum / weightedCount / 255; // Normalize to 0-1
     
-    // Much higher amplification for visible VU meter activity - scale to 0-100 range
-    const average = rawAverage * 150; // Increased amplification for VU meters
+    // Return simulated stereo levels (original working amplification)
+    const average = rawAverage * 1.3; // Back to original working amplification
     
-    // Create slight stereo variation
-    const variation = Math.sin(Date.now() * 0.001 + trackId.charCodeAt(0)) * 2;
-    const leftLevel = Math.max(0, Math.min(100, average + variation));
-    const rightLevel = Math.max(0, Math.min(100, average - variation));
-    
-    return { left: leftLevel, right: rightLevel };
+    return { left: average, right: average };
   }
 
   getMasterLevels(): { left: number; right: number } {

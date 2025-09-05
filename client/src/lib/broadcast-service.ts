@@ -6,6 +6,10 @@ export interface BroadcastState {
   isPlaying: boolean;
   currentLyricLine?: string;
   waveformProgress: number; // 0-1
+  // Send lyrics text and metadata to viewers
+  lyrics?: string;
+  artist?: string;
+  duration?: number;
 }
 
 export interface BroadcastRoom {

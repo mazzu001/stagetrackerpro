@@ -19,6 +19,10 @@ interface BroadcastState {
   isPlaying: boolean;
   currentLyricLine?: string;
   waveformProgress: number;
+  // Send lyrics text and metadata to viewers
+  lyrics?: string;
+  artist?: string;
+  duration?: number;
 }
 
 class BroadcastServer {

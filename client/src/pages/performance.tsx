@@ -78,6 +78,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   // Optional broadcast integration - completely isolated
   const { isHost, isViewer, broadcastState, sendPerformanceState, currentRoom } = useBroadcast();
   
+  // Check if viewer has broadcast data but no local song
+  const showBroadcastViewerMode = isViewer && broadcastState && broadcastState.lyrics && !selectedSong;
+  
   // Debug broadcast state changes
   const [debugMessage, setDebugMessage] = useState('');
   useEffect(() => {
@@ -464,24 +467,24 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Broadcast viewer mode: Sync with broadcaster's performance state
   useEffect(() => {
-    if (!isViewer || !broadcastState || !user?.email) return;
+    if (!isViewer || !broadcastState) return;
     
     console.log('📺 Broadcast viewer mode: Syncing with broadcaster state', broadcastState);
     
-    // Sync current song if broadcaster changed it
-    if (broadcastState.currentSong && broadcastState.currentSong !== selectedSongId) {
+    // Sync current song if broadcaster changed it (only if logged in)
+    if (broadcastState.currentSong && broadcastState.currentSong !== selectedSongId && user?.email) {
       console.log(`📺 Broadcaster changed song to: ${broadcastState.songTitle || broadcastState.currentSong}`);
       setSelectedSongId(broadcastState.currentSong);
     }
     
-    // Sync playback position if significant difference
-    if (Math.abs(broadcastState.position - currentTime) > 1) {
+    // Sync playback position if significant difference (only if we have local song)
+    if (selectedSong && Math.abs(broadcastState.position - currentTime) > 1) {
       console.log(`📺 Syncing playback position: ${broadcastState.position}s`);
       seek(broadcastState.position);
     }
     
-    // Sync play/pause state
-    if (broadcastState.isPlaying !== isPlaying) {
+    // Sync play/pause state (only if we have local song)
+    if (selectedSong && broadcastState.isPlaying !== isPlaying) {
       console.log(`📺 Syncing playback state: ${broadcastState.isPlaying ? 'playing' : 'paused'}`);
       if (broadcastState.isPlaying) {
         play();
@@ -490,7 +493,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       }
     }
     
-  }, [isViewer, broadcastState, selectedSongId, currentTime, isPlaying, user?.email, seek, play, pause]);
+  }, [isViewer, broadcastState, selectedSongId, selectedSong, currentTime, isPlaying, user?.email, seek, play, pause]);
 
   // Broadcast host mode: Send performance state to viewers
   useEffect(() => {
@@ -508,7 +511,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       position: currentTime,
       isPlaying: isPlaying,
       currentLyricLine: '', // TODO: Add current lyric line if available
-      waveformProgress: duration > 0 ? currentTime / duration : 0
+      waveformProgress: duration > 0 ? currentTime / duration : 0,
+      // Send lyrics and metadata to viewers
+      lyrics: selectedSong.lyrics,
+      artist: selectedSong.artist,
+      duration: duration
     };
     
     console.log('🎭 Broadcasting performance state:', performanceState);

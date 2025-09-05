@@ -9,6 +9,7 @@ import { Cast, Users, Radio, Link2, LogOut, Upload, User, Copy, Crown, X } from 
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { useBroadcast } from '@/hooks/useBroadcast';
 import { useToast } from '@/hooks/use-toast';
+import { useLocation } from 'wouter';
 
 export default function Dashboard() {
   const { user, logout } = useLocalAuth();
@@ -23,6 +24,7 @@ export default function Dashboard() {
   } = useBroadcast();
   
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
   const [broadcastName, setBroadcastName] = useState('');
   const [roomIdToJoin, setRoomIdToJoin] = useState('');
   const [isStarting, setIsStarting] = useState(false);
@@ -165,17 +167,23 @@ export default function Dashboard() {
       const roomId = await startBroadcast(user.email, user.email, broadcastName);
       toast({
         title: "🎭 Broadcast Started!",
-        description: `Room ID: ${roomId}\nShare this ID with your band members.`
+        description: `Room ID: ${roomId}\nRedirecting to performance page...`
       });
       setBroadcastName('');
+      
+      // Redirect to performance page after successful broadcast start
+      setTimeout(() => {
+        setLocation('/performance');
+      }, 1000); // Small delay to let user see the success message
+      
     } catch (error) {
       toast({
         title: "Failed to start broadcast",
         description: "Please try again",
         variant: "destructive"
       });
+      setIsStarting(false); // Only reset if failed
     }
-    setIsStarting(false);
   };
 
   const handleJoinBroadcast = async () => {
@@ -197,15 +205,22 @@ export default function Dashboard() {
       if (success) {
         toast({
           title: "🎵 Joined Broadcast!",
-          description: "You're now viewing the host's performance."
+          description: "Connected! Redirecting to performance page..."
         });
         setRoomIdToJoin('');
+        
+        // Redirect to performance page after successful join
+        setTimeout(() => {
+          setLocation('/performance');
+        }, 1000); // Small delay to let user see the success message
+        
       } else {
         toast({
           title: "Failed to join broadcast",
           description: "Room not found or no longer active",
           variant: "destructive"
         });
+        setIsJoining(false); // Only reset if failed
       }
     } catch (error) {
       toast({
@@ -213,8 +228,8 @@ export default function Dashboard() {
         description: "Please check the room ID and try again",
         variant: "destructive"
       });
+      setIsJoining(false); // Only reset if failed
     }
-    setIsJoining(false);
   };
 
   const handleLeaveBroadcast = () => {

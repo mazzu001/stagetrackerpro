@@ -1240,7 +1240,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                       onClick={() => !isPlaying && setSelectedSongId(song.id)}
                       data-testid={`song-item-${song.id}`}
                     >
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between mt-[-8px] mb-[-8px]">
                         <div className="font-medium text-sm md:text-base truncate mr-2">{song.title}</div>
                         <div className="flex gap-1">
                           <button

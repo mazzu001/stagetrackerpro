@@ -122,6 +122,9 @@ export default function Dashboard() {
             setProfilePhoto(data.profilePhoto);
           }
         }
+      } catch (error) {
+        console.error('Error loading profile photo:', error);
+      }
     };
 
     loadUserData();

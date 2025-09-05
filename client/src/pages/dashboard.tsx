@@ -105,11 +105,11 @@ export default function Dashboard() {
       return;
     }
 
-    // Check file size (limit to 5MB)
-    if (file.size > 5 * 1024 * 1024) {
+    // Check file size (limit to 2MB)
+    if (file.size > 2 * 1024 * 1024) {
       toast({
         title: "File too large",
-        description: "Please select an image smaller than 5MB.",
+        description: "Please select an image smaller than 2MB to keep the database optimized.",
         variant: "destructive"
       });
       return;

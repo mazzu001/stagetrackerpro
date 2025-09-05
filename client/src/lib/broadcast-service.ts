@@ -40,45 +40,50 @@ class BroadcastService {
     };
   }
 
-  // Host: Start broadcasting
+  // Host: Start broadcasting - Fixed with Promise to wait for connection
   async startBroadcast(userId: string, userName: string, broadcastName: string): Promise<string> {
-    // Use the broadcast name directly as the room ID (no random generation)
     const roomId = broadcastName.trim();
     
-    try {
-      const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-      const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${encodeURIComponent(roomId)}`;
-      this.ws = new WebSocket(wsUrl);
-      
-      this.ws.onopen = () => {
-        this.ws?.send(JSON.stringify({
-          type: 'host_connect',
-          userId,
-          userName,
-          broadcastName
-        }));
-        this.isHost = true;
-        this.roomId = roomId;
-        console.log(`📡 Started broadcasting: "${roomId}"`);
-      };
+    return new Promise((resolve, reject) => {
+      try {
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${encodeURIComponent(roomId)}`;
+        this.ws = new WebSocket(wsUrl);
+        
+        this.ws.onopen = () => {
+          this.ws?.send(JSON.stringify({
+            type: 'host_connect',
+            userId,
+            userName,
+            broadcastName
+          }));
+          this.isHost = true;
+          this.roomId = roomId;
+          console.log(`📡 Started broadcasting: "${roomId}"`);
+          resolve(roomId); // ✅ Wait for connection before resolving
+        };
 
-      this.ws.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-        if (message.type === 'room_info') {
-          this.roomListeners.forEach(cb => cb(message.room));
-        }
-      };
+        this.ws.onmessage = (event) => {
+          const message = JSON.parse(event.data);
+          if (message.type === 'room_info') {
+            this.roomListeners.forEach(cb => cb(message.room));
+          }
+        };
 
-      this.ws.onclose = () => {
-        console.log('📡 Broadcast WebSocket closed');
-      };
+        this.ws.onclose = () => {
+          console.log('📡 Host WebSocket closed');
+        };
 
-      return roomId;
-    } catch (error) {
-      console.warn('Broadcast WebSocket failed, continuing offline:', error);
-      // Graceful degradation - still works offline
-      return roomId;
-    }
+        this.ws.onerror = (error) => {
+          console.error('📡 Broadcast WebSocket error:', error);
+          reject(error);
+        };
+        
+      } catch (error) {
+        console.warn('Broadcast WebSocket failed:', error);
+        reject(error);
+      }
+    });
   }
 
   // Viewer: Join broadcast
@@ -153,8 +158,6 @@ class BroadcastService {
   getRoomId() { return this.roomId; }
   getIsHost() { return this.isHost; }
   getIsConnected() { return this.ws?.readyState === WebSocket.OPEN; }
-
-  // No longer need to generate random IDs - we use user-provided names directly
 }
 
 // Singleton instance

@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { Cast, Users, Radio, Link2, LogOut } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Cast, Users, Radio, Link2, LogOut, Upload, User, Copy, Crown, X } from 'lucide-react';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { useBroadcast } from '@/hooks/useBroadcast';
 import { useToast } from '@/hooks/use-toast';
@@ -26,6 +27,14 @@ export default function Dashboard() {
   const [roomIdToJoin, setRoomIdToJoin] = useState('');
   const [isStarting, setIsStarting] = useState(false);
   const [isJoining, setIsJoining] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
+  const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Generate permanent broadcast ID for professional users
+  const permanentBroadcastId = user?.userType === 'professional' 
+    ? `PRO-${user.email.split('@')[0].toUpperCase().substring(0, 6)}-${user.email.length}${Date.now().toString().slice(-3)}`
+    : null;
 
   const handleStartBroadcast = async () => {
     if (!user || !broadcastName.trim()) return;
@@ -85,6 +94,51 @@ export default function Dashboard() {
     });
   };
 
+  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setIsUploadingPhoto(true);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const result = e.target?.result as string;
+        setProfilePhoto(result);
+        localStorage.setItem(`profile_photo_${user?.email}`, result);
+        setIsUploadingPhoto(false);
+        toast({
+          title: "Photo updated!",
+          description: "Your profile photo has been saved successfully."
+        });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      toast({
+        title: "Invalid file",
+        description: "Please select a valid image file.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  // Load profile photo on mount
+  useEffect(() => {
+    if (user?.email) {
+      const savedPhoto = localStorage.getItem(`profile_photo_${user.email}`);
+      if (savedPhoto) {
+        setProfilePhoto(savedPhoto);
+      }
+    }
+  }, [user?.email]);
+
+  const copyPermanentId = () => {
+    if (permanentBroadcastId) {
+      navigator.clipboard.writeText(permanentBroadcastId);
+      toast({
+        title: "ID Copied!",
+        description: "Your permanent broadcast ID has been copied to clipboard."
+      });
+    }
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -104,14 +158,14 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 shadow-sm border-b">
+      <div className="bg-surface border-b border-gray-700 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold">Dashboard</h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-400">
                 Welcome, {user.email}
               </p>
             </div>
@@ -121,10 +175,6 @@ export default function Dashboard() {
                 onClick={() => window.location.href = '/'}
               >
                 ← Back to Performance
-              </Button>
-              <Button variant="outline" onClick={logout}>
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
               </Button>
             </div>
           </div>
@@ -189,93 +239,205 @@ export default function Dashboard() {
           </Card>
         )}
 
-        {/* Broadcast Actions */}
+        {/* Main Dashboard Layout */}
         {!isHost && !isViewer && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            {/* Start Broadcast */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Cast className="h-5 w-5" />
-                  Start Broadcasting
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Share your performance screen with band members in real-time
-                </p>
-                <div>
-                  <Label htmlFor="broadcast-name">Broadcast Name</Label>
-                  <Input
-                    id="broadcast-name"
-                    placeholder="Tonight's Show"
-                    value={broadcastName}
-                    onChange={(e) => setBroadcastName(e.target.value)}
-                  />
-                </div>
-                <Button 
-                  onClick={handleStartBroadcast}
-                  disabled={!broadcastName.trim() || isStarting}
-                  className="w-full"
-                >
-                  {isStarting ? 'Starting...' : 'Start Broadcasting'}
-                </Button>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            {/* Left Side - Broadcast Controls */}
+            <div className="space-y-4">
+              {/* Start Broadcast */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Cast className="h-5 w-5" />
+                    Start Broadcasting
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-gray-400">
+                    Share your performance screen with band members in real-time
+                  </p>
+                  <div>
+                    <Label htmlFor="broadcast-name">Broadcast Name</Label>
+                    <Input
+                      id="broadcast-name"
+                      placeholder="Tonight's Show"
+                      value={broadcastName}
+                      onChange={(e) => setBroadcastName(e.target.value)}
+                    />
+                  </div>
+                  <Button 
+                    onClick={handleStartBroadcast}
+                    disabled={!broadcastName.trim() || isStarting}
+                    className="w-full"
+                  >
+                    {isStarting ? 'Starting...' : 'Start Broadcasting'}
+                  </Button>
+                </CardContent>
+              </Card>
 
-            {/* Join Broadcast */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Radio className="h-5 w-5" />
-                  Join Broadcast
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Enter a Room ID to view someone else's performance
-                </p>
-                <div>
-                  <Label htmlFor="room-id">Room ID</Label>
-                  <Input
-                    id="room-id"
-                    placeholder="STAGE-ABC123"
-                    value={roomIdToJoin}
-                    onChange={(e) => setRoomIdToJoin(e.target.value.toUpperCase())}
-                  />
-                </div>
-                <Button 
-                  onClick={handleJoinBroadcast}
-                  disabled={!roomIdToJoin.trim() || isJoining}
-                  className="w-full"
-                >
-                  {isJoining ? 'Joining...' : 'Join Broadcast'}
-                </Button>
-              </CardContent>
-            </Card>
+              {/* Join Broadcast */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Radio className="h-5 w-5" />
+                    Join Broadcast
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-sm text-gray-400">
+                    Enter a Room ID to view someone else's performance
+                  </p>
+                  <div>
+                    <Label htmlFor="room-id">Room ID</Label>
+                    <Input
+                      id="room-id"
+                      placeholder="STAGE-ABC123"
+                      value={roomIdToJoin}
+                      onChange={(e) => setRoomIdToJoin(e.target.value.toUpperCase())}
+                    />
+                  </div>
+                  <Button 
+                    onClick={handleJoinBroadcast}
+                    disabled={!roomIdToJoin.trim() || isJoining}
+                    className="w-full"
+                  >
+                    {isJoining ? 'Joining...' : 'Join Broadcast'}
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Right Side - User Profile */}
+            <div className="lg:col-span-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle>User Profile</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Profile Photo Section */}
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-20 w-20">
+                      <AvatarImage src={profilePhoto || undefined} />
+                      <AvatarFallback>
+                        <User className="h-8 w-8" />
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="space-y-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={isUploadingPhoto}
+                      >
+                        {isUploadingPhoto ? (
+                          <>
+                            <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin mr-2" />
+                            Uploading...
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="h-4 w-4 mr-2" />
+                            Upload Photo
+                          </>
+                        )}
+                      </Button>
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handlePhotoUpload}
+                        accept="image/*"
+                        className="hidden"
+                      />
+                      <p className="text-xs text-gray-500">
+                        Upload a photo to personalize your experience
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* User Details */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label>Email</Label>
+                      <p className="text-lg">{user.email}</p>
+                    </div>
+                    <div>
+                      <Label>Account Type</Label>
+                      <div className="flex items-center gap-2">
+                        {user.userType === 'professional' ? (
+                          <>
+                            <Crown className="h-4 w-4 text-yellow-500" />
+                            <Badge variant="secondary" className="text-lg">
+                              Professional
+                            </Badge>
+                          </>
+                        ) : (
+                          <>
+                            <User className="h-4 w-4" />
+                            <Badge variant="secondary" className="text-lg">
+                              {user.userType || 'Free'}
+                            </Badge>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Permanent Broadcast ID - Professional Users Only */}
+                  {permanentBroadcastId && (
+                    <div>
+                      <Label>Permanent Broadcast ID</Label>
+                      <div className="flex items-center gap-2 mt-1">
+                        <code className="bg-muted px-2 py-1 rounded text-sm flex-1">
+                          {permanentBroadcastId}
+                        </code>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={copyPermanentId}
+                        >
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Professional users get a permanent broadcast ID for consistent team access
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Subscription Actions */}
+                  <div className="flex items-center gap-4 pt-4 border-t">
+                    {user.userType !== 'professional' && (
+                      <Button
+                        variant="default"
+                        onClick={() => window.location.href = '/subscribe'}
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                      >
+                        <Crown className="h-4 w-4 mr-2" />
+                        {user.userType === 'free' ? 'Upgrade to Pro' : 'Upgrade to Professional'}
+                      </Button>
+                    )}
+                    
+                    {user.userType !== 'free' && (
+                      <Button
+                        variant="outline"
+                        onClick={() => window.location.href = '/unsubscribe'}
+                      >
+                        <X className="h-4 w-4 mr-2" />
+                        Manage Subscription
+                      </Button>
+                    )}
+                    
+                    <Button variant="outline" onClick={logout}>
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         )}
 
-        {/* User Profile */}
-        <Card>
-          <CardHeader>
-            <CardTitle>User Profile</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label>Email</Label>
-                <p className="text-lg">{user.email}</p>
-              </div>
-              <div>
-                <Label>Account Type</Label>
-                <Badge variant="secondary" className="text-lg">
-                  {user.userType || 'Free'}
-                </Badge>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

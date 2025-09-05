@@ -1040,31 +1040,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   )}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="flex items-center gap-2" data-testid="menuitem-user-info">
-                  {userType === 'professional' ? (
-                    <>
-                      <Crown className="h-4 w-4 text-yellow-500" />
-                      <span>Professional User</span>
-                    </>
-                  ) : (
-                    <>
-                      <User className="h-4 w-4" />
-                      <span>{userType || 'Free'} User</span>
-                    </>
-                  )}
-                </DropdownMenuItem>
-                {userType !== 'free' && userType && (
-                  <>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => {
-                      console.log('🔄 Navigating to unsubscribe - User type:', userType, 'User:', user);
-                      setLocation('/unsubscribe');
-                    }} data-testid="menuitem-unsubscribe">
-                      <X className="h-4 w-4 mr-2" />
-                      Unsubscribe
-                    </DropdownMenuItem>
-                  </>
-                )}
                 <DropdownMenuItem onClick={() => { logout(); setLocation('/'); }} data-testid="menuitem-logout">
                   <LogOut className="h-4 w-4 mr-2" />
                   Logout

@@ -497,10 +497,21 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Broadcast host mode: Send performance state to viewers
   useEffect(() => {
-    console.log('🎭 Broadcast host effect:', { isHost, selectedSong: !!selectedSong, selectedSongId });
+    console.log('🎭 Broadcast host effect:', { 
+      isHost, 
+      selectedSong: !!selectedSong, 
+      selectedSongId, 
+      songTitle: selectedSong?.title,
+      hasLyrics: !!selectedSong?.lyrics 
+    });
     
-    if (!isHost || !selectedSong) {
-      console.log('🎭 Not broadcasting - isHost:', isHost, 'selectedSong:', !!selectedSong);
+    if (!isHost) {
+      console.log('🎭 Not broadcasting - not host');
+      return;
+    }
+    
+    if (!selectedSong) {
+      console.log('🎭 Not broadcasting - no song selected');
       return;
     }
     

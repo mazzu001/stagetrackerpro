@@ -76,7 +76,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Optional broadcast integration - completely isolated
-  const { isHost, isViewer, broadcastState, sendPerformanceState } = useBroadcast();
+  const { isHost, isViewer, broadcastState, sendPerformanceState, currentRoom } = useBroadcast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
 

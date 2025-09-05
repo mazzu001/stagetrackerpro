@@ -465,8 +465,8 @@ export class StreamingAudioEngine {
     
     const rawAverage = sum / weightedCount / 255; // Normalize to 0-1
     
-    // Return simulated stereo levels (original working amplification)
-    const average = rawAverage * 1.3; // Back to original working amplification
+    // Return normalized levels in 0-100 range for consistent VU meter usage
+    const average = rawAverage * 100; // Convert to 0-100 range directly
     
     return { left: average, right: average };
   }

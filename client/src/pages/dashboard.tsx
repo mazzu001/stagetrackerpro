@@ -94,20 +94,46 @@ export default function Dashboard() {
     });
   };
 
-  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith('image/')) {
       setIsUploadingPhoto(true);
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = async (e) => {
         const result = e.target?.result as string;
-        setProfilePhoto(result);
-        localStorage.setItem(`profile_photo_${user?.email}`, result);
-        setIsUploadingPhoto(false);
-        toast({
-          title: "Photo updated!",
-          description: "Your profile photo has been saved successfully."
-        });
+        
+        try {
+          // Save to database instead of localStorage
+          const response = await fetch('/api/profile-photo', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({ photoData: result }),
+          });
+
+          if (response.ok) {
+            setProfilePhoto(result);
+            // Remove any old localStorage entry
+            localStorage.removeItem(`profile_photo_${user?.email}`);
+            setIsUploadingPhoto(false);
+            toast({
+              title: "Photo updated!",
+              description: "Your profile photo has been saved successfully."
+            });
+          } else {
+            throw new Error('Failed to upload photo');
+          }
+        } catch (error) {
+          console.error('Error uploading photo:', error);
+          setIsUploadingPhoto(false);
+          toast({
+            title: "Upload failed",
+            description: "Failed to save your profile photo. Please try again.",
+            variant: "destructive"
+          });
+        }
       };
       reader.readAsDataURL(file);
     } else {
@@ -119,15 +145,30 @@ export default function Dashboard() {
     }
   };
 
-  // Load profile photo on mount
+  // Load profile photo from user data
   useEffect(() => {
-    if (user?.email) {
+    if (user?.profilePhoto) {
+      setProfilePhoto(user.profilePhoto);
+    } else if (user?.email) {
+      // Check localStorage for legacy photos
       const savedPhoto = localStorage.getItem(`profile_photo_${user.email}`);
       if (savedPhoto) {
         setProfilePhoto(savedPhoto);
+        // Migrate from localStorage to database
+        fetch('/api/profile-photo', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ photoData: savedPhoto }),
+        }).then(() => {
+          // Remove from localStorage after successful migration
+          localStorage.removeItem(`profile_photo_${user.email}`);
+        }).catch(console.error);
       }
     }
-  }, [user?.email]);
+  }, [user]);
 
   const copyPermanentId = () => {
     if (permanentBroadcastId) {

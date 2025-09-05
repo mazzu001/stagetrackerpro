@@ -102,6 +102,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Profile photo upload endpoint
+  app.put('/api/profile-photo', isAuthenticated, async (req: any, res) => {
+    try {
+      const { photoData } = req.body;
+      const userEmail = req.user.claims.email;
+      
+      if (!photoData || !userEmail) {
+        return res.status(400).json({ message: "Missing photo data or user email" });
+      }
+
+      const updatedUser = await storage.updateUserProfilePhoto(userEmail, photoData);
+      
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json({ message: "Profile photo updated successfully", user: updatedUser });
+    } catch (error) {
+      console.error("Error updating profile photo:", error);
+      res.status(500).json({ message: "Failed to update profile photo" });
+    }
+  });
+
   // Email/password authentication endpoints for frontend
   app.post('/api/auth/register', async (req, res) => {
     try {

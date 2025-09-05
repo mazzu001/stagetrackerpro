@@ -41,6 +41,9 @@ export interface IStorage {
   // User subscription management
   getAllUsersWithSubscriptions(): Promise<User[]>;
   updateUserSubscription(userId: string, data: { subscriptionStatus: number; subscriptionEndDate: string | null }): Promise<void>;
+  
+  // Profile photo management
+  updateUserProfilePhoto(email: string, photoData: string): Promise<User | undefined>;
 
   // Legacy methods for compatibility (no-op in database mode)
   getAllData(): any;
@@ -98,6 +101,25 @@ export class DatabaseStorage implements IStorage {
       console.log(`✅ Updated subscription for user ${userId}: status=${data.subscriptionStatus}`);
     } catch (error) {
       console.error(`❌ Error updating subscription for user ${userId}:`, error);
+      throw error;
+    }
+  }
+
+  async updateUserProfilePhoto(email: string, photoData: string): Promise<User | undefined> {
+    try {
+      const [user] = await db
+        .update(users)
+        .set({
+          profilePhoto: photoData,
+          updatedAt: new Date(),
+        })
+        .where(eq(users.email, email))
+        .returning();
+      
+      console.log(`✅ Updated profile photo for user: ${email}`);
+      return user;
+    } catch (error) {
+      console.error(`❌ Error updating profile photo for ${email}:`, error);
       throw error;
     }
   }

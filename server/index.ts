@@ -120,13 +120,29 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Add early health check endpoint for deployment verification
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development',
-    version: '1.0.0'
-  });
+app.get('/health', async (req, res) => {
+  try {
+    // Import database health check
+    const { dbHealthCheck } = await import('./db');
+    const dbStatus = await dbHealthCheck();
+    
+    res.json({ 
+      status: dbStatus.status === 'healthy' ? 'ok' : 'degraded',
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development',
+      version: '1.0.0',
+      database: dbStatus
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      status: 'error',
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV || 'development',
+      version: '1.0.0',
+      database: { status: 'unhealthy', error: error.message },
+      error: 'Health check failed'
+    });
+  }
 });
 
 // Add startup status endpoint for deployment debugging
@@ -628,12 +644,20 @@ process.on('uncaughtException', (error) => {
   });
   
   // Provide specific guidance based on error type
-  if (error.message.includes('ECONNREFUSED')) {
+  if (error.message.includes('terminating connection due to administrator command') ||
+      error.message.includes('connection terminated') ||
+      error.message.includes('Connection terminated unexpectedly')) {
+    console.error('💡 Database connection terminated by provider - this is likely a temporary issue');
+    console.error('🔧 The database manager will attempt automatic reconnection');
+    console.error('🔍 If this persists, check your Neon/PostgreSQL provider status');
+  } else if (error.message.includes('ECONNREFUSED')) {
     console.error('💡 Database connection refused - check DATABASE_URL and database availability');
   } else if (error.message.includes('MODULE_NOT_FOUND')) {
     console.error('💡 Missing dependency - ensure all packages are properly installed');
   } else if (error.message.includes('permission') || error.message.includes('EACCES')) {
     console.error('💡 Permission error - check file system permissions');
+  } else if (error.message.includes('Pool') || error.message.includes('database')) {
+    console.error('💡 Database-related error - check connection string and database status');
   }
   
   // For deployment environments, attempt graceful shutdown with timeout

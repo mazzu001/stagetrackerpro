@@ -368,10 +368,25 @@ export default function Dashboard() {
             <div className="lg:col-span-2">
               <Card className="h-fit">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <User className="h-5 w-5" />
-                    User Profile
-                  </CardTitle>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2">
+                      <User className="h-5 w-5" />
+                      User Profile
+                    </CardTitle>
+                    <div className="flex items-center gap-2">
+                      {user.userType === 'professional' ? (
+                        <>
+                          <Crown className="h-4 w-4 text-yellow-500" />
+                          <Badge variant="secondary">Professional</Badge>
+                        </>
+                      ) : (
+                        <>
+                          <User className="h-4 w-4" />
+                          <Badge variant="secondary">{user.userType || 'Free'}</Badge>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   {/* Profile Photo & Basic Info */}
@@ -385,19 +400,6 @@ export default function Dashboard() {
                     <div className="flex-1 space-y-2">
                       <div>
                         <h3 className="text-lg font-semibold">{user.email}</h3>
-                        <div className="flex items-center gap-2 mt-1 text-left ml-[77px] mr-[77px]">
-                          {user.userType === 'professional' ? (
-                            <>
-                              <Crown className="h-4 w-4 text-yellow-500" />
-                              <Badge variant="secondary">Professional</Badge>
-                            </>
-                          ) : (
-                            <>
-                              <User className="h-4 w-4" />
-                              <Badge variant="secondary">{user.userType || 'Free'}</Badge>
-                            </>
-                          )}
-                        </div>
                       </div>
                       <Button
                         variant="outline"

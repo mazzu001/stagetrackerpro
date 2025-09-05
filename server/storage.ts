@@ -44,7 +44,7 @@ export interface IStorage {
   
   // Profile photo management
   updateUserProfilePhoto(email: string, photoData: string): Promise<User | undefined>;
-  updateUserProfile(email: string, profileData: { firstName?: string; lastName?: string; phone?: string }): Promise<User | undefined>;
+  updateUserProfile(email: string, profileData: { firstName?: string; lastName?: string; phone?: string; customBroadcastId?: string }): Promise<User | undefined>;
 
   // Legacy methods for compatibility (no-op in database mode)
   getAllData(): any;
@@ -125,7 +125,7 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  async updateUserProfile(email: string, profileData: { firstName?: string; lastName?: string; phone?: string }): Promise<User | undefined> {
+  async updateUserProfile(email: string, profileData: { firstName?: string; lastName?: string; phone?: string; customBroadcastId?: string }): Promise<User | undefined> {
     try {
       const updateData: any = {
         updatedAt: new Date(),
@@ -134,6 +134,7 @@ export class DatabaseStorage implements IStorage {
       if (profileData.firstName !== undefined) updateData.firstName = profileData.firstName;
       if (profileData.lastName !== undefined) updateData.lastName = profileData.lastName;
       if (profileData.phone !== undefined) updateData.phone = profileData.phone;
+      if (profileData.customBroadcastId !== undefined) updateData.customBroadcastId = profileData.customBroadcastId;
 
       const [user] = await db
         .update(users)

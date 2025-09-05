@@ -35,7 +35,8 @@ export default function Dashboard() {
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
-    phone: ''
+    phone: '',
+    customBroadcastId: ''
   });
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   
@@ -44,13 +45,28 @@ export default function Dashboard() {
   const [editValues, setEditValues] = useState({
     firstName: '',
     lastName: '',
-    phone: ''
+    phone: '',
+    customBroadcastId: ''
   });
   
-  // Generate permanent broadcast ID for professional users
-  const permanentBroadcastId = user?.userType === 'professional' 
-    ? `PRO-${user.email.split('@')[0].toUpperCase().substring(0, 6)}-${user.email.length}${Date.now().toString().slice(-3)}`
-    : null;
+  // Generate display broadcast ID based on custom ID or fallback
+  const getBroadcastId = () => {
+    // Use custom ID if set
+    if (profileData.customBroadcastId) {
+      return profileData.customBroadcastId;
+    }
+    // Generate fallback for professional users
+    if (user?.userType === 'professional') {
+      return `PRO-${user.email.split('@')[0].toUpperCase().substring(0, 6)}-${user.email.length}${Date.now().toString().slice(-3)}`;
+    }
+    return null;
+  };
+
+  const displayBroadcastId = getBroadcastId();
+  
+  // Determine broadcast permissions
+  const canBroadcast = user?.userType === 'professional';
+  const canJoin = user?.userType === 'premium' || user?.userType === 'professional';
 
   // Load profile photo and user data when component mounts
   useEffect(() => {
@@ -76,7 +92,8 @@ export default function Dashboard() {
             const newProfileData = {
               firstName: userData.firstName || '',
               lastName: userData.lastName || '',
-              phone: userData.phone || ''
+              phone: userData.phone || '',
+              customBroadcastId: userData.customBroadcastId || ''
             };
             setProfileData(newProfileData);
             setEditValues(newProfileData);
@@ -133,6 +150,16 @@ export default function Dashboard() {
   const handleStartBroadcast = async () => {
     if (!user || !broadcastName.trim()) return;
     
+    // Check if user has permission to broadcast
+    if (!canBroadcast) {
+      toast({
+        title: "Permission Denied",
+        description: "Only Professional users can start broadcasts. Upgrade to Professional to broadcast.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsStarting(true);
     try {
       const roomId = await startBroadcast(user.email, user.email, broadcastName);
@@ -153,6 +180,16 @@ export default function Dashboard() {
 
   const handleJoinBroadcast = async () => {
     if (!user || !roomIdToJoin.trim()) return;
+    
+    // Check if user has permission to join
+    if (!canJoin) {
+      toast({
+        title: "Permission Denied",
+        description: "Only Premium and Professional users can join broadcasts. Upgrade to Premium to join broadcasts.",
+        variant: "destructive"
+      });
+      return;
+    }
     
     setIsJoining(true);
     try {
@@ -301,7 +338,8 @@ export default function Dashboard() {
     setEditValues({
       firstName: profileData.firstName,
       lastName: profileData.lastName,
-      phone: profileData.phone
+      phone: profileData.phone,
+      customBroadcastId: profileData.customBroadcastId
     });
   };
 
@@ -353,7 +391,8 @@ export default function Dashboard() {
     setEditValues({
       firstName: profileData.firstName,
       lastName: profileData.lastName,
-      phone: profileData.phone
+      phone: profileData.phone,
+      customBroadcastId: profileData.customBroadcastId
     });
   };
 
@@ -417,8 +456,8 @@ export default function Dashboard() {
   }, [user]);
 
   const copyPermanentId = () => {
-    if (permanentBroadcastId) {
-      navigator.clipboard.writeText(permanentBroadcastId);
+    if (displayBroadcastId) {
+      navigator.clipboard.writeText(displayBroadcastId);
       toast({
         title: "ID Copied!",
         description: "Your permanent broadcast ID has been copied to clipboard."
@@ -532,64 +571,96 @@ export default function Dashboard() {
             {/* Left Column - Broadcast Controls */}
             <div className="lg:col-span-1 space-y-4">
               {/* Start Broadcast */}
-              <Card>
+              <Card className={!canBroadcast ? 'opacity-60' : ''}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Cast className="h-5 w-5" />
                     Start Broadcasting
+                    {!canBroadcast && <Badge variant="outline" className="text-xs">Professional Only</Badge>}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-sm text-gray-400">
-                    Share your performance screen with band members in real-time
+                    {canBroadcast 
+                      ? "Share your performance screen with band members in real-time"
+                      : "Upgrade to Professional to start broadcasts"
+                    }
                   </p>
-                  <div>
-                    <Label htmlFor="broadcast-name">Broadcast Name</Label>
-                    <Input
-                      id="broadcast-name"
-                      placeholder="Tonight's Show"
-                      value={broadcastName}
-                      onChange={(e) => setBroadcastName(e.target.value)}
-                    />
-                  </div>
-                  <Button 
-                    onClick={handleStartBroadcast}
-                    disabled={!broadcastName.trim() || isStarting}
-                    className="w-full"
-                  >
-                    {isStarting ? 'Starting...' : 'Start Broadcasting'}
-                  </Button>
+                  {canBroadcast ? (
+                    <>
+                      <div>
+                        <Label htmlFor="broadcast-name">Broadcast Name</Label>
+                        <Input
+                          id="broadcast-name"
+                          placeholder={displayBroadcastId ? `${displayBroadcastId} Show` : "Tonight's Show"}
+                          value={broadcastName}
+                          onChange={(e) => setBroadcastName(e.target.value)}
+                        />
+                      </div>
+                      <Button 
+                        onClick={handleStartBroadcast}
+                        disabled={!broadcastName.trim() || isStarting}
+                        className="w-full"
+                      >
+                        {isStarting ? 'Starting...' : 'Start Broadcasting'}
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      onClick={() => window.location.href = '/subscribe'}
+                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                    >
+                      <Crown className="h-4 w-4 mr-2" />
+                      Upgrade to Professional
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
 
               {/* Join Broadcast */}
-              <Card>
+              <Card className={!canJoin ? 'opacity-60' : ''}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Radio className="h-5 w-5" />
                     Join Broadcast
+                    {!canJoin && <Badge variant="outline" className="text-xs">Premium+</Badge>}
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-sm text-gray-400">
-                    Enter a Room ID to view someone else's performance
+                    {canJoin 
+                      ? "Enter a Room ID to view someone else's performance"
+                      : "Upgrade to Premium to join broadcasts"
+                    }
                   </p>
-                  <div>
-                    <Label htmlFor="room-id">Room ID</Label>
-                    <Input
-                      id="room-id"
-                      placeholder="STAGE-ABC123"
-                      value={roomIdToJoin}
-                      onChange={(e) => setRoomIdToJoin(e.target.value.toUpperCase())}
-                    />
-                  </div>
-                  <Button 
-                    onClick={handleJoinBroadcast}
-                    disabled={!roomIdToJoin.trim() || isJoining}
-                    className="w-full"
-                  >
-                    {isJoining ? 'Joining...' : 'Join Broadcast'}
-                  </Button>
+                  {canJoin ? (
+                    <>
+                      <div>
+                        <Label htmlFor="room-id">Room ID</Label>
+                        <Input
+                          id="room-id"
+                          placeholder="STAGE-ABC123"
+                          value={roomIdToJoin}
+                          onChange={(e) => setRoomIdToJoin(e.target.value.toUpperCase())}
+                        />
+                      </div>
+                      <Button 
+                        onClick={handleJoinBroadcast}
+                        disabled={!roomIdToJoin.trim() || isJoining}
+                        className="w-full"
+                      >
+                        {isJoining ? 'Joining...' : 'Join Broadcast'}
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      onClick={() => window.location.href = '/subscribe'}
+                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                    >
+                      <Crown className="h-4 w-4 mr-2" />
+                      Upgrade to Premium
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </div>
@@ -791,15 +862,67 @@ export default function Dashboard() {
                         </div>
                       )}
                     </div>
+
+                    {/* Custom Broadcast ID - Premium and Professional users */}
+                    {(user?.userType === 'premium' || user?.userType === 'professional') && (
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Custom Broadcast ID</Label>
+                        {editingField === 'customBroadcastId' ? (
+                          <div className="flex items-center gap-2 mt-1">
+                            <Input
+                              value={editValues.customBroadcastId}
+                              onChange={(e) => {
+                                // Format: letters, numbers, hyphens only, max 20 chars
+                                const value = e.target.value.replace(/[^a-zA-Z0-9-]/g, '').substring(0, 20);
+                                setEditValues(prev => ({ ...prev, customBroadcastId: value }));
+                              }}
+                              className="h-8 text-sm flex-1"
+                              placeholder="MY-SHOW-2025"
+                              autoFocus
+                              maxLength={20}
+                            />
+                            <Button 
+                              size="sm" 
+                              onClick={() => handleFieldSave('customBroadcastId')}
+                              disabled={isUpdatingProfile}
+                              className="h-8 px-2"
+                            >
+                              ✓
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={handleFieldCancel}
+                              className="h-8 px-2"
+                            >
+                              ✕
+                            </Button>
+                          </div>
+                        ) : (
+                          <div 
+                            onClick={() => handleFieldEdit('customBroadcastId')}
+                            className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
+                          >
+                            <span className="text-sm">
+                              {profileData.customBroadcastId || 'Click to set your broadcast ID'}
+                            </span>
+                            {!profileData.customBroadcastId && <span className="text-muted-foreground text-sm ml-2">✎</span>}
+                          </div>
+                        )}
+                        <div className="text-xs text-muted-foreground mt-1">
+                          Others will use this ID to join your broadcasts
+                        </div>
+                      </div>
+                    )}
                   </div>
 
-                  {/* Permanent Broadcast ID - Professional Users Only */}
-                  {permanentBroadcastId && (
+                  {/* Broadcast ID Section */}
+                  {displayBroadcastId && (
                     <div className="bg-muted/30 p-4 rounded-lg">
-                      <Label className="text-sm font-medium">Permanent Broadcast ID</Label>
+                      <Label className="text-sm font-medium">Your Broadcast ID</Label>
                       <div className="flex items-center gap-2 mt-2">
                         <code className="bg-background px-3 py-1 rounded text-sm flex-1 font-mono">
-                          {permanentBroadcastId}
+                          {displayBroadcastId}
                         </code>
                         <Button
                           size="sm"

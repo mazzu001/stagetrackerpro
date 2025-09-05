@@ -81,6 +81,8 @@ export const users = pgTable("users", {
   phone: varchar("phone"),
   profileImageUrl: varchar("profile_image_url"),
   profilePhoto: pgText("profile_photo"), // Base64 encoded image data
+  userType: varchar("user_type"), // free, premium, professional
+  customBroadcastId: varchar("custom_broadcast_id", { length: 50 }), // User's custom broadcast ID
   subscriptionStatus: pgInteger("subscription_status").default(1), // 1 = free, 2 = premium, 3 = professional
   stripeCustomerId: varchar("stripe_customer_id"),
   stripeSubscriptionId: varchar("stripe_subscription_id"),

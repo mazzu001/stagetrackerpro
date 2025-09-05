@@ -169,7 +169,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Update user profile endpoint (works with both local and Replit auth)
   app.put('/api/profile', async (req: any, res) => {
     try {
-      const { firstName, lastName, phone, userEmail } = req.body;
+      const { firstName, lastName, phone, customBroadcastId, userEmail } = req.body;
       
       // For local auth, email comes from request body
       // For Replit auth, email comes from session
@@ -182,7 +182,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "Missing user email" });
       }
 
-      const updatedUser = await storage.updateUserProfile(email, { firstName, lastName, phone });
+      const updatedUser = await storage.updateUserProfile(email, { firstName, lastName, phone, customBroadcastId });
       
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });

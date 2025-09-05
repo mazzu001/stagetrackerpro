@@ -6,6 +6,7 @@ import { storage } from "./storage";
 import { insertSongSchema, insertTrackSchema } from "@shared/schema";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { subscriptionManager } from "./subscriptionManager";
+import { setupBroadcastServer } from "./broadcast-server";
 // MIDI functionality removed
 import Stripe from "stripe";
 import multer from "multer";
@@ -1658,6 +1659,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log('🌐 Creating HTTP server...');
   const httpServer = createServer(app);
   console.log('✅ HTTP server created successfully');
+
+  // Setup broadcast WebSocket server
+  console.log('📡 Setting up broadcast server...');
+  setupBroadcastServer(httpServer);
+  console.log('✅ Broadcast server initialized');
 
   // MIDI WebSocket functionality has been completely removed
   console.log('🎯 Route registration completed successfully');

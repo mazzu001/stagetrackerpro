@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb, Volume2, Download, Upload, FolderOpen } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb, Volume2, Download, Upload, FolderOpen, Cast } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
@@ -32,6 +32,7 @@ import { USBMidiManager } from "@/components/USBMidiManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
+import { useBroadcast } from "@/hooks/useBroadcast";
 
 interface PerformanceProps {
   userType: UserType;
@@ -73,6 +74,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isExportDialogOpen, setIsExportDialogOpen] = useState(false);
   const [exportFilename, setExportFilename] = useState("");
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Optional broadcast integration - completely isolated
+  const { isHost, sendPerformanceState } = useBroadcast();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
 
@@ -981,6 +985,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setLocation('/dashboard')} data-testid="menuitem-dashboard">
+                  <Cast className="h-4 w-4 mr-2" />
+                  Dashboard
+                </DropdownMenuItem>
+                
+                <DropdownMenuSeparator />
+                
                 <DropdownMenuItem onClick={() => window.open('https://www.youtube.com/channel/UCV6QdegSAG-YgxvXoFTsRVw', '_blank')} data-testid="menuitem-youtube-tutorials">
                   <ExternalLink className="h-4 w-4 mr-2" />
                   YouTube Tutorials

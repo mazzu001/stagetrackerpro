@@ -628,88 +628,91 @@ export default function Dashboard() {
 
                   {/* Profile Information - Inline Editing */}
                   <div className="space-y-3">
-                    {/* First Name */}
-                    <div>
-                      <Label className="text-xs text-muted-foreground">First Name</Label>
-                      {editingField === 'firstName' ? (
-                        <div className="flex items-center gap-2 mt-1">
-                          <Input
-                            value={editValues.firstName}
-                            onChange={(e) => setEditValues(prev => ({ ...prev, firstName: e.target.value }))}
-                            className="h-8 text-sm flex-1"
-                            placeholder="Enter first name"
-                            autoFocus
-                          />
-                          <Button 
-                            size="sm" 
-                            onClick={() => handleFieldSave('firstName')}
-                            disabled={isUpdatingProfile}
-                            className="h-8 px-2"
+                    {/* First & Last Name Row */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* First Name */}
+                      <div>
+                        <Label className="text-xs text-muted-foreground">First Name</Label>
+                        {editingField === 'firstName' ? (
+                          <div className="flex items-center gap-1 mt-1">
+                            <Input
+                              value={editValues.firstName}
+                              onChange={(e) => setEditValues(prev => ({ ...prev, firstName: e.target.value }))}
+                              className="h-8 text-sm flex-1"
+                              placeholder="Enter first name"
+                              autoFocus
+                            />
+                            <Button 
+                              size="sm" 
+                              onClick={() => handleFieldSave('firstName')}
+                              disabled={isUpdatingProfile}
+                              className="h-8 px-1.5"
+                            >
+                              ✓
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={handleFieldCancel}
+                              className="h-8 px-1.5"
+                            >
+                              ✕
+                            </Button>
+                          </div>
+                        ) : (
+                          <div 
+                            onClick={() => handleFieldEdit('firstName')}
+                            className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
                           >
-                            ✓
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            onClick={handleFieldCancel}
-                            className="h-8 px-2"
-                          >
-                            ✕
-                          </Button>
-                        </div>
-                      ) : (
-                        <div 
-                          onClick={() => handleFieldEdit('firstName')}
-                          className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
-                        >
-                          <span className="text-sm">
-                            {profileData.firstName || 'Click to add first name'}
-                          </span>
-                          {!profileData.firstName && <span className="text-muted-foreground text-sm ml-2">✎</span>}
-                        </div>
-                      )}
-                    </div>
+                            <span className="text-sm">
+                              {profileData.firstName || 'Click to add first name'}
+                            </span>
+                            {!profileData.firstName && <span className="text-muted-foreground text-sm ml-2">✎</span>}
+                          </div>
+                        )}
+                      </div>
 
-                    {/* Last Name */}
-                    <div>
-                      <Label className="text-xs text-muted-foreground">Last Name</Label>
-                      {editingField === 'lastName' ? (
-                        <div className="flex items-center gap-2 mt-1">
-                          <Input
-                            value={editValues.lastName}
-                            onChange={(e) => setEditValues(prev => ({ ...prev, lastName: e.target.value }))}
-                            className="h-8 text-sm flex-1"
-                            placeholder="Enter last name"
-                            autoFocus
-                          />
-                          <Button 
-                            size="sm" 
-                            onClick={() => handleFieldSave('lastName')}
-                            disabled={isUpdatingProfile}
-                            className="h-8 px-2"
+                      {/* Last Name */}
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Last Name</Label>
+                        {editingField === 'lastName' ? (
+                          <div className="flex items-center gap-1 mt-1">
+                            <Input
+                              value={editValues.lastName}
+                              onChange={(e) => setEditValues(prev => ({ ...prev, lastName: e.target.value }))}
+                              className="h-8 text-sm flex-1"
+                              placeholder="Enter last name"
+                              autoFocus
+                            />
+                            <Button 
+                              size="sm" 
+                              onClick={() => handleFieldSave('lastName')}
+                              disabled={isUpdatingProfile}
+                              className="h-8 px-1.5"
+                            >
+                              ✓
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={handleFieldCancel}
+                              className="h-8 px-1.5"
+                            >
+                              ✕
+                            </Button>
+                          </div>
+                        ) : (
+                          <div 
+                            onClick={() => handleFieldEdit('lastName')}
+                            className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
                           >
-                            ✓
-                          </Button>
-                          <Button 
-                            size="sm" 
-                            variant="outline" 
-                            onClick={handleFieldCancel}
-                            className="h-8 px-2"
-                          >
-                            ✕
-                          </Button>
-                        </div>
-                      ) : (
-                        <div 
-                          onClick={() => handleFieldEdit('lastName')}
-                          className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
-                        >
-                          <span className="text-sm">
-                            {profileData.lastName || 'Click to add last name'}
-                          </span>
-                          {!profileData.lastName && <span className="text-muted-foreground text-sm ml-2">✎</span>}
-                        </div>
-                      )}
+                            <span className="text-sm">
+                              {profileData.lastName || 'Click to add last name'}
+                            </span>
+                            {!profileData.lastName && <span className="text-muted-foreground text-sm ml-2">✎</span>}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     {/* Phone */}

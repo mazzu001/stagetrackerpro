@@ -11,6 +11,7 @@ export function useBroadcast() {
   useEffect(() => {
     // Subscribe to broadcast updates (viewer mode)
     const unsubscribeState = broadcastService.onStateChange((state) => {
+      console.log('📺 useBroadcast received state update:', state);
       setBroadcastState(state);
       setIsViewer(true);
       setIsHost(false);

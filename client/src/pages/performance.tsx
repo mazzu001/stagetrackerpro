@@ -77,6 +77,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Optional broadcast integration - completely isolated
   const { isHost, isViewer, broadcastState, sendPerformanceState, currentRoom } = useBroadcast();
+  
+  // Debug broadcast state changes
+  useEffect(() => {
+    if (broadcastState) {
+      console.log('📺 Performance page received broadcast state:', broadcastState);
+    }
+  }, [broadcastState]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
 

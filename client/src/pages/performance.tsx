@@ -79,9 +79,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const { isHost, isViewer, broadcastState, sendPerformanceState, currentRoom } = useBroadcast();
   
   // Debug broadcast state changes
+  const [debugMessage, setDebugMessage] = useState('');
   useEffect(() => {
     if (broadcastState) {
       console.log('📺 Performance page received broadcast state:', broadcastState);
+      setDebugMessage(`📺 Received: ${broadcastState.songTitle || 'Unknown'} - Playing: ${broadcastState.isPlaying ? 'Yes' : 'No'} - Position: ${Math.round(broadcastState.position)}s`);
+      
+      // Clear debug message after 3 seconds
+      setTimeout(() => setDebugMessage(''), 3000);
     }
   }, [broadcastState]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -1440,6 +1445,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             isViewer={isViewer}
             currentRoom={currentRoom?.name || null}
           />
+          
+          {/* Visual Debug Indicator for Broadcast State (only show for viewers) */}
+          {isViewer && debugMessage && (
+            <div className="fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 max-w-sm text-sm">
+              {debugMessage}
+            </div>
+          )}
           
           
         </div>

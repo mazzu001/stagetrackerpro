@@ -96,11 +96,29 @@ export default function Dashboard() {
 
   const handlePhotoUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.type.startsWith('image/')) {
-      setIsUploadingPhoto(true);
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const result = e.target?.result as string;
+    if (!file || !file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file",
+        description: "Please select a valid image file.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Check file size (limit to 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please select an image smaller than 5MB.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsUploadingPhoto(true);
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const result = e.target?.result as string;
         
         try {
           // Save to database instead of localStorage
@@ -130,19 +148,12 @@ export default function Dashboard() {
           setIsUploadingPhoto(false);
           toast({
             title: "Upload failed",
-            description: "Failed to save your profile photo. Please try again.",
+            description: "Failed to save your profile photo. Try a smaller image or check your connection.",
             variant: "destructive"
           });
         }
       };
       reader.readAsDataURL(file);
-    } else {
-      toast({
-        title: "Invalid file",
-        description: "Please select a valid image file.",
-        variant: "destructive"
-      });
-    }
   };
 
   // Load profile photo from user data

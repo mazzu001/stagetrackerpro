@@ -74,33 +74,61 @@ export class BackupManager {
         tracks: [] // Reset tracks, will be rebuilt during import
       };
       
-      songsFolder.file(`${newSongId}.json`, JSON.stringify(songData, null, 2));
+      songsFolder.file(`${newSongId}.json`, JSON.stringify(songData, null, 2), {
+        compression: "DEFLATE",
+        compressionOptions: { level: 6 }
+      });
 
       // Process tracks for this song
       for (const track of song.tracks) {
         const newTrackId = crypto.randomUUID();
         totalTracks++;
         
-        trackMappings.push({
-          originalId: track.id,
-          newId: newTrackId,
-          name: track.name,
-          fileName: `${newTrackId}.audio`
-        });
-
-        // Get audio file data from browser storage
         try {
+          // Get audio file data from browser storage first to determine proper extension
           const audioUrl = await browserFS.getAudioUrl(track.id);
+          let fileExtension = '.mp3'; // Default fallback
+          
           if (audioUrl) {
             // Fetch the audio data
             const response = await fetch(audioUrl);
             const audioBlob = await response.blob();
             
-            // Store in zip with new ID
-            audioFolder.file(`${newTrackId}.audio`, audioBlob);
-            console.log(`✅ Exported audio for track: ${track.name}`);
+            // Determine proper file extension from MIME type
+            if (audioBlob.type.includes('mp3') || audioBlob.type.includes('mpeg')) {
+              fileExtension = '.mp3';
+            } else if (audioBlob.type.includes('wav')) {
+              fileExtension = '.wav';
+            } else if (audioBlob.type.includes('m4a') || audioBlob.type.includes('aac')) {
+              fileExtension = '.m4a';
+            } else if (audioBlob.type.includes('ogg')) {
+              fileExtension = '.ogg';
+            }
+            
+            const fileName = `${newTrackId}${fileExtension}`;
+            
+            trackMappings.push({
+              originalId: track.id,
+              newId: newTrackId,
+              name: track.name,
+              fileName: fileName
+            });
+            
+            // Store in zip with proper extension and compression
+            audioFolder.file(fileName, audioBlob, {
+              compression: "DEFLATE",
+              compressionOptions: { level: 6 }
+            });
+            console.log(`✅ Exported audio for track: ${track.name} as ${fileName}`);
           } else {
             console.warn(`⚠️ No audio data found for track: ${track.name}`);
+            // Still add to mappings but without audio file
+            trackMappings.push({
+              originalId: track.id,
+              newId: newTrackId,
+              name: track.name,
+              fileName: `${newTrackId}${fileExtension}`
+            });
           }
         } catch (error) {
           console.error(`❌ Failed to export audio for track ${track.name}:`, error);
@@ -118,7 +146,10 @@ export class BackupManager {
       // Export waveform data if it exists
       const waveformData = waveformGenerator.getCachedWaveform(song.id);
       if (waveformData && waveformData.length > 0) {
-        waveformsFolder.file(`${newSongId}.json`, JSON.stringify(waveformData));
+        waveformsFolder.file(`${newSongId}.json`, JSON.stringify(waveformData), {
+          compression: "DEFLATE",
+          compressionOptions: { level: 6 }
+        });
         console.log(`📈 Exported waveform for: ${song.title}`);
       }
     }
@@ -134,14 +165,20 @@ export class BackupManager {
       songs: manifestSongs
     };
 
-    zip.file('manifest.json', JSON.stringify(manifest, null, 2));
+    zip.file('manifest.json', JSON.stringify(manifest, null, 2), {
+      compression: "DEFLATE",
+      compressionOptions: { level: 6 }
+    });
 
     console.log(`✅ Backup complete: ${songs.length} songs, ${totalTracks} tracks`);
     
-    // Generate zip file with explicit MIME type for Android compatibility
+    // Generate zip file with Android-compatible settings
     return await zip.generateAsync({ 
       type: 'blob',
-      mimeType: 'application/zip'
+      mimeType: 'application/zip',
+      compression: "DEFLATE",
+      compressionOptions: { level: 6 },
+      platform: "UNIX" // Better Android compatibility
     });
   }
 

@@ -168,11 +168,12 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         // Master levels now come in 0-100 range directly from streaming engine
         setMasterStereoLevels(masterLevels);
         
-        // Debug logging occasionally to verify VU meter data flow
-        if (Math.random() < 0.01 && isPlaying) { // Log when playing
+        // Always log VU meter data flow for debugging
+        if (isPlaying) {
           const trackCount = Object.keys(levels).length;
           const nonZeroTracks = Object.values(levels).filter(l => l > 0).length;
-          console.log(`🎛️ VU Data: ${nonZeroTracks}/${trackCount} tracks active, master: L=${masterLevels.left.toFixed(1)}, R=${masterLevels.right.toFixed(1)}`);
+          console.log(`🎛️ VU HOOK: ${nonZeroTracks}/${trackCount} tracks active, master: L=${masterLevels.left.toFixed(1)}, R=${masterLevels.right.toFixed(1)}`);
+          console.log(`🎛️ VU HOOK levels:`, levels);
         }
         
         

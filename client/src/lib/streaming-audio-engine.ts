@@ -437,12 +437,16 @@ export class StreamingAudioEngine {
   getTrackLevels(trackId: string): { left: number; right: number } {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (!track) {
+      console.log(`🎛️ DEBUG: Track not found: ${trackId}`);
       return { left: 0, right: 0 };
     }
 
     this.ensureTrackAudioNodes(track);
     
+    console.log(`🎛️ DEBUG: Track ${track.name} - analyzer: ${!!track.analyzerNode}, isPlaying: ${this.state.isPlaying}`);
+    
     if (!track.analyzerNode || !this.state.isPlaying) {
+      console.log(`🎛️ DEBUG: Returning zeros - analyzer: ${!!track.analyzerNode}, isPlaying: ${this.state.isPlaying}`);
       return { left: 0, right: 0 };
     }
 
@@ -479,10 +483,8 @@ export class StreamingAudioEngine {
     const leftLevel = Math.max(0, Math.min(100, average + variation));
     const rightLevel = Math.max(0, Math.min(100, average - variation));
     
-    // Debug logging occasionally
-    if (Math.random() < 0.001) { // Very occasional logging
-      console.log(`🎛️ Track ${track.id.slice(0,8)} levels: L=${leftLevel.toFixed(1)}, R=${rightLevel.toFixed(1)}, raw=${rawAverage.toFixed(3)}`);
-    }
+    // Always log for debugging VU meters
+    console.log(`🎛️ DEBUG: Track ${track.name} levels: L=${leftLevel.toFixed(1)}, R=${rightLevel.toFixed(1)}, raw=${rawAverage.toFixed(3)}, dataSum=${sum.toFixed(1)}`);
     
     return { left: leftLevel, right: rightLevel };
   }

@@ -135,6 +135,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get profile photo endpoint (works with both local and Replit auth)
+  app.get('/api/profile-photo', async (req: any, res) => {
+    try {
+      // For local auth, email comes from query params
+      // For Replit auth, email comes from session
+      let email = req.query.email;
+      if (!email && req.user?.claims?.email) {
+        email = req.user.claims.email;
+      }
+      
+      if (!email) {
+        return res.status(400).json({ message: "Missing user email" });
+      }
+
+      const user = await storage.getUserByEmail(email);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json({ profilePhoto: user.profilePhoto || null });
+    } catch (error) {
+      console.error('Error getting profile photo:', error);
+      res.status(500).json({ message: 'Failed to get profile photo' });
+    }
+  });
+
   // Email/password authentication endpoints for frontend
   app.post('/api/auth/register', async (req, res) => {
     try {

@@ -36,6 +36,29 @@ export default function Dashboard() {
     ? `PRO-${user.email.split('@')[0].toUpperCase().substring(0, 6)}-${user.email.length}${Date.now().toString().slice(-3)}`
     : null;
 
+  // Load profile photo when component mounts
+  useEffect(() => {
+    const loadProfilePhoto = async () => {
+      if (!user?.email) return;
+      
+      try {
+        const response = await fetch(`/api/profile-photo?email=${encodeURIComponent(user.email)}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setProfilePhoto(data.profilePhoto);
+        }
+      } catch (error) {
+        console.error('Error loading profile photo:', error);
+      }
+    };
+
+    loadProfilePhoto();
+  }, [user?.email]);
+
   const handleStartBroadcast = async () => {
     if (!user || !broadcastName.trim()) return;
     

@@ -67,6 +67,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isMidiListening, setIsMidiListening] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [isExportDialogOpen, setIsExportDialogOpen] = useState(false);
+  const [exportFilename, setExportFilename] = useState("");
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -175,8 +177,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
-  // Export all data as zip file
-  const handleExportData = async () => {
+  // Show export dialog with filename input
+  const handleExportData = () => {
     if (!user?.email) {
       toast({
         title: "Export Failed",
@@ -186,8 +188,22 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       return;
     }
 
+    // Generate default filename suggestion
+    const timestamp = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    const userPrefix = user.email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '');
+    const defaultName = `stagetracker-backup-${userPrefix}-${timestamp}`;
+    setExportFilename(defaultName);
+    setIsExportDialogOpen(true);
+  };
+
+  // Actually perform the export with custom filename
+  const performExport = async () => {
+    if (!user?.email || !exportFilename.trim()) return;
+
     try {
       setIsExporting(true);
+      setIsExportDialogOpen(false);
+      
       const backupManager = BackupManager.getInstance();
       const zipBlob = await backupManager.exportAllData(user.email);
       
@@ -197,8 +213,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       const link = document.createElement('a');
       link.href = url;
       
-      // Generate Android-friendly filename
-      const filename = BackupManager.generateBackupFilename(user.email);
+      // Use custom filename, ensure .zip extension
+      let filename = exportFilename.trim();
+      if (!filename.toLowerCase().endsWith('.zip')) {
+        filename += '.zip';
+      }
       link.download = filename;
       
       // Better mobile download handling
@@ -219,7 +238,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       
       toast({
         title: "Export Complete",
-        description: "Your music library has been exported successfully",
+        description: `Your music library has been exported as "${filename}"`,
       });
     } catch (error) {
       console.error('Export failed:', error);
@@ -1532,6 +1551,60 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Export Filename Dialog */}
+      <Dialog open={isExportDialogOpen} onOpenChange={setIsExportDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Export Music Library</DialogTitle>
+            <p className="text-sm text-muted-foreground">
+              Choose a name for your backup file
+            </p>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="export-filename">Filename</Label>
+              <Input
+                id="export-filename"
+                value={exportFilename}
+                onChange={(e) => setExportFilename(e.target.value)}
+                placeholder="Enter filename..."
+                className="mt-1"
+                data-testid="input-export-filename"
+              />
+              <p className="text-xs text-muted-foreground mt-1">
+                .zip extension will be added automatically
+              </p>
+            </div>
+            <div className="flex justify-end space-x-2">
+              <Button
+                variant="outline"
+                onClick={() => setIsExportDialogOpen(false)}
+                data-testid="button-cancel-export"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={performExport}
+                disabled={!exportFilename.trim() || isExporting}
+                data-testid="button-confirm-export"
+              >
+                {isExporting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Exporting...
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-4 w-4 mr-2" />
+                    Export
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Hidden file input for import */}
       <input

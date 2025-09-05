@@ -1446,12 +1446,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             currentRoom={currentRoom?.name || null}
           />
           
-          {/* Visual Debug Indicator for Broadcast State (only show for viewers) */}
-          {isViewer && debugMessage && (
-            <div className="fixed top-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 max-w-sm text-sm">
-              {debugMessage}
-            </div>
-          )}
           
           
         </div>

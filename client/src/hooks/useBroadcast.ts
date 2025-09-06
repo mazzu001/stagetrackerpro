@@ -130,25 +130,27 @@ export function useBroadcast() {
     currentLyricLine?: string;
     waveformProgress: number;
   }) => {
-    console.log('🎭 sendPerformanceState called:', { isHost, currentState });
-    console.log('🎭 isHost value check:', { 
-      isHost, 
-      typeOfIsHost: typeof isHost, 
-      isHostEqualsTrue: isHost === true,
-      isHostDoubleEquals: isHost == true,
-      isHostBoolean: Boolean(isHost)
+    // Always check the actual service state, not just the hook state
+    const actualIsHost = broadcastService.getIsHost();
+    const actualConnected = broadcastService.getIsConnected();
+    
+    console.log('🎭 sendPerformanceState called:', { 
+      hookIsHost: isHost, 
+      serviceIsHost: actualIsHost,
+      serviceConnected: actualConnected,
+      currentState 
     });
     
-    if (isHost) {
+    if (actualIsHost && actualConnected) {
       console.log('🎭 About to call broadcastService.sendState with:', currentState);
       broadcastService.sendState(currentState);
       console.log('🎭 Finished calling broadcastService.sendState');
     } else {
-      console.log('🎭 Not sending - not host:', { 
-        isHost, 
-        reason: 'isHost condition failed',
-        actualValue: isHost,
-        actualType: typeof isHost
+      console.log('🎭 Not sending - service state check failed:', { 
+        hookIsHost: isHost,
+        serviceIsHost: actualIsHost,
+        serviceConnected: actualConnected,
+        reason: !actualIsHost ? 'Service not host' : 'Service not connected'
       });
     }
   }, [isHost]);

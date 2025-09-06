@@ -125,7 +125,9 @@ export function useBroadcast() {
   }) => {
     console.log('🎭 sendPerformanceState called:', { isHost, currentState });
     if (isHost) {
+      console.log('🎭 About to call broadcastService.sendState with:', currentState);
       broadcastService.sendState(currentState);
+      console.log('🎭 Finished calling broadcastService.sendState');
     } else {
       console.log('🎭 Not sending - not host:', { isHost });
     }

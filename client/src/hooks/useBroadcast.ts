@@ -27,7 +27,13 @@ export function useBroadcast() {
     });
 
     // Check initial state
-    setIsHost(broadcastService.getIsHost());
+    const serviceIsHost = broadcastService.getIsHost();
+    console.log('🔍 Initial service isHost check:', { 
+      serviceIsHost, 
+      serviceConnected: broadcastService.getIsConnected(),
+      serviceRoomId: broadcastService.getRoomId()
+    });
+    setIsHost(serviceIsHost);
     
     // Check for fallback broadcast in localStorage (for cross-device consistency)
     const fallbackBroadcast = localStorage.getItem('fallback_broadcast');
@@ -40,6 +46,7 @@ export function useBroadcast() {
         // Only restore if less than 24 hours old
         if (now - broadcastData.timestamp < 24 * 60 * 60 * 1000) {
           console.log('🎭 Restored fallback broadcast from localStorage:', broadcastData);
+          console.log('🎭 Setting isHost to true via fallback broadcast restore');
           setIsHost(true);
           setCurrentRoom({
             id: broadcastData.roomId,

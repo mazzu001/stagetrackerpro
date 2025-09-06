@@ -21,6 +21,13 @@ interface BroadcastState {
   waveformProgress: number;
 }
 
+interface ParsedLyricLine {
+  text: string;
+  timestamp: number; // in seconds
+  isCurrent: boolean;
+  isPast: boolean;
+}
+
 export default function SimpleBroadcastViewer() {
   const [, setLocation] = useLocation();
   const [isConnected, setIsConnected] = useState(false);
@@ -31,6 +38,58 @@ export default function SimpleBroadcastViewer() {
 
   // Get broadcast ID from URL
   const broadcastId = new URLSearchParams(window.location.search).get('id') || 'Matt';
+
+  // Parse lyrics with timestamps for karaoke highlighting
+  const parseLyricsWithTimestamps = (lyricsText: string, currentPosition: number): ParsedLyricLine[] => {
+    const lines = lyricsText.split('\n');
+    const parsedLines: ParsedLyricLine[] = [];
+    
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      
+      // Parse timestamp [MM:SS] or [M:SS]
+      const timestampMatch = trimmed.match(/^\[(\d{1,2}):(\d{2})\]/);
+      if (timestampMatch) {
+        const minutes = parseInt(timestampMatch[1]);
+        const seconds = parseInt(timestampMatch[2]);
+        const timestamp = minutes * 60 + seconds;
+        
+        // Remove timestamp and MIDI commands from display text
+        const text = trimmed
+          .replace(/^\[(\d{1,2}):(\d{2})\]/, '')
+          .replace(/\[\[[^\]]+\]\]/g, '')
+          .trim();
+        
+        if (text) {
+          parsedLines.push({
+            text,
+            timestamp,
+            isCurrent: currentPosition >= timestamp && (parsedLines.length === 0 || currentPosition < (parsedLines[parsedLines.length - 1]?.timestamp + 4)),
+            isPast: currentPosition > timestamp + 4
+          });
+        }
+      }
+    }
+    
+    // Determine current line more accurately
+    let currentLineIndex = -1;
+    for (let i = 0; i < parsedLines.length; i++) {
+      if (currentPosition >= parsedLines[i].timestamp) {
+        currentLineIndex = i;
+      } else {
+        break;
+      }
+    }
+    
+    // Update isCurrent flags
+    parsedLines.forEach((line, index) => {
+      line.isCurrent = index === currentLineIndex;
+      line.isPast = index < currentLineIndex;
+    });
+    
+    return parsedLines;
+  };
 
   useEffect(() => {
     // Simple WebSocket connection - no complex service layer
@@ -178,15 +237,28 @@ export default function SimpleBroadcastViewer() {
               </div>
             )}
 
-            {/* Full Lyrics */}
+            {/* Karaoke-Style Lyrics */}
             {currentSong.lyrics && (
               <div className="bg-black/20 rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center">
                   <Volume2 className="mr-2 h-5 w-5" />
                   Lyrics
                 </h3>
-                <div className="text-gray-300 leading-relaxed whitespace-pre-line">
-                  {currentSong.lyrics}
+                <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {parseLyricsWithTimestamps(currentSong.lyrics, broadcastState?.position || 0).map((line, index) => (
+                    <div
+                      key={index}
+                      className={`transition-all duration-300 p-2 rounded ${
+                        line.isCurrent 
+                          ? 'bg-blue-500/30 text-white text-lg font-semibold scale-105' 
+                          : line.isPast 
+                          ? 'text-gray-400 opacity-70' 
+                          : 'text-gray-300'
+                      }`}
+                    >
+                      {line.text}
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

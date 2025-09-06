@@ -1938,6 +1938,132 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ================================
+  // SUPER SIMPLE BROADCAST SYSTEM - Pure SQL approach
+  // ================================
+  
+  // 1. Broadcaster starts a broadcast (creates table entry)
+  app.post('/api/simple-broadcast/:name/start', async (req, res) => {
+    try {
+      const { name } = req.params;
+      const { hostEmail } = req.body;
+      
+      // Simple SQL: Insert or update broadcast session
+      const [session] = await db.insert(broadcastSessions)
+        .values({
+          id: name,
+          name: name,
+          hostEmail: hostEmail,
+          isActive: true,
+        })
+        .onConflictDoUpdate({
+          target: broadcastSessions.id,
+          set: {
+            hostEmail: hostEmail,
+            isActive: true,
+            updatedAt: new Date(),
+          },
+        })
+        .returning();
+      
+      console.log(`🎯 Simple broadcast started: ${name} by ${hostEmail}`);
+      res.json({ success: true, session });
+    } catch (error) {
+      console.error('Error starting simple broadcast:', error);
+      res.status(500).json({ error: 'Failed to start broadcast' });
+    }
+  });
+
+  // 2. Broadcaster selects a song (creates song entry with unique ID)
+  app.post('/api/simple-broadcast/:name/song', async (req, res) => {
+    try {
+      const { name } = req.params;
+      const { songTitle, artistName, lyrics, waveformData } = req.body;
+      
+      // Simple SQL: Insert song entry
+      const [song] = await db.insert(broadcastSongs)
+        .values({
+          broadcastId: name,
+          songTitle,
+          artistName,
+          lyrics,
+          waveformData,
+          position: 0,
+          isPlaying: false,
+        })
+        .returning();
+      
+      // Simple SQL: Update broadcast to point to this song
+      await db.update(broadcastSessions)
+        .set({ currentSongId: song.id })
+        .where(eq(broadcastSessions.id, name));
+      
+      console.log(`🎵 Simple song selected: ${songTitle} (ID: ${song.id}) for broadcast ${name}`);
+      res.json({ success: true, songId: song.id, song });
+    } catch (error) {
+      console.error('Error selecting simple song:', error);
+      res.status(500).json({ error: 'Failed to select song' });
+    }
+  });
+
+  // 3. Listeners get current song data (simple SQL query)
+  app.get('/api/simple-broadcast/:name/current', async (req, res) => {
+    try {
+      const { name } = req.params;
+      
+      // Simple SQL: Get current song ID from broadcast session
+      const [session] = await db.select()
+        .from(broadcastSessions)
+        .where(eq(broadcastSessions.id, name))
+        .limit(1);
+      
+      if (!session || !session.currentSongId) {
+        return res.json({ song: null });
+      }
+      
+      // Simple SQL: Get current song data
+      const [song] = await db.select()
+        .from(broadcastSongs)
+        .where(eq(broadcastSongs.id, session.currentSongId))
+        .limit(1);
+      
+      console.log(`📺 Listener requested current song for ${name}: ${song?.songTitle || 'none'}`);
+      res.json({ song: song || null });
+    } catch (error) {
+      console.error('Error getting simple current song:', error);
+      res.status(500).json({ error: 'Failed to get current song' });
+    }
+  });
+
+  // 4. Update playback position (simple SQL update)
+  app.put('/api/simple-broadcast/:name/position', async (req, res) => {
+    try {
+      const { name } = req.params;
+      const { position, isPlaying } = req.body;
+      
+      // Simple SQL: Get current song ID
+      const [session] = await db.select()
+        .from(broadcastSessions)
+        .where(eq(broadcastSessions.id, name))
+        .limit(1);
+      
+      if (!session?.currentSongId) {
+        return res.status(404).json({ error: 'No current song' });
+      }
+      
+      // Simple SQL: Update position and playing state
+      await db.update(broadcastSongs)
+        .set({ position, isPlaying })
+        .where(eq(broadcastSongs.id, session.currentSongId));
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error updating simple position:', error);
+      res.status(500).json({ error: 'Failed to update position' });
+    }
+  });
+
+  console.log('🎯 Simple broadcast API registered - Pure SQL approach!');
   console.log('📡 Registering broadcast session routes...');
   console.log('🗄️ Registering database storage routes...');
   console.log('🎵 Registering song management routes...');

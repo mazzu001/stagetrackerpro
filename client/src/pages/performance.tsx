@@ -485,12 +485,18 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       
       if (response.ok) {
         const result = await response.json();
+        console.log('🔍 Full API response:', result);
+        console.log('🔍 Songs array:', result.songs);
+        if (result.songs && result.songs[0]) {
+          console.log('🔍 First song object:', result.songs[0]);
+        }
+        
         const entryId = result.songs?.[0]?.id;
         if (entryId) {
           setSongEntryId(entryId);
           console.log(`✅ Song uploaded to database with entry ID: ${entryId}`);
         } else {
-          console.log('⚠️ Song uploaded but no entry ID returned:', result);
+          console.log('⚠️ Song uploaded but no entry ID returned. Full result:', JSON.stringify(result, null, 2));
         }
       }
     } catch (error) {

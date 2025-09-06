@@ -55,6 +55,11 @@ export default function SimpleBroadcastViewer() {
     socket.onmessage = async (event) => {
       const message = JSON.parse(event.data);
       console.log('📺 Simple viewer received:', message);
+      console.log('📺 Message type:', message.type);
+      if (message.state) {
+        console.log('📺 State details:', message.state);
+        console.log('📺 songEntryId in state:', message.state.songEntryId);
+      }
 
       if (message.type === 'room_info') {
         setRoomInfo(message.room);

@@ -104,6 +104,18 @@ export default function Landing() {
             >
               Already Have an Account? Sign In
             </Button>
+            
+            <div className="border-t border-slate-700 pt-4">
+              <Button 
+                onClick={() => window.open('/demo-info', '_blank')}
+                variant="ghost"
+                className="w-full text-yellow-400 hover:bg-yellow-400/10 border border-yellow-400/30"
+                size="lg"
+                data-testid="button-demo-info"
+              >
+                🎬 YouTuber Demo Account Info
+              </Button>
+            </div>
 
           </CardContent>
         </Card>

@@ -23,6 +23,7 @@ import SubscribeTest from "@/pages/subscribe-test";
 import Plans from "@/pages/plans";
 import Landing from "@/pages/landing";
 import Unsubscribe from "@/pages/unsubscribe";
+import DemoInfo from "@/pages/demo-info";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
@@ -165,32 +166,40 @@ function AppContent() {
 
   return (
     <TooltipProvider>
-      {!isAuthenticated ? (
-        <Landing />
-      ) : !isLocalFSReady ? (
-        <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
-      ) : (
-        <Router>
-          <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
-          <Route path="/broadcast-viewer-old" component={BroadcastViewer} />
-          <Route path="/simple-broadcaster" component={SimpleBroadcaster} />
-          <Route path="/simple-listener" component={SimpleListener} />
-          <Route path="/ultra-simple-broadcaster" component={UltraSimpleBroadcaster} />
-          <Route path="/ultra-simple-listener" component={UltraSimpleListener} />
-          <Route path="/streaming-demo" component={StreamingDemo} />
-          <Route path="/subscribe" component={SubscribeRedirect} />
-          <Route path="/subscribe-fixed" component={SubscribeFixed} />
-          <Route path="/subscribe-test-elements" component={SubscribeElementsTest} />
-          <Route path="/subscribe-debug" component={SubscribeDebug} />
-          <Route path="/subscribe-simple" component={SubscribeSimple} />
-          <Route path="/subscribe-old" component={Subscribe} />
-          <Route path="/subscribe-test" component={SubscribeTest} />
-          <Route path="/plans" component={Plans} />
-          <Route path="/unsubscribe" component={Unsubscribe} />
-        </Router>
-      )}
+      <Router>
+        {/* Public routes accessible without authentication */}
+        <Route path="/demo-info" component={DemoInfo} />
+        
+        {/* Protected routes requiring authentication */}
+        <Route>
+          {!isAuthenticated ? (
+            <Landing />
+          ) : !isLocalFSReady ? (
+            <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
+          ) : (
+            <>
+              <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
+              <Route path="/dashboard" component={Dashboard} />
+              <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
+              <Route path="/broadcast-viewer-old" component={BroadcastViewer} />
+              <Route path="/simple-broadcaster" component={SimpleBroadcaster} />
+              <Route path="/simple-listener" component={SimpleListener} />
+              <Route path="/ultra-simple-broadcaster" component={UltraSimpleBroadcaster} />
+              <Route path="/ultra-simple-listener" component={UltraSimpleListener} />
+              <Route path="/streaming-demo" component={StreamingDemo} />
+              <Route path="/subscribe" component={SubscribeRedirect} />
+              <Route path="/subscribe-fixed" component={SubscribeFixed} />
+              <Route path="/subscribe-test-elements" component={SubscribeElementsTest} />
+              <Route path="/subscribe-debug" component={SubscribeDebug} />
+              <Route path="/subscribe-simple" component={SubscribeSimple} />
+              <Route path="/subscribe-old" component={Subscribe} />
+              <Route path="/subscribe-test" component={SubscribeTest} />
+              <Route path="/plans" component={Plans} />
+              <Route path="/unsubscribe" component={Unsubscribe} />
+            </>
+          )}
+        </Route>
+      </Router>
       <Toaster />
     </TooltipProvider>
   );

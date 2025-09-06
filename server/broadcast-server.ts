@@ -14,15 +14,12 @@ interface BroadcastRoom {
 
 interface BroadcastState {
   currentSong?: string;
-  songTitle?: string;
+  songEntryId?: string; // Database ID of the broadcast song entry
   position: number;
   isPlaying: boolean;
   currentLyricLine?: string;
   waveformProgress: number;
-  // Send lyrics text and metadata to viewers
-  lyrics?: string;
-  artist?: string;
-  duration?: number;
+  // Removed full song data - viewers fetch from database using songEntryId
 }
 
 class BroadcastServer {

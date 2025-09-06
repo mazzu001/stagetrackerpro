@@ -106,5 +106,21 @@ export const broadcastSessions = pgTable("broadcast_sessions", {
   lastActivity: timestamp("last_activity").defaultNow(),
 });
 
+// Broadcast songs table - stores all song data for each broadcast session  
+export const broadcastSongs = pgTable("broadcast_songs", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`), // Unique ID for this song entry
+  broadcastId: varchar("broadcast_id").notNull(), // References broadcast_sessions.id
+  songId: varchar("song_id").notNull(), // Local song ID from host's library
+  songTitle: varchar("song_title").notNull(),
+  artistName: varchar("artist_name"),
+  duration: pgInteger("duration"), // Duration in seconds
+  lyrics: pgText("lyrics"), // Timestamped lyrics  
+  waveformData: jsonb("waveform_data"), // Waveform visualization data
+  trackCount: pgInteger("track_count").default(1),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export type BroadcastSession = typeof broadcastSessions.$inferSelect;
 export type InsertBroadcastSession = typeof broadcastSessions.$inferInsert;
+export type BroadcastSong = typeof broadcastSongs.$inferSelect;
+export type InsertBroadcastSong = typeof broadcastSongs.$inferInsert;

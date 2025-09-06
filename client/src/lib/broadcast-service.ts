@@ -1,15 +1,12 @@
 // Simple broadcast service - completely isolated from existing code
 export interface BroadcastState {
   currentSong?: string;
-  songTitle?: string;
+  songEntryId?: string; // Database ID of the broadcast song entry
   position: number; // seconds
   isPlaying: boolean;
   currentLyricLine?: string;
   waveformProgress: number; // 0-1
-  // Send lyrics text and metadata to viewers
-  lyrics?: string;
-  artist?: string;
-  duration?: number;
+  // Removed full song data - viewers fetch from database using songEntryId
 }
 
 export interface BroadcastRoom {
@@ -67,6 +64,25 @@ class BroadcastService {
       }
       
       console.log('📡 Database session created successfully');
+      
+      // Upload all songs from local library to database for this broadcast
+      console.log(`🎵 Uploading songs for broadcast: ${broadcastName}`);
+      const songs = JSON.parse(localStorage.getItem('songs') || '[]');
+      if (songs.length > 0) {
+        const songsResponse = await fetch(`/api/broadcast/${roomId}/songs`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ songs })
+        });
+        
+        if (songsResponse.ok) {
+          console.log(`✅ Uploaded ${songs.length} songs to database for broadcast`);
+        } else {
+          console.warn('⚠️ Failed to upload songs, continuing without them');
+        }
+      } else {
+        console.log('⚠️ No songs found in local library to upload');
+      }
       
       // Then establish WebSocket connection  
       return new Promise((resolve, reject) => {

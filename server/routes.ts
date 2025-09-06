@@ -3,7 +3,7 @@ import express from "express";
 import { createServer, type Server } from "http";
 import bcrypt from "bcrypt";
 import { storage } from "./storage";
-import { insertSongSchema, insertTrackSchema, broadcastSessions } from "@shared/schema";
+import { insertSongSchema, insertTrackSchema, broadcastSessions, broadcastSongs } from "@shared/schema";
 import { eq, sql } from "drizzle-orm";
 import { db } from "./db";
 import { setupAuth, isAuthenticated } from "./replitAuth";
@@ -1839,16 +1839,98 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { sessionId } = req.params;
       
+      // First clean up all songs associated with this broadcast
+      const deletedSongs = await db.delete(broadcastSongs)
+        .where(eq(broadcastSongs.broadcastId, sessionId))
+        .returning();
+      
+      console.log(`🗑️ Cleaned up ${deletedSongs.length} songs for broadcast ${sessionId}`);
+      
+      // Then mark the broadcast session as inactive
       await db
         .update(broadcastSessions)
         .set({ isActive: false })
         .where(eq(broadcastSessions.id, sessionId));
         
       console.log(`📡 Ended broadcast session: ${sessionId}`);
-      res.json({ success: true, message: 'Broadcast session ended' });
+      res.json({ 
+        success: true, 
+        message: 'Broadcast session ended', 
+        deletedSongs: deletedSongs.length 
+      });
     } catch (error) {
       console.error('Failed to end broadcast session:', error);
       res.status(500).json({ error: 'Failed to end broadcast session' });
+    }
+  });
+
+  // Upload songs for a broadcast session
+  app.post('/api/broadcast/:broadcastId/songs', async (req, res) => {
+    try {
+      const { broadcastId } = req.params;
+      const { songs } = req.body; // Array of song data from local library
+      
+      if (!Array.isArray(songs)) {
+        return res.status(400).json({ error: 'Songs must be an array' });
+      }
+      
+      // Insert all songs for this broadcast
+      const insertedSongs = [];
+      for (const songData of songs) {
+        const [insertedSong] = await db.insert(broadcastSongs).values({
+          broadcastId,
+          songId: songData.id,
+          songTitle: songData.title,
+          artistName: songData.artist,
+          duration: songData.duration,
+          lyrics: songData.lyrics,
+          waveformData: songData.waveformData ? JSON.parse(songData.waveformData) : null,
+          trackCount: songData.trackCount || 1
+        }).returning();
+        
+        insertedSongs.push(insertedSong);
+      }
+      
+      console.log(`📡 Uploaded ${insertedSongs.length} songs for broadcast ${broadcastId}`);
+      res.json({ success: true, count: insertedSongs.length, songs: insertedSongs });
+    } catch (error) {
+      console.error('Error uploading broadcast songs:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  // Get song data by entry ID  
+  app.get('/api/broadcast/song/:songEntryId', async (req, res) => {
+    try {
+      const { songEntryId } = req.params;
+      const [song] = await db.select().from(broadcastSongs)
+        .where(eq(broadcastSongs.id, songEntryId))
+        .limit(1);
+      
+      if (!song) {
+        return res.status(404).json({ error: 'Song not found' });
+      }
+      
+      res.json({ song });
+    } catch (error) {
+      console.error('Error fetching broadcast song:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  // Clean up all songs for a broadcast (when broadcast ends)
+  app.delete('/api/broadcast/:broadcastId/songs', async (req, res) => {
+    try {
+      const { broadcastId } = req.params;
+      const deletedSongs = await db.delete(broadcastSongs)
+        .where(eq(broadcastSongs.broadcastId, broadcastId))
+        .returning();
+      
+      console.log(`🗑️ Cleaned up ${deletedSongs.length} songs for broadcast ${broadcastId}`);
+      res.json({ success: true, deletedCount: deletedSongs.length });
+    } catch (error) {
+      console.error('Error cleaning up broadcast songs:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
   });
 

@@ -1,0 +1,130 @@
+Console.js:61 🎵 Loading song: Cherry Bomb
+Console.js:61 📡 Not uploading to database: {isHost: true, hasCurrentRoom: false, roomId: undefined}
+Console.js:61 🔍 Debug values: {selectedSongId: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', userEmail: 'professional@demo.com', isHost: true, currentRoomId: undefined, hasSelectedSongId: true, …}
+ 🎭 Broadcast host effect: {isHost: true, selectedSong: true, selectedSongId: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songTitle: '3 AM', hasLyrics: true}
+ 🎭 Broadcasting performance state: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: '3 AM', position: 0, isPlaying: false, …}
+ 🎭 sendPerformanceState called: {hookIsHost: true, serviceIsHost: true, serviceConnected: true, currentState: {…}}
+ 🎭 About to call broadcastService.sendState with: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: '3 AM', position: 0, isPlaying: false, …}
+ 📡 Broadcasting state to viewers: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: '3 AM', position: 0, isPlaying: false, …}
+ 🎭 Finished calling broadcastService.sendState
+ Loading cached waveform for "Cherry Bomb" (400 data points)
+ 🔄 Resetting processed timestamps - Song changed to: Cherry Bomb
+ Song selected: "Cherry Bomb" with 5 tracks - loading for streaming
+ Setting up streaming for: "Cherry Bomb" - UI stays responsive
+ 🔍 Requesting audio URL for track: 9f1f20f6-cb8b-44f6-adfb-5a1d0519c604
+ 📂 Available audio files (29): (29) ['8d40351a-99cf-40f6-9495-51ea5bd7ee4d', '19bc7d3e-d54c-41aa-8579-94432fbbe315', 'b940a11e-0f16-49a1-a3ad-ff3108629e57', 'ff07365b-0758-48a5-96e4-5d4406eb82d7', '5c781265-6e39-485a-8562-8eef92ab2eb0', 'f8d6d53e-ad93-4068-b160-92480a91b6b3', '47de9edd-40f3-453f-b0da-fa549781fa4a', 'fa547ada-4c5d-4867-899c-ca3c15344ac7', 'c9c3854b-a4f6-4f19-a9ec-59d682af31ba', '3a0ccbed-b712-41ab-8a19-ab694de45f10', '79353001-c7ba-4638-b9db-98617eb6503a', '7116f959-3790-46da-856e-81b6caf1d034', 'c95e9295-e1eb-426b-8ada-dca64e3f39ea', '2993924b-bea3-4e51-a3be-683ab8c58f82', 'b9669ebc-880a-48d8-a4bc-eafc1244f212', '97144b32-2617-4b91-abd9-e7c4d04513b1', 'fdb70fc0-93b4-457a-846f-73af2d319292', 'fe6ebb33-de14-47a4-be94-916cd6c91ef0', 'b171ec5e-fe86-4372-8334-09517de2eb80', 'f92f1199-8495-415c-b9c9-3f62f6342044', 'dee650b0-f697-40f8-ad19-3570b1c2612f', '4d319c49-b3c1-40d3-b37c-a821ba1694d3', 'ba50d327-7b2f-438c-af36-a2446ac6cd2b', 'dfd4e4a8-f0c4-4ca4-b0fb-405aefd5db26', 'ccfd0d5a-7f2d-44aa-97e2-32a76933d906', '513e2143-d5d5-44cf-8f05-2f6dd92deef9', 'd46d5800-1e18-47dd-ae33-8de7b96d8229', 'f3e3f635-ce7f-480d-9f37-c56fdf940400', '0fa4f882-a9fc-4a59-a32a-c354b1832656']
+ 💾 Memory cache files (0): []
+ 🔍 BrowserFS.getAudioFile: Looking for track 9f1f20f6-cb8b-44f6-adfb-5a1d0519c604
+ 💾 Memory cache has: [7cb8e9a6-96ca-4421-9338-9325a1d5dd9d, 1e204789-c47d-4044-829b-ee69791a8daa, 4e112d69-8810-4e2a-9c0d-c167d963c90d, 63be6d14-e695-419f-8004-cb1b4ce32c1c, ca4c9590-9baa-4aa7-9dc1-ee4383265988, 41fba77b-a08e-4fbf-940d-1233d4f94be9]
+Console.js:61 🗃️ Database initialized: true
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 9f1f20f6-cb8b-44f6-adfb-5a1d0519c604
+Console.js:61 🔍 Requesting audio URL for track: 2a8c0394-5aaf-4d01-88c0-d5ed25307800
+Console.js:61 📂 Available audio files (29): (29) ['8d40351a-99cf-40f6-9495-51ea5bd7ee4d', '19bc7d3e-d54c-41aa-8579-94432fbbe315', 'b940a11e-0f16-49a1-a3ad-ff3108629e57', 'ff07365b-0758-48a5-96e4-5d4406eb82d7', '5c781265-6e39-485a-8562-8eef92ab2eb0', 'f8d6d53e-ad93-4068-b160-92480a91b6b3', '47de9edd-40f3-453f-b0da-fa549781fa4a', 'fa547ada-4c5d-4867-899c-ca3c15344ac7', 'c9c3854b-a4f6-4f19-a9ec-59d682af31ba', '3a0ccbed-b712-41ab-8a19-ab694de45f10', '79353001-c7ba-4638-b9db-98617eb6503a', '7116f959-3790-46da-856e-81b6caf1d034', 'c95e9295-e1eb-426b-8ada-dca64e3f39ea', '2993924b-bea3-4e51-a3be-683ab8c58f82', 'b9669ebc-880a-48d8-a4bc-eafc1244f212', '97144b32-2617-4b91-abd9-e7c4d04513b1', 'fdb70fc0-93b4-457a-846f-73af2d319292', 'fe6ebb33-de14-47a4-be94-916cd6c91ef0', 'b171ec5e-fe86-4372-8334-09517de2eb80', 'f92f1199-8495-415c-b9c9-3f62f6342044', 'dee650b0-f697-40f8-ad19-3570b1c2612f', '4d319c49-b3c1-40d3-b37c-a821ba1694d3', 'ba50d327-7b2f-438c-af36-a2446ac6cd2b', 'dfd4e4a8-f0c4-4ca4-b0fb-405aefd5db26', 'ccfd0d5a-7f2d-44aa-97e2-32a76933d906', '513e2143-d5d5-44cf-8f05-2f6dd92deef9', 'd46d5800-1e18-47dd-ae33-8de7b96d8229', 'f3e3f635-ce7f-480d-9f37-c56fdf940400', '0fa4f882-a9fc-4a59-a32a-c354b1832656']
+Console.js:61 💾 Memory cache files (0): []
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 2a8c0394-5aaf-4d01-88c0-d5ed25307800
+Console.js:61 💾 Memory cache has: [7cb8e9a6-96ca-4421-9338-9325a1d5dd9d, 1e204789-c47d-4044-829b-ee69791a8daa, 4e112d69-8810-4e2a-9c0d-c167d963c90d, 63be6d14-e695-419f-8004-cb1b4ce32c1c, ca4c9590-9baa-4aa7-9dc1-ee4383265988, 41fba77b-a08e-4fbf-940d-1233d4f94be9]
+Console.js:61 🗃️ Database initialized: true
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 2a8c0394-5aaf-4d01-88c0-d5ed25307800
+Console.js:61 🔍 Requesting audio URL for track: 9402716f-3e0a-4326-8f78-56d4a9178636
+Console.js:61 📂 Available audio files (29): (29) ['8d40351a-99cf-40f6-9495-51ea5bd7ee4d', '19bc7d3e-d54c-41aa-8579-94432fbbe315', 'b940a11e-0f16-49a1-a3ad-ff3108629e57', 'ff07365b-0758-48a5-96e4-5d4406eb82d7', '5c781265-6e39-485a-8562-8eef92ab2eb0', 'f8d6d53e-ad93-4068-b160-92480a91b6b3', '47de9edd-40f3-453f-b0da-fa549781fa4a', 'fa547ada-4c5d-4867-899c-ca3c15344ac7', 'c9c3854b-a4f6-4f19-a9ec-59d682af31ba', '3a0ccbed-b712-41ab-8a19-ab694de45f10', '79353001-c7ba-4638-b9db-98617eb6503a', '7116f959-3790-46da-856e-81b6caf1d034', 'c95e9295-e1eb-426b-8ada-dca64e3f39ea', '2993924b-bea3-4e51-a3be-683ab8c58f82', 'b9669ebc-880a-48d8-a4bc-eafc1244f212', '97144b32-2617-4b91-abd9-e7c4d04513b1', 'fdb70fc0-93b4-457a-846f-73af2d319292', 'fe6ebb33-de14-47a4-be94-916cd6c91ef0', 'b171ec5e-fe86-4372-8334-09517de2eb80', 'f92f1199-8495-415c-b9c9-3f62f6342044', 'dee650b0-f697-40f8-ad19-3570b1c2612f', '4d319c49-b3c1-40d3-b37c-a821ba1694d3', 'ba50d327-7b2f-438c-af36-a2446ac6cd2b', 'dfd4e4a8-f0c4-4ca4-b0fb-405aefd5db26', 'ccfd0d5a-7f2d-44aa-97e2-32a76933d906', '513e2143-d5d5-44cf-8f05-2f6dd92deef9', 'd46d5800-1e18-47dd-ae33-8de7b96d8229', 'f3e3f635-ce7f-480d-9f37-c56fdf940400', '0fa4f882-a9fc-4a59-a32a-c354b1832656']
+Console.js:61 💾 Memory cache files (0): []
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 9402716f-3e0a-4326-8f78-56d4a9178636
+Console.js:61 💾 Memory cache has: [7cb8e9a6-96ca-4421-9338-9325a1d5dd9d, 1e204789-c47d-4044-829b-ee69791a8daa, 4e112d69-8810-4e2a-9c0d-c167d963c90d, 63be6d14-e695-419f-8004-cb1b4ce32c1c, ca4c9590-9baa-4aa7-9dc1-ee4383265988, 41fba77b-a08e-4fbf-940d-1233d4f94be9]
+Console.js:61 🗃️ Database initialized: true
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 9402716f-3e0a-4326-8f78-56d4a9178636
+Console.js:61 🔍 Requesting audio URL for track: c69186bb-5604-4259-9f24-924b8b8ee620
+Console.js:61 📂 Available audio files (29): (29) ['8d40351a-99cf-40f6-9495-51ea5bd7ee4d', '19bc7d3e-d54c-41aa-8579-94432fbbe315', 'b940a11e-0f16-49a1-a3ad-ff3108629e57', 'ff07365b-0758-48a5-96e4-5d4406eb82d7', '5c781265-6e39-485a-8562-8eef92ab2eb0', 'f8d6d53e-ad93-4068-b160-92480a91b6b3', '47de9edd-40f3-453f-b0da-fa549781fa4a', 'fa547ada-4c5d-4867-899c-ca3c15344ac7', 'c9c3854b-a4f6-4f19-a9ec-59d682af31ba', '3a0ccbed-b712-41ab-8a19-ab694de45f10', '79353001-c7ba-4638-b9db-98617eb6503a', '7116f959-3790-46da-856e-81b6caf1d034', 'c95e9295-e1eb-426b-8ada-dca64e3f39ea', '2993924b-bea3-4e51-a3be-683ab8c58f82', 'b9669ebc-880a-48d8-a4bc-eafc1244f212', '97144b32-2617-4b91-abd9-e7c4d04513b1', 'fdb70fc0-93b4-457a-846f-73af2d319292', 'fe6ebb33-de14-47a4-be94-916cd6c91ef0', 'b171ec5e-fe86-4372-8334-09517de2eb80', 'f92f1199-8495-415c-b9c9-3f62f6342044', 'dee650b0-f697-40f8-ad19-3570b1c2612f', '4d319c49-b3c1-40d3-b37c-a821ba1694d3', 'ba50d327-7b2f-438c-af36-a2446ac6cd2b', 'dfd4e4a8-f0c4-4ca4-b0fb-405aefd5db26', 'ccfd0d5a-7f2d-44aa-97e2-32a76933d906', '513e2143-d5d5-44cf-8f05-2f6dd92deef9', 'd46d5800-1e18-47dd-ae33-8de7b96d8229', 'f3e3f635-ce7f-480d-9f37-c56fdf940400', '0fa4f882-a9fc-4a59-a32a-c354b1832656']
+Console.js:61 💾 Memory cache files (0): []
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track c69186bb-5604-4259-9f24-924b8b8ee620
+Console.js:61 💾 Memory cache has: [7cb8e9a6-96ca-4421-9338-9325a1d5dd9d, 1e204789-c47d-4044-829b-ee69791a8daa, 4e112d69-8810-4e2a-9c0d-c167d963c90d, 63be6d14-e695-419f-8004-cb1b4ce32c1c, ca4c9590-9baa-4aa7-9dc1-ee4383265988, 41fba77b-a08e-4fbf-940d-1233d4f94be9]
+Console.js:61 🗃️ Database initialized: true
+Console.js:61 💾 Not in memory cache, checking IndexedDB for c69186bb-5604-4259-9f24-924b8b8ee620
+Console.js:61 🔍 Requesting audio URL for track: 52eb6d16-a239-4575-9947-ee573a781560
+Console.js:61 📂 Available audio files (29): (29) ['8d40351a-99cf-40f6-9495-51ea5bd7ee4d', '19bc7d3e-d54c-41aa-8579-94432fbbe315', 'b940a11e-0f16-49a1-a3ad-ff3108629e57', 'ff07365b-0758-48a5-96e4-5d4406eb82d7', '5c781265-6e39-485a-8562-8eef92ab2eb0', 'f8d6d53e-ad93-4068-b160-92480a91b6b3', '47de9edd-40f3-453f-b0da-fa549781fa4a', 'fa547ada-4c5d-4867-899c-ca3c15344ac7', 'c9c3854b-a4f6-4f19-a9ec-59d682af31ba', '3a0ccbed-b712-41ab-8a19-ab694de45f10', '79353001-c7ba-4638-b9db-98617eb6503a', '7116f959-3790-46da-856e-81b6caf1d034', 'c95e9295-e1eb-426b-8ada-dca64e3f39ea', '2993924b-bea3-4e51-a3be-683ab8c58f82', 'b9669ebc-880a-48d8-a4bc-eafc1244f212', '97144b32-2617-4b91-abd9-e7c4d04513b1', 'fdb70fc0-93b4-457a-846f-73af2d319292', 'fe6ebb33-de14-47a4-be94-916cd6c91ef0', 'b171ec5e-fe86-4372-8334-09517de2eb80', 'f92f1199-8495-415c-b9c9-3f62f6342044', 'dee650b0-f697-40f8-ad19-3570b1c2612f', '4d319c49-b3c1-40d3-b37c-a821ba1694d3', 'ba50d327-7b2f-438c-af36-a2446ac6cd2b', 'dfd4e4a8-f0c4-4ca4-b0fb-405aefd5db26', 'ccfd0d5a-7f2d-44aa-97e2-32a76933d906', '513e2143-d5d5-44cf-8f05-2f6dd92deef9', 'd46d5800-1e18-47dd-ae33-8de7b96d8229', 'f3e3f635-ce7f-480d-9f37-c56fdf940400', '0fa4f882-a9fc-4a59-a32a-c354b1832656']
+Console.js:61 💾 Memory cache files (0): []
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 52eb6d16-a239-4575-9947-ee573a781560
+Console.js:61 💾 Memory cache has: [7cb8e9a6-96ca-4421-9338-9325a1d5dd9d, 1e204789-c47d-4044-829b-ee69791a8daa, 4e112d69-8810-4e2a-9c0d-c167d963c90d, 63be6d14-e695-419f-8004-cb1b4ce32c1c, ca4c9590-9baa-4aa7-9dc1-ee4383265988, 41fba77b-a08e-4fbf-940d-1233d4f94be9]
+Console.js:61 🗃️ Database initialized: true
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 52eb6d16-a239-4575-9947-ee573a781560
+Console.js:61 🎭 Broadcast host effect: {isHost: true, selectedSong: true, selectedSongId: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songTitle: 'Cherry Bomb', hasLyrics: false}
+Console.js:61 🎭 Broadcasting performance state: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 🎭 sendPerformanceState called: {hookIsHost: true, serviceIsHost: true, serviceConnected: true, currentState: {…}}
+Console.js:61 🎭 About to call broadcastService.sendState with: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 📡 Broadcasting state to viewers: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 🎭 Broadcast host effect: {isHost: true, selectedSong: true, selectedSongId: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songTitle: 'Cherry Bomb', hasLyrics: false}
+Console.js:61 🎭 Broadcasting performance state: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 🎭 sendPerformanceState called: {hookIsHost: true, serviceIsHost: true, serviceConnected: true, currentState: {…}}
+Console.js:61 🎭 About to call broadcastService.sendState with: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 📡 Broadcasting state to viewers: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 ✅ Found in IndexedDB: 9f1f20f6-cb8b-44f6-adfb-5a1d0519c604 (82aa69bf-aa55-4e9b-a121-2b29c90364c9.mp3)
+ ✅ Got audio URL from browser storage for track: 9f1f20f6-cb8b-44f6-adfb-5a1d0519c604
+ ✅ Found in IndexedDB: 9402716f-3e0a-4326-8f78-56d4a9178636 (e5ef2d91-4f97-40b4-8262-2324551ba223.mp3)
+Console.js:61 ✅ Got audio URL from browser storage for track: 9402716f-3e0a-4326-8f78-56d4a9178636
+Console.js:61 ✅ Found in IndexedDB: 52eb6d16-a239-4575-9947-ee573a781560 (a43308d0-dd8b-4828-9864-e99b08414039.mp3)
+Console.js:61 ✅ Got audio URL from browser storage for track: 52eb6d16-a239-4575-9947-ee573a781560
+Console.js:61 ✅ Found in IndexedDB: c69186bb-5604-4259-9f24-924b8b8ee620 (c093bf80-16aa-4014-bc7b-64c884d0826f.mp3)
+Console.js:61 ✅ Got audio URL from browser storage for track: c69186bb-5604-4259-9f24-924b8b8ee620
+Console.js:61 ✅ Found in IndexedDB: 2a8c0394-5aaf-4d01-88c0-d5ed25307800 (2eadcaa6-b46a-4487-9a12-d61a8da75181.mp3)
+Console.js:61 ✅ Got audio URL from browser storage for track: 2a8c0394-5aaf-4d01-88c0-d5ed25307800
+Console.js:61 🚀 Streaming load: 5 tracks (deferred setup)
+Console.js:61 🎵 Loading original tracks...
+Console.js:61 🎵 Track loading complete: 5 tracks ready
+Console.js:61 ✅ Streaming ready for "Cherry Bomb" - instant playback available
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 ✅ Streaming ready: 5 tracks setup instantly (audio nodes created on demand)
+Console.js:61 🔧 Audio nodes created on demand for: Cherry Bomb - 0001 - Audio - Click
+Console.js:61 🔧 Audio nodes created on demand for: Cherry Bomb - 0002 - Audio - Drums
+Console.js:61 🔧 Audio nodes created on demand for: Cherry Bomb - 0003 - Audio - Bass
+Console.js:61 🔧 Audio nodes created on demand for: Cherry Bomb - 0004 - Audio - Keys
+Console.js:61 🔧 Audio nodes created on demand for: Cherry Bomb - 0005 - Audio - Backups
+Console.js:61 🎭 Broadcast host effect: {isHost: true, selectedSong: true, selectedSongId: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songTitle: 'Cherry Bomb', hasLyrics: false}
+Console.js:61 🎭 Broadcasting performance state: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 🎭 sendPerformanceState called: {hookIsHost: true, serviceIsHost: true, serviceConnected: true, currentState: {…}}
+Console.js:61 🎭 About to call broadcastService.sendState with: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 📡 Broadcasting state to viewers: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 🔄 Loading started for Addicted to love - 0001 - Audio - Click
+Console.js:61 ⚠️ Audio error for Addicted to love - 0001 - Audio - Click: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+Mt.forEach.n.<computed> @ Console.js:61
+errorHandler @ streaming-audio-engine.ts:151
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🔄 Loading started for Addicted to love - 0002 - Audio - Drums
+Console.js:61 ⚠️ Audio error for Addicted to love - 0002 - Audio - Drums: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+Mt.forEach.n.<computed> @ Console.js:61
+errorHandler @ streaming-audio-engine.ts:151
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🔄 Loading started for Addicted to love - 0003 - Audio - Bass
+Console.js:61 ⚠️ Audio error for Addicted to love - 0003 - Audio - Bass: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+Mt.forEach.n.<computed> @ Console.js:61
+errorHandler @ streaming-audio-engine.ts:151
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🔄 Loading started for Addicted to love - 0004 - Audio - Lead Guitar
+Console.js:61 ⚠️ Audio error for Addicted to love - 0004 - Audio - Lead Guitar: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+Mt.forEach.n.<computed> @ Console.js:61
+errorHandler @ streaming-audio-engine.ts:151
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🔄 Loading started for Addicted to love - 0005 - Audio - Keys
+Console.js:61 ⚠️ Audio error for Addicted to love - 0005 - Audio - Keys: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+Mt.forEach.n.<computed> @ Console.js:61
+errorHandler @ streaming-audio-engine.ts:151
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🔄 Loading started for Addicted to love - 0006 - Audio - Backups
+Console.js:61 ⚠️ Audio error for Addicted to love - 0006 - Audio - Backups: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+Mt.forEach.n.<computed> @ Console.js:61
+errorHandler @ streaming-audio-engine.ts:151
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🔄 Loading started for Cherry Bomb - 0001 - Audio - Click
+Console.js:61 🔄 Loading started for Cherry Bomb - 0002 - Audio - Drums
+Console.js:61 🔄 Loading started for Cherry Bomb - 0003 - Audio - Bass
+Console.js:61 🔄 Loading started for Cherry Bomb - 0004 - Audio - Keys
+Console.js:61 🔄 Loading started for Cherry Bomb - 0005 - Audio - Backups
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: {isHost: true, selectedSong: true, selectedSongId: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songTitle: 'Cherry Bomb', hasLyrics: false}
+Console.js:61 🎭 Broadcasting performance state: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 🎭 sendPerformanceState called: {hookIsHost: true, serviceIsHost: true, serviceConnected: true, currentState: {…}}
+Console.js:61 🎭 About to call broadcastService.sendState with: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 📡 Broadcasting state to viewers: {currentSong: '9b664ef3-64ed-44d6-8fc1-70219d09dadf', songEntryId: null, songTitle: 'Cherry Bomb', position: 0, isPlaying: false, …}
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 Duration updated from streaming engine: 297s

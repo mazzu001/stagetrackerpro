@@ -1,4 +1,7 @@
 import WebSocket, { WebSocketServer } from 'ws';
+import { db } from './db';
+import { broadcastSessions } from '../shared/schema';
+import { eq } from 'drizzle-orm';
 import type { Server } from 'http';
 
 interface BroadcastRoom {
@@ -113,10 +116,6 @@ class BroadcastServer {
     // If room not found in memory, check database and recreate if active
     if (!room || !room.isActive) {
       try {
-        const { db } = require('./db');
-        const { broadcastSessions } = require('../shared/schema');
-        const { eq } = require('drizzle-orm');
-        
         const [dbSession] = await db.select().from(broadcastSessions)
           .where(eq(broadcastSessions.id, roomId))
           .limit(1);

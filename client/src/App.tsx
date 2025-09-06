@@ -9,6 +9,8 @@ import StreamingDemo from "@/pages/streaming-demo";
 import Dashboard from "@/pages/dashboard";
 import BroadcastViewer from "@/pages/broadcast-viewer";
 import SimpleBroadcastViewer from "@/pages/broadcast-viewer-simple";
+import SimpleBroadcaster from "@/pages/simple-broadcaster";
+import SimpleListener from "@/pages/simple-listener";
 import Subscribe from "@/pages/subscribe";
 import SubscribeRedirect from "@/pages/subscribe-redirect";
 import SubscribeFixed from "@/pages/subscribe-fixed";
@@ -171,6 +173,8 @@ function AppContent() {
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
           <Route path="/broadcast-viewer-old" component={BroadcastViewer} />
+          <Route path="/simple-broadcaster" component={SimpleBroadcaster} />
+          <Route path="/simple-listener" component={SimpleListener} />
           <Route path="/streaming-demo" component={StreamingDemo} />
           <Route path="/subscribe" component={SubscribeRedirect} />
           <Route path="/subscribe-fixed" component={SubscribeFixed} />

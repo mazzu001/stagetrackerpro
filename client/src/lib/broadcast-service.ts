@@ -48,35 +48,56 @@ class BroadcastService {
   async startBroadcast(userId: string, userName: string, broadcastName: string): Promise<string> {
     const roomId = broadcastName.trim();
     
-    return new Promise((resolve, reject) => {
-      try {
-        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-        const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${encodeURIComponent(roomId)}`;
-        
-        console.log(`📡 Attempting WebSocket connection to: ${wsUrl}`);
-        this.ws = new WebSocket(wsUrl);
-        
-        this.ws.onopen = () => {
-          console.log('📡 WebSocket connection established');
-          this.ws?.send(JSON.stringify({
-            type: 'host_connect',
-            userId,
-            userName,
-            broadcastName
-          }));
-          this.isHost = true;
-          this.roomId = roomId;
-          console.log(`📡 Started broadcasting: "${roomId}"`);
-          resolve(roomId); // ✅ Wait for connection before resolving
-        };
+    try {
+      // First create database entry
+      console.log('📡 Creating broadcast session in database...');
+      const dbResponse = await fetch('/api/broadcast/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: roomId,
+          name: broadcastName,
+          hostId: userId,
+          hostName: userName
+        })
+      });
+      
+      if (!dbResponse.ok) {
+        throw new Error('Failed to create broadcast session in database');
+      }
+      
+      console.log('📡 Database session created successfully');
+      
+      // Then establish WebSocket connection  
+      return new Promise((resolve, reject) => {
+        try {
+          const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+          const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${encodeURIComponent(roomId)}`;
+          
+          console.log(`📡 Attempting WebSocket connection to: ${wsUrl}`);
+          this.ws = new WebSocket(wsUrl);
+          
+          this.ws.onopen = () => {
+            console.log('📡 WebSocket connection established');
+            this.ws?.send(JSON.stringify({
+              type: 'host_connect',
+              userId,
+              userName,
+              broadcastName
+            }));
+            this.isHost = true;
+            this.roomId = roomId;
+            console.log(`📡 Started broadcasting: "${roomId}"`);
+            resolve(roomId); // ✅ Wait for connection before resolving
+          };
 
-        this.ws.onmessage = (event) => {
-          const message = JSON.parse(event.data);
-          console.log('📡 Received server message:', message);
-          if (message.type === 'room_info') {
-            this.roomListeners.forEach(cb => cb(message.room));
-          }
-        };
+          this.ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            console.log('📡 Received server message:', message);
+            if (message.type === 'room_info') {
+              this.roomListeners.forEach(cb => cb(message.room));
+            }
+          };
 
         this.ws.onclose = (event) => {
           console.log(`📡 Host WebSocket closed - Code: ${event.code}, Reason: ${event.reason}`);
@@ -129,11 +150,16 @@ class BroadcastService {
           }
         }, 10000); // 10 second timeout
         
-      } catch (error) {
-        console.warn('📡 Broadcast WebSocket setup failed:', error);
-        reject(error);
-      }
-    });
+        } catch (error) {
+          console.warn('📡 Broadcast WebSocket setup failed:', error);
+          reject(error);
+        }
+      });
+      
+    } catch (error) {
+      console.error('📡 Failed to create broadcast session:', error);
+      throw error;
+    }
   }
 
   // Viewer: Join broadcast

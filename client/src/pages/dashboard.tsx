@@ -202,11 +202,28 @@ export default function Dashboard() {
     
     setIsJoining(true);
     try {
+      // First, check if broadcast exists in database
+      const response = await fetch(`/api/broadcast/check/${encodeURIComponent(roomIdToJoin.trim())}`);
+      const { exists, session } = await response.json();
+      
+      if (!exists) {
+        toast({
+          title: "Broadcast not found",
+          description: `No active broadcast named "${roomIdToJoin}" was found`,
+          variant: "destructive",
+        });
+        setIsJoining(false);
+        return;
+      }
+      
+      console.log('📡 Broadcast exists in database:', session);
+      
+      // Now attempt WebSocket connection
       const success = await joinBroadcast(roomIdToJoin, user.email, user.email);
       if (success) {
         toast({
           title: "🎵 Joined Broadcast!",
-          description: "Connected! Redirecting to performance page..."
+          description: `Connected to "${session.name}"! Redirecting to viewer...`
         });
         setRoomIdToJoin('');
         
@@ -218,15 +235,16 @@ export default function Dashboard() {
       } else {
         toast({
           title: "Failed to join broadcast",
-          description: "Room not found or no longer active",
+          description: "Unable to establish connection to the broadcast",
           variant: "destructive"
         });
         setIsJoining(false); // Only reset if failed
       }
     } catch (error) {
+      console.error('Join broadcast error:', error);
       toast({
         title: "Connection failed",
-        description: "Please check the room ID and try again",
+        description: "Unable to connect to the broadcast",
         variant: "destructive"
       });
       setIsJoining(false); // Only reset if failed

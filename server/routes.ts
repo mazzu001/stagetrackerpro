@@ -3,7 +3,9 @@ import express from "express";
 import { createServer, type Server } from "http";
 import bcrypt from "bcrypt";
 import { storage } from "./storage";
-import { insertSongSchema, insertTrackSchema } from "@shared/schema";
+import { insertSongSchema, insertTrackSchema, broadcastSessions } from "@shared/schema";
+import { eq, sql } from "drizzle-orm";
+import { db } from "./db";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { subscriptionManager } from "./subscriptionManager";
 import { setupBroadcastServer } from "./broadcast-server";
@@ -1772,6 +1774,85 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Broadcast session management routes
+  app.post('/api/broadcast/create', async (req, res) => {
+    try {
+      const { id, name, hostId, hostName } = req.body;
+      
+      // Upsert broadcast session - replace if exists
+      await db
+        .insert(broadcastSessions)
+        .values({
+          id,
+          name,
+          hostId,
+          hostName,
+          isActive: true,
+          lastActivity: new Date()
+        })
+        .onConflictDoUpdate({
+          target: broadcastSessions.id,
+          set: {
+            name,
+            hostId,
+            hostName,
+            isActive: true,
+            lastActivity: new Date()
+          }
+        });
+        
+      console.log(`📡 Created broadcast session: ${id} (${name}) by ${hostName}`);
+      res.json({ success: true, message: 'Broadcast session created' });
+    } catch (error) {
+      console.error('Failed to create broadcast session:', error);
+      res.status(500).json({ error: 'Failed to create broadcast session' });
+    }
+  });
+
+  app.get('/api/broadcast/check/:sessionName', async (req, res) => {
+    try {
+      const { sessionName } = req.params;
+      
+      const session = await db
+        .select()
+        .from(broadcastSessions)
+        .where(sql`${broadcastSessions.id} = ${sessionName} AND ${broadcastSessions.isActive} = true`)
+        .limit(1);
+        
+      if (session.length > 0) {
+        console.log(`📡 Broadcast session found: ${sessionName}`);
+        res.json({ 
+          exists: true, 
+          session: session[0]
+        });
+      } else {
+        console.log(`📡 Broadcast session not found: ${sessionName}`);
+        res.json({ exists: false });
+      }
+    } catch (error) {
+      console.error('Failed to check broadcast session:', error);
+      res.status(500).json({ error: 'Failed to check broadcast session' });
+    }
+  });
+
+  app.delete('/api/broadcast/:sessionId', async (req, res) => {
+    try {
+      const { sessionId } = req.params;
+      
+      await db
+        .update(broadcastSessions)
+        .set({ isActive: false })
+        .where(eq(broadcastSessions.id, sessionId));
+        
+      console.log(`📡 Ended broadcast session: ${sessionId}`);
+      res.json({ success: true, message: 'Broadcast session ended' });
+    } catch (error) {
+      console.error('Failed to end broadcast session:', error);
+      res.status(500).json({ error: 'Failed to end broadcast session' });
+    }
+  });
+
+  console.log('📡 Registering broadcast session routes...');
   console.log('🗄️ Registering database storage routes...');
   console.log('🎵 Registering song management routes...');
   console.log('🎧 Registering track management routes...');

@@ -1,6 +1,6 @@
 import { sql } from "drizzle-orm";
 import { sqliteTable, text, integer, blob } from "drizzle-orm/sqlite-core";
-import { pgTable, text as pgText, integer as pgInteger, timestamp, varchar, index, jsonb } from "drizzle-orm/pg-core";
+import { pgTable, text as pgText, integer as pgInteger, timestamp, varchar, index, jsonb, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -94,3 +94,17 @@ export const users = pgTable("users", {
 
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
+
+// Broadcast sessions table
+export const broadcastSessions = pgTable("broadcast_sessions", {
+  id: varchar("id").primaryKey(), // Room/broadcast name
+  name: varchar("name").notNull(), // Display name
+  hostId: varchar("host_id").notNull(), // Host user ID
+  hostName: varchar("host_name").notNull(), // Host display name
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  lastActivity: timestamp("last_activity").defaultNow(),
+});
+
+export type BroadcastSession = typeof broadcastSessions.$inferSelect;
+export type InsertBroadcastSession = typeof broadcastSessions.$inferInsert;

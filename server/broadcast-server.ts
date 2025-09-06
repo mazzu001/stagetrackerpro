@@ -73,6 +73,12 @@ class BroadcastServer {
   }
 
   private async handleMessage(ws: WebSocket, roomId: string, message: any) {
+    console.log(`📨 Server received message:`, { 
+      type: message.type, 
+      roomId, 
+      hasSongEntryId: !!message.state?.songEntryId 
+    });
+    
     switch (message.type) {
       case 'host_connect':
         this.handleHostConnect(ws, roomId, message);
@@ -83,6 +89,8 @@ class BroadcastServer {
       case 'state_update':
         this.handleStateUpdate(roomId, message.state);
         break;
+      default:
+        console.log(`❓ Unknown message type: ${message.type}`);
     }
   }
 
@@ -163,7 +171,16 @@ class BroadcastServer {
 
   private handleStateUpdate(roomId: string, state: BroadcastState) {
     const room = this.rooms.get(roomId);
-    if (!room || !room.isActive) return;
+    if (!room || !room.isActive) {
+      console.log(`❌ State update failed: Room ${roomId} not found or inactive`);
+      return;
+    }
+
+    console.log(`🎭 Server received state update for room ${roomId}:`, {
+      songEntryId: state.songEntryId,
+      songTitle: state.songTitle,
+      viewerCount: room.viewers.size
+    });
 
     // Broadcast state to all viewers
     const stateMessage = JSON.stringify({
@@ -171,11 +188,16 @@ class BroadcastServer {
       state
     });
 
-    Array.from(room.viewers.values()).forEach(({ ws }) => {
+    let sentCount = 0;
+    Array.from(room.viewers.values()).forEach(({ ws, userName }) => {
       if (ws.readyState === WebSocket.OPEN) {
         ws.send(stateMessage);
+        sentCount++;
+        console.log(`📺 State forwarded to viewer: ${userName}`);
       }
     });
+
+    console.log(`✅ State update broadcasted to ${sentCount}/${room.viewers.size} viewers`);
   }
 
   private handleDisconnection(ws: WebSocket, roomId: string) {

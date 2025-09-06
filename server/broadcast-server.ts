@@ -69,13 +69,13 @@ class BroadcastServer {
     });
   }
 
-  private handleMessage(ws: WebSocket, roomId: string, message: any) {
+  private async handleMessage(ws: WebSocket, roomId: string, message: any) {
     switch (message.type) {
       case 'host_connect':
         this.handleHostConnect(ws, roomId, message);
         break;
       case 'viewer_connect':
-        this.handleViewerConnect(ws, roomId, message);
+        await this.handleViewerConnect(ws, roomId, message);
         break;
       case 'state_update':
         this.handleStateUpdate(roomId, message.state);
@@ -104,20 +104,55 @@ class BroadcastServer {
     this.sendRoomInfo(room);
   }
 
-  private handleViewerConnect(ws: WebSocket, roomId: string, message: any) {
+  private async handleViewerConnect(ws: WebSocket, roomId: string, message: any) {
     const { userId, userName } = message;
     console.log(`📺 Processing viewer_connect for room ${roomId}, user: ${userName}`);
     
-    const room = this.rooms.get(roomId);
+    let room = this.rooms.get(roomId);
 
+    // If room not found in memory, check database and recreate if active
     if (!room || !room.isActive) {
-      console.log(`❌ Room ${roomId} not found or not active`);
-      ws.send(JSON.stringify({
-        type: 'error',
-        message: 'Room not found or not active'
-      }));
-      ws.close(1000, 'Room not found');
-      return;
+      try {
+        const { db } = require('./db');
+        const { broadcastSessions } = require('../shared/schema');
+        const { eq } = require('drizzle-orm');
+        
+        const [dbSession] = await db.select().from(broadcastSessions)
+          .where(eq(broadcastSessions.id, roomId))
+          .limit(1);
+          
+        if (dbSession && dbSession.isActive) {
+          console.log(`🔄 Recreating WebSocket room from database session: ${roomId}`);
+          // Recreate room from database session
+          room = {
+            id: dbSession.id,
+            name: dbSession.name,
+            hostId: dbSession.hostId,
+            hostName: dbSession.hostName,
+            host: null, // Host will reconnect separately
+            viewers: new Map(),
+            isActive: true,
+            createdAt: new Date(dbSession.createdAt)
+          };
+          this.rooms.set(roomId, room);
+        } else {
+          console.log(`❌ Room ${roomId} not found in database or inactive`);
+          ws.send(JSON.stringify({
+            type: 'error',
+            message: 'Room not found or not active'
+          }));
+          ws.close(1000, 'Room not found');
+          return;
+        }
+      } catch (error) {
+        console.error(`❌ Error checking database for room ${roomId}:`, error);
+        ws.send(JSON.stringify({
+          type: 'error',
+          message: 'Room not found or not active'
+        }));
+        ws.close(1000, 'Room not found');
+        return;
+      }
     }
 
     room.viewers.set(userId, { ws, userId, userName });

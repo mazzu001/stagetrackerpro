@@ -162,6 +162,19 @@ export default function SimpleBroadcastViewer() {
             console.error('❌ Failed to fetch song:', error);
           }
         }
+        // ALSO: Use state data directly when available (even without songEntryId)
+        else if (state.songTitle && state.lyrics) {
+          console.log(`🎵 Using state data directly for: ${state.songTitle}`);
+          const stateBasedSong = {
+            id: state.currentSong || 'state-based',
+            songTitle: state.songTitle,
+            artistName: 'Live Broadcast', // Default since not in state
+            lyrics: state.lyrics,
+            createdAt: new Date().toISOString()
+          };
+          setCurrentSong(stateBasedSong);
+          console.log(`✅ Displaying state-based song: ${state.songTitle}`);
+        }
       }
     };
 

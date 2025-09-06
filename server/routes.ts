@@ -1810,20 +1810,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { sessionName } = req.params;
       
-      const session = await db
-        .select()
-        .from(broadcastSessions)
-        .where(sql`${broadcastSessions.id} = ${sessionName} AND ${broadcastSessions.isActive} = true`)
-        .limit(1);
+      console.log(`📡 Checking broadcast session: ${sessionName}`);
+      
+      // Simple SQL query - use ACTUAL database columns!
+      const result = await db.execute(sql`
+        SELECT id, name, host_id, host_name, is_active, created_at, current_song_id
+        FROM broadcast_sessions 
+        WHERE id = ${sessionName} AND is_active = true
+        LIMIT 1
+      `);
         
-      if (session.length > 0) {
-        console.log(`📡 Broadcast session found: ${sessionName}`);
+      if (result.rows.length > 0) {
+        const session = result.rows[0];
+        console.log(`📡 ✅ Broadcast session found: ${sessionName}`);
         res.json({ 
           exists: true, 
-          session: session[0]
+          session: {
+            id: session.id,
+            name: session.name,
+            hostId: session.host_id,
+            hostName: session.host_name,
+            isActive: session.is_active,
+            currentSongId: session.current_song_id
+          }
         });
       } else {
-        console.log(`📡 Broadcast session not found: ${sessionName}`);
+        console.log(`📡 ❌ Broadcast session not found: ${sessionName}`);
         res.json({ exists: false });
       }
     } catch (error) {

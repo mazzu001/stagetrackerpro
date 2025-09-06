@@ -124,12 +124,25 @@ export function useBroadcast() {
     waveformProgress: number;
   }) => {
     console.log('🎭 sendPerformanceState called:', { isHost, currentState });
+    console.log('🎭 isHost value check:', { 
+      isHost, 
+      typeOfIsHost: typeof isHost, 
+      isHostEqualsTrue: isHost === true,
+      isHostDoubleEquals: isHost == true,
+      isHostBoolean: Boolean(isHost)
+    });
+    
     if (isHost) {
       console.log('🎭 About to call broadcastService.sendState with:', currentState);
       broadcastService.sendState(currentState);
       console.log('🎭 Finished calling broadcastService.sendState');
     } else {
-      console.log('🎭 Not sending - not host:', { isHost });
+      console.log('🎭 Not sending - not host:', { 
+        isHost, 
+        reason: 'isHost condition failed',
+        actualValue: isHost,
+        actualType: typeof isHost
+      });
     }
   }, [isHost]);
 

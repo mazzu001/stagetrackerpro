@@ -95,28 +95,28 @@ export const users = pgTable("users", {
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 
-// Broadcast sessions table
+// SIMPLE BROADCAST SYSTEM - Pure SQL approach
+// Table per broadcaster - tracks which song is currently active
 export const broadcastSessions = pgTable("broadcast_sessions", {
-  id: varchar("id").primaryKey(), // Room/broadcast name
+  id: varchar("id").primaryKey(), // Broadcast name (e.g. "Matt") 
   name: varchar("name").notNull(), // Display name
-  hostId: varchar("host_id").notNull(), // Host user ID
-  hostName: varchar("host_name").notNull(), // Host display name
+  hostEmail: varchar("host_email").notNull(), // Host email
+  currentSongId: varchar("current_song_id"), // Points to active song in broadcast_songs
   isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
-  lastActivity: timestamp("last_activity").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-// Broadcast songs table - stores all song data for each broadcast session  
+// Song entries - all song data stored here with unique IDs
 export const broadcastSongs = pgTable("broadcast_songs", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`), // Unique ID for this song entry
-  broadcastId: varchar("broadcast_id").notNull(), // References broadcast_sessions.id
-  songId: varchar("song_id").notNull(), // Local song ID from host's library
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`), // Unique song entry ID
+  broadcastId: varchar("broadcast_id").notNull(), // Which broadcast table (e.g. "Matt")
   songTitle: varchar("song_title").notNull(),
   artistName: varchar("artist_name"),
-  duration: pgInteger("duration"), // Duration in seconds
-  lyrics: pgText("lyrics"), // Timestamped lyrics  
+  lyrics: pgText("lyrics"), // Timestamped lyrics like [0:02]She said...
   waveformData: jsonb("waveform_data"), // Waveform visualization data
-  trackCount: pgInteger("track_count").default(1),
+  position: pgInteger("position").default(0), // Current playback position in seconds
+  isPlaying: boolean("is_playing").default(false), // Playback state
   createdAt: timestamp("created_at").defaultNow(),
 });
 

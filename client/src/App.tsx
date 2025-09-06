@@ -11,6 +11,8 @@ import BroadcastViewer from "@/pages/broadcast-viewer";
 import SimpleBroadcastViewer from "@/pages/broadcast-viewer-simple";
 import SimpleBroadcaster from "@/pages/simple-broadcaster";
 import SimpleListener from "@/pages/simple-listener";
+import UltraSimpleBroadcaster from "@/pages/ultra-simple-broadcaster";
+import UltraSimpleListener from "@/pages/ultra-simple-listener";
 import Subscribe from "@/pages/subscribe";
 import SubscribeRedirect from "@/pages/subscribe-redirect";
 import SubscribeFixed from "@/pages/subscribe-fixed";
@@ -175,6 +177,8 @@ function AppContent() {
           <Route path="/broadcast-viewer-old" component={BroadcastViewer} />
           <Route path="/simple-broadcaster" component={SimpleBroadcaster} />
           <Route path="/simple-listener" component={SimpleListener} />
+          <Route path="/ultra-simple-broadcaster" component={UltraSimpleBroadcaster} />
+          <Route path="/ultra-simple-listener" component={UltraSimpleListener} />
           <Route path="/streaming-demo" component={StreamingDemo} />
           <Route path="/subscribe" component={SubscribeRedirect} />
           <Route path="/subscribe-fixed" component={SubscribeFixed} />

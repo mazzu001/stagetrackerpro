@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { apiRequest } from '@/lib/queryClient';
 
-export type UserType = 'free' | 'paid' | 'premium' | 'professional';
+export type UserType = 'free' | 'premium' | 'professional';
 
 interface LocalUser {
   email: string;
@@ -68,6 +68,13 @@ export function useLocalAuth() {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
           const userData = JSON.parse(stored) as LocalUser;
+          
+          // Migrate old 'paid' userType to 'premium' for backward compatibility
+          if ((userData.userType as any) === 'paid') {
+            userData.userType = 'premium';
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+            console.log('🔄 Migrated old "paid" status to "premium"');
+          }
           
           // Check if session is still valid (within 24 hours)
           if (Date.now() - userData.loginTime < SESSION_DURATION) {

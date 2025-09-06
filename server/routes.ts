@@ -220,9 +220,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log(`📋 Getting profile for ${email}`);
       
+      // Calculate correct userType from subscriptionStatus
+      const userType = user.subscriptionStatus === 1 ? 'free' : 
+                       user.subscriptionStatus === 2 ? 'premium' : 'professional';
+      
       // Set proper content type for JSON response
       res.setHeader('Content-Type', 'application/json');
-      res.json(user);
+      res.json({ ...user, userType });
     } catch (error) {
       console.error('Error getting user profile:', error);
       res.status(500).json({ message: 'Failed to get user profile' });

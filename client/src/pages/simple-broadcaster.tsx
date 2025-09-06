@@ -3,16 +3,15 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Play, Pause, SkipBack, SkipForward, Volume2, Users } from 'lucide-react';
 import { Slider } from '@/components/ui/slider';
-import { storage } from '@/lib/storage';
-import type { Song } from '@shared/schema';
+import { LocalSongStorage, type LocalSong } from '@/lib/local-song-storage';
 
 // Simple broadcaster using pure SQL APIs - no complex hooks or services!
 export default function SimpleBroadcaster() {
   const [userEmail, setUserEmail] = useState<string>('');
   const [broadcastName, setBroadcastName] = useState<string>('');
   const [broadcastStarted, setBroadcastStarted] = useState<boolean>(false);
-  const [songs, setSongs] = useState<Song[]>([]);
-  const [selectedSong, setSelectedSong] = useState<Song | null>(null);
+  const [songs, setSongs] = useState<LocalSong[]>([]);
+  const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [currentSongId, setCurrentSongId] = useState<string | null>(null);
   
   // Audio playback state
@@ -31,7 +30,7 @@ export default function SimpleBroadcaster() {
         setBroadcastName(email.split('@')[0]); // Use first part of email as broadcast name
         
         // Load songs from local storage
-        const songsList = await storage.getSongs();
+        const songsList = LocalSongStorage.getAllSongs(email);
         setSongs(songsList);
         console.log('🎵 Loaded songs:', songsList.length);
       } catch (error) {
@@ -94,19 +93,18 @@ export default function SimpleBroadcaster() {
   };
 
   // 2. Select song - Simple SQL call
-  const selectSong = async (song: Song) => {
+  const selectSong = async (song: LocalSong) => {
     if (!broadcastStarted) return;
     
     try {
       // Get audio file for this song
-      const tracks = await storage.getTracks(song.id);
-      if (tracks.length === 0) {
+      if (song.tracks.length === 0) {
         console.error('No tracks found for song');
         return;
       }
       
       // Use first track's audio
-      const audioUrl = tracks[0].audioUrl;
+      const audioUrl = song.tracks[0].audioUrl;
       
       const response = await fetch(`/api/simple-broadcast/${broadcastName}/song`, {
         method: 'POST',

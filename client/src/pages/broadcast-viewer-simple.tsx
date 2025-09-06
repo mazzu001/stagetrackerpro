@@ -42,6 +42,7 @@ export default function SimpleBroadcastViewer() {
   // Parse lyrics with timestamps for karaoke highlighting
   const parseLyricsWithTimestamps = (lyricsText: string, currentPosition: number): ParsedLyricLine[] => {
     console.log('🎤 Parsing lyrics, position:', currentPosition, 'seconds');
+    console.log('🎤 Raw lyrics text:', lyricsText.substring(0, 200) + '...');
     const lines = lyricsText.split('\n');
     const parsedLines: ParsedLyricLine[] = [];
     
@@ -58,11 +59,12 @@ export default function SimpleBroadcastViewer() {
         
         // Remove timestamp and MIDI commands from display text
         let text = trimmed
-          .replace(/^\[(\d{1,2}):(\d{2})\]/, '')  // Remove timestamp
-          .replace(/\[\[[^\]]+\]\]/g, '')         // Remove MIDI commands like [[PC:12:1]]
+          .replace(/^\[\d{1,2}:\d{2}\]/, '')      // Remove timestamp [0:02]
+          .replace(/\[\[.*?\]\]/g, '')            // Remove MIDI commands [[PC:12:1]]
           .trim();
         
         if (text) {
+          console.log(`🎤 Cleaned line: "${text}" from "${trimmed}"`);
           parsedLines.push({
             text,
             timestamp,
@@ -72,7 +74,7 @@ export default function SimpleBroadcastViewer() {
         }
       } else {
         // Lines without timestamps (usually non-lyric content)
-        const text = trimmed.replace(/\[\[[^\]]+\]\]/g, '').trim();
+        const text = trimmed.replace(/\[\[.*?\]\]/g, '').trim();
         if (text) {
           parsedLines.push({
             text,

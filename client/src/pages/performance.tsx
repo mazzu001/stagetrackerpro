@@ -452,6 +452,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   }, [user?.email]);
 
+  // Track database entry ID for broadcasting
+  const [songEntryId, setSongEntryId] = useState<string | null>(null);
+
   // Select song and load its tracks
   useEffect(() => {
     if (!selectedSongId || !user?.email) return;
@@ -463,7 +466,35 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
     console.log(`🎵 Loading song: ${song.title}`);
     setSelectedSong(song);
-  }, [selectedSongId, user?.email]);
+
+    // If we're hosting a broadcast, upload song to database immediately on selection
+    if (isHost && currentRoom?.id) {
+      console.log(`📡 Host selected song - uploading to database for broadcast: ${song.title}`);
+      uploadSongToDatabase(song, currentRoom.id);
+    }
+  }, [selectedSongId, user?.email, isHost, currentRoom?.id]);
+
+  // Upload song to database and get entry ID for broadcasting
+  const uploadSongToDatabase = async (song: any, broadcastId: string) => {
+    try {
+      const response = await fetch(`/api/broadcast/${broadcastId}/songs`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ songs: [song] })
+      });
+      
+      if (response.ok) {
+        const result = await response.json();
+        const entryId = result.songEntries?.[0]?.id;
+        if (entryId) {
+          setSongEntryId(entryId);
+          console.log(`✅ Song uploaded to database with entry ID: ${entryId}`);
+        }
+      }
+    } catch (error) {
+      console.error('❌ Failed to upload song to database:', error);
+    }
+  };
 
   // Broadcast viewer mode: Sync with broadcaster's performance state
   useEffect(() => {
@@ -517,7 +548,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     
     // Send current performance state to all viewers
     const performanceState = {
-      currentSong: selectedSongId,
+      currentSong: selectedSongId, // Keep for backward compatibility
+      songEntryId: songEntryId, // Database entry ID for viewers to fetch
       songTitle: selectedSong.title,
       position: currentTime,
       isPlaying: isPlaying,
@@ -531,7 +563,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     
     console.log('🎭 Broadcasting performance state:', performanceState);
     sendPerformanceState(performanceState);
-  }, [isHost, selectedSong, selectedSongId, currentTime, isPlaying, duration, sendPerformanceState]);
+  }, [isHost, selectedSong, selectedSongId, songEntryId, currentTime, isPlaying, duration, sendPerformanceState]);
 
   const handleSeek = useCallback((time: number) => {
     seek(time);

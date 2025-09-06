@@ -1948,20 +1948,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { name } = req.params;
       const { hostEmail } = req.body;
       
-      // Simple SQL: Insert or update broadcast session
+      // Simple SQL: Insert or update broadcast session using existing columns
       const [session] = await db.insert(broadcastSessions)
         .values({
           id: name,
           name: name,
-          hostEmail: hostEmail,
+          hostId: hostEmail, // Use existing hostId column
+          hostName: hostEmail, // Use existing hostName column 
           isActive: true,
         })
         .onConflictDoUpdate({
           target: broadcastSessions.id,
           set: {
-            hostEmail: hostEmail,
+            hostId: hostEmail,
+            hostName: hostEmail,
             isActive: true,
-            updatedAt: new Date(),
+            lastActivity: new Date(), // Use existing lastActivity column
           },
         })
         .returning();

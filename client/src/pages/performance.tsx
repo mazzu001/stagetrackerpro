@@ -485,10 +485,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       
       if (response.ok) {
         const result = await response.json();
-        const entryId = result.songEntries?.[0]?.id;
+        const entryId = result.songs?.[0]?.id;
         if (entryId) {
           setSongEntryId(entryId);
           console.log(`✅ Song uploaded to database with entry ID: ${entryId}`);
+        } else {
+          console.log('⚠️ Song uploaded but no entry ID returned:', result);
         }
       }
     } catch (error) {

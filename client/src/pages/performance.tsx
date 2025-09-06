@@ -470,12 +470,16 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     // If we're hosting a broadcast, upload song to database immediately on selection
     if (isHost && currentRoom?.id) {
       console.log(`📡 Host selected song - uploading to database for broadcast: ${song.title}`);
+      console.log(`📡 Upload function will be called with roomId: ${currentRoom.id}`);
       uploadSongToDatabase(song, currentRoom.id);
+    } else {
+      console.log('📡 Not uploading to database:', { isHost, hasCurrentRoom: !!currentRoom?.id, roomId: currentRoom?.id });
     }
   }, [selectedSongId, user?.email, isHost, currentRoom?.id]);
 
   // Upload song to database and get entry ID for broadcasting
   const uploadSongToDatabase = async (song: any, broadcastId: string) => {
+    console.log('🚀 uploadSongToDatabase function called!', { song: song.title, broadcastId });
     try {
       const response = await fetch(`/api/broadcast/${broadcastId}/songs`, {
         method: 'POST',

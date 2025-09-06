@@ -1,0 +1,1177 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+BandMaestro:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+BandMaestro:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+BandMaestro:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+BandMaestro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-c05af7ad4bcd5607.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-c05af7ad4bcd5607.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9bp%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=8mV0pE77nJwV' failed: 
+t @ eruda.js:2
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 📡 Not broadcasting - host: false ws ready: false
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 📡 Not broadcasting - host: false ws ready: false
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 📡 Not broadcasting - host: false ws ready: false
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 📡 Not broadcasting - host: false ws ready: false
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 📡 Not broadcasting - host: false ws ready: false
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 📖 Reading timestamped line at 2s: "[0:02]She said, "It's cold outside, " and she hands me my raincoat[[PC:12:1]]"
+ 🎵 Found MIDI command in timestamped line: [[PC:12:1]]
+ 🎼 Sending MIDI command from lyrics: [[PC:12:1]]
+ ❌ No MIDI device connected
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ ⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI
+ ❌ No MIDI device connected
+Mt.forEach.n.<computed> @ eruda.js:2
+ ❌ Failed to send external MIDI command: [[PC:12:1]]
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 📖 Reading timestamped line at 4s: "[0:04]She's always worried about things like that"
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 270s
+ ⏹️ Streaming playback stopped
+ ⏹️ Resetting processed timestamps - Playback stopped
+ ⏫ Scrolled lyrics back to top - Playback stopped
+ ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ 🎵 Loading song: Cherry Bomb
+ 📡 Host selected song - uploading to database for broadcast: Cherry Bomb
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Loading cached waveform for "Cherry Bomb" (400 data points)
+ 🔄 Resetting processed timestamps - Song changed to: Cherry Bomb
+ Song selected: "Cherry Bomb" with 5 tracks - loading for streaming
+ Setting up streaming for: "Cherry Bomb" - UI stays responsive
+ 🔍 Requesting audio URL for track: 9f1f20f6-cb8b-44f6-adfb-5a1d0519c604
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 2a8c0394-5aaf-4d01-88c0-d5ed25307800
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 9402716f-3e0a-4326-8f78-56d4a9178636
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: c69186bb-5604-4259-9f24-924b8b8ee620
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 52eb6d16-a239-4575-9947-ee573a781560
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ ✅ Got audio URL from browser storage for track: 9f1f20f6-cb8b-44f6-adfb-5a1d0519c604
+ ✅ Got audio URL from browser storage for track: 2a8c0394-5aaf-4d01-88c0-d5ed25307800
+ ✅ Got audio URL from browser storage for track: 9402716f-3e0a-4326-8f78-56d4a9178636
+ ✅ Got audio URL from browser storage for track: c69186bb-5604-4259-9f24-924b8b8ee620
+ ✅ Got audio URL from browser storage for track: 52eb6d16-a239-4575-9947-ee573a781560
+ 🚀 Streaming load: 5 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 5 tracks ready
+ ✅ Streaming ready for "Cherry Bomb" - instant playback available
+ Duration updated from streaming engine: 270s
+ ✅ Streaming ready: 5 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: Cherry Bomb - 0001 - Audio - Click
+ 🔧 Audio nodes created on demand for: Cherry Bomb - 0002 - Audio - Drums
+ 🔧 Audio nodes created on demand for: Cherry Bomb - 0003 - Audio - Bass
+ 🔧 Audio nodes created on demand for: Cherry Bomb - 0004 - Audio - Keys
+ 🔧 Audio nodes created on demand for: Cherry Bomb - 0005 - Audio - Backups
+ 🔄 Loading started for Addicted to love - 0001 - Audio - Click
+ ⚠️ Audio error for Addicted to love - 0001 - Audio - Click: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 270s
+ 🔄 Loading started for Addicted to love - 0002 - Audio - Drums
+ ⚠️ Audio error for Addicted to love - 0002 - Audio - Drums: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 270s
+ 🔄 Loading started for Addicted to love - 0003 - Audio - Bass
+ ⚠️ Audio error for Addicted to love - 0003 - Audio - Bass: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 270s
+ 🔄 Loading started for Addicted to love - 0004 - Audio - Lead Guitar
+ ⚠️ Audio error for Addicted to love - 0004 - Audio - Lead Guitar: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 270s
+ 🔄 Loading started for Addicted to love - 0005 - Audio - Keys
+ ⚠️ Audio error for Addicted to love - 0005 - Audio - Keys: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 270s
+ 🔄 Loading started for Addicted to love - 0006 - Audio - Backups
+ ⚠️ Audio error for Addicted to love - 0006 - Audio - Backups: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 270s
+ 🔄 Loading started for Cherry Bomb - 0001 - Audio - Click
+ 🔄 Loading started for Cherry Bomb - 0002 - Audio - Drums
+ 🔄 Loading started for Cherry Bomb - 0003 - Audio - Bass
+ 🔄 Loading started for Cherry Bomb - 0004 - Audio - Keys
+ 🔄 Loading started for Cherry Bomb - 0005 - Audio - Backups
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Duration updated from streaming engine: 297s
+ 🎵 Loading song: 3 AM
+ 📡 Host selected song - uploading to database for broadcast: 3 AM
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 📡 Not broadcasting - host: false ws ready: false
+ Loading cached waveform for "3 AM" (400 data points)
+ 📋 Analyzing lyrics for song: 3 AM
+ ⏰ Found timestamped line: [0:02] at 2s -> "[0:02]She said, "It's cold outside, " and she hands me my raincoat[[PC:12:1]]"
+ ⏰ Found timestamped line: [0:04] at 4s -> "[0:04]She's always worried about things like that"
+ ⏰ Found timestamped line: [0:05] at 5s -> "[0:05]Well, she said, "It's all gonna end and it might as well be my fault""
+ ⏰ Found timestamped line: [0:06] at 6s -> "[0:06]And she only sleeps when it's raining"
+ ⏰ Found timestamped line: [0:08] at 8s -> "[0:08]And she screams, and her voice is straining"
+ ⏰ Found timestamped line: [0:10] at 10s -> "[0:10]She says, "Baby, it's 3 AM, I must be lonely""
+ ⏰ Found timestamped line: [0:12] at 12s -> "[0:12]And she says, "Baby, well, I can't help"
+ ⏰ Found timestamped line: [0:14] at 14s -> "[0:14]But be scared of it all sometimes"
+ ⏰ Found timestamped line: [0:15] at 15s -> "[0:15]And the rain's gonna wash away, I believe it""
+ ⏰ Found timestamped line: [0:17] at 17s -> "[0:17]Well, she's got a little bit of something, God, it's better than nothing"
+ ⏰ Found timestamped line: [0:18] at 18s -> "[0:18]And in her color portrait world, she believes that she's got it all"
+ 📋 Total timestamped lines found: 11
+ 📋 Checking for non-timestamped MIDI commands in: 3 AM
+ 📋 No non-timestamped MIDI commands found in: 3 AM
+ 🔄 Resetting processed timestamps - Song changed to: 3 AM
+ Song selected: "3 AM" with 6 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🔍 Requesting audio URL for track: 7cb8e9a6-96ca-4421-9338-9325a1d5dd9d
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 41fba77b-a08e-4fbf-940d-1233d4f94be9
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 4e112d69-8810-4e2a-9c0d-c167d963c90d
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 1e204789-c47d-4044-829b-ee69791a8daa
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 63be6d14-e695-419f-8004-cb1b4ce32c1c
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: ca4c9590-9baa-4aa7-9dc1-ee4383265988
+ 📂 Available audio files (29): Array(29)
+ 💾 Memory cache files (0): Array(0)
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 📡 Not broadcasting - host: false ws ready: false
+Console.js:61 ✅ Got audio URL from browser storage for track: 7cb8e9a6-96ca-4421-9338-9325a1d5dd9d
+Console.js:61 ✅ Got audio URL from browser storage for track: 41fba77b-a08e-4fbf-940d-1233d4f94be9
+Console.js:61 ✅ Got audio URL from browser storage for track: 4e112d69-8810-4e2a-9c0d-c167d963c90d
+Console.js:61 ✅ Got audio URL from browser storage for track: 1e204789-c47d-4044-829b-ee69791a8daa
+Console.js:61 ✅ Got audio URL from browser storage for track: 63be6d14-e695-419f-8004-cb1b4ce32c1c
+Console.js:61 ✅ Got audio URL from browser storage for track: ca4c9590-9baa-4aa7-9dc1-ee4383265988
+Console.js:61 🚀 Streaming load: 6 tracks (deferred setup)
+Console.js:61 🎵 Loading original tracks...
+Console.js:61 🎵 Track loading complete: 6 tracks ready
+Console.js:61 ✅ Streaming ready for "3 AM" - instant playback available
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 ✅ Streaming ready: 6 tracks setup instantly (audio nodes created on demand)
+Console.js:61 🔧 Audio nodes created on demand for: Addicted to love - 0001 - Audio - Click
+Console.js:61 🔧 Audio nodes created on demand for: Addicted to love - 0002 - Audio - Drums
+Console.js:61 🔧 Audio nodes created on demand for: Addicted to love - 0003 - Audio - Bass
+Console.js:61 🔧 Audio nodes created on demand for: Addicted to love - 0004 - Audio - Lead Guitar
+Console.js:61 🔧 Audio nodes created on demand for: Addicted to love - 0005 - Audio - Keys
+Console.js:61 🔧 Audio nodes created on demand for: Addicted to love - 0006 - Audio - Backups
+Console.js:61 🔄 Loading started for Cherry Bomb - 0001 - Audio - Click
+Console.js:61 ⚠️ Audio error for Cherry Bomb - 0001 - Audio - Click: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🔄 Loading started for Cherry Bomb - 0002 - Audio - Drums
+Console.js:61 ⚠️ Audio error for Cherry Bomb - 0002 - Audio - Drums: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🔄 Loading started for Cherry Bomb - 0003 - Audio - Bass
+Console.js:61 ⚠️ Audio error for Cherry Bomb - 0003 - Audio - Bass: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🔄 Loading started for Cherry Bomb - 0004 - Audio - Keys
+Console.js:61 ⚠️ Audio error for Cherry Bomb - 0004 - Audio - Keys: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🔄 Loading started for Cherry Bomb - 0005 - Audio - Backups
+Console.js:61 ⚠️ Audio error for Cherry Bomb - 0005 - Audio - Backups: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🔄 Loading started for Addicted to love - 0001 - Audio - Click
+Console.js:61 🔄 Loading started for Addicted to love - 0002 - Audio - Drums
+Console.js:61 🔄 Loading started for Addicted to love - 0003 - Audio - Bass
+Console.js:61 🔄 Loading started for Addicted to love - 0004 - Audio - Lead Guitar
+Console.js:61 🔄 Loading started for Addicted to love - 0005 - Audio - Keys
+Console.js:61 🔄 Loading started for Addicted to love - 0006 - Audio - Backups
+Console.js:61 Duration updated from streaming engine: 270s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 📡 Not broadcasting - host: false ws ready: false
+Console.js:61 Duration updated from streaming engine: 270s

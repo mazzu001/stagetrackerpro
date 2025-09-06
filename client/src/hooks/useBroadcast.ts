@@ -20,11 +20,17 @@ export function useBroadcast() {
     // Subscribe to room info updates
     const unsubscribeRoom = broadcastService.onRoomChange((room) => {
       console.log('📺 Room changed, setting viewer state:', room);
+      console.log('📺 Current state - isHost:', broadcastService.getIsHost(), 'roomId:', broadcastService.getRoomId());
       setCurrentRoom(room);
       // If we have room info and we're not the host, we're a viewer
       if (room && !broadcastService.getIsHost()) {
+        console.log('📺 Setting isViewer = true (have room, not host)');
         setIsViewer(true);
         setIsHost(false);
+      } else if (room && broadcastService.getIsHost()) {
+        console.log('📺 Setting isHost = true (have room, is host)');
+        setIsViewer(false);
+        setIsHost(true);
       }
     });
 

@@ -8,16 +8,29 @@ export default function BroadcastViewer() {
   const [, setLocation] = useLocation();
   const { isViewer, broadcastState, currentRoom, leaveBroadcast } = useBroadcast();
 
-  // Redirect if not viewing a broadcast - give time for connection to establish
+  // Redirect if not viewing a broadcast - give more time for connection to establish
   useEffect(() => {
-    const redirectTimer = setTimeout(() => {
-      if (!isViewer && !currentRoom) {
-        setLocation('/dashboard');
-      }
-    }, 2000); // Wait 2 seconds before redirecting
+    let redirectTimer: NodeJS.Timeout;
+    
+    // Only start redirect timer if we have no room info at all after 5 seconds
+    const startRedirectCheck = () => {
+      redirectTimer = setTimeout(() => {
+        console.log('📺 Redirect check:', { isViewer, currentRoom: !!currentRoom });
+        // Only redirect if we have no room AND no viewer status after sufficient time
+        if (!isViewer && !currentRoom) {
+          console.log('📺 No broadcast connection found, redirecting to dashboard');
+          setLocation('/dashboard');
+        }
+      }, 5000); // Wait 5 seconds before redirecting
+    };
+    
+    // Start the timer
+    startRedirectCheck();
 
-    return () => clearTimeout(redirectTimer);
-  }, [isViewer, currentRoom, setLocation]);
+    return () => {
+      if (redirectTimer) clearTimeout(redirectTimer);
+    };
+  }, []); // Only run once on mount
 
   // Debug what we're receiving
   useEffect(() => {
@@ -38,12 +51,16 @@ export default function BroadcastViewer() {
     setLocation('/dashboard');
   };
 
-  if (!isViewer && !currentRoom) {
+  // Show loading for first 5 seconds OR if we have a room (connection in progress)
+  if ((!isViewer && !currentRoom)) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
         <div className="text-center">
           <p className="text-lg">Connecting to broadcast...</p>
           <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mt-4"></div>
+          <p className="text-sm text-muted-foreground mt-4">
+            Establishing secure connection...
+          </p>
         </div>
       </div>
     );

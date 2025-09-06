@@ -41,6 +41,7 @@ export default function SimpleBroadcastViewer() {
 
   // Parse lyrics with timestamps for karaoke highlighting
   const parseLyricsWithTimestamps = (lyricsText: string, currentPosition: number): ParsedLyricLine[] => {
+    console.log('🎤 Parsing lyrics, position:', currentPosition, 'seconds');
     const lines = lyricsText.split('\n');
     const parsedLines: ParsedLyricLine[] = [];
     
@@ -56,38 +57,54 @@ export default function SimpleBroadcastViewer() {
         const timestamp = minutes * 60 + seconds;
         
         // Remove timestamp and MIDI commands from display text
-        const text = trimmed
-          .replace(/^\[(\d{1,2}):(\d{2})\]/, '')
-          .replace(/\[\[[^\]]+\]\]/g, '')
+        let text = trimmed
+          .replace(/^\[(\d{1,2}):(\d{2})\]/, '')  // Remove timestamp
+          .replace(/\[\[[^\]]+\]\]/g, '')         // Remove MIDI commands like [[PC:12:1]]
           .trim();
         
         if (text) {
           parsedLines.push({
             text,
             timestamp,
-            isCurrent: currentPosition >= timestamp && (parsedLines.length === 0 || currentPosition < (parsedLines[parsedLines.length - 1]?.timestamp + 4)),
-            isPast: currentPosition > timestamp + 4
+            isCurrent: false, // Will set below
+            isPast: false     // Will set below
+          });
+        }
+      } else {
+        // Lines without timestamps (usually non-lyric content)
+        const text = trimmed.replace(/\[\[[^\]]+\]\]/g, '').trim();
+        if (text) {
+          parsedLines.push({
+            text,
+            timestamp: -1, // No timestamp
+            isCurrent: false,
+            isPast: false
           });
         }
       }
     }
     
-    // Determine current line more accurately
+    // Determine current line based on position
     let currentLineIndex = -1;
     for (let i = 0; i < parsedLines.length; i++) {
-      if (currentPosition >= parsedLines[i].timestamp) {
+      if (parsedLines[i].timestamp !== -1 && currentPosition >= parsedLines[i].timestamp) {
         currentLineIndex = i;
-      } else {
-        break;
       }
     }
     
-    // Update isCurrent flags
+    // Update highlighting flags
     parsedLines.forEach((line, index) => {
-      line.isCurrent = index === currentLineIndex;
-      line.isPast = index < currentLineIndex;
+      if (line.timestamp === -1) {
+        // Non-timestamped lines stay normal
+        line.isCurrent = false;
+        line.isPast = false;
+      } else {
+        line.isCurrent = index === currentLineIndex;
+        line.isPast = index < currentLineIndex;
+      }
     });
     
+    console.log('🎤 Parsed', parsedLines.length, 'lines, current line index:', currentLineIndex);
     return parsedLines;
   };
 
@@ -245,20 +262,24 @@ export default function SimpleBroadcastViewer() {
                   Lyrics
                 </h3>
                 <div className="space-y-2 max-h-96 overflow-y-auto">
-                  {parseLyricsWithTimestamps(currentSong.lyrics, broadcastState?.position || 0).map((line, index) => (
-                    <div
-                      key={index}
-                      className={`transition-all duration-300 p-2 rounded ${
-                        line.isCurrent 
-                          ? 'bg-blue-500/30 text-white text-lg font-semibold scale-105' 
-                          : line.isPast 
-                          ? 'text-gray-400 opacity-70' 
-                          : 'text-gray-300'
-                      }`}
-                    >
-                      {line.text}
-                    </div>
-                  ))}
+                  {parseLyricsWithTimestamps(currentSong.lyrics, broadcastState?.position || 0).map((line, index) => {
+                    console.log(`🎤 Line ${index}: "${line.text}" (${line.timestamp}s) - Current: ${line.isCurrent}, Past: ${line.isPast}`);
+                    return (
+                      <div
+                        key={index}
+                        className={`transition-all duration-500 p-3 rounded-lg ${
+                          line.isCurrent 
+                            ? 'bg-gradient-to-r from-blue-500/40 to-purple-500/40 text-white text-xl font-bold scale-105 shadow-lg border-l-4 border-blue-400' 
+                            : line.isPast 
+                            ? 'text-gray-500 opacity-60' 
+                            : 'text-gray-200 hover:text-white'
+                        }`}
+                      >
+                        {line.text}
+                        {line.isCurrent && <span className="ml-2 text-blue-300">♪</span>}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}

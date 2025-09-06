@@ -293,6 +293,8 @@ class BroadcastService {
   // Getters
   getRoomId() { return this.roomId; }
   getIsHost() { return this.isHost; }
+  
+  getIsViewer() { return !this.isHost && this.roomId !== null; }
   getIsConnected() { return this.ws?.readyState === WebSocket.OPEN; }
 }
 

@@ -54,7 +54,8 @@ class BroadcastService {
         body: JSON.stringify({
           id: roomId,
           name: broadcastName,
-          hostEmail: userEmail  // Fixed: matches database schema!
+          hostId: userEmail,    // Match actual database columns!
+          hostName: userName    // Match actual database columns!
         })
       });
       

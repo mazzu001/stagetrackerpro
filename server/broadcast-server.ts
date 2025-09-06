@@ -1,7 +1,7 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import { db } from './db';
 import { broadcastSessions } from '../shared/schema';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import type { Server } from 'http';
 
 interface BroadcastRoom {
@@ -124,22 +124,27 @@ class BroadcastServer {
     // If room not found in memory, check database and recreate if active
     if (!room || !room.isActive) {
       try {
-        const [dbSession] = await db.select().from(broadcastSessions)
-          .where(eq(broadcastSessions.id, roomId))
-          .limit(1);
+        // Simple SQL query - use ACTUAL database columns!
+        const result = await db.execute(sql`
+          SELECT id, name, host_id, host_name, is_active, created_at
+          FROM broadcast_sessions 
+          WHERE id = ${roomId} AND is_active = true
+          LIMIT 1
+        `);
           
-        if (dbSession && dbSession.isActive) {
+        if (result.rows.length > 0) {
+          const dbSession = result.rows[0];
           console.log(`🔄 Recreating WebSocket room from database session: ${roomId}`);
           // Recreate room from database session
           room = {
-            id: dbSession.id,
-            name: dbSession.name,
-            hostId: dbSession.hostId,
-            hostName: dbSession.hostName,
+            id: dbSession.id as string,
+            name: dbSession.name as string,
+            hostId: dbSession.host_id as string,
+            hostName: dbSession.host_name as string,
             host: null, // Host will reconnect separately
             viewers: new Map(),
             isActive: true,
-            createdAt: new Date(dbSession.createdAt)
+            createdAt: new Date(dbSession.created_at as string)
           };
           this.rooms.set(roomId, room);
         } else {

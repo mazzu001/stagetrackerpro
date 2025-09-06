@@ -445,7 +445,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let isPaid = false;
       
       if (user.subscriptionStatus === 2) {
-        userType = 'paid';
+        userType = 'premium';
         isPaid = true;
       } else if (user.subscriptionStatus === 3) {
         userType = 'professional';
@@ -1029,7 +1029,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             isPaid = false;
             break;
           case 2:
-            userType = 'paid';
+            userType = 'premium';
             isPaid = true;
             break;
           case 3:
@@ -1056,7 +1056,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json({
         isPaid: verificationResult.isPaid,
-        userType: verificationResult.isPaid ? 'paid' : 'free',
+        userType: verificationResult.isPaid ? 'premium' : 'free',
         subscriptionData: verificationResult.subscriptionData || null,
         source: verificationResult.source
       });

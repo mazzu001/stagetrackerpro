@@ -1778,35 +1778,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Broadcast session management routes
+  // Broadcast session management routes - SIMPLE SQL
   app.post('/api/broadcast/create', async (req, res) => {
     try {
-      const { id, name, hostId, hostName } = req.body;
+      const { id, name, hostEmail } = req.body;
       
-      // Upsert broadcast session - replace if exists
+      console.log(`📡 Creating broadcast session with SQL: ${id} (${name}) by ${hostEmail}`);
+      
+      // Simple SQL upsert - replace if exists
       await db
         .insert(broadcastSessions)
         .values({
-          id,
-          name,
-          hostId,
-          hostName,
+          id,           // Broadcast name (e.g. "Matt")
+          name,         // Display name  
+          hostEmail,    // Host email (matches schema!)
           isActive: true,
-          lastActivity: new Date()
+          currentSongId: null
         })
         .onConflictDoUpdate({
           target: broadcastSessions.id,
           set: {
             name,
-            hostId,
-            hostName,
+            hostEmail,
             isActive: true,
-            lastActivity: new Date()
+            updatedAt: new Date()
           }
         });
         
-      console.log(`📡 Created broadcast session: ${id} (${name}) by ${hostName}`);
-      res.json({ success: true, message: 'Broadcast session created' });
+      console.log(`📡 ✅ SQL SUCCESS: Created broadcast session: ${id} (${name}) by ${hostEmail}`);
+      res.json({ success: true, message: 'Broadcast session created successfully' });
     } catch (error) {
       console.error('Failed to create broadcast session:', error);
       res.status(500).json({ error: 'Failed to create broadcast session' });

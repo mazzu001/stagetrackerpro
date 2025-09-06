@@ -42,7 +42,7 @@ class BroadcastService {
   }
 
   // Host: Start broadcasting - Fixed with Promise to wait for connection
-  async startBroadcast(userId: string, userName: string, broadcastName: string): Promise<string> {
+  async startBroadcast(userEmail: string, userName: string, broadcastName: string): Promise<string> {
     const roomId = broadcastName.trim();
     
     try {
@@ -54,8 +54,7 @@ class BroadcastService {
         body: JSON.stringify({
           id: roomId,
           name: broadcastName,
-          hostId: userId,
-          hostName: userName
+          hostEmail: userEmail  // Fixed: matches database schema!
         })
       });
       
@@ -97,7 +96,7 @@ class BroadcastService {
             console.log('📡 WebSocket connection established');
             this.ws?.send(JSON.stringify({
               type: 'host_connect',
-              userId,
+              userEmail,
               userName,
               broadcastName
             }));
@@ -123,7 +122,7 @@ class BroadcastService {
             this.isHost = true;
             this.roomId = roomId;
             localStorage.setItem('fallback_broadcast', JSON.stringify({
-              userId,
+              userEmail,
               userName,
               broadcastName,
               roomId,
@@ -146,7 +145,7 @@ class BroadcastService {
           this.isHost = true;
           this.roomId = roomId;
           localStorage.setItem('fallback_broadcast', JSON.stringify({
-            userId,
+            userEmail,
             userName,
             broadcastName,
             roomId,

@@ -54,25 +54,20 @@ export default function BroadcastViewer() {
   useEffect(() => {
     let redirectTimer: NodeJS.Timeout;
     
-    // Only start redirect timer if we have no room info at all after 5 seconds
-    const startRedirectCheck = () => {
-      redirectTimer = setTimeout(() => {
-        console.log('📺 Redirect check:', { isViewer, currentRoom: !!currentRoom });
-        // Only redirect if we have no room AND no viewer status after sufficient time
-        if (!isViewer && !currentRoom) {
-          console.log('📺 No broadcast connection found, redirecting to dashboard');
-          setLocation('/dashboard');
-        }
-      }, 5000); // Wait 5 seconds before redirecting
-    };
-    
-    // Start the timer
-    startRedirectCheck();
+    // Only redirect if we're definitely not in a broadcast after enough time
+    redirectTimer = setTimeout(() => {
+      console.log('📺 Redirect check:', { isViewer, currentRoom: !!currentRoom });
+      // Only redirect if we have no room AND no viewer status after sufficient time
+      if (!isViewer && !currentRoom) {
+        console.log('📺 No broadcast connection found, redirecting to dashboard');
+        setLocation('/dashboard');
+      }
+    }, 5000); // Wait 5 seconds before redirecting
 
     return () => {
       if (redirectTimer) clearTimeout(redirectTimer);
     };
-  }, []); // Only run once on mount
+  }, [isViewer, currentRoom, setLocation]); // Re-run when broadcast state changes
 
   // Debug what we're receiving
   useEffect(() => {

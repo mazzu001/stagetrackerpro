@@ -259,63 +259,72 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
 
     const bpmNumber = parseFloat(song.metronomeBpm) || 120;
+    const metronomeEnabled = song.metronomeOn === true; // Explicitly check for true
+    const countIn = song.metronomeCountIn === true; // Explicitly check for true  
+    const wholeSong = song.metronomeWholeSong === true; // Explicitly check for true
+    const isAtStart = currentTime <= 1; // Consider "at start" if within first second
+    
+    console.log('🎯 Metronome settings:', { metronomeEnabled, countIn, wholeSong, isAtStart, currentTime, isPlaying });
     
     const config: ClickTrackConfig = {
       bpm: bpmNumber,
       countInMeasures: 1, // 1 measure count-in
       volume: 0.6,
-      enabled: song.metronomeOn || false,
+      enabled: metronomeEnabled,
       accentDownbeat: true,
       soundType: 'woodblock' // Use woodblock as default sound
     };
 
     // If metronome is off, stop any playing metronome
-    if (!config.enabled) {
+    if (!metronomeEnabled) {
       clickTrackRef.current.stop();
       isMetronomePlayingRef.current = false;
       console.log('🎯 Metronome disabled for this song');
       return;
     }
 
-    // Handle different metronome modes based on song settings
-    const countIn = song.metronomeCountIn || false;
-    const wholeSong = song.metronomeWholeSong || false;
-
-    if (isPlaying && wholeSong) {
-      // Continuous metronome during song playback
-      if (!isMetronomePlayingRef.current) {
-        clickTrackRef.current.startContinuous(config);
-        isMetronomePlayingRef.current = true;
-        console.log('🎯 Started continuous metronome for whole song');
-      }
-    } else if (isPlaying && countIn && !wholeSong) {
-      // Count-in only when starting playback
-      if (!isMetronomePlayingRef.current) {
-        clickTrackRef.current.startCountIn(config, () => {
-          // Count-in complete, stop if not whole song mode
-          isMetronomePlayingRef.current = false;
-          console.log('🎯 Count-in complete');
-        });
-        isMetronomePlayingRef.current = true;
-        console.log('🎯 Started count-in metronome');
-      }
-    } else if (isPlaying && countIn && wholeSong) {
-      // Count-in first, then continuous
-      if (!isMetronomePlayingRef.current) {
-        clickTrackRef.current.startCountIn(config, () => {
-          // Count-in complete, start continuous mode
-          clickTrackRef.current.startContinuous(config);
-          console.log('🎯 Count-in complete, starting continuous metronome');
-        });
-        isMetronomePlayingRef.current = true;
-        console.log('🎯 Started count-in then continuous metronome');
-      }
-    } else if (!isPlaying) {
+    if (!isPlaying) {
       // Stop metronome when playback stops
       clickTrackRef.current.stop();
       isMetronomePlayingRef.current = false;
+      console.log('🎯 Metronome stopped - playback paused');
+      return;
     }
-  }, [song, isPlaying]);
+
+    // Handle different metronome modes based on song settings
+    if (isPlaying && !isMetronomePlayingRef.current) {
+      if (countIn && isAtStart) {
+        // Count-in only at song start, then continuous if whole song enabled
+        if (wholeSong) {
+          console.log('🎯 Starting count-in -> continuous metronome');
+          clickTrackRef.current.startCountIn(config, () => {
+            // Count-in complete, start continuous mode
+            clickTrackRef.current.startContinuous(config);
+            console.log('🎯 Count-in complete, starting continuous metronome');
+          });
+        } else {
+          console.log('🎯 Starting count-in only metronome');
+          clickTrackRef.current.startCountIn(config, () => {
+            // Count-in complete, stop metronome
+            isMetronomePlayingRef.current = false;
+            console.log('🎯 Count-in complete - metronome stopped');
+          });
+        }
+        isMetronomePlayingRef.current = true;
+      } else if (wholeSong && !countIn) {
+        // Continuous metronome without count-in
+        console.log('🎯 Starting continuous metronome (no count-in)');
+        clickTrackRef.current.startContinuous(config);
+        isMetronomePlayingRef.current = true;
+      } else if (wholeSong && countIn && !isAtStart) {
+        // If whole song is on but we're not at start, just do continuous
+        console.log('🎯 Starting continuous metronome (mid-song)');
+        clickTrackRef.current.startContinuous(config);
+        isMetronomePlayingRef.current = true;
+      }
+      // If only count-in is enabled but we're not at start, do nothing
+    }
+  }, [song, isPlaying, currentTime]);
 
   // Update metronome when playback state or song settings change
   useEffect(() => {

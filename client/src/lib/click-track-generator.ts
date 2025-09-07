@@ -1,12 +1,15 @@
 // Click track generator for professional metronome functionality
 // Uses Web Audio API for precise timing and professional sound quality
 
+export type MetronomeSound = 'square' | 'sine' | 'triangle' | 'sawtooth' | 'woodblock' | 'kick' | 'hihat';
+
 export interface ClickTrackConfig {
   bpm: number;
   countInMeasures: 1 | 2 | 3 | 4;
   volume: number; // 0.0 to 1.0
   enabled: boolean;
   accentDownbeat: boolean; // Different sound for beat 1
+  soundType?: MetronomeSound; // Sound preset to use
 }
 
 export class ClickTrackGenerator {
@@ -26,30 +29,141 @@ export class ClickTrackGenerator {
     console.log('🎯 Click track generator initialized');
   }
 
-  // Generate professional metronome click sound
-  private createClickSound(frequency: number = 800, isAccent: boolean = false): void {
+  // Generate professional metronome click sound with different presets
+  private createClickSound(frequency: number = 800, isAccent: boolean = false, soundType: MetronomeSound = 'square'): void {
+    const now = this.audioContext.currentTime;
+    
+    switch (soundType) {
+      case 'sine':
+        this.createToneSound('sine', isAccent ? frequency * 1.2 : frequency, isAccent ? 0.4 : 0.3, 0.15);
+        break;
+      
+      case 'triangle':
+        this.createToneSound('triangle', isAccent ? frequency * 1.3 : frequency, isAccent ? 0.35 : 0.25, 0.12);
+        break;
+      
+      case 'sawtooth':
+        this.createToneSound('sawtooth', isAccent ? frequency * 1.4 : frequency, isAccent ? 0.25 : 0.2, 0.08);
+        break;
+      
+      case 'woodblock':
+        this.createWoodblockSound(isAccent);
+        break;
+      
+      case 'kick':
+        this.createKickSound(isAccent);
+        break;
+      
+      case 'hihat':
+        this.createHihatSound(isAccent);
+        break;
+      
+      default: // 'square'
+        this.createToneSound('square', isAccent ? frequency * 1.5 : frequency, isAccent ? 0.3 : 0.25, 0.1);
+        break;
+    }
+  }
+
+  private createToneSound(type: OscillatorType, frequency: number, volume: number, duration: number): void {
     const oscillator = this.audioContext.createOscillator();
     const envelope = this.audioContext.createGain();
+    const now = this.audioContext.currentTime;
 
-    // Configure oscillator
-    oscillator.type = 'square';
-    oscillator.frequency.setValueAtTime(
-      isAccent ? frequency * 1.5 : frequency, // Higher pitch for accented beats
-      this.audioContext.currentTime
-    );
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, now);
 
-    // Configure envelope for sharp click
-    envelope.gain.setValueAtTime(0, this.audioContext.currentTime);
-    envelope.gain.linearRampToValueAtTime(0.3, this.audioContext.currentTime + 0.001);
-    envelope.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+    // Sharp attack, exponential decay
+    envelope.gain.setValueAtTime(0, now);
+    envelope.gain.linearRampToValueAtTime(volume, now + 0.001);
+    envelope.gain.exponentialRampToValueAtTime(0.01, now + duration);
 
-    // Connect audio nodes
     oscillator.connect(envelope);
     envelope.connect(this.gainNode);
 
-    // Play the click
-    oscillator.start(this.audioContext.currentTime);
-    oscillator.stop(this.audioContext.currentTime + 0.1);
+    oscillator.start(now);
+    oscillator.stop(now + duration);
+  }
+
+  private createWoodblockSound(isAccent: boolean): void {
+    // Multiple frequencies for realistic woodblock sound
+    const frequencies = isAccent ? [1200, 1800, 2400] : [800, 1200, 1600];
+    const volume = isAccent ? 0.4 : 0.3;
+
+    frequencies.forEach((freq, i) => {
+      const oscillator = this.audioContext.createOscillator();
+      const envelope = this.audioContext.createGain();
+      const now = this.audioContext.currentTime;
+
+      oscillator.type = 'triangle';
+      oscillator.frequency.setValueAtTime(freq, now);
+
+      const gain = volume * (1 - i * 0.2); // Decreasing volume for harmonics
+      envelope.gain.setValueAtTime(0, now);
+      envelope.gain.linearRampToValueAtTime(gain, now + 0.001);
+      envelope.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+
+      oscillator.connect(envelope);
+      envelope.connect(this.gainNode);
+
+      oscillator.start(now);
+      oscillator.stop(now + 0.08);
+    });
+  }
+
+  private createKickSound(isAccent: boolean): void {
+    const oscillator = this.audioContext.createOscillator();
+    const envelope = this.audioContext.createGain();
+    const now = this.audioContext.currentTime;
+
+    // Low frequency for kick-like sound
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(isAccent ? 80 : 60, now);
+    oscillator.frequency.exponentialRampToValueAtTime(isAccent ? 40 : 30, now + 0.1);
+
+    const volume = isAccent ? 0.6 : 0.5;
+    envelope.gain.setValueAtTime(0, now);
+    envelope.gain.linearRampToValueAtTime(volume, now + 0.005);
+    envelope.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+
+    oscillator.connect(envelope);
+    envelope.connect(this.gainNode);
+
+    oscillator.start(now);
+    oscillator.stop(now + 0.2);
+  }
+
+  private createHihatSound(isAccent: boolean): void {
+    // Generate filtered noise for hi-hat like sound
+    const bufferSize = this.audioContext.sampleRate * 0.05; // 50ms of noise
+    const buffer = this.audioContext.createBuffer(1, bufferSize, this.audioContext.sampleRate);
+    const data = buffer.getChannelData(0);
+
+    // Generate white noise
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+
+    const noise = this.audioContext.createBufferSource();
+    const filter = this.audioContext.createBiquadFilter();
+    const envelope = this.audioContext.createGain();
+    const now = this.audioContext.currentTime;
+
+    noise.buffer = buffer;
+
+    // High-pass filter for crisp hi-hat sound
+    filter.type = 'highpass';
+    filter.frequency.setValueAtTime(isAccent ? 8000 : 6000, now);
+
+    const volume = isAccent ? 0.4 : 0.3;
+    envelope.gain.setValueAtTime(0, now);
+    envelope.gain.linearRampToValueAtTime(volume, now + 0.001);
+    envelope.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+
+    noise.connect(filter);
+    filter.connect(envelope);
+    envelope.connect(this.gainNode);
+
+    noise.start(now);
   }
 
   // Start count-in sequence before song playback
@@ -85,7 +199,7 @@ export class ClickTrackGenerator {
 
     // Play click sound
     const isDownbeat = (this.clickCount % 4) === 0;
-    this.createClickSound(800, config.accentDownbeat && isDownbeat);
+    this.createClickSound(800, config.accentDownbeat && isDownbeat, config.soundType);
     
     this.clickCount++;
     
@@ -115,7 +229,7 @@ export class ClickTrackGenerator {
 
     // Play click sound
     const isDownbeat = (this.clickCount % 4) === 0;
-    this.createClickSound(800, config.accentDownbeat && isDownbeat);
+    this.createClickSound(800, config.accentDownbeat && isDownbeat, config.soundType);
     
     this.clickCount++;
     

@@ -11,7 +11,7 @@ import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
-import { ClickTrackGenerator, type ClickTrackConfig } from "@/lib/click-track-generator";
+import { ClickTrackGenerator, type ClickTrackConfig, type MetronomeSound } from "@/lib/click-track-generator";
 
 
 import type { Track, SongWithTracks } from "@shared/schema";
@@ -57,6 +57,7 @@ export default function TrackManager({
   const [countIn, setCountIn] = useState(song?.metronomeCountIn || false);
   const [metronomeOn, setMetronomeOn] = useState(song?.metronomeOn || false);
   const [wholeSong, setWholeSong] = useState(song?.metronomeWholeSong || false);
+  const [soundType, setSoundType] = useState<MetronomeSound>('woodblock'); // Default to woodblock (nicer sound)
   
   // Metronome audio setup
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -156,7 +157,8 @@ export default function TrackManager({
       countInMeasures: 1, // 1 measure count-in
       volume: 0.6,
       enabled: metronomeOn,
-      accentDownbeat: true
+      accentDownbeat: true,
+      soundType: soundType
     };
 
     // If metronome is off, stop any playing metronome
@@ -191,7 +193,7 @@ export default function TrackManager({
       clickTrackRef.current.stop();
       isMetronomePlayingRef.current = false;
     }
-  }, [metronomeOn, bpm, countIn, wholeSong, isPlaying]);
+  }, [metronomeOn, bpm, countIn, wholeSong, isPlaying, soundType]);
 
   // Update metronome when relevant settings change
   useEffect(() => {
@@ -735,6 +737,19 @@ export default function TrackManager({
           {/* Metronome Controls */}
           <div className="flex items-center gap-2 text-sm">
             <span className="font-medium text-xs text-gray-700 dark:text-gray-300">🎵</span>
+            <select
+              value={soundType}
+              onChange={(e) => setSoundType(e.target.value as MetronomeSound)}
+              className="h-7 px-2 text-xs border rounded bg-white dark:bg-gray-700 dark:border-gray-600"
+              title="Metronome sound type"
+            >
+              <option value="woodblock">Wood</option>
+              <option value="hihat">Hi-Hat</option>
+              <option value="square">Beep</option>
+              <option value="sine">Pure</option>
+              <option value="triangle">Warm</option>
+              <option value="kick">Kick</option>
+            </select>
             <Input 
               type="number" 
               placeholder="BPM" 

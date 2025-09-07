@@ -11,6 +11,7 @@ import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
+import { ClickTrackGenerator, type ClickTrackConfig } from "@/lib/click-track-generator";
 
 
 import type { Track, SongWithTracks } from "@shared/schema";
@@ -56,6 +57,12 @@ export default function TrackManager({
   const [countIn, setCountIn] = useState(song?.metronomeCountIn || false);
   const [metronomeOn, setMetronomeOn] = useState(song?.metronomeOn || false);
   const [wholeSong, setWholeSong] = useState(song?.metronomeWholeSong || false);
+  
+  // Metronome audio setup
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const clickTrackRef = useRef<ClickTrackGenerator | null>(null);
+  const isMetronomePlayingRef = useRef<boolean>(false);
+  
   // Pitch and speed control removed
 
   // Recording state
@@ -101,6 +108,95 @@ export default function TrackManager({
       setWholeSong(song.metronomeWholeSong || false);
     }
   }, [song?.id]);
+
+  // Initialize metronome audio system
+  useEffect(() => {
+    const initializeAudio = () => {
+      try {
+        if (!audioContextRef.current) {
+          audioContextRef.current = new AudioContext();
+          console.log('🎯 AudioContext initialized for metronome');
+        }
+        
+        if (!clickTrackRef.current && audioContextRef.current) {
+          clickTrackRef.current = new ClickTrackGenerator(audioContextRef.current);
+          console.log('🎯 ClickTrackGenerator initialized');
+        }
+      } catch (error) {
+        console.error('Failed to initialize metronome audio:', error);
+      }
+    };
+
+    initializeAudio();
+
+    return () => {
+      // Cleanup when component unmounts
+      if (clickTrackRef.current) {
+        clickTrackRef.current.destroy();
+        clickTrackRef.current = null;
+      }
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        audioContextRef.current.close();
+        audioContextRef.current = null;
+      }
+    };
+  }, []);
+
+  // Handle metronome control based on playback state and settings
+  const handleMetronome = useCallback(() => {
+    if (!clickTrackRef.current || !audioContextRef.current) {
+      console.warn('Metronome audio not initialized');
+      return;
+    }
+
+    const bpmNumber = parseFloat(bpm) || 120;
+    
+    const config: ClickTrackConfig = {
+      bpm: bpmNumber,
+      countInMeasures: 1, // 1 measure count-in
+      volume: 0.6,
+      enabled: metronomeOn,
+      accentDownbeat: true
+    };
+
+    // If metronome is off, stop any playing metronome
+    if (!metronomeOn) {
+      clickTrackRef.current.stop();
+      isMetronomePlayingRef.current = false;
+      return;
+    }
+
+    // Handle different metronome modes
+    if (isPlaying && wholeSong) {
+      // Continuous metronome during song playback
+      if (!isMetronomePlayingRef.current) {
+        clickTrackRef.current.startContinuous(config);
+        isMetronomePlayingRef.current = true;
+        console.log('🎯 Started continuous metronome for whole song');
+      }
+    } else if (isPlaying && countIn) {
+      // Count-in only when starting playback
+      if (!isMetronomePlayingRef.current) {
+        clickTrackRef.current.startCountIn(config, () => {
+          // Count-in complete, stop metronome if not whole song mode
+          if (!wholeSong) {
+            isMetronomePlayingRef.current = false;
+          }
+        });
+        isMetronomePlayingRef.current = true;
+        console.log('🎯 Started count-in metronome');
+      }
+    } else if (!isPlaying) {
+      // Stop metronome when playback stops
+      clickTrackRef.current.stop();
+      isMetronomePlayingRef.current = false;
+    }
+  }, [metronomeOn, bpm, countIn, wholeSong, isPlaying]);
+
+  // Update metronome when relevant settings change
+  useEffect(() => {
+    handleMetronome();
+  }, [handleMetronome]);
 
   // Initialize local track values from song data
   useEffect(() => {

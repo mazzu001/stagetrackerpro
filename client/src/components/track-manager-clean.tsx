@@ -51,6 +51,10 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
+  // Metronome controls
+  const [bpm, setBpm] = useState<string>("120.0000");
+  const [countIn, setCountIn] = useState(false);
+  const [metronomeOn, setMetronomeOn] = useState(false);
   // Pitch and speed control removed
 
   // Recording state
@@ -595,6 +599,41 @@ export default function TrackManager({
             {tracks.length > 0 && (
               <span className="text-sm text-gray-500">({tracks.length} track{tracks.length !== 1 ? 's' : ''})</span>
             )}
+          </div>
+          
+          {/* Metronome Controls */}
+          <div className="flex items-center gap-3 text-sm">
+            <Input 
+              type="number" 
+              placeholder="BPM" 
+              step="0.0001"
+              min="1"
+              value={bpm}
+              onChange={(e) => setBpm(e.target.value)}
+              className="w-20 h-8 text-xs px-2"
+            />
+            <label className="flex items-center gap-1 cursor-pointer">
+              <input 
+                type="checkbox" 
+                checked={countIn}
+                onChange={(e) => setCountIn(e.target.checked)}
+                className="w-3 h-3" 
+              />
+              <span className="text-xs whitespace-nowrap">Count-in</span>
+            </label>
+            <Button
+              onClick={() => setMetronomeOn(!metronomeOn)}
+              variant="ghost"
+              size="sm"
+              className={`h-8 w-8 p-0 transition-all ${
+                metronomeOn 
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50 glow' 
+                  : 'text-gray-500 hover:text-gray-700'
+              }`}
+              title={metronomeOn ? "Turn metronome off" : "Turn metronome on"}
+            >
+              <div className="w-4 h-4 bg-current rounded-full" />
+            </Button>
           </div>
           
         </div>

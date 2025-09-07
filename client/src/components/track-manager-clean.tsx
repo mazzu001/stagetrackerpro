@@ -740,7 +740,7 @@ export default function TrackManager({
             <select
               value={soundType}
               onChange={(e) => setSoundType(e.target.value as MetronomeSound)}
-              className="h-7 px-2 text-xs border rounded bg-white dark:bg-gray-700 dark:border-gray-600"
+              className="h-7 px-2 text-xs border rounded dark:bg-gray-700 dark:border-gray-600 bg-[#0d1216]"
               title="Metronome sound type"
             >
               <option value="woodblock">Wood</option>
@@ -865,7 +865,6 @@ export default function TrackManager({
           </div>
         </div>
       </div>
-
       {tracks.length === 0 ? (
         <Card>
           <CardContent className="p-6">
@@ -989,8 +988,6 @@ export default function TrackManager({
           })}
         </div>
       )}
-
-
     </div>
   );
 }

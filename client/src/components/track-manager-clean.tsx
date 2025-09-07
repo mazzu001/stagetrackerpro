@@ -627,8 +627,8 @@ export default function TrackManager({
   return (
     <div className="w-full space-y-4 max-h-[70vh] overflow-y-auto pr-2">
       {/* Header with controls */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <h3 className="text-lg font-semibold">Track Manager</h3>
             {tracks.length > 0 && (
@@ -636,118 +636,114 @@ export default function TrackManager({
             )}
           </div>
           
-          {/* Metronome Controls */}
-          <div className="flex items-center gap-3 text-sm">
-            <Input 
-              type="number" 
-              placeholder="BPM" 
-              step="0.0001"
-              min="1"
-              value={bpm}
-              onChange={(e) => setBpm(e.target.value)}
-              className="w-20 h-8 text-xs px-2"
-            />
-            <label className="flex items-center gap-1 cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={countIn}
-                onChange={(e) => setCountIn(e.target.checked)}
-                className="w-3 h-3" 
-              />
-              <span className="text-xs whitespace-nowrap">Count-in</span>
-            </label>
-            <label className="flex items-center gap-1 cursor-pointer">
-              <input 
-                type="checkbox" 
-                checked={wholeSong}
-                onChange={(e) => setWholeSong(e.target.checked)}
-                className="w-3 h-3" 
-              />
-              <span className="text-xs whitespace-nowrap">Whole song</span>
-            </label>
+          {/* Main action buttons */}
+          <div className="flex items-center gap-2">
+            {/* Play/Pause button - only show if callbacks provided */}
+            {(onPlay || onPause) && (
+              <Button
+                onClick={isPlaying ? onPause : onPlay}
+                variant={isPlaying ? "destructive" : "default"}
+                size="sm"
+                data-testid="button-play-pause"
+              >
+                {isPlaying ? <Pause className="h-4 w-4 mr-2" /> : <Play className="h-4 w-4 mr-2" />}
+                {isPlaying ? 'Pause' : 'Play'}
+              </Button>
+            )}
+            
             <Button
-              onClick={() => setMetronomeOn(!metronomeOn)}
-              variant="ghost"
-              size="sm"
-              className={`h-8 w-8 p-0 transition-all ${
-                metronomeOn 
-                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50 glow' 
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-              title={metronomeOn ? "Turn metronome off" : "Turn metronome on"}
-            >
-              <div className="w-4 h-4 bg-current rounded-full" />
-            </Button>
-          </div>
-          
-        </div>
-        
-        
-        <div className="flex items-center gap-2">
-          {/* Play/Pause button - only show if callbacks provided */}
-          {(onPlay || onPause) && (
-            <Button
-              onClick={isPlaying ? onPause : onPlay}
-              variant={isPlaying ? "destructive" : "default"}
-              size="sm"
-              data-testid="button-play-pause"
-            >
-              {isPlaying ? <Pause className="h-4 w-4 mr-2" /> : <Play className="h-4 w-4 mr-2" />}
-              {isPlaying ? 'Pause' : 'Play'}
-            </Button>
-          )}
-          
-          {/* Recording features removed */}
-
-          <Button
-            onClick={handleFileSelect}
-            disabled={tracks.length >= 6 || isImporting}
-            size="sm"
-            className="hidden md:flex"
-            data-testid="button-add-tracks-desktop"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            {isImporting ? 'Adding...' : 'Add Tracks'}
-          </Button>
-          
-          {tracks.length > 0 && (
-            <Button
-              onClick={handleClearBrokenTracks}
-              variant="outline"
+              onClick={handleFileSelect}
+              disabled={tracks.length >= 6 || isImporting}
               size="sm"
               className="hidden md:flex"
-              data-testid="button-clear-tracks-desktop"
+              data-testid="button-add-tracks-desktop"
             >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Clear All
+              <Plus className="h-4 w-4 mr-2" />
+              {isImporting ? 'Adding...' : 'Add Tracks'}
             </Button>
-          )}
-
-          {/* Recording features removed */}
-
-          <Button
-            onClick={handleFileSelect}
-            disabled={tracks.length >= 6 || isImporting}
-            size="sm"
-            className="flex md:hidden"
-            data-testid="button-add-tracks-mobile"
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            {isImporting ? 'Adding...' : 'Add'}
-          </Button>
-          
-          {tracks.length > 0 && (
+            
+            {tracks.length > 0 && (
+              <Button
+                onClick={handleClearBrokenTracks}
+                variant="outline"
+                size="sm"
+                className="hidden md:flex"
+                data-testid="button-clear-tracks-desktop"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Clear All
+              </Button>
+            )}
+            
             <Button
-              onClick={handleClearBrokenTracks}
-              variant="outline"
+              onClick={handleFileSelect}
+              disabled={tracks.length >= 6 || isImporting}
               size="sm"
-              className="flex md:hidden h-8 w-8 p-0"
-              title="Clear All Tracks"
-              data-testid="button-clear-tracks-mobile"
+              className="flex md:hidden"
+              data-testid="button-add-tracks-mobile"
             >
-              <Trash2 className="h-4 w-4" />
+              <Plus className="h-4 w-4 mr-1" />
+              {isImporting ? 'Adding...' : 'Add'}
             </Button>
-          )}
+            
+            {tracks.length > 0 && (
+              <Button
+                onClick={handleClearBrokenTracks}
+                variant="outline"
+                size="sm"
+                className="flex md:hidden h-8 w-8 p-0"
+                title="Clear All Tracks"
+                data-testid="button-clear-tracks-mobile"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+        </div>
+        
+        {/* Metronome Controls Row */}
+        <div className="flex items-center gap-4 text-sm bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
+          <span className="font-medium text-xs text-gray-700 dark:text-gray-300">Metronome:</span>
+          <Input 
+            type="number" 
+            placeholder="BPM" 
+            step="0.0001"
+            min="1"
+            value={bpm}
+            onChange={(e) => setBpm(e.target.value)}
+            className="w-20 h-8 text-xs px-2"
+          />
+          <label className="flex items-center gap-1 cursor-pointer">
+            <input 
+              type="checkbox" 
+              checked={countIn}
+              onChange={(e) => setCountIn(e.target.checked)}
+              className="w-3 h-3" 
+            />
+            <span className="text-xs whitespace-nowrap">Count-in</span>
+          </label>
+          <label className="flex items-center gap-1 cursor-pointer">
+            <input 
+              type="checkbox" 
+              checked={wholeSong}
+              onChange={(e) => setWholeSong(e.target.checked)}
+              className="w-3 h-3" 
+            />
+            <span className="text-xs whitespace-nowrap">Whole song</span>
+          </label>
+          <Button
+            onClick={() => setMetronomeOn(!metronomeOn)}
+            variant="ghost"
+            size="sm"
+            className={`h-8 w-8 p-0 transition-all ${
+              metronomeOn 
+                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50 glow' 
+                : 'text-gray-500 hover:text-gray-700'
+            }`}
+            title={metronomeOn ? "Turn metronome off" : "Turn metronome on"}
+          >
+            <div className="w-4 h-4 bg-current rounded-full" />
+          </Button>
         </div>
       </div>
 

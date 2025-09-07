@@ -1075,7 +1075,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     <div className={`h-screen flex flex-col bg-background text-foreground overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {/* Header */}
       <div className="bg-surface border-b border-gray-700 p-2 md:p-4 flex-shrink-0">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mt-[-7px] mb-[-7px] pl-[1px] pr-[1px] ml-[-4px] mr-[-4px] pt-[0px] pb-[0px]">
           <div className="flex items-center gap-2 md:gap-4">
             <img 
               src={stageTrackerLogo} 
@@ -1216,7 +1216,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </div>
       </div>
-      
       {/* Broadcast Viewer Mode - Show lyrics from broadcast data */}
       {showBroadcastViewerMode && (
         <div className="bg-blue-50 dark:bg-blue-950 border-b border-blue-200 dark:border-blue-800 p-4 flex-shrink-0">
@@ -1246,7 +1245,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </div>
       )}
-      
       {/* Main Content */}
       <div className="flex-1 flex min-h-0">
         {/* Left Sidebar - Song Selection */}

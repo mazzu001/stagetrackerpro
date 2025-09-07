@@ -51,10 +51,30 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
-  // Metronome controls
-  const [bpm, setBpm] = useState<string>("120.0000");
-  const [countIn, setCountIn] = useState(false);
-  const [metronomeOn, setMetronomeOn] = useState(false);
+  // Metronome controls with localStorage persistence
+  const [bpm, setBpm] = useState<string>(() => {
+    try {
+      return localStorage.getItem('metronome-bpm') || "120.0000";
+    } catch {
+      return "120.0000";
+    }
+  });
+  const [countIn, setCountIn] = useState(() => {
+    try {
+      const saved = localStorage.getItem('metronome-count-in');
+      return saved ? JSON.parse(saved) : false;
+    } catch {
+      return false;
+    }
+  });
+  const [metronomeOn, setMetronomeOn] = useState(() => {
+    try {
+      const saved = localStorage.getItem('metronome-on');
+      return saved ? JSON.parse(saved) : false;
+    } catch {
+      return false;
+    }
+  });
   // Pitch and speed control removed
 
   // Recording state
@@ -66,21 +86,6 @@ export default function TrackManager({
 
   // Get tracks for the current song
   const tracks = song?.tracks || [];
-
-  // Load metronome preferences from localStorage on mount
-  useEffect(() => {
-    try {
-      const savedBpm = localStorage.getItem('metronome-bpm');
-      const savedCountIn = localStorage.getItem('metronome-count-in');
-      const savedMetronomeOn = localStorage.getItem('metronome-on');
-      
-      if (savedBpm) setBpm(savedBpm);
-      if (savedCountIn) setCountIn(JSON.parse(savedCountIn));
-      if (savedMetronomeOn) setMetronomeOn(JSON.parse(savedMetronomeOn));
-    } catch (error) {
-      console.error('Failed to load metronome preferences:', error);
-    }
-  }, []);
 
   // Save metronome preferences to localStorage when they change
   useEffect(() => {

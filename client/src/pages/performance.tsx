@@ -1074,7 +1074,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   return (
     <div className={`h-screen flex flex-col bg-background text-foreground overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {/* Header */}
-      <div className="bg-surface border-b border-gray-700 p-2 md:p-4 flex-shrink-0">
+      <div className="bg-surface border-b border-gray-700 p-2 md:p-4 flex-shrink-0 pt-[4px] pb-[4px]">
         <div className="flex items-center justify-between mt-[-7px] mb-[-7px] pl-[1px] pr-[1px] ml-[-4px] mr-[-4px] pt-[0px] pb-[0px]">
           <div className="flex items-center gap-2 md:gap-4">
             <img 

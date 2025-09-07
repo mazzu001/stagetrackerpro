@@ -646,7 +646,7 @@ export default function TrackManager({
               min="1"
               value={bpm}
               onChange={(e) => setBpm(e.target.value)}
-              className="w-16 h-7 text-xs px-2"
+              className="w-20 h-7 text-xs px-2"
             />
             <Button
               onClick={() => setCountIn(!countIn)}

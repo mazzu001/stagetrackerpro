@@ -1076,10 +1076,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       <div className="bg-surface border-b border-gray-700 p-2 md:p-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 md:gap-4">
-            <div className="flex items-center gap-2">
-              <Music className="h-5 w-5 md:h-6 md:w-6 text-primary" />
-              <span className="text-base md:text-lg font-semibold">StageTracker Pro</span>
-            </div>
+            <img 
+              src="/attached_assets/xparent bckgrn_1757282012602.png" 
+              alt="StageTracker" 
+              className="h-8 md:h-10"
+            />
           </div>
 
           {/* Waveform Visualizer - Stretch across available space */}

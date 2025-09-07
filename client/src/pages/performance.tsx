@@ -28,6 +28,7 @@ import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import type { SongWithTracks } from "@shared/schema";
 import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
+import stageTrackerLogo from "@assets/xparent bckgrn_1757282012602.png";
 import { USBMidiManager } from "@/components/USBMidiManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
 import { useRef } from "react";
@@ -1077,7 +1078,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 md:gap-4">
             <img 
-              src="/attached_assets/xparent bckgrn_1757282012602.png" 
+              src={stageTrackerLogo} 
               alt="StageTracker" 
               className="h-8 md:h-10"
             />

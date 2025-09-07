@@ -67,6 +67,34 @@ export default function TrackManager({
   // Get tracks for the current song
   const tracks = song?.tracks || [];
 
+  // Load metronome preferences from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedBpm = localStorage.getItem('metronome-bpm');
+      const savedCountIn = localStorage.getItem('metronome-count-in');
+      const savedMetronomeOn = localStorage.getItem('metronome-on');
+      
+      if (savedBpm) setBpm(savedBpm);
+      if (savedCountIn) setCountIn(JSON.parse(savedCountIn));
+      if (savedMetronomeOn) setMetronomeOn(JSON.parse(savedMetronomeOn));
+    } catch (error) {
+      console.error('Failed to load metronome preferences:', error);
+    }
+  }, []);
+
+  // Save metronome preferences to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('metronome-bpm', bpm);
+  }, [bpm]);
+
+  useEffect(() => {
+    localStorage.setItem('metronome-count-in', JSON.stringify(countIn));
+  }, [countIn]);
+
+  useEffect(() => {
+    localStorage.setItem('metronome-on', JSON.stringify(metronomeOn));
+  }, [metronomeOn]);
+
   // Initialize local track values from song data
   useEffect(() => {
     if (tracks.length > 0) {

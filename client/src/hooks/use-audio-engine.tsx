@@ -275,7 +275,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       volume: 0.6,
       enabled: metronomeEnabled,
       accentDownbeat: true,
-      soundType: 'woodblock' // Use woodblock as default sound
+      soundType: 'woodblock', // Use woodblock as default sound
+      pan: song.metronomePan as 'left' | 'right' | 'center' || 'center' // Default to center
     };
 
     // If metronome is off, stop any playing metronome

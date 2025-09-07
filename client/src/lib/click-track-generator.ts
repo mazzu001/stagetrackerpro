@@ -10,11 +10,13 @@ export interface ClickTrackConfig {
   enabled: boolean;
   accentDownbeat: boolean; // Different sound for beat 1
   soundType?: MetronomeSound; // Sound preset to use
+  pan?: 'left' | 'right' | 'center'; // Channel routing for in-ear monitors
 }
 
 export class ClickTrackGenerator {
   private audioContext: AudioContext;
   private gainNode: GainNode;
+  private panNode: StereoPannerNode;
   private isPlaying: boolean = false;
   private clickInterval: number | null = null;
   private countInTimeout: number | null = null;
@@ -25,8 +27,13 @@ export class ClickTrackGenerator {
   constructor(audioContext: AudioContext) {
     this.audioContext = audioContext;
     this.gainNode = this.audioContext.createGain();
-    this.gainNode.connect(this.audioContext.destination);
-    console.log('🎯 Click track generator initialized');
+    this.panNode = this.audioContext.createStereoPanner();
+    
+    // Connect: Sound -> Gain (volume) -> Pan (L/R routing) -> Destination
+    this.gainNode.connect(this.panNode);
+    this.panNode.connect(this.audioContext.destination);
+    
+    console.log('🎯 Click track generator initialized with pan control');
   }
 
   // Generate professional metronome click sound with different presets
@@ -166,6 +173,13 @@ export class ClickTrackGenerator {
     noise.start(now);
   }
 
+  // Set pan position for professional in-ear monitor routing
+  setPan(pan: 'left' | 'right' | 'center'): void {
+    const panValue = pan === 'left' ? -1 : pan === 'right' ? 1 : 0;
+    this.panNode.pan.setValueAtTime(panValue, this.audioContext.currentTime);
+    console.log(`🎯 Metronome pan set to: ${pan} (${panValue})`);
+  }
+
   // Start count-in sequence before song playback
   startCountIn(config: ClickTrackConfig, onComplete?: () => void): void {
     if (this.isPlaying) {
@@ -174,6 +188,11 @@ export class ClickTrackGenerator {
 
     this.onCountInComplete = onComplete;
     this.gainNode.gain.setValueAtTime(config.volume, this.audioContext.currentTime);
+    
+    // Set pan for professional in-ear monitor routing
+    if (config.pan) {
+      this.setPan(config.pan);
+    }
     
     // Calculate timing
     const beatInterval = 60000 / config.bpm; // milliseconds per beat
@@ -214,6 +233,11 @@ export class ClickTrackGenerator {
     if (!config.enabled) return;
 
     this.gainNode.gain.setValueAtTime(config.volume, this.audioContext.currentTime);
+    
+    // Set pan for professional in-ear monitor routing
+    if (config.pan) {
+      this.setPan(config.pan);
+    }
     
     const beatInterval = 60000 / config.bpm;
     this.clickCount = 0;

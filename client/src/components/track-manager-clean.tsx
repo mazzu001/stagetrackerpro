@@ -57,6 +57,7 @@ export default function TrackManager({
   const [countIn, setCountIn] = useState(song?.metronomeCountIn || false);
   const [metronomeOn, setMetronomeOn] = useState(song?.metronomeOn || false);
   const [wholeSong, setWholeSong] = useState(song?.metronomeWholeSong || false);
+  const [metronomePan, setMetronomePan] = useState<'left' | 'right' | 'center'>(song?.metronomePan as 'left' | 'right' | 'center' || 'center');
   const [soundType, setSoundType] = useState<MetronomeSound>('woodblock'); // Default to woodblock (nicer sound)
   
   // Metronome audio setup
@@ -77,7 +78,7 @@ export default function TrackManager({
   const tracks = song?.tracks || [];
 
   // Update song when metronome settings change
-  const updateSongMetronome = useCallback((updates: Partial<{ metronomeBpm: string; metronomeCountIn: boolean; metronomeOn: boolean; metronomeWholeSong: boolean }>) => {
+  const updateSongMetronome = useCallback((updates: Partial<{ metronomeBpm: string; metronomeCountIn: boolean; metronomeOn: boolean; metronomeWholeSong: boolean; metronomePan: string }>) => {
     if (song?.id && user?.email) {
       LocalSongStorage.updateSong(user.email, song.id, updates);
       onSongUpdate?.({ ...song, ...updates });
@@ -100,6 +101,10 @@ export default function TrackManager({
     updateSongMetronome({ metronomeWholeSong: wholeSong });
   }, [wholeSong, updateSongMetronome]);
 
+  useEffect(() => {
+    updateSongMetronome({ metronomePan: metronomePan });
+  }, [metronomePan, updateSongMetronome]);
+
   // Sync metronome state when song changes
   useEffect(() => {
     if (song) {
@@ -107,6 +112,7 @@ export default function TrackManager({
       setCountIn(song.metronomeCountIn || false);
       setMetronomeOn(song.metronomeOn || false);
       setWholeSong(song.metronomeWholeSong || false);
+      setMetronomePan(song.metronomePan as 'left' | 'right' | 'center' || 'center');
     }
   }, [song?.id]);
 
@@ -158,7 +164,8 @@ export default function TrackManager({
       volume: 0.6,
       enabled: metronomeOn,
       accentDownbeat: true,
-      soundType: soundType
+      soundType: soundType,
+      pan: metronomePan
     };
 
     // If metronome is off, stop any playing metronome
@@ -797,6 +804,22 @@ export default function TrackManager({
               title={metronomeOn ? "Turn metronome off" : "Turn metronome on"}
             >
               {metronomeOn ? 'ON' : 'OFF'}
+            </Button>
+            <Button
+              onClick={() => {
+                const next = metronomePan === 'center' ? 'left' : metronomePan === 'left' ? 'right' : 'center';
+                setMetronomePan(next);
+              }}
+              variant="ghost"
+              size="sm"
+              className={`h-7 w-8 p-0 transition-all text-xs font-bold ${
+                metronomePan !== 'center'
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
+                  : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
+              }`}
+              title={`Channel: ${metronomePan.toUpperCase()} - Click to cycle (Center → Left → Right)`}
+            >
+              {metronomePan === 'left' ? 'L' : metronomePan === 'right' ? 'R' : 'C'}
             </Button>
           </div>
           

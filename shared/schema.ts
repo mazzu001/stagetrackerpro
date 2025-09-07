@@ -20,6 +20,7 @@ export const songs = sqliteTable("songs", {
   metronomeCountIn: integer("metronome_count_in", { mode: 'boolean' }).default(false),
   metronomeOn: integer("metronome_on", { mode: 'boolean' }).default(false),
   metronomeWholeSong: integer("metronome_whole_song", { mode: 'boolean' }).default(false),
+  metronomePan: text("metronome_pan").default("center"), // "left", "right", "center"
   createdAt: text("created_at").default(sql`(datetime('now'))`),
 });
 

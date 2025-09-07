@@ -1080,7 +1080,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             <img 
               src={stageTrackerLogo} 
               alt="StageTracker" 
-              className="h-16 md:h-20"
+              className="h-16 md:h-20 ml-[0px] mr-[0px] pl-[0px] pr-[0px] pt-[0px] pb-[0px] mt-[-4px] mb-[-4px]"
             />
           </div>
 

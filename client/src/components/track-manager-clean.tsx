@@ -713,36 +713,44 @@ export default function TrackManager({
             onChange={(e) => setBpm(e.target.value)}
             className="w-20 h-8 text-xs px-2"
           />
-          <label className="flex items-center gap-1 cursor-pointer">
-            <input 
-              type="checkbox" 
-              checked={countIn}
-              onChange={(e) => setCountIn(e.target.checked)}
-              className="w-3 h-3" 
-            />
-            <span className="text-xs whitespace-nowrap">Count-in</span>
-          </label>
-          <label className="flex items-center gap-1 cursor-pointer">
-            <input 
-              type="checkbox" 
-              checked={wholeSong}
-              onChange={(e) => setWholeSong(e.target.checked)}
-              className="w-3 h-3" 
-            />
-            <span className="text-xs whitespace-nowrap">Whole song</span>
-          </label>
+          <Button
+            onClick={() => setCountIn(!countIn)}
+            variant="ghost"
+            size="sm"
+            className={`h-8 w-12 p-0 transition-all text-xs font-bold ${
+              countIn 
+                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
+                : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
+            }`}
+            title={countIn ? "Turn count-in off" : "Turn count-in on"}
+          >
+            CI
+          </Button>
+          <Button
+            onClick={() => setWholeSong(!wholeSong)}
+            variant="ghost"
+            size="sm"
+            className={`h-8 w-12 p-0 transition-all text-xs font-bold ${
+              wholeSong 
+                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
+                : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
+            }`}
+            title={wholeSong ? "Turn whole song off" : "Turn whole song on"}
+          >
+            WS
+          </Button>
           <Button
             onClick={() => setMetronomeOn(!metronomeOn)}
             variant="ghost"
             size="sm"
-            className={`h-8 w-8 p-0 transition-all ${
+            className={`h-8 w-16 p-0 transition-all text-xs font-bold ${
               metronomeOn 
-                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50 glow' 
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
+                : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
             }`}
             title={metronomeOn ? "Turn metronome off" : "Turn metronome on"}
           >
-            <div className="w-4 h-4 bg-current rounded-full" />
+            {metronomeOn ? 'ON' : 'OFF'}
           </Button>
         </div>
       </div>

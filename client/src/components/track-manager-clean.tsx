@@ -703,7 +703,7 @@ export default function TrackManager({
         
         {/* Metronome Controls Row */}
         <div className="flex items-center gap-4 text-sm bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
-          <span className="font-medium text-xs text-gray-700 dark:text-gray-300">Metronome:</span>
+          <span className="font-medium text-xs text-gray-700 dark:text-gray-300">🎵 Metronome:</span>
           <Input 
             type="number" 
             placeholder="BPM" 

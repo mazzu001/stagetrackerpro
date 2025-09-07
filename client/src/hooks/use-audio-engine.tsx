@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 import type { SongWithTracks } from "@shared/schema";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
+import { ClickTrackGenerator, type ClickTrackConfig, type MetronomeSound } from "@/lib/click-track-generator";
 
 interface UseAudioEngineProps {
   song?: SongWithTracks;
@@ -34,6 +35,11 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
 
   const audioEngineRef = useRef<StreamingAudioEngine | null>(null);
   const animationFrameRef = useRef<number>();
+  
+  // Metronome setup
+  const metronomeContextRef = useRef<AudioContext | null>(null);
+  const clickTrackRef = useRef<ClickTrackGenerator | null>(null);
+  const isMetronomePlayingRef = useRef<boolean>(false);
 
   const stop = useCallback(() => {
     if (audioEngineRef.current) {
@@ -41,9 +47,14 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       setIsPlaying(false);
       setCurrentTime(0);
     }
+    // Stop metronome when stopping playback
+    if (clickTrackRef.current) {
+      clickTrackRef.current.stop();
+      isMetronomePlayingRef.current = false;
+    }
   }, []);
 
-  // Initialize audio engine
+  // Initialize audio engine and metronome
   useEffect(() => {
     const initAudioEngine = async () => {
       try {
@@ -76,9 +87,28 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         // Store unsubscribe function
         (audioEngineRef.current as any).unsubscribe = unsubscribe;
         setIsAudioEngineOnline(true);
+        
+        // Initialize metronome audio system
+        initializeMetronome();
       } catch (error) {
         console.error('Failed to initialize audio engine:', error);
         setIsAudioEngineOnline(false);
+      }
+    };
+
+    const initializeMetronome = () => {
+      try {
+        if (!metronomeContextRef.current) {
+          metronomeContextRef.current = new AudioContext();
+          console.log('🎯 Metronome AudioContext initialized');
+        }
+        
+        if (!clickTrackRef.current && metronomeContextRef.current) {
+          clickTrackRef.current = new ClickTrackGenerator(metronomeContextRef.current);
+          console.log('🎯 Metronome ClickTrackGenerator initialized');
+        }
+      } catch (error) {
+        console.error('Failed to initialize metronome:', error);
       }
     };
 
@@ -94,6 +124,15 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       }
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+      }
+      // Cleanup metronome
+      if (clickTrackRef.current) {
+        clickTrackRef.current.destroy();
+        clickTrackRef.current = null;
+      }
+      if (metronomeContextRef.current && metronomeContextRef.current.state !== 'closed') {
+        metronomeContextRef.current.close();
+        metronomeContextRef.current = null;
       }
     };
   }, [stop]);
@@ -213,6 +252,76 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     };
   }, [song?.id, isPlaying]);
 
+  // Metronome control function
+  const handleMetronome = useCallback(() => {
+    if (!clickTrackRef.current || !metronomeContextRef.current || !song) {
+      return;
+    }
+
+    const bpmNumber = parseFloat(song.metronomeBpm) || 120;
+    
+    const config: ClickTrackConfig = {
+      bpm: bpmNumber,
+      countInMeasures: 1, // 1 measure count-in
+      volume: 0.6,
+      enabled: song.metronomeOn || false,
+      accentDownbeat: true,
+      soundType: 'woodblock' // Use woodblock as default sound
+    };
+
+    // If metronome is off, stop any playing metronome
+    if (!config.enabled) {
+      clickTrackRef.current.stop();
+      isMetronomePlayingRef.current = false;
+      console.log('🎯 Metronome disabled for this song');
+      return;
+    }
+
+    // Handle different metronome modes based on song settings
+    const countIn = song.metronomeCountIn || false;
+    const wholeSong = song.metronomeWholeSong || false;
+
+    if (isPlaying && wholeSong) {
+      // Continuous metronome during song playback
+      if (!isMetronomePlayingRef.current) {
+        clickTrackRef.current.startContinuous(config);
+        isMetronomePlayingRef.current = true;
+        console.log('🎯 Started continuous metronome for whole song');
+      }
+    } else if (isPlaying && countIn && !wholeSong) {
+      // Count-in only when starting playback
+      if (!isMetronomePlayingRef.current) {
+        clickTrackRef.current.startCountIn(config, () => {
+          // Count-in complete, stop if not whole song mode
+          isMetronomePlayingRef.current = false;
+          console.log('🎯 Count-in complete');
+        });
+        isMetronomePlayingRef.current = true;
+        console.log('🎯 Started count-in metronome');
+      }
+    } else if (isPlaying && countIn && wholeSong) {
+      // Count-in first, then continuous
+      if (!isMetronomePlayingRef.current) {
+        clickTrackRef.current.startCountIn(config, () => {
+          // Count-in complete, start continuous mode
+          clickTrackRef.current.startContinuous(config);
+          console.log('🎯 Count-in complete, starting continuous metronome');
+        });
+        isMetronomePlayingRef.current = true;
+        console.log('🎯 Started count-in then continuous metronome');
+      }
+    } else if (!isPlaying) {
+      // Stop metronome when playback stops
+      clickTrackRef.current.stop();
+      isMetronomePlayingRef.current = false;
+    }
+  }, [song, isPlaying]);
+
+  // Update metronome when playback state or song settings change
+  useEffect(() => {
+    handleMetronome();
+  }, [handleMetronome]);
+
   const play = useCallback(async () => {
     if (!audioEngineRef.current || !song) return;
     
@@ -225,6 +334,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     try {
       await audioEngineRef.current.play();
       setIsPlaying(true);
+      // Metronome will be handled by useEffect that watches isPlaying
     } catch (error) {
       console.error('Failed to start playback:', error);
       setIsPlaying(false);
@@ -235,6 +345,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     if (audioEngineRef.current) {
       audioEngineRef.current.pause();
       setIsPlaying(false);
+      // Metronome will be stopped by useEffect that watches isPlaying
     }
   }, []);
 

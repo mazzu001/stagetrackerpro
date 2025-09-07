@@ -1078,14 +1078,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           <div className="flex items-center gap-2 md:gap-4">
             <div className="flex items-center gap-2">
               <Music className="h-5 w-5 md:h-6 md:w-6 text-primary" />
-              <div className="flex flex-col">
-                <span className="text-base md:text-lg font-semibold">StageTracker Pro</span>
-                {user?.email && (
-                  <span className="text-xs text-gray-400" data-testid="text-username">
-                    {user.email}
-                  </span>
-                )}
-              </div>
+              <span className="text-base md:text-lg font-semibold">StageTracker Pro</span>
             </div>
           </div>
 
@@ -1101,29 +1094,38 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             />
           </div>
 
-          <div className="flex items-center gap-1 md:gap-2">
-            {/* Bluetooth Manager Button - Professional Users Only */}
-            {userType === 'professional' && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsBluetoothDevicesOpen(true)}
-                data-testid="button-bluetooth-manager"
-                className="h-8 px-2 md:px-3"
-              >
-                <Bluetooth className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                <span className="hidden sm:inline text-xs md:text-sm">Bluetooth</span>
-              </Button>
+          <div className="flex flex-col items-end">
+            {/* User Email - Above buttons */}
+            {user?.email && (
+              <span className="text-xs text-gray-400 mb-1" data-testid="text-username">
+                {user.email}
+              </span>
             )}
-
-            {/* Settings Menu */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" data-testid="button-settings-menu" className="h-8 px-2 md:px-3">
-                  <Settings className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                  <span className="hidden sm:inline text-xs md:text-sm">Settings</span>
+            
+            {/* Button Container - Below email */}
+            <div className="flex items-center gap-1 md:gap-2">
+              {/* Bluetooth Manager Button - Professional Users Only */}
+              {userType === 'professional' && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsBluetoothDevicesOpen(true)}
+                  data-testid="button-bluetooth-manager"
+                  className="h-8 px-2 md:px-3"
+                >
+                  <Bluetooth className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                  <span className="hidden sm:inline text-xs md:text-sm">Bluetooth</span>
                 </Button>
-              </DropdownMenuTrigger>
+              )}
+
+              {/* Settings Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" data-testid="button-settings-menu" className="h-8 px-2 md:px-3">
+                    <Settings className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                    <span className="hidden sm:inline text-xs md:text-sm">Settings</span>
+                  </Button>
+                </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setLocation('/dashboard')} data-testid="menuitem-dashboard">
                   <Cast className="h-4 w-4 mr-2" />
@@ -1185,30 +1187,30 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+              </DropdownMenu>
 
-            {/* Upgrade Subscription Button */}
-            {userType !== 'professional' && (
-              <Button
-                variant="default"
-                size="sm"
-                onClick={() => {
-                  console.log('🔄 Current user type before upgrade:', userType, 'User:', user);
-                  setLocation('/subscribe');
-                }}
-                data-testid="button-upgrade-subscription"
-                className="h-8 px-2 md:px-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
-              >
-                <Crown className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                <span className="hidden sm:inline text-xs md:text-sm">
-                  {userType === 'free' ? 'Upgrade' : 'Upgrade to Pro'}
-                </span>
-                <span className="sm:hidden text-xs">
-                  {userType === 'free' ? 'Up' : 'Pro'}
-                </span>
-              </Button>
-            )}
-            
+              {/* Upgrade Subscription Button */}
+              {userType !== 'professional' && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => {
+                    console.log('🔄 Current user type before upgrade:', userType, 'User:', user);
+                    setLocation('/subscribe');
+                  }}
+                  data-testid="button-upgrade-subscription"
+                  className="h-8 px-2 md:px-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
+                >
+                  <Crown className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                  <span className="hidden sm:inline text-xs md:text-sm">
+                    {userType === 'free' ? 'Upgrade' : 'Upgrade to Pro'}
+                  </span>
+                  <span className="sm:hidden text-xs">
+                    {userType === 'free' ? 'Up' : 'Pro'}
+                  </span>
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>

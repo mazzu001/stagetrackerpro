@@ -635,6 +635,59 @@ export default function TrackManager({
               <span className="text-sm text-gray-500">({tracks.length} track{tracks.length !== 1 ? 's' : ''})</span>
             )}
           </div>
+
+          {/* Metronome Controls */}
+          <div className="flex items-center gap-2 text-sm">
+            <span className="font-medium text-xs text-gray-700 dark:text-gray-300">🎵</span>
+            <Input 
+              type="number" 
+              placeholder="BPM" 
+              step="0.0001"
+              min="1"
+              value={bpm}
+              onChange={(e) => setBpm(e.target.value)}
+              className="w-16 h-7 text-xs px-2"
+            />
+            <Button
+              onClick={() => setCountIn(!countIn)}
+              variant="ghost"
+              size="sm"
+              className={`h-7 w-10 p-0 transition-all text-xs font-bold ${
+                countIn 
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
+                  : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
+              }`}
+              title={countIn ? "Turn count-in off" : "Turn count-in on"}
+            >
+              CI
+            </Button>
+            <Button
+              onClick={() => setWholeSong(!wholeSong)}
+              variant="ghost"
+              size="sm"
+              className={`h-7 w-10 p-0 transition-all text-xs font-bold ${
+                wholeSong 
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
+                  : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
+              }`}
+              title={wholeSong ? "Turn whole song off" : "Turn whole song on"}
+            >
+              WS
+            </Button>
+            <Button
+              onClick={() => setMetronomeOn(!metronomeOn)}
+              variant="ghost"
+              size="sm"
+              className={`h-7 w-12 p-0 transition-all text-xs font-bold ${
+                metronomeOn 
+                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
+                  : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
+              }`}
+              title={metronomeOn ? "Turn metronome off" : "Turn metronome on"}
+            >
+              {metronomeOn ? 'ON' : 'OFF'}
+            </Button>
+          </div>
           
           {/* Main action buttons */}
           <div className="flex items-center gap-2">
@@ -699,59 +752,6 @@ export default function TrackManager({
               </Button>
             )}
           </div>
-        </div>
-        
-        {/* Metronome Controls Row */}
-        <div className="flex items-center gap-4 text-sm bg-gray-50 dark:bg-gray-900 rounded-lg p-3">
-          <span className="font-medium text-xs text-gray-700 dark:text-gray-300">🎵 Metronome:</span>
-          <Input 
-            type="number" 
-            placeholder="BPM" 
-            step="0.0001"
-            min="1"
-            value={bpm}
-            onChange={(e) => setBpm(e.target.value)}
-            className="w-20 h-8 text-xs px-2"
-          />
-          <Button
-            onClick={() => setCountIn(!countIn)}
-            variant="ghost"
-            size="sm"
-            className={`h-8 w-12 p-0 transition-all text-xs font-bold ${
-              countIn 
-                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
-                : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
-            }`}
-            title={countIn ? "Turn count-in off" : "Turn count-in on"}
-          >
-            CI
-          </Button>
-          <Button
-            onClick={() => setWholeSong(!wholeSong)}
-            variant="ghost"
-            size="sm"
-            className={`h-8 w-12 p-0 transition-all text-xs font-bold ${
-              wholeSong 
-                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
-                : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
-            }`}
-            title={wholeSong ? "Turn whole song off" : "Turn whole song on"}
-          >
-            WS
-          </Button>
-          <Button
-            onClick={() => setMetronomeOn(!metronomeOn)}
-            variant="ghost"
-            size="sm"
-            className={`h-8 w-16 p-0 transition-all text-xs font-bold ${
-              metronomeOn 
-                ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
-                : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
-            }`}
-            title={metronomeOn ? "Turn metronome off" : "Turn metronome on"}
-          >
-            {metronomeOn ? 'ON' : 'OFF'}
-          </Button>
         </div>
       </div>
 

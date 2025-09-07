@@ -15,6 +15,11 @@ export const songs = sqliteTable("songs", {
   lyrics: text("lyrics"), // lyrics with timestamps
   waveformData: text("waveform_data"), // JSON array of waveform amplitudes
   waveformGenerated: integer("waveform_generated", { mode: 'boolean' }).default(false),
+  // Metronome settings per song
+  metronomeBpm: text("metronome_bpm").default("120.0000"),
+  metronomeCountIn: integer("metronome_count_in", { mode: 'boolean' }).default(false),
+  metronomeOn: integer("metronome_on", { mode: 'boolean' }).default(false),
+  metronomeWholeSong: integer("metronome_whole_song", { mode: 'boolean' }).default(false),
   createdAt: text("created_at").default(sql`(datetime('now'))`),
 });
 
@@ -34,19 +39,6 @@ export const tracks = sqliteTable("tracks", {
   isSolo: integer("is_solo", { mode: 'boolean' }).default(false),
 });
 
-// User preferences table for local settings
-export const userPreferences = sqliteTable("user_preferences", {
-  id: text("id").primaryKey().$defaultFn(() => crypto.randomUUID()),
-  userId: text("user_id").notNull(), // User email for local identification
-  // Metronome preferences
-  metronomeBpm: text("metronome_bpm").default("120.0000"),
-  metronomeCountIn: integer("metronome_count_in", { mode: 'boolean' }).default(false),
-  metronomeOn: integer("metronome_on", { mode: 'boolean' }).default(false),
-  metronomeWholeSong: integer("metronome_whole_song", { mode: 'boolean' }).default(false),
-  // Timestamps
-  createdAt: text("created_at").default(sql`(datetime('now'))`),
-  updatedAt: text("updated_at").default(sql`(datetime('now'))`),
-});
 
 // MIDI events table removed - MIDI functionality disabled
 
@@ -59,11 +51,6 @@ export const insertTrackSchema = createInsertSchema(tracks).omit({
   id: true,
 });
 
-export const insertUserPreferencesSchema = createInsertSchema(userPreferences).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
 
 // MIDI event schema removed - MIDI functionality disabled
 
@@ -73,8 +60,6 @@ export type Song = typeof songs.$inferSelect;
 export type InsertTrack = z.infer<typeof insertTrackSchema>;
 export type Track = typeof tracks.$inferSelect;
 
-export type InsertUserPreferences = z.infer<typeof insertUserPreferencesSchema>;
-export type UserPreferences = typeof userPreferences.$inferSelect;
 
 // MIDI event types removed - MIDI functionality disabled
 

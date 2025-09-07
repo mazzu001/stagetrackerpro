@@ -51,30 +51,11 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
-  // Metronome controls with localStorage persistence
-  const [bpm, setBpm] = useState<string>(() => {
-    try {
-      return localStorage.getItem('metronome-bpm') || "120.0000";
-    } catch {
-      return "120.0000";
-    }
-  });
-  const [countIn, setCountIn] = useState(() => {
-    try {
-      const saved = localStorage.getItem('metronome-count-in');
-      return saved ? JSON.parse(saved) : false;
-    } catch {
-      return false;
-    }
-  });
-  const [metronomeOn, setMetronomeOn] = useState(() => {
-    try {
-      const saved = localStorage.getItem('metronome-on');
-      return saved ? JSON.parse(saved) : false;
-    } catch {
-      return false;
-    }
-  });
+  // Metronome controls from song data
+  const [bpm, setBpm] = useState<string>(song?.metronomeBpm || "120.0000");
+  const [countIn, setCountIn] = useState(song?.metronomeCountIn || false);
+  const [metronomeOn, setMetronomeOn] = useState(song?.metronomeOn || false);
+  const [wholeSong, setWholeSong] = useState(song?.metronomeWholeSong || false);
   // Pitch and speed control removed
 
   // Recording state
@@ -87,18 +68,39 @@ export default function TrackManager({
   // Get tracks for the current song
   const tracks = song?.tracks || [];
 
-  // Save metronome preferences to localStorage when they change
-  useEffect(() => {
-    localStorage.setItem('metronome-bpm', bpm);
-  }, [bpm]);
+  // Update song when metronome settings change
+  const updateSongMetronome = useCallback((updates: Partial<{ metronomeBpm: string; metronomeCountIn: boolean; metronomeOn: boolean; metronomeWholeSong: boolean }>) => {
+    if (song?.id && user?.email) {
+      LocalSongStorage.updateSong(user.email, song.id, updates);
+      onSongUpdate?.({ ...song, ...updates });
+    }
+  }, [song, user?.email, onSongUpdate]);
 
   useEffect(() => {
-    localStorage.setItem('metronome-count-in', JSON.stringify(countIn));
-  }, [countIn]);
+    updateSongMetronome({ metronomeBpm: bpm });
+  }, [bpm, updateSongMetronome]);
 
   useEffect(() => {
-    localStorage.setItem('metronome-on', JSON.stringify(metronomeOn));
-  }, [metronomeOn]);
+    updateSongMetronome({ metronomeCountIn: countIn });
+  }, [countIn, updateSongMetronome]);
+
+  useEffect(() => {
+    updateSongMetronome({ metronomeOn: metronomeOn });
+  }, [metronomeOn, updateSongMetronome]);
+
+  useEffect(() => {
+    updateSongMetronome({ metronomeWholeSong: wholeSong });
+  }, [wholeSong, updateSongMetronome]);
+
+  // Sync metronome state when song changes
+  useEffect(() => {
+    if (song) {
+      setBpm(song.metronomeBpm || "120.0000");
+      setCountIn(song.metronomeCountIn || false);
+      setMetronomeOn(song.metronomeOn || false);
+      setWholeSong(song.metronomeWholeSong || false);
+    }
+  }, [song?.id]);
 
   // Initialize local track values from song data
   useEffect(() => {
@@ -653,6 +655,15 @@ export default function TrackManager({
                 className="w-3 h-3" 
               />
               <span className="text-xs whitespace-nowrap">Count-in</span>
+            </label>
+            <label className="flex items-center gap-1 cursor-pointer">
+              <input 
+                type="checkbox" 
+                checked={wholeSong}
+                onChange={(e) => setWholeSong(e.target.checked)}
+                className="w-3 h-3" 
+              />
+              <span className="text-xs whitespace-nowrap">Whole song</span>
             </label>
             <Button
               onClick={() => setMetronomeOn(!metronomeOn)}

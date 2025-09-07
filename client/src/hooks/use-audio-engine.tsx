@@ -264,7 +264,10 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     const wholeSong = song.metronomeWholeSong === true; // Explicitly check for true
     const isAtStart = currentTime <= 1; // Consider "at start" if within first second
     
-    console.log('🎯 Metronome settings:', { metronomeEnabled, countIn, wholeSong, isAtStart, currentTime, isPlaying });
+    console.log('🎯 Metronome settings:', { 
+      raw: { metronomeBpm: song.metronomeBpm, metronomeOn: song.metronomeOn, metronomeCountIn: song.metronomeCountIn, metronomeWholeSong: song.metronomeWholeSong },
+      parsed: { metronomeEnabled, countIn, wholeSong, isAtStart, currentTime, isPlaying }
+    });
     
     const config: ClickTrackConfig = {
       bpm: bpmNumber,
@@ -305,7 +308,11 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         } else {
           console.log('🎯 Starting count-in only metronome');
           clickTrackRef.current.startCountIn(config, () => {
-            // Count-in complete, stop metronome
+            // Count-in complete, FORCE stop metronome
+            if (clickTrackRef.current) {
+              clickTrackRef.current.stop();
+              console.log('🎯 Count-in complete - metronome FORCE STOPPED');
+            }
             isMetronomePlayingRef.current = false;
             console.log('🎯 Count-in complete - metronome stopped');
           });

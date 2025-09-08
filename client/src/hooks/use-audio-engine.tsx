@@ -133,7 +133,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     } finally {
       setIsBPMDetecting(false);
     }
-  }, [song, onBPMDetected]);
+  }, [onBPMDetected]);
 
   // Auto-detect BPM when song loads (if not already set)
   const autoDetectBPM = useCallback(async () => {
@@ -143,7 +143,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
 
     console.log(`🎯 Auto-detecting BPM for "${song.title}"`);
     await detectBPM();
-  }, [song, detectBPM]);
+  }, [detectBPM]);
 
   // Get effective BPM (manual override or detected)
   const getEffectiveBPM = useCallback((): number => {
@@ -152,7 +152,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     if (song?.metronomeBpm) return parseFloat(song.metronomeBpm) || 120;
     if (detectedBPM) return detectedBPM;
     return 120;
-  }, [song?.bpm, song?.metronomeBpm, detectedBPM]);
+  }, [detectedBPM]);
 
   // Initialize audio engine and metronome
   useEffect(() => {

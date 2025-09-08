@@ -76,7 +76,7 @@ export function UnifiedMIDIDeviceManager() {
               name: baseName,
               manufacturer: device.manufacturer,
               state: device.state,
-              isConnected: globalMidi.isConnected && globalMidi.deviceName.replace(/ (IN|OUT)$/i, '') === baseName,
+              isConnected: false, // Will be set correctly below
               outputId: undefined,
               inputId: undefined
             });
@@ -94,6 +94,11 @@ export function UnifiedMIDIDeviceManager() {
           // Update state if this port is available
           if (device.state === 'connected') {
             existing.state = 'connected';
+          }
+          
+          // Check if this device is currently connected
+          if (globalMidi.isConnected && globalMidi.deviceName.replace(/ (IN|OUT)$/i, '') === baseName) {
+            existing.isConnected = true;
           }
         }
       });
@@ -116,8 +121,17 @@ export function UnifiedMIDIDeviceManager() {
   const toggleDevice = async (deviceName: string, isCurrentlyConnected: boolean) => {
     try {
       if (isCurrentlyConnected) {
-        // Disconnect everything
-        await globalMidi.disconnectAllDevices();
+        // Disconnect just this device (not all devices)
+        const device = devices.find(d => d.name === deviceName);
+        if (device) {
+          // Try to disconnect by device ID
+          if (device.outputId) {
+            await globalMidi.disconnectDevice(device.outputId);
+          }
+          if (device.inputId) {
+            await globalMidi.disconnectDevice(device.inputId);
+          }
+        }
         toast({
           title: "Disconnected",
           description: `Disconnected from ${deviceName}`,
@@ -353,9 +367,9 @@ export function UnifiedMIDIDeviceManager() {
                         size="sm"
                         onClick={() => toggleDevice(device.name, device.isConnected)}
                         disabled={device.state !== 'connected'}
-                        className={device.isConnected ? "bg-green-600 hover:bg-green-700" : ""}
+                        className={device.isConnected ? "bg-red-600 hover:bg-red-700" : ""}
                       >
-                        {device.isConnected ? 'Connected' : 'Connect'}
+                        {device.isConnected ? 'Disconnect' : 'Connect'}
                       </Button>
                       {device.state !== 'connected' && (
                         <Button

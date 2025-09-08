@@ -33,7 +33,7 @@ interface TrackManagerProps {
   detectedBPM?: number | null;
   bpmConfidence?: number;
   isBPMDetecting?: boolean;
-  detectBPM?: () => Promise<void>;
+  detectBPM?: () => Promise<any>;
   getEffectiveBPM?: () => number;
 }
 
@@ -781,7 +781,34 @@ export default function TrackManager({
               />
               {/* BPM Detection */}
               <Button
-                onClick={() => detectBPM?.()}
+                onClick={async () => {
+                  if (detectBPM && song?.id) {
+                    try {
+                      console.log('🎯 BPM Detection button clicked for song:', song.id);
+                      const result = await detectBPM();
+                      console.log('🎯 BPM Detection result:', result);
+                      if (result && result.bpm) {
+                        toast({
+                          title: "BPM Detected",
+                          description: `Detected ${result.bpm} BPM with ${Math.round(result.confidence * 100)}% confidence`,
+                        });
+                      } else {
+                        toast({
+                          title: "BPM Detection Failed", 
+                          description: "Could not detect BPM from audio tracks",
+                          variant: "destructive"
+                        });
+                      }
+                    } catch (error) {
+                      console.error('🎯 BPM Detection error:', error);
+                      toast({
+                        title: "BPM Detection Error",
+                        description: "An error occurred during BPM detection",
+                        variant: "destructive"
+                      });
+                    }
+                  }
+                }}
                 disabled={isBPMDetecting || !detectBPM || !song?.id}
                 variant="ghost"
                 size="sm"

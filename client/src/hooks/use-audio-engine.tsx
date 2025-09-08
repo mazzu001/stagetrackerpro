@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 import type { SongWithTracks } from "@shared/schema";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
+import { LocalSongStorage } from "@/lib/local-song-storage";
 import { ClickTrackGenerator, type ClickTrackConfig, type MetronomeSound } from "@/lib/click-track-generator";
 import { detectSongBPM, type BPMDetectionResult } from "@/lib/bpm-detection";
 
@@ -65,24 +66,43 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
 
   // BPM Detection Functions
   const detectBPM = useCallback(async (): Promise<BPMDetectionResult | null> => {
-    if (!song || !song.waveformData || !song.duration) {
-      console.log('🎯 Cannot detect BPM - missing song, waveform data, or duration');
+    if (!song?.id || isBPMDetecting) {
+      console.log('🎯 Cannot detect BPM - no song ID or already detecting');
       return null;
     }
 
     setIsBPMDetecting(true);
-    console.log(`🎯 Starting BPM detection for "${song.title}"`);
+    console.log(`🎯 Starting BPM detection for "${song.title}" (ID: ${song.id})`);
 
     try {
-      const result = await detectSongBPM(song.waveformData, song.duration, {
+      // Get waveform data from storage
+      const waveformData = await LocalSongStorage.getWaveform(song.id);
+      if (!waveformData || waveformData.length === 0) {
+        console.log('🎯 No waveform data available for BPM detection');
+        console.log(`🎯 Song has ${song.tracks?.length || 0} tracks - waveform may not be generated yet`);
+        return null;
+      }
+
+      if (!song.duration) {
+        console.log('🎯 No duration available for BPM detection');
+        return null;
+      }
+
+      console.log(`🎯 Found waveform data, length: ${waveformData.length}, duration: ${song.duration}s`);
+
+      const result = await detectSongBPM(waveformData, song.duration, {
         minBPM: 60,
         maxBPM: 200,
         analysisLength: 30 // Analyze first 30 seconds
       });
 
-      setDetectedBPM(result.bpm);
-      setBpmConfidence(result.confidence);
-      console.log(`🎯 BPM detected: ${result.bpm} (confidence: ${result.confidence.toFixed(2)})`);
+      if (result) {
+        setDetectedBPM(result.bpm);
+        setBpmConfidence(result.confidence);
+        console.log(`🎯 BPM detected: ${result.bpm} (confidence: ${result.confidence.toFixed(2)})`);
+      } else {
+        console.log('🎯 BPM detection failed - no result returned');
+      }
 
       // Notify parent component if callback provided
       if (onBPMDetected) {

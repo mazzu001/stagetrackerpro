@@ -97,20 +97,12 @@ export function UnifiedMIDIDeviceManager() {
           }
           
           // Check if this device is currently connected
-          // Check both primary device and multi-device collections
-          if (globalMidi.isConnected && globalMidi.deviceName.replace(/ (IN|OUT)$/i, '') === baseName) {
-            existing.isConnected = true;
-          }
-          
-          // Also check if any port of this device is in the connected collections
-          const allOutputs = globalMidi.getAvailableOutputs();
-          const allInputs = globalMidi.getAvailableInputs();
-          const devicePorts = [...allOutputs, ...allInputs].filter(d => 
-            d.name.replace(/ (IN|OUT)$/i, '') === baseName
+          // A device is connected if either its input OR output port is connected
+          const deviceIsConnected = (
+            (existing.outputId && globalMidi.connectedOutputs && globalMidi.connectedOutputs.has(existing.outputId)) ||
+            (existing.inputId && globalMidi.connectedInputs && globalMidi.connectedInputs.has(existing.inputId))
           );
-          
-          // For now, mark as connected if primary device matches
-          // TODO: Implement proper multi-device status checking
+          existing.isConnected = deviceIsConnected;
         }
       });
       

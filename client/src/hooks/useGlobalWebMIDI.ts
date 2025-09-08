@@ -265,24 +265,31 @@ const connectToDevice = async (deviceId: string): Promise<boolean> => {
   
   try {
     await output.open();
-    globalSelectedOutput = output;
-    globalConnectionStatus = 'Connected';
-    globalDeviceName = output.name || 'Unknown Device';
     
-    // Save this device as the last connected device
-    saveLastConnectedDevice(
-      deviceId, 
-      output.name || 'Unknown Device', 
-      output.manufacturer || 'Unknown'
-    );
+    // Add to multi-device collection
+    globalConnectedOutputs.set(deviceId, output);
     
-    console.log('✅ Connected to MIDI device:', globalDeviceName);
+    // Also set as primary device (for backward compatibility)
+    if (!globalSelectedOutput) {
+      globalSelectedOutput = output;
+      globalConnectionStatus = 'Connected';
+      globalDeviceName = output.name || 'Unknown Device';
+      
+      // Save this device as the last connected device
+      saveLastConnectedDevice(
+        deviceId, 
+        output.name || 'Unknown Device', 
+        output.manufacturer || 'Unknown'
+      );
+    }
+    
+    console.log('✅ Connected to MIDI device:', output.name);
     
     // Dispatch connection status change
     window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
       detail: {
         connected: true,
-        deviceName: globalDeviceName,
+        deviceName: output.name || 'Unknown Device',
         deviceId: deviceId
       }
     }));
@@ -378,24 +385,25 @@ const connectToInputDevice = async (deviceId: string): Promise<boolean> => {
   try {
     await input.open();
     
-    // Disconnect previous input if any
-    if (globalSelectedInput) {
-      globalSelectedInput.onmidimessage = null;
-    }
-    
-    globalSelectedInput = input;
-    globalInputDeviceName = input.name || 'Unknown Input Device';
+    // Add to multi-device collection
+    globalConnectedInputs.set(deviceId, input);
     
     // Set up message listener
     input.onmidimessage = handleIncomingMIDI;
     
-    console.log('✅ Connected to MIDI input device:', globalInputDeviceName);
+    // Also set as primary input device (for backward compatibility)
+    if (!globalSelectedInput) {
+      globalSelectedInput = input;
+      globalInputDeviceName = input.name || 'Unknown Input Device';
+    }
+    
+    console.log('✅ Connected to MIDI input device:', input.name);
     
     // Dispatch connection status change
     window.dispatchEvent(new CustomEvent('globalMidiInputConnectionChange', {
       detail: {
         connected: true,
-        deviceName: globalInputDeviceName,
+        deviceName: input.name || 'Unknown Input Device',
         deviceId: deviceId
       }
     }));

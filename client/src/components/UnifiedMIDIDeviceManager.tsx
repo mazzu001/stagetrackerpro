@@ -97,9 +97,20 @@ export function UnifiedMIDIDeviceManager() {
           }
           
           // Check if this device is currently connected
+          // Check both primary device and multi-device collections
           if (globalMidi.isConnected && globalMidi.deviceName.replace(/ (IN|OUT)$/i, '') === baseName) {
             existing.isConnected = true;
           }
+          
+          // Also check if any port of this device is in the connected collections
+          const allOutputs = globalMidi.getAvailableOutputs();
+          const allInputs = globalMidi.getAvailableInputs();
+          const devicePorts = [...allOutputs, ...allInputs].filter(d => 
+            d.name.replace(/ (IN|OUT)$/i, '') === baseName
+          );
+          
+          // For now, mark as connected if primary device matches
+          // TODO: Implement proper multi-device status checking
         }
       });
       
@@ -132,6 +143,12 @@ export function UnifiedMIDIDeviceManager() {
             await globalMidi.disconnectDevice(device.inputId);
           }
         }
+        
+        // Update UI state immediately
+        setDevices(prev => prev.map(d => 
+          d.name === deviceName ? { ...d, isConnected: false } : d
+        ));
+        
         toast({
           title: "Disconnected",
           description: `Disconnected from ${deviceName}`,
@@ -166,6 +183,11 @@ export function UnifiedMIDIDeviceManager() {
           if (outputConnected) connections.push('output');
           if (inputConnected) connections.push('input');
           
+          // Update UI state immediately
+          setDevices(prev => prev.map(d => 
+            d.name === deviceName ? { ...d, isConnected: true } : d
+          ));
+          
           toast({
             title: "Connected",
             description: `Connected ${deviceName} (${connections.join(' & ')})`,
@@ -179,7 +201,7 @@ export function UnifiedMIDIDeviceManager() {
         }
       }
       
-      // Refresh after toggle
+      // Refresh after toggle to sync with actual state
       setTimeout(() => refreshDevices(), 300);
       
     } catch (error) {

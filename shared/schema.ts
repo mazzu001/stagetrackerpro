@@ -10,7 +10,6 @@ export const songs = sqliteTable("songs", {
   title: text("title").notNull(),
   artist: text("artist").notNull(),
   duration: integer("duration").notNull(), // in seconds
-  bpm: integer("bpm"),
   key: text("key"),
   lyrics: text("lyrics"), // lyrics with timestamps
   waveformData: text("waveform_data"), // JSON array of waveform amplitudes
@@ -34,6 +33,7 @@ export const tracks = sqliteTable("tracks", {
   isSolo: integer("is_solo", { mode: 'boolean' }).default(false),
 });
 
+
 // MIDI events table removed - MIDI functionality disabled
 
 export const insertSongSchema = createInsertSchema(songs).omit({
@@ -45,6 +45,7 @@ export const insertTrackSchema = createInsertSchema(tracks).omit({
   id: true,
 });
 
+
 // MIDI event schema removed - MIDI functionality disabled
 
 export type InsertSong = z.infer<typeof insertSongSchema>;
@@ -52,6 +53,7 @@ export type Song = typeof songs.$inferSelect;
 
 export type InsertTrack = z.infer<typeof insertTrackSchema>;
 export type Track = typeof tracks.$inferSelect;
+
 
 // MIDI event types removed - MIDI functionality disabled
 

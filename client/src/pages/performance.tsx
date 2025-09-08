@@ -27,8 +27,10 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import type { SongWithTracks } from "@shared/schema";
-import { SimpleMIDIManager } from "@/components/SimpleMIDIManager";
-import { useSimpleMIDI } from "@/hooks/useSimpleMIDI";
+import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
+import stageTrackerLogo from "@assets/xparent bckgrn_1757282012602.png";
+import { USBMidiManager } from "@/components/USBMidiManager";
+import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
 import { useBroadcast } from "@/hooks/useBroadcast";
@@ -57,13 +59,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isMIDIDevicesOpen, setIsMIDIDevicesOpen] = useState(false);
+  const [isBluetoothDevicesOpen, setIsBluetoothDevicesOpen] = useState(false);
   const [footerMidiCommand, setFooterMidiCommand] = useState('');
   const [midiCommandSent, setMidiCommandSent] = useState(false);
   const [isMidiConnected, setIsMidiConnected] = useState(false);
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
+  const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
@@ -107,20 +110,40 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     };
   }, []);
 
-  // Simple MIDI integration
-  const simpleMidi = useSimpleMIDI();
+  // Global Web MIDI integration - persistent across dialog closures
+  const globalMidi = useGlobalWebMIDI();
 
-  // Initialize MIDI on mount
+  // Initialize global MIDI event listener for external commands
   useEffect(() => {
-    simpleMidi.initialize();
-  }, [simpleMidi]);
+    console.log('🎵 Setting up persistent Web MIDI event listener...');
+    const cleanup = setupGlobalMIDIEventListener();
+    return cleanup;
+  }, []);
 
-  // Update local state when MIDI connection changes
+  // Update local state when global MIDI connection changes
   useEffect(() => {
-    setIsMidiConnected(!!simpleMidi.connectedDevice);
-    setSelectedMidiDeviceName(simpleMidi.connectedDevice?.name || '');
-    console.log(`🔄 MIDI status: ${simpleMidi.connectedDevice ? 'Connected' : 'Disconnected'} - ${simpleMidi.connectedDevice?.name || ''}`);
-  }, [simpleMidi.connectedDevice]);
+    setIsMidiConnected(globalMidi.isConnected);
+    setSelectedMidiDeviceName(globalMidi.deviceName);
+    console.log(`🔄 Global Web MIDI status: ${globalMidi.isConnected ? 'Connected' : 'Disconnected'} - ${globalMidi.deviceName}`);
+  }, [globalMidi.isConnected, globalMidi.deviceName]);
+
+  // Listen for legacy Bluetooth MIDI connection status changes (fallback)
+  useEffect(() => {
+    const handleStatusChange = (event: any) => {
+      const { connected, deviceName, midiReady } = event.detail;
+      // Only use if global MIDI is not connected
+      if (!globalMidi.isConnected) {
+        setIsMidiConnected(connected && midiReady);
+        setSelectedMidiDeviceName(deviceName);
+        console.log(`🔄 Legacy Bluetooth MIDI status: ${connected ? 'Connected' : 'Disconnected'} ${midiReady ? '(MIDI Ready)' : '(No MIDI)'}`);
+      }
+    };
+
+    window.addEventListener('bluetoothMidiStatusChanged', handleStatusChange);
+    return () => {
+      window.removeEventListener('bluetoothMidiStatusChanged', handleStatusChange);
+    };
+  }, [globalMidi.isConnected]);
 
   // Trigger blue blink effect for MIDI status light
   const triggerMidiBlink = useCallback(() => {
@@ -144,19 +167,26 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     try {
-      const success = await simpleMidi.sendCommand(footerMidiCommand.trim());
+      // Try global Web MIDI first, fallback to legacy Bluetooth
+      const success = await globalMidi.sendCommand(footerMidiCommand.trim());
       if (success) {
-        console.log('✅ MIDI command sent successfully');
+        console.log('✅ Manual MIDI command sent via global Web MIDI');
         triggerMidiBlink();
         toast({
           title: "MIDI Command Sent",
-          description: `Sent: ${footerMidiCommand.trim()}`,
+          description: `Sent via Web MIDI: ${footerMidiCommand.trim()}`,
         });
       } else {
+        console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
+        // Send via custom event to Bluetooth MIDI manager as fallback
+        const event = new CustomEvent('sendBluetoothMIDI', {
+          detail: { command: footerMidiCommand.trim() }
+        });
+        window.dispatchEvent(event);
+        triggerMidiBlink();
         toast({
-          title: "MIDI Send Failed",
-          description: "Failed to send MIDI command. Check device connection.",
-          variant: "destructive",
+          title: "MIDI Command Sent",
+          description: `Sent via Bluetooth: ${footerMidiCommand.trim()}`,
         });
       }
       
@@ -316,17 +346,24 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     try {
       console.log(`🎼 Sending MIDI command from lyrics: ${command}`);
       
-      const success = await simpleMidi.sendCommand(command.trim());
+      // Try global Web MIDI first, fallback to legacy Bluetooth
+      const success = await globalMidi.sendCommand(command.trim());
       if (success) {
-        console.log('✅ MIDI command sent successfully');
+        console.log('✅ MIDI command sent via global Web MIDI');
         triggerMidiBlink();
       } else {
-        console.log('⚠️ MIDI send failed - check device connection');
+        console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
+        // Send via custom event to Bluetooth MIDI manager as fallback
+        const event = new CustomEvent('sendBluetoothMIDI', {
+          detail: { command: command.trim() }
+        });
+        window.dispatchEvent(event);
+        triggerMidiBlink();
       }
     } catch (error) {
       console.error('❌ Failed to send lyrics MIDI command:', error);
     }
-  }, [userType, triggerMidiBlink, simpleMidi]);
+  }, [userType, triggerMidiBlink, globalMidi]);
 
   // Instant audio engine (now with zero decode delays)
   const audioEngine = useAudioEngine({ 
@@ -356,7 +393,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     // Pitch and speed control removed
     isAudioEngineOnline,
     masterStereoLevels,
-    audioLevels
+    audioLevels,
   } = audioEngine;
 
   // Create toggle functions for track manager compatibility
@@ -368,6 +405,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     updateTrackSolo(trackId);
   }, [updateTrackSolo]);
 
+  // Handle song updates from TrackManager
+  const handleSongUpdate = useCallback((updatedSong: any) => {
+    console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
+    setSelectedSong(updatedSong);
+    setAllSongs(prev => prev.map(song => 
+      song.id === updatedSong.id ? updatedSong : song
+    ));
+  }, []);
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
@@ -439,7 +484,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     } else {
       console.log('📡 Not uploading to database:', { isHost, hasCurrentRoom: !!currentRoom?.id, roomId: currentRoom?.id });
     }
-  }, [selectedSongId, user?.email, isHost, currentRoom?.id]);
+  }, [selectedSongId, user?.email]);
 
   // Debug current values to see why upload isn't triggering
   useEffect(() => {
@@ -452,7 +497,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       hasUserEmail: !!user?.email,
       hasCurrentRoom: !!currentRoom?.id
     });
-  }, [selectedSongId, user?.email, isHost, currentRoom?.id]);
+  }, [selectedSongId, user?.email]);
 
   // Upload song to database and get entry ID for broadcasting
   const uploadSongToDatabase = async (song: any, broadcastId: string) => {
@@ -593,7 +638,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         title: songTitle,
         artist: songArtist,
         duration: 0,
-        bpm: null,
         key: null,
         lyrics: '',
         waveformData: null
@@ -1037,20 +1081,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   return (
     <div className={`h-screen flex flex-col bg-background text-foreground overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {/* Header */}
-      <div className="bg-surface border-b border-gray-700 p-2 md:p-4 flex-shrink-0">
-        <div className="flex items-center justify-between">
+      <div className="bg-surface border-b border-gray-700 p-2 md:p-4 flex-shrink-0 pt-[4px] pb-[4px]">
+        <div className="flex items-center justify-between mt-[-7px] mb-[-7px] pl-[1px] pr-[1px] ml-[-4px] mr-[-4px] pt-[0px] pb-[0px]">
           <div className="flex items-center gap-2 md:gap-4">
-            <div className="flex items-center gap-2">
-              <Music className="h-5 w-5 md:h-6 md:w-6 text-primary" />
-              <div className="flex flex-col">
-                <span className="text-base md:text-lg font-semibold">StageTracker Pro</span>
-                {user?.email && (
-                  <span className="text-xs text-gray-400" data-testid="text-username">
-                    {user.email}
-                  </span>
-                )}
-              </div>
-            </div>
+            <img 
+              src={stageTrackerLogo} 
+              alt="StageTracker" 
+              className="h-16 md:h-20 ml-[0px] mr-[0px] pl-[0px] pr-[0px] pt-[0px] pb-[0px] mt-[-4px] mb-[-4px]"
+            />
           </div>
 
           {/* Waveform Visualizer - Stretch across available space */}
@@ -1065,29 +1103,38 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             />
           </div>
 
-          <div className="flex items-center gap-1 md:gap-2">
-            {/* MIDI Device Manager Button - Professional Users Only */}
-            {userType === 'professional' && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsMIDIDevicesOpen(true)}
-                data-testid="button-midi-devices"
-                className="h-8 px-2 md:px-3"
-              >
-                <Music className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                <span className="hidden sm:inline text-xs md:text-sm">MIDI Devices</span>
-              </Button>
+          <div className="flex flex-col items-end">
+            {/* User Email - Above buttons */}
+            {user?.email && (
+              <span className="text-xs text-gray-400 mb-1" data-testid="text-username">
+                {user.email}
+              </span>
             )}
-
-            {/* Settings Menu */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" data-testid="button-settings-menu" className="h-8 px-2 md:px-3">
-                  <Settings className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                  <span className="hidden sm:inline text-xs md:text-sm">Settings</span>
+            
+            {/* Button Container - Below email */}
+            <div className="flex items-center gap-1 md:gap-2">
+              {/* Bluetooth Manager Button - Professional Users Only */}
+              {userType === 'professional' && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setIsBluetoothDevicesOpen(true)}
+                  data-testid="button-bluetooth-manager"
+                  className="h-8 px-2 md:px-3"
+                >
+                  <Bluetooth className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                  <span className="hidden sm:inline text-xs md:text-sm">Bluetooth</span>
                 </Button>
-              </DropdownMenuTrigger>
+              )}
+
+              {/* Settings Menu */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" data-testid="button-settings-menu" className="h-8 px-2 md:px-3">
+                    <Settings className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                    <span className="hidden sm:inline text-xs md:text-sm">Settings</span>
+                  </Button>
+                </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setLocation('/dashboard')} data-testid="menuitem-dashboard">
                   <Cast className="h-4 w-4 mr-2" />
@@ -1101,6 +1148,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   YouTube Tutorials
                 </DropdownMenuItem>
 
+                {userType === 'professional' && (
+                  <DropdownMenuItem onClick={() => setIsUSBMidiOpen(true)} data-testid="menuitem-usb-midi">
+                    <Usb className="h-4 w-4 mr-2" />
+                    USB MIDI
+                  </DropdownMenuItem>
+                )}
 
                 <DropdownMenuSeparator />
                 
@@ -1143,34 +1196,33 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+              </DropdownMenu>
 
-            {/* Upgrade Subscription Button */}
-            {userType !== 'professional' && (
-              <Button
-                variant="default"
-                size="sm"
-                onClick={() => {
-                  console.log('🔄 Current user type before upgrade:', userType, 'User:', user);
-                  setLocation('/subscribe');
-                }}
-                data-testid="button-upgrade-subscription"
-                className="h-8 px-2 md:px-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
-              >
-                <Crown className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                <span className="hidden sm:inline text-xs md:text-sm">
-                  {userType === 'free' ? 'Upgrade' : 'Upgrade to Pro'}
-                </span>
-                <span className="sm:hidden text-xs">
-                  {userType === 'free' ? 'Up' : 'Pro'}
-                </span>
-              </Button>
-            )}
-            
+              {/* Upgrade Subscription Button */}
+              {userType !== 'professional' && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => {
+                    console.log('🔄 Current user type before upgrade:', userType, 'User:', user);
+                    setLocation('/subscribe');
+                  }}
+                  data-testid="button-upgrade-subscription"
+                  className="h-8 px-2 md:px-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
+                >
+                  <Crown className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                  <span className="hidden sm:inline text-xs md:text-sm">
+                    {userType === 'free' ? 'Upgrade' : 'Upgrade to Pro'}
+                  </span>
+                  <span className="sm:hidden text-xs">
+                    {userType === 'free' ? 'Up' : 'Pro'}
+                  </span>
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
-      
       {/* Broadcast Viewer Mode - Show lyrics from broadcast data */}
       {showBroadcastViewerMode && (
         <div className="bg-blue-50 dark:bg-blue-950 border-b border-blue-200 dark:border-blue-800 p-4 flex-shrink-0">
@@ -1200,7 +1252,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </div>
       )}
-      
       {/* Main Content */}
       <div className="flex-1 flex min-h-0">
         {/* Left Sidebar - Song Selection */}
@@ -1627,13 +1678,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           {selectedSong && (
             <TrackManager
               song={selectedSong as any}
-              onSongUpdate={(updatedSong: any) => {
-                console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
-                setSelectedSong(updatedSong);
-                setAllSongs(prev => prev.map(song => 
-                  song.id === updatedSong.id ? updatedSong : song
-                ));
-              }}
+              onSongUpdate={handleSongUpdate}
               onTrackVolumeChange={updateTrackVolume}
               onTrackMuteToggle={toggleTrackMute}
               onTrackSoloToggle={toggleTrackSolo}
@@ -1649,17 +1694,31 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           )}
         </DialogContent>
       </Dialog>
-      {/* Unified MIDI Device Manager Dialog - Professional Users Only */}
-      {userType === 'professional' && isMIDIDevicesOpen && (
-        <Dialog open={isMIDIDevicesOpen} onOpenChange={setIsMIDIDevicesOpen}>
-          <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+      {/* Persistent Web MIDI Manager Dialog - Professional Users Only */}
+      {userType === 'professional' && isBluetoothDevicesOpen && (
+        <Dialog open={isBluetoothDevicesOpen} onOpenChange={setIsBluetoothDevicesOpen}>
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>MIDI Device Manager</DialogTitle>
+              <DialogTitle>Persistent Web MIDI Devices</DialogTitle>
               <p className="text-sm text-muted-foreground">
-                Connect to MIDI devices for live performance control
+                Connections persist even when this dialog is closed - perfect for live performance automation
               </p>
             </DialogHeader>
-            <SimpleMIDIManager />
+            <PersistentWebMIDIManager />
+          </DialogContent>
+        </Dialog>
+      )}
+      {/* USB MIDI Manager Dialog - Professional Users Only */}
+      {userType === 'professional' && (
+        <Dialog open={isUSBMidiOpen} onOpenChange={setIsUSBMidiOpen}>
+          <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>USB MIDI Manager</DialogTitle>
+              <p className="text-sm text-muted-foreground">
+                Connect and control USB MIDI devices using the Web MIDI API
+              </p>
+            </DialogHeader>
+            <USBMidiManager />
           </DialogContent>
         </Dialog>
       )}

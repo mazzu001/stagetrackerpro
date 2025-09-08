@@ -19,7 +19,7 @@ export default function Landing() {
             <Music className="w-12 h-12 text-purple-400" />
             <h1 className="text-4xl font-bold text-white">StageTracker Pro</h1>
           </div>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">Professional live music performance application with multi-track audio for pre recorded backing tracks, MIDI sequencing, and synchronized lyrics display. Have your set list and lyrics ready to go with synced backing tracks instantly at your finger tips. Completely automated Set List app for complete control of the stage.</p>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">Professional live music performance application with multi-track audio for pre recorded backing tracks, MIDI sequencing, and synchronized lyrics display.</p>
         </div>
 
         {/* Demo Video Section */}

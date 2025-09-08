@@ -7,11 +7,6 @@ let globalSelectedInput: MIDIInput | null = null;
 let globalConnectionStatus = 'Disconnected';
 let globalDeviceName = '';
 let globalInputDeviceName = '';
-let globalIsInitializing = false; // Prevent multiple simultaneous initializations
-
-// Support multiple simultaneous device connections
-let globalConnectedOutputs: Map<string, MIDIOutput> = new Map();
-let globalConnectedInputs: Map<string, MIDIInput> = new Map();
 
 // Store last connected device info in localStorage for auto-reconnect
 const MIDI_DEVICE_STORAGE_KEY = 'lastConnectedMidiDevice';
@@ -56,13 +51,9 @@ interface GlobalMIDIState {
   isConnected: boolean;
   deviceName: string;
   inputDeviceName: string;
-  connectedOutputs: Map<string, MIDIOutput>;
-  connectedInputs: Map<string, MIDIInput>;
   sendCommand: (command: string) => Promise<boolean>;
   connectToDevice: (deviceId: string) => Promise<boolean>;
   connectToInputDevice: (deviceId: string) => Promise<boolean>;
-  disconnectDevice: (deviceId: string) => Promise<boolean>;
-  disconnectAllDevices: () => Promise<boolean>;
   refreshDevices: () => Promise<void>;
   getAvailableOutputs: () => MIDIDevice[];
   getAvailableInputs: () => MIDIDevice[];
@@ -162,26 +153,43 @@ const attemptAutoReconnect = async (): Promise<boolean> => {
   }
 };
 
-// Simple Web MIDI initialization - back to basics
+// Initialize Web MIDI access once - NO REPEATED CHECKING
 const initializeWebMIDI = async (): Promise<boolean> => {
   if (globalMidiAccess) return true;
   
   try {
+    // Check if we're in a browser environment
+    if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+      console.log('⚠️ Not in browser environment, skipping Web MIDI initialization');
+      return false;
+    }
+    
     if (!navigator.requestMIDIAccess) {
       console.log('❌ Web MIDI API not supported in this browser');
       return false;
     }
     
-    console.log('🎵 Initializing Web MIDI access...');
-    globalMidiAccess = await navigator.requestMIDIAccess();
+    console.log('🎵 Initializing global Web MIDI access...');
     
-    console.log('✅ Web MIDI initialized successfully');
-    console.log(`🎵 Found ${globalMidiAccess.inputs.size} input devices and ${globalMidiAccess.outputs.size} output devices`);
+    // Add timeout to prevent hanging
+    const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000);
+    });
     
-    // Simple state change listener
+    globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;
+    
+    // Minimal device change listener - no complex logic
     globalMidiAccess.onstatechange = (event: any) => {
-      console.log('🔄 MIDI device state changed:', event.port?.name, event.port?.state);
+      if (event.port) {
+        console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
+      }
     };
+    
+    console.log('✅ Global Web MIDI access initialized');
+    
+    // Check for auto-reconnect ONCE only, no repeated attempts
+    attemptAutoReconnect();
     
     return true;
     
@@ -191,17 +199,12 @@ const initializeWebMIDI = async (): Promise<boolean> => {
   }
 };
 
-// Get available MIDI output devices
+// Get available MIDI output devices - NO LOOPS, return array directly
 const getAvailableOutputs = (): MIDIDevice[] => {
-  if (!globalMidiAccess) {
-    return [];
-  }
+  if (!globalMidiAccess) return [];
   
-  const outputs = Array.from(globalMidiAccess.outputs.values());
-  console.log(`🎵 Available MIDI outputs: ${outputs.length}`);
-  outputs.forEach(output => console.log(`  - ${output.name} (${output.state})`));
-  
-  return outputs.map((output: MIDIOutput) => ({
+  // Convert to array without loops
+  return Array.from(globalMidiAccess.outputs.values()).map((output: MIDIOutput) => ({
     id: output.id,
     name: output.name || 'Unknown Device',
     manufacturer: output.manufacturer || 'Unknown',
@@ -211,17 +214,11 @@ const getAvailableOutputs = (): MIDIDevice[] => {
   }));
 };
 
-// Get available MIDI input devices  
+// Get available MIDI input devices
 const getAvailableInputs = (): MIDIDevice[] => {
-  if (!globalMidiAccess) {
-    return [];
-  }
+  if (!globalMidiAccess) return [];
   
-  const inputs = Array.from(globalMidiAccess.inputs.values());
-  console.log(`🎵 Available MIDI inputs: ${inputs.length}`);
-  inputs.forEach(input => console.log(`  - ${input.name} (${input.state})`));
-  
-  return inputs.map((input: MIDIInput) => ({
+  return Array.from(globalMidiAccess.inputs.values()).map((input: MIDIInput) => ({
     id: input.id,
     name: input.name || 'Unknown Device',
     manufacturer: input.manufacturer || 'Unknown',
@@ -246,31 +243,24 @@ const connectToDevice = async (deviceId: string): Promise<boolean> => {
   
   try {
     await output.open();
+    globalSelectedOutput = output;
+    globalConnectionStatus = 'Connected';
+    globalDeviceName = output.name || 'Unknown Device';
     
-    // Add to multi-device collection
-    globalConnectedOutputs.set(deviceId, output);
+    // Save this device as the last connected device
+    saveLastConnectedDevice(
+      deviceId, 
+      output.name || 'Unknown Device', 
+      output.manufacturer || 'Unknown'
+    );
     
-    // Also set as primary device (for backward compatibility)
-    if (!globalSelectedOutput) {
-      globalSelectedOutput = output;
-      globalConnectionStatus = 'Connected';
-      globalDeviceName = output.name || 'Unknown Device';
-      
-      // Save this device as the last connected device
-      saveLastConnectedDevice(
-        deviceId, 
-        output.name || 'Unknown Device', 
-        output.manufacturer || 'Unknown'
-      );
-    }
-    
-    console.log('✅ Connected to MIDI device:', output.name);
+    console.log('✅ Connected to MIDI device:', globalDeviceName);
     
     // Dispatch connection status change
     window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
       detail: {
         connected: true,
-        deviceName: output.name || 'Unknown Device',
+        deviceName: globalDeviceName,
         deviceId: deviceId
       }
     }));
@@ -366,25 +356,24 @@ const connectToInputDevice = async (deviceId: string): Promise<boolean> => {
   try {
     await input.open();
     
-    // Add to multi-device collection
-    globalConnectedInputs.set(deviceId, input);
+    // Disconnect previous input if any
+    if (globalSelectedInput) {
+      globalSelectedInput.onmidimessage = null;
+    }
+    
+    globalSelectedInput = input;
+    globalInputDeviceName = input.name || 'Unknown Input Device';
     
     // Set up message listener
     input.onmidimessage = handleIncomingMIDI;
     
-    // Also set as primary input device (for backward compatibility)
-    if (!globalSelectedInput) {
-      globalSelectedInput = input;
-      globalInputDeviceName = input.name || 'Unknown Input Device';
-    }
-    
-    console.log('✅ Connected to MIDI input device:', input.name);
+    console.log('✅ Connected to MIDI input device:', globalInputDeviceName);
     
     // Dispatch connection status change
     window.dispatchEvent(new CustomEvent('globalMidiInputConnectionChange', {
       detail: {
         connected: true,
-        deviceName: input.name || 'Unknown Input Device',
+        deviceName: globalInputDeviceName,
         deviceId: deviceId
       }
     }));
@@ -421,144 +410,23 @@ const sendMIDICommand = async (command: string): Promise<boolean> => {
   }
 };
 
-// Disconnect a specific device ONLY
-const disconnectDevice = async (deviceId: string): Promise<boolean> => {
-  try {
-    let disconnectedAny = false;
-    
-    // Only disconnect from multi-device collections if this exact device ID exists
-    if (globalConnectedOutputs.has(deviceId)) {
-      const output = globalConnectedOutputs.get(deviceId)!;
-      await output.close();
-      globalConnectedOutputs.delete(deviceId);
-      console.log('✅ Disconnected from multi-device output:', deviceId);
-      disconnectedAny = true;
-    }
-    
-    if (globalConnectedInputs.has(deviceId)) {
-      const input = globalConnectedInputs.get(deviceId)!;
-      input.onmidimessage = null;
-      await input.close();
-      globalConnectedInputs.delete(deviceId);
-      console.log('✅ Disconnected from multi-device input:', deviceId);
-      disconnectedAny = true;
-    }
-    
-    // If this was the primary device, clear primary references
-    if (globalSelectedOutput && globalSelectedOutput.id === deviceId) {
-      globalSelectedOutput = null;
-      globalDeviceName = '';
-      globalConnectionStatus = 'Disconnected';
-      localStorage.removeItem(MIDI_DEVICE_STORAGE_KEY);
-    }
-    
-    if (globalSelectedInput && globalSelectedInput.id === deviceId) {
-      globalSelectedInput = null;
-      globalInputDeviceName = '';
-    }
-    
-    if (disconnectedAny) {
-      // Dispatch disconnection event
-      window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
-        detail: {
-          connected: false,
-          deviceName: '',
-          deviceId: deviceId
-        }
-      }));
-      
-      return true;
-    } else {
-      console.log('⚠️ Device not found in connected devices:', deviceId);
-      return false;
-    }
-    
-  } catch (error) {
-    console.error('❌ Failed to disconnect device:', error);
-    return false;
-  }
-};
-
-// Disconnect all devices
-const disconnectAllDevices = async (): Promise<boolean> => {
-  try {
-    let disconnectedCount = 0;
-    
-    // Disconnect primary output
-    if (globalSelectedOutput) {
-      await globalSelectedOutput.close();
-      globalSelectedOutput = null;
-      globalDeviceName = '';
-      globalConnectionStatus = 'Disconnected';
-      disconnectedCount++;
-    }
-    
-    // Disconnect primary input  
-    if (globalSelectedInput) {
-      globalSelectedInput.onmidimessage = null;
-      await globalSelectedInput.close();
-      globalSelectedInput = null;
-      globalInputDeviceName = '';
-      disconnectedCount++;
-    }
-    
-    // Disconnect multi-device outputs
-    for (const [deviceId, output] of Array.from(globalConnectedOutputs.entries())) {
-      await output.close();
-      disconnectedCount++;
-    }
-    globalConnectedOutputs.clear();
-    
-    // Disconnect multi-device inputs
-    for (const [deviceId, input] of Array.from(globalConnectedInputs.entries())) {
-      input.onmidimessage = null;
-      await input.close();
-      disconnectedCount++;
-    }
-    globalConnectedInputs.clear();
-    
-    // Clear localStorage
-    localStorage.removeItem(MIDI_DEVICE_STORAGE_KEY);
-    
-    console.log(`✅ Disconnected from ${disconnectedCount} MIDI devices`);
-    
-    // Dispatch global disconnection event
-    window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
-      detail: {
-        connected: false,
-        deviceName: '',
-        deviceId: null
-      }
-    }));
-    
-    return true;
-    
-  } catch (error) {
-    console.error('❌ Failed to disconnect all devices:', error);
-    return false;
-  }
-};
-
 export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [isConnected, setIsConnected] = useState(globalConnectionStatus === 'Connected');
   const [deviceName, setDeviceName] = useState(globalDeviceName);
   const [inputDeviceName, setInputDeviceName] = useState(globalInputDeviceName);
   
   useEffect(() => {
-    // Check if we should attempt auto-reconnect (but without causing freeze)
-    console.log('🎵 Web MIDI hook ready - will initialize lazily when needed');
+    // Initialize Web MIDI asynchronously to prevent blocking
+    const initAsync = async () => {
+      try {
+        await initializeWebMIDI();
+      } catch (error) {
+        console.error('❌ Failed to initialize Web MIDI in useGlobalWebMIDI:', error);
+      }
+    };
     
-    // Only attempt auto-reconnect if there's a stored device
-    const lastDevice = getLastConnectedDevice();
-    if (lastDevice) {
-      console.log('🔄 Stored device found, will attempt auto-reconnect after UI loads:', lastDevice.name);
-      
-      // Delay auto-reconnect to prevent startup freeze
-      setTimeout(async () => {
-        console.log('🔄 Attempting delayed auto-reconnect...');
-        await initializeWebMIDI(); // This will trigger attemptAutoReconnect
-      }, 1000); // Give UI time to load first
-    }
+    // Don't block the component mounting
+    initAsync();
     
     // Listen for global connection changes
     const handleConnectionChange = (event: any) => {
@@ -593,7 +461,6 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   }, []);
   
   const refreshDevices = useCallback(async () => {
-    console.log('🎵 User requested device refresh - initializing MIDI now...');
     await initializeWebMIDI();
   }, []);
   
@@ -617,25 +484,13 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     return await connectToInputDevice(deviceId);
   }, []);
   
-  const disconnectDeviceCallback = useCallback(async (deviceId: string) => {
-    return await disconnectDevice(deviceId);
-  }, []);
-  
-  const disconnectAllDevicesCallback = useCallback(async () => {
-    return await disconnectAllDevices();
-  }, []);
-  
   return {
     isConnected,
     deviceName,
     inputDeviceName,
-    connectedOutputs: globalConnectedOutputs,
-    connectedInputs: globalConnectedInputs,
     sendCommand: sendCommandCallback,
     connectToDevice: connectToDeviceCallback,
     connectToInputDevice: connectToInputDeviceCallback,
-    disconnectDevice: disconnectDeviceCallback,
-    disconnectAllDevices: disconnectAllDevicesCallback,
     refreshDevices,
     getAvailableOutputs: getAvailableOutputsCallback,
     getAvailableInputs: getAvailableInputsCallback

@@ -9,6 +9,10 @@ let globalDeviceName = '';
 let globalInputDeviceName = '';
 let globalIsInitializing = false; // Prevent multiple simultaneous initializations
 
+// Support multiple simultaneous device connections
+let globalConnectedOutputs: Map<string, MIDIOutput> = new Map();
+let globalConnectedInputs: Map<string, MIDIInput> = new Map();
+
 // Store last connected device info in localStorage for auto-reconnect
 const MIDI_DEVICE_STORAGE_KEY = 'lastConnectedMidiDevice';
 
@@ -185,9 +189,10 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     console.log('🎵 Initializing global Web MIDI access...');
     
     // NO SYSEX - this causes aggressive hardware scanning and 25-second freezes!
+    // Increased timeout to 3 seconds for better device detection
     const midiAccessPromise = navigator.requestMIDIAccess();
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('MIDI initialization timeout')), 500);
+      setTimeout(() => reject(new Error('MIDI initialization timeout after 3 seconds')), 3000);
     });
     
     globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;

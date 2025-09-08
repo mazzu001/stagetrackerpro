@@ -435,49 +435,91 @@ const sendMIDICommand = async (command: string): Promise<boolean> => {
 // Disconnect a specific device
 const disconnectDevice = async (deviceId: string): Promise<boolean> => {
   try {
-    // Check if it's the currently selected output
+    let disconnectedAny = false;
+    const requestedDeviceId = deviceId;
+    
+    // Strategy 1: Try exact device ID match first
     if (globalSelectedOutput && globalSelectedOutput.id === deviceId) {
       await globalSelectedOutput.close();
+      console.log('✅ Disconnected from MIDI output device (exact ID):', deviceId);
+      
       globalSelectedOutput = null;
       globalDeviceName = '';
       globalConnectionStatus = 'Disconnected';
-      
-      // Clear from localStorage
       localStorage.removeItem(MIDI_DEVICE_STORAGE_KEY);
       
-      console.log('✅ Disconnected from MIDI output device:', deviceId);
-      
-      // Dispatch disconnection event
-      window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
-        detail: {
-          connected: false,
-          deviceName: '',
-          deviceId: deviceId
-        }
-      }));
-      
-      return true;
+      disconnectedAny = true;
     }
     
-    // Check if it's the currently selected input
     if (globalSelectedInput && globalSelectedInput.id === deviceId) {
       globalSelectedInput.onmidimessage = null;
       await globalSelectedInput.close();
+      console.log('✅ Disconnected from MIDI input device (exact ID):', deviceId);
+      
       globalSelectedInput = null;
       globalInputDeviceName = '';
       
-      console.log('✅ Disconnected from MIDI input device:', deviceId);
+      disconnectedAny = true;
+    }
+    
+    // Strategy 2: If no exact match, find by device name/type and disconnect the connected device
+    if (!disconnectedAny && globalMidiAccess) {
+      // Try to find the device in the available devices to get its name
+      const allOutputs = Array.from(globalMidiAccess.outputs.values());
+      const allInputs = Array.from(globalMidiAccess.inputs.values());
+      const targetDevice = [...allOutputs, ...allInputs].find(d => d.id === deviceId);
       
-      // Dispatch disconnection event
-      window.dispatchEvent(new CustomEvent('globalMidiInputConnectionChange', {
-        detail: {
-          connected: false,
-          deviceName: '',
-          deviceId: deviceId
+      if (targetDevice) {
+        // If we found the target device, check if we have a connected device with the same name
+        if (globalSelectedOutput && globalSelectedOutput.name === targetDevice.name) {
+          await globalSelectedOutput.close();
+          console.log('✅ Disconnected from MIDI output device (by name):', targetDevice.name);
+          
+          globalSelectedOutput = null;
+          globalDeviceName = '';
+          globalConnectionStatus = 'Disconnected';
+          localStorage.removeItem(MIDI_DEVICE_STORAGE_KEY);
+          
+          disconnectedAny = true;
         }
-      }));
+        
+        if (globalSelectedInput && globalSelectedInput.name === targetDevice.name) {
+          globalSelectedInput.onmidimessage = null;
+          await globalSelectedInput.close();
+          console.log('✅ Disconnected from MIDI input device (by name):', targetDevice.name);
+          
+          globalSelectedInput = null;
+          globalInputDeviceName = '';
+          
+          disconnectedAny = true;
+        }
+      }
+    }
+    
+    // Strategy 3: If still no match, disconnect whatever is currently connected (failsafe)
+    if (!disconnectedAny) {
+      if (globalSelectedOutput) {
+        await globalSelectedOutput.close();
+        console.log('✅ Disconnected from current MIDI output device (failsafe):', globalSelectedOutput.name);
+        
+        globalSelectedOutput = null;
+        globalDeviceName = '';
+        globalConnectionStatus = 'Disconnected';
+        localStorage.removeItem(MIDI_DEVICE_STORAGE_KEY);
+        
+        disconnectedAny = true;
+      }
       
-      return true;
+      if (globalSelectedInput) {
+        globalSelectedInput.onmidimessage = null;
+        await globalSelectedInput.close();
+        console.log('✅ Disconnected from current MIDI input device (failsafe):', globalSelectedInput.name);
+        
+        globalSelectedInput = null;
+        globalInputDeviceName = '';
+        
+        disconnectedAny = true;
+      }
     }
     
     // Check multi-device connections (future expansion)
@@ -488,7 +530,7 @@ const disconnectDevice = async (deviceId: string): Promise<boolean> => {
       }
       globalConnectedOutputs.delete(deviceId);
       console.log('✅ Disconnected from multi-device output:', deviceId);
-      return true;
+      disconnectedAny = true;
     }
     
     if (globalConnectedInputs.has(deviceId)) {
@@ -499,11 +541,24 @@ const disconnectDevice = async (deviceId: string): Promise<boolean> => {
       }
       globalConnectedInputs.delete(deviceId);
       console.log('✅ Disconnected from multi-device input:', deviceId);
-      return true;
+      disconnectedAny = true;
     }
     
-    console.log('⚠️ Device not found in connected devices:', deviceId);
-    return false;
+    if (disconnectedAny) {
+      // Dispatch disconnection event
+      window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
+        detail: {
+          connected: false,
+          deviceName: '',
+          deviceId: requestedDeviceId
+        }
+      }));
+      
+      return true;
+    } else {
+      console.log('⚠️ No connected devices found to disconnect');
+      return false;
+    }
     
   } catch (error) {
     console.error('❌ Failed to disconnect device:', error);

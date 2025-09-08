@@ -2,14 +2,11 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 import type { SongWithTracks } from "@shared/schema";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
-import { ClickTrackGenerator, type ClickTrackConfig, type MetronomeSound } from "@/lib/click-track-generator";
-import { detectSongBPM, type BPMDetectionResult } from "@/lib/bpm-detection";
 import { waveformGenerator } from "@/lib/waveform-generator";
 
 interface UseAudioEngineProps {
   song?: SongWithTracks;
   onDurationUpdated?: (songId: string, duration: number) => void;
-  onBPMDetected?: (songId: string, bpm: number, confidence: number) => void;
 }
 
 export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProps) {
@@ -22,7 +19,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     // New calling pattern: useAudioEngine({ song, onDurationUpdated, onBPMDetected })
     song = songOrProps.song;
     onDurationUpdated = songOrProps.onDurationUpdated;
-    onBPMDetected = songOrProps.onBPMDetected;
   } else {
     // Old calling pattern: useAudioEngine(song)
     song = songOrProps as SongWithTracks | undefined;
@@ -38,18 +34,10 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   const [masterVolume, setMasterVolume] = useState(85);
   const [isLoadingTracks, setIsLoadingTracks] = useState(false);
   
-  // BPM Detection state
-  const [detectedBPM, setDetectedBPM] = useState<number | null>(null);
-  const [bpmConfidence, setBpmConfidence] = useState<number>(0);
-  const [isBPMDetecting, setIsBPMDetecting] = useState(false);
 
   const audioEngineRef = useRef<StreamingAudioEngine | null>(null);
   const animationFrameRef = useRef<number>();
   
-  // Metronome setup
-  const metronomeContextRef = useRef<AudioContext | null>(null);
-  const clickTrackRef = useRef<ClickTrackGenerator | null>(null);
-  const isMetronomePlayingRef = useRef<boolean>(false);
   
   // Song ref to avoid stale closures
   const songRef = useRef<SongWithTracks | undefined>(song);
@@ -65,93 +53,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       setIsPlaying(false);
       setCurrentTime(0);
     }
-    // Stop metronome when stopping playback
-    if (clickTrackRef.current) {
-      clickTrackRef.current.stop();
-      isMetronomePlayingRef.current = false;
-    }
   }, []);
 
-  // BPM Detection Functions
-  const detectBPM = useCallback(async (): Promise<BPMDetectionResult | null> => {
-    const currentSong = songRef.current;
-    if (!currentSong?.id || isBPMDetecting) {
-      console.log('🎯 Cannot detect BPM - no song ID or already detecting', { 
-        hasSong: !!currentSong, 
-        songId: currentSong?.id,
-        isBPMDetecting 
-      });
-      return null;
-    }
-
-    setIsBPMDetecting(true);
-    console.log(`🎯 Starting BPM detection for "${currentSong.title}" (ID: ${currentSong.id})`);
-
-    try {
-      if (!currentSong.duration) {
-        console.log('🎯 No duration available for BPM detection');
-        return null;
-      }
-
-      // Generate fresh waveform from song tracks for BPM detection
-      console.log(`🎯 Generating fresh waveform for BPM detection from ${currentSong.tracks?.length || 0} tracks...`);
-      const waveformData = await waveformGenerator.generateWaveformFromSong(currentSong);
-      
-      if (!waveformData || waveformData.length === 0) {
-        console.log('🎯 Failed to generate waveform data for BPM detection');
-        return null;
-      }
-
-      console.log(`🎯 Generated waveform data, length: ${waveformData.length}, duration: ${currentSong.duration}s`);
-
-      const result = await detectSongBPM(waveformData, currentSong.duration, {
-        minBPM: 60,
-        maxBPM: 200,
-        analysisLength: 30 // Analyze first 30 seconds
-      });
-
-      if (result) {
-        setDetectedBPM(result.bpm);
-        setBpmConfidence(result.confidence);
-        console.log(`🎯 BPM detected: ${result.bpm} (confidence: ${result.confidence.toFixed(2)})`);
-
-        // Notify parent component if callback provided
-        if (onBPMDetected) {
-          onBPMDetected(currentSong.id, result.bpm, result.confidence);
-        }
-      } else {
-        console.log('🎯 BPM detection failed - no result returned');
-      }
-
-      return result;
-    } catch (error) {
-      console.error('❌ BPM detection failed:', error);
-      setDetectedBPM(null);
-      setBpmConfidence(0);
-      return null;
-    } finally {
-      setIsBPMDetecting(false);
-    }
-  }, [onBPMDetected]);
-
-  // Auto-detect BPM when song loads (if not already set)
-  const autoDetectBPM = useCallback(async () => {
-    if (!song || song.bpm || !song.waveformData) {
-      return; // Skip if song has manual BPM or no waveform data
-    }
-
-    console.log(`🎯 Auto-detecting BPM for "${song.title}"`);
-    await detectBPM();
-  }, [detectBPM]);
-
-  // Get effective BPM (manual override or detected)
-  const getEffectiveBPM = useCallback((): number => {
-    // Priority: manual BPM > metronome BPM > detected BPM > fallback 120
-    if (song?.bpm) return song.bpm;
-    if (song?.metronomeBpm) return parseFloat(song.metronomeBpm) || 120;
-    if (detectedBPM) return detectedBPM;
-    return 120;
-  }, [detectedBPM]);
 
   // Initialize audio engine and metronome
   useEffect(() => {
@@ -187,29 +90,12 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         (audioEngineRef.current as any).unsubscribe = unsubscribe;
         setIsAudioEngineOnline(true);
         
-        // Initialize metronome audio system
-        initializeMetronome();
       } catch (error) {
         console.error('Failed to initialize audio engine:', error);
         setIsAudioEngineOnline(false);
       }
     };
 
-    const initializeMetronome = () => {
-      try {
-        if (!metronomeContextRef.current) {
-          metronomeContextRef.current = new AudioContext();
-          console.log('🎯 Metronome AudioContext initialized');
-        }
-        
-        if (!clickTrackRef.current && metronomeContextRef.current) {
-          clickTrackRef.current = new ClickTrackGenerator(metronomeContextRef.current);
-          console.log('🎯 Metronome ClickTrackGenerator initialized');
-        }
-      } catch (error) {
-        console.error('Failed to initialize metronome:', error);
-      }
-    };
 
     initAudioEngine();
 
@@ -286,17 +172,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, [song?.id, song?.tracks?.length]);
 
-  // Auto-detect BPM when song changes (if not already set)
-  useEffect(() => {
-    if (song && song.waveformData && !song.bpm && !isBPMDetecting) {
-      // Small delay to ensure streaming setup is complete
-      const timer = setTimeout(() => {
-        autoDetectBPM();
-      }, 1000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [song?.id, song?.waveformData, song?.bpm, autoDetectBPM, isBPMDetecting]);
 
   // Animation loop for real-time updates
 
@@ -363,95 +238,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     };
   }, [song?.id, isPlaying]);
 
-  // Metronome control function
-  const handleMetronome = useCallback(() => {
-    if (!clickTrackRef.current || !metronomeContextRef.current || !song) {
-      return;
-    }
-
-    // Use effective BPM (manual override, metronome setting, or detected BPM)
-    const bpmNumber = getEffectiveBPM();
-    const showBPMSource = song.bpm ? 'manual' : song.metronomeBpm ? 'metronome' : detectedBPM ? 'detected' : 'default';
-    console.log(`🎯 Using BPM: ${bpmNumber} (source: ${showBPMSource})`);
-    const metronomeEnabled = song.metronomeOn === true; // Explicitly check for true
-    const countIn = song.metronomeCountIn === true; // Explicitly check for true  
-    const wholeSong = song.metronomeWholeSong === true; // Explicitly check for true
-    const isAtStart = currentTime <= 1; // Consider "at start" if within first second
-    
-    console.log('🎯 Metronome settings:', { 
-      raw: { metronomeBpm: song.metronomeBpm, metronomeOn: song.metronomeOn, metronomeCountIn: song.metronomeCountIn, metronomeWholeSong: song.metronomeWholeSong },
-      parsed: { metronomeEnabled, countIn, wholeSong, isAtStart, currentTime, isPlaying }
-    });
-    
-    const config: ClickTrackConfig = {
-      bpm: bpmNumber,
-      countInMeasures: 1, // 1 measure count-in
-      volume: 0.6,
-      enabled: metronomeEnabled,
-      accentDownbeat: true,
-      soundType: 'woodblock', // Use woodblock as default sound
-      pan: song.metronomePan as 'left' | 'right' | 'center' || 'center' // Default to center
-    };
-
-    // If metronome is off, stop any playing metronome
-    if (!metronomeEnabled) {
-      clickTrackRef.current.stop();
-      isMetronomePlayingRef.current = false;
-      console.log('🎯 Metronome disabled for this song');
-      return;
-    }
-
-    if (!isPlaying) {
-      // Stop metronome when playback stops
-      clickTrackRef.current.stop();
-      isMetronomePlayingRef.current = false;
-      console.log('🎯 Metronome stopped - playback paused');
-      return;
-    }
-
-    // Handle different metronome modes based on song settings
-    if (isPlaying && !isMetronomePlayingRef.current) {
-      if (countIn && isAtStart) {
-        // Count-in only at song start, then continuous if whole song enabled
-        if (wholeSong) {
-          console.log('🎯 Starting count-in -> continuous metronome');
-          clickTrackRef.current.startCountIn(config, () => {
-            // Count-in complete, start continuous mode
-            clickTrackRef.current.startContinuous(config);
-            console.log('🎯 Count-in complete, starting continuous metronome');
-          });
-        } else {
-          console.log('🎯 Starting count-in only metronome');
-          clickTrackRef.current.startCountIn(config, () => {
-            // Count-in complete, FORCE stop metronome
-            if (clickTrackRef.current) {
-              clickTrackRef.current.stop();
-              console.log('🎯 Count-in complete - metronome FORCE STOPPED');
-            }
-            isMetronomePlayingRef.current = false;
-            console.log('🎯 Count-in complete - metronome stopped');
-          });
-        }
-        isMetronomePlayingRef.current = true;
-      } else if (wholeSong && !countIn) {
-        // Continuous metronome without count-in
-        console.log('🎯 Starting continuous metronome (no count-in)');
-        clickTrackRef.current.startContinuous(config);
-        isMetronomePlayingRef.current = true;
-      } else if (wholeSong && countIn && !isAtStart) {
-        // If whole song is on but we're not at start, just do continuous
-        console.log('🎯 Starting continuous metronome (mid-song)');
-        clickTrackRef.current.startContinuous(config);
-        isMetronomePlayingRef.current = true;
-      }
-      // If only count-in is enabled but we're not at start, do nothing
-    }
-  }, [song, isPlaying, currentTime, getEffectiveBPM]);
-
-  // Update metronome when playback state or song settings change
-  useEffect(() => {
-    handleMetronome();
-  }, [handleMetronome]);
 
   const play = useCallback(async () => {
     if (!audioEngineRef.current || !song) return;
@@ -465,7 +251,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     try {
       await audioEngineRef.current.play();
       setIsPlaying(true);
-      // Metronome will be handled by useEffect that watches isPlaying
     } catch (error) {
       console.error('Failed to start playback:', error);
       setIsPlaying(false);
@@ -476,7 +261,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     if (audioEngineRef.current) {
       audioEngineRef.current.pause();
       setIsPlaying(false);
-      // Metronome will be stopped by useEffect that watches isPlaying
     }
   }, []);
 
@@ -534,12 +318,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     isMidiConnected,
     masterVolume,
     isLoadingTracks,
-    // BPM Detection
-    detectedBPM,
-    bpmConfidence,
-    isBPMDetecting,
-    detectBPM,
-    getEffectiveBPM,
     play,
     pause,
     stop,

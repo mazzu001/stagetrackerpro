@@ -1425,32 +1425,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // BPM update endpoint - for auto-detected BPM values
-  app.put("/api/songs/:id/bpm", isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const { bpm } = req.body;
-      
-      if (typeof bpm !== 'number' || bpm <= 0 || bpm > 300) {
-        return res.status(400).json({ message: "BPM must be a positive number between 1 and 300" });
-      }
-      
-      const song = await storage.updateSong(req.params.id, { bpm }, userId);
-      if (!song) {
-        return res.status(404).json({ message: "Song not found" });
-      }
-      
-      console.log(`🎯 BPM updated for song ${req.params.id}: ${bpm} BPM`);
-      res.json({ bpm: song.bpm, message: "BPM updated successfully" });
-    } catch (error) {
-      console.error('Error updating BPM:', error);
-      if (error instanceof Error) {
-        res.status(400).json({ message: error.message });
-      } else {
-        res.status(500).json({ message: "Failed to update BPM" });
-      }
-    }
-  });
 
   app.delete("/api/songs/:id", isAuthenticated, async (req: any, res) => {
     try {

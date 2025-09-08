@@ -153,19 +153,40 @@ const attemptAutoReconnect = async (): Promise<boolean> => {
   }
 };
 
+// Global initialization state to prevent concurrent calls
+let isInitializing = false;
+let initializationFailed = false;
+
 // Initialize Web MIDI access once - NO REPEATED CHECKING
 const initializeWebMIDI = async (): Promise<boolean> => {
+  // If already initialized, return true
   if (globalMidiAccess) return true;
+  
+  // If initialization failed before, don't try again
+  if (initializationFailed) {
+    console.log('⚠️ Web MIDI initialization was previously attempted and failed, skipping');
+    return false;
+  }
+  
+  // If already initializing, wait for it to complete
+  if (isInitializing) {
+    console.log('⚠️ Web MIDI initialization already in progress, skipping duplicate attempt');
+    return false;
+  }
+  
+  isInitializing = true;
   
   try {
     // Check if we're in a browser environment
     if (typeof window === 'undefined' || typeof navigator === 'undefined') {
       console.log('⚠️ Not in browser environment, skipping Web MIDI initialization');
+      initializationFailed = true;
       return false;
     }
     
     if (!navigator.requestMIDIAccess) {
       console.log('❌ Web MIDI API not supported in this browser');
+      initializationFailed = true;
       return false;
     }
     
@@ -174,7 +195,7 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     // Add timeout to prevent hanging
     const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000);
+      setTimeout(() => reject(new Error('MIDI initialization timeout')), 3000); // Reduced to 3 seconds
     });
     
     globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;
@@ -195,7 +216,10 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
   } catch (error) {
     console.error('❌ Failed to initialize Web MIDI:', error);
+    initializationFailed = true;
     return false;
+  } finally {
+    isInitializing = false;
   }
 };
 
@@ -419,14 +443,20 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     // Initialize Web MIDI asynchronously to prevent blocking
     const initAsync = async () => {
       try {
-        await initializeWebMIDI();
+        const success = await initializeWebMIDI();
+        if (!success) {
+          console.log('🔇 Web MIDI initialization skipped or failed, continuing without MIDI support');
+        }
       } catch (error) {
         console.error('❌ Failed to initialize Web MIDI in useGlobalWebMIDI:', error);
+        // Don't throw - allow the app to continue without MIDI
       }
     };
     
-    // Don't block the component mounting
-    initAsync();
+    // Don't block the component mounting, use setTimeout to run after current stack
+    setTimeout(() => {
+      initAsync();
+    }, 0);
     
     // Listen for global connection changes
     const handleConnectionChange = (event: any) => {

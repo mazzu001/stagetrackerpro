@@ -127,28 +127,36 @@ export function UnifiedMIDIDeviceManager() {
           description: `Disconnected from ${deviceName}`,
         });
       } else {
-        // Connect - find output device and connect
+        // Connect - find the OUTPUT device for this name (strip IN/OUT suffixes if present)
         const outputs = globalMidi.getAvailableOutputs();
-        const targetDevice = outputs.find(d => d.name === deviceName);
+        const inputs = globalMidi.getAvailableInputs();
+        
+        // Clean device name (remove IN/OUT suffixes to find matching devices)
+        const cleanName = deviceName.replace(/ (IN|OUT)$/, '');
+        
+        // Look for exact match first, then try with OUT suffix, then clean name match
+        let targetDevice = outputs.find(d => d.name === deviceName) ||
+                          outputs.find(d => d.name === `${cleanName} OUT`) ||
+                          outputs.find(d => d.name.replace(/ (IN|OUT)$/, '') === cleanName);
         
         if (targetDevice) {
           const success = await globalMidi.connectToDevice(targetDevice.id);
           if (success) {
             toast({
               title: "Connected",
-              description: `Connected to ${deviceName}`,
+              description: `Connected to ${targetDevice.name}`,
             });
           } else {
             toast({
               title: "Failed",
-              description: `Failed to connect to ${deviceName}`,
+              description: `Failed to connect to ${targetDevice.name}`,
               variant: "destructive",
             });
           }
         } else {
           toast({
             title: "Failed",
-            description: `Device ${deviceName} not found`,
+            description: `No output device found for ${deviceName}`,
             variant: "destructive",
           });
         }

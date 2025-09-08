@@ -171,10 +171,10 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
     console.log('🎵 Initializing global Web MIDI access...');
     
-    // Add timeout to prevent hanging
+    // Add aggressive timeout to prevent hanging - 500ms max
     const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000);
+      setTimeout(() => reject(new Error('MIDI initialization timeout')), 500);
     });
     
     globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;
@@ -416,17 +416,20 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [inputDeviceName, setInputDeviceName] = useState(globalInputDeviceName);
   
   useEffect(() => {
-    // Initialize Web MIDI asynchronously to prevent blocking
-    const initAsync = async () => {
-      try {
-        await initializeWebMIDI();
-      } catch (error) {
-        console.error('❌ Failed to initialize Web MIDI in useGlobalWebMIDI:', error);
-      }
+    // Defer MIDI initialization to prevent startup freeze
+    const deferredInit = () => {
+      // Give UI time to render first, then try MIDI
+      setTimeout(async () => {
+        try {
+          await initializeWebMIDI();
+        } catch (error) {
+          console.error('❌ Failed to initialize Web MIDI in useGlobalWebMIDI:', error);
+        }
+      }, 100); // Small delay to let UI render
     };
     
     // Don't block the component mounting
-    initAsync();
+    deferredInit();
     
     // Listen for global connection changes
     const handleConnectionChange = (event: any) => {

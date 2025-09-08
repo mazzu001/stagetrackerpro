@@ -1,0 +1,168 @@
+service-worker.js:24 [Report Only] Refused to connect to 'https://replit.com/public/offline.html' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+service-worker.js:24 [Report Only] Refused to connect to 'https://replit.com/public/offline.html' because it violates the following Content Security Policy directive: "connect-src 'none'".
+
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-bde315f04dc191f6.js:38 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-bde315f04dc191f6.js:38 [LaunchDarkly] LaunchDarkly client initialized
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-fbe1e4d61270f14c.js:1
+  Unrecognized feature: 'battery'.
+_ @ framework-fbe1e4d61270f14c.js:1
+framework-fbe1e4d61270f14c.js:1  Unrecognized feature: 'layout-animations'.
+_ @ framework-fbe1e4d61270f14c.js:1
+framework-fbe1e4d61270f14c.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-fbe1e4d61270f14c.js:1
+framework-fbe1e4d61270f14c.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-fbe1e4d61270f14c.js:1
+framework-fbe1e4d61270f14c.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-fbe1e4d61270f14c.js:1
+framework-fbe1e4d61270f14c.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-fbe1e4d61270f14c.js:1
+framework-fbe1e4d61270f14c.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-fbe1e4d61270f14c.js:1
+framework-fbe1e4d61270f14c.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-fbe1e4d61270f14c.js:1
+framework-fbe1e4d61270f14c.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-fbe1e4d61270f14c.js:1
+framework-fbe1e4d61270f14c.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-fbe1e4d61270f14c.js:1
+framework-fbe1e4d61270f14c.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-fbe1e4d61270f14c.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar6p%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+Network.js:227  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=gwX9IVYyyNd8' failed: 
+t @ Network.js:227
+Network.js:227  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=gwX9IVYyyNd8' is invalid.
+Console.js:61 No stored audio file references found
+Console.js:61 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+Console.js:61 🔍 Parsed values: [object Object]
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 Browser file system needs initialization
+Console.js:61 ✅ BrowserFileSystem database auto-initialized
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 ✅ Cloud login successful: mnbtransport2024@gmail.com
+Console.js:61 Browser support check: [object Object]
+Console.js:61 Browser file system initialized successfully
+Console.js:61 Browser file system initialized successfully
+Console.js:61 🔄 Resetting processed timestamps - Song changed to: none
+Console.js:61 ⏹️ Resetting processed timestamps - Playback stopped
+Console.js:61 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+Console.js:61 🔍 Initial service isHost check: [object Object]
+Console.js:61 🎵 Initializing global Web MIDI access...
+Console.js:61 🎵 Setting up persistent Web MIDI event listener...
+Console.js:61 🔄 Global Web MIDI status: Disconnected - 
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: [object Object]
+Console.js:61 🎭 Broadcast host effect: [object Object]
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 📋 Loaded 0 songs from local storage (alphabetically sorted)
+Console.js:61 🔍 Debug values: [object Object]
+Console.js:61  ❌ Failed to initialize Web MIDI: Error: MIDI initialization timeout
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 🔍 Debug values: [object Object]
+Network.js:227  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=gwX9IVYyyNd8' failed: 
+t @ Network.js:227
+Network.js:227  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=gwX9IVYyyNd8' is invalid.
+    at new t (Network.js:227:18)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+Console.js:61 No stored audio file references found
+Console.js:61 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+Console.js:61 🔍 Parsed values: Object
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 Browser file system already initialized - auto-initializing
+Console.js:61 ✅ BrowserFileSystem database auto-initialized
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+Console.js:61 Browser file system initialized successfully
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 ✅ Cloud login successful: professional@demo.com
+Console.js:61 🔄 Resetting processed timestamps - Song changed to: none
+Console.js:61 ⏹️ Resetting processed timestamps - Playback stopped
+Console.js:61 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+Console.js:61 🔍 Initial service isHost check: Object
+Console.js:61 🎵 Initializing global Web MIDI access...
+Console.js:61 🎵 Setting up persistent Web MIDI event listener...
+Console.js:61 🔄 Global Web MIDI status: Disconnected - 
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: Object
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 📋 Loaded 0 songs from local storage (alphabetically sorted)
+Console.js:61 🔍 Debug values: Object
+Console.js:61  ❌ Failed to initialize Web MIDI: Error: MIDI initialization timeout
+    at useGlobalWebMIDI.ts:177:31
+Mt.forEach.n.<computed> @ Console.js:61
+initializeWebMIDI @ useGlobalWebMIDI.ts:197

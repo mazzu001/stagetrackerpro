@@ -482,7 +482,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     } else {
       console.log('📡 Not uploading to database:', { isHost, hasCurrentRoom: !!currentRoom?.id, roomId: currentRoom?.id });
     }
-  }, [selectedSongId, user?.email, isHost, currentRoom?.id]);
+  }, [selectedSongId, user?.email]);
 
   // Debug current values to see why upload isn't triggering
   useEffect(() => {
@@ -495,7 +495,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       hasUserEmail: !!user?.email,
       hasCurrentRoom: !!currentRoom?.id
     });
-  }, [selectedSongId, user?.email, isHost, currentRoom?.id]);
+  }, [selectedSongId, user?.email]);
 
   // Upload song to database and get entry ID for broadcasting
   const uploadSongToDatabase = async (song: any, broadcastId: string) => {

@@ -27,10 +27,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import type { SongWithTracks } from "@shared/schema";
-import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
-import { USBMidiManager } from "@/components/USBMidiManager";
-import { UnifiedMIDIDeviceManager } from "@/components/UnifiedMIDIDeviceManager";
-import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
+import { SimpleMIDIManager } from "@/components/SimpleMIDIManager";
+import { useSimpleMIDI } from "@/hooks/useSimpleMIDI";
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
 import { useBroadcast } from "@/hooks/useBroadcast";
@@ -109,40 +107,20 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     };
   }, []);
 
-  // Global Web MIDI integration - persistent across dialog closures
-  const globalMidi = useGlobalWebMIDI();
+  // Simple MIDI integration
+  const simpleMidi = useSimpleMIDI();
 
-  // Initialize global MIDI event listener for external commands
+  // Initialize MIDI on mount
   useEffect(() => {
-    console.log('🎵 Setting up persistent Web MIDI event listener...');
-    const cleanup = setupGlobalMIDIEventListener();
-    return cleanup;
-  }, []);
+    simpleMidi.initialize();
+  }, [simpleMidi]);
 
-  // Update local state when global MIDI connection changes
+  // Update local state when MIDI connection changes
   useEffect(() => {
-    setIsMidiConnected(globalMidi.isConnected);
-    setSelectedMidiDeviceName(globalMidi.deviceName);
-    console.log(`🔄 Global Web MIDI status: ${globalMidi.isConnected ? 'Connected' : 'Disconnected'} - ${globalMidi.deviceName}`);
-  }, [globalMidi.isConnected, globalMidi.deviceName]);
-
-  // Listen for legacy Bluetooth MIDI connection status changes (fallback)
-  useEffect(() => {
-    const handleStatusChange = (event: any) => {
-      const { connected, deviceName, midiReady } = event.detail;
-      // Only use if global MIDI is not connected
-      if (!globalMidi.isConnected) {
-        setIsMidiConnected(connected && midiReady);
-        setSelectedMidiDeviceName(deviceName);
-        console.log(`🔄 Legacy Bluetooth MIDI status: ${connected ? 'Connected' : 'Disconnected'} ${midiReady ? '(MIDI Ready)' : '(No MIDI)'}`);
-      }
-    };
-
-    window.addEventListener('bluetoothMidiStatusChanged', handleStatusChange);
-    return () => {
-      window.removeEventListener('bluetoothMidiStatusChanged', handleStatusChange);
-    };
-  }, [globalMidi.isConnected]);
+    setIsMidiConnected(!!simpleMidi.connectedDevice);
+    setSelectedMidiDeviceName(simpleMidi.connectedDevice?.name || '');
+    console.log(`🔄 MIDI status: ${simpleMidi.connectedDevice ? 'Connected' : 'Disconnected'} - ${simpleMidi.connectedDevice?.name || ''}`);
+  }, [simpleMidi.connectedDevice]);
 
   // Trigger blue blink effect for MIDI status light
   const triggerMidiBlink = useCallback(() => {
@@ -166,26 +144,19 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     try {
-      // Try global Web MIDI first, fallback to legacy Bluetooth
-      const success = await globalMidi.sendCommand(footerMidiCommand.trim());
+      const success = await simpleMidi.sendCommand(footerMidiCommand.trim());
       if (success) {
-        console.log('✅ Manual MIDI command sent via global Web MIDI');
+        console.log('✅ MIDI command sent successfully');
         triggerMidiBlink();
         toast({
           title: "MIDI Command Sent",
-          description: `Sent via Web MIDI: ${footerMidiCommand.trim()}`,
+          description: `Sent: ${footerMidiCommand.trim()}`,
         });
       } else {
-        console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
-        // Send via custom event to Bluetooth MIDI manager as fallback
-        const event = new CustomEvent('sendBluetoothMIDI', {
-          detail: { command: footerMidiCommand.trim() }
-        });
-        window.dispatchEvent(event);
-        triggerMidiBlink();
         toast({
-          title: "MIDI Command Sent",
-          description: `Sent via Bluetooth: ${footerMidiCommand.trim()}`,
+          title: "MIDI Send Failed",
+          description: "Failed to send MIDI command. Check device connection.",
+          variant: "destructive",
         });
       }
       
@@ -345,24 +316,17 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     try {
       console.log(`🎼 Sending MIDI command from lyrics: ${command}`);
       
-      // Try global Web MIDI first, fallback to legacy Bluetooth
-      const success = await globalMidi.sendCommand(command.trim());
+      const success = await simpleMidi.sendCommand(command.trim());
       if (success) {
-        console.log('✅ MIDI command sent via global Web MIDI');
+        console.log('✅ MIDI command sent successfully');
         triggerMidiBlink();
       } else {
-        console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
-        // Send via custom event to Bluetooth MIDI manager as fallback
-        const event = new CustomEvent('sendBluetoothMIDI', {
-          detail: { command: command.trim() }
-        });
-        window.dispatchEvent(event);
-        triggerMidiBlink();
+        console.log('⚠️ MIDI send failed - check device connection');
       }
     } catch (error) {
       console.error('❌ Failed to send lyrics MIDI command:', error);
     }
-  }, [userType, triggerMidiBlink, globalMidi]);
+  }, [userType, triggerMidiBlink, simpleMidi]);
 
   // Instant audio engine (now with zero decode delays)
   const audioEngine = useAudioEngine({ 
@@ -1692,10 +1656,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             <DialogHeader>
               <DialogTitle>MIDI Device Manager</DialogTitle>
               <p className="text-sm text-muted-foreground">
-                Connect to multiple MIDI devices simultaneously (USB, Bluetooth, Network)
+                Connect to MIDI devices for live performance control
               </p>
             </DialogHeader>
-            <UnifiedMIDIDeviceManager />
+            <SimpleMIDIManager />
           </DialogContent>
         </Dialog>
       )}

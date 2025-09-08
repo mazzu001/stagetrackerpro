@@ -13,10 +13,9 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   // Handle both old and new calling patterns for backwards compatibility
   let song: SongWithTracks | undefined;
   let onDurationUpdated: ((songId: string, duration: number) => void) | undefined;
-  let onBPMDetected: ((songId: string, bpm: number, confidence: number) => void) | undefined;
   
   if (songOrProps && 'song' in songOrProps) {
-    // New calling pattern: useAudioEngine({ song, onDurationUpdated, onBPMDetected })
+    // New calling pattern: useAudioEngine({ song, onDurationUpdated })
     song = songOrProps.song;
     onDurationUpdated = songOrProps.onDurationUpdated;
   } else {

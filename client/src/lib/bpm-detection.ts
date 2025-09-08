@@ -144,8 +144,18 @@ export class BPMDetector {
       }
     }
 
+    // Prevent division by zero
+    if (bestPeriod === 0 || !isFinite(bestPeriod)) {
+      return { bpm: 120, confidence: 0.1, method: 'autocorrelation' };
+    }
+
     const bpm = Math.round(60 * sampleRate / bestPeriod);
     const confidence = Math.min(1.0, bestCorrelation / (waveformData.length * 0.1));
+
+    // Validate the result
+    if (!isFinite(bpm) || bpm <= 0) {
+      return { bpm: 120, confidence: 0.1, method: 'autocorrelation' };
+    }
 
     return {
       bpm,
@@ -199,9 +209,11 @@ export class BPMDetector {
     intervals: number[],
     options: Required<BPMDetectionOptions>
   ): number {
-    // Convert intervals to BPMs
-    const bpms = intervals.map(interval => 60 / interval)
-      .filter(bpm => bpm >= options.minBPM && bpm <= options.maxBPM);
+    // Convert intervals to BPMs - prevent division by zero
+    const bpms = intervals
+      .filter(interval => interval > 0.01) // Filter out zero/tiny intervals
+      .map(interval => 60 / interval)
+      .filter(bpm => bpm >= options.minBPM && bpm <= options.maxBPM && isFinite(bpm));
 
     if (bpms.length === 0) return 120;
 

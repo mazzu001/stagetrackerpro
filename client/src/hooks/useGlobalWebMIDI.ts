@@ -7,6 +7,7 @@ let globalSelectedInput: MIDIInput | null = null;
 let globalConnectionStatus = 'Disconnected';
 let globalDeviceName = '';
 let globalInputDeviceName = '';
+let globalIsInitializing = false; // Prevent multiple simultaneous initializations
 
 // Store last connected device info in localStorage for auto-reconnect
 const MIDI_DEVICE_STORAGE_KEY = 'lastConnectedMidiDevice';
@@ -157,6 +158,18 @@ const attemptAutoReconnect = async (): Promise<boolean> => {
 const initializeWebMIDI = async (): Promise<boolean> => {
   if (globalMidiAccess) return true;
   
+  // Prevent multiple simultaneous initialization attempts
+  if (globalIsInitializing) {
+    console.log('⚠️ MIDI initialization already in progress, waiting...');
+    // Wait for current initialization to complete
+    while (globalIsInitializing) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    return globalMidiAccess !== null;
+  }
+  
+  globalIsInitializing = true;
+  
   try {
     // Check if we're in a browser environment
     if (typeof window === 'undefined' || typeof navigator === 'undefined') {
@@ -196,6 +209,8 @@ const initializeWebMIDI = async (): Promise<boolean> => {
   } catch (error) {
     console.error('❌ Failed to initialize Web MIDI:', error);
     return false;
+  } finally {
+    globalIsInitializing = false; // Always clear the flag
   }
 };
 

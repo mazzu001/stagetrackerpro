@@ -162,86 +162,45 @@ const attemptAutoReconnect = async (): Promise<boolean> => {
   }
 };
 
-// Initialize Web MIDI access once - NO REPEATED CHECKING
+// Simple Web MIDI initialization - back to basics
 const initializeWebMIDI = async (): Promise<boolean> => {
   if (globalMidiAccess) return true;
   
-  // Prevent multiple simultaneous initialization attempts
-  if (globalIsInitializing) {
-    console.log('⚠️ MIDI initialization already in progress, waiting...');
-    // Wait for current initialization to complete
-    while (globalIsInitializing) {
-      await new Promise(resolve => setTimeout(resolve, 100));
-    }
-    return globalMidiAccess !== null;
-  }
-  
-  globalIsInitializing = true;
-  
   try {
-    // Check if we're in a browser environment
-    if (typeof window === 'undefined' || typeof navigator === 'undefined') {
-      console.log('⚠️ Not in browser environment, skipping Web MIDI initialization');
-      return false;
-    }
-    
     if (!navigator.requestMIDIAccess) {
       console.log('❌ Web MIDI API not supported in this browser');
       return false;
     }
     
-    console.log('🎵 Initializing global Web MIDI access...');
-    
-    // NO SYSEX - this causes aggressive hardware scanning and 25-second freezes!
-    // Simple MIDI access request like it was working before
+    console.log('🎵 Initializing Web MIDI access...');
     globalMidiAccess = await navigator.requestMIDIAccess();
     
-    console.log('🔍 MIDI Access initialized - devices found:', {
-      inputs: globalMidiAccess.inputs.size,
-      outputs: globalMidiAccess.outputs.size
-    });
+    console.log('✅ Web MIDI initialized successfully');
+    console.log(`🎵 Found ${globalMidiAccess.inputs.size} input devices and ${globalMidiAccess.outputs.size} output devices`);
     
-    // List all devices immediately
-    if (globalMidiAccess.inputs.size > 0) {
-      console.log('🔍 MIDI Inputs found:', Array.from(globalMidiAccess.inputs.values()).map(i => i.name));
-    }
-    if (globalMidiAccess.outputs.size > 0) {
-      console.log('🔍 MIDI Outputs found:', Array.from(globalMidiAccess.outputs.values()).map(o => o.name));
-    }
-    
-    // Minimal device change listener - no complex logic
+    // Simple state change listener
     globalMidiAccess.onstatechange = (event: any) => {
-      if (event.port) {
-        console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
-      }
+      console.log('🔄 MIDI device state changed:', event.port?.name, event.port?.state);
     };
-    
-    console.log('✅ Global Web MIDI access initialized');
-    
-    // Check for auto-reconnect ONCE only, no repeated attempts
-    attemptAutoReconnect();
     
     return true;
     
   } catch (error) {
     console.error('❌ Failed to initialize Web MIDI:', error);
     return false;
-  } finally {
-    globalIsInitializing = false; // Always clear the flag
   }
 };
 
-// Get available MIDI output devices - NO LOOPS, return array directly
+// Get available MIDI output devices
 const getAvailableOutputs = (): MIDIDevice[] => {
   if (!globalMidiAccess) {
-    console.log('🔍 No globalMidiAccess available for outputs');
     return [];
   }
   
   const outputs = Array.from(globalMidiAccess.outputs.values());
-  console.log(`🔍 getAvailableOutputs: ${outputs.length} devices found`);
+  console.log(`🎵 Available MIDI outputs: ${outputs.length}`);
+  outputs.forEach(output => console.log(`  - ${output.name} (${output.state})`));
   
-  // Return all output devices
   return outputs.map((output: MIDIOutput) => ({
     id: output.id,
     name: output.name || 'Unknown Device',
@@ -252,17 +211,16 @@ const getAvailableOutputs = (): MIDIDevice[] => {
   }));
 };
 
-// Get available MIDI input devices
+// Get available MIDI input devices  
 const getAvailableInputs = (): MIDIDevice[] => {
   if (!globalMidiAccess) {
-    console.log('🔍 No globalMidiAccess available for inputs');
     return [];
   }
   
   const inputs = Array.from(globalMidiAccess.inputs.values());
-  console.log(`🔍 getAvailableInputs: ${inputs.length} devices found`);
+  console.log(`🎵 Available MIDI inputs: ${inputs.length}`);
+  inputs.forEach(input => console.log(`  - ${input.name} (${input.state})`));
   
-  // Return all input devices
   return inputs.map((input: MIDIInput) => ({
     id: input.id,
     name: input.name || 'Unknown Device',

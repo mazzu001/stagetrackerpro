@@ -49,6 +49,14 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   const metronomeContextRef = useRef<AudioContext | null>(null);
   const clickTrackRef = useRef<ClickTrackGenerator | null>(null);
   const isMetronomePlayingRef = useRef<boolean>(false);
+  
+  // Song ref to avoid stale closures
+  const songRef = useRef<SongWithTracks | undefined>(song);
+
+  // Keep song ref updated
+  useEffect(() => {
+    songRef.current = song;
+  }, [song]);
 
   const stop = useCallback(() => {
     if (audioEngineRef.current) {
@@ -65,24 +73,29 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
 
   // BPM Detection Functions
   const detectBPM = useCallback(async (): Promise<BPMDetectionResult | null> => {
-    if (!song?.id || isBPMDetecting) {
-      console.log('🎯 Cannot detect BPM - no song ID or already detecting');
+    const currentSong = songRef.current;
+    if (!currentSong?.id || isBPMDetecting) {
+      console.log('🎯 Cannot detect BPM - no song ID or already detecting', { 
+        hasSong: !!currentSong, 
+        songId: currentSong?.id,
+        isBPMDetecting 
+      });
       return null;
     }
 
     setIsBPMDetecting(true);
-    console.log(`🎯 Starting BPM detection for "${song.title}" (ID: ${song.id})`);
+    console.log(`🎯 Starting BPM detection for "${currentSong.title}" (ID: ${currentSong.id})`);
 
     try {
       // Check if waveform data exists on the song
-      if (!song.waveformData || !song.waveformGenerated) {
+      if (!currentSong.waveformData || !currentSong.waveformGenerated) {
         console.log('🎯 No waveform data available for BPM detection');
-        console.log(`🎯 Song has ${song.tracks?.length || 0} tracks - waveform may not be generated yet`);
-        console.log('🎯 waveformGenerated:', song.waveformGenerated, 'waveformData exists:', !!song.waveformData);
+        console.log(`🎯 Song has ${currentSong.tracks?.length || 0} tracks - waveform may not be generated yet`);
+        console.log('🎯 waveformGenerated:', currentSong.waveformGenerated, 'waveformData exists:', !!currentSong.waveformData);
         return null;
       }
 
-      if (!song.duration) {
+      if (!currentSong.duration) {
         console.log('🎯 No duration available for BPM detection');
         return null;
       }
@@ -90,9 +103,9 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       // Parse waveform data (stored as JSON string)
       let waveformData: number[];
       try {
-        waveformData = typeof song.waveformData === 'string' 
-          ? JSON.parse(song.waveformData) 
-          : song.waveformData;
+        waveformData = typeof currentSong.waveformData === 'string' 
+          ? JSON.parse(currentSong.waveformData) 
+          : currentSong.waveformData;
       } catch (parseError) {
         console.log('🎯 Failed to parse waveform data:', parseError);
         return null;
@@ -103,9 +116,9 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         return null;
       }
 
-      console.log(`🎯 Found waveform data, length: ${waveformData.length}, duration: ${song.duration}s`);
+      console.log(`🎯 Found waveform data, length: ${waveformData.length}, duration: ${currentSong.duration}s`);
 
-      const result = await detectSongBPM(waveformData, song.duration, {
+      const result = await detectSongBPM(waveformData, currentSong.duration, {
         minBPM: 60,
         maxBPM: 200,
         analysisLength: 30 // Analyze first 30 seconds
@@ -115,13 +128,13 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         setDetectedBPM(result.bpm);
         setBpmConfidence(result.confidence);
         console.log(`🎯 BPM detected: ${result.bpm} (confidence: ${result.confidence.toFixed(2)})`);
+
+        // Notify parent component if callback provided
+        if (onBPMDetected) {
+          onBPMDetected(currentSong.id, result.bpm, result.confidence);
+        }
       } else {
         console.log('🎯 BPM detection failed - no result returned');
-      }
-
-      // Notify parent component if callback provided
-      if (onBPMDetected) {
-        onBPMDetected(song.id, result.bpm, result.confidence);
       }
 
       return result;

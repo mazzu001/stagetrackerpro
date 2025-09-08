@@ -168,30 +168,46 @@ export function UnifiedMIDIDeviceManager() {
   // Disconnect from a device
   const disconnectFromDevice = async (deviceId: string, deviceName: string) => {
     try {
-      // TODO: Add actual disconnect logic to global MIDI system
-      // For now, just update local state
+      // Use the global MIDI system to actually disconnect the device
+      const success = await globalMidi.disconnectDevice(deviceId);
       
-      setConnectedDevices(prev => {
-        const newArray = Array.from(prev).filter(id => id !== deviceId);
-        return new Set(newArray);
-      });
+      if (success) {
+        // Update local state to reflect disconnection
+        setConnectedDevices(prev => {
+          const newArray = Array.from(prev).filter(id => id !== deviceId);
+          return new Set(newArray);
+        });
+        
+        setAvailableDevices(prev => 
+          prev.map(d => d.id === deviceId ? { ...d, isConnected: false } : d)
+        );
+
+        addMessage({
+          timestamp: Date.now(),
+          data: [],
+          formatted: `Disconnected from: ${deviceName}`,
+          direction: 'out',
+          deviceName
+        });
+
+        toast({
+          title: "Device Disconnected",
+          description: `Successfully disconnected from ${deviceName}`,
+        });
+        
+        // Refresh device list to sync state
+        setTimeout(() => {
+          refreshDevices();
+        }, 500);
+        
+      } else {
+        toast({
+          title: "Disconnect Failed",
+          description: "Device may not be connected or already disconnected",
+          variant: "destructive",
+        });
+      }
       
-      setAvailableDevices(prev => 
-        prev.map(d => d.id === deviceId ? { ...d, isConnected: false } : d)
-      );
-
-      addMessage({
-        timestamp: Date.now(),
-        data: [],
-        formatted: `Disconnected from: ${deviceName}`,
-        direction: 'out',
-        deviceName
-      });
-
-      toast({
-        title: "Device Disconnected",
-        description: `Disconnected from ${deviceName}`,
-      });
     } catch (error) {
       console.error('Failed to disconnect device:', error);
       toast({

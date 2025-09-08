@@ -3,21 +3,25 @@ import { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 import type { SongWithTracks } from "@shared/schema";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { ClickTrackGenerator, type ClickTrackConfig, type MetronomeSound } from "@/lib/click-track-generator";
+import { detectSongBPM, type BPMDetectionResult } from "@/lib/bpm-detection";
 
 interface UseAudioEngineProps {
   song?: SongWithTracks;
   onDurationUpdated?: (songId: string, duration: number) => void;
+  onBPMDetected?: (songId: string, bpm: number, confidence: number) => void;
 }
 
 export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProps) {
   // Handle both old and new calling patterns for backwards compatibility
   let song: SongWithTracks | undefined;
   let onDurationUpdated: ((songId: string, duration: number) => void) | undefined;
+  let onBPMDetected: ((songId: string, bpm: number, confidence: number) => void) | undefined;
   
   if (songOrProps && 'song' in songOrProps) {
-    // New calling pattern: useAudioEngine({ song, onDurationUpdated })
+    // New calling pattern: useAudioEngine({ song, onDurationUpdated, onBPMDetected })
     song = songOrProps.song;
     onDurationUpdated = songOrProps.onDurationUpdated;
+    onBPMDetected = songOrProps.onBPMDetected;
   } else {
     // Old calling pattern: useAudioEngine(song)
     song = songOrProps as SongWithTracks | undefined;
@@ -32,6 +36,11 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   const [isMidiConnected, setIsMidiConnected] = useState(true);
   const [masterVolume, setMasterVolume] = useState(85);
   const [isLoadingTracks, setIsLoadingTracks] = useState(false);
+  
+  // BPM Detection state
+  const [detectedBPM, setDetectedBPM] = useState<number | null>(null);
+  const [bpmConfidence, setBpmConfidence] = useState<number>(0);
+  const [isBPMDetecting, setIsBPMDetecting] = useState(false);
 
   const audioEngineRef = useRef<StreamingAudioEngine | null>(null);
   const animationFrameRef = useRef<number>();
@@ -53,6 +62,62 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       isMetronomePlayingRef.current = false;
     }
   }, []);
+
+  // BPM Detection Functions
+  const detectBPM = useCallback(async (): Promise<BPMDetectionResult | null> => {
+    if (!song || !song.waveformData || !song.duration) {
+      console.log('🎯 Cannot detect BPM - missing song, waveform data, or duration');
+      return null;
+    }
+
+    setIsBPMDetecting(true);
+    console.log(`🎯 Starting BPM detection for "${song.title}"`);
+
+    try {
+      const result = await detectSongBPM(song.waveformData, song.duration, {
+        minBPM: 60,
+        maxBPM: 200,
+        analysisLength: 30 // Analyze first 30 seconds
+      });
+
+      setDetectedBPM(result.bpm);
+      setBpmConfidence(result.confidence);
+      console.log(`🎯 BPM detected: ${result.bpm} (confidence: ${result.confidence.toFixed(2)})`);
+
+      // Notify parent component if callback provided
+      if (onBPMDetected) {
+        onBPMDetected(song.id, result.bpm, result.confidence);
+      }
+
+      return result;
+    } catch (error) {
+      console.error('❌ BPM detection failed:', error);
+      setDetectedBPM(null);
+      setBpmConfidence(0);
+      return null;
+    } finally {
+      setIsBPMDetecting(false);
+    }
+  }, [song, onBPMDetected]);
+
+  // Auto-detect BPM when song loads (if not already set)
+  const autoDetectBPM = useCallback(async () => {
+    if (!song || song.bpm || !song.waveformData) {
+      return; // Skip if song has manual BPM or no waveform data
+    }
+
+    console.log(`🎯 Auto-detecting BPM for "${song.title}"`);
+    await detectBPM();
+  }, [song, detectBPM]);
+
+  // Get effective BPM (manual override or detected)
+  const getEffectiveBPM = useCallback((): number => {
+    // Priority: manual BPM > metronome BPM > detected BPM > fallback 120
+    if (song?.bpm) return song.bpm;
+    if (song?.metronomeBpm) return parseFloat(song.metronomeBpm) || 120;
+    if (detectedBPM) return detectedBPM;
+    return 120;
+  }, [song?.bpm, song?.metronomeBpm, detectedBPM]);
 
   // Initialize audio engine and metronome
   useEffect(() => {
@@ -187,6 +252,18 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, [song?.id, song?.tracks?.length]);
 
+  // Auto-detect BPM when song changes (if not already set)
+  useEffect(() => {
+    if (song && song.waveformData && !song.bpm && !isBPMDetecting) {
+      // Small delay to ensure streaming setup is complete
+      const timer = setTimeout(() => {
+        autoDetectBPM();
+      }, 1000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [song?.id, song?.waveformData, song?.bpm, autoDetectBPM, isBPMDetecting]);
+
   // Animation loop for real-time updates
 
   useEffect(() => {
@@ -258,7 +335,10 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       return;
     }
 
-    const bpmNumber = parseFloat(song.metronomeBpm) || 120;
+    // Use effective BPM (manual override, metronome setting, or detected BPM)
+    const bpmNumber = getEffectiveBPM();
+    const showBPMSource = song.bpm ? 'manual' : song.metronomeBpm ? 'metronome' : detectedBPM ? 'detected' : 'default';
+    console.log(`🎯 Using BPM: ${bpmNumber} (source: ${showBPMSource})`);
     const metronomeEnabled = song.metronomeOn === true; // Explicitly check for true
     const countIn = song.metronomeCountIn === true; // Explicitly check for true  
     const wholeSong = song.metronomeWholeSong === true; // Explicitly check for true
@@ -332,7 +412,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       }
       // If only count-in is enabled but we're not at start, do nothing
     }
-  }, [song, isPlaying, currentTime]);
+  }, [song, isPlaying, currentTime, getEffectiveBPM]);
 
   // Update metronome when playback state or song settings change
   useEffect(() => {
@@ -420,6 +500,12 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     isMidiConnected,
     masterVolume,
     isLoadingTracks,
+    // BPM Detection
+    detectedBPM,
+    bpmConfidence,
+    isBPMDetecting,
+    detectBPM,
+    getEffectiveBPM,
     play,
     pause,
     stop,

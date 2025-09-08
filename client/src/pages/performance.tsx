@@ -1678,15 +1678,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
             <TrackManager
               song={selectedSong as any}
               onSongUpdate={useCallback((updatedSong: any) => {
-                // Only update if the song actually changed to prevent infinite loops
-                if (selectedSong && selectedSong.id === updatedSong.id) {
-                  console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
-                  setSelectedSong(updatedSong);
-                  setAllSongs(prev => prev.map(song => 
-                    song.id === updatedSong.id ? updatedSong : song
-                  ));
-                }
-              }, [selectedSong])}
+                console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
+                setSelectedSong(updatedSong);
+                setAllSongs(prev => prev.map(song => 
+                  song.id === updatedSong.id ? updatedSong : song
+                ));
+              }, [])}
               onTrackVolumeChange={updateTrackVolume}
               onTrackMuteToggle={toggleTrackMute}
               onTrackSoloToggle={toggleTrackSolo}

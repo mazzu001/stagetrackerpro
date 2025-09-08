@@ -95,7 +95,7 @@ export default function TrackManager({
       LocalSongStorage.updateSong(user.email, song.id, updates);
       onSongUpdate?.({ ...song, ...updates });
     }
-  }, [song, user?.email, onSongUpdate]);
+  }, [song, user?.email]);
 
   useEffect(() => {
     updateSongMetronome({ metronomeBpm: bpm });
@@ -261,7 +261,7 @@ export default function TrackManager({
     } catch (error) {
       console.error('Failed to refetch tracks:', error);
     }
-  }, [song?.id, user?.email, onSongUpdate]);
+  }, [song?.id, user?.email]);
 
   const detectAndUpdateSongDuration = async (audioFile: File, songId: string) => {
     try {

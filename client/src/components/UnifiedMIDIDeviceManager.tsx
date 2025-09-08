@@ -62,42 +62,38 @@ export function UnifiedMIDIDeviceManager() {
       const outputs = globalMidi.getAvailableOutputs();
       const inputs = globalMidi.getAvailableInputs();
       
-      // Group by device name
+      // Group by BASE device name (strip IN/OUT suffixes)
       const deviceMap = new Map<string, SimpleDevice>();
       
-      // Process outputs
-      outputs.forEach(device => {
-        if (!forgottenDevices.has(device.name)) {
-          if (!deviceMap.has(device.name)) {
-            deviceMap.set(device.name, {
-              name: device.name,
+      // Process all devices and group by base name
+      [...outputs, ...inputs].forEach(device => {
+        // Remove IN/OUT suffixes to get base device name
+        const baseName = device.name.replace(/ (IN|OUT)$/i, '');
+        
+        if (!forgottenDevices.has(baseName)) {
+          if (!deviceMap.has(baseName)) {
+            deviceMap.set(baseName, {
+              name: baseName,
               manufacturer: device.manufacturer,
               state: device.state,
-              isConnected: globalMidi.isConnected && globalMidi.deviceName === device.name,
-              outputId: device.id
+              isConnected: globalMidi.isConnected && globalMidi.deviceName.replace(/ (IN|OUT)$/i, '') === baseName,
+              outputId: undefined,
+              inputId: undefined
             });
-          } else {
-            const existing = deviceMap.get(device.name)!;
-            existing.outputId = device.id;
-            if (device.state === 'connected') existing.state = 'connected';
           }
-        }
-      });
-      
-      // Process inputs
-      inputs.forEach(device => {
-        if (!forgottenDevices.has(device.name)) {
-          if (!deviceMap.has(device.name)) {
-            deviceMap.set(device.name, {
-              name: device.name,
-              manufacturer: device.manufacturer,
-              state: device.state,
-              isConnected: false, // Inputs don't show as "connected" in our simple model
-              inputId: device.id
-            });
+          
+          const existing = deviceMap.get(baseName)!;
+          
+          // Store the appropriate ID
+          if (device.type === 'output') {
+            existing.outputId = device.id;
           } else {
-            const existing = deviceMap.get(device.name)!;
             existing.inputId = device.id;
+          }
+          
+          // Update state if this port is available
+          if (device.state === 'connected') {
+            existing.state = 'connected';
           }
         }
       });
@@ -116,47 +112,54 @@ export function UnifiedMIDIDeviceManager() {
     }
   };
 
-  // Simple toggle: connect if disconnected, disconnect if connected
+  // Simple toggle: connect/disconnect both input AND output for the device
   const toggleDevice = async (deviceName: string, isCurrentlyConnected: boolean) => {
     try {
       if (isCurrentlyConnected) {
-        // Disconnect
+        // Disconnect everything
         await globalMidi.disconnectAllDevices();
         toast({
           title: "Disconnected",
           description: `Disconnected from ${deviceName}`,
         });
       } else {
-        // Connect - find the OUTPUT device for this name (strip IN/OUT suffixes if present)
-        const outputs = globalMidi.getAvailableOutputs();
-        const inputs = globalMidi.getAvailableInputs();
-        
-        // Clean device name (remove IN/OUT suffixes to find matching devices)
-        const cleanName = deviceName.replace(/ (IN|OUT)$/, '');
-        
-        // Look for exact match first, then try with OUT suffix, then clean name match
-        let targetDevice = outputs.find(d => d.name === deviceName) ||
-                          outputs.find(d => d.name === `${cleanName} OUT`) ||
-                          outputs.find(d => d.name.replace(/ (IN|OUT)$/, '') === cleanName);
-        
-        if (targetDevice) {
-          const success = await globalMidi.connectToDevice(targetDevice.id);
-          if (success) {
-            toast({
-              title: "Connected",
-              description: `Connected to ${targetDevice.name}`,
-            });
-          } else {
-            toast({
-              title: "Failed",
-              description: `Failed to connect to ${targetDevice.name}`,
-              variant: "destructive",
-            });
-          }
+        // Connect both input and output for this device
+        const device = devices.find(d => d.name === deviceName);
+        if (!device) {
+          toast({
+            title: "Failed",
+            description: `Device ${deviceName} not found`,
+            variant: "destructive",
+          });
+          return;
+        }
+
+        let outputConnected = false;
+        let inputConnected = false;
+
+        // Connect output if available
+        if (device.outputId) {
+          outputConnected = await globalMidi.connectToDevice(device.outputId);
+        }
+
+        // Connect input if available  
+        if (device.inputId) {
+          inputConnected = await globalMidi.connectToInputDevice(device.inputId);
+        }
+
+        if (outputConnected || inputConnected) {
+          const connections = [];
+          if (outputConnected) connections.push('output');
+          if (inputConnected) connections.push('input');
+          
+          toast({
+            title: "Connected",
+            description: `Connected ${deviceName} (${connections.join(' & ')})`,
+          });
         } else {
           toast({
             title: "Failed",
-            description: `No output device found for ${deviceName}`,
+            description: `Failed to connect to ${deviceName}`,
             variant: "destructive",
           });
         }
@@ -352,7 +355,7 @@ export function UnifiedMIDIDeviceManager() {
                         disabled={device.state !== 'connected'}
                         className={device.isConnected ? "bg-green-600 hover:bg-green-700" : ""}
                       >
-                        {device.isConnected ? 'ON' : 'OFF'}
+                        {device.isConnected ? 'Connected' : 'Connect'}
                       </Button>
                       {device.state !== 'connected' && (
                         <Button

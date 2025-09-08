@@ -8,10 +8,9 @@ import { useToast } from "@/hooks/use-toast";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { LocalSongStorage } from "@/lib/local-song-storage";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
-import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle, Activity, Zap, CheckCircle2 } from "lucide-react";
+import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
-import { ClickTrackGenerator, type ClickTrackConfig, type MetronomeSound } from "@/lib/click-track-generator";
 
 
 import type { Track, SongWithTracks } from "@shared/schema";
@@ -29,12 +28,6 @@ interface TrackManagerProps {
   isLoadingTracks?: boolean;
   onPlay?: () => void;
   onPause?: () => void;
-  // BPM Detection
-  detectedBPM?: number | null;
-  bpmConfidence?: number;
-  isBPMDetecting?: boolean;
-  detectBPM?: () => Promise<any>;
-  getEffectiveBPM?: () => number;
 }
 
 export default function TrackManager({ 
@@ -50,12 +43,6 @@ export default function TrackManager({
   isLoadingTracks = false,
   onPlay,
   onPause,
-  // BPM Detection
-  detectedBPM,
-  bpmConfidence,
-  isBPMDetecting = false,
-  detectBPM,
-  getEffectiveBPM
 }: TrackManagerProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
@@ -64,18 +51,6 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
-  // Metronome controls from song data
-  const [bpm, setBpm] = useState<string>(song?.metronomeBpm || "120.0000");
-  const [countIn, setCountIn] = useState(song?.metronomeCountIn || false);
-  const [metronomeOn, setMetronomeOn] = useState(song?.metronomeOn || false);
-  const [wholeSong, setWholeSong] = useState(song?.metronomeWholeSong || false);
-  const [metronomePan, setMetronomePan] = useState<'left' | 'right' | 'center'>(song?.metronomePan as 'left' | 'right' | 'center' || 'center');
-  const [soundType, setSoundType] = useState<MetronomeSound>('woodblock'); // Default to woodblock (nicer sound)
-  
-  // Metronome audio setup
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const clickTrackRef = useRef<ClickTrackGenerator | null>(null);
-  const isMetronomePlayingRef = useRef<boolean>(false);
   
   // Pitch and speed control removed
 
@@ -89,135 +64,6 @@ export default function TrackManager({
   // Get tracks for the current song
   const tracks = song?.tracks || [];
 
-  // Update song when metronome settings change
-  const updateSongMetronome = useCallback((updates: Partial<{ metronomeBpm: string; metronomeCountIn: boolean; metronomeOn: boolean; metronomeWholeSong: boolean; metronomePan: string }>) => {
-    if (song?.id && user?.email) {
-      LocalSongStorage.updateSong(user.email, song.id, updates);
-      onSongUpdate?.({ ...song, ...updates });
-    }
-  }, [user?.email]);
-
-  useEffect(() => {
-    updateSongMetronome({ metronomeBpm: bpm });
-  }, [bpm, updateSongMetronome]);
-
-  useEffect(() => {
-    updateSongMetronome({ metronomeCountIn: countIn });
-  }, [countIn, updateSongMetronome]);
-
-  useEffect(() => {
-    updateSongMetronome({ metronomeOn: metronomeOn });
-  }, [metronomeOn, updateSongMetronome]);
-
-  useEffect(() => {
-    updateSongMetronome({ metronomeWholeSong: wholeSong });
-  }, [wholeSong, updateSongMetronome]);
-
-  useEffect(() => {
-    updateSongMetronome({ metronomePan: metronomePan });
-  }, [metronomePan, updateSongMetronome]);
-
-  // Sync metronome state when song changes
-  useEffect(() => {
-    if (song) {
-      setBpm(song.metronomeBpm || "120.0000");
-      setCountIn(song.metronomeCountIn || false);
-      setMetronomeOn(song.metronomeOn || false);
-      setWholeSong(song.metronomeWholeSong || false);
-      setMetronomePan(song.metronomePan as 'left' | 'right' | 'center' || 'center');
-    }
-  }, [song?.id]);
-
-  // Initialize metronome audio system
-  useEffect(() => {
-    const initializeAudio = () => {
-      try {
-        if (!audioContextRef.current) {
-          audioContextRef.current = new AudioContext();
-          console.log('🎯 AudioContext initialized for metronome');
-        }
-        
-        if (!clickTrackRef.current && audioContextRef.current) {
-          clickTrackRef.current = new ClickTrackGenerator(audioContextRef.current);
-          console.log('🎯 ClickTrackGenerator initialized');
-        }
-      } catch (error) {
-        console.error('Failed to initialize metronome audio:', error);
-      }
-    };
-
-    initializeAudio();
-
-    return () => {
-      // Cleanup when component unmounts
-      if (clickTrackRef.current) {
-        clickTrackRef.current.destroy();
-        clickTrackRef.current = null;
-      }
-      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
-        audioContextRef.current.close();
-        audioContextRef.current = null;
-      }
-    };
-  }, []);
-
-  // Handle metronome control based on playback state and settings
-  const handleMetronome = useCallback(() => {
-    if (!clickTrackRef.current || !audioContextRef.current) {
-      console.warn('Metronome audio not initialized');
-      return;
-    }
-
-    const bpmNumber = parseFloat(bpm) || 120;
-    
-    const config: ClickTrackConfig = {
-      bpm: bpmNumber,
-      countInMeasures: 1, // 1 measure count-in
-      volume: 0.6,
-      enabled: metronomeOn,
-      accentDownbeat: true,
-      soundType: soundType,
-      pan: metronomePan
-    };
-
-    // If metronome is off, stop any playing metronome
-    if (!metronomeOn) {
-      clickTrackRef.current.stop();
-      isMetronomePlayingRef.current = false;
-      return;
-    }
-
-    // Handle different metronome modes
-    if (isPlaying && wholeSong) {
-      // Continuous metronome during song playback
-      if (!isMetronomePlayingRef.current) {
-        clickTrackRef.current.startContinuous(config);
-        isMetronomePlayingRef.current = true;
-        console.log('🎯 Started continuous metronome for whole song');
-      }
-    } else if (isPlaying && countIn) {
-      // Count-in only when starting playback
-      if (!isMetronomePlayingRef.current) {
-        clickTrackRef.current.startCountIn(config, () => {
-          // Count-in complete, stop metronome if not whole song mode
-          if (!wholeSong) {
-            isMetronomePlayingRef.current = false;
-          }
-        });
-        isMetronomePlayingRef.current = true;
-        console.log('🎯 Started count-in metronome');
-      }
-    } else if (!isPlaying) {
-      // Stop metronome when playback stops
-      clickTrackRef.current.stop();
-      isMetronomePlayingRef.current = false;
-    }
-  }, [metronomeOn, bpm, countIn, wholeSong, isPlaying, soundType]);
-
-  // Update metronome when relevant settings change
-  useEffect(() => {
-    handleMetronome();
-  }, [handleMetronome]);
 
   // Initialize local track values from song data
   useEffect(() => {
@@ -753,160 +599,6 @@ export default function TrackManager({
             )}
           </div>
 
-          {/* Metronome Controls */}
-          <div className="flex items-center gap-2 text-sm">
-            <span className="font-medium text-xs text-gray-700 dark:text-gray-300">🎵</span>
-            <select
-              value={soundType}
-              onChange={(e) => setSoundType(e.target.value as MetronomeSound)}
-              className="h-7 px-2 text-xs border rounded dark:bg-gray-700 dark:border-gray-600 bg-[#0d1216]"
-              title="Metronome sound type"
-            >
-              <option value="woodblock">Wood</option>
-              <option value="hihat">Hi-Hat</option>
-              <option value="square">Beep</option>
-              <option value="sine">Pure</option>
-              <option value="triangle">Warm</option>
-              <option value="kick">Kick</option>
-            </select>
-            <div className="flex items-center gap-1">
-              <Input 
-                type="number" 
-                placeholder="BPM" 
-                step="0.0001"
-                min="1"
-                value={bpm}
-                onChange={(e) => setBpm(e.target.value)}
-                className="w-20 h-7 text-xs px-2"
-              />
-              {/* BPM Detection */}
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  console.log('🔥 BPM Detection button CLICKED!', { 
-                    detectBPM: !!detectBPM, 
-                    songId: song?.id,
-                    disabled: isBPMDetecting || !detectBPM || !song?.id,
-                    isBPMDetecting,
-                    song: song?.title 
-                  });
-                  
-                  if (!detectBPM) {
-                    console.log('❌ detectBPM function not available');
-                    return;
-                  }
-                  
-                  if (!song?.id) {
-                    console.log('❌ No song selected');
-                    return;
-                  }
-                  
-                  if (isBPMDetecting) {
-                    console.log('❌ Already detecting BPM');
-                    return;
-                  }
-                  
-                  console.log('✅ Starting BPM detection...');
-                  detectBPM().then(result => {
-                    console.log('🎯 BPM Detection result:', result);
-                    if (result && result.bpm) {
-                      toast({
-                        title: "BPM Detected",
-                        description: `Detected ${result.bpm} BPM with ${Math.round(result.confidence * 100)}% confidence`,
-                      });
-                    } else {
-                      toast({
-                        title: "BPM Detection Failed", 
-                        description: "Could not detect BPM from audio tracks",
-                        variant: "destructive"
-                      });
-                    }
-                  }).catch(error => {
-                    console.error('🎯 BPM Detection error:', error);
-                    toast({
-                      title: "BPM Detection Error",
-                      description: "An error occurred during BPM detection",
-                      variant: "destructive"
-                    });
-                  });
-                }}
-                disabled={false}
-                variant="ghost"
-                size="sm"
-                className="h-7 w-7 p-0 transition-all border border-gray-300 hover:border-blue-500"
-                title={detectedBPM ? `Detected: ${detectedBPM}bpm (${Math.round((bpmConfidence || 0) * 100)}% confidence)` : "Auto-detect BPM from audio"}
-              >
-                {isBPMDetecting ? (
-                  <Activity className="h-3 w-3 animate-pulse text-blue-500" />
-                ) : detectedBPM ? (
-                  <CheckCircle2 className="h-3 w-3 text-green-500" />
-                ) : (
-                  <Zap className="h-3 w-3 text-gray-400" />
-                )}
-              </Button>
-              {detectedBPM && (
-                <span className="text-xs text-green-600 dark:text-green-400 font-mono">
-                  {detectedBPM}
-                </span>
-              )}
-            </div>
-            <Button
-              onClick={() => setCountIn(!countIn)}
-              variant="ghost"
-              size="sm"
-              className={`h-7 w-10 p-0 transition-all text-xs font-bold ${
-                countIn 
-                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
-                  : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
-              }`}
-              title={countIn ? "Turn count-in off" : "Turn count-in on"}
-            >
-              CI
-            </Button>
-            <Button
-              onClick={() => setWholeSong(!wholeSong)}
-              variant="ghost"
-              size="sm"
-              className={`h-7 w-10 p-0 transition-all text-xs font-bold ${
-                wholeSong 
-                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
-                  : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
-              }`}
-              title={wholeSong ? "Turn whole song off" : "Turn whole song on"}
-            >
-              WS
-            </Button>
-            <Button
-              onClick={() => setMetronomeOn(!metronomeOn)}
-              variant="ghost"
-              size="sm"
-              className={`h-7 w-12 p-0 transition-all text-xs font-bold ${
-                metronomeOn 
-                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
-                  : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
-              }`}
-              title={metronomeOn ? "Turn metronome off" : "Turn metronome on"}
-            >
-              {metronomeOn ? 'ON' : 'OFF'}
-            </Button>
-            <Button
-              onClick={() => {
-                const next = metronomePan === 'center' ? 'left' : metronomePan === 'left' ? 'right' : 'center';
-                setMetronomePan(next);
-              }}
-              variant="ghost"
-              size="sm"
-              className={`h-7 w-8 p-0 transition-all text-xs font-bold ${
-                metronomePan !== 'center'
-                  ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/50' 
-                  : 'bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-500'
-              }`}
-              title={`Channel: ${metronomePan.toUpperCase()} - Click to cycle (Center → Left → Right)`}
-            >
-              {metronomePan === 'left' ? 'L' : metronomePan === 'right' ? 'R' : 'C'}
-            </Button>
-          </div>
           
           {/* Main action buttons */}
           <div className="flex items-center gap-2">

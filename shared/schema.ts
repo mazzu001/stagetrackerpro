@@ -10,17 +10,10 @@ export const songs = sqliteTable("songs", {
   title: text("title").notNull(),
   artist: text("artist").notNull(),
   duration: integer("duration").notNull(), // in seconds
-  bpm: integer("bpm"),
   key: text("key"),
   lyrics: text("lyrics"), // lyrics with timestamps
   waveformData: text("waveform_data"), // JSON array of waveform amplitudes
   waveformGenerated: integer("waveform_generated", { mode: 'boolean' }).default(false),
-  // Metronome settings per song
-  metronomeBpm: text("metronome_bpm").default("120.0000"),
-  metronomeCountIn: integer("metronome_count_in", { mode: 'boolean' }).default(false),
-  metronomeOn: integer("metronome_on", { mode: 'boolean' }).default(false),
-  metronomeWholeSong: integer("metronome_whole_song", { mode: 'boolean' }).default(false),
-  metronomePan: text("metronome_pan").default("center"), // "left", "right", "center"
   createdAt: text("created_at").default(sql`(datetime('now'))`),
 });
 

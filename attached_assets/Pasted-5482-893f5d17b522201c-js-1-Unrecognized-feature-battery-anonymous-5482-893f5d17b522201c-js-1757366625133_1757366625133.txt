@@ -1,0 +1,457 @@
+5482-893f5d17b522201c.js:1  Unrecognized feature: 'battery'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+5482-893f5d17b522201c.js:1  Unrecognized feature: 'layout-animations'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+5482-893f5d17b522201c.js:1  Unrecognized feature: 'legacy-image-formats'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+5482-893f5d17b522201c.js:1  Unrecognized feature: 'navigation-override'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+5482-893f5d17b522201c.js:1  Unrecognized feature: 'oversized-images'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+5482-893f5d17b522201c.js:1  Unrecognized feature: 'publickey-credentials'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+5482-893f5d17b522201c.js:1  Unrecognized feature: 'unoptimized-images'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+5482-893f5d17b522201c.js:1  Unrecognized feature: 'unsized-media'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+5482-893f5d17b522201c.js:1  Unrecognized feature: 'pointer-lock'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+5482-893f5d17b522201c.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+5482-893f5d17b522201c.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+n @ main-6c500ef07f38147e.js:1
+u @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ main-6c500ef07f38147e.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+navigateTo @ 5482-893f5d17b522201c.js:1
+refresh @ 5482-893f5d17b522201c.js:1
+(anonymous) @ 5482-893f5d17b522201c.js:1
+(anonymous) @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:9
+onClick @ _app-bde315f04dc191f6.js:9
+(anonymous) @ _app-bde315f04dc191f6.js:14
+eB @ framework-fbe1e4d61270f14c.js:1
+eH @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+re @ framework-fbe1e4d61270f14c.js:1
+rt @ framework-fbe1e4d61270f14c.js:1
+(anonymous) @ framework-fbe1e4d61270f14c.js:1
+uT @ framework-fbe1e4d61270f14c.js:1
+eM @ framework-fbe1e4d61270f14c.js:1
+ru @ framework-fbe1e4d61270f14c.js:1
+tB @ framework-fbe1e4d61270f14c.js:1
+tD @ framework-fbe1e4d61270f14c.js:1
+n @ _app-bde315f04dc191f6.js:38
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1ar%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=3kCqYVlQ53TW' failed: 
+t @ Network.js:227
+setupWebSocket @ client:536
+(anonymous) @ client:531
+Network.js:227  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=3kCqYVlQ53TW' is invalid.
+    at new t (Network.js:227:18)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ Network.js:227
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+Console.js:61 No stored audio file references found
+Console.js:61 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+Console.js:61 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 Browser file system already initialized - auto-initializing
+Console.js:61 ✅ BrowserFileSystem database auto-initialized
+Console.js:61 Browser file system initialized successfully
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+fy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-simple.tsx:9
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+fy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-elements-test.tsx:9
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 🔄 Resetting processed timestamps - Song changed to: none
+Console.js:61 ⏹️ Resetting processed timestamps - Playback stopped
+Console.js:61 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+Console.js:61 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+Console.js:61 🎵 Web MIDI hook ready - will initialize lazily when needed
+Console.js:61 🎵 Setting up persistent Web MIDI event listener...
+Console.js:61 🔄 Global Web MIDI status: Disconnected - 
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+Console.js:61 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, hasLyrics: false}
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 📋 Loaded 0 songs from local storage (alphabetically sorted)
+Console.js:61 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+Console.js:61 🎵 Web MIDI hook ready - will initialize lazily when needed
+Console.js:61  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+Console.js:61 🔄 Refreshed MIDI devices: 0 outputs found

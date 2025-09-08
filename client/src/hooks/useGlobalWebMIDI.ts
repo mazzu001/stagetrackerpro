@@ -171,8 +171,8 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
     console.log('🎵 Initializing global Web MIDI access...');
     
-    // Add aggressive timeout to prevent hanging - 500ms max
-    const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
+    // NO SYSEX - this causes aggressive hardware scanning and 25-second freezes!
+    const midiAccessPromise = navigator.requestMIDIAccess();
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(() => reject(new Error('MIDI initialization timeout')), 500);
     });

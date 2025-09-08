@@ -88,21 +88,21 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     console.log(`🎯 Starting BPM detection for "${currentSong.title}" (ID: ${currentSong.id})`);
 
     try {
-      // Get waveform data from the waveform generator cache (same system as visualizer)
-      const waveformData = waveformGenerator.getCachedWaveform(currentSong.id);
-      if (!waveformData || waveformData.length === 0) {
-        console.log('🎯 No cached waveform data available for BPM detection');
-        console.log(`🎯 Song has ${currentSong.tracks?.length || 0} tracks - waveform may not be generated yet`);
-        console.log('🎯 Try playing the song first to generate waveform data');
-        return null;
-      }
-
       if (!currentSong.duration) {
         console.log('🎯 No duration available for BPM detection');
         return null;
       }
 
-      console.log(`🎯 Found cached waveform data, length: ${waveformData.length}, duration: ${currentSong.duration}s`);
+      // Generate fresh waveform from song tracks for BPM detection
+      console.log(`🎯 Generating fresh waveform for BPM detection from ${currentSong.tracks?.length || 0} tracks...`);
+      const waveformData = await waveformGenerator.generateWaveformFromSong(currentSong);
+      
+      if (!waveformData || waveformData.length === 0) {
+        console.log('🎯 Failed to generate waveform data for BPM detection');
+        return null;
+      }
+
+      console.log(`🎯 Generated waveform data, length: ${waveformData.length}, duration: ${currentSong.duration}s`);
 
       const result = await detectSongBPM(waveformData, currentSong.duration, {
         minBPM: 60,

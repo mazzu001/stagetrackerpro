@@ -4,6 +4,7 @@ import type { SongWithTracks } from "@shared/schema";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { ClickTrackGenerator, type ClickTrackConfig, type MetronomeSound } from "@/lib/click-track-generator";
 import { detectSongBPM, type BPMDetectionResult } from "@/lib/bpm-detection";
+import { waveformGenerator } from "@/lib/waveform-generator";
 
 interface UseAudioEngineProps {
   song?: SongWithTracks;
@@ -87,11 +88,12 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     console.log(`🎯 Starting BPM detection for "${currentSong.title}" (ID: ${currentSong.id})`);
 
     try {
-      // Check if waveform data exists on the song
-      if (!currentSong.waveformData || !currentSong.waveformGenerated) {
-        console.log('🎯 No waveform data available for BPM detection');
+      // Get waveform data from the waveform generator cache (same system as visualizer)
+      const waveformData = waveformGenerator.getCachedWaveform(currentSong.id);
+      if (!waveformData || waveformData.length === 0) {
+        console.log('🎯 No cached waveform data available for BPM detection');
         console.log(`🎯 Song has ${currentSong.tracks?.length || 0} tracks - waveform may not be generated yet`);
-        console.log('🎯 waveformGenerated:', currentSong.waveformGenerated, 'waveformData exists:', !!currentSong.waveformData);
+        console.log('🎯 Try playing the song first to generate waveform data');
         return null;
       }
 
@@ -100,23 +102,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         return null;
       }
 
-      // Parse waveform data (stored as JSON string)
-      let waveformData: number[];
-      try {
-        waveformData = typeof currentSong.waveformData === 'string' 
-          ? JSON.parse(currentSong.waveformData) 
-          : currentSong.waveformData;
-      } catch (parseError) {
-        console.log('🎯 Failed to parse waveform data:', parseError);
-        return null;
-      }
-
-      if (!waveformData || waveformData.length === 0) {
-        console.log('🎯 Parsed waveform data is empty');
-        return null;
-      }
-
-      console.log(`🎯 Found waveform data, length: ${waveformData.length}, duration: ${currentSong.duration}s`);
+      console.log(`🎯 Found cached waveform data, length: ${waveformData.length}, duration: ${currentSong.duration}s`);
 
       const result = await detectSongBPM(waveformData, currentSong.duration, {
         minBPM: 60,

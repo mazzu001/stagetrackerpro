@@ -411,6 +411,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     updateTrackSolo(trackId);
   }, [updateTrackSolo]);
 
+  // Handle song updates from TrackManager
+  const handleSongUpdate = useCallback((updatedSong: any) => {
+    console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
+    setSelectedSong(updatedSong);
+    setAllSongs(prev => prev.map(song => 
+      song.id === updatedSong.id ? updatedSong : song
+    ));
+  }, []);
 
   // Keyboard shortcuts
   useKeyboardShortcuts({
@@ -1677,13 +1685,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           {selectedSong && (
             <TrackManager
               song={selectedSong as any}
-              onSongUpdate={useCallback((updatedSong: any) => {
-                console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
-                setSelectedSong(updatedSong);
-                setAllSongs(prev => prev.map(song => 
-                  song.id === updatedSong.id ? updatedSong : song
-                ));
-              }, [])}
+              onSongUpdate={handleSongUpdate}
               onTrackVolumeChange={updateTrackVolume}
               onTrackMuteToggle={toggleTrackMute}
               onTrackSoloToggle={toggleTrackSolo}

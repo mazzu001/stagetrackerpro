@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { LocalSongStorage } from "@/lib/local-song-storage";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
-import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
+import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle, Activity, Zap, CheckCircle2 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
 import { ClickTrackGenerator, type ClickTrackConfig, type MetronomeSound } from "@/lib/click-track-generator";
@@ -29,6 +29,12 @@ interface TrackManagerProps {
   isLoadingTracks?: boolean;
   onPlay?: () => void;
   onPause?: () => void;
+  // BPM Detection
+  detectedBPM?: number | null;
+  bpmConfidence?: number;
+  isBPMDetecting?: boolean;
+  detectBPM?: () => Promise<void>;
+  getEffectiveBPM?: () => number;
 }
 
 export default function TrackManager({ 
@@ -43,7 +49,13 @@ export default function TrackManager({
   isPlaying = false,
   isLoadingTracks = false,
   onPlay,
-  onPause
+  onPause,
+  // BPM Detection
+  detectedBPM,
+  bpmConfidence,
+  isBPMDetecting = false,
+  detectBPM,
+  getEffectiveBPM
 }: TrackManagerProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
@@ -757,15 +769,39 @@ export default function TrackManager({
               <option value="triangle">Warm</option>
               <option value="kick">Kick</option>
             </select>
-            <Input 
-              type="number" 
-              placeholder="BPM" 
-              step="0.0001"
-              min="1"
-              value={bpm}
-              onChange={(e) => setBpm(e.target.value)}
-              className="w-24 h-7 text-xs px-2"
-            />
+            <div className="flex items-center gap-1">
+              <Input 
+                type="number" 
+                placeholder="BPM" 
+                step="0.0001"
+                min="1"
+                value={bpm}
+                onChange={(e) => setBpm(e.target.value)}
+                className="w-20 h-7 text-xs px-2"
+              />
+              {/* BPM Detection */}
+              <Button
+                onClick={() => detectBPM?.()}
+                disabled={isBPMDetecting || !detectBPM || !song?.id}
+                variant="ghost"
+                size="sm"
+                className="h-7 w-7 p-0 transition-all"
+                title={detectedBPM ? `Detected: ${detectedBPM}bpm (${Math.round((bpmConfidence || 0) * 100)}% confidence)` : "Auto-detect BPM from audio"}
+              >
+                {isBPMDetecting ? (
+                  <Activity className="h-3 w-3 animate-pulse text-blue-500" />
+                ) : detectedBPM ? (
+                  <CheckCircle2 className="h-3 w-3 text-green-500" />
+                ) : (
+                  <Zap className="h-3 w-3 text-gray-400" />
+                )}
+              </Button>
+              {detectedBPM && (
+                <span className="text-xs text-green-600 dark:text-green-400 font-mono">
+                  {detectedBPM}
+                </span>
+              )}
+            </div>
             <Button
               onClick={() => setCountIn(!countIn)}
               variant="ghost"

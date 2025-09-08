@@ -393,7 +393,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     // Pitch and speed control removed
     isAudioEngineOnline,
     masterStereoLevels,
-    audioLevels
+    audioLevels,
+    // BPM Detection
+    detectedBPM,
+    bpmConfidence,
+    isBPMDetecting,
+    detectBPM,
+    getEffectiveBPM
   } = audioEngine;
 
   // Create toggle functions for track manager compatibility
@@ -1688,6 +1694,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               isPlaying={isPlaying}
               isLoadingTracks={isLoadingTracks}
               audioLevels={audioLevels}
+              // BPM Detection
+              detectedBPM={detectedBPM}
+              bpmConfidence={bpmConfidence}
+              isBPMDetecting={isBPMDetecting}
+              detectBPM={detectBPM}
+              getEffectiveBPM={getEffectiveBPM}
               data-testid="track-manager"
             />
           )}

@@ -782,6 +782,7 @@ export default function TrackManager({
               {/* BPM Detection */}
               <Button
                 onClick={async () => {
+                  console.log('🔥 BPM Detection button CLICKED!', { detectBPM: !!detectBPM, songId: song?.id });
                   if (detectBPM && song?.id) {
                     try {
                       console.log('🎯 BPM Detection button clicked for song:', song.id);

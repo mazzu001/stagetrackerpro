@@ -1425,7 +1425,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-
   app.delete("/api/songs/:id", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;

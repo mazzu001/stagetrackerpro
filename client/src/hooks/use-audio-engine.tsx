@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 import type { SongWithTracks } from "@shared/schema";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
-import { LocalSongStorage } from "@/lib/local-song-storage";
 import { ClickTrackGenerator, type ClickTrackConfig, type MetronomeSound } from "@/lib/click-track-generator";
 import { detectSongBPM, type BPMDetectionResult } from "@/lib/bpm-detection";
 
@@ -75,16 +74,32 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     console.log(`🎯 Starting BPM detection for "${song.title}" (ID: ${song.id})`);
 
     try {
-      // Get waveform data from storage
-      const waveformData = await LocalSongStorage.getWaveform(song.id);
-      if (!waveformData || waveformData.length === 0) {
+      // Check if waveform data exists on the song
+      if (!song.waveformData || !song.waveformGenerated) {
         console.log('🎯 No waveform data available for BPM detection');
         console.log(`🎯 Song has ${song.tracks?.length || 0} tracks - waveform may not be generated yet`);
+        console.log('🎯 waveformGenerated:', song.waveformGenerated, 'waveformData exists:', !!song.waveformData);
         return null;
       }
 
       if (!song.duration) {
         console.log('🎯 No duration available for BPM detection');
+        return null;
+      }
+
+      // Parse waveform data (stored as JSON string)
+      let waveformData: number[];
+      try {
+        waveformData = typeof song.waveformData === 'string' 
+          ? JSON.parse(song.waveformData) 
+          : song.waveformData;
+      } catch (parseError) {
+        console.log('🎯 Failed to parse waveform data:', parseError);
+        return null;
+      }
+
+      if (!waveformData || waveformData.length === 0) {
+        console.log('🎯 Parsed waveform data is empty');
         return null;
       }
 

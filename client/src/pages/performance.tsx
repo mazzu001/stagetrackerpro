@@ -29,6 +29,7 @@ import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import type { SongWithTracks } from "@shared/schema";
 import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
 import { USBMidiManager } from "@/components/USBMidiManager";
+import { UnifiedMIDIDeviceManager } from "@/components/UnifiedMIDIDeviceManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
@@ -58,14 +59,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isBluetoothDevicesOpen, setIsBluetoothDevicesOpen] = useState(false);
+  const [isMIDIDevicesOpen, setIsMIDIDevicesOpen] = useState(false);
   const [footerMidiCommand, setFooterMidiCommand] = useState('');
   const [midiCommandSent, setMidiCommandSent] = useState(false);
   const [isMidiConnected, setIsMidiConnected] = useState(false);
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
-  const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
@@ -1102,17 +1102,17 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
 
           <div className="flex items-center gap-1 md:gap-2">
-            {/* Bluetooth Manager Button - Professional Users Only */}
+            {/* MIDI Device Manager Button - Professional Users Only */}
             {userType === 'professional' && (
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsBluetoothDevicesOpen(true)}
-                data-testid="button-bluetooth-manager"
+                onClick={() => setIsMIDIDevicesOpen(true)}
+                data-testid="button-midi-devices"
                 className="h-8 px-2 md:px-3"
               >
-                <Bluetooth className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                <span className="hidden sm:inline text-xs md:text-sm">Bluetooth</span>
+                <Music className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                <span className="hidden sm:inline text-xs md:text-sm">MIDI Devices</span>
               </Button>
             )}
 
@@ -1137,12 +1137,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   YouTube Tutorials
                 </DropdownMenuItem>
 
-                {userType === 'professional' && (
-                  <DropdownMenuItem onClick={() => setIsUSBMidiOpen(true)} data-testid="menuitem-usb-midi">
-                    <Usb className="h-4 w-4 mr-2" />
-                    USB MIDI
-                  </DropdownMenuItem>
-                )}
 
                 <DropdownMenuSeparator />
                 
@@ -1691,31 +1685,17 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           )}
         </DialogContent>
       </Dialog>
-      {/* Persistent Web MIDI Manager Dialog - Professional Users Only */}
-      {userType === 'professional' && isBluetoothDevicesOpen && (
-        <Dialog open={isBluetoothDevicesOpen} onOpenChange={setIsBluetoothDevicesOpen}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Persistent Web MIDI Devices</DialogTitle>
-              <p className="text-sm text-muted-foreground">
-                Connections persist even when this dialog is closed - perfect for live performance automation
-              </p>
-            </DialogHeader>
-            <PersistentWebMIDIManager />
-          </DialogContent>
-        </Dialog>
-      )}
-      {/* USB MIDI Manager Dialog - Professional Users Only */}
-      {userType === 'professional' && (
-        <Dialog open={isUSBMidiOpen} onOpenChange={setIsUSBMidiOpen}>
+      {/* Unified MIDI Device Manager Dialog - Professional Users Only */}
+      {userType === 'professional' && isMIDIDevicesOpen && (
+        <Dialog open={isMIDIDevicesOpen} onOpenChange={setIsMIDIDevicesOpen}>
           <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>USB MIDI Manager</DialogTitle>
+              <DialogTitle>MIDI Device Manager</DialogTitle>
               <p className="text-sm text-muted-foreground">
-                Connect and control USB MIDI devices using the Web MIDI API
+                Connect to multiple MIDI devices simultaneously (USB, Bluetooth, Network)
               </p>
             </DialogHeader>
-            <USBMidiManager />
+            <UnifiedMIDIDeviceManager />
           </DialogContent>
         </Dialog>
       )}

@@ -1,0 +1,425 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+BandMaestro:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+BandMaestro:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+BandMaestro:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-af7c6e189633e9a7.js:38 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-af7c6e189633e9a7.js:38 [LaunchDarkly] LaunchDarkly client initialized
+framework-088e45a76fcbc783.js:1  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Unrecognized feature: 'battery'.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Unrecognized feature: 'layout-animations'.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-088e45a76fcbc783.js:1
+framework-088e45a76fcbc783.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-088e45a76fcbc783.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'oversized-images'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'publickey-credentials'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'unoptimized-images'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'unsized-media'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+VM8 eruda.js:2  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=Y81j_7ap01ux' failed: 
+t @ VM8 eruda.js:2
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=Y81j_7ap01ux' failed: 
+t @ 8003ebbc-7c24-44f5-a…da/3.2.3/eruda.js:2
+VM8 eruda.js:2  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=Y81j_7ap01ux' is invalid.
+    at new t (VM8 eruda.js:2:218737)
+    at setupWebSocket (VM22 client:536:19)
+    at fallback (VM22 client:509:16)
+    at WebSocket.<anonymous> (VM22 client:555:7)
+VM8 eruda.js:2 No stored audio file references found
+VM8 eruda.js:2 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+VM8 eruda.js:2 🔍 Parsed values: Object
+VM8 eruda.js:2 🔍 No payment success detected in URL
+VM8 eruda.js:2 Browser file system already initialized - auto-initializing
+VM8 eruda.js:2 ✅ BrowserFileSystem database auto-initialized
+VM8 eruda.js:2 Browser file system initialized successfully
+VM140 stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+VM140 stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+BandMaestro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+VM8 eruda.js:2 📱 Edge browser detected - using compatibility mode
+VM8 eruda.js:2 📱 Edge browser detected - using compatibility mode
+VM8 eruda.js:2  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ VM8 eruda.js:2
+VM8 eruda.js:2 ✅ Cloud login successful: mnbtransport2024@gmail.com
+VM8 eruda.js:2 🔄 Resetting processed timestamps - Song changed to: none
+VM8 eruda.js:2 ⏹️ Resetting processed timestamps - Playback stopped
+VM8 eruda.js:2 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+VM8 eruda.js:2 🔍 Initial service isHost check: Object
+VM8 eruda.js:2 🎵 Web MIDI hook ready - will initialize lazily when needed
+VM8 eruda.js:2 🎵 Setting up persistent Web MIDI event listener...
+VM8 eruda.js:2 🔄 Global Web MIDI status: Disconnected - 
+VM8 eruda.js:2 🎵 Master output initialized
+VM8 eruda.js:2 🔍 Debug values: Object
+VM8 eruda.js:2 🎭 Broadcast host effect: Object
+VM8 eruda.js:2 🎭 Not broadcasting - not host
+VM8 eruda.js:2 📱 Edge browser detected - using compatibility mode
+VM8 eruda.js:2 📋 Loaded 0 songs from local storage (alphabetically sorted)
+VM8 eruda.js:2 🔍 Debug values: Object
+VM8 eruda.js:2 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=Y81j_7ap01ux' failed: 
+t @ Network.js:227
+setupWebSocket @ client:536
+(anonymous) @ client:531
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=Y81j_7ap01ux' failed: 
+t @ 8003ebbc-7c24-44f5-a…da/3.2.3/eruda.js:2
+setupWebSocket @ 8003ebbc-7c24-44f5-a…ev/@vite/client:536
+(anonymous) @ 8003ebbc-7c24-44f5-a…ev/@vite/client:531
+Network.js:227  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=Y81j_7ap01ux' is invalid.
+    at new t (Network.js:227:18)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ Network.js:227
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+Console.js:61 No stored audio file references found
+Console.js:61 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+Console.js:61 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 Browser file system already initialized - auto-initializing
+Console.js:61 ✅ BrowserFileSystem database auto-initialized
+Console.js:61 Browser file system initialized successfully
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+fy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-simple.tsx:9
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+fy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-elements-test.tsx:9
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+Console.js:61 ✅ Cloud login successful: professional@demo.com
+Console.js:61 🔄 Resetting processed timestamps - Song changed to: none
+Console.js:61 ⏹️ Resetting processed timestamps - Playback stopped
+Console.js:61 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+Console.js:61 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+Console.js:61 🎵 Web MIDI hook ready - will initialize lazily when needed
+Console.js:61 🎵 Setting up persistent Web MIDI event listener...
+Console.js:61 🔄 Global Web MIDI status: Disconnected - 
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+Console.js:61 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, hasLyrics: false}
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 📋 Loaded 0 songs from local storage (alphabetically sorted)
+Console.js:61 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+Console.js:61 🎵 Web MIDI hook ready - will initialize lazily when needed
+Console.js:61  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+Console.js:61 🔄 Refreshed MIDI devices: 0 outputs found
+Console.js:61 🎵 Web MIDI hook ready - will initialize lazily when needed
+Console.js:61  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+Console.js:61 🔄 Refreshed MIDI devices: 0 outputs found
+Console.js:61 🔄 Refreshed MIDI devices: 0 outputs found
+workspace_iframe.html?initialPath=%2F&id=%3Ar5k%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=Y81j_7ap01ux' failed: 
+t @ Network.js:227
+setupWebSocket @ client:536
+(anonymous) @ client:531
+Network.js:227  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=Y81j_7ap01ux' is invalid.
+    at new t (Network.js:227:18)
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+t @ Network.js:227
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+Console.js:61 No stored audio file references found
+Console.js:61 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+Console.js:61 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 Browser file system already initialized - auto-initializing
+Console.js:61 ✅ BrowserFileSystem database auto-initialized
+Console.js:61 Browser file system initialized successfully
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+fy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-simple.tsx:9
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+fy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-elements-test.tsx:9
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 🔄 Resetting processed timestamps - Song changed to: none
+Console.js:61 ⏹️ Resetting processed timestamps - Playback stopped
+Console.js:61 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+Console.js:61 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+Console.js:61 🎵 Web MIDI hook ready - will initialize lazily when needed
+Console.js:61 🎵 Setting up persistent Web MIDI event listener...
+Console.js:61 🔄 Global Web MIDI status: Disconnected - 
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+Console.js:61 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, hasLyrics: false}
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 📋 Loaded 0 songs from local storage (alphabetically sorted)
+Console.js:61 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+Console.js:61 🎵 Web MIDI hook ready - will initialize lazily when needed
+Console.js:61  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+Console.js:61 🔄 Refreshed MIDI devices: 0 outputs found
+Console.js:61 🔄 Refreshed MIDI devices: 0 outputs found
+Console.js:61 🎵 Web MIDI hook ready - will initialize lazily when needed
+Console.js:61 🎵 User requested device refresh - initializing MIDI now...
+Console.js:61 🎵 Initializing global Web MIDI access...
+Console.js:61  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+flushSync @ react-dom.development.js:26240
+flushSync$1 @ react-dom.development.js:29878
+dispatchDiscreteCustomEvent @ primitive.tsx:96
+handleSelect @ menu.tsx:628
+handleEvent @ primitive.tsx:10
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+Console.js:61  ❌ Failed to initialize Web MIDI: Error: MIDI initialization timeout
+    at useGlobalWebMIDI.ts:190:31
+Mt.forEach.n.<computed> @ Console.js:61
+initializeWebMIDI @ useGlobalWebMIDI.ts:210
+await in initializeWebMIDI
+(anonymous) @ useGlobalWebMIDI.ts:483
+(anonymous) @ USBMidiManager.tsx:72
+(anonymous) @ USBMidiManager.tsx:87
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+flushSync @ react-dom.development.js:26240
+flushSync$1 @ react-dom.development.js:29878
+dispatchDiscreteCustomEvent @ primitive.tsx:96
+handleSelect @ menu.tsx:628
+handleEvent @ primitive.tsx:10
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+Console.js:61 🎵 User requested device refresh - initializing MIDI now...
+Console.js:61 🎵 Initializing global Web MIDI access...
+Console.js:61 🎵 User requested device refresh - initializing MIDI now...
+Console.js:61 ⚠️ MIDI initialization already in progress, waiting...
+Console.js:61 🎵 User requested device refresh - initializing MIDI now...
+Console.js:61 ⚠️ MIDI initialization already in progress, waiting...
+Console.js:61  ❌ Failed to initialize Web MIDI: Error: MIDI initialization timeout
+    at useGlobalWebMIDI.ts:190:31
+Mt.forEach.n.<computed> @ Console.js:61
+initializeWebMIDI @ useGlobalWebMIDI.ts:210
+await in initializeWebMIDI
+(anonymous) @ useGlobalWebMIDI.ts:483
+(anonymous) @ USBMidiManager.tsx:72
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430

@@ -79,7 +79,7 @@ export function UnifiedMIDIDeviceManager() {
       
       const allDevices = [...outputs, ...inputs].map(device => ({
         ...device,
-        isConnected: connectedDevices.has(device.id)
+        isConnected: Array.from(connectedDevices).includes(device.id)
       }));
       
       setAvailableDevices(allDevices);
@@ -112,7 +112,7 @@ export function UnifiedMIDIDeviceManager() {
       }
 
       if (success) {
-        setConnectedDevices(prev => new Set([...prev, deviceId]));
+        setConnectedDevices(prev => new Set([...Array.from(prev), deviceId]));
         setAvailableDevices(prev => 
           prev.map(d => d.id === deviceId ? { ...d, isConnected: true } : d)
         );
@@ -149,9 +149,8 @@ export function UnifiedMIDIDeviceManager() {
   // Disconnect from a device
   const disconnectFromDevice = (deviceId: string, deviceName: string) => {
     setConnectedDevices(prev => {
-      const newSet = new Set(prev);
-      newSet.delete(deviceId);
-      return newSet;
+      const newArray = Array.from(prev).filter(id => id !== deviceId);
+      return new Set(newArray);
     });
     
     setAvailableDevices(prev => 
@@ -256,15 +255,15 @@ export function UnifiedMIDIDeviceManager() {
         {/* Connection Status & Controls */}
         <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
           <div className="flex items-center gap-3">
-            {connectedDevices.size > 0 ? (
+            {Array.from(connectedDevices).length > 0 ? (
               <CheckCircle2 className="w-5 h-5 text-green-500" />
             ) : (
               <AlertCircle className="w-5 h-5 text-yellow-500" />
             )}
             <div>
               <p className="font-medium">
-                {connectedDevices.size > 0 
-                  ? `${connectedDevices.size} Device${connectedDevices.size > 1 ? 's' : ''} Connected`
+                {Array.from(connectedDevices).length > 0 
+                  ? `${Array.from(connectedDevices).length} Device${Array.from(connectedDevices).length > 1 ? 's' : ''} Connected`
                   : 'No Connections'
                 }
               </p>

@@ -66,7 +66,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
-  const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);

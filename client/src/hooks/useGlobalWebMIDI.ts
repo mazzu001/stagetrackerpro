@@ -188,8 +188,8 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
     console.log('✅ Global Web MIDI access initialized');
     
-    // Check for auto-reconnect ONCE only, no repeated attempts
-    attemptAutoReconnect();
+    // Auto-reconnect is now manual - user must explicitly request it
+    // This prevents any blocking operations during MIDI initialization
     
     return true;
     
@@ -416,20 +416,8 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [inputDeviceName, setInputDeviceName] = useState(globalInputDeviceName);
   
   useEffect(() => {
-    // Defer MIDI initialization to prevent startup freeze
-    const deferredInit = () => {
-      // Give UI time to render first, then try MIDI
-      setTimeout(async () => {
-        try {
-          await initializeWebMIDI();
-        } catch (error) {
-          console.error('❌ Failed to initialize Web MIDI in useGlobalWebMIDI:', error);
-        }
-      }, 100); // Small delay to let UI render
-    };
-    
-    // Don't block the component mounting
-    deferredInit();
+    // NO automatic MIDI initialization - only when user needs it
+    console.log('🎵 Web MIDI hook ready - will initialize lazily when needed');
     
     // Listen for global connection changes
     const handleConnectionChange = (event: any) => {
@@ -464,6 +452,7 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   }, []);
   
   const refreshDevices = useCallback(async () => {
+    console.log('🎵 User requested device refresh - initializing MIDI now...');
     await initializeWebMIDI();
   }, []);
   

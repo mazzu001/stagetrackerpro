@@ -95,7 +95,7 @@ export default function TrackManager({
       LocalSongStorage.updateSong(user.email, song.id, updates);
       onSongUpdate?.({ ...song, ...updates });
     }
-  }, [song, user?.email]);
+  }, [user?.email]);
 
   useEffect(() => {
     updateSongMetronome({ metronomeBpm: bpm });
@@ -715,7 +715,7 @@ export default function TrackManager({
         setTimeout(() => refetchTracks(), 50);
       }
     }
-  }, [tracks, song?.id, user?.email, onTrackMuteToggle, refetchTracks]);
+  }, [tracks, song?.id, user?.email, onTrackMuteToggle]);
 
   // Solo toggle handler
   const handleSoloToggle = useCallback((trackId: string) => {
@@ -730,7 +730,7 @@ export default function TrackManager({
         setTimeout(() => refetchTracks(), 50);
       }
     }
-  }, [tracks, song?.id, user?.email, onTrackSoloToggle, refetchTracks]);
+  }, [tracks, song?.id, user?.email, onTrackSoloToggle]);
 
   // Cleanup timeouts on unmount
   useEffect(() => {

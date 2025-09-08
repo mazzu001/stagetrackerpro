@@ -26,7 +26,6 @@ export function useSimpleMIDI() {
 
   // Initialize MIDI API
   const initialize = useCallback(async (): Promise<boolean> => {
-    if (isInitialized) return true;
     if (!navigator.requestMIDIAccess) {
       console.log('Web MIDI API not supported');
       return false;
@@ -34,33 +33,49 @@ export function useSimpleMIDI() {
 
     setIsLoading(true);
     try {
-      console.log('🎵 Initializing MIDI...');
-      const access = await navigator.requestMIDIAccess();
+      console.log('🎵 Requesting MIDI access with permissions...');
+      
+      // Request MIDI access with sysex permissions for broader device support
+      const access = await navigator.requestMIDIAccess({ sysex: true });
       midiAccessRef.current = access;
       setIsInitialized(true);
+      
+      // Set up state change listener
+      access.onstatechange = (event) => {
+        console.log('🔄 MIDI device state changed:', event.port?.name, event.port?.state);
+        loadDevices(); // Reload devices when state changes
+      };
       
       // Load available devices
       loadDevices();
       
-      console.log('✅ MIDI initialized successfully');
+      console.log('✅ MIDI access granted successfully');
       return true;
     } catch (error) {
-      console.error('❌ MIDI initialization failed:', error);
+      console.error('❌ MIDI access denied or failed:', error);
+      console.log('💡 Try clicking "Refresh" to request MIDI permissions again');
       return false;
     } finally {
       setIsLoading(false);
     }
-  }, [isInitialized]);
+  }, []);
 
   // Load available MIDI devices
   const loadDevices = useCallback(() => {
     const access = midiAccessRef.current;
-    if (!access) return;
+    if (!access) {
+      console.log('❌ No MIDI access - call initialize() first');
+      return;
+    }
 
     const devices: MIDIDevice[] = [];
     
-    // Add output devices
+    console.log('🔍 Scanning for MIDI devices...');
+    console.log(`📊 MIDI Access Status: inputs=${access.inputs.size}, outputs=${access.outputs.size}`);
+    
+    // Add output devices with detailed logging
     access.outputs.forEach((output) => {
+      console.log(`🎯 Found output device: "${output.name}" (${output.manufacturer}) - ${output.state}`);
       devices.push({
         id: output.id,
         name: output.name || 'Unknown Device',
@@ -69,8 +84,20 @@ export function useSimpleMIDI() {
       });
     });
 
+    // Also check input devices for completeness
+    access.inputs.forEach((input) => {
+      console.log(`🎯 Found input device: "${input.name}" (${input.manufacturer}) - ${input.state}`);
+    });
+
     setAvailableDevices(devices);
-    console.log(`🔍 Found ${devices.length} MIDI devices`);
+    console.log(`🔍 Found ${devices.length} MIDI output devices total`);
+    
+    if (devices.length === 0) {
+      console.log('💡 No MIDI devices found. Make sure your MIDI device is:');
+      console.log('   1. Connected via USB or Bluetooth');  
+      console.log('   2. Powered on and recognized by your system');
+      console.log('   3. Not being used by another application');
+    }
   }, []);
 
   // Connect to a single MIDI device
@@ -217,14 +244,20 @@ export function useSimpleMIDI() {
     }
   }, [parseMIDICommand]);
 
-  // Refresh device list
+  // Refresh device list and re-request permissions if needed
   const refresh = useCallback(async () => {
-    if (!isInitialized) {
-      await initialize();
-    } else {
-      loadDevices();
+    console.log('🔄 Refreshing MIDI devices...');
+    
+    // Always re-initialize to handle permission changes
+    setIsInitialized(false);
+    midiAccessRef.current = null;
+    
+    const success = await initialize();
+    if (!success) {
+      console.log('💡 MIDI refresh failed - this might be a permissions issue');
+      console.log('🔐 Some browsers require you to click a button to grant MIDI access');
     }
-  }, [isInitialized, initialize, loadDevices]);
+  }, [initialize, loadDevices]);
 
   return {
     // State

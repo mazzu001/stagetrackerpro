@@ -132,13 +132,36 @@ export function SimpleMIDIManager() {
                 <div className="text-center py-8 text-muted-foreground">
                   <div className="flex items-center justify-center gap-2">
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Initializing MIDI...</span>
+                    <span>Requesting MIDI access...</span>
                   </div>
                 </div>
               ) : availableDevices.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  <p>No MIDI devices found</p>
-                  <p className="text-xs mt-1">Connect a device and click Refresh</p>
+                <div className="text-center py-8 text-muted-foreground space-y-3">
+                  <div>
+                    <Music className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                    <p className="font-medium">No MIDI devices found</p>
+                  </div>
+                  <div className="text-xs space-y-1">
+                    <p>• Make sure your MIDI device is connected and powered on</p>
+                    <p>• Check that no other app is using the device</p>
+                    <p>• Try clicking Refresh to request permissions again</p>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => {
+                      refresh();
+                      toast({
+                        title: "Requesting MIDI Access",
+                        description: "Please allow MIDI access when prompted by your browser",
+                      });
+                    }}
+                    className="mt-2"
+                    data-testid="button-request-midi-access"
+                  >
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Request MIDI Access
+                  </Button>
                 </div>
               ) : (
                 availableDevices.map((device) => (

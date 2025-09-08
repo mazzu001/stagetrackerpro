@@ -781,39 +781,60 @@ export default function TrackManager({
               />
               {/* BPM Detection */}
               <Button
-                onClick={async () => {
-                  console.log('🔥 BPM Detection button CLICKED!', { detectBPM: !!detectBPM, songId: song?.id });
-                  if (detectBPM && song?.id) {
-                    try {
-                      console.log('🎯 BPM Detection button clicked for song:', song.id);
-                      const result = await detectBPM();
-                      console.log('🎯 BPM Detection result:', result);
-                      if (result && result.bpm) {
-                        toast({
-                          title: "BPM Detected",
-                          description: `Detected ${result.bpm} BPM with ${Math.round(result.confidence * 100)}% confidence`,
-                        });
-                      } else {
-                        toast({
-                          title: "BPM Detection Failed", 
-                          description: "Could not detect BPM from audio tracks",
-                          variant: "destructive"
-                        });
-                      }
-                    } catch (error) {
-                      console.error('🎯 BPM Detection error:', error);
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('🔥 BPM Detection button CLICKED!', { 
+                    detectBPM: !!detectBPM, 
+                    songId: song?.id,
+                    disabled: isBPMDetecting || !detectBPM || !song?.id,
+                    isBPMDetecting,
+                    song: song?.title 
+                  });
+                  
+                  if (!detectBPM) {
+                    console.log('❌ detectBPM function not available');
+                    return;
+                  }
+                  
+                  if (!song?.id) {
+                    console.log('❌ No song selected');
+                    return;
+                  }
+                  
+                  if (isBPMDetecting) {
+                    console.log('❌ Already detecting BPM');
+                    return;
+                  }
+                  
+                  console.log('✅ Starting BPM detection...');
+                  detectBPM().then(result => {
+                    console.log('🎯 BPM Detection result:', result);
+                    if (result && result.bpm) {
                       toast({
-                        title: "BPM Detection Error",
-                        description: "An error occurred during BPM detection",
+                        title: "BPM Detected",
+                        description: `Detected ${result.bpm} BPM with ${Math.round(result.confidence * 100)}% confidence`,
+                      });
+                    } else {
+                      toast({
+                        title: "BPM Detection Failed", 
+                        description: "Could not detect BPM from audio tracks",
                         variant: "destructive"
                       });
                     }
-                  }
+                  }).catch(error => {
+                    console.error('🎯 BPM Detection error:', error);
+                    toast({
+                      title: "BPM Detection Error",
+                      description: "An error occurred during BPM detection",
+                      variant: "destructive"
+                    });
+                  });
                 }}
-                disabled={isBPMDetecting || !detectBPM || !song?.id}
+                disabled={false}
                 variant="ghost"
                 size="sm"
-                className="h-7 w-7 p-0 transition-all"
+                className="h-7 w-7 p-0 transition-all border border-gray-300 hover:border-blue-500"
                 title={detectedBPM ? `Detected: ${detectedBPM}bpm (${Math.round((bpmConfidence || 0) * 100)}% confidence)` : "Auto-detect BPM from audio"}
               >
                 {isBPMDetecting ? (

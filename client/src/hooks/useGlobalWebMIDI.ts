@@ -192,26 +192,22 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
     console.log('🎵 Initializing global Web MIDI access...');
     
-    // Request MIDI access with SysEx enabled for better device detection
-    const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('MIDI initialization timeout after 5 seconds')), 5000);
+    // NO SYSEX - this causes aggressive hardware scanning and 25-second freezes!
+    // Simple MIDI access request like it was working before
+    globalMidiAccess = await navigator.requestMIDIAccess();
+    
+    console.log('🔍 MIDI Access initialized - devices found:', {
+      inputs: globalMidiAccess.inputs.size,
+      outputs: globalMidiAccess.outputs.size
     });
     
-    globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;
-    
-    // Give devices time to be enumerated
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    console.log('🔍 MIDI Access State:', {
-      hasInputs: globalMidiAccess.inputs.size,
-      hasOutputs: globalMidiAccess.outputs.size,
-      sysexEnabled: globalMidiAccess.sysexEnabled
-    });
-    
-    // List all detected devices for debugging
-    console.log('🔍 All MIDI inputs:', Array.from(globalMidiAccess.inputs.values()).map(i => ({ name: i.name, state: i.state, connection: i.connection })));
-    console.log('🔍 All MIDI outputs:', Array.from(globalMidiAccess.outputs.values()).map(o => ({ name: o.name, state: o.state, connection: o.connection })));
+    // List all devices immediately
+    if (globalMidiAccess.inputs.size > 0) {
+      console.log('🔍 MIDI Inputs found:', Array.from(globalMidiAccess.inputs.values()).map(i => i.name));
+    }
+    if (globalMidiAccess.outputs.size > 0) {
+      console.log('🔍 MIDI Outputs found:', Array.from(globalMidiAccess.outputs.values()).map(o => o.name));
+    }
     
     // Minimal device change listener - no complex logic
     globalMidiAccess.onstatechange = (event: any) => {
@@ -243,9 +239,9 @@ const getAvailableOutputs = (): MIDIDevice[] => {
   }
   
   const outputs = Array.from(globalMidiAccess.outputs.values());
-  console.log(`🔍 Found ${outputs.length} MIDI output devices:`, outputs.map(o => `${o.name} (${o.state})`));
+  console.log(`🔍 getAvailableOutputs: ${outputs.length} devices found`);
   
-  // Return ALL devices, regardless of state - user might need to connect them
+  // Return all output devices
   return outputs.map((output: MIDIOutput) => ({
     id: output.id,
     name: output.name || 'Unknown Device',
@@ -264,9 +260,9 @@ const getAvailableInputs = (): MIDIDevice[] => {
   }
   
   const inputs = Array.from(globalMidiAccess.inputs.values());
-  console.log(`🔍 Found ${inputs.length} MIDI input devices:`, inputs.map(i => `${i.name} (${i.state})`));
+  console.log(`🔍 getAvailableInputs: ${inputs.length} devices found`);
   
-  // Return ALL devices, regardless of state - user might need to connect them
+  // Return all input devices
   return inputs.map((input: MIDIInput) => ({
     id: input.id,
     name: input.name || 'Unknown Device',

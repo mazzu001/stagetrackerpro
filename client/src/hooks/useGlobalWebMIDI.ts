@@ -200,11 +200,18 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
     globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;
     
+    // Give devices time to be enumerated
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
     console.log('🔍 MIDI Access State:', {
       hasInputs: globalMidiAccess.inputs.size,
       hasOutputs: globalMidiAccess.outputs.size,
       sysexEnabled: globalMidiAccess.sysexEnabled
     });
+    
+    // List all detected devices for debugging
+    console.log('🔍 All MIDI inputs:', Array.from(globalMidiAccess.inputs.values()).map(i => ({ name: i.name, state: i.state, connection: i.connection })));
+    console.log('🔍 All MIDI outputs:', Array.from(globalMidiAccess.outputs.values()).map(o => ({ name: o.name, state: o.state, connection: o.connection })));
     
     // Minimal device change listener - no complex logic
     globalMidiAccess.onstatechange = (event: any) => {
@@ -236,8 +243,9 @@ const getAvailableOutputs = (): MIDIDevice[] => {
   }
   
   const outputs = Array.from(globalMidiAccess.outputs.values());
-  console.log(`🔍 Found ${outputs.length} MIDI output devices:`, outputs.map(o => o.name));
+  console.log(`🔍 Found ${outputs.length} MIDI output devices:`, outputs.map(o => `${o.name} (${o.state})`));
   
+  // Return ALL devices, regardless of state - user might need to connect them
   return outputs.map((output: MIDIOutput) => ({
     id: output.id,
     name: output.name || 'Unknown Device',
@@ -256,8 +264,9 @@ const getAvailableInputs = (): MIDIDevice[] => {
   }
   
   const inputs = Array.from(globalMidiAccess.inputs.values());
-  console.log(`🔍 Found ${inputs.length} MIDI input devices:`, inputs.map(i => i.name));
+  console.log(`🔍 Found ${inputs.length} MIDI input devices:`, inputs.map(i => `${i.name} (${i.state})`));
   
+  // Return ALL devices, regardless of state - user might need to connect them
   return inputs.map((input: MIDIInput) => ({
     id: input.id,
     name: input.name || 'Unknown Device',

@@ -62,6 +62,10 @@ export function UnifiedMIDIDeviceManager() {
       const outputs = globalMidi.getAvailableOutputs();
       const inputs = globalMidi.getAvailableInputs();
       
+      console.log('🔍 Refreshing devices - outputs:', outputs.length, 'inputs:', inputs.length);
+      console.log('🔍 Output devices:', outputs);
+      console.log('🔍 Input devices:', inputs);
+      
       // Group by BASE device name (strip IN/OUT suffixes)
       const deviceMap = new Map<string, SimpleDevice>();
       

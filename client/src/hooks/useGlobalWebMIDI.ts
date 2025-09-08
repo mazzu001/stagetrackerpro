@@ -225,10 +225,15 @@ const initializeWebMIDI = async (): Promise<boolean> => {
 
 // Get available MIDI output devices - NO LOOPS, return array directly
 const getAvailableOutputs = (): MIDIDevice[] => {
-  if (!globalMidiAccess) return [];
+  if (!globalMidiAccess) {
+    console.log('🔍 No globalMidiAccess available for outputs');
+    return [];
+  }
   
-  // Convert to array without loops
-  return Array.from(globalMidiAccess.outputs.values()).map((output: MIDIOutput) => ({
+  const outputs = Array.from(globalMidiAccess.outputs.values());
+  console.log(`🔍 Found ${outputs.length} MIDI output devices:`, outputs.map(o => o.name));
+  
+  return outputs.map((output: MIDIOutput) => ({
     id: output.id,
     name: output.name || 'Unknown Device',
     manufacturer: output.manufacturer || 'Unknown',
@@ -240,9 +245,15 @@ const getAvailableOutputs = (): MIDIDevice[] => {
 
 // Get available MIDI input devices
 const getAvailableInputs = (): MIDIDevice[] => {
-  if (!globalMidiAccess) return [];
+  if (!globalMidiAccess) {
+    console.log('🔍 No globalMidiAccess available for inputs');
+    return [];
+  }
   
-  return Array.from(globalMidiAccess.inputs.values()).map((input: MIDIInput) => ({
+  const inputs = Array.from(globalMidiAccess.inputs.values());
+  console.log(`🔍 Found ${inputs.length} MIDI input devices:`, inputs.map(i => i.name));
+  
+  return inputs.map((input: MIDIInput) => ({
     id: input.id,
     name: input.name || 'Unknown Device',
     manufacturer: input.manufacturer || 'Unknown',

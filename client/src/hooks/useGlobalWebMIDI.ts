@@ -316,8 +316,9 @@ const getAvailableInputs = (): MIDIDevice[] => {
 // Connect to a specific device
 const connectToDevice = async (deviceId: string): Promise<boolean> => {
   if (!globalMidiAccess) {
-    const initialized = await initializeWebMIDI();
-    if (!initialized) return false;
+    // Try to initialize but don't block - return false if not ready
+    initializeWebMIDI().catch(() => {});
+    return false;
   }
   
   const output = globalMidiAccess!.outputs.get(deviceId);
@@ -428,8 +429,9 @@ const handleIncomingMIDI = (event: MIDIMessageEvent) => {
 // Connect to input device
 const connectToInputDevice = async (deviceId: string): Promise<boolean> => {
   if (!globalMidiAccess) {
-    const initialized = await initializeWebMIDI();
-    if (!initialized) return false;
+    // Try to initialize but don't block - return false if not ready
+    initializeWebMIDI().catch(() => {});
+    return false;
   }
   
   const input = globalMidiAccess!.inputs.get(deviceId);
@@ -535,12 +537,11 @@ const connectToMultipleDevices = async (deviceIds: string[], setLoadingState?: (
   setLoadingState?.(true, 'Please wait - Connecting to MIDI devices...', progress);
   
   if (!globalMidiAccess) {
-    setLoadingState?.(true, 'Please wait - Initializing MIDI system...', progress);
-    const initialized = await initializeWebMIDI();
-    if (!initialized) {
-      setLoadingState?.(false, '', []);
-      return { connected: [], failed: deviceIds };
-    }
+    setLoadingState?.(true, 'MIDI system not ready - please try again...', progress);
+    // Don't await - just try to initialize in background
+    initializeWebMIDI().catch(() => {});
+    setLoadingState?.(false, '', []);
+    return { connected: [], failed: deviceIds };
   }
   
   console.log('🔄 Connecting to multiple devices...', deviceIds);
@@ -724,17 +725,10 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [connectionProgress, setConnectionProgress] = useState<Array<{device: string, status: 'pending' | 'connecting' | 'connected' | 'failed'}>>([]);
   
   useEffect(() => {
-    // Initialize Web MIDI asynchronously to prevent blocking
-    const initAsync = async () => {
-      try {
-        await initializeWebMIDI();
-      } catch (error) {
-        console.error('❌ Failed to initialize Web MIDI in useGlobalWebMIDI:', error);
-      }
-    };
-    
-    // Don't block the component mounting
-    initAsync();
+    // Initialize Web MIDI in background - completely non-blocking
+    initializeWebMIDI().catch(error => {
+      console.log('🔍 MIDI scan completed (background initialization)');
+    });
     
     // Listen for global connection changes
     const handleConnectionChange = (event: any) => {

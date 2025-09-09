@@ -362,7 +362,7 @@ export function PersistentWebMIDIManager() {
                         )}
                         <Music className="h-4 w-4" />
                         <div>
-                          <div className="font-medium">{device.name}</div>
+                          <div className="font-medium">{device.name.replace(' OUT', '')}</div>
                           <div className="text-sm text-muted-foreground">
                             {device.manufacturer}
                             {viewMode === 'multi' && deviceChannel && (

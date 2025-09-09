@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { FolderOpen, Check, X, FileAudio } from "lucide-react";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
@@ -172,6 +172,9 @@ export function FileReconnectionDialog({
             <FileAudio className="w-5 h-5 text-primary" />
             <span>Reconnect Audio Files</span>
           </DialogTitle>
+          <DialogDescription>
+            Reconnect missing audio files to your tracks
+          </DialogDescription>
         </DialogHeader>
         
         <div className="space-y-4">

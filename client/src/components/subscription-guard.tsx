@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Crown, Music, Star, Check } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -34,6 +34,9 @@ export function SubscriptionGuard({ songCount, onUpgrade }: SubscriptionGuardPro
             <Crown className="w-6 h-6 mr-2 text-primary" />
             Upgrade to Music Performance Pro
           </DialogTitle>
+          <DialogDescription>
+            Unlock unlimited songs and advanced features for professional performance
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">

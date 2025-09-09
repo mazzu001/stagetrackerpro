@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -118,6 +118,9 @@ export function TrackFileUploader({ open, onOpenChange, tracks, onUploadComplete
             <FileAudio className="w-5 h-5" />
             <span>Upload Audio Files</span>
           </DialogTitle>
+          <DialogDescription>
+            Upload audio files for tracks that are missing audio data
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">

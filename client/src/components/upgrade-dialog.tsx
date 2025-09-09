@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Crown, Check, Music } from 'lucide-react';
@@ -25,7 +25,9 @@ export function UpgradeDialog({
             <Crown className="w-8 h-8 text-white" />
           </div>
           <DialogTitle className="text-2xl text-center">{title}</DialogTitle>
-          <p className="text-gray-600 text-center">{description}</p>
+          <DialogDescription className="text-gray-600 text-center">
+            {description}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="grid md:grid-cols-2 gap-6 my-6">

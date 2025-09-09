@@ -372,6 +372,9 @@ export function PersistentWebMIDIManager() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
+                        <Badge variant={device.state === 'connected' ? 'default' : 'secondary'}>
+                          {device.state === 'connected' ? 'Available' : device.state}
+                        </Badge>
                         {viewMode === 'single' ? (
                           <Button
                             size="sm"

@@ -795,7 +795,8 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   }, []);
   
   const connectToInputDeviceCallback = useCallback(async (deviceId: string) => {
-    return await connectToInputDevice(deviceId);
+    // Don't await - return the promise directly for non-blocking operation
+    return connectToInputDevice(deviceId);
   }, []);
   
   // NEW: Multi-device callbacks with loading state support
@@ -810,19 +811,23 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
       setConnectionProgress(progress);
     };
     
-    return await connectToMultipleDevices(deviceIds, setLoadingState);
+    // Don't await - return the promise directly for non-blocking operation
+    return connectToMultipleDevices(deviceIds, setLoadingState);
   }, []);
   
   const disconnectDeviceCallback = useCallback(async (deviceId: string) => {
-    return await disconnectDevice(deviceId);
+    // Don't await - return the promise directly for non-blocking operation
+    return disconnectDevice(deviceId);
   }, []);
   
   const sendCommandToAllCallback = useCallback(async (command: string) => {
-    return await sendCommandToAll(command);
+    // Don't await - return the promise directly for non-blocking operation
+    return sendCommandToAll(command);
   }, []);
   
   const sendCommandToDeviceCallback = useCallback(async (command: string, deviceId: string) => {
-    return await sendCommandToDevice(command, deviceId);
+    // Don't await - return the promise directly for non-blocking operation
+    return sendCommandToDevice(command, deviceId);
   }, []);
   
   const isDeviceConnectedCallback = useCallback((deviceId: string) => {

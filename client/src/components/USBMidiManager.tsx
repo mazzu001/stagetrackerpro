@@ -99,15 +99,26 @@ export function USBMidiManager() {
     }
 
     try {
-      const success = await globalConnectToDevice(selectedOutputId);
-      if (success) {
-        toast({
-          title: "MIDI Connected",
-          description: `Connected to ${globalDeviceName}`,
+      // Don't await - handle connection in background
+      globalConnectToDevice(selectedOutputId)
+        .then((success) => {
+          if (success) {
+            toast({
+              title: "MIDI Connected",
+              description: `Connected to ${globalDeviceName}`,
+            });
+          } else {
+            throw new Error('Connection failed');
+          }
+        })
+        .catch((error) => {
+          console.error('Connection failed:', error);
+          toast({
+            title: "Connection Failed",
+            description: "Could not connect to selected MIDI device",
+            variant: "destructive",
+          });
         });
-      } else {
-        throw new Error('Connection failed');
-      }
     } catch (error) {
       console.error('Connection failed:', error);
       toast({

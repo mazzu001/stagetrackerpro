@@ -125,26 +125,37 @@ export function PersistentWebMIDIManager() {
     }
 
     try {
-      const success = await globalMidi.sendCommand(testMessage);
-      if (success) {
-        setLastSentMessage(testMessage);
-        
-        const message = `📤 ${testMessage} (sent successfully)`;
-        setMidiMessages(prev => [message, ...prev.slice(0, 9)]);
-        
-        console.log('✅ MIDI sent successfully:', testMessage);
-        
-        toast({
-          title: "MIDI Sent",
-          description: testMessage,
+      // Don't await - handle MIDI sending in background
+      globalMidi.sendCommand(testMessage)
+        .then((success) => {
+          if (success) {
+            setLastSentMessage(testMessage);
+            
+            const message = `📤 ${testMessage} (sent successfully)`;
+            setMidiMessages(prev => [message, ...prev.slice(0, 9)]);
+            
+            console.log('✅ MIDI sent successfully:', testMessage);
+            
+            toast({
+              title: "MIDI Sent",
+              description: testMessage,
+            });
+          } else {
+            toast({
+              title: "Send Failed",
+              description: "Failed to send MIDI command",
+              variant: "destructive",
+            });
+          }
+        })
+        .catch((error) => {
+          console.error('❌ Failed to send MIDI:', error);
+          toast({
+            title: "Send Failed",
+            description: "Failed to send MIDI command",
+            variant: "destructive",
+          });
         });
-      } else {
-        toast({
-          title: "Send Failed",
-          description: "Failed to send MIDI command",
-          variant: "destructive",
-        });
-      }
     } catch (error) {
       console.error('❌ Failed to send MIDI:', error);
       toast({
@@ -323,12 +334,23 @@ export function PersistentWebMIDIManager() {
                     size="sm"
                     onClick={async () => {
                       if (selectedDevices.length > 0) {
-                        const result = await globalMidi.connectToMultipleDevices(selectedDevices);
-                        toast({
-                          title: "Multi-Device Connection",
-                          description: `Connected to ${result.connected.length} devices. ${result.failed.length} failed.`,
-                        });
-                        setSelectedDevices([]);
+                        // Don't await - handle connection in background
+                        globalMidi.connectToMultipleDevices(selectedDevices)
+                          .then((result) => {
+                            toast({
+                              title: "Multi-Device Connection",
+                              description: `Connected to ${result.connected.length} devices. ${result.failed.length} failed.`,
+                            });
+                            setSelectedDevices([]);
+                          })
+                          .catch((error) => {
+                            console.error('❌ Multi-device connection failed:', error);
+                            toast({
+                              title: "Connection Failed", 
+                              description: "Failed to connect to selected devices",
+                              variant: "destructive",
+                            });
+                          });
                       }
                     }}
                     disabled={selectedDevices.length === 0 || globalMidi.isLoading}
@@ -400,17 +422,39 @@ export function PersistentWebMIDIManager() {
                             size="sm"
                             onClick={async () => {
                               if (isConnectedMulti) {
-                                await globalMidi.disconnectDevice(device.id);
-                                toast({
-                                  title: "Device Disconnected",
-                                  description: `${device.name} disconnected`,
-                                });
+                                // Don't await - handle disconnection in background
+                                globalMidi.disconnectDevice(device.id)
+                                  .then(() => {
+                                    toast({
+                                      title: "Device Disconnected",
+                                      description: `${device.name} disconnected`,
+                                    });
+                                  })
+                                  .catch((error) => {
+                                    console.error('❌ Disconnect failed:', error);
+                                    toast({
+                                      title: "Disconnect Failed",
+                                      description: `Failed to disconnect ${device.name}`,
+                                      variant: "destructive",
+                                    });
+                                  });
                               } else {
-                                const result = await globalMidi.connectToMultipleDevices([device.id]);
-                                toast({
-                                  title: "Device Connection",
-                                  description: result.connected.length > 0 ? `${device.name} connected` : `Failed to connect to ${device.name}`,
-                                });
+                                // Don't await - handle connection in background
+                                globalMidi.connectToMultipleDevices([device.id])
+                                  .then((result) => {
+                                    toast({
+                                      title: "Device Connection",
+                                      description: result.connected.length > 0 ? `${device.name} connected` : `Failed to connect to ${device.name}`,
+                                    });
+                                  })
+                                  .catch((error) => {
+                                    console.error('❌ Connection failed:', error);
+                                    toast({
+                                      title: "Connection Failed",
+                                      description: `Failed to connect to ${device.name}`,
+                                      variant: "destructive",
+                                    });
+                                  });
                               }
                             }}
                             disabled={device.state !== 'connected' || globalMidi.isLoading}

@@ -21,14 +21,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Usb, Volume2, Download, Upload, FolderOpen, Cast } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Volume2, Download, Upload, FolderOpen, Cast } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import type { SongWithTracks } from "@shared/schema";
 import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
-import { USBMidiManager } from "@/components/USBMidiManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
@@ -65,7 +64,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
-  const [isUSBMidiOpen, setIsUSBMidiOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
@@ -1137,12 +1135,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   YouTube Tutorials
                 </DropdownMenuItem>
 
-                {userType === 'professional' && (
-                  <DropdownMenuItem onClick={() => setIsUSBMidiOpen(true)} data-testid="menuitem-usb-midi">
-                    <Usb className="h-4 w-4 mr-2" />
-                    USB MIDI
-                  </DropdownMenuItem>
-                )}
 
                 <DropdownMenuSeparator />
                 
@@ -1702,20 +1694,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               </DialogDescription>
             </DialogHeader>
             <PersistentWebMIDIManager />
-          </DialogContent>
-        </Dialog>
-      )}
-      {/* USB MIDI Manager Dialog - Professional Users Only */}
-      {userType === 'professional' && (
-        <Dialog open={isUSBMidiOpen} onOpenChange={setIsUSBMidiOpen}>
-          <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>USB MIDI Manager</DialogTitle>
-              <DialogDescription>
-                Connect and control USB MIDI devices using the Web MIDI API
-              </DialogDescription>
-            </DialogHeader>
-            <USBMidiManager />
           </DialogContent>
         </Dialog>
       )}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -817,6 +817,9 @@ export default function SimpleBluetoothManager({ isOpen, onClose }: SimpleBlueto
               {hasBluetoothSupport ? "Supported" : "Not Supported"}
             </Badge>
           </DialogTitle>
+          <DialogDescription>
+            Connect to Bluetooth MIDI devices for wireless music control
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex-1 space-y-4 overflow-y-auto pr-2">

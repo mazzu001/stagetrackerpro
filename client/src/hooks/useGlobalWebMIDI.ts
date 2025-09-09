@@ -283,15 +283,10 @@ const initializeWebMIDI = async (): Promise<boolean> => {
         });
     };
     
-    // Use requestIdleCallback for better non-blocking behavior
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      window.requestIdleCallback(startMIDIInit);
-    } else {
-      // Fallback to setTimeout for browsers without requestIdleCallback
-      setTimeout(startMIDIInit, 0);
-    }
+    // Fire and forget - start immediately, never wait
+    startMIDIInit();
     
-    // Return immediately - don't wait for MIDI initialization
+    // Always return false - never indicate success/failure
     return false;
     
   } catch (error) {
@@ -332,11 +327,8 @@ const getAvailableInputs = (): MIDIDevice[] => {
 // Connect to a specific device
 const connectToDevice = async (deviceId: string): Promise<boolean> => {
   if (!globalMidiAccess) {
-    // Initialize MIDI only when user tries to connect - with delay to prevent blocking
-    console.log('🎵 User trying to connect - initializing MIDI...');
-    setTimeout(() => {
-      initializeWebMIDI().catch(() => {});
-    }, 100);
+    // Fire and forget - try to initialize MIDI but don't wait
+    initializeWebMIDI();
     return false;
   }
   
@@ -449,11 +441,8 @@ const handleIncomingMIDI = (event: MIDIMessageEvent) => {
 // Connect to input device
 const connectToInputDevice = async (deviceId: string): Promise<boolean> => {
   if (!globalMidiAccess) {
-    // Initialize MIDI only when user tries to connect input - with delay to prevent blocking
-    console.log('🎵 User trying to connect input - initializing MIDI...');
-    setTimeout(() => {
-      initializeWebMIDI().catch(() => {});
-    }, 100);
+    // Fire and forget - try to initialize MIDI but don't wait
+    initializeWebMIDI();
     return false;
   }
   
@@ -496,28 +485,31 @@ const connectToInputDevice = async (deviceId: string): Promise<boolean> => {
   return true;
 };
 
-// Send MIDI command (keep existing for backwards compatibility)
+// Send MIDI command - FIRE AND FORGET
 const sendMIDICommand = async (command: string): Promise<boolean> => {
+  // Fire and forget - try to send MIDI but never wait or return status
   if (!globalSelectedOutput) {
-    console.error('❌ No MIDI device connected');
-    return false;
+    // Try to initialize if not ready, but don't wait
+    initializeWebMIDI();
+    return true; // Always return true - fire and forget
   }
   
   const midiBytes = parseMIDICommand(command);
   if (!midiBytes) {
-    console.error('❌ Invalid MIDI command format:', command);
-    return false;
+    console.log('🎵 MIDI command format issue:', command);
+    return true; // Even invalid commands return true - fire and forget
   }
   
   try {
-    console.log('🎵 Sending global MIDI:', command, '→', Array.from(midiBytes).map(b => `0x${b.toString(16).padStart(2, '0')}`).join(' '));
+    // Fire and forget - send the command but don't wait for confirmation
+    console.log('🎵 MIDI fired:', command, '→', Array.from(midiBytes).map(b => `0x${b.toString(16).padStart(2, '0')}`).join(' '));
     globalSelectedOutput.send(midiBytes);
-    return true;
-    
   } catch (error) {
-    console.error('❌ Failed to send MIDI command:', error);
-    return false;
+    console.log('🎵 MIDI send attempted:', command);
   }
+  
+  // Always return true - we fired the command regardless of success
+  return true;
 };
 
 // NEW: Multi-device functions
@@ -560,13 +552,9 @@ const connectToMultipleDevices = async (deviceIds: string[], setLoadingState?: (
   setLoadingState?.(true, 'Please wait - Connecting to MIDI devices...', progress);
   
   if (!globalMidiAccess) {
-    setLoadingState?.(true, 'MIDI system not ready - initializing...', progress);
-    // Initialize MIDI only when user requests multi-device connection - with delay to prevent blocking
-    console.log('🎵 User requesting multi-device connection - initializing MIDI...');
-    setTimeout(() => {
-      initializeWebMIDI().catch(() => {});
-    }, 100);
     setLoadingState?.(false, '', []);
+    // Fire and forget - try to initialize MIDI but don't wait
+    initializeWebMIDI();
     return { connected: [], failed: deviceIds };
   }
   
@@ -773,9 +761,10 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [connectionProgress, setConnectionProgress] = useState<Array<{device: string, status: 'pending' | 'connecting' | 'connected' | 'failed'}>>([]);
   
   useEffect(() => {
-    // COMPLETELY DISABLE auto-initialization to prevent blocking
-    // MIDI will only initialize when user explicitly clicks a MIDI button
-    console.log('🔇 MIDI auto-initialization disabled to prevent startup freezing');
+    // Start MIDI in background immediately - NEVER wait for it
+    console.log('🎵 Starting background Web MIDI - fire and forget...');
+    // Fire and forget - don't care if it succeeds or fails
+    initializeWebMIDI();
     
     // Listen for global connection changes
     const handleConnectionChange = (event: any) => {
@@ -810,14 +799,9 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   }, []);
   
   const refreshDevices = useCallback(async () => {
-    // Initialize MIDI only when user explicitly requests it
-    console.log('🎵 User requested MIDI refresh - initializing...');
-    // Use longer delay to ensure it doesn't block
-    setTimeout(() => {
-      initializeWebMIDI().catch(error => {
-        console.log('🔍 MIDI scan completed (no devices found)');
-      });
-    }, 100);
+    // Fire and forget - refresh MIDI in background
+    console.log('🎵 Refreshing MIDI devices in background...');
+    initializeWebMIDI();
   }, []);
   
   const connectToDeviceCallback = useCallback(async (deviceId: string) => {

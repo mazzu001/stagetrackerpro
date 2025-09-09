@@ -2,19 +2,34 @@ import { useState, useEffect, useCallback } from 'react';
 
 // Global MIDI state for persistence across dialog closures
 let globalMidiAccess: MIDIAccess | null = null;
-let globalSelectedOutput: MIDIOutput | null = null;
+let globalSelectedOutput: MIDIOutput | null = null; // Primary device (backwards compatibility)
 let globalSelectedInput: MIDIInput | null = null;
 let globalConnectionStatus = 'Disconnected';
-let globalDeviceName = '';
+let globalDeviceName = ''; // Primary device name (backwards compatibility)
 let globalInputDeviceName = '';
 
+// NEW: Multi-device support - maps device ID to connection info
+let globalConnectedOutputs: Map<string, {device: MIDIOutput, channel: number, name: string}> = new Map();
+let globalConnectedInputs: Map<string, {device: MIDIInput, name: string}> = new Map();
+let globalNextChannel = 1; // Auto-assign channels 1-16
+
 // Store last connected device info in localStorage for auto-reconnect
-const MIDI_DEVICE_STORAGE_KEY = 'lastConnectedMidiDevice';
+const MIDI_DEVICE_STORAGE_KEY = 'lastConnectedMidiDevice'; // Keep existing for compatibility
+const MIDI_DEVICES_STORAGE_KEY = 'connectedMidiDevices'; // NEW: Multi-device storage
 
 interface StoredMidiDevice {
   id: string;
   name: string;
   manufacturer: string;
+}
+
+// NEW: Multi-device storage interface
+interface StoredMultiMidiDevice {
+  id: string;
+  name: string;
+  manufacturer: string;
+  channel: number;
+  type: 'input' | 'output';
 }
 
 // Save last connected device to localStorage
@@ -47,6 +62,54 @@ const getLastConnectedDevice = (): StoredMidiDevice | null => {
   return null;
 };
 
+// NEW: Multi-device storage functions
+const saveConnectedDevices = () => {
+  try {
+    const devices: StoredMultiMidiDevice[] = [];
+    
+    // Save all connected outputs
+    globalConnectedOutputs.forEach((info, deviceId) => {
+      devices.push({
+        id: deviceId,
+        name: info.name,
+        manufacturer: info.device.manufacturer || 'Unknown',
+        channel: info.channel,
+        type: 'output'
+      });
+    });
+    
+    // Save all connected inputs  
+    globalConnectedInputs.forEach((info, deviceId) => {
+      devices.push({
+        id: deviceId,
+        name: info.name,
+        manufacturer: info.device.manufacturer || 'Unknown', 
+        channel: 0, // Inputs don't need channels
+        type: 'input'
+      });
+    });
+    
+    localStorage.setItem(MIDI_DEVICES_STORAGE_KEY, JSON.stringify(devices));
+    console.log('💾 Saved', devices.length, 'connected MIDI devices');
+  } catch (error) {
+    console.error('❌ Failed to save connected devices:', error);
+  }
+};
+
+const getStoredDevices = (): StoredMultiMidiDevice[] => {
+  try {
+    const stored = localStorage.getItem(MIDI_DEVICES_STORAGE_KEY);
+    if (stored) {
+      const devices = JSON.parse(stored) as StoredMultiMidiDevice[];
+      console.log('📱 Found', devices.length, 'stored MIDI devices');
+      return devices;
+    }
+  } catch (error) {
+    console.error('❌ Failed to load stored devices:', error);
+  }
+  return [];
+};
+
 interface GlobalMIDIState {
   isConnected: boolean;
   deviceName: string;
@@ -57,6 +120,13 @@ interface GlobalMIDIState {
   refreshDevices: () => Promise<void>;
   getAvailableOutputs: () => MIDIDevice[];
   getAvailableInputs: () => MIDIDevice[];
+  // NEW: Multi-device functions
+  getConnectedDevices: () => Array<{id: string, name: string, channel: number, type: 'input' | 'output'}>;
+  connectToMultipleDevices: (deviceIds: string[]) => Promise<{connected: string[], failed: string[]}>;
+  disconnectDevice: (deviceId: string) => Promise<boolean>;
+  sendCommandToAll: (command: string) => Promise<boolean>;
+  sendCommandToDevice: (command: string, deviceId: string) => Promise<boolean>;
+  isDeviceConnected: (deviceId: string) => boolean;
 }
 
 interface MIDIDevice {

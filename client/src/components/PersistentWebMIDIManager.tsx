@@ -32,7 +32,6 @@ export function PersistentWebMIDIManager() {
     setIsRefreshing(true);
     try {
       const outputs = globalMidi.getAvailableOutputs();
-      console.log('🔍 UI Component: Got outputs from hook:', outputs.length, outputs.map(o => o.name));
       setAvailableOutputs(outputs);
       console.log('🔄 Refreshed MIDI devices:', outputs.length, 'outputs found');
     } catch (error) {

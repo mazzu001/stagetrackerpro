@@ -203,13 +203,10 @@ const initializeWebMIDI = async (): Promise<boolean> => {
 
 // Get available MIDI output devices - NO LOOPS, return array directly
 const getAvailableOutputs = (): MIDIDevice[] => {
-  if (!globalMidiAccess) {
-    console.log('🔍 getAvailableOutputs: No globalMidiAccess');
-    return [];
-  }
+  if (!globalMidiAccess) return [];
   
   // Convert to array without loops
-  const outputs = Array.from(globalMidiAccess.outputs.values()).map((output: MIDIOutput) => ({
+  return Array.from(globalMidiAccess.outputs.values()).map((output: MIDIOutput) => ({
     id: output.id,
     name: output.name || 'Unknown Device',
     manufacturer: output.manufacturer || 'Unknown',
@@ -217,9 +214,6 @@ const getAvailableOutputs = (): MIDIDevice[] => {
     type: 'output' as const,
     connection: output.connection
   }));
-  
-  console.log('🔍 getAvailableOutputs returning:', outputs.length, 'devices:', outputs.map(o => o.name));
-  return outputs;
 };
 
 // Get available MIDI input devices

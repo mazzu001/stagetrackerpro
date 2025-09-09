@@ -531,7 +531,7 @@ const connectToMultipleDevices = async (deviceIds: string[], setLoadingState?: (
   // Set up initial loading state
   const progress = deviceIds.map(id => ({
     device: globalMidiAccess?.outputs.get(id)?.name || 'Unknown Device',
-    status: 'pending' as const
+    status: 'pending' as 'pending' | 'connecting' | 'connected' | 'failed'
   }));
   
   setLoadingState?.(true, 'Please wait - Connecting to MIDI devices...', progress);

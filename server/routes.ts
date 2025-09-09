@@ -1425,7 +1425,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-
   app.delete("/api/songs/:id", isAuthenticated, async (req: any, res) => {
     try {
       const userId = req.user.claims.sub;
@@ -1779,28 +1778,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Broadcast session management routes - SIMPLE SQL
+  // Broadcast session management routes
   app.post('/api/broadcast/create', async (req, res) => {
     try {
       const { id, name, hostId, hostName } = req.body;
       
-      console.log(`📡 Creating broadcast session with SQL: ${id} (${name}) by ${hostName} (${hostId})`);
-      
-      // Simple SQL upsert - use ACTUAL database columns!
-      await db.execute(sql`
-        INSERT INTO broadcast_sessions (id, name, host_id, host_name, is_active, created_at, current_song_id)
-        VALUES (${id}, ${name}, ${hostId}, ${hostName}, true, NOW(), NULL)
-        ON CONFLICT (id) 
-        DO UPDATE SET 
-          name = ${name},
-          host_id = ${hostId}, 
-          host_name = ${hostName},
-          is_active = true,
-          last_activity = NOW()
-      `);
+      // Upsert broadcast session - replace if exists
+      await db
+        .insert(broadcastSessions)
+        .values({
+          id,
+          name,
+          hostId,
+          hostName,
+          isActive: true,
+          lastActivity: new Date()
+        })
+        .onConflictDoUpdate({
+          target: broadcastSessions.id,
+          set: {
+            name,
+            hostId,
+            hostName,
+            isActive: true,
+            lastActivity: new Date()
+          }
+        });
         
-      console.log(`📡 ✅ SQL SUCCESS: Created broadcast session: ${id} (${name}) by ${hostName}`);
-      res.json({ success: true, message: 'Broadcast session created successfully' });
+      console.log(`📡 Created broadcast session: ${id} (${name}) by ${hostName}`);
+      res.json({ success: true, message: 'Broadcast session created' });
     } catch (error) {
       console.error('Failed to create broadcast session:', error);
       res.status(500).json({ error: 'Failed to create broadcast session' });
@@ -1811,32 +1817,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { sessionName } = req.params;
       
-      console.log(`📡 Checking broadcast session: ${sessionName}`);
-      
-      // Simple SQL query - use ACTUAL database columns!
-      const result = await db.execute(sql`
-        SELECT id, name, host_id, host_name, is_active, created_at, current_song_id
-        FROM broadcast_sessions 
-        WHERE id = ${sessionName} AND is_active = true
-        LIMIT 1
-      `);
+      const session = await db
+        .select()
+        .from(broadcastSessions)
+        .where(sql`${broadcastSessions.id} = ${sessionName} AND ${broadcastSessions.isActive} = true`)
+        .limit(1);
         
-      if (result.rows.length > 0) {
-        const session = result.rows[0];
-        console.log(`📡 ✅ Broadcast session found: ${sessionName}`);
+      if (session.length > 0) {
+        console.log(`📡 Broadcast session found: ${sessionName}`);
         res.json({ 
           exists: true, 
-          session: {
-            id: session.id,
-            name: session.name,
-            hostId: session.host_id,
-            hostName: session.host_name,
-            isActive: session.is_active,
-            currentSongId: session.current_song_id
-          }
+          session: session[0]
         });
       } else {
-        console.log(`📡 ❌ Broadcast session not found: ${sessionName}`);
+        console.log(`📡 Broadcast session not found: ${sessionName}`);
         res.json({ exists: false });
       }
     } catch (error) {
@@ -1944,134 +1938,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // ================================
-  // SUPER SIMPLE BROADCAST SYSTEM - Pure SQL approach
-  // ================================
-  
-  // 1. Broadcaster starts a broadcast (creates table entry)
-  app.post('/api/simple-broadcast/:name/start', async (req, res) => {
-    try {
-      const { name } = req.params;
-      const { hostEmail } = req.body;
-      
-      // Simple SQL: Insert or update broadcast session using existing columns
-      const [session] = await db.insert(broadcastSessions)
-        .values({
-          id: name,
-          name: name,
-          hostId: hostEmail, // Use existing hostId column
-          hostName: hostEmail, // Use existing hostName column 
-          isActive: true,
-        })
-        .onConflictDoUpdate({
-          target: broadcastSessions.id,
-          set: {
-            hostId: hostEmail,
-            hostName: hostEmail,
-            isActive: true,
-            lastActivity: new Date(), // Use existing lastActivity column
-          },
-        })
-        .returning();
-      
-      console.log(`🎯 Simple broadcast started: ${name} by ${hostEmail}`);
-      res.json({ success: true, session });
-    } catch (error) {
-      console.error('Error starting simple broadcast:', error);
-      res.status(500).json({ error: 'Failed to start broadcast' });
-    }
-  });
-
-  // 2. Broadcaster selects a song (creates song entry with unique ID)
-  app.post('/api/simple-broadcast/:name/song', async (req, res) => {
-    try {
-      const { name } = req.params;
-      const { songTitle, artistName, lyrics, waveformData } = req.body;
-      
-      // Simple SQL: Insert song entry
-      const [song] = await db.insert(broadcastSongs)
-        .values({
-          broadcastId: name,
-          songTitle,
-          artistName,
-          lyrics,
-          waveformData,
-          position: 0,
-          isPlaying: false,
-        })
-        .returning();
-      
-      // Simple SQL: Update broadcast to point to this song
-      await db.update(broadcastSessions)
-        .set({ currentSongId: song.id })
-        .where(eq(broadcastSessions.id, name));
-      
-      console.log(`🎵 Simple song selected: ${songTitle} (ID: ${song.id}) for broadcast ${name}`);
-      res.json({ success: true, songId: song.id, song });
-    } catch (error) {
-      console.error('Error selecting simple song:', error);
-      res.status(500).json({ error: 'Failed to select song' });
-    }
-  });
-
-  // 3. Listeners get current song data (simple SQL query)
-  app.get('/api/simple-broadcast/:name/current', async (req, res) => {
-    try {
-      const { name } = req.params;
-      
-      // Simple SQL: Get current song ID from broadcast session
-      const [session] = await db.select()
-        .from(broadcastSessions)
-        .where(eq(broadcastSessions.id, name))
-        .limit(1);
-      
-      if (!session || !session.currentSongId) {
-        return res.json({ song: null });
-      }
-      
-      // Simple SQL: Get current song data
-      const [song] = await db.select()
-        .from(broadcastSongs)
-        .where(eq(broadcastSongs.id, session.currentSongId))
-        .limit(1);
-      
-      console.log(`📺 Listener requested current song for ${name}: ${song?.songTitle || 'none'}`);
-      res.json({ song: song || null });
-    } catch (error) {
-      console.error('Error getting simple current song:', error);
-      res.status(500).json({ error: 'Failed to get current song' });
-    }
-  });
-
-  // 4. Update playback position (simple SQL update)
-  app.put('/api/simple-broadcast/:name/position', async (req, res) => {
-    try {
-      const { name } = req.params;
-      const { position, isPlaying } = req.body;
-      
-      // Simple SQL: Get current song ID
-      const [session] = await db.select()
-        .from(broadcastSessions)
-        .where(eq(broadcastSessions.id, name))
-        .limit(1);
-      
-      if (!session?.currentSongId) {
-        return res.status(404).json({ error: 'No current song' });
-      }
-      
-      // Simple SQL: Update position and playing state
-      await db.update(broadcastSongs)
-        .set({ position, isPlaying })
-        .where(eq(broadcastSongs.id, session.currentSongId));
-      
-      res.json({ success: true });
-    } catch (error) {
-      console.error('Error updating simple position:', error);
-      res.status(500).json({ error: 'Failed to update position' });
-    }
-  });
-
-  console.log('🎯 Simple broadcast API registered - Pure SQL approach!');
   console.log('📡 Registering broadcast session routes...');
   console.log('🗄️ Registering database storage routes...');
   console.log('🎵 Registering song management routes...');

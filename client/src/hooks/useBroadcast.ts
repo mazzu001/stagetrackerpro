@@ -89,9 +89,9 @@ export function useBroadcast() {
   }, []);
 
   // Host: Start broadcasting current performance state
-  const startBroadcast = useCallback(async (userEmail: string, userName: string, broadcastName: string) => {
-    console.log('🎭 Starting broadcast:', { userEmail, userName, broadcastName });
-    const roomId = await broadcastService.startBroadcast(userEmail, userName, broadcastName);
+  const startBroadcast = useCallback(async (userId: string, userName: string, broadcastName: string) => {
+    console.log('🎭 Starting broadcast:', { userId, userName, broadcastName });
+    const roomId = await broadcastService.startBroadcast(userId, userName, broadcastName);
     console.log('🎭 Broadcast started, roomId:', roomId);
     setIsHost(true);
     setIsViewer(false);

@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 import type { SongWithTracks } from "@shared/schema";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
-import { waveformGenerator } from "@/lib/waveform-generator";
 
 interface UseAudioEngineProps {
   song?: SongWithTracks;
@@ -32,19 +31,9 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   const [isMidiConnected, setIsMidiConnected] = useState(true);
   const [masterVolume, setMasterVolume] = useState(85);
   const [isLoadingTracks, setIsLoadingTracks] = useState(false);
-  
 
   const audioEngineRef = useRef<StreamingAudioEngine | null>(null);
   const animationFrameRef = useRef<number>();
-  
-  
-  // Song ref to avoid stale closures
-  const songRef = useRef<SongWithTracks | undefined>(song);
-
-  // Keep song ref updated
-  useEffect(() => {
-    songRef.current = song;
-  }, [song]);
 
   const stop = useCallback(() => {
     if (audioEngineRef.current) {
@@ -54,8 +43,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, []);
 
-
-  // Initialize audio engine and metronome
+  // Initialize audio engine
   useEffect(() => {
     const initAudioEngine = async () => {
       try {
@@ -88,13 +76,11 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         // Store unsubscribe function
         (audioEngineRef.current as any).unsubscribe = unsubscribe;
         setIsAudioEngineOnline(true);
-        
       } catch (error) {
         console.error('Failed to initialize audio engine:', error);
         setIsAudioEngineOnline(false);
       }
     };
-
 
     initAudioEngine();
 
@@ -108,15 +94,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       }
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
-      }
-      // Cleanup metronome
-      if (clickTrackRef.current) {
-        clickTrackRef.current.destroy();
-        clickTrackRef.current = null;
-      }
-      if (metronomeContextRef.current && metronomeContextRef.current.state !== 'closed') {
-        metronomeContextRef.current.close();
-        metronomeContextRef.current = null;
       }
     };
   }, [stop]);
@@ -170,7 +147,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       setupStreamingAsync();
     }
   }, [song?.id, song?.tracks?.length]);
-
 
   // Animation loop for real-time updates
 
@@ -236,7 +212,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       clearInterval(vuInterval);
     };
   }, [song?.id, isPlaying]);
-
 
   const play = useCallback(async () => {
     if (!audioEngineRef.current || !song) return;

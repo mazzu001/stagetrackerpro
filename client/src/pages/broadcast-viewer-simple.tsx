@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { LogOut, Play, Pause, Volume2 } from "lucide-react";
 
 interface SongData {
@@ -42,8 +41,6 @@ export default function SimpleBroadcastViewer() {
 
   // Parse lyrics with timestamps for karaoke highlighting
   const parseLyricsWithTimestamps = (lyricsText: string, currentPosition: number): ParsedLyricLine[] => {
-    console.log('🎤 Parsing lyrics, position:', currentPosition, 'seconds');
-    console.log('🎤 Raw lyrics text:', lyricsText.substring(0, 200) + '...');
     const lines = lyricsText.split('\n');
     const parsedLines: ParsedLyricLine[] = [];
     
@@ -59,55 +56,38 @@ export default function SimpleBroadcastViewer() {
         const timestamp = minutes * 60 + seconds;
         
         // Remove timestamp and MIDI commands from display text
-        let text = trimmed
-          .replace(/^\[\d{1,2}:\d{2}\]/, '')      // Remove timestamp [0:02]
-          .replace(/\[\[.*?\]\]/g, '')            // Remove MIDI commands [[PC:12:1]]
+        const text = trimmed
+          .replace(/^\[(\d{1,2}):(\d{2})\]/, '')
+          .replace(/\[\[[^\]]+\]\]/g, '')
           .trim();
         
         if (text) {
-          console.log(`🎤 Cleaned line: "${text}" from "${trimmed}"`);
           parsedLines.push({
             text,
             timestamp,
-            isCurrent: false, // Will set below
-            isPast: false     // Will set below
-          });
-        }
-      } else {
-        // Lines without timestamps (usually non-lyric content)
-        const text = trimmed.replace(/\[\[.*?\]\]/g, '').trim();
-        if (text) {
-          parsedLines.push({
-            text,
-            timestamp: -1, // No timestamp
-            isCurrent: false,
-            isPast: false
+            isCurrent: currentPosition >= timestamp && (parsedLines.length === 0 || currentPosition < (parsedLines[parsedLines.length - 1]?.timestamp + 4)),
+            isPast: currentPosition > timestamp + 4
           });
         }
       }
     }
     
-    // Determine current line based on position
+    // Determine current line more accurately
     let currentLineIndex = -1;
     for (let i = 0; i < parsedLines.length; i++) {
-      if (parsedLines[i].timestamp !== -1 && currentPosition >= parsedLines[i].timestamp) {
+      if (currentPosition >= parsedLines[i].timestamp) {
         currentLineIndex = i;
+      } else {
+        break;
       }
     }
     
-    // Update highlighting flags
+    // Update isCurrent flags
     parsedLines.forEach((line, index) => {
-      if (line.timestamp === -1) {
-        // Non-timestamped lines stay normal
-        line.isCurrent = false;
-        line.isPast = false;
-      } else {
-        line.isCurrent = index === currentLineIndex;
-        line.isPast = index < currentLineIndex;
-      }
+      line.isCurrent = index === currentLineIndex;
+      line.isPast = index < currentLineIndex;
     });
     
-    console.log('🎤 Parsed', parsedLines.length, 'lines, current line index:', currentLineIndex);
     return parsedLines;
   };
 
@@ -163,19 +143,6 @@ export default function SimpleBroadcastViewer() {
             console.error('❌ Failed to fetch song:', error);
           }
         }
-        // ALSO: Use state data directly when available (even without songEntryId)
-        else if (state.songTitle && state.lyrics) {
-          console.log(`🎵 Using state data directly for: ${state.songTitle}`);
-          const stateBasedSong = {
-            id: state.currentSong || 'state-based',
-            songTitle: state.songTitle,
-            artistName: 'Live Broadcast', // Default since not in state
-            lyrics: state.lyrics,
-            createdAt: new Date().toISOString()
-          };
-          setCurrentSong(stateBasedSong);
-          console.log(`✅ Displaying state-based song: ${state.songTitle}`);
-        }
       }
     };
 
@@ -203,27 +170,28 @@ export default function SimpleBroadcastViewer() {
   // Show loading until connected
   if (!isConnected || !roomInfo) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-foreground text-lg">Connecting to broadcast...</p>
-          <p className="text-muted-foreground text-sm mt-2">Establishing secure connection</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+          <p className="text-white text-lg">Connecting to broadcast...</p>
+          <p className="text-gray-300 text-sm mt-2">Establishing secure connection</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted">
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 text-white">
       {/* Header */}
-      <div className="border-b bg-card/50 backdrop-blur-sm p-4 flex justify-between items-center">
+      <div className="border-b border-white/20 p-4 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Viewing: {roomInfo.name}</h1>
-          <p className="text-muted-foreground">Host: {roomInfo.hostName} • {roomInfo.participantCount} viewers</p>
+          <h1 className="text-2xl font-bold">Viewing: {roomInfo.name}</h1>
+          <p className="text-gray-300">Host: {roomInfo.hostName} • {roomInfo.participantCount} viewers</p>
         </div>
         <Button 
           onClick={leaveBroadcast}
-          variant="outline"
+          variant="outline" 
+          className="border-white/30 hover:bg-white/10"
         >
           <LogOut className="mr-2 h-4 w-4" />
           Leave Broadcast
@@ -234,90 +202,71 @@ export default function SimpleBroadcastViewer() {
         {currentSong ? (
           <div className="space-y-6">
             {/* Now Playing */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center space-x-4">
-                  {broadcastState?.isPlaying ? (
-                    <Play className="h-8 w-8 text-green-600 dark:text-green-400" />
-                  ) : (
-                    <Pause className="h-8 w-8 text-muted-foreground" />
-                  )}
-                  <div>
-                    <CardTitle>{currentSong.songTitle}</CardTitle>
-                    <CardDescription>{currentSong.artistName}</CardDescription>
-                  </div>
+            <div className="bg-black/30 rounded-lg p-6">
+              <div className="flex items-center space-x-4 mb-4">
+                {broadcastState?.isPlaying ? (
+                  <Play className="h-8 w-8 text-green-400" />
+                ) : (
+                  <Pause className="h-8 w-8 text-gray-400" />
+                )}
+                <div>
+                  <h2 className="text-xl font-bold">{currentSong.songTitle}</h2>
+                  <p className="text-gray-300">{currentSong.artistName}</p>
                 </div>
-              </CardHeader>
+              </div>
 
-              <CardContent>
-                {/* Progress Bar */}
-                <div className="w-full bg-secondary rounded-full h-2 mb-2">
-                  <div 
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${(broadcastState?.waveformProgress || 0) * 100}%` }}
-                  />
-                </div>
-                <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>{Math.floor(broadcastState?.position || 0)}s</span>
-                  <span>{currentSong.duration ? Math.floor(currentSong.duration) + 's' : '--'}</span>
-                </div>
-              </CardContent>
-            </Card>
+              {/* Progress Bar */}
+              <div className="w-full bg-white/20 rounded-full h-2 mb-2">
+                <div 
+                  className="bg-blue-400 h-2 rounded-full transition-all duration-300"
+                  style={{ width: `${(broadcastState?.waveformProgress || 0) * 100}%` }}
+                />
+              </div>
+              <div className="flex justify-between text-sm text-gray-400">
+                <span>{Math.floor(broadcastState?.position || 0)}s</span>
+                <span>{currentSong.duration ? Math.floor(currentSong.duration) + 's' : '--'}</span>
+              </div>
+            </div>
 
             {/* Current Lyric */}
             {broadcastState?.currentLyricLine && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg text-center">Current Lyric</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-2xl font-bold text-center text-foreground">{broadcastState.currentLyricLine}</p>
-                </CardContent>
-              </Card>
+              <div className="bg-black/20 rounded-lg p-8 text-center">
+                <p className="text-2xl font-semibold leading-relaxed">
+                  {broadcastState.currentLyricLine}
+                </p>
+              </div>
             )}
 
             {/* Karaoke-Style Lyrics */}
             {currentSong.lyrics && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Volume2 className="mr-2 h-5 w-5" />
-                    Lyrics
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 max-h-96 overflow-y-auto">
-                    {parseLyricsWithTimestamps(currentSong.lyrics, broadcastState?.position || 0).map((line, index) => {
-                      console.log(`🎤 Line ${index}: "${line.text}" (${line.timestamp}s) - Current: ${line.isCurrent}, Past: ${line.isPast}`);
-                      return (
-                        <div
-                          key={index}
-                          className={`transition-all duration-500 p-3 rounded-lg ${
-                            line.isCurrent 
-                              ? 'bg-gradient-to-r from-purple-600/20 to-blue-600/20 text-foreground text-xl font-bold scale-105 shadow-lg border-l-4 border-purple-600' 
-                              : line.isPast 
-                              ? 'text-muted-foreground opacity-60' 
-                              : 'text-foreground hover:text-foreground/80'
-                          }`}
-                        >
-                          {line.text}
-                          {line.isCurrent && <span className="ml-2 text-purple-600 dark:text-purple-400">♪</span>}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </CardContent>
-              </Card>
+              <div className="bg-black/20 rounded-lg p-6">
+                <h3 className="text-lg font-semibold mb-4 flex items-center">
+                  <Volume2 className="mr-2 h-5 w-5" />
+                  Lyrics
+                </h3>
+                <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {parseLyricsWithTimestamps(currentSong.lyrics, broadcastState?.position || 0).map((line, index) => (
+                    <div
+                      key={index}
+                      className={`transition-all duration-300 p-2 rounded ${
+                        line.isCurrent 
+                          ? 'bg-blue-500/30 text-white text-lg font-semibold scale-105' 
+                          : line.isPast 
+                          ? 'text-gray-400 opacity-70' 
+                          : 'text-gray-300'
+                      }`}
+                    >
+                      {line.text}
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         ) : (
-          <Card>
-            <CardContent className="text-center py-16">
-              <div className="text-6xl mb-4">🎵</div>
-              <CardTitle className="text-2xl mb-2">Waiting for music...</CardTitle>
-              <CardDescription>The host hasn't started playing a song yet.</CardDescription>
-            </CardContent>
-          </Card>
+          <div className="text-center py-12">
+            <p className="text-xl text-gray-300">Waiting for host to start playing...</p>
+          </div>
         )}
       </div>
     </div>

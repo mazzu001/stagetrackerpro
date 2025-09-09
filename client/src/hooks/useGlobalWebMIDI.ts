@@ -171,39 +171,30 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
     console.log('🎵 Initializing global Web MIDI access...');
     
-    // Use shorter timeout and handle gracefully to prevent app freezing
-    try {
-      const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error('MIDI initialization timeout')), 2000); // Reduced to 2s
-      });
-      
-      globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;
-      
-      // Minimal device change listener - no complex logic
-      globalMidiAccess.onstatechange = (event: any) => {
-        if (event.port) {
-          console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
-        }
-      };
-      
-      console.log('✅ Global Web MIDI access initialized');
-      
-      // Check for auto-reconnect ONCE only, no repeated attempts
-      attemptAutoReconnect();
-      
-      return true;
-      
-    } catch (timeoutError) {
-      // Handle timeout gracefully - don't block the app
-      console.log('⚠️ MIDI initialization timed out, continuing without MIDI support');
-      globalMidiAccess = null;
-      return false;
-    }
+    // Add timeout to prevent hanging
+    const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000);
+    });
+    
+    globalMidiAccess = await Promise.race([midiAccessPromise, timeoutPromise]) as MIDIAccess;
+    
+    // Minimal device change listener - no complex logic
+    globalMidiAccess.onstatechange = (event: any) => {
+      if (event.port) {
+        console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
+      }
+    };
+    
+    console.log('✅ Global Web MIDI access initialized');
+    
+    // Check for auto-reconnect ONCE only, no repeated attempts
+    attemptAutoReconnect();
+    
+    return true;
     
   } catch (error) {
-    console.log('⚠️ MIDI initialization failed, continuing without MIDI support:', error instanceof Error ? error.message : String(error));
-    globalMidiAccess = null;
+    console.error('❌ Failed to initialize Web MIDI:', error);
     return false;
   }
 };
@@ -240,13 +231,8 @@ const getAvailableInputs = (): MIDIDevice[] => {
 // Connect to a specific device
 const connectToDevice = async (deviceId: string): Promise<boolean> => {
   if (!globalMidiAccess) {
-    try {
-      const initialized = await initializeWebMIDI();
-      if (!initialized) return false;
-    } catch (error) {
-      console.log('⚠️ MIDI not available, cannot connect to device');
-      return false;
-    }
+    const initialized = await initializeWebMIDI();
+    if (!initialized) return false;
   }
   
   const output = globalMidiAccess!.outputs.get(deviceId);
@@ -357,13 +343,8 @@ const handleIncomingMIDI = (event: MIDIMessageEvent) => {
 // Connect to input device
 const connectToInputDevice = async (deviceId: string): Promise<boolean> => {
   if (!globalMidiAccess) {
-    try {
-      const initialized = await initializeWebMIDI();
-      if (!initialized) return false;
-    } catch (error) {
-      console.log('⚠️ MIDI not available, cannot connect to input device');
-      return false;
-    }
+    const initialized = await initializeWebMIDI();
+    if (!initialized) return false;
   }
   
   const input = globalMidiAccess!.inputs.get(deviceId);
@@ -435,20 +416,16 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [inputDeviceName, setInputDeviceName] = useState(globalInputDeviceName);
   
   useEffect(() => {
-    // Initialize Web MIDI asynchronously and completely non-blocking
-    const initAsync = () => {
-      // Use setTimeout to ensure this doesn't block component mounting
-      setTimeout(async () => {
-        try {
-          await initializeWebMIDI();
-        } catch (error) {
-          // Silently handle errors to prevent app freezing
-          console.log('⚠️ MIDI initialization skipped due to error, app continues normally');
-        }
-      }, 100); // Small delay to ensure UI loads first
+    // Initialize Web MIDI asynchronously to prevent blocking
+    const initAsync = async () => {
+      try {
+        await initializeWebMIDI();
+      } catch (error) {
+        console.error('❌ Failed to initialize Web MIDI in useGlobalWebMIDI:', error);
+      }
     };
     
-    // Don't block the component mounting at all
+    // Don't block the component mounting
     initAsync();
     
     // Listen for global connection changes
@@ -484,11 +461,7 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   }, []);
   
   const refreshDevices = useCallback(async () => {
-    try {
-      await initializeWebMIDI();
-    } catch (error) {
-      console.log('⚠️ MIDI refresh failed, continuing without MIDI');
-    }
+    await initializeWebMIDI();
   }, []);
   
   const connectToDeviceCallback = useCallback(async (deviceId: string) => {

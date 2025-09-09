@@ -42,7 +42,7 @@ export default function TrackManager({
   isPlaying = false,
   isLoadingTracks = false,
   onPlay,
-  onPause,
+  onPause
 }: TrackManagerProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
@@ -51,7 +51,6 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
-  
   // Pitch and speed control removed
 
   // Recording state
@@ -63,7 +62,6 @@ export default function TrackManager({
 
   // Get tracks for the current song
   const tracks = song?.tracks || [];
-
 
   // Initialize local track values from song data
   useEffect(() => {
@@ -107,7 +105,7 @@ export default function TrackManager({
     } catch (error) {
       console.error('Failed to refetch tracks:', error);
     }
-  }, [song?.id, user?.email]);
+  }, [song?.id, user?.email, onSongUpdate]);
 
   const detectAndUpdateSongDuration = async (audioFile: File, songId: string) => {
     try {
@@ -561,7 +559,7 @@ export default function TrackManager({
         setTimeout(() => refetchTracks(), 50);
       }
     }
-  }, [tracks, song?.id, user?.email, onTrackMuteToggle]);
+  }, [tracks, song?.id, user?.email, onTrackMuteToggle, refetchTracks]);
 
   // Solo toggle handler
   const handleSoloToggle = useCallback((trackId: string) => {
@@ -576,7 +574,7 @@ export default function TrackManager({
         setTimeout(() => refetchTracks(), 50);
       }
     }
-  }, [tracks, song?.id, user?.email, onTrackSoloToggle]);
+  }, [tracks, song?.id, user?.email, onTrackSoloToggle, refetchTracks]);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
@@ -590,81 +588,86 @@ export default function TrackManager({
   return (
     <div className="w-full space-y-4 max-h-[70vh] overflow-y-auto pr-2">
       {/* Header with controls */}
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <h3 className="text-lg font-semibold">Track Manager</h3>
             {tracks.length > 0 && (
               <span className="text-sm text-gray-500">({tracks.length} track{tracks.length !== 1 ? 's' : ''})</span>
             )}
           </div>
-
           
-          {/* Main action buttons */}
-          <div className="flex items-center gap-2">
-            {/* Play/Pause button - only show if callbacks provided */}
-            {(onPlay || onPause) && (
-              <Button
-                onClick={isPlaying ? onPause : onPlay}
-                variant={isPlaying ? "destructive" : "default"}
-                size="sm"
-                data-testid="button-play-pause"
-              >
-                {isPlaying ? <Pause className="h-4 w-4 mr-2" /> : <Play className="h-4 w-4 mr-2" />}
-                {isPlaying ? 'Pause' : 'Play'}
-              </Button>
-            )}
-            
+        </div>
+        
+        
+        <div className="flex items-center gap-2">
+          {/* Play/Pause button - only show if callbacks provided */}
+          {(onPlay || onPause) && (
             <Button
-              onClick={handleFileSelect}
-              disabled={tracks.length >= 6 || isImporting}
+              onClick={isPlaying ? onPause : onPlay}
+              variant={isPlaying ? "destructive" : "default"}
+              size="sm"
+              data-testid="button-play-pause"
+            >
+              {isPlaying ? <Pause className="h-4 w-4 mr-2" /> : <Play className="h-4 w-4 mr-2" />}
+              {isPlaying ? 'Pause' : 'Play'}
+            </Button>
+          )}
+          
+          {/* Recording features removed */}
+
+          <Button
+            onClick={handleFileSelect}
+            disabled={tracks.length >= 6 || isImporting}
+            size="sm"
+            className="hidden md:flex"
+            data-testid="button-add-tracks-desktop"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            {isImporting ? 'Adding...' : 'Add Tracks'}
+          </Button>
+          
+          {tracks.length > 0 && (
+            <Button
+              onClick={handleClearBrokenTracks}
+              variant="outline"
               size="sm"
               className="hidden md:flex"
-              data-testid="button-add-tracks-desktop"
+              data-testid="button-clear-tracks-desktop"
             >
-              <Plus className="h-4 w-4 mr-2" />
-              {isImporting ? 'Adding...' : 'Add Tracks'}
+              <Trash2 className="h-4 w-4 mr-2" />
+              Clear All
             </Button>
-            
-            {tracks.length > 0 && (
-              <Button
-                onClick={handleClearBrokenTracks}
-                variant="outline"
-                size="sm"
-                className="hidden md:flex"
-                data-testid="button-clear-tracks-desktop"
-              >
-                <Trash2 className="h-4 w-4 mr-2" />
-                Clear All
-              </Button>
-            )}
-            
+          )}
+
+          {/* Recording features removed */}
+
+          <Button
+            onClick={handleFileSelect}
+            disabled={tracks.length >= 6 || isImporting}
+            size="sm"
+            className="flex md:hidden"
+            data-testid="button-add-tracks-mobile"
+          >
+            <Plus className="h-4 w-4 mr-1" />
+            {isImporting ? 'Adding...' : 'Add'}
+          </Button>
+          
+          {tracks.length > 0 && (
             <Button
-              onClick={handleFileSelect}
-              disabled={tracks.length >= 6 || isImporting}
+              onClick={handleClearBrokenTracks}
+              variant="outline"
               size="sm"
-              className="flex md:hidden"
-              data-testid="button-add-tracks-mobile"
+              className="flex md:hidden h-8 w-8 p-0"
+              title="Clear All Tracks"
+              data-testid="button-clear-tracks-mobile"
             >
-              <Plus className="h-4 w-4 mr-1" />
-              {isImporting ? 'Adding...' : 'Add'}
+              <Trash2 className="h-4 w-4" />
             </Button>
-            
-            {tracks.length > 0 && (
-              <Button
-                onClick={handleClearBrokenTracks}
-                variant="outline"
-                size="sm"
-                className="flex md:hidden h-8 w-8 p-0"
-                title="Clear All Tracks"
-                data-testid="button-clear-tracks-mobile"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
+          )}
         </div>
       </div>
+
       {tracks.length === 0 ? (
         <Card>
           <CardContent className="p-6">
@@ -788,6 +791,8 @@ export default function TrackManager({
           })}
         </div>
       )}
+
+
     </div>
   );
 }

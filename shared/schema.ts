@@ -10,6 +10,7 @@ export const songs = sqliteTable("songs", {
   title: text("title").notNull(),
   artist: text("artist").notNull(),
   duration: integer("duration").notNull(), // in seconds
+  bpm: integer("bpm"),
   key: text("key"),
   lyrics: text("lyrics"), // lyrics with timestamps
   waveformData: text("waveform_data"), // JSON array of waveform amplitudes
@@ -33,7 +34,6 @@ export const tracks = sqliteTable("tracks", {
   isSolo: integer("is_solo", { mode: 'boolean' }).default(false),
 });
 
-
 // MIDI events table removed - MIDI functionality disabled
 
 export const insertSongSchema = createInsertSchema(songs).omit({
@@ -45,7 +45,6 @@ export const insertTrackSchema = createInsertSchema(tracks).omit({
   id: true,
 });
 
-
 // MIDI event schema removed - MIDI functionality disabled
 
 export type InsertSong = z.infer<typeof insertSongSchema>;
@@ -53,7 +52,6 @@ export type Song = typeof songs.$inferSelect;
 
 export type InsertTrack = z.infer<typeof insertTrackSchema>;
 export type Track = typeof tracks.$inferSelect;
-
 
 // MIDI event types removed - MIDI functionality disabled
 
@@ -97,28 +95,28 @@ export const users = pgTable("users", {
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
 
-// SIMPLE BROADCAST SYSTEM - Pure SQL approach
-// Table per broadcaster - tracks which song is currently active
+// Broadcast sessions table
 export const broadcastSessions = pgTable("broadcast_sessions", {
-  id: varchar("id").primaryKey(), // Broadcast name (e.g. "Matt") 
+  id: varchar("id").primaryKey(), // Room/broadcast name
   name: varchar("name").notNull(), // Display name
-  hostEmail: varchar("host_email").notNull(), // Host email
-  currentSongId: varchar("current_song_id"), // Points to active song in broadcast_songs
+  hostId: varchar("host_id").notNull(), // Host user ID
+  hostName: varchar("host_name").notNull(), // Host display name
   isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+  lastActivity: timestamp("last_activity").defaultNow(),
 });
 
-// Song entries - all song data stored here with unique IDs
+// Broadcast songs table - stores all song data for each broadcast session  
 export const broadcastSongs = pgTable("broadcast_songs", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`), // Unique song entry ID
-  broadcastId: varchar("broadcast_id").notNull(), // Which broadcast table (e.g. "Matt")
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`), // Unique ID for this song entry
+  broadcastId: varchar("broadcast_id").notNull(), // References broadcast_sessions.id
+  songId: varchar("song_id").notNull(), // Local song ID from host's library
   songTitle: varchar("song_title").notNull(),
   artistName: varchar("artist_name"),
-  lyrics: pgText("lyrics"), // Timestamped lyrics like [0:02]She said...
+  duration: pgInteger("duration"), // Duration in seconds
+  lyrics: pgText("lyrics"), // Timestamped lyrics  
   waveformData: jsonb("waveform_data"), // Waveform visualization data
-  position: pgInteger("position").default(0), // Current playback position in seconds
-  isPlaying: boolean("is_playing").default(false), // Playback state
+  trackCount: pgInteger("track_count").default(1),
   createdAt: timestamp("created_at").defaultNow(),
 });
 

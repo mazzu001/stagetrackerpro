@@ -29,10 +29,18 @@ export function PersistentWebMIDIManager() {
   
   const globalMidi = useGlobalWebMIDI();
 
-  // Refresh available devices - MINIMAL, NO REPEATED CALLS
+  // Refresh available devices with spinning animation
   const refreshDevices = async () => {
     setIsRefreshing(true);
+    
     try {
+      // Start background MIDI scan
+      globalMidi.refreshDevices();
+      
+      // Add minimum spin duration so users can see the animation
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
+      // Get updated device list
       const outputs = globalMidi.getAvailableOutputs();
       setAvailableOutputs(outputs);
       console.log('🔄 Refreshed MIDI devices:', outputs.length, 'outputs found');

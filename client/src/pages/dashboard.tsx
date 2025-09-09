@@ -540,7 +540,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Current Broadcast Status */}
         {(isHost || isViewer) && currentRoom && (
@@ -803,7 +802,7 @@ export default function Dashboard() {
                             onClick={() => handleFieldEdit('firstName')}
                             className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
                           >
-                            <span className="text-sm">
+                            <span className="text-[20px] font-semibold">
                               {profileData.firstName || 'Click to add first name'}
                             </span>
                             {!profileData.firstName && <span className="text-muted-foreground text-sm ml-2">✎</span>}

@@ -23,6 +23,8 @@ export function PersistentWebMIDIManager() {
   const [lastSentMessage, setLastSentMessage] = useState('');
   const [availableOutputs, setAvailableOutputs] = useState<MIDIDevice[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedDevices, setSelectedDevices] = useState<string[]>([]);
+  const [viewMode, setViewMode] = useState<'single' | 'multi'>('single');
   const { toast } = useToast();
   
   const globalMidi = useGlobalWebMIDI();
@@ -179,20 +181,90 @@ export function PersistentWebMIDIManager() {
       </CardHeader>
       <CardContent className="space-y-6">
         
+        {/* Loading State */}
+        {globalMidi.isLoading && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+            <div className="flex items-center gap-2 text-blue-700">
+              <RefreshCw className="h-4 w-4 animate-spin" />
+              <span className="font-medium">{globalMidi.loadingMessage}</span>
+            </div>
+            {globalMidi.connectionProgress.length > 0 && (
+              <div className="mt-3 space-y-2">
+                {globalMidi.connectionProgress.map((device, index) => (
+                  <div key={index} className="flex items-center gap-2 text-sm">
+                    <div className={`w-2 h-2 rounded-full ${
+                      device.status === 'connected' ? 'bg-green-500' :
+                      device.status === 'connecting' ? 'bg-blue-500 animate-pulse' :
+                      device.status === 'failed' ? 'bg-red-500' :
+                      'bg-gray-300'
+                    }`} />
+                    <span className={device.status === 'failed' ? 'text-red-600' : ''}>{device.device}</span>
+                    <span className="text-xs text-muted-foreground ml-auto">
+                      {device.status === 'connected' && '✅'}
+                      {device.status === 'connecting' && '🔄'}
+                      {device.status === 'failed' && '❌'}
+                      {device.status === 'pending' && '⏳'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Mode Toggle */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <Button
+              size="sm"
+              variant={viewMode === 'single' ? 'default' : 'outline'}
+              onClick={() => setViewMode('single')}
+            >
+              Single Device
+            </Button>
+            <Button
+              size="sm"
+              variant={viewMode === 'multi' ? 'default' : 'outline'}
+              onClick={() => setViewMode('multi')}
+            >
+              Multi-Device
+            </Button>
+          </div>
+          {viewMode === 'multi' && (
+            <Badge variant="secondary">
+              {globalMidi.getConnectedDevices().length} connected
+            </Badge>
+          )}
+        </div>
+
         {/* Connection Status */}
         <div className="bg-muted/50 p-3 rounded-lg">
           <h4 className="font-medium mb-2">Connection Status</h4>
           <div className="flex items-center gap-2">
-            {globalMidi.isConnected ? (
-              <>
-                <Wifi className="h-4 w-4 text-green-600" />
-                <Badge variant="default">Connected: {globalMidi.deviceName}</Badge>
-              </>
+            {viewMode === 'single' ? (
+              globalMidi.isConnected ? (
+                <>
+                  <Wifi className="h-4 w-4 text-green-600" />
+                  <Badge variant="default">Connected: {globalMidi.deviceName}</Badge>
+                </>
+              ) : (
+                <>
+                  <WifiOff className="h-4 w-4 text-red-600" />
+                  <Badge variant="secondary">Not Connected</Badge>
+                </>
+              )
             ) : (
-              <>
-                <WifiOff className="h-4 w-4 text-red-600" />
-                <Badge variant="secondary">Not Connected</Badge>
-              </>
+              globalMidi.getConnectedDevices().length > 0 ? (
+                <>
+                  <Wifi className="h-4 w-4 text-green-600" />
+                  <Badge variant="default">{globalMidi.getConnectedDevices().length} devices connected</Badge>
+                </>
+              ) : (
+                <>
+                  <WifiOff className="h-4 w-4 text-red-600" />
+                  <Badge variant="secondary">No devices connected</Badge>
+                </>
+              )
             )}
           </div>
           <p className="text-sm text-muted-foreground mt-2">
@@ -229,31 +301,118 @@ export function PersistentWebMIDIManager() {
               </div>
             </div>
           ) : (
-            <div className="grid gap-2">
-              {availableOutputs.map((device) => (
-                <div key={device.id} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <Music className="h-4 w-4" />
-                    <div>
-                      <div className="font-medium">{device.name}</div>
-                      <div className="text-sm text-muted-foreground">{device.manufacturer}</div>
-                    </div>
+            <div className="space-y-4">
+              {/* Multi-device Controls */}
+              {viewMode === 'multi' && (
+                <div className="flex items-center gap-2 mb-4 p-3 bg-blue-50 rounded-lg">
+                  <div className="text-sm font-medium text-blue-700">
+                    Selected: {selectedDevices.length} device(s)
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant={device.state === 'connected' ? 'default' : 'secondary'}>
-                      {device.state}
-                    </Badge>
-                    <Button
-                      size="sm"
-                      onClick={() => connectToOutput(device.id)}
-                      disabled={device.state !== 'connected'}
-                      variant={globalMidi.isConnected && globalMidi.deviceName === device.name ? 'default' : 'outline'}
-                    >
-                      {globalMidi.isConnected && globalMidi.deviceName === device.name ? 'Connected' : 'Connect'}
-                    </Button>
-                  </div>
+                  <Button
+                    size="sm"
+                    onClick={async () => {
+                      if (selectedDevices.length > 0) {
+                        const result = await globalMidi.connectToMultipleDevices(selectedDevices);
+                        toast({
+                          title: "Multi-Device Connection",
+                          description: `Connected to ${result.connected.length} devices. ${result.failed.length} failed.`,
+                        });
+                        setSelectedDevices([]);
+                      }
+                    }}
+                    disabled={selectedDevices.length === 0 || globalMidi.isLoading}
+                  >
+                    Connect Selected ({selectedDevices.length})
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setSelectedDevices([])}
+                    disabled={selectedDevices.length === 0}
+                  >
+                    Clear Selection
+                  </Button>
                 </div>
-              ))}
+              )}
+
+              {/* Device List */}
+              <div className="grid gap-2">
+                {availableOutputs.map((device) => {
+                  const isConnectedMulti = globalMidi.isDeviceConnected(device.id);
+                  const connectedDevices = globalMidi.getConnectedDevices();
+                  const deviceChannel = connectedDevices.find(d => d.id === device.id)?.channel;
+                  
+                  return (
+                    <div key={device.id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        {viewMode === 'multi' && (
+                          <input
+                            type="checkbox"
+                            checked={selectedDevices.includes(device.id)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectedDevices([...selectedDevices, device.id]);
+                              } else {
+                                setSelectedDevices(selectedDevices.filter(id => id !== device.id));
+                              }
+                            }}
+                            disabled={isConnectedMulti}
+                            className="w-4 h-4"
+                          />
+                        )}
+                        <Music className="h-4 w-4" />
+                        <div>
+                          <div className="font-medium">{device.name}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {device.manufacturer}
+                            {viewMode === 'multi' && deviceChannel && (
+                              <span className="ml-2 text-blue-600">• Channel {deviceChannel}</span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant={device.state === 'connected' ? 'default' : 'secondary'}>
+                          {device.state}
+                        </Badge>
+                        {viewMode === 'single' ? (
+                          <Button
+                            size="sm"
+                            onClick={() => connectToOutput(device.id)}
+                            disabled={device.state !== 'connected'}
+                            variant={globalMidi.isConnected && globalMidi.deviceName === device.name ? 'default' : 'outline'}
+                          >
+                            {globalMidi.isConnected && globalMidi.deviceName === device.name ? 'Connected' : 'Connect'}
+                          </Button>
+                        ) : (
+                          <Button
+                            size="sm"
+                            onClick={async () => {
+                              if (isConnectedMulti) {
+                                await globalMidi.disconnectDevice(device.id);
+                                toast({
+                                  title: "Device Disconnected",
+                                  description: `${device.name} disconnected`,
+                                });
+                              } else {
+                                const result = await globalMidi.connectToMultipleDevices([device.id]);
+                                toast({
+                                  title: "Device Connection",
+                                  description: result.connected.length > 0 ? `${device.name} connected` : `Failed to connect to ${device.name}`,
+                                });
+                              }
+                            }}
+                            disabled={device.state !== 'connected' || globalMidi.isLoading}
+                            variant={isConnectedMulti ? 'default' : 'outline'}
+                          >
+                            {isConnectedMulti ? 'Disconnect' : 'Connect'}
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>

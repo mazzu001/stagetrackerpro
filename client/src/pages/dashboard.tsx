@@ -844,7 +844,7 @@ export default function Dashboard() {
                             onClick={() => handleFieldEdit('lastName')}
                             className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
                           >
-                            <span className="text-sm">
+                            <span className="text-[20px]">
                               {profileData.lastName || 'Click to add last name'}
                             </span>
                             {!profileData.lastName && <span className="text-muted-foreground text-sm ml-2">✎</span>}

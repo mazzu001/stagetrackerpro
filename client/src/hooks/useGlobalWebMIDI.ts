@@ -769,7 +769,10 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   }, []);
   
   const refreshDevices = useCallback(async () => {
-    await initializeWebMIDI();
+    // Don't await - let MIDI initialization run in background
+    initializeWebMIDI().catch(error => {
+      console.log('🔍 MIDI scan completed (no devices found)');
+    });
   }, []);
   
   const connectToDeviceCallback = useCallback(async (deviceId: string) => {

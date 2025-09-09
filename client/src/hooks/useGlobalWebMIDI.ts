@@ -127,6 +127,10 @@ interface GlobalMIDIState {
   sendCommandToAll: (command: string) => Promise<boolean>;
   sendCommandToDevice: (command: string, deviceId: string) => Promise<boolean>;
   isDeviceConnected: (deviceId: string) => boolean;
+  // NEW: Loading states
+  isLoading: boolean;
+  loadingMessage: string;
+  connectionProgress: Array<{device: string, status: 'pending' | 'connecting' | 'connected' | 'failed'}>;
 }
 
 interface MIDIDevice {
@@ -182,12 +186,13 @@ const parseMIDICommand = (command: string): Uint8Array | null => {
 };
 
 // Auto-reconnect to last known device - CHECK ONLY ONCE, NO LOOPS
-const attemptAutoReconnect = async (): Promise<boolean> => {
+const attemptAutoReconnect = async (setLoadingState?: (loading: boolean, message: string) => void): Promise<boolean> => {
   const lastDevice = getLastConnectedDevice();
   if (!lastDevice || !globalMidiAccess) {
     return false;
   }
   
+  setLoadingState?.(true, `Please wait - Reconnecting to ${lastDevice.name}...`);
   console.log('🔄 Attempting auto-reconnect to:', lastDevice.name);
   
   // Try to find the device by ID ONLY - no loops or searching
@@ -195,11 +200,17 @@ const attemptAutoReconnect = async (): Promise<boolean> => {
   
   if (!output) {
     console.log('⚠️ Last connected device not available:', lastDevice.name);
+    setLoadingState?.(false, '');
     return false;
   }
   
   try {
-    await output.open();
+    // 2-second timeout for auto-reconnection
+    await Promise.race([
+      output.open(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Auto-reconnect timeout')), 2000))
+    ]);
+    
     globalSelectedOutput = output;
     globalConnectionStatus = 'Connected';
     globalDeviceName = output.name || 'Unknown Device';
@@ -215,10 +226,12 @@ const attemptAutoReconnect = async (): Promise<boolean> => {
       }
     }));
     
+    setLoadingState?.(false, '');
     return true;
     
   } catch (error) {
     console.error('❌ Auto-reconnect failed:', error);
+    setLoadingState?.(false, '');
     return false;
   }
 };
@@ -509,29 +522,50 @@ const getConnectedDevices = () => {
   return devices;
 };
 
-const connectToMultipleDevices = async (deviceIds: string[]): Promise<{connected: string[], failed: string[]}> => {
+const connectToMultipleDevices = async (deviceIds: string[], setLoadingState?: (loading: boolean, message: string, progress: Array<{device: string, status: 'pending' | 'connecting' | 'connected' | 'failed'}>) => void): Promise<{connected: string[], failed: string[]}> => {
   const connected: string[] = [];
   const failed: string[] = [];
   
+  // Set up initial loading state
+  const progress = deviceIds.map(id => ({
+    device: globalMidiAccess?.outputs.get(id)?.name || 'Unknown Device',
+    status: 'pending' as const
+  }));
+  
+  setLoadingState?.(true, 'Please wait - Connecting to MIDI devices...', progress);
+  
   if (!globalMidiAccess) {
+    setLoadingState?.(true, 'Please wait - Initializing MIDI system...', progress);
     const initialized = await initializeWebMIDI();
     if (!initialized) {
+      setLoadingState?.(false, '', []);
       return { connected: [], failed: deviceIds };
     }
   }
   
   console.log('🔄 Connecting to multiple devices...', deviceIds);
   
-  for (const deviceId of deviceIds) {
+  for (let i = 0; i < deviceIds.length; i++) {
+    const deviceId = deviceIds[i];
+    
+    // Update progress for current device
+    progress[i].status = 'connecting';
+    setLoadingState?.(true, `Please wait - Connecting to ${progress[i].device}... (${i + 1}/${deviceIds.length})`, [...progress]);
+    
     try {
       const output = globalMidiAccess!.outputs.get(deviceId);
       if (!output) {
         console.log('❌ Device not found:', deviceId);
         failed.push(deviceId);
+        progress[i].status = 'failed';
         continue;
       }
       
-      await output.open();
+      // Add 2-second timeout per device connection
+      await Promise.race([
+        output.open(),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Connection timeout')), 2000))
+      ]);
       
       // Assign channel (1-16, cycling)
       const channel = globalNextChannel;
@@ -545,16 +579,21 @@ const connectToMultipleDevices = async (deviceIds: string[]): Promise<{connected
       });
       
       connected.push(deviceId);
+      progress[i].status = 'connected';
       console.log('✅ Connected to device:', output.name, 'on channel', channel);
       
     } catch (error) {
       console.error('❌ Failed to connect to device:', deviceId, error);
       failed.push(deviceId);
+      progress[i].status = 'failed';
     }
   }
   
   // Save connected devices to localStorage
   saveConnectedDevices();
+  
+  // Clear loading state
+  setLoadingState?.(false, '', []);
   
   return { connected, failed };
 };
@@ -679,6 +718,11 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [deviceName, setDeviceName] = useState(globalDeviceName);
   const [inputDeviceName, setInputDeviceName] = useState(globalInputDeviceName);
   
+  // NEW: Loading states for background tasks
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState('');
+  const [connectionProgress, setConnectionProgress] = useState<Array<{device: string, status: 'pending' | 'connecting' | 'connected' | 'failed'}>>([]);
+  
   useEffect(() => {
     // Initialize Web MIDI asynchronously to prevent blocking
     const initAsync = async () => {
@@ -748,13 +792,19 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     return await connectToInputDevice(deviceId);
   }, []);
   
-  // NEW: Multi-device callbacks
+  // NEW: Multi-device callbacks with loading state support
   const getConnectedDevicesCallback = useCallback(() => {
     return getConnectedDevices();
   }, []);
   
   const connectToMultipleDevicesCallback = useCallback(async (deviceIds: string[]) => {
-    return await connectToMultipleDevices(deviceIds);
+    const setLoadingState = (loading: boolean, message: string, progress: Array<{device: string, status: 'pending' | 'connecting' | 'connected' | 'failed'}>) => {
+      setIsLoading(loading);
+      setLoadingMessage(message);
+      setConnectionProgress(progress);
+    };
+    
+    return await connectToMultipleDevices(deviceIds, setLoadingState);
   }, []);
   
   const disconnectDeviceCallback = useCallback(async (deviceId: string) => {
@@ -789,7 +839,11 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     disconnectDevice: disconnectDeviceCallback,
     sendCommandToAll: sendCommandToAllCallback,
     sendCommandToDevice: sendCommandToDeviceCallback,
-    isDeviceConnected: isDeviceConnectedCallback
+    isDeviceConnected: isDeviceConnectedCallback,
+    // NEW: Loading states
+    isLoading,
+    loadingMessage,
+    connectionProgress
   };
 };
 

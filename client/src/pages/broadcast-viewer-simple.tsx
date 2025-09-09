@@ -39,65 +39,33 @@ export default function SimpleBroadcastViewer() {
   // Get broadcast ID from URL
   const broadcastId = new URLSearchParams(window.location.search).get('id') || 'Matt';
 
-  // Memoized lyrics parsing to prevent excessive re-renders
-  const parsedLyrics = useMemo(() => {
-    if (!currentSong?.lyrics) return [];
+  // Lightweight current line detection - only calculate current line index
+  const getCurrentLine = () => {
+    if (!currentSong?.lyrics || !broadcastState?.position) return null;
     
     const lines = currentSong.lyrics.split('\n');
-    const parsedLines: ParsedLyricLine[] = [];
+    const currentPosition = broadcastState.position;
     
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed) continue;
-      
-      // Parse timestamp [MM:SS] or [M:SS]
-      const timestampMatch = trimmed.match(/^\[(\d{1,2}):(\d{2})\]/);
+    for (let i = lines.length - 1; i >= 0; i--) {
+      const line = lines[i].trim();
+      const timestampMatch = line.match(/^\[(\d{1,2}):(\d{2})\]/);
       if (timestampMatch) {
         const minutes = parseInt(timestampMatch[1]);
         const seconds = parseInt(timestampMatch[2]);
         const timestamp = minutes * 60 + seconds;
         
-        // Remove timestamp and MIDI commands from display text
-        const text = trimmed
-          .replace(/^\[(\d{1,2}):(\d{2})\]/, '')
-          .replace(/\[\[[^\]]+\]\]/g, '')
-          .trim();
-        
-        if (text) {
-          parsedLines.push({
-            text,
-            timestamp,
-            isCurrent: false,
-            isPast: false
-          });
+        if (currentPosition >= timestamp) {
+          return {
+            index: i,
+            text: line.replace(/^\[(\d{1,2}):(\d{2})\]/, '').replace(/\[\[[^\]]+\]\]/g, '').trim()
+          };
         }
       }
     }
-    
-    return parsedLines;
-  }, [currentSong?.lyrics]);
+    return null;
+  };
 
-  // Separate memoized calculation for current line highlighting
-  const lyricsWithHighlighting = useMemo(() => {
-    const currentPosition = broadcastState?.position || 0;
-    
-    // Determine current line
-    let currentLineIndex = -1;
-    for (let i = 0; i < parsedLyrics.length; i++) {
-      if (currentPosition >= parsedLyrics[i].timestamp) {
-        currentLineIndex = i;
-      } else {
-        break;
-      }
-    }
-    
-    // Update highlighting flags
-    return parsedLyrics.map((line, index) => ({
-      ...line,
-      isCurrent: index === currentLineIndex,
-      isPast: index < currentLineIndex
-    }));
-  }, [parsedLyrics, broadcastState?.position]);
+  const currentLine = getCurrentLine();
 
   useEffect(() => {
     // Simple WebSocket connection - no complex service layer
@@ -236,37 +204,28 @@ export default function SimpleBroadcastViewer() {
               </div>
             </div>
 
-            {/* Current Lyric */}
-            {broadcastState?.currentLyricLine && (
+            {/* Current Lyric - Karaoke Style */}
+            {currentLine && (
               <div className="bg-black/20 rounded-lg p-8 text-center">
-                <p className="text-2xl font-semibold leading-relaxed">
-                  {broadcastState.currentLyricLine}
+                <p className="text-2xl font-semibold leading-relaxed text-blue-300">
+                  {currentLine.text}
                 </p>
               </div>
             )}
 
-            {/* Karaoke-Style Lyrics */}
+            {/* Simple Lyrics Display */}
             {currentSong.lyrics && (
               <div className="bg-black/20 rounded-lg p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center">
                   <Volume2 className="mr-2 h-5 w-5" />
                   Lyrics
                 </h3>
-                <div className="space-y-2 max-h-96 overflow-y-auto">
-                  {lyricsWithHighlighting.map((line, index) => (
-                    <div
-                      key={index}
-                      className={`transition-all duration-500 p-2 rounded ${
-                        line.isCurrent 
-                          ? 'bg-blue-500/30 text-white text-lg font-semibold scale-105' 
-                          : line.isPast 
-                          ? 'text-gray-400 opacity-70' 
-                          : 'text-gray-300'
-                      }`}
-                    >
-                      {line.text}
-                    </div>
-                  ))}
+                <div className="text-gray-300 leading-relaxed whitespace-pre-line max-h-96 overflow-y-auto">
+                  {currentSong.lyrics
+                    .split('\n')
+                    .map(line => line.replace(/^\[(\d{1,2}):(\d{2})\]/, '').replace(/\[\[[^\]]+\]\]/g, '').trim())
+                    .filter(line => line)
+                    .join('\n')}
                 </div>
               </div>
             )}

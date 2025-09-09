@@ -1,0 +1,349 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+ Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-6bcab48f07aed158.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-6bcab48f07aed158.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-6bcab48f07aed158.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-6bcab48f07aed158.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar45%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=z6ADgFg1Ky9T' failed: 
+t @ eruda.js:2
+eruda.js:2 Uncaught (in promise) 
+ Loaded 29 audio file path references from localStorage
+ 🔄 Auto-loading 29 stored audio files...
+ 🔍 BrowserFS.getAudioFile: Looking for track 8d40351a-99cf-40f6-9495-51ea5bd7ee4d
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 8d40351a-99cf-40f6-9495-51ea5bd7ee4d
+ ❌ Database not initialized for track 8d40351a-99cf-40f6-9495-51ea5bd7ee4d
+ Expected audio files for tracks:
+   - Comfortably Numb - Acoustic.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/8d40351a-99cf-40f6-9495-51ea5bd7ee4d)
+   - Comfortably Numb - Backups.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/19bc7d3e-d54c-41aa-8579-94432fbbe315)
+   - Comfortably Numb - Bass.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/b940a11e-0f16-49a1-a3ad-ff3108629e57)
+   - Comfortably Numb - Click.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/ff07365b-0758-48a5-96e4-5d4406eb82d7)
+   - Comfortably Numb - Drums.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/5c781265-6e39-485a-8562-8eef92ab2eb0)
+   - Comfortably Numb - Keys.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/f8d6d53e-ad93-4068-b160-92480a91b6b3)
+   - Comfortably Numb - Acoustic.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/47de9edd-40f3-453f-b0da-fa549781fa4a)
+   - Comfortably Numb - Backups.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/fa547ada-4c5d-4867-899c-ca3c15344ac7)
+   - Comfortably Numb - Bass.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/c9c3854b-a4f6-4f19-a9ec-59d682af31ba)
+   - Comfortably Numb - Click.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/3a0ccbed-b712-41ab-8a19-ab694de45f10)
+   - Comfortably Numb - Drums.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/79353001-c7ba-4638-b9db-98617eb6503a)
+   - Comfortably Numb - Keys.mp3 (browser://69fa95aa-0e37-4bc7-92cf-1b4f9900a074/7116f959-3790-46da-856e-81b6caf1d034)
+   - 3AM - Backups.mp3 (browser://1e709f03-effa-415b-9f16-0bbd3885b14e/c95e9295-e1eb-426b-8ada-dca64e3f39ea)
+   - 3AM - Bass.mp3 (browser://1e709f03-effa-415b-9f16-0bbd3885b14e/2993924b-bea3-4e51-a3be-683ab8c58f82)
+   - 3AM - Click.mp3 (browser://1e709f03-effa-415b-9f16-0bbd3885b14e/b9669ebc-880a-48d8-a4bc-eafc1244f212)
+   - 3AM - Drums.mp3 (browser://1e709f03-effa-415b-9f16-0bbd3885b14e/97144b32-2617-4b91-abd9-e7c4d04513b1)
+   - 3AM - Guitars.mp3 (browser://1e709f03-effa-415b-9f16-0bbd3885b14e/fdb70fc0-93b4-457a-846f-73af2d319292)
+   - 3AM - Organ.mp3 (browser://1e709f03-effa-415b-9f16-0bbd3885b14e/fe6ebb33-de14-47a4-be94-916cd6c91ef0)
+   - Already Gone - Backups.mp3 (browser://7deef8d7-0197-4d9d-8753-de99d4d9176c/b171ec5e-fe86-4372-8334-09517de2eb80)
+   - Already Gone - Bass.mp3 (browser://7deef8d7-0197-4d9d-8753-de99d4d9176c/f92f1199-8495-415c-b9c9-3f62f6342044)
+   - Already Gone - Click.mp3 (browser://7deef8d7-0197-4d9d-8753-de99d4d9176c/dee650b0-f697-40f8-ad19-3570b1c2612f)
+   - Already Gone - Drums.mp3 (browser://7deef8d7-0197-4d9d-8753-de99d4d9176c/4d319c49-b3c1-40d3-b37c-a821ba1694d3)
+   - Already Gone - Guitars.mp3 (browser://7deef8d7-0197-4d9d-8753-de99d4d9176c/ba50d327-7b2f-438c-af36-a2446ac6cd2b)
+   - 3AM - Backups.mp3 (browser://4fc52e2e-febe-4c07-84cd-594e5697101e/dfd4e4a8-f0c4-4ca4-b0fb-405aefd5db26)
+   - 3AM - Bass.mp3 (browser://4fc52e2e-febe-4c07-84cd-594e5697101e/ccfd0d5a-7f2d-44aa-97e2-32a76933d906)
+   - 3AM - Click.mp3 (browser://4fc52e2e-febe-4c07-84cd-594e5697101e/513e2143-d5d5-44cf-8f05-2f6dd92deef9)
+   - 3AM - Drums.mp3 (browser://4fc52e2e-febe-4c07-84cd-594e5697101e/d46d5800-1e18-47dd-ae33-8de7b96d8229)
+   - 3AM - Guitars.mp3 (browser://4fc52e2e-febe-4c07-84cd-594e5697101e/f3e3f635-ce7f-480d-9f37-c56fdf940400)
+   - 3AM - Organ.mp3 (browser://4fc52e2e-febe-4c07-84cd-594e5697101e/0fa4f882-a9fc-4a59-a32a-c354b1832656)
+ These files will be loaded when you select them through the file picker.
+ 🔍 BrowserFS.getAudioFile: Looking for track 19bc7d3e-d54c-41aa-8579-94432fbbe315
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 19bc7d3e-d54c-41aa-8579-94432fbbe315
+ ❌ Database not initialized for track 19bc7d3e-d54c-41aa-8579-94432fbbe315
+ 🔍 BrowserFS.getAudioFile: Looking for track b940a11e-0f16-49a1-a3ad-ff3108629e57
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for b940a11e-0f16-49a1-a3ad-ff3108629e57
+ ❌ Database not initialized for track b940a11e-0f16-49a1-a3ad-ff3108629e57
+ 🔍 BrowserFS.getAudioFile: Looking for track ff07365b-0758-48a5-96e4-5d4406eb82d7
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for ff07365b-0758-48a5-96e4-5d4406eb82d7
+ ❌ Database not initialized for track ff07365b-0758-48a5-96e4-5d4406eb82d7
+ 🔍 BrowserFS.getAudioFile: Looking for track 5c781265-6e39-485a-8562-8eef92ab2eb0
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 5c781265-6e39-485a-8562-8eef92ab2eb0
+ ❌ Database not initialized for track 5c781265-6e39-485a-8562-8eef92ab2eb0
+ 🔍 BrowserFS.getAudioFile: Looking for track f8d6d53e-ad93-4068-b160-92480a91b6b3
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for f8d6d53e-ad93-4068-b160-92480a91b6b3
+ ❌ Database not initialized for track f8d6d53e-ad93-4068-b160-92480a91b6b3
+ 🔍 BrowserFS.getAudioFile: Looking for track 47de9edd-40f3-453f-b0da-fa549781fa4a
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 47de9edd-40f3-453f-b0da-fa549781fa4a
+ ❌ Database not initialized for track 47de9edd-40f3-453f-b0da-fa549781fa4a
+ 🔍 BrowserFS.getAudioFile: Looking for track fa547ada-4c5d-4867-899c-ca3c15344ac7
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for fa547ada-4c5d-4867-899c-ca3c15344ac7
+ ❌ Database not initialized for track fa547ada-4c5d-4867-899c-ca3c15344ac7
+ 🔍 BrowserFS.getAudioFile: Looking for track c9c3854b-a4f6-4f19-a9ec-59d682af31ba
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for c9c3854b-a4f6-4f19-a9ec-59d682af31ba
+ ❌ Database not initialized for track c9c3854b-a4f6-4f19-a9ec-59d682af31ba
+ 🔍 BrowserFS.getAudioFile: Looking for track 3a0ccbed-b712-41ab-8a19-ab694de45f10
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 3a0ccbed-b712-41ab-8a19-ab694de45f10
+ ❌ Database not initialized for track 3a0ccbed-b712-41ab-8a19-ab694de45f10
+ 🔍 BrowserFS.getAudioFile: Looking for track 79353001-c7ba-4638-b9db-98617eb6503a
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 79353001-c7ba-4638-b9db-98617eb6503a
+ ❌ Database not initialized for track 79353001-c7ba-4638-b9db-98617eb6503a
+ 🔍 BrowserFS.getAudioFile: Looking for track 7116f959-3790-46da-856e-81b6caf1d034
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 7116f959-3790-46da-856e-81b6caf1d034
+ ❌ Database not initialized for track 7116f959-3790-46da-856e-81b6caf1d034
+ 🔍 BrowserFS.getAudioFile: Looking for track c95e9295-e1eb-426b-8ada-dca64e3f39ea
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for c95e9295-e1eb-426b-8ada-dca64e3f39ea
+ ❌ Database not initialized for track c95e9295-e1eb-426b-8ada-dca64e3f39ea
+ 🔍 BrowserFS.getAudioFile: Looking for track 2993924b-bea3-4e51-a3be-683ab8c58f82
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 2993924b-bea3-4e51-a3be-683ab8c58f82
+ ❌ Database not initialized for track 2993924b-bea3-4e51-a3be-683ab8c58f82
+ 🔍 BrowserFS.getAudioFile: Looking for track b9669ebc-880a-48d8-a4bc-eafc1244f212
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for b9669ebc-880a-48d8-a4bc-eafc1244f212
+ ❌ Database not initialized for track b9669ebc-880a-48d8-a4bc-eafc1244f212
+ 🔍 BrowserFS.getAudioFile: Looking for track 97144b32-2617-4b91-abd9-e7c4d04513b1
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 97144b32-2617-4b91-abd9-e7c4d04513b1
+ ❌ Database not initialized for track 97144b32-2617-4b91-abd9-e7c4d04513b1
+ 🔍 BrowserFS.getAudioFile: Looking for track fdb70fc0-93b4-457a-846f-73af2d319292
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for fdb70fc0-93b4-457a-846f-73af2d319292
+ ❌ Database not initialized for track fdb70fc0-93b4-457a-846f-73af2d319292
+ 🔍 BrowserFS.getAudioFile: Looking for track fe6ebb33-de14-47a4-be94-916cd6c91ef0
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for fe6ebb33-de14-47a4-be94-916cd6c91ef0
+ ❌ Database not initialized for track fe6ebb33-de14-47a4-be94-916cd6c91ef0
+ 🔍 BrowserFS.getAudioFile: Looking for track b171ec5e-fe86-4372-8334-09517de2eb80
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for b171ec5e-fe86-4372-8334-09517de2eb80
+ ❌ Database not initialized for track b171ec5e-fe86-4372-8334-09517de2eb80
+ 🔍 BrowserFS.getAudioFile: Looking for track f92f1199-8495-415c-b9c9-3f62f6342044
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for f92f1199-8495-415c-b9c9-3f62f6342044
+Console.js:61 ❌ Database not initialized for track f92f1199-8495-415c-b9c9-3f62f6342044
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track dee650b0-f697-40f8-ad19-3570b1c2612f
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for dee650b0-f697-40f8-ad19-3570b1c2612f
+Console.js:61 ❌ Database not initialized for track dee650b0-f697-40f8-ad19-3570b1c2612f
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 4d319c49-b3c1-40d3-b37c-a821ba1694d3
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 4d319c49-b3c1-40d3-b37c-a821ba1694d3
+Console.js:61 ❌ Database not initialized for track 4d319c49-b3c1-40d3-b37c-a821ba1694d3
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track ba50d327-7b2f-438c-af36-a2446ac6cd2b
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for ba50d327-7b2f-438c-af36-a2446ac6cd2b
+Console.js:61 ❌ Database not initialized for track ba50d327-7b2f-438c-af36-a2446ac6cd2b
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track dfd4e4a8-f0c4-4ca4-b0fb-405aefd5db26
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for dfd4e4a8-f0c4-4ca4-b0fb-405aefd5db26
+Console.js:61 ❌ Database not initialized for track dfd4e4a8-f0c4-4ca4-b0fb-405aefd5db26
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track ccfd0d5a-7f2d-44aa-97e2-32a76933d906
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for ccfd0d5a-7f2d-44aa-97e2-32a76933d906
+Console.js:61 ❌ Database not initialized for track ccfd0d5a-7f2d-44aa-97e2-32a76933d906
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 513e2143-d5d5-44cf-8f05-2f6dd92deef9
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 513e2143-d5d5-44cf-8f05-2f6dd92deef9
+Console.js:61 ❌ Database not initialized for track 513e2143-d5d5-44cf-8f05-2f6dd92deef9
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track d46d5800-1e18-47dd-ae33-8de7b96d8229
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for d46d5800-1e18-47dd-ae33-8de7b96d8229
+Console.js:61 ❌ Database not initialized for track d46d5800-1e18-47dd-ae33-8de7b96d8229
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track f3e3f635-ce7f-480d-9f37-c56fdf940400
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for f3e3f635-ce7f-480d-9f37-c56fdf940400
+Console.js:61 ❌ Database not initialized for track f3e3f635-ce7f-480d-9f37-c56fdf940400
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 0fa4f882-a9fc-4a59-a32a-c354b1832656
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 0fa4f882-a9fc-4a59-a32a-c354b1832656
+Console.js:61 ❌ Database not initialized for track 0fa4f882-a9fc-4a59-a32a-c354b1832656
+Console.js:61 ✅ Auto-loaded 0/29 audio files into cache
+Console.js:61 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+Console.js:61 🔍 Parsed values: Object
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 Browser file system already initialized - auto-initializing
+Console.js:61 ✅ BrowserFileSystem database auto-initialized
+Console.js:61 Browser file system initialized successfully
+stripe.js:1 Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+stripe.js:1 Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+Console.js:61 🔄 Resetting processed timestamps - Song changed to: none
+Console.js:61 ⏹️ Resetting processed timestamps - Playback stopped
+Console.js:61 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+Console.js:61 🔍 Initial service isHost check: Object
+Console.js:61 🎵 Initializing global Web MIDI access...
+Console.js:61 🎵 Setting up persistent Web MIDI event listener...
+Console.js:61 🔄 Global Web MIDI status: Disconnected - 
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: Object
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 📋 Loaded 3 songs from local storage (alphabetically sorted)
+Console.js:61 🔍 Debug values: Object
+stallwart.build.js:1 stallwart: failed ping 1
+stallwart.build.js:1 stallwart: failed ping 2
+stallwart.build.js:1 stallwart: failed ping 3
+stallwart.build.js:1 stallwart: failed ping 4
+Console.js:61 ❌ Failed to initialize Web MIDI: Error: MIDI initialization timeout
+    at useGlobalWebMIDI.ts:177:31
+Mt.forEach.n.<computed> @ Console.js:61
+stallwart.build.js:1 stallwart: failed ping 5
+stallwart.build.js:1 stallwart: session stalled
+anchor?ar=1&k=6Ldqhw…jQ0Mw..&hl=en&v=…:1 Uncaught (in promise) Timeout (o)
+anchor?ar=1&k=6Ldqhw…jQ0Mw..&hl=en&v=…:1 Uncaught (in promise) Timeout (o)
+Console.js:61 🎵 Initializing global Web MIDI access...
+Console.js:61 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+(anonymous) @ @radix-ui_react-dialog.js?v=80e16b82:344
+commitHookEffectListMount @ chunk-UZOKQUDP.js?v=80e16b82:16915
+commitPassiveMountOnFiber @ chunk-UZOKQUDP.js?v=80e16b82:18156
+commitPassiveMountEffects_complete @ chunk-UZOKQUDP.js?v=80e16b82:18129
+commitPassiveMountEffects_begin @ chunk-UZOKQUDP.js?v=80e16b82:18119
+commitPassiveMountEffects @ chunk-UZOKQUDP.js?v=80e16b82:18109
+flushPassiveEffectsImpl @ chunk-UZOKQUDP.js?v=80e16b82:19490
+flushPassiveEffects @ chunk-UZOKQUDP.js?v=80e16b82:19447
+commitRootImpl @ chunk-UZOKQUDP.js?v=80e16b82:19416
+commitRoot @ chunk-UZOKQUDP.js?v=80e16b82:19277
+performSyncWorkOnRoot @ chunk-UZOKQUDP.js?v=80e16b82:18895
+flushSyncCallbacks @ chunk-UZOKQUDP.js?v=80e16b82:9119
+(anonymous) @ chunk-UZOKQUDP.js?v=80e16b82:18627
+Console.js:61 🔄 Refreshed MIDI devices: 0 outputs found
+Console.js:61 ❌ Failed to initialize Web MIDI: Error: MIDI initialization timeout
+    at useGlobalWebMIDI.ts:177:31
+Mt.forEach.n.<computed> @ Console.js:61
+initializeWebMIDI @ useGlobalWebMIDI.ts:197
+await in initializeWebMIDI
+initAsync @ useGlobalWebMIDI.ts:422
+(anonymous) @ useGlobalWebMIDI.ts:429
+commitHookEffectListMount @ chunk-UZOKQUDP.js?v=80e16b82:16915
+commitPassiveMountOnFiber @ chunk-UZOKQUDP.js?v=80e16b82:18156
+commitPassiveMountEffects_complete @ chunk-UZOKQUDP.js?v=80e16b82:18129
+commitPassiveMountEffects_begin @ chunk-UZOKQUDP.js?v=80e16b82:18119
+commitPassiveMountEffects @ chunk-UZOKQUDP.js?v=80e16b82:18109
+flushPassiveEffectsImpl @ chunk-UZOKQUDP.js?v=80e16b82:19490
+flushPassiveEffects @ chunk-UZOKQUDP.js?v=80e16b82:19447
+commitRootImpl @ chunk-UZOKQUDP.js?v=80e16b82:19416
+commitRoot @ chunk-UZOKQUDP.js?v=80e16b82:19277
+performSyncWorkOnRoot @ chunk-UZOKQUDP.js?v=80e16b82:18895
+flushSyncCallbacks @ chunk-UZOKQUDP.js?v=80e16b82:9119
+(anonymous) @ chunk-UZOKQUDP.js?v=80e16b82:18627

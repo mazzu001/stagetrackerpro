@@ -569,11 +569,27 @@ const connectToMultipleDevices = async (deviceIds: string[], setLoadingState?: (
         continue;
       }
       
-      // Add 2-second timeout per device connection
-      await Promise.race([
-        output.open(),
-        new Promise((_, reject) => setTimeout(() => reject(new Error('Connection timeout')), 2000))
-      ]);
+      // Don't await - handle device connection in background with timeout
+      try {
+        Promise.race([
+          output.open(),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Connection timeout')), 2000))
+        ])
+        .then(() => {
+          // Device opened successfully - continue with connection logic
+          console.log('✅ Device opened successfully:', output.name);
+        })
+        .catch((error) => {
+          console.error('❌ Failed to open device:', output.name, error);
+          // Remove from connected devices if opening failed
+          globalConnectedOutputs.delete(deviceId);
+        });
+        
+        // Continue immediately without waiting for device to open
+      } catch (error) {
+        // If opening fails, still treat as failed but don't block
+        throw error;
+      }
       
       // Assign channel (1-16, cycling)
       const channel = globalNextChannel;
@@ -611,7 +627,10 @@ const disconnectDevice = async (deviceId: string): Promise<boolean> => {
     // Check outputs
     if (globalConnectedOutputs.has(deviceId)) {
       const info = globalConnectedOutputs.get(deviceId)!;
-      await info.device.close();
+      // Don't await - handle device closing in background
+      info.device.close().catch(error => {
+        console.error('❌ Error closing output device:', error);
+      });
       globalConnectedOutputs.delete(deviceId);
       console.log('✅ Disconnected output device:', info.name);
       
@@ -629,7 +648,10 @@ const disconnectDevice = async (deviceId: string): Promise<boolean> => {
     // Check inputs
     if (globalConnectedInputs.has(deviceId)) {
       const info = globalConnectedInputs.get(deviceId)!;
-      await info.device.close();
+      // Don't await - handle device closing in background
+      info.device.close().catch(error => {
+        console.error('❌ Error closing input device:', error);
+      });
       globalConnectedInputs.delete(deviceId);
       console.log('✅ Disconnected input device:', info.name);
       

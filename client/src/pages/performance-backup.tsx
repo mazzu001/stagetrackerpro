@@ -86,24 +86,31 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         return false;
       }
 
-      const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
-      const output = midiAccess.outputs.get(outputDevice.id);
-      
-      if (!output) {
-        console.warn(`⚠️ USB MIDI output device ${outputDevice.id} not found`);
-        return false;
-      }
+      // Don't await - handle MIDI access in background
+      navigator.requestMIDIAccess({ sysex: false })
+        .then((midiAccess) => {
+          const output = midiAccess.outputs.get(outputDevice.id);
+          
+          if (!output) {
+            console.warn(`⚠️ USB MIDI output device ${outputDevice.id} not found`);
+            return;
+          }
 
-      // Parse and send the MIDI command
-      const parseResult = parseMIDICommand(commandText);
-      if (parseResult && parseResult.bytes.length > 0) {
-        console.log(`🎹 Sequencer sending to ${outputDevice.name}: ${commandText} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-        output.send(parseResult.bytes);
-        return true;
-      } else {
-        console.warn(`⚠️ Failed to parse MIDI command: ${commandText}`);
-        return false;
-      }
+          // Parse and send the MIDI command
+          const parseResult = parseMIDICommand(commandText);
+          if (parseResult && parseResult.bytes.length > 0) {
+            console.log(`🎹 Sequencer sending to ${outputDevice.name}: ${commandText} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+            output.send(parseResult.bytes);
+          } else {
+            console.warn(`⚠️ Failed to parse MIDI command: ${commandText}`);
+          }
+        })
+        .catch((error) => {
+          console.error('❌ MIDI access failed:', error);
+        });
+      
+      // Return immediately - MIDI sending happens in background
+      return true;
     } catch (error) {
       console.error('❌ Error executing MIDI command from sequencer:', error);
       return false;
@@ -135,38 +142,47 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
     try {
       if (navigator.requestMIDIAccess) {
-        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
-        const output = midiAccess.outputs.get(selectedOutputDevice);
-        
-        if (output) {
-          // Parse MIDI command using proper parser (supports [[PC:12:1]], hex, and text formats)
-          const parseResult = parseMIDICommand(footerMidiCommand);
-          
-          if (parseResult && parseResult.bytes.length > 0) {
-            console.log(`📤 Footer MIDI Sending: ${footerMidiCommand} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-            output.send(parseResult.bytes);
-            triggerMidiBlink(); // Blue blink for visual confirmation
+        // Don't await - handle MIDI access in background
+        navigator.requestMIDIAccess({ sysex: false })
+          .then((midiAccess) => {
+            const output = midiAccess.outputs.get(selectedOutputDevice);
             
+            if (output) {
+              // Parse MIDI command using proper parser (supports [[PC:12:1]], hex, and text formats)
+              const parseResult = parseMIDICommand(footerMidiCommand);
+              
+              if (parseResult && parseResult.bytes.length > 0) {
+                console.log(`📤 Footer MIDI Sending: ${footerMidiCommand} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+                output.send(parseResult.bytes);
+                triggerMidiBlink(); // Blue blink for visual confirmation
+                
+                toast({
+                  title: "Message Sent",
+                  description: `${parseResult.formatted} sent to ${selectedMidiDeviceName}`,
+                });
+              } else {
+                toast({
+                  title: "Invalid MIDI Command",
+                  description: "Please use format: [[PC:12:1]], [[CC:7:64:1]], or hex bytes",
+                  variant: "destructive",
+                });
+              }
+            } else {
+              toast({
+                title: "Device Not Found",
+                description: "Selected output device is not available",
+                variant: "destructive",
+              });
+            }
+          })
+          .catch((error) => {
+            console.error('Footer MIDI Send Error:', error);
             toast({
-              title: "Message Sent",
-              description: `${parseResult.formatted} sent to ${selectedMidiDeviceName}`,
-            });
-          } else {
-            toast({
-              title: "Invalid MIDI Command",
-              description: "Please use format: [[PC:12:1]], [[CC:7:64:1]], or hex bytes",
+              title: "Send Failed",
+              description: `Unable to send MIDI message: ${error instanceof Error ? error.message : 'Unknown error'}`,
               variant: "destructive",
             });
-            return;
-          }
-        } else {
-          toast({
-            title: "Device Not Found",
-            description: "Selected output device is not available",
-            variant: "destructive",
           });
-          return;
-        }
       }
       
       setFooterMidiCommand('');
@@ -197,26 +213,31 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
     try {
       if (navigator.requestMIDIAccess) {
-        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
-        const output = midiAccess.outputs.get(selectedOutputDevice);
-        
-        if (output) {
-          // Parse MIDI command using proper parser (supports [[PC:12:1]], hex, and text formats)
-          const parseResult = parseMIDICommand(command);
-          
-          if (parseResult && parseResult.bytes.length > 0) {
-            console.log(`📤 Lyrics Auto MIDI Sending: ${command} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
-            output.send(parseResult.bytes);
-            triggerMidiBlink(); // Blue blink for visual confirmation
-            // Silent execution - no toast notification during performance
-          } else {
-            console.warn(`⚠️ Invalid MIDI command from lyrics: ${command}`);
-            return;
-          }
-        } else {
-          console.warn(`⚠️ MIDI output device not found for lyrics command: ${command}`);
-          return;
-        }
+        // Don't await - handle MIDI access in background
+        navigator.requestMIDIAccess({ sysex: false })
+          .then((midiAccess) => {
+            const output = midiAccess.outputs.get(selectedOutputDevice);
+            
+            if (output) {
+              // Parse MIDI command using proper parser (supports [[PC:12:1]], hex, and text formats)
+              const parseResult = parseMIDICommand(command);
+              
+              if (parseResult && parseResult.bytes.length > 0) {
+                console.log(`📤 Lyrics Auto MIDI Sending: ${command} → [${parseResult.bytes.map(b => b.toString(16).padStart(2, '0')).join(' ')}]`);
+                output.send(parseResult.bytes);
+                triggerMidiBlink(); // Blue blink for visual confirmation
+                // Silent execution - no toast notification during performance
+              } else {
+                console.warn(`⚠️ Invalid MIDI command from lyrics: ${command}`);
+              }
+            } else {
+              console.warn(`⚠️ MIDI output device not found for lyrics command: ${command}`);
+            }
+          })
+          .catch((error) => {
+            console.error('Lyrics MIDI Send Error:', error);
+            // Silent error handling - no toast notification during performance
+          });
       }
       
       // Clear the input after successful send

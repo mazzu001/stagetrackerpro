@@ -1022,13 +1022,21 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     
     const setupMIDIListeners = async () => {
       try {
-        midiAccess = await navigator.requestMIDIAccess();
-        
-        // Add listeners to all input devices
-        midiAccess.inputs.forEach((input: any) => {
-          input.addEventListener('midimessage', handleIncomingMIDIMessage);
-          console.log('🎵 Added MIDI listener to:', input.name);
-        });
+        // Don't await - handle MIDI access in background
+        navigator.requestMIDIAccess()
+          .then((access) => {
+            midiAccess = access;
+            
+            // Add listeners to all input devices
+            midiAccess.inputs.forEach((input: any) => {
+              input.addEventListener('midimessage', handleIncomingMIDIMessage);
+              console.log('🎵 Added MIDI listener to:', input.name);
+            });
+          })
+          .catch((error) => {
+            console.error('❌ Failed to set up MIDI listeners:', error);
+            setIsMidiListening(false);
+          });
         
       } catch (error) {
         console.error('❌ Failed to set up MIDI listeners:', error);

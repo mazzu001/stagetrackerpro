@@ -95,34 +95,45 @@ export function WebMIDIManager({ onStatusChange }: WebMIDIManagerProps) {
       console.log('🎵 Requesting Web MIDI access...');
       console.log('🔍 Checking system MIDI availability...');
       
-      // Request access with sysex for broader device compatibility
-      const access = await navigator.requestMIDIAccess({ sysex: true });
-      setMidiAccess(access);
-      
-      console.log('✅ Web MIDI access granted successfully');
-      console.log('🔍 System reports:', access.inputs.size, 'input devices and', access.outputs.size, 'output devices');
-      
-      // Additional debugging for paired Bluetooth devices
-      console.log('🔍 Detailed device analysis:');
-      console.log('  - Web MIDI can only see devices that appear in your system\'s MIDI device list');
-      console.log('  - Paired Bluetooth devices must be "connected" (not just paired) to appear');
-      console.log('  - Some Bluetooth MIDI devices need to be "activated" in system settings');
-      
-      // Set up device change listeners
-      access.onstatechange = handleDeviceChange;
-      
-      // Scan for devices
-      scanDevices(access);
-      
-      if (access.inputs.size > 0 || access.outputs.size > 0) {
-        onStatusChange?.('Connected');
-      } else {
-        onStatusChange?.('No System MIDI Devices');
-        console.log('⚠️ No MIDI devices detected by system. For Bluetooth MIDI:');
-        console.log('  1. Verify device shows as "Connected" in Bluetooth settings');
-        console.log('  2. Look for it in system MIDI settings (not just Bluetooth)');
-        console.log('  3. Some devices need driver installation or manual activation');
-      }
+      // Don't await - handle MIDI access in background
+      navigator.requestMIDIAccess({ sysex: true })
+        .then((access) => {
+          setMidiAccess(access);
+          
+          console.log('✅ Web MIDI access granted successfully');
+          console.log('🔍 System reports:', access.inputs.size, 'input devices and', access.outputs.size, 'output devices');
+          
+          // Additional debugging for paired Bluetooth devices
+          console.log('🔍 Detailed device analysis:');
+          console.log('  - Web MIDI can only see devices that appear in your system\'s MIDI device list');
+          console.log('  - Paired Bluetooth devices must be "connected" (not just paired) to appear');
+          console.log('  - Some Bluetooth MIDI devices need to be "activated" in system settings');
+          
+          // Set up device change listeners
+          access.onstatechange = handleDeviceChange;
+          
+          // Scan for devices
+          scanDevices(access);
+          
+          if (access.inputs.size > 0 || access.outputs.size > 0) {
+            onStatusChange?.('Connected');
+          } else {
+            onStatusChange?.('No System MIDI Devices');
+            console.log('⚠️ No MIDI devices detected by system. For Bluetooth MIDI:');
+            console.log('  1. Verify device shows as "Connected" in Bluetooth settings');
+            console.log('  2. Look for it in system MIDI settings (not just Bluetooth)');
+            console.log('  3. Some devices need driver installation or manual activation');
+          }
+        })
+        .catch((error) => {
+          console.error('❌ Web MIDI access failed:', error);
+          onStatusChange?.('Error');
+          toast({
+            title: "Web MIDI Access Denied",
+            description: "Browser blocked MIDI access. Check permissions and try again.",
+            variant: "destructive",
+          });
+        });
       
     } catch (error) {
       console.error('❌ Web MIDI access failed:', error);

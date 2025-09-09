@@ -13,7 +13,7 @@ import { WaveformVisualizer } from "@/components/waveform-visualizer";
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -1697,9 +1697,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Persistent Web MIDI Devices</DialogTitle>
-              <p className="text-sm text-muted-foreground">
+              <DialogDescription>
                 Connections persist even when this dialog is closed - perfect for live performance automation
-              </p>
+              </DialogDescription>
             </DialogHeader>
             <PersistentWebMIDIManager />
           </DialogContent>
@@ -1711,9 +1711,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>USB MIDI Manager</DialogTitle>
-              <p className="text-sm text-muted-foreground">
+              <DialogDescription>
                 Connect and control USB MIDI devices using the Web MIDI API
-              </p>
+              </DialogDescription>
             </DialogHeader>
             <USBMidiManager />
           </DialogContent>
@@ -1724,9 +1724,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Export Music Library</DialogTitle>
-            <p className="text-sm text-muted-foreground">
+            <DialogDescription>
               Choose a name for your backup file
-            </p>
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>

@@ -188,18 +188,7 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
     console.log('✅ Global Web MIDI access initialized');
     
-    // Debug: Log all available devices immediately after initialization
-    console.log('🔍 MIDI Debug - Inputs available:', globalMidiAccess.inputs.size);
-    console.log('🔍 MIDI Debug - Outputs available:', globalMidiAccess.outputs.size);
-    
-    // Log each device found
-    Array.from(globalMidiAccess.inputs.values()).forEach(input => {
-      console.log('🎹 MIDI Input found:', input.name, input.manufacturer, input.state, input.connection);
-    });
-    
-    Array.from(globalMidiAccess.outputs.values()).forEach(output => {
-      console.log('🎵 MIDI Output found:', output.name, output.manufacturer, output.state, output.connection);
-    });
+    // Devices are being detected - removing debug logs
     
     // Check for auto-reconnect ONCE only, no repeated attempts
     attemptAutoReconnect();
@@ -214,10 +203,13 @@ const initializeWebMIDI = async (): Promise<boolean> => {
 
 // Get available MIDI output devices - NO LOOPS, return array directly
 const getAvailableOutputs = (): MIDIDevice[] => {
-  if (!globalMidiAccess) return [];
+  if (!globalMidiAccess) {
+    console.log('🔍 getAvailableOutputs: No globalMidiAccess');
+    return [];
+  }
   
   // Convert to array without loops
-  return Array.from(globalMidiAccess.outputs.values()).map((output: MIDIOutput) => ({
+  const outputs = Array.from(globalMidiAccess.outputs.values()).map((output: MIDIOutput) => ({
     id: output.id,
     name: output.name || 'Unknown Device',
     manufacturer: output.manufacturer || 'Unknown',
@@ -225,6 +217,9 @@ const getAvailableOutputs = (): MIDIDevice[] => {
     type: 'output' as const,
     connection: output.connection
   }));
+  
+  console.log('🔍 getAvailableOutputs returning:', outputs.length, 'devices:', outputs.map(o => o.name));
+  return outputs;
 };
 
 // Get available MIDI input devices

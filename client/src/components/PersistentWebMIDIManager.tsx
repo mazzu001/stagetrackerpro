@@ -69,20 +69,31 @@ export function PersistentWebMIDIManager() {
   // Connect to output device
   const connectToOutput = async (deviceId: string) => {
     try {
-      const success = await globalMidi.connectToDevice(deviceId);
-      if (success) {
-        toast({
-          title: "Device Connected",
-          description: "MIDI device connected successfully",
+      // Don't await - handle connection in background
+      globalMidi.connectToDevice(deviceId)
+        .then((success) => {
+          if (success) {
+            toast({
+              title: "Device Connected",
+              description: "MIDI device connected successfully",
+            });
+            refreshDevices();
+          } else {
+            toast({
+              title: "Connection Failed",
+              description: "Failed to connect to MIDI device",
+              variant: "destructive",
+            });
+          }
+        })
+        .catch((error) => {
+          console.error('❌ Failed to connect:', error);
+          toast({
+            title: "Connection Error",
+            description: "An error occurred while connecting",
+            variant: "destructive",
+          });
         });
-        refreshDevices();
-      } else {
-        toast({
-          title: "Connection Failed",
-          description: "Failed to connect to MIDI device",
-          variant: "destructive",
-        });
-      }
     } catch (error) {
       console.error('❌ Failed to connect:', error);
       toast({

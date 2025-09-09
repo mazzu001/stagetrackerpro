@@ -777,11 +777,13 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   }, []);
   
   const connectToDeviceCallback = useCallback(async (deviceId: string) => {
-    return await connectToDevice(deviceId);
+    // Don't await - return the promise directly for non-blocking operation
+    return connectToDevice(deviceId);
   }, []);
   
   const sendCommandCallback = useCallback(async (command: string) => {
-    return await sendMIDICommand(command);
+    // Don't await - return the promise directly for non-blocking operation
+    return sendMIDICommand(command);
   }, []);
   
   const getAvailableOutputsCallback = useCallback(() => {
@@ -856,12 +858,18 @@ export const setupGlobalMIDIEventListener = () => {
   const handleExternalMIDI = async (event: any) => {
     const command = event.detail?.command;
     if (command) {
-      const success = await sendMIDICommand(command);
-      if (success) {
-        console.log('✅ External MIDI command sent successfully:', command);
-      } else {
-        console.error('❌ Failed to send external MIDI command:', command);
-      }
+      // Don't await - handle MIDI sending in background
+      sendMIDICommand(command)
+        .then((success) => {
+          if (success) {
+            console.log('✅ External MIDI command sent successfully:', command);
+          } else {
+            console.error('❌ Failed to send external MIDI command:', command);
+          }
+        })
+        .catch((error) => {
+          console.error('❌ Failed to send external MIDI command:', command, error);
+        });
     }
   };
   

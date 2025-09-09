@@ -123,24 +123,35 @@ export function USBMidiManager() {
     if (!globalIsConnected || !midiCommand.trim()) return;
 
     try {
-      const success = await globalSendCommand(midiCommand.trim());
-      if (success) {
-        addMessage({
-          timestamp: Date.now(),
-          data: [],
-          formatted: midiCommand.trim(),
-          direction: 'out'
-        });
+      // Don't await - handle MIDI sending in background
+      globalSendCommand(midiCommand.trim())
+        .then((success) => {
+          if (success) {
+            addMessage({
+              timestamp: Date.now(),
+              data: [],
+              formatted: midiCommand.trim(),
+              direction: 'out'
+            });
 
-        toast({
-          title: "MIDI Sent",
-          description: midiCommand.trim(),
+            toast({
+              title: "MIDI Sent",
+              description: midiCommand.trim(),
+            });
+            
+            setMidiCommand('');
+          } else {
+            throw new Error('Send failed');
+          }
+        })
+        .catch((error) => {
+          console.error('Send failed:', error);
+          toast({
+            title: "Send Failed",
+            description: error instanceof Error ? error.message : 'Unknown error',
+            variant: "destructive",
+          });
         });
-        
-        setMidiCommand('');
-      } else {
-        throw new Error('Send failed');
-      }
     } catch (error) {
       console.error('Send failed:', error);
       toast({

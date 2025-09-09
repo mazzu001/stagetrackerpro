@@ -164,28 +164,37 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     try {
-      // Try global Web MIDI first, fallback to legacy Bluetooth
-      const success = await globalMidi.sendCommand(footerMidiCommand.trim());
-      if (success) {
-        console.log('✅ Manual MIDI command sent via global Web MIDI');
-        triggerMidiBlink();
-        toast({
-          title: "MIDI Command Sent",
-          description: `Sent via Web MIDI: ${footerMidiCommand.trim()}`,
+      // Don't await - handle MIDI sending in background
+      globalMidi.sendCommand(footerMidiCommand.trim())
+        .then((success) => {
+          if (success) {
+            console.log('✅ Manual MIDI command sent via global Web MIDI');
+            triggerMidiBlink();
+            toast({
+              title: "MIDI Command Sent",
+              description: `Sent via Web MIDI: ${footerMidiCommand.trim()}`,
+            });
+          } else {
+            console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
+            // Send via custom event to Bluetooth MIDI manager as fallback
+            const event = new CustomEvent('sendBluetoothMIDI', {
+              detail: { command: footerMidiCommand.trim() }
+            });
+            window.dispatchEvent(event);
+            triggerMidiBlink();
+            toast({
+              title: "MIDI Command Sent",
+              description: `Sent via Bluetooth: ${footerMidiCommand.trim()}`,
+            });
+          }
+        })
+        .catch((error) => {
+          toast({
+            title: "MIDI Send Failed",
+            description: "Failed to send MIDI command",
+            variant: "destructive",
+          });
         });
-      } else {
-        console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
-        // Send via custom event to Bluetooth MIDI manager as fallback
-        const event = new CustomEvent('sendBluetoothMIDI', {
-          detail: { command: footerMidiCommand.trim() }
-        });
-        window.dispatchEvent(event);
-        triggerMidiBlink();
-        toast({
-          title: "MIDI Command Sent",
-          description: `Sent via Bluetooth: ${footerMidiCommand.trim()}`,
-        });
-      }
       
       setFooterMidiCommand('');
     } catch (error) {
@@ -343,20 +352,25 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     try {
       console.log(`🎼 Sending MIDI command from lyrics: ${command}`);
       
-      // Try global Web MIDI first, fallback to legacy Bluetooth
-      const success = await globalMidi.sendCommand(command.trim());
-      if (success) {
-        console.log('✅ MIDI command sent via global Web MIDI');
-        triggerMidiBlink();
-      } else {
-        console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
-        // Send via custom event to Bluetooth MIDI manager as fallback
-        const event = new CustomEvent('sendBluetoothMIDI', {
-          detail: { command: command.trim() }
+      // Don't await - handle MIDI sending in background
+      globalMidi.sendCommand(command.trim())
+        .then((success) => {
+          if (success) {
+            console.log('✅ MIDI command sent via global Web MIDI');
+            triggerMidiBlink();
+          } else {
+            console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
+            // Send via custom event to Bluetooth MIDI manager as fallback
+            const event = new CustomEvent('sendBluetoothMIDI', {
+              detail: { command: command.trim() }
+            });
+            window.dispatchEvent(event);
+            triggerMidiBlink();
+          }
+        })
+        .catch((error) => {
+          console.error('❌ Failed to send lyrics MIDI command:', error);
         });
-        window.dispatchEvent(event);
-        triggerMidiBlink();
-      }
     } catch (error) {
       console.error('❌ Failed to send lyrics MIDI command:', error);
     }

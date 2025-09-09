@@ -188,6 +188,19 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
     console.log('✅ Global Web MIDI access initialized');
     
+    // Debug: Log all available devices immediately after initialization
+    console.log('🔍 MIDI Debug - Inputs available:', globalMidiAccess.inputs.size);
+    console.log('🔍 MIDI Debug - Outputs available:', globalMidiAccess.outputs.size);
+    
+    // Log each device found
+    Array.from(globalMidiAccess.inputs.values()).forEach(input => {
+      console.log('🎹 MIDI Input found:', input.name, input.manufacturer, input.state, input.connection);
+    });
+    
+    Array.from(globalMidiAccess.outputs.values()).forEach(output => {
+      console.log('🎵 MIDI Output found:', output.name, output.manufacturer, output.state, output.connection);
+    });
+    
     // Check for auto-reconnect ONCE only, no repeated attempts
     attemptAutoReconnect();
     

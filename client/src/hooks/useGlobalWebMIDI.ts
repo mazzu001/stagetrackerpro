@@ -458,7 +458,7 @@ const connectToInputDevice = async (deviceId: string): Promise<boolean> => {
   }
 };
 
-// Send MIDI command
+// Send MIDI command (keep existing for backwards compatibility)
 const sendMIDICommand = async (command: string): Promise<boolean> => {
   if (!globalSelectedOutput) {
     console.error('❌ No MIDI device connected');
@@ -480,6 +480,198 @@ const sendMIDICommand = async (command: string): Promise<boolean> => {
     console.error('❌ Failed to send MIDI command:', error);
     return false;
   }
+};
+
+// NEW: Multi-device functions
+const getConnectedDevices = () => {
+  const devices: Array<{id: string, name: string, channel: number, type: 'input' | 'output'}> = [];
+  
+  // Add connected outputs
+  globalConnectedOutputs.forEach((info, deviceId) => {
+    devices.push({
+      id: deviceId,
+      name: info.name,
+      channel: info.channel,
+      type: 'output'
+    });
+  });
+  
+  // Add connected inputs
+  globalConnectedInputs.forEach((info, deviceId) => {
+    devices.push({
+      id: deviceId,
+      name: info.name,
+      channel: 0, // Inputs don't use channels
+      type: 'input'
+    });
+  });
+  
+  return devices;
+};
+
+const connectToMultipleDevices = async (deviceIds: string[]): Promise<{connected: string[], failed: string[]}> => {
+  const connected: string[] = [];
+  const failed: string[] = [];
+  
+  if (!globalMidiAccess) {
+    const initialized = await initializeWebMIDI();
+    if (!initialized) {
+      return { connected: [], failed: deviceIds };
+    }
+  }
+  
+  console.log('🔄 Connecting to multiple devices...', deviceIds);
+  
+  for (const deviceId of deviceIds) {
+    try {
+      const output = globalMidiAccess!.outputs.get(deviceId);
+      if (!output) {
+        console.log('❌ Device not found:', deviceId);
+        failed.push(deviceId);
+        continue;
+      }
+      
+      await output.open();
+      
+      // Assign channel (1-16, cycling)
+      const channel = globalNextChannel;
+      globalNextChannel = (globalNextChannel % 16) + 1;
+      
+      // Add to connected devices
+      globalConnectedOutputs.set(deviceId, {
+        device: output,
+        channel: channel,
+        name: output.name || 'Unknown Device'
+      });
+      
+      connected.push(deviceId);
+      console.log('✅ Connected to device:', output.name, 'on channel', channel);
+      
+    } catch (error) {
+      console.error('❌ Failed to connect to device:', deviceId, error);
+      failed.push(deviceId);
+    }
+  }
+  
+  // Save connected devices to localStorage
+  saveConnectedDevices();
+  
+  return { connected, failed };
+};
+
+const disconnectDevice = async (deviceId: string): Promise<boolean> => {
+  try {
+    // Check outputs
+    if (globalConnectedOutputs.has(deviceId)) {
+      const info = globalConnectedOutputs.get(deviceId)!;
+      await info.device.close();
+      globalConnectedOutputs.delete(deviceId);
+      console.log('✅ Disconnected output device:', info.name);
+      
+      // Update primary device if this was it
+      if (globalSelectedOutput?.id === deviceId) {
+        globalSelectedOutput = null;
+        globalConnectionStatus = 'Disconnected';
+        globalDeviceName = '';
+      }
+      
+      saveConnectedDevices();
+      return true;
+    }
+    
+    // Check inputs
+    if (globalConnectedInputs.has(deviceId)) {
+      const info = globalConnectedInputs.get(deviceId)!;
+      await info.device.close();
+      globalConnectedInputs.delete(deviceId);
+      console.log('✅ Disconnected input device:', info.name);
+      
+      // Update primary input if this was it
+      if (globalSelectedInput?.id === deviceId) {
+        globalSelectedInput = null;
+        globalInputDeviceName = '';
+      }
+      
+      saveConnectedDevices();
+      return true;
+    }
+    
+    console.log('⚠️ Device not found in connected devices:', deviceId);
+    return false;
+    
+  } catch (error) {
+    console.error('❌ Failed to disconnect device:', deviceId, error);
+    return false;
+  }
+};
+
+const sendCommandToAll = async (command: string): Promise<boolean> => {
+  if (globalConnectedOutputs.size === 0) {
+    console.error('❌ No MIDI devices connected');
+    return false;
+  }
+  
+  const midiBytes = parseMIDICommand(command);
+  if (!midiBytes) {
+    console.error('❌ Invalid MIDI command format:', command);
+    return false;
+  }
+  
+  let success = true;
+  
+  globalConnectedOutputs.forEach((info, deviceId) => {
+    try {
+      // Override channel with device-specific channel
+      const channelOverrideBytes = new Uint8Array(midiBytes);
+      if (channelOverrideBytes.length > 0 && (channelOverrideBytes[0] & 0xF0) !== 0xF0) {
+        // Set channel bits for channel voice messages
+        channelOverrideBytes[0] = (channelOverrideBytes[0] & 0xF0) | ((info.channel - 1) & 0x0F);
+      }
+      
+      console.log('🎵 Sending to', info.name, 'channel', info.channel, ':', command);
+      info.device.send(channelOverrideBytes);
+      
+    } catch (error) {
+      console.error('❌ Failed to send to device:', info.name, error);
+      success = false;
+    }
+  });
+  
+  return success;
+};
+
+const sendCommandToDevice = async (command: string, deviceId: string): Promise<boolean> => {
+  const deviceInfo = globalConnectedOutputs.get(deviceId);
+  if (!deviceInfo) {
+    console.error('❌ Device not connected:', deviceId);
+    return false;
+  }
+  
+  const midiBytes = parseMIDICommand(command);
+  if (!midiBytes) {
+    console.error('❌ Invalid MIDI command format:', command);
+    return false;
+  }
+  
+  try {
+    // Override channel with device-specific channel
+    const channelOverrideBytes = new Uint8Array(midiBytes);
+    if (channelOverrideBytes.length > 0 && (channelOverrideBytes[0] & 0xF0) !== 0xF0) {
+      channelOverrideBytes[0] = (channelOverrideBytes[0] & 0xF0) | ((deviceInfo.channel - 1) & 0x0F);
+    }
+    
+    console.log('🎵 Sending to', deviceInfo.name, 'channel', deviceInfo.channel, ':', command);
+    deviceInfo.device.send(channelOverrideBytes);
+    return true;
+    
+  } catch (error) {
+    console.error('❌ Failed to send to device:', deviceInfo.name, error);
+    return false;
+  }
+};
+
+const isDeviceConnected = (deviceId: string): boolean => {
+  return globalConnectedOutputs.has(deviceId) || globalConnectedInputs.has(deviceId);
 };
 
 export const useGlobalWebMIDI = (): GlobalMIDIState => {
@@ -556,6 +748,31 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     return await connectToInputDevice(deviceId);
   }, []);
   
+  // NEW: Multi-device callbacks
+  const getConnectedDevicesCallback = useCallback(() => {
+    return getConnectedDevices();
+  }, []);
+  
+  const connectToMultipleDevicesCallback = useCallback(async (deviceIds: string[]) => {
+    return await connectToMultipleDevices(deviceIds);
+  }, []);
+  
+  const disconnectDeviceCallback = useCallback(async (deviceId: string) => {
+    return await disconnectDevice(deviceId);
+  }, []);
+  
+  const sendCommandToAllCallback = useCallback(async (command: string) => {
+    return await sendCommandToAll(command);
+  }, []);
+  
+  const sendCommandToDeviceCallback = useCallback(async (command: string, deviceId: string) => {
+    return await sendCommandToDevice(command, deviceId);
+  }, []);
+  
+  const isDeviceConnectedCallback = useCallback((deviceId: string) => {
+    return isDeviceConnected(deviceId);
+  }, []);
+  
   return {
     isConnected,
     deviceName,
@@ -565,7 +782,14 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     connectToInputDevice: connectToInputDeviceCallback,
     refreshDevices,
     getAvailableOutputs: getAvailableOutputsCallback,
-    getAvailableInputs: getAvailableInputsCallback
+    getAvailableInputs: getAvailableInputsCallback,
+    // NEW: Multi-device functions
+    getConnectedDevices: getConnectedDevicesCallback,
+    connectToMultipleDevices: connectToMultipleDevicesCallback,
+    disconnectDevice: disconnectDeviceCallback,
+    sendCommandToAll: sendCommandToAllCallback,
+    sendCommandToDevice: sendCommandToDeviceCallback,
+    isDeviceConnected: isDeviceConnectedCallback
   };
 };
 

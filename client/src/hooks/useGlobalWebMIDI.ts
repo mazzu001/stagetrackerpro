@@ -204,36 +204,36 @@ const attemptAutoReconnect = async (setLoadingState?: (loading: boolean, message
     return false;
   }
   
-  try {
-    // 2-second timeout for auto-reconnection
-    await Promise.race([
-      output.open(),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('Auto-reconnect timeout')), 2000))
-    ]);
-    
-    globalSelectedOutput = output;
-    globalConnectionStatus = 'Connected';
-    globalDeviceName = output.name || 'Unknown Device';
-    
-    console.log('✅ Auto-reconnected to MIDI device:', globalDeviceName);
-    
-    // Dispatch connection status change
-    window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
-      detail: {
-        connected: true,
-        deviceName: globalDeviceName,
-        deviceId: output.id
-      }
-    }));
-    
-    setLoadingState?.(false, '');
-    return true;
-    
-  } catch (error) {
-    console.error('❌ Auto-reconnect failed:', error);
-    setLoadingState?.(false, '');
-    return false;
-  }
+  // Don't await - handle auto-reconnection in background
+  Promise.race([
+    output.open(),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('Auto-reconnect timeout')), 2000))
+  ])
+    .then(() => {
+      globalSelectedOutput = output;
+      globalConnectionStatus = 'Connected';
+      globalDeviceName = output.name || 'Unknown Device';
+      
+      console.log('✅ Auto-reconnected to MIDI device:', globalDeviceName);
+      
+      // Dispatch connection status change
+      window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
+        detail: {
+          connected: true,
+          deviceName: globalDeviceName,
+          deviceId: output.id
+        }
+      }));
+      
+      setLoadingState?.(false, '');
+    })
+    .catch(error => {
+      console.error('❌ Auto-reconnect failed:', error);
+      setLoadingState?.(false, '');
+    });
+  
+  // Return immediately - don't wait for connection
+  return false;
 };
 
 // Initialize Web MIDI access once - NO REPEATED CHECKING
@@ -333,36 +333,37 @@ const connectToDevice = async (deviceId: string): Promise<boolean> => {
     return false;
   }
   
-  try {
-    await output.open();
-    globalSelectedOutput = output;
-    globalConnectionStatus = 'Connected';
-    globalDeviceName = output.name || 'Unknown Device';
-    
-    // Save this device as the last connected device
-    saveLastConnectedDevice(
-      deviceId, 
-      output.name || 'Unknown Device', 
-      output.manufacturer || 'Unknown'
-    );
-    
-    console.log('✅ Connected to MIDI device:', globalDeviceName);
-    
-    // Dispatch connection status change
-    window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
-      detail: {
-        connected: true,
-        deviceName: globalDeviceName,
-        deviceId: deviceId
-      }
-    }));
-    
-    return true;
-    
-  } catch (error) {
-    console.error('❌ Failed to connect to device:', error);
-    return false;
-  }
+  // Don't await - handle device connection in background
+  output.open()
+    .then(() => {
+      globalSelectedOutput = output;
+      globalConnectionStatus = 'Connected';
+      globalDeviceName = output.name || 'Unknown Device';
+      
+      // Save this device as the last connected device
+      saveLastConnectedDevice(
+        deviceId, 
+        output.name || 'Unknown Device', 
+        output.manufacturer || 'Unknown'
+      );
+      
+      console.log('✅ Connected to MIDI device:', globalDeviceName);
+      
+      // Dispatch connection status change
+      window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
+        detail: {
+          connected: true,
+          deviceName: globalDeviceName,
+          deviceId: deviceId
+        }
+      }));
+    })
+    .catch(error => {
+      console.error('❌ Failed to connect to device:', error);
+    });
+  
+  // Return immediately - connection happens in background
+  return true;
 };
 
 // Format incoming MIDI message as bracket command
@@ -446,37 +447,37 @@ const connectToInputDevice = async (deviceId: string): Promise<boolean> => {
     return false;
   }
   
-  try {
-    await input.open();
-    
-    // Disconnect previous input if any
-    if (globalSelectedInput) {
-      globalSelectedInput.onmidimessage = null;
-    }
-    
-    globalSelectedInput = input;
-    globalInputDeviceName = input.name || 'Unknown Input Device';
-    
-    // Set up message listener
-    input.onmidimessage = handleIncomingMIDI;
-    
-    console.log('✅ Connected to MIDI input device:', globalInputDeviceName);
-    
-    // Dispatch connection status change
-    window.dispatchEvent(new CustomEvent('globalMidiInputConnectionChange', {
-      detail: {
-        connected: true,
-        deviceName: globalInputDeviceName,
-        deviceId: deviceId
+  // Don't await - handle input device connection in background
+  input.open()
+    .then(() => {
+      // Disconnect previous input if any
+      if (globalSelectedInput) {
+        globalSelectedInput.onmidimessage = null;
       }
-    }));
-    
-    return true;
-    
-  } catch (error) {
-    console.error('❌ Failed to connect to input device:', error);
-    return false;
-  }
+      
+      globalSelectedInput = input;
+      globalInputDeviceName = input.name || 'Unknown Input Device';
+      
+      // Set up message listener
+      input.onmidimessage = handleIncomingMIDI;
+      
+      console.log('✅ Connected to MIDI input device:', globalInputDeviceName);
+      
+      // Dispatch connection status change
+      window.dispatchEvent(new CustomEvent('globalMidiInputConnectionChange', {
+        detail: {
+          connected: true,
+          deviceName: globalInputDeviceName,
+          deviceId: deviceId
+        }
+      }));
+    })
+    .catch(error => {
+      console.error('❌ Failed to connect to input device:', error);
+    });
+  
+  // Return immediately - connection happens in background
+  return true;
 };
 
 // Send MIDI command (keep existing for backwards compatibility)

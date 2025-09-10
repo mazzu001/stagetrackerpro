@@ -242,9 +242,12 @@ const attemptAutoReconnect = async (setLoadingState?: (loading: boolean, message
   return false;
 };
 
-// Initialize Web MIDI access once - WITH LOADING SUPPORT AND NO TIMEOUT ABORT
+// Initialize Web MIDI access once - WITH PROPER TIMEOUT AND LOGGING
 const initializeWebMIDI = async (setLoadingState?: (loading: boolean, message: string, progress?: string) => void): Promise<boolean> => {
-  if (globalMidiAccess) return true;
+  if (globalMidiAccess) {
+    console.log('✅ Web MIDI already initialized');
+    return true;
+  }
   
   try {
     // Check if we're in a browser environment
@@ -252,6 +255,10 @@ const initializeWebMIDI = async (setLoadingState?: (loading: boolean, message: s
       console.log('⚠️ Not in browser environment, skipping Web MIDI initialization');
       return false;
     }
+    
+    // DEBUG: Log navigator object
+    console.log('🔍 DEBUG: Navigator object available:', !!navigator);
+    console.log('🔍 DEBUG: requestMIDIAccess function available:', !!navigator.requestMIDIAccess);
     
     if (!navigator.requestMIDIAccess) {
       console.log('❌ Web MIDI API not supported in this browser');
@@ -261,86 +268,115 @@ const initializeWebMIDI = async (setLoadingState?: (loading: boolean, message: s
     
     // Show loading screen BEFORE starting MIDI initialization  
     setLoadingState?.(true, 'Initializing MIDI System', 'Requesting MIDI access...');
-    console.log('🎵 Initializing global Web MIDI access...');
+    console.log('🎵 Starting Web MIDI initialization...');
     
-    // CRITICAL FIX: Don't use Promise.race - let MIDI initialize without timeout abort
+    // DEBUG: Log before requestMIDIAccess call
+    console.log('🔍 DEBUG: About to call navigator.requestMIDIAccess({ sysex: true })');
+    console.log('🔍 DEBUG: Current timestamp:', Date.now());
+    
+    // FIXED: Use Promise.race with proper timeout to prevent infinite hanging
+    const MIDI_TIMEOUT_MS = 30000; // 30 second hard timeout
+    
     const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
-    
-    // Timeout for UI messaging only - doesn't abort initialization
-    const uiTimeoutId = setTimeout(() => {
-      console.log('⏰ MIDI initialization taking longer than expected...');
-      setLoadingState?.(true, 'Initializing MIDI System', 'Taking longer than usual - Please wait...');
-      
-      // Show extended wait message after 5 seconds
+    const timeoutPromise = new Promise<never>((_, reject) => {
       setTimeout(() => {
-        setLoadingState?.(true, 'Initializing MIDI System', 'Still initializing - Some systems need extra time');
-      }, 3000);
-    }, 2000);
-    
-    // Use pre-rendering approach - show loading before potential thread block
-    requestAnimationFrame(() => {
-      // Update progress message  
-      setLoadingState?.(true, 'Initializing MIDI System', 'Accessing MIDI devices...');
-      
-      // FIXED: Wait for MIDI access without timeout abort - let it take as long as needed
-      midiAccessPromise
-        .then((midiAccess) => {
-          // Clear UI timeout since we succeeded
-          clearTimeout(uiTimeoutId);
-          
-          globalMidiAccess = midiAccess as MIDIAccess;
-          
-          // Update progress
-          setLoadingState?.(true, 'Initializing MIDI System', 'Setting up device listeners...');
-          
-          // Minimal device change listener - no complex logic
-          globalMidiAccess.onstatechange = (event: any) => {
-            if (event.port) {
-              console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
-            }
-          };
-          
-          console.log('✅ Global Web MIDI access initialized');
-          
-          // Defer auto-reconnect until after UI renders  
-          requestAnimationFrame(() => {
-            setLoadingState?.(true, 'Initializing MIDI System', 'Reconnecting to saved devices...');
-            console.log('🎵 Starting deferred MIDI device reconnection...');
-            
-            attemptAutoReconnect((loading, message) => {
-              if (!loading) {
-                // MIDI initialization complete
-                setLoadingState?.(false, '', '');
-              }
-            });
-          });
-        })
-        .catch(error => {
-          // Clear UI timeout on error
-          clearTimeout(uiTimeoutId);
-          
-          console.error('❌ Failed to initialize Web MIDI:', error);
-          
-          // Determine error type for better user messaging
-          const isPermissionError = error.name === 'NotAllowedError' || error.message.includes('permission');
-          const isNotSupportedError = error.name === 'NotSupportedError';
-          
-          let errorMessage = 'MIDI initialization failed - Click to retry';
-          if (isPermissionError) {
-            errorMessage = 'MIDI access denied - Please grant permission and retry';
-          } else if (isNotSupportedError) {
-            errorMessage = 'MIDI not supported on this system';
-          }
-          
-          setLoadingState?.(false, '', errorMessage);
-        });
+        console.log('❌ MIDI initialization timed out after', MIDI_TIMEOUT_MS, 'ms');
+        reject(new Error(`MIDI initialization timed out after ${MIDI_TIMEOUT_MS / 1000} seconds`));
+      }, MIDI_TIMEOUT_MS);
     });
     
-    // Return immediately - don't wait for MIDI initialization
-    return false;
+    // Progress tracking timeouts
+    const progressTimeout1 = setTimeout(() => {
+      console.log('⏰ MIDI initialization progress: 2 seconds elapsed');
+      setLoadingState?.(true, 'Initializing MIDI System', 'Taking longer than usual - Please wait...');
+    }, 2000);
+    
+    const progressTimeout2 = setTimeout(() => {
+      console.log('⏰ MIDI initialization progress: 5 seconds elapsed');
+      setLoadingState?.(true, 'Initializing MIDI System', 'Still initializing - Some systems need extra time');
+    }, 5000);
+    
+    const progressTimeout3 = setTimeout(() => {
+      console.log('⏰ MIDI initialization progress: 10 seconds elapsed');
+      setLoadingState?.(true, 'Initializing MIDI System', 'Almost there - Final setup steps...');
+    }, 10000);
+    
+    try {
+      console.log('🔍 DEBUG: Waiting for MIDI access promise to resolve...');
+      
+      // Race between MIDI access and timeout
+      const midiAccess = await Promise.race([midiAccessPromise, timeoutPromise]);
+      
+      // Clear all timeouts since we succeeded
+      clearTimeout(progressTimeout1);
+      clearTimeout(progressTimeout2);
+      clearTimeout(progressTimeout3);
+      
+      console.log('🔍 DEBUG: MIDI access promise resolved successfully');
+      console.log('🔍 DEBUG: MIDI access object:', midiAccess);
+      console.log('🔍 DEBUG: Available outputs:', midiAccess.outputs.size);
+      console.log('🔍 DEBUG: Available inputs:', midiAccess.inputs.size);
+      
+      globalMidiAccess = midiAccess as MIDIAccess;
+      
+      // Update progress
+      setLoadingState?.(true, 'Initializing MIDI System', 'Setting up device listeners...');
+      
+      // Minimal device change listener - no complex logic
+      globalMidiAccess.onstatechange = (event: any) => {
+        if (event.port) {
+          console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
+        }
+      };
+      
+      console.log('✅ Global Web MIDI access initialized successfully');
+      
+      // Defer auto-reconnect until after UI renders  
+      setTimeout(() => {
+        setLoadingState?.(true, 'Initializing MIDI System', 'Reconnecting to saved devices...');
+        console.log('🎵 Starting deferred MIDI device reconnection...');
+        
+        attemptAutoReconnect((loading, message) => {
+          if (!loading) {
+            // MIDI initialization complete
+            console.log('✅ MIDI initialization and auto-reconnect complete');
+            setLoadingState?.(false, '', '');
+          }
+        });
+      }, 100);
+      
+      return true;
+      
+    } catch (error) {
+      // Clear all timeouts on error
+      clearTimeout(progressTimeout1);
+      clearTimeout(progressTimeout2);
+      clearTimeout(progressTimeout3);
+      
+      console.error('❌ MIDI initialization failed with error:', error);
+      console.log('🔍 DEBUG: Error name:', error.name);
+      console.log('🔍 DEBUG: Error message:', error.message);
+      
+      // Determine error type for better user messaging
+      const isTimeoutError = error.message && error.message.includes('timed out');
+      const isPermissionError = error.name === 'NotAllowedError' || error.message.includes('permission');
+      const isNotSupportedError = error.name === 'NotSupportedError';
+      
+      let errorMessage = 'MIDI initialization failed - Click to retry';
+      if (isTimeoutError) {
+        errorMessage = 'MIDI initialization timed out - System may be busy. Click to retry';
+      } else if (isPermissionError) {
+        errorMessage = 'MIDI access denied - Please grant permission and retry';
+      } else if (isNotSupportedError) {
+        errorMessage = 'MIDI not supported on this system';
+      }
+      
+      setLoadingState?.(false, '', errorMessage);
+      return false;
+    }
     
   } catch (error) {
-    console.error('❌ Failed to initialize Web MIDI:', error);
+    console.error('❌ Failed to initialize Web MIDI (outer catch):', error);
     setLoadingState?.(false, '', 'MIDI initialization failed - Click to retry');
     return false;
   }

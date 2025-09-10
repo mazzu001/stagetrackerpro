@@ -2,6 +2,7 @@
 This project is a professional, offline-capable live music performance application designed for stage use. It features real-time audio mixing, advanced Web MIDI device management, and synchronized lyrics display. The application prioritizes offline functionality, utilizing local storage for all performance data and blob URLs for audio files. It is production-ready with robust MIDI integration, including persistent connections, and comprehensive device management.
 
 ## Recent Changes
+- **Lazy MIDI Initialization (Sep 10, 2025)**: Completely eliminated automatic MIDI initialization from app startup, achieving instant loading. Implemented lazy initialization pattern where MIDI only initializes when users actually need it (clicking MIDI device buttons). Removed all blocking Web MIDI API calls during startup while preserving full MIDI functionality. App now starts instantly without any MIDI-related freezing or delays.
 - **Edge Browser Compatibility Fix (Jan 29, 2025)**: Resolved authentication stuck issue specific to Microsoft Edge browser. Added browser detection, extended timeouts, fallback session handling, and background verification to prevent Edge users from getting stuck on authentication screen. Edge browser now uses cached authentication immediately while performing background verification after UI loads.
 - **Comprehensive Subscription Monitoring (Jan 29, 2025)**: Implemented real-time webhook processing for payment failures, cancellations, and subscription expiry. Enhanced daily monitor detects expired subscriptions and automatically downgrades users to free tier. Manual check endpoint added for troubleshooting subscription issues.
 - **Complete Unsubscribe Flow (Jan 29, 2025)**: Implemented comprehensive subscription cancellation system with retention strategies. Features multi-step flow with pause subscription, 50% discount offers, and downgrade options. Includes feedback collection and proper Stripe subscription cancellation. Only shows unsubscribe option to paid users (not free users).
@@ -28,9 +29,10 @@ This project is a professional, offline-capable live music performance applicati
 - **Routing**: Wouter for client-side routing
 
 ## MIDI System Architecture
-- **API**: Web MIDI API for system-level MIDI device integration.
+- **API**: Web MIDI API for system-level MIDI device integration with lazy initialization pattern.
+- **Lazy Initialization**: MIDI system initializes only when users explicitly need it, eliminating blocking startup calls for instant app loading.
 - **Persistence**: Global Web MIDI service (`useGlobalWebMIDI.ts`) ensures persistent MIDI connections even when UI components close.
-- **Auto-Reconnect**: Automatically reconnects to the last known USB MIDI device on app launch using localStorage device persistence and intelligent device matching (ID or name/manufacturer).
+- **Auto-Reconnect**: Automatically reconnects to the last known USB MIDI device when MIDI is initialized, using localStorage device persistence and intelligent device matching (ID or name/manufacturer).
 - **Server-side MIDI**: Node.js with `easymidi` library (mock mode in development) for server-side MIDI processing and `ws` for WebSocket communication.
 - **Device Management**: Supports USB MIDI, Bluetooth MIDI (for legacy devices), and general MIDI device types. Features automatic scanning, connection management, and signal monitoring.
 - **Command Parsing**: Multi-format parser supports new bracket format (`[[PC:12:1]]`, `[[CC:7:64:1]]`, `[[NOTE:60:127:1]]`), as well as legacy hex and text formats.

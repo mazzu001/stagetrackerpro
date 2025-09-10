@@ -274,13 +274,16 @@ const initializeWebMIDI = async (setLoadingState?: (loading: boolean, message: s
     console.log('🎵 Starting Web MIDI initialization...');
     
     // DEBUG: Log before requestMIDIAccess call
-    console.log('🔍 DEBUG: About to call navigator.requestMIDIAccess({ sysex: true })');
+    console.log('🔍 DEBUG: About to call navigator.requestMIDIAccess({ sysex: false })');
     console.log('🔍 DEBUG: Current timestamp:', Date.now());
     
-    // FIXED: Use Promise.race with proper timeout to prevent infinite hanging
-    const MIDI_TIMEOUT_MS = 30000; // 30 second hard timeout
+    // IMPROVED: Use multiple fallback strategies with shorter timeout
+    const MIDI_TIMEOUT_MS = 8000; // 8 second timeout (shorter for better UX)
     
-    const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
+    // Try basic MIDI access first (without sysex) - more likely to work
+    console.log('🔍 DEBUG: Attempting basic MIDI access (without sysex)...');
+    let midiAccessPromise = navigator.requestMIDIAccess({ sysex: false });
+    
     const timeoutPromise = new Promise<never>((_, reject) => {
       setTimeout(() => {
         console.log('❌ MIDI initialization timed out after', MIDI_TIMEOUT_MS, 'ms');

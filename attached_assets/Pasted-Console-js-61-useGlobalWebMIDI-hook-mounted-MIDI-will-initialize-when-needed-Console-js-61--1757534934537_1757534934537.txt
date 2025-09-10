@@ -1,0 +1,38 @@
+Console.js:61 🎵 useGlobalWebMIDI hook mounted - MIDI will initialize when needed
+Console.js:61 🎵 MIDI not initialized, starting lazy initialization...
+Console.js:61 🎵 Starting lazy MIDI initialization...
+Console.js:61 🔍 DEBUG: Navigator object available: true
+Console.js:61 🔍 DEBUG: requestMIDIAccess function available: true
+Console.js:61 🎵 Starting Web MIDI initialization...
+Console.js:61 🔍 DEBUG: About to call navigator.requestMIDIAccess({ sysex: true })
+Console.js:61 🔍 DEBUG: Current timestamp: 1757534891750
+Console.js:61 🔍 DEBUG: Waiting for MIDI access promise to resolve...
+Console.js:61 ⏰ MIDI initialization progress: 2 seconds elapsed
+Console.js:61 ⏰ MIDI initialization progress: 5 seconds elapsed
+Console.js:61 ⏰ MIDI initialization progress: 10 seconds elapsed
+Console.js:61 ❌ MIDI initialization timed out after 30000 ms
+Console.js:61  ❌ MIDI initialization failed with error: Error: MIDI initialization timed out after 30 seconds
+    at useGlobalWebMIDI.ts:287:16
+Mt.forEach.n.<computed> @ Console.js:61
+initializeWebMIDI @ useGlobalWebMIDI.ts:359
+await in initializeWebMIDI
+(anonymous) @ useGlobalWebMIDI.ts:979
+refreshDevices @ PersistentWebMIDIManager.tsx:39
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+Console.js:61 🔍 DEBUG: Error name: Error
+Console.js:61 🔍 DEBUG: Error message: MIDI initialization timed out after 30 seconds
+Console.js:61 ❌ MIDI initialization failed, cannot refresh devices

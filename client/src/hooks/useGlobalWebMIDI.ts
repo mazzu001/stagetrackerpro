@@ -135,6 +135,9 @@ interface GlobalMIDIState {
   isMIDIInitializing: boolean;
   midiInitMessage: string;
   midiInitProgress: string;
+  // NEW: Manual lazy initialization
+  initializeMIDI: () => Promise<boolean>;
+  isMIDIAvailable: boolean;
   // NEW: Retry functionality
   retryMIDIInitialization: () => Promise<boolean>;
 }
@@ -850,19 +853,12 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [midiInitMessage, setMidiInitMessage] = useState('');
   const [midiInitProgress, setMidiInitProgress] = useState('');
   
+  // NEW: Track MIDI availability (lazy initialization)
+  const [isMIDIAvailable, setIsMIDIAvailable] = useState(!!globalMidiAccess);
+  
   useEffect(() => {
-    // Initialize Web MIDI with loading state support
-    const midiLoadingCallback = (loading: boolean, message: string, progress?: string) => {
-      setIsMIDIInitializing(loading);
-      setMidiInitMessage(message);
-      setMidiInitProgress(progress || '');
-    };
-    
-    // Initialize Web MIDI with loading feedback
-    initializeWebMIDI(midiLoadingCallback).catch(error => {
-      console.log('🔍 MIDI scan completed (background initialization)');
-      setIsMIDIInitializing(false);
-    });
+    // REMOVED: Automatic MIDI initialization - now lazy loaded only when needed
+    console.log('🎵 useGlobalWebMIDI hook mounted - MIDI will initialize when needed');
     
     // Listen for global connection changes
     const handleConnectionChange = (event: any) => {
@@ -961,6 +957,42 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     return isDeviceConnected(deviceId);
   }, []);
   
+  // NEW: Manual lazy MIDI initialization
+  const initializeMIDI = useCallback(async (): Promise<boolean> => {
+    // Don't initialize if already available
+    if (globalMidiAccess) {
+      console.log('🎵 MIDI already initialized');
+      setIsMIDIAvailable(true);
+      return true;
+    }
+    
+    console.log('🎵 Starting lazy MIDI initialization...');
+    
+    // Set up loading callback
+    const midiLoadingCallback = (loading: boolean, message: string, progress?: string) => {
+      setIsMIDIInitializing(loading);
+      setMidiInitMessage(message);
+      setMidiInitProgress(progress || '');
+    };
+    
+    // Initialize Web MIDI
+    return initializeWebMIDI(midiLoadingCallback)
+      .then(success => {
+        if (success) {
+          console.log('✅ Lazy MIDI initialization completed');
+          setIsMIDIAvailable(true);
+        }
+        return success;
+      })
+      .catch(error => {
+        console.error('❌ Lazy MIDI initialization failed:', error);
+        setIsMIDIInitializing(false);
+        setMidiInitProgress('MIDI initialization failed - Click to retry');
+        setIsMIDIAvailable(false);
+        return false;
+      });
+  }, []);
+
   // NEW: Retry MIDI initialization
   const retryMIDIInitialization = useCallback(async (): Promise<boolean> => {
     console.log('🔄 Retrying MIDI initialization...');
@@ -970,23 +1002,11 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     globalConnectionStatus = 'Disconnected';
     globalDeviceName = '';
     globalInputDeviceName = '';
+    setIsMIDIAvailable(false);
     
-    // Set up loading callback for retry
-    const midiLoadingCallback = (loading: boolean, message: string, progress?: string) => {
-      setIsMIDIInitializing(loading);
-      setMidiInitMessage(message);
-      setMidiInitProgress(progress || '');
-    };
-    
-    // Attempt re-initialization
-    return initializeWebMIDI(midiLoadingCallback)
-      .catch(error => {
-        console.error('❌ MIDI retry failed:', error);
-        setIsMIDIInitializing(false);
-        setMidiInitProgress('MIDI initialization failed - Click to retry');
-        return false;
-      });
-  }, []);
+    // Use the manual initialization function
+    return initializeMIDI();
+  }, [initializeMIDI]);
   
   return {
     isConnected,
@@ -1013,6 +1033,9 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     isMIDIInitializing,
     midiInitMessage,
     midiInitProgress,
+    // NEW: Manual lazy initialization
+    initializeMIDI,
+    isMIDIAvailable,
     // NEW: Retry functionality
     retryMIDIInitialization
   };

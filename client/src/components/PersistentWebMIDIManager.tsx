@@ -29,29 +29,43 @@ export function PersistentWebMIDIManager() {
   
   const globalMidi = useGlobalWebMIDI();
 
-  // Refresh available devices - MINIMAL, NO REPEATED CALLS
+  // Refresh available devices - LAZY INITIALIZATION
   const refreshDevices = async () => {
     setIsRefreshing(true);
     try {
+      // Initialize MIDI first if not available
+      if (!globalMidi.isMIDIAvailable) {
+        console.log('🎵 MIDI not initialized, starting lazy initialization...');
+        const initialized = await globalMidi.initializeMIDI();
+        if (!initialized) {
+          console.log('❌ MIDI initialization failed, cannot refresh devices');
+          toast({
+            title: "MIDI Initialization Failed",
+            description: "Could not access MIDI system. Please check permissions.",
+            variant: "destructive",
+          });
+          setIsRefreshing(false);
+          return;
+        }
+      }
+      
       const outputs = globalMidi.getAvailableOutputs();
       setAvailableOutputs(outputs);
       console.log('🔄 Refreshed MIDI devices:', outputs.length, 'outputs found');
     } catch (error) {
       console.error('❌ Failed to refresh devices:', error);
+      toast({
+        title: "Device Refresh Failed",
+        description: "Could not refresh MIDI devices",
+        variant: "destructive",
+      });
     } finally {
       setIsRefreshing(false);
     }
   };
 
-  // Get devices on mount only (remove dependency to prevent infinite loop)
-  useEffect(() => {
-    // Delay the initial refresh to prevent blocking
-    const timer = setTimeout(() => {
-      refreshDevices();
-    }, 100);
-    
-    return () => clearTimeout(timer);
-  }, []); // Empty dependency array - only run on mount
+  // REMOVED: Automatic device refresh on mount - now lazy loaded only when needed
+  // Users will click "Refresh" button to initialize MIDI and load devices
 
   // Listen for global device changes
   useEffect(() => {
@@ -66,9 +80,23 @@ export function PersistentWebMIDIManager() {
     };
   }, [refreshDevices]); // Include refreshDevices in dependency
 
-  // Connect to output device
+  // Connect to output device - LAZY INITIALIZATION
   const connectToOutput = async (deviceId: string) => {
     try {
+      // Initialize MIDI first if not available
+      if (!globalMidi.isMIDIAvailable) {
+        console.log('🎵 Initializing MIDI for device connection...');
+        const initialized = await globalMidi.initializeMIDI();
+        if (!initialized) {
+          toast({
+            title: "MIDI Initialization Required",
+            description: "Please initialize MIDI first by clicking Refresh",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+      
       // Don't await - handle connection in background
       globalMidi.connectToDevice(deviceId)
         .then((success) => {
@@ -104,8 +132,22 @@ export function PersistentWebMIDIManager() {
     }
   };
 
-  // Send MIDI command
+  // Send MIDI command - LAZY INITIALIZATION
   const sendMIDICommand = async () => {
+    // Initialize MIDI first if not available
+    if (!globalMidi.isMIDIAvailable) {
+      console.log('🎵 Initializing MIDI for command sending...');
+      const initialized = await globalMidi.initializeMIDI();
+      if (!initialized) {
+        toast({
+          title: "MIDI Initialization Required",
+          description: "Please initialize MIDI first by clicking Refresh",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+    
     if (!globalMidi.isConnected) {
       toast({
         title: "No Device Connected",

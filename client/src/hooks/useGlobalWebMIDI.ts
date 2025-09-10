@@ -274,8 +274,11 @@ const initializeWebMIDI = async (): Promise<boolean> => {
         
         console.log('✅ Global Web MIDI access initialized');
         
-        // Check for auto-reconnect ONCE only, no repeated attempts
-        attemptAutoReconnect();
+        // Defer auto-reconnect until after UI renders (Option 1: Defer MIDI initialization)
+        requestAnimationFrame(() => {
+          console.log('🎵 Starting deferred MIDI device reconnection...');
+          attemptAutoReconnect();
+        });
       })
       .catch(error => {
         console.error('❌ Failed to initialize Web MIDI:', error);

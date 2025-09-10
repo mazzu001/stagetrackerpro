@@ -117,6 +117,7 @@ interface GlobalMIDIState {
   sendCommand: (command: string) => Promise<boolean>;
   connectToDevice: (deviceId: string) => Promise<boolean>;
   connectToInputDevice: (deviceId: string) => Promise<boolean>;
+  startMIDI: () => Promise<void>; // NEW: User-triggered MIDI initialization
   refreshDevices: () => Promise<void>;
   getAvailableOutputs: () => MIDIDevice[];
   getAvailableInputs: () => MIDIDevice[];
@@ -266,17 +267,24 @@ const initializeWebMIDI = async (): Promise<boolean> => {
         .then((midiAccess) => {
           globalMidiAccess = midiAccess as MIDIAccess;
           
-          // Minimal device change listener - no complex logic
+          // Smart statechange handler - let browser handle device enumeration
           globalMidiAccess.onstatechange = (event: any) => {
             if (event.port) {
-              console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
+              console.log('🔄 MIDI device state changed:', event.port.name, event.port.state);
+              
+              if (event.port.state === "connected") {
+                if (event.port.type === "output") {
+                  console.log('🎵 Auto-connecting to output device:', event.port.name);
+                  connectToDeviceAutomatically(event.port);
+                } else if (event.port.type === "input") {
+                  console.log('🎵 Auto-connecting to input device:', event.port.name);
+                  connectToInputDeviceAutomatically(event.port);
+                }
+              }
             }
           };
           
-          console.log('✅ Global Web MIDI access initialized');
-          
-          // Check for auto-reconnect ONCE only, no repeated attempts
-          attemptAutoReconnect();
+          console.log('✅ Global Web MIDI access initialized - devices will connect via statechange events');
         })
         .catch(error => {
           console.error('❌ Failed to initialize Web MIDI:', error);
@@ -435,6 +443,66 @@ const handleIncomingMIDI = (event: MIDIMessageEvent) => {
         }
       }));
     }
+  }
+};
+
+// Automatic connection helpers for statechange events
+const connectToDeviceAutomatically = async (port: MIDIOutput): Promise<void> => {
+  try {
+    await port.open();
+    globalSelectedOutput = port;
+    globalConnectionStatus = 'Connected';
+    globalDeviceName = port.name || 'Unknown Device';
+    
+    // Save this device as the last connected device
+    saveLastConnectedDevice(
+      port.id, 
+      port.name || 'Unknown Device', 
+      port.manufacturer || 'Unknown'
+    );
+    
+    console.log('✅ Auto-connected to MIDI output device:', globalDeviceName);
+    
+    // Dispatch connection status change
+    window.dispatchEvent(new CustomEvent('globalMidiConnectionChange', {
+      detail: {
+        connected: true,
+        deviceName: globalDeviceName,
+        deviceId: port.id
+      }
+    }));
+  } catch (error) {
+    console.error('❌ Failed to auto-connect to output device:', error);
+  }
+};
+
+const connectToInputDeviceAutomatically = async (port: MIDIInput): Promise<void> => {
+  try {
+    await port.open();
+    
+    // Disconnect previous input if any
+    if (globalSelectedInput) {
+      globalSelectedInput.onmidimessage = null;
+    }
+    
+    globalSelectedInput = port;
+    globalInputDeviceName = port.name || 'Unknown Input Device';
+    
+    // Set up message listener
+    port.onmidimessage = handleIncomingMIDI;
+    
+    console.log('✅ Auto-connected to MIDI input device:', globalInputDeviceName);
+    
+    // Dispatch connection status change
+    window.dispatchEvent(new CustomEvent('globalMidiInputConnectionChange', {
+      detail: {
+        connected: true,
+        deviceName: globalInputDeviceName,
+        deviceId: port.id
+      }
+    }));
+  } catch (error) {
+    console.error('❌ Failed to auto-connect to input device:', error);
   }
 };
 
@@ -761,10 +829,8 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [connectionProgress, setConnectionProgress] = useState<Array<{device: string, status: 'pending' | 'connecting' | 'connected' | 'failed'}>>([]);
   
   useEffect(() => {
-    // Start MIDI in background immediately - NEVER wait for it
-    console.log('🎵 Starting background Web MIDI - fire and forget...');
-    // Fire and forget - don't care if it succeeds or fails
-    initializeWebMIDI();
+    // NO automatic MIDI initialization - eliminates startup blocking completely
+    console.log('🎵 MIDI initialization disabled at startup - user can enable when needed');
     
     // Listen for global connection changes
     const handleConnectionChange = (event: any) => {
@@ -798,6 +864,15 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     };
   }, []);
   
+  const startMIDI = useCallback(async () => {
+    if (globalMidiAccess) {
+      console.log('🎵 MIDI already initialized');
+      return;
+    }
+    console.log('🎵 User starting MIDI...');
+    initializeWebMIDI();
+  }, []);
+
   const refreshDevices = useCallback(async () => {
     // Fire and forget - refresh MIDI in background
     console.log('🎵 Refreshing MIDI devices in background...');
@@ -869,6 +944,7 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     sendCommand: sendCommandCallback,
     connectToDevice: connectToDeviceCallback,
     connectToInputDevice: connectToInputDeviceCallback,
+    startMIDI, // NEW: User-triggered MIDI initialization
     refreshDevices,
     getAvailableOutputs: getAvailableOutputsCallback,
     getAvailableInputs: getAvailableInputsCallback,

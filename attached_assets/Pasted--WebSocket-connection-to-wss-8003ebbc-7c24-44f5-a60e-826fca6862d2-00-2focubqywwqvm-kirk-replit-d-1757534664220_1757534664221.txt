@@ -1,0 +1,218 @@
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=UtliVjNVyYsh' failed: 
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) 
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ Loaded 12 audio file path references from localStorage
+ 🔄 Auto-loading 12 stored audio files...
+ 🔍 BrowserFS.getAudioFile: Looking for track ee04b47a-619a-497e-a5d9-1da5e2de9e2f
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for ee04b47a-619a-497e-a5d9-1da5e2de9e2f
+ ❌ Database not initialized for track ee04b47a-619a-497e-a5d9-1da5e2de9e2f
+ Expected audio files for tracks:
+   - Addicted to love - 0001 - Audio - Click.mp3 (browser://64c63550-162f-416a-975d-4c0bbf9d95ad/ee04b47a-619a-497e-a5d9-1da5e2de9e2f)
+   - Addicted to love - 0002 - Audio - Drums.mp3 (browser://64c63550-162f-416a-975d-4c0bbf9d95ad/740eeb7f-0646-4090-b7e3-044b0ae6d919)
+   - Addicted to love - 0003 - Audio - Bass.mp3 (browser://64c63550-162f-416a-975d-4c0bbf9d95ad/b31a54f8-8d09-4a8b-80ad-aeb5824dfaa7)
+   - Addicted to love - 0004 - Audio - Lead Guitar.mp3 (browser://64c63550-162f-416a-975d-4c0bbf9d95ad/82d0ef26-b909-4062-a816-071e95239e39)
+   - Addicted to love - 0005 - Audio - Keys.mp3 (browser://64c63550-162f-416a-975d-4c0bbf9d95ad/186e975a-f197-4c26-aff2-99e8b0452cf3)
+   - Addicted to love - 0006 - Audio - Backups.mp3 (browser://64c63550-162f-416a-975d-4c0bbf9d95ad/85ac16b3-c96c-4500-bea6-916728259813)
+   - 3AM - Backups.mp3 (browser://f4d3dab2-9bdf-4778-8a35-3763ade06473/4d6fc3d9-64cb-4f30-8e31-4e3f10136aec)
+   - 3AM - Bass.mp3 (browser://f4d3dab2-9bdf-4778-8a35-3763ade06473/98a4a25b-4474-4a30-aa3d-9bbb95630355)
+   - 3AM - Click.mp3 (browser://f4d3dab2-9bdf-4778-8a35-3763ade06473/35417aec-c565-44da-9f63-f3b2d00ec23f)
+   - 3AM - Drums.mp3 (browser://f4d3dab2-9bdf-4778-8a35-3763ade06473/d85c58c4-4ec4-4b7b-a053-3d5e16fec987)
+   - 3AM - Guitars.mp3 (browser://f4d3dab2-9bdf-4778-8a35-3763ade06473/8b21285d-17e8-49bd-8f27-a2b29535b021)
+   - 3AM - Organ.mp3 (browser://f4d3dab2-9bdf-4778-8a35-3763ade06473/05b73720-8376-4e80-9ddf-8286a58e3c6e)
+ These files will be loaded when you select them through the file picker.
+ 🔍 BrowserFS.getAudioFile: Looking for track 740eeb7f-0646-4090-b7e3-044b0ae6d919
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 740eeb7f-0646-4090-b7e3-044b0ae6d919
+ ❌ Database not initialized for track 740eeb7f-0646-4090-b7e3-044b0ae6d919
+ 🔍 BrowserFS.getAudioFile: Looking for track b31a54f8-8d09-4a8b-80ad-aeb5824dfaa7
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for b31a54f8-8d09-4a8b-80ad-aeb5824dfaa7
+ ❌ Database not initialized for track b31a54f8-8d09-4a8b-80ad-aeb5824dfaa7
+ 🔍 BrowserFS.getAudioFile: Looking for track 82d0ef26-b909-4062-a816-071e95239e39
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 82d0ef26-b909-4062-a816-071e95239e39
+ ❌ Database not initialized for track 82d0ef26-b909-4062-a816-071e95239e39
+ 🔍 BrowserFS.getAudioFile: Looking for track 186e975a-f197-4c26-aff2-99e8b0452cf3
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 186e975a-f197-4c26-aff2-99e8b0452cf3
+ ❌ Database not initialized for track 186e975a-f197-4c26-aff2-99e8b0452cf3
+ 🔍 BrowserFS.getAudioFile: Looking for track 85ac16b3-c96c-4500-bea6-916728259813
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 85ac16b3-c96c-4500-bea6-916728259813
+ ❌ Database not initialized for track 85ac16b3-c96c-4500-bea6-916728259813
+ 🔍 BrowserFS.getAudioFile: Looking for track 4d6fc3d9-64cb-4f30-8e31-4e3f10136aec
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 4d6fc3d9-64cb-4f30-8e31-4e3f10136aec
+ ❌ Database not initialized for track 4d6fc3d9-64cb-4f30-8e31-4e3f10136aec
+ 🔍 BrowserFS.getAudioFile: Looking for track 98a4a25b-4474-4a30-aa3d-9bbb95630355
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 98a4a25b-4474-4a30-aa3d-9bbb95630355
+ ❌ Database not initialized for track 98a4a25b-4474-4a30-aa3d-9bbb95630355
+ 🔍 BrowserFS.getAudioFile: Looking for track 35417aec-c565-44da-9f63-f3b2d00ec23f
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 35417aec-c565-44da-9f63-f3b2d00ec23f
+ ❌ Database not initialized for track 35417aec-c565-44da-9f63-f3b2d00ec23f
+ 🔍 BrowserFS.getAudioFile: Looking for track d85c58c4-4ec4-4b7b-a053-3d5e16fec987
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for d85c58c4-4ec4-4b7b-a053-3d5e16fec987
+ ❌ Database not initialized for track d85c58c4-4ec4-4b7b-a053-3d5e16fec987
+ 🔍 BrowserFS.getAudioFile: Looking for track 8b21285d-17e8-49bd-8f27-a2b29535b021
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 8b21285d-17e8-49bd-8f27-a2b29535b021
+ ❌ Database not initialized for track 8b21285d-17e8-49bd-8f27-a2b29535b021
+ 🔍 BrowserFS.getAudioFile: Looking for track 05b73720-8376-4e80-9ddf-8286a58e3c6e
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 05b73720-8376-4e80-9ddf-8286a58e3c6e
+ ❌ Database not initialized for track 05b73720-8376-4e80-9ddf-8286a58e3c6e
+ ✅ Auto-loaded 0/12 audio files into cache
+ 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ Browser file system already initialized - auto-initializing
+ ✅ BrowserFileSystem database auto-initialized
+ Browser file system initialized successfully
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+ 📱 Edge browser detected - using compatibility mode
+ 📱 Edge browser detected - using compatibility mode
+ ✅ Cloud login successful: professional@demo.com
+ 🔄 Resetting processed timestamps - Song changed to: none
+ ⏹️ Resetting processed timestamps - Playback stopped
+ ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+ 🔍 Initial service isHost check: Object
+ 🎵 useGlobalWebMIDI hook mounted - MIDI will initialize when needed
+ 🎵 Setting up persistent Web MIDI event listener...
+ 🔄 Global Web MIDI status: Disconnected - 
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 📱 Edge browser detected - using compatibility mode
+ 📋 Loaded 1 songs from local storage (alphabetically sorted)
+ 🔍 Debug values: Object
+ 🎵 Loading song: kjhkj
+ 📡 Not uploading to database: Object
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Loading cached waveform for "kjhkj" (400 data points)
+ 📋 Analyzing lyrics for song: kjhkj
+ ⏰ Found timestamped line: [1:21] at 81s -> "[1:21]"
+ 📋 Total timestamped lines found: 1
+ 📋 Checking for non-timestamped MIDI commands in: kjhkj
+ 📋 No non-timestamped MIDI commands found in: kjhkj
+ 🔄 Resetting processed timestamps - Song changed to: kjhkj
+ Song selected: "kjhkj" with 6 tracks - loading for streaming
+ Setting up streaming for: "kjhkj" - UI stays responsive
+ 🔍 Requesting audio URL for track: ee04b47a-619a-497e-a5d9-1da5e2de9e2f
+ 📂 Available audio files (12): Array(12)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track ee04b47a-619a-497e-a5d9-1da5e2de9e2f
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for ee04b47a-619a-497e-a5d9-1da5e2de9e2f
+ 🔍 Requesting audio URL for track: 740eeb7f-0646-4090-b7e3-044b0ae6d919
+ 📂 Available audio files (12): Array(12)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 740eeb7f-0646-4090-b7e3-044b0ae6d919
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for 740eeb7f-0646-4090-b7e3-044b0ae6d919
+ 🔍 Requesting audio URL for track: b31a54f8-8d09-4a8b-80ad-aeb5824dfaa7
+audio-file-storage.ts:79 📂 Available audio files (12): Array(12)
+audio-file-storage.ts:80 💾 Memory cache files (0): Array(0)
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track b31a54f8-8d09-4a8b-80ad-aeb5824dfaa7
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for b31a54f8-8d09-4a8b-80ad-aeb5824dfaa7
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 82d0ef26-b909-4062-a816-071e95239e39
+audio-file-storage.ts:79 📂 Available audio files (12): Array(12)
+audio-file-storage.ts:80 💾 Memory cache files (0): Array(0)
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 82d0ef26-b909-4062-a816-071e95239e39
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 82d0ef26-b909-4062-a816-071e95239e39
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 186e975a-f197-4c26-aff2-99e8b0452cf3
+audio-file-storage.ts:79 📂 Available audio files (12): Array(12)
+audio-file-storage.ts:80 💾 Memory cache files (0): Array(0)
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 186e975a-f197-4c26-aff2-99e8b0452cf3
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 186e975a-f197-4c26-aff2-99e8b0452cf3
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 85ac16b3-c96c-4500-bea6-916728259813
+audio-file-storage.ts:79 📂 Available audio files (12): Array(12)
+audio-file-storage.ts:80 💾 Memory cache files (0): Array(0)
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 85ac16b3-c96c-4500-bea6-916728259813
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 85ac16b3-c96c-4500-bea6-916728259813
+performance.tsx:572 🎭 Broadcast host effect: Object
+performance.tsx:581 🎭 Not broadcasting - not host
+performance.tsx:572 🎭 Broadcast host effect: Object
+performance.tsx:581 🎭 Not broadcasting - not host
+browser-file-system.ts:251 ✅ Found in IndexedDB: ee04b47a-619a-497e-a5d9-1da5e2de9e2f (Addicted to love - 0001 - Audio - Click.mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: ee04b47a-619a-497e-a5d9-1da5e2de9e2f
+browser-file-system.ts:251 ✅ Found in IndexedDB: b31a54f8-8d09-4a8b-80ad-aeb5824dfaa7 (Addicted to love - 0003 - Audio - Bass.mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: b31a54f8-8d09-4a8b-80ad-aeb5824dfaa7
+browser-file-system.ts:251 ✅ Found in IndexedDB: 82d0ef26-b909-4062-a816-071e95239e39 (Addicted to love - 0004 - Audio - Lead Guitar.mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 82d0ef26-b909-4062-a816-071e95239e39
+browser-file-system.ts:251 ✅ Found in IndexedDB: 186e975a-f197-4c26-aff2-99e8b0452cf3 (Addicted to love - 0005 - Audio - Keys.mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 186e975a-f197-4c26-aff2-99e8b0452cf3
+browser-file-system.ts:251 ✅ Found in IndexedDB: 740eeb7f-0646-4090-b7e3-044b0ae6d919 (Addicted to love - 0002 - Audio - Drums.mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 740eeb7f-0646-4090-b7e3-044b0ae6d919
+browser-file-system.ts:251 ✅ Found in IndexedDB: 85ac16b3-c96c-4500-bea6-916728259813 (Addicted to love - 0006 - Audio - Backups.mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 85ac16b3-c96c-4500-bea6-916728259813
+streaming-audio-engine.ts:81 🚀 Streaming load: 6 tracks (deferred setup)
+streaming-audio-engine.ts:72 🎵 Loading original tracks...
+streaming-audio-engine.ts:75 🎵 Track loading complete: 6 tracks ready
+use-audio-engine.tsx:140 ✅ Streaming ready for "kjhkj" - instant playback available
+streaming-audio-engine.ts:114 ✅ Streaming ready: 6 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:216 🔧 Audio nodes created on demand for: Addicted to love - 0001 - Audio - Click
+streaming-audio-engine.ts:216 🔧 Audio nodes created on demand for: Addicted to love - 0002 - Audio - Drums
+streaming-audio-engine.ts:216 🔧 Audio nodes created on demand for: Addicted to love - 0003 - Audio - Bass
+streaming-audio-engine.ts:216 🔧 Audio nodes created on demand for: Addicted to love - 0004 - Audio - Lead Guitar
+streaming-audio-engine.ts:216 🔧 Audio nodes created on demand for: Addicted to love - 0005 - Audio - Keys
+streaming-audio-engine.ts:216 🔧 Audio nodes created on demand for: Addicted to love - 0006 - Audio - Backups
+streaming-audio-engine.ts:166 🔄 Loading started for Addicted to love - 0001 - Audio - Click
+streaming-audio-engine.ts:166 🔄 Loading started for Addicted to love - 0002 - Audio - Drums
+streaming-audio-engine.ts:166 🔄 Loading started for Addicted to love - 0003 - Audio - Bass
+streaming-audio-engine.ts:166 🔄 Loading started for Addicted to love - 0004 - Audio - Lead Guitar
+streaming-audio-engine.ts:166 🔄 Loading started for Addicted to love - 0005 - Audio - Keys
+streaming-audio-engine.ts:166 🔄 Loading started for Addicted to love - 0006 - Audio - Backups
+use-audio-engine.tsx:64 Duration updated from streaming engine: 270s
+use-audio-engine.tsx:64 Duration updated from streaming engine: 270s
+useGlobalWebMIDI.ts:861 🎵 useGlobalWebMIDI hook mounted - MIDI will initialize when needed
+PersistentWebMIDIManager.tsx:38 🎵 MIDI not initialized, starting lazy initialization...
+useGlobalWebMIDI.ts:969 🎵 Starting lazy MIDI initialization...
+useGlobalWebMIDI.ts:263 🔍 DEBUG: Navigator object available: true
+useGlobalWebMIDI.ts:264 🔍 DEBUG: requestMIDIAccess function available: true
+useGlobalWebMIDI.ts:274 🎵 Starting Web MIDI initialization...
+useGlobalWebMIDI.ts:277 🔍 DEBUG: About to call navigator.requestMIDIAccess({ sysex: true })
+useGlobalWebMIDI.ts:278 🔍 DEBUG: Current timestamp: 1757534614851
+useGlobalWebMIDI.ts:308 🔍 DEBUG: Waiting for MIDI access promise to resolve...
+useGlobalWebMIDI.ts:293 ⏰ MIDI initialization progress: 2 seconds elapsed
+useGlobalWebMIDI.ts:298 ⏰ MIDI initialization progress: 5 seconds elapsed
+useGlobalWebMIDI.ts:303 ⏰ MIDI initialization progress: 10 seconds elapsed
+useGlobalWebMIDI.ts:286 ❌ MIDI initialization timed out after 30000 ms
+useGlobalWebMIDI.ts:359  ❌ MIDI initialization failed with error: Error: MIDI initialization timed out after 30 seconds
+    at useGlobalWebMIDI.ts:287:16
+initializeWebMIDI @ useGlobalWebMIDI.ts:359
+useGlobalWebMIDI.ts:360 🔍 DEBUG: Error name: Error
+useGlobalWebMIDI.ts:361 🔍 DEBUG: Error message: MIDI initialization timed out after 30 seconds
+PersistentWebMIDIManager.tsx:41 ❌ MIDI initialization failed, cannot refresh devices

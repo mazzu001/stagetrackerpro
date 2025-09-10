@@ -234,25 +234,6 @@ export function PersistentWebMIDIManager() {
           </div>
         )}
 
-        {/* MIDI Initialization */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h4 className="font-medium text-blue-900">MIDI System</h4>
-              <p className="text-sm text-blue-700">Click to enable MIDI device detection and auto-connection</p>
-            </div>
-            <Button
-              onClick={globalMidi.startMIDI}
-              size="sm"
-              className="bg-blue-600 hover:bg-blue-700"
-              data-testid="button-start-midi"
-            >
-              <Music className="h-4 w-4 mr-2" />
-              Start MIDI
-            </Button>
-          </div>
-        </div>
-
         {/* Mode Toggle */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">

@@ -135,6 +135,8 @@ interface GlobalMIDIState {
   isMIDIInitializing: boolean;
   midiInitMessage: string;
   midiInitProgress: string;
+  // NEW: Retry functionality
+  retryMIDIInitialization: () => Promise<boolean>;
 }
 
 interface MIDIDevice {
@@ -240,7 +242,7 @@ const attemptAutoReconnect = async (setLoadingState?: (loading: boolean, message
   return false;
 };
 
-// Initialize Web MIDI access once - WITH LOADING SUPPORT
+// Initialize Web MIDI access once - WITH LOADING SUPPORT AND NO TIMEOUT ABORT
 const initializeWebMIDI = async (setLoadingState?: (loading: boolean, message: string, progress?: string) => void): Promise<boolean> => {
   if (globalMidiAccess) return true;
   
@@ -261,20 +263,31 @@ const initializeWebMIDI = async (setLoadingState?: (loading: boolean, message: s
     setLoadingState?.(true, 'Initializing MIDI System', 'Requesting MIDI access...');
     console.log('🎵 Initializing global Web MIDI access...');
     
-    // Reduced timeout from 5s to 2s for quicker response
+    // CRITICAL FIX: Don't use Promise.race - let MIDI initialize without timeout abort
     const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('MIDI initialization timeout')), 2000);
-    });
+    
+    // Timeout for UI messaging only - doesn't abort initialization
+    const uiTimeoutId = setTimeout(() => {
+      console.log('⏰ MIDI initialization taking longer than expected...');
+      setLoadingState?.(true, 'Initializing MIDI System', 'Taking longer than usual - Please wait...');
+      
+      // Show extended wait message after 5 seconds
+      setTimeout(() => {
+        setLoadingState?.(true, 'Initializing MIDI System', 'Still initializing - Some systems need extra time');
+      }, 3000);
+    }, 2000);
     
     // Use pre-rendering approach - show loading before potential thread block
     requestAnimationFrame(() => {
       // Update progress message  
       setLoadingState?.(true, 'Initializing MIDI System', 'Accessing MIDI devices...');
       
-      // Don't await - handle MIDI access asynchronously in background
-      Promise.race([midiAccessPromise, timeoutPromise])
+      // FIXED: Wait for MIDI access without timeout abort - let it take as long as needed
+      midiAccessPromise
         .then((midiAccess) => {
+          // Clear UI timeout since we succeeded
+          clearTimeout(uiTimeoutId);
+          
           globalMidiAccess = midiAccess as MIDIAccess;
           
           // Update progress
@@ -303,8 +316,23 @@ const initializeWebMIDI = async (setLoadingState?: (loading: boolean, message: s
           });
         })
         .catch(error => {
+          // Clear UI timeout on error
+          clearTimeout(uiTimeoutId);
+          
           console.error('❌ Failed to initialize Web MIDI:', error);
-          setLoadingState?.(false, '', 'MIDI initialization failed - Click to retry');
+          
+          // Determine error type for better user messaging
+          const isPermissionError = error.name === 'NotAllowedError' || error.message.includes('permission');
+          const isNotSupportedError = error.name === 'NotSupportedError';
+          
+          let errorMessage = 'MIDI initialization failed - Click to retry';
+          if (isPermissionError) {
+            errorMessage = 'MIDI access denied - Please grant permission and retry';
+          } else if (isNotSupportedError) {
+            errorMessage = 'MIDI not supported on this system';
+          }
+          
+          setLoadingState?.(false, '', errorMessage);
         });
     });
     
@@ -897,6 +925,33 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     return isDeviceConnected(deviceId);
   }, []);
   
+  // NEW: Retry MIDI initialization
+  const retryMIDIInitialization = useCallback(async (): Promise<boolean> => {
+    console.log('🔄 Retrying MIDI initialization...');
+    
+    // Reset global MIDI access to force re-initialization
+    globalMidiAccess = null;
+    globalConnectionStatus = 'Disconnected';
+    globalDeviceName = '';
+    globalInputDeviceName = '';
+    
+    // Set up loading callback for retry
+    const midiLoadingCallback = (loading: boolean, message: string, progress?: string) => {
+      setIsMIDIInitializing(loading);
+      setMidiInitMessage(message);
+      setMidiInitProgress(progress || '');
+    };
+    
+    // Attempt re-initialization
+    return initializeWebMIDI(midiLoadingCallback)
+      .catch(error => {
+        console.error('❌ MIDI retry failed:', error);
+        setIsMIDIInitializing(false);
+        setMidiInitProgress('MIDI initialization failed - Click to retry');
+        return false;
+      });
+  }, []);
+  
   return {
     isConnected,
     deviceName,
@@ -921,7 +976,9 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     // NEW: MIDI initialization loading states
     isMIDIInitializing,
     midiInitMessage,
-    midiInitProgress
+    midiInitProgress,
+    // NEW: Retry functionality
+    retryMIDIInitialization
   };
 };
 

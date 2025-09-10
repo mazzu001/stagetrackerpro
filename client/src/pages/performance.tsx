@@ -29,6 +29,7 @@ import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import type { SongWithTracks } from "@shared/schema";
 import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
 import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
+import { MIDILoadingModal } from "@/components/MIDILoadingModal";
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
 import { useBroadcast } from "@/hooks/useBroadcast";
@@ -109,6 +110,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Global Web MIDI integration - persistent across dialog closures
   const globalMidi = useGlobalWebMIDI();
+  
+  // Extract MIDI loading states for loading modal
+  const { isMIDIInitializing, midiInitMessage, midiInitProgress, retryMIDIInitialization } = globalMidi;
 
   // Initialize global MIDI event listener for external commands
   useEffect(() => {
@@ -1092,6 +1096,15 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   return (
     <div className={`h-screen flex flex-col bg-background text-foreground overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+      
+      {/* MIDI Loading Modal - appears during MIDI initialization */}
+      <MIDILoadingModal 
+        isVisible={isMIDIInitializing}
+        message={midiInitMessage}
+        progress={midiInitProgress}
+        onRetry={retryMIDIInitialization}
+      />
+      
       {/* Header */}
       <div className="bg-surface border-b border-gray-700 p-2 md:p-4 flex-shrink-0">
         <div className="flex items-center justify-between">

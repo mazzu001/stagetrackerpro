@@ -127,10 +127,14 @@ interface GlobalMIDIState {
   sendCommandToAll: (command: string) => Promise<boolean>;
   sendCommandToDevice: (command: string, deviceId: string) => Promise<boolean>;
   isDeviceConnected: (deviceId: string) => boolean;
-  // NEW: Loading states
+  // NEW: Connection loading states
   isLoading: boolean;
   loadingMessage: string;
   connectionProgress: Array<{device: string, status: 'pending' | 'connecting' | 'connected' | 'failed'}>;
+  // NEW: MIDI initialization loading states  
+  isMIDIInitializing: boolean;
+  midiInitMessage: string;
+  midiInitProgress: string;
 }
 
 interface MIDIDevice {
@@ -236,8 +240,8 @@ const attemptAutoReconnect = async (setLoadingState?: (loading: boolean, message
   return false;
 };
 
-// Initialize Web MIDI access once - NO REPEATED CHECKING
-const initializeWebMIDI = async (): Promise<boolean> => {
+// Initialize Web MIDI access once - WITH LOADING SUPPORT
+const initializeWebMIDI = async (setLoadingState?: (loading: boolean, message: string, progress?: string) => void): Promise<boolean> => {
   if (globalMidiAccess) return true;
   
   try {
@@ -249,46 +253,67 @@ const initializeWebMIDI = async (): Promise<boolean> => {
     
     if (!navigator.requestMIDIAccess) {
       console.log('❌ Web MIDI API not supported in this browser');
+      setLoadingState?.(false, '', 'Web MIDI not supported in this browser');
       return false;
     }
     
+    // Show loading screen BEFORE starting MIDI initialization  
+    setLoadingState?.(true, 'Initializing MIDI System', 'Requesting MIDI access...');
     console.log('🎵 Initializing global Web MIDI access...');
     
-    // Add timeout to prevent hanging
+    // Reduced timeout from 5s to 2s for quicker response
     const midiAccessPromise = navigator.requestMIDIAccess({ sysex: true });
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000);
+      setTimeout(() => reject(new Error('MIDI initialization timeout')), 2000);
     });
     
-    // Don't await - handle MIDI access asynchronously in background
-    Promise.race([midiAccessPromise, timeoutPromise])
-      .then((midiAccess) => {
-        globalMidiAccess = midiAccess as MIDIAccess;
-        
-        // Minimal device change listener - no complex logic
-        globalMidiAccess.onstatechange = (event: any) => {
-          if (event.port) {
-            console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
-          }
-        };
-        
-        console.log('✅ Global Web MIDI access initialized');
-        
-        // Defer auto-reconnect until after UI renders (Option 1: Defer MIDI initialization)
-        requestAnimationFrame(() => {
-          console.log('🎵 Starting deferred MIDI device reconnection...');
-          attemptAutoReconnect();
+    // Use pre-rendering approach - show loading before potential thread block
+    requestAnimationFrame(() => {
+      // Update progress message  
+      setLoadingState?.(true, 'Initializing MIDI System', 'Accessing MIDI devices...');
+      
+      // Don't await - handle MIDI access asynchronously in background
+      Promise.race([midiAccessPromise, timeoutPromise])
+        .then((midiAccess) => {
+          globalMidiAccess = midiAccess as MIDIAccess;
+          
+          // Update progress
+          setLoadingState?.(true, 'Initializing MIDI System', 'Setting up device listeners...');
+          
+          // Minimal device change listener - no complex logic
+          globalMidiAccess.onstatechange = (event: any) => {
+            if (event.port) {
+              console.log('🔄 Global MIDI device state changed:', event.port.name, event.port.state);
+            }
+          };
+          
+          console.log('✅ Global Web MIDI access initialized');
+          
+          // Defer auto-reconnect until after UI renders  
+          requestAnimationFrame(() => {
+            setLoadingState?.(true, 'Initializing MIDI System', 'Reconnecting to saved devices...');
+            console.log('🎵 Starting deferred MIDI device reconnection...');
+            
+            attemptAutoReconnect((loading, message) => {
+              if (!loading) {
+                // MIDI initialization complete
+                setLoadingState?.(false, '', '');
+              }
+            });
+          });
+        })
+        .catch(error => {
+          console.error('❌ Failed to initialize Web MIDI:', error);
+          setLoadingState?.(false, '', 'MIDI initialization failed - Click to retry');
         });
-      })
-      .catch(error => {
-        console.error('❌ Failed to initialize Web MIDI:', error);
-      });
+    });
     
     // Return immediately - don't wait for MIDI initialization
     return false;
     
   } catch (error) {
     console.error('❌ Failed to initialize Web MIDI:', error);
+    setLoadingState?.(false, '', 'MIDI initialization failed - Click to retry');
     return false;
   }
 };
@@ -756,10 +781,23 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   const [loadingMessage, setLoadingMessage] = useState('');
   const [connectionProgress, setConnectionProgress] = useState<Array<{device: string, status: 'pending' | 'connecting' | 'connected' | 'failed'}>>([]);
   
+  // NEW: MIDI initialization loading states (separate from device connection loading)
+  const [isMIDIInitializing, setIsMIDIInitializing] = useState(false);
+  const [midiInitMessage, setMidiInitMessage] = useState('');
+  const [midiInitProgress, setMidiInitProgress] = useState('');
+  
   useEffect(() => {
-    // Initialize Web MIDI in background - completely non-blocking
-    initializeWebMIDI().catch(error => {
+    // Initialize Web MIDI with loading state support
+    const midiLoadingCallback = (loading: boolean, message: string, progress?: string) => {
+      setIsMIDIInitializing(loading);
+      setMidiInitMessage(message);
+      setMidiInitProgress(progress || '');
+    };
+    
+    // Initialize Web MIDI with loading feedback
+    initializeWebMIDI(midiLoadingCallback).catch(error => {
       console.log('🔍 MIDI scan completed (background initialization)');
+      setIsMIDIInitializing(false);
     });
     
     // Listen for global connection changes
@@ -876,10 +914,14 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     sendCommandToAll: sendCommandToAllCallback,
     sendCommandToDevice: sendCommandToDeviceCallback,
     isDeviceConnected: isDeviceConnectedCallback,
-    // NEW: Loading states
+    // NEW: Connection loading states
     isLoading,
     loadingMessage,
-    connectionProgress
+    connectionProgress,
+    // NEW: MIDI initialization loading states
+    isMIDIInitializing,
+    midiInitMessage,
+    midiInitProgress
   };
 };
 

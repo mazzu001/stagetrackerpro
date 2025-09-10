@@ -960,7 +960,7 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     return isDeviceConnected(deviceId);
   }, []);
   
-  // NEW: Manual lazy MIDI initialization
+  // NEW: Lazy main-thread MIDI initialization (non-blocking, user-gesture triggered)
   const initializeMIDI = useCallback(async (): Promise<boolean> => {
     // Don't initialize if already available
     if (globalMidiAccess) {
@@ -969,31 +969,89 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
       return true;
     }
     
-    console.log('🎵 Starting lazy MIDI initialization...');
+    console.log('🎵 Starting lazy main-thread MIDI initialization...');
     
-    // Set up loading callback
-    const midiLoadingCallback = (loading: boolean, message: string, progress?: string) => {
-      setIsMIDIInitializing(loading);
-      setMidiInitMessage(message);
-      setMidiInitProgress(progress || '');
-    };
+    // Show brief loading message
+    setIsMIDIInitializing(true);
+    setMidiInitMessage('Loading MIDI Services...');
+    setMidiInitProgress('Requesting permissions...');
     
-    // Initialize Web MIDI
-    return initializeWebMIDI(midiLoadingCallback)
-      .then(success => {
-        if (success) {
-          console.log('✅ Lazy MIDI initialization completed');
-          setIsMIDIAvailable(true);
-        }
-        return success;
-      })
-      .catch(error => {
-        console.error('❌ Lazy MIDI initialization failed:', error);
-        setIsMIDIInitializing(false);
-        setMidiInitProgress('MIDI initialization failed - Click to retry');
-        setIsMIDIAvailable(false);
-        return false;
+    try {
+      // Check browser environment
+      if (typeof window === 'undefined' || typeof navigator === 'undefined') {
+        throw new Error('Not in browser environment');
+      }
+      
+      if (!navigator.requestMIDIAccess) {
+        throw new Error('Web MIDI API not supported in this browser');
+      }
+      
+      console.log('🎵 Main Thread: Requesting MIDI access with 3-second timeout...');
+      
+      // STRICT 3-second timeout for tablet performance
+      const TABLET_TIMEOUT_MS = 3000;
+      
+      const midiPromise = navigator.requestMIDIAccess({ sysex: false });
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        setTimeout(() => {
+          console.log('⏰ MIDI initialization timed out after 3 seconds (tablet optimized)');
+          reject(new Error('MIDI initialization timed out after 3 seconds'));
+        }, TABLET_TIMEOUT_MS);
       });
+      
+      // Race between MIDI access and timeout  
+      const midiAccess = await Promise.race([midiPromise, timeoutPromise]);
+      
+      console.log('✅ Main Thread: MIDI access granted successfully');
+      console.log('🎵 Available devices:', midiAccess.outputs.size, 'outputs,', midiAccess.inputs.size, 'inputs');
+      
+      // Set global MIDI access for other functions to use
+      globalMidiAccess = midiAccess as MIDIAccess;
+      globalConnectionStatus = 'Disconnected';
+      globalDeviceName = '';
+      globalInputDeviceName = '';
+      
+      // Set up device change listener
+      globalMidiAccess.onstatechange = (event: any) => {
+        if (event.port) {
+          console.log('🔄 MIDI device state changed:', event.port.name, event.port.state);
+          // Dispatch custom event for device changes
+          window.dispatchEvent(new CustomEvent('globalMidiDeviceChange'));
+        }
+      };
+      
+      // Update UI state
+      setIsMIDIInitializing(false);
+      setMidiInitMessage('');
+      setMidiInitProgress('');
+      setIsMIDIAvailable(true);
+      
+      console.log('🎵 MIDI initialization completed successfully with', midiAccess.outputs.size, 'outputs and', midiAccess.inputs.size, 'inputs');
+      
+      return true;
+      
+    } catch (error) {
+      console.error('❌ Main Thread: MIDI initialization failed:', error);
+      
+      // Clear loading state
+      setIsMIDIInitializing(false);
+      setMidiInitMessage('');
+      
+      // Provide user-friendly error messages
+      let errorMessage = 'MIDI not available on this device';
+      if (error.message.includes('timeout')) {
+        errorMessage = 'MIDI initialization timed out - device may be busy';
+      } else if (error.message.includes('not supported')) {
+        errorMessage = 'MIDI not supported in this browser';
+      } else if (error.name === 'NotAllowedError') {
+        errorMessage = 'MIDI access denied - please allow permissions';
+      }
+      
+      setMidiInitProgress(errorMessage);
+      setIsMIDIAvailable(false);
+      
+      return false;
+    }
   }, []);
 
   // NEW: Retry MIDI initialization

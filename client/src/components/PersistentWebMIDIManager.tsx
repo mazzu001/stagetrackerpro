@@ -29,19 +29,19 @@ export function PersistentWebMIDIManager() {
   
   const globalMidi = useGlobalWebMIDI();
 
-  // Refresh available devices - LAZY INITIALIZATION
+  // Refresh available devices - LAZY INITIALIZATION (3-second timeout)
   const refreshDevices = async () => {
     setIsRefreshing(true);
     try {
-      // Initialize MIDI first if not available
+      // Initialize MIDI first if not available (lazy initialization on user gesture)
       if (!globalMidi.isMIDIAvailable) {
         console.log('🎵 MIDI not initialized, starting lazy initialization...');
         const initialized = await globalMidi.initializeMIDI();
         if (!initialized) {
           console.log('❌ MIDI initialization failed, cannot refresh devices');
           toast({
-            title: "MIDI Initialization Failed",
-            description: "Could not access MIDI system. Please check permissions.",
+            title: "MIDI Services Unavailable",
+            description: "MIDI not available on this device",
             variant: "destructive",
           });
           setIsRefreshing(false);
@@ -83,14 +83,14 @@ export function PersistentWebMIDIManager() {
   // Connect to output device - LAZY INITIALIZATION
   const connectToOutput = async (deviceId: string) => {
     try {
-      // Initialize MIDI first if not available
+      // Initialize MIDI first if not available (lazy initialization on user gesture)
       if (!globalMidi.isMIDIAvailable) {
         console.log('🎵 Initializing MIDI for device connection...');
         const initialized = await globalMidi.initializeMIDI();
         if (!initialized) {
           toast({
-            title: "MIDI Initialization Required",
-            description: "Please initialize MIDI first by clicking Refresh",
+            title: "MIDI Services Unavailable",
+            description: "MIDI not available on this device",
             variant: "destructive",
           });
           return;

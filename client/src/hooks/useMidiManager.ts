@@ -205,58 +205,60 @@ export function useMidiManager() {
         console.log('⏰ MIDI initialization deadline reached (3 seconds)');
         setState('timeout');
         setIsLoading(false);
-        setLoadingMessage('MIDI still loading in background...');
+        setLoadingMessage('MIDI timeout - devices may not be available');
       }
     }, 3000);
 
-    // Start MIDI request in background - don't await on UI thread
-    const initializeInBackground = async () => {
-      try {
-        if (!navigator.requestMIDIAccess) {
-          throw new Error('Web MIDI API not supported');
-        }
+    // Start MIDI request in background using setTimeout to avoid blocking
+    setTimeout(() => {
+      const initializeInBackground = async () => {
+        try {
+          if (!navigator.requestMIDIAccess) {
+            throw new Error('Web MIDI API not supported');
+          }
 
-        console.log('🎵 Requesting MIDI access in background...');
-        const access = await navigator.requestMIDIAccess({ sysex: false });
-        
-        // Check if this result is still current
-        if (currentGeneration.current === thisGeneration) {
-          console.log('✅ MIDI access granted, updating state');
-          midiAccess = access;
+          console.log('🎵 Requesting MIDI access in background...');
+          const access = await navigator.requestMIDIAccess({ sysex: false });
           
-          // Set up device change listener
-          access.onstatechange = () => {
-            console.log('🔄 MIDI device state changed');
+          // Check if this result is still current
+          if (currentGeneration.current === thisGeneration) {
+            console.log('✅ MIDI access granted, updating state');
+            midiAccess = access;
+            
+            // Set up device change listener
+            access.onstatechange = () => {
+              console.log('🔄 MIDI device state changed');
+              updateDeviceList();
+            };
+
+            setState('ready');
+            setIsLoading(false);
+            setLoadingMessage('');
+            clearTimeout(deadlineTimerRef.current);
+            
             updateDeviceList();
-          };
-
-          setState('ready');
-          setIsLoading(false);
-          setLoadingMessage('');
-          clearTimeout(deadlineTimerRef.current);
-          
-          updateDeviceList();
-          
-          // Auto-reconnect to saved devices
-          setTimeout(() => autoReconnect(), 100);
-        } else {
-          console.log('🚫 Ignoring stale MIDI result (generation mismatch)');
+            
+            // Auto-reconnect to saved devices
+            setTimeout(() => autoReconnect(), 100);
+          } else {
+            console.log('🚫 Ignoring stale MIDI result (generation mismatch)');
+          }
+        } catch (error) {
+          if (currentGeneration.current === thisGeneration) {
+            console.error('❌ MIDI initialization failed:', error);
+            setState('error');
+            setIsLoading(false);
+            setLoadingMessage('MIDI not available on this device');
+            clearTimeout(deadlineTimerRef.current);
+          }
         }
-      } catch (error) {
-        if (currentGeneration.current === thisGeneration) {
-          console.error('❌ MIDI initialization failed:', error);
-          setState('error');
-          setIsLoading(false);
-          setLoadingMessage('MIDI initialization failed');
-          clearTimeout(deadlineTimerRef.current);
-        }
-      }
-    };
+      };
 
-    // Start background work but don't await it
-    initializeInBackground();
+      // Start the async work
+      initializeInBackground();
+    }, 0);
 
-    // Return false immediately - UI is not blocked
+    // Return false immediately - UI is never blocked
     return Promise.resolve(false);
   }, [state, updateDeviceList, autoReconnect]);
 

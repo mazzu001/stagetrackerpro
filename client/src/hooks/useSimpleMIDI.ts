@@ -25,7 +25,7 @@ export function useSimpleMIDI() {
   const refreshDevices = useCallback(async () => {
     setState(prev => ({ ...prev, isLoading: true, errorMessage: '' }));
     
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: NodeJS.Timeout | undefined;
     let completed = false;
     
     // Guaranteed 3-second timeout - app will never hang longer than this
@@ -55,18 +55,37 @@ export function useSimpleMIDI() {
         
         if (!completed) {
           completed = true;
-          clearTimeout(timeoutId);
+          if (timeoutId) clearTimeout(timeoutId);
           
           // Store MIDI access for sending commands
           setMidiAccess(access);
           
           const deviceList: SimpleMIDIDevice[] = [];
-          access.outputs.forEach((output) => {
+          // Use Array.from for more reliable device discovery
+          Array.from(access.outputs.values()).forEach((output) => {
             deviceList.push({
               id: output.id,
               name: output.name || 'Unknown MIDI Device'
             });
           });
+          
+          // Add state change listener for dynamic device updates
+          access.onstatechange = (event: any) => {
+            console.log('🎵 MIDI device state changed:', event.port?.name, event.port?.state);
+            // Re-scan devices when state changes
+            if (!completed) {
+              setTimeout(() => {
+                const updatedDevices: SimpleMIDIDevice[] = [];
+                Array.from(access.outputs.values()).forEach((output) => {
+                  updatedDevices.push({
+                    id: output.id,
+                    name: output.name || 'Unknown MIDI Device'
+                  });
+                });
+                setState(prev => ({ ...prev, devices: updatedDevices }));
+              }, 100);
+            }
+          };
           
           setState(prev => ({ 
             ...prev, 
@@ -78,7 +97,7 @@ export function useSimpleMIDI() {
       } catch (error) {
         if (!completed) {
           completed = true;
-          clearTimeout(timeoutId);
+          if (timeoutId) clearTimeout(timeoutId);
           setState(prev => ({ 
             ...prev, 
             isLoading: false,

@@ -1,4 +1,4 @@
-// Ultra-Simple MIDI with non-blocking timeout
+// Completely Simple MIDI - Absolutely no blocking calls
 import { useState, useCallback, useRef } from 'react';
 
 interface SimpleMIDIDevice {
@@ -23,8 +23,9 @@ export function useSimpleMIDI() {
 
   const [midiAccess, setMidiAccess] = useState<any>(null);
   const isScanningRef = useRef(false);
+  const abortRef = useRef<AbortController | null>(null);
 
-  // Permission-gated, non-blocking device refresh
+  // Ultra-simple device refresh with hard abort
   const refreshDevices = useCallback(async () => {
     // Prevent concurrent scans
     if (isScanningRef.current) {
@@ -33,120 +34,95 @@ export function useSimpleMIDI() {
     }
 
     console.log('🎵 Starting MIDI device scan...');
+    
+    // Abort any existing scan
+    if (abortRef.current) {
+      abortRef.current.abort();
+    }
+    abortRef.current = new AbortController();
+    
     isScanningRef.current = true;
     setState(prev => ({ ...prev, isLoading: true, errorMessage: '' }));
 
     try {
-      // Check MIDI support first
+      // Check MIDI support immediately
       if (!navigator?.requestMIDIAccess) {
         throw new Error('MIDI not supported in this browser');
       }
 
-      // Check permissions to avoid hanging calls
+      console.log('🎵 MIDI API available, starting scan...');
+
+      // Hard timeout - if this doesn't resolve in 2 seconds, we give up
+      const timeoutId = setTimeout(() => {
+        console.log('🎵 MIDI scan HARD TIMEOUT at 2 seconds - giving up');
+        isScanningRef.current = false;
+        setState(prev => ({
+          ...prev,
+          isLoading: false,
+          errorMessage: 'MIDI scan timeout - your browser may be slow. Try again or check device connections.',
+          devices: []
+        }));
+      }, 2000);
+
       try {
-        const permissionStatus = await navigator.permissions.query({ name: 'midi' as any });
-        if (permissionStatus.state === 'denied') {
-          throw new Error('MIDI permission denied - enable in browser settings');
+        console.log('🎵 Calling navigator.requestMIDIAccess...');
+        const access = await navigator.requestMIDIAccess({ sysex: false });
+        
+        // Clear timeout if we succeeded
+        clearTimeout(timeoutId);
+        
+        if (!isScanningRef.current) {
+          console.log('🎵 Scan was aborted, ignoring result');
+          return;
         }
-      } catch (permError) {
-        console.log('🎵 Permission check failed, proceeding anyway:', permError);
-      }
 
-      // Yield the main thread first so UI can update
-      await new Promise(resolve => setTimeout(resolve, 0));
-      console.log('🎵 UI yielded, starting MIDI access request...');
-
-      // Set up external watchdog timeout using MessageChannel
-      const channel = new MessageChannel();
-      let watchdogCompleted = false;
-      let midiCompleted = false;
-
-      // External timeout mechanism
-      const timeoutPromise = new Promise<'timeout'>((resolve) => {
-        setTimeout(() => {
-          if (!watchdogCompleted) {
-            watchdogCompleted = true;
-            console.log('🎵 MIDI scan timeout reached (3 seconds)');
-            resolve('timeout');
-          }
-        }, 3000);
-      });
-
-      // MIDI access request
-      const midiPromise = navigator.requestMIDIAccess({ sysex: false }).then((access) => {
-        if (!midiCompleted) {
-          midiCompleted = true;
-          console.log('🎵 MIDI access granted, scanning devices...');
-          
-          setMidiAccess(access);
-          
-          const deviceList: SimpleMIDIDevice[] = [];
-          Array.from(access.outputs.values()).forEach((output) => {
-            deviceList.push({
-              id: output.id,
-              name: output.name || 'Unknown MIDI Device'
-            });
+        console.log('🎵 MIDI access granted, scanning devices...');
+        setMidiAccess(access);
+        
+        const deviceList: SimpleMIDIDevice[] = [];
+        Array.from(access.outputs.values()).forEach((output) => {
+          deviceList.push({
+            id: output.id,
+            name: output.name || 'Unknown MIDI Device'
           });
-          
-          console.log(`🎵 Found ${deviceList.length} MIDI device(s):`, deviceList.map(d => d.name));
-          
-          // Set up device state change listener
-          access.onstatechange = (event: any) => {
-            console.log('🎵 MIDI device state changed:', event.port?.name, event.port?.state);
-            setTimeout(() => {
-              const updatedDevices: SimpleMIDIDevice[] = [];
-              Array.from(access.outputs.values()).forEach((output) => {
-                updatedDevices.push({
-                  id: output.id,
-                  name: output.name || 'Unknown MIDI Device'
-                });
+        });
+        
+        console.log(`🎵 Found ${deviceList.length} MIDI device(s):`, deviceList.map(d => d.name));
+        
+        setState(prev => ({
+          ...prev,
+          isLoading: false,
+          devices: deviceList,
+          errorMessage: deviceList.length === 0 ? 'No MIDI devices found - check connections' : ''
+        }));
+
+        // Set up device state change listener
+        access.onstatechange = (event: any) => {
+          console.log('🎵 MIDI device state changed:', event.port?.name, event.port?.state);
+          setTimeout(() => {
+            const updatedDevices: SimpleMIDIDevice[] = [];
+            Array.from(access.outputs.values()).forEach((output) => {
+              updatedDevices.push({
+                id: output.id,
+                name: output.name || 'Unknown MIDI Device'
               });
-              setState(prev => ({ ...prev, devices: updatedDevices }));
-            }, 100);
-          };
-          
-          return { type: 'success' as const, devices: deviceList };
-        }
-        return { type: 'ignored' as const };
-      }).catch((error) => {
-        if (!midiCompleted) {
-          midiCompleted = true;
+            });
+            setState(prev => ({ ...prev, devices: updatedDevices }));
+          }, 100);
+        };
+
+      } catch (error) {
+        clearTimeout(timeoutId);
+        if (isScanningRef.current) {
           console.error('🎵 MIDI access failed:', error);
-          return { type: 'error' as const, error };
+          setState(prev => ({
+            ...prev,
+            isLoading: false,
+            errorMessage: 'MIDI not available - check browser permissions',
+            devices: []
+          }));
         }
-        return { type: 'ignored' as const };
-      });
-
-      // Race between timeout and MIDI - timeout wins if MIDI hangs
-      const result = await Promise.race([timeoutPromise, midiPromise]);
-
-      // Handle the result
-      if (result === 'timeout') {
-        watchdogCompleted = true;
-        setState(prev => ({
-          ...prev,
-          isLoading: false,
-          errorMessage: 'MIDI scan timeout - devices may take longer to appear',
-          devices: []
-        }));
-      } else if (result.type === 'success') {
-        watchdogCompleted = true;
-        setState(prev => ({
-          ...prev,
-          isLoading: false,
-          devices: result.devices,
-          errorMessage: result.devices.length === 0 ? 'No MIDI devices found - check connections' : ''
-        }));
-      } else if (result.type === 'error') {
-        watchdogCompleted = true;
-        setState(prev => ({
-          ...prev,
-          isLoading: false,
-          errorMessage: 'MIDI not available - check browser permissions',
-          devices: []
-        }));
       }
-      // 'ignored' results are discarded
 
     } catch (error) {
       console.error('🎵 MIDI scan failed:', error);

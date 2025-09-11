@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Bluetooth, Zap, X, Target, Send, Search, ExternalLink, Loader2, Volume2, Download, Upload, FolderOpen, Cast } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Activity, Zap, X, Target, Send, Search, ExternalLink, Loader2, Volume2, Download, Upload, FolderOpen, Cast } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
@@ -30,6 +30,7 @@ import type { SongWithTracks } from "@shared/schema";
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
 import { useBroadcast } from "@/hooks/useBroadcast";
+import { MidiDeviceManager } from "@/components/midi-device-manager";
 
 interface PerformanceProps {
   userType: UserType;
@@ -53,7 +54,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isBluetoothDevicesOpen, setIsBluetoothDevicesOpen] = useState(false);
+  const [isDeviceManagerOpen, setIsDeviceManagerOpen] = useState(false);
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -817,11 +818,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsBluetoothDevicesOpen(true)}
-                data-testid="button-bluetooth-manager"
+                onClick={() => setIsDeviceManagerOpen(true)}
+                data-testid="button-device-manager"
                 className="h-8 px-2 md:px-3"
               >
-                <Bluetooth className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                <Activity className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
                 <span className="hidden sm:inline text-xs md:text-sm">Devices</span>
               </Button>
             )}
@@ -1444,6 +1445,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </DialogContent>
       </Dialog>
+      
+      {/* MIDI Device Manager */}
+      <MidiDeviceManager
+        isOpen={isDeviceManagerOpen}
+        onClose={() => setIsDeviceManagerOpen(false)}
+      />
+      
       {/* Hidden file input for import */}
       <input
         ref={fileInputRef}

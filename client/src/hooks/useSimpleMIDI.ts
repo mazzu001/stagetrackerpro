@@ -23,6 +23,7 @@ export function useSimpleMIDI() {
     // Load cached devices - default to user's known device
     const cachedDevices = JSON.parse(localStorage.getItem('midi-cached-devices') || '[{"id":"midiportA-out","name":"MidiPortA OUT","state":"connected"}]');
     const safeMode = localStorage.getItem('midi-safe-mode') !== 'false'; // Default to TRUE (safe mode)
+    console.log('🎵 MIDI Hook Initializing - Safe Mode:', safeMode);
     
     return {
       isLoading: false,
@@ -263,7 +264,11 @@ export function useSimpleMIDI() {
         console.log(`🎵 Cached device connected (no physical device found): ${device.name}`);
       }
     } else {
-      console.log(`🎵 Simulated connection (MIDI access not available): ${device.name}`);
+      console.log(`🎵 FAILED: MIDI access not available for ${device.name} - Check browser permissions!`);
+      setState(prev => ({
+        ...prev,
+        errorMessage: 'MIDI permission denied or not supported. Check browser settings!'
+      }));
       // Try to initialize MIDI access now that user is connecting
       if (state.safeMode) {
         console.log('🎵 Attempting MIDI initialization on connect...');
@@ -308,7 +313,7 @@ export function useSimpleMIDI() {
 
     if (!midiAccessRef.current) {
       console.log(`🎵 MIDI Command (no MIDI access - simulated): ${command}`);
-      return state.safeMode; // Return true in safe mode, false otherwise
+      return false; // No MIDI access available
     }
 
     try {
@@ -352,8 +357,8 @@ export function useSimpleMIDI() {
           console.log(`🎵 REAL MIDI Command sent to ${(output as any).name}: ${command}`);
           sent = true;
         } else if (device) {
-          console.log(`🎵 SIMULATED MIDI Command to ${device.name}: ${command} (device not physically connected)`);
-          sent = true; // Count as sent for UI purposes
+          console.log(`🎵 FAILED MIDI Command to ${device.name}: ${command} (device not connected or no MIDI access)`);
+          // Don't count as sent - be honest about failure
         }
       }
       

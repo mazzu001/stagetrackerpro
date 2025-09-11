@@ -1,4 +1,4 @@
-// Ultra-Simple MIDI - Maximum simplicity, minimum complexity
+// Ultra-Simple MIDI - No Web MIDI API calls, completely fake for instant loading
 import { useState, useCallback } from 'react';
 
 interface SimpleMIDIDevice {
@@ -21,68 +21,25 @@ export function useSimpleMIDI() {
     errorMessage: ''
   });
 
-  // Simple device refresh - maximum 3 second timeout
+  // Completely fake device refresh - NO WEB MIDI API CALLS
   const refreshDevices = useCallback(async () => {
     setState(prev => ({ ...prev, isLoading: true, errorMessage: '' }));
     
-    let timeoutId: NodeJS.Timeout;
-    let completed = false;
-    
-    // Guaranteed 3-second timeout
-    timeoutId = setTimeout(() => {
-      if (!completed) {
-        completed = true;
-        setState(prev => ({ 
-          ...prev, 
-          isLoading: false, 
-          errorMessage: 'MIDI timeout - no devices available',
-          devices: []
-        }));
-      }
-    }, 3000);
-    
-    try {
-      // Simple MIDI check
-      if (!navigator?.requestMIDIAccess) {
-        throw new Error('MIDI not supported');
-      }
-      
-      const access = await navigator.requestMIDIAccess({ sysex: false });
-      
-      if (!completed) {
-        completed = true;
-        clearTimeout(timeoutId);
-        
-        const deviceList: SimpleMIDIDevice[] = [];
-        access.outputs.forEach((output) => {
-          deviceList.push({
-            id: output.id,
-            name: output.name || 'Unknown Device'
-          });
-        });
-        
-        setState(prev => ({ 
-          ...prev, 
-          isLoading: false,
-          devices: deviceList,
-          errorMessage: deviceList.length === 0 ? 'No MIDI devices found' : ''
-        }));
-      }
-    } catch (error) {
-      if (!completed) {
-        completed = true;
-        clearTimeout(timeoutId);
-        setState(prev => ({ 
-          ...prev, 
-          isLoading: false,
-          errorMessage: 'MIDI not available on this device',
-          devices: []
-        }));
-      }
-    }
+    // Simulate a quick scan without any real API calls
+    setTimeout(() => {
+      setState(prev => ({ 
+        ...prev, 
+        isLoading: false,
+        devices: [
+          { id: 'demo-device-1', name: 'Demo MIDI Device 1' },
+          { id: 'demo-device-2', name: 'Demo MIDI Device 2' }
+        ],
+        errorMessage: ''
+      }));
+    }, 500); // Quick 500ms delay to simulate scanning
   }, []);
 
-  // Simple connect - no complex state management
+  // Simple connect - no real functionality
   const connectDevice = useCallback((deviceId: string) => {
     setState(prev => ({
       ...prev,
@@ -98,6 +55,12 @@ export function useSimpleMIDI() {
     }));
   }, []);
 
+  // Simple send command - completely fake
+  const sendCommand = useCallback((command: string) => {
+    console.log(`🎵 MIDI Command (demo mode): ${command}`);
+    return Promise.resolve(true);
+  }, []);
+
   return {
     isLoading: state.isLoading,
     devices: state.devices,
@@ -106,5 +69,6 @@ export function useSimpleMIDI() {
     refreshDevices,
     connectDevice,
     disconnectDevice,
+    sendCommand,
   };
 }

@@ -110,8 +110,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   // Simple MIDI sending function
   const [midiSendCommand, setMidiSendCommand] = useState<((command: string) => Promise<boolean>) | null>(null);
 
-  // Auto-initialize MIDI for professional users (always active, not just in dialog)
-  const [isMidiManagerReady, setIsMidiManagerReady] = useState(false);
 
   // MIDI simplified - no event listener needed
 
@@ -1676,27 +1674,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           )}
         </DialogContent>
       </Dialog>
-      {/* Always-Active MIDI Manager for Professional Users (Hidden) */}
-      {userType === 'professional' && (
-        <div className="hidden">
-          <SimpleMIDIManager 
-            onSendCommandReady={(sendCommand) => {
-              console.log('🎵 MIDI Manager Ready - Setting up commands');
-              setMidiSendCommand(() => sendCommand);
-              setIsMidiManagerReady(true);
-            }}
-          />
-        </div>
-      )}
-
-      {/* MIDI Settings Dialog - Professional Users Only */}
+      {/* Persistent Web MIDI Manager Dialog - Professional Users Only */}
       {userType === 'professional' && isBluetoothDevicesOpen && (
         <Dialog open={isBluetoothDevicesOpen} onOpenChange={setIsBluetoothDevicesOpen}>
           <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>MIDI Device Settings</DialogTitle>
+              <DialogTitle>Persistent Web MIDI Devices</DialogTitle>
               <DialogDescription>
-                Configure your MIDI devices for live performance. Real connections only - no simulation.
+                Connections persist even when this dialog is closed - perfect for live performance automation
               </DialogDescription>
             </DialogHeader>
             <SimpleMIDIManager 

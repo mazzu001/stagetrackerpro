@@ -12,63 +12,12 @@ interface LyricsDisplayProps {
   currentTime: number;
   duration: number;
   onEditLyrics?: () => void;
-  onMidiCommand?: (command: string) => void;
   isPlaying: boolean;
 }
 
-export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMidiCommand, isPlaying }: LyricsDisplayProps) {
+export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPlaying }: LyricsDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const nonTimestampedExecutedRef = useRef<string | null>(null);
 
-  // Separate function to handle non-timestamped MIDI commands on song change
-  const executeNonTimestampedMidiCommands = (currentSong: any, midiCommandHandler: ((command: string) => void) | undefined) => {
-    if (!currentSong?.lyrics || !midiCommandHandler) return;
-    
-    // Check if we've already executed non-timestamped commands for this song
-    if (nonTimestampedExecutedRef.current === currentSong.id) {
-      return; // Already executed for this song
-    }
-    
-    console.log(`📋 Checking for non-timestamped MIDI commands in: ${currentSong.title}`);
-    
-    // Parse all lines to identify non-timestamped lines with MIDI commands
-    const lines = currentSong.lyrics.split('\n');
-    const nonTimestampedMidiCommands: string[] = [];
-    
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed) continue;
-      
-      // Check if this line is NOT timestamped (doesn't start with [MM:SS])
-      const hasTimestamp = /^\[(\d{1,2}):(\d{2})\]/.test(trimmed);
-      
-      if (!hasTimestamp) {
-        // Look for MIDI commands in this non-timestamped line
-        const midiMatches = trimmed.match(/\[\[([^\]]+)\]\]/g);
-        if (midiMatches) {
-          for (const midiCommand of midiMatches) {
-            console.log(`🎵 Found non-timestamped MIDI command: ${midiCommand} in line: "${trimmed}"`);
-            nonTimestampedMidiCommands.push(midiCommand);
-          }
-        }
-      }
-    }
-    
-    // Execute all non-timestamped MIDI commands immediately
-    if (nonTimestampedMidiCommands.length > 0) {
-      console.log(`⚡ Executing ${nonTimestampedMidiCommands.length} non-timestamped MIDI commands on song load`);
-      
-      for (const command of nonTimestampedMidiCommands) {
-        console.log(`🎵 Executing non-timestamped MIDI command: ${command}`);
-        midiCommandHandler(command);
-      }
-    } else {
-      console.log(`📋 No non-timestamped MIDI commands found in: ${currentSong.title}`);
-    }
-    
-    // Mark this song as having its non-timestamped commands executed
-    nonTimestampedExecutedRef.current = currentSong.id;
-  };
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');
     return saved ? parseInt(saved) : 18;
@@ -137,8 +86,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         const timestamp = minutes * 60 + seconds;
         let text = trimmed.substring(timestampMatch[0].length).trim();
         
-        // Only remove MIDI commands (double brackets) from display, keep regular text
-        text = text.replace(/\[\[([^\]]+)\]\]/g, '').trim();
+        text = text.trim();
         
         if (text) {
           parsedLines.push({ timestamp, text });
@@ -148,8 +96,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
         // Line without timestamp - still include it with estimated timing
         let text = trimmed;
         
-        // Only remove MIDI commands (double brackets) from display, keep regular text
-        text = text.replace(/\[\[([^\]]+)\]\]/g, '').trim();
+        text = text.trim();
         
         if (text) {
           parsedLines.push({ timestamp: estimatedTime, text });
@@ -178,9 +125,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
   const plainLines = song?.lyrics && !hasTimestamps ? 
     song.lyrics.split('\n')
       .map((line: string) => {
-        // Only remove MIDI commands (double brackets) from display, keep regular text
-        let cleanLine = line.replace(/\[\[([^\]]+)\]\]/g, '').trim();
-        return cleanLine;
+        return line.trim();
       })
       .filter((line: string) => line.trim()) : [];
   
@@ -192,109 +137,18 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, onMid
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   }) : -1;
 
-  // Auto-send MIDI commands from timestamped lyrics - reads every line according to timestamps
-  const [processedTimestamps, setProcessedTimestamps] = useState(new Set<number>());
-  const [parsedTimestampedLines, setParsedTimestampedLines] = useState<Array<{timestamp: number, line: string, originalLine: string}>>([]);
   
-  // Parse lyrics only when song changes (not on every render)
-  useEffect(() => {
-    if (!song?.lyrics) {
-      setParsedTimestampedLines([]);
-      return;
-    }
-    
-    console.log(`📋 Analyzing lyrics for song: ${song.title}`);
-    
-    // Parse all lines with timestamps from lyrics
-    const lines = song.lyrics.split('\n');
-    const timestampedLines: Array<{timestamp: number, line: string, originalLine: string}> = [];
-    
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed) continue;
-      
-      // Look for timestamp pattern [mm:ss] at start of line
-      const timestampMatch = trimmed.match(/^\[(\d{1,2}):(\d{2})\]/);
-      if (timestampMatch) {
-        const minutes = parseInt(timestampMatch[1]);
-        const seconds = parseInt(timestampMatch[2]);
-        const timestamp = minutes * 60 + seconds;
-        
-        console.log(`⏰ Found timestamped line: [${minutes}:${seconds.toString().padStart(2, '0')}] at ${timestamp}s -> "${trimmed}"`);
-        
-        timestampedLines.push({
-          timestamp,
-          line: trimmed,
-          originalLine: line
-        });
-      }
-    }
-    
-    console.log(`📋 Total timestamped lines found: ${timestampedLines.length}`);
-    setParsedTimestampedLines(timestampedLines);
-  }, [song?.id]);
   
-  // Process MIDI commands based on current time (separate from parsing)
-  useEffect(() => {
-    if (!onMidiCommand || parsedTimestampedLines.length === 0 || currentTime <= 0) return;
-    
-    // Read through each timestamped line according to current playback time
-    for (const { timestamp, line } of parsedTimestampedLines) {
-      // If current time matches this timestamp (within 0.5 seconds) and we haven't processed it yet
-      if (Math.abs(currentTime - timestamp) <= 0.5 && !processedTimestamps.has(timestamp)) {
-        console.log(`📖 Reading timestamped line at ${timestamp}s: "${line}"`);
-        
-        // Look for any MIDI commands in this timestamped line
-        const midiMatches = line.match(/\[\[([^\]]+)\]\]/g);
-        if (midiMatches) {
-          for (const midiCommand of midiMatches) {
-            console.log(`🎵 Found MIDI command in timestamped line: ${midiCommand}`);
-            onMidiCommand(midiCommand);
-          }
-        }
-        
-        // Mark this timestamp as processed
-        setProcessedTimestamps(prev => new Set(Array.from(prev).concat(timestamp)));
-      }
-    }
-  }, [currentTime, parsedTimestampedLines, onMidiCommand]);
   
-  // Execute non-timestamped MIDI commands when song changes
-  useEffect(() => {
-    if (song?.id && onMidiCommand) {
-      executeNonTimestampedMidiCommands(song, onMidiCommand);
-    }
-  }, [song?.id]);
 
-  // Reset MIDI tracking when song changes
-  useEffect(() => {
-    console.log(`🔄 Resetting processed timestamps - Song changed to: ${song?.title || 'none'}`);
-    setProcessedTimestamps(new Set());
-    // Reset non-timestamped execution tracking for new song
-    nonTimestampedExecutedRef.current = null;
-  }, [song?.id]);
 
-  // Reset MIDI tracking and scroll position when playback stops
+  // Scroll lyrics back to top when playback stops
   useEffect(() => {
-    if (!isPlaying) {
-      console.log(`⏹️ Resetting processed timestamps - Playback stopped`);
-      setProcessedTimestamps(new Set());
-      
-      // Scroll lyrics back to top when stopped
-      if (containerRef.current) {
-        containerRef.current.scrollTop = 0;
-        console.log(`⏫ Scrolled lyrics back to top - Playback stopped`);
-      }
+    if (!isPlaying && containerRef.current) {
+      containerRef.current.scrollTop = 0;
     }
   }, [isPlaying]);
 
-  // Reset MIDI tracking when seeking back to beginning
-  useEffect(() => {
-    if (currentTime <= 1) { // Reset when at or near the beginning (within 1 second)
-      console.log(`⏮️ Resetting processed timestamps - Playback at beginning (${currentTime}s)`);
-      setProcessedTimestamps(new Set());
-    }
-  }, [currentTime]);
 
   // Auto-scroll for timestamped lyrics
   useEffect(() => {

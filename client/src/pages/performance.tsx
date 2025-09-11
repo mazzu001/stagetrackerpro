@@ -110,6 +110,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   // Simple MIDI sending function
   const [midiSendCommand, setMidiSendCommand] = useState<((command: string) => Promise<boolean>) | null>(null);
 
+  // Auto-initialize MIDI for professional users (always active, not just in dialog)
+  const [isMidiManagerReady, setIsMidiManagerReady] = useState(false);
+
   // MIDI simplified - no event listener needed
 
   // MIDI simplified - using local state only
@@ -1673,6 +1676,18 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           )}
         </DialogContent>
       </Dialog>
+      {/* Always-Active MIDI Manager for Professional Users (Hidden) */}
+      {userType === 'professional' && (
+        <div className="hidden">
+          <SimpleMIDIManager 
+            onSendCommandReady={(sendCommand) => {
+              setMidiSendCommand(() => sendCommand);
+              setIsMidiManagerReady(true);
+            }}
+          />
+        </div>
+      )}
+
       {/* Persistent Web MIDI Manager Dialog - Professional Users Only */}
       {userType === 'professional' && isBluetoothDevicesOpen && (
         <Dialog open={isBluetoothDevicesOpen} onOpenChange={setIsBluetoothDevicesOpen}>

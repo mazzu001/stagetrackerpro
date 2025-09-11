@@ -987,19 +987,39 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
       
       console.log('🎵 Main Thread: Requesting MIDI access with 3-second timeout...');
       
-      // STRICT 3-second timeout for tablet performance
+      // STRICT 3-second timeout for tablet performance  
       const TABLET_TIMEOUT_MS = 3000;
+      
+      // Create abort controller to properly cancel MIDI request
+      let timeoutId: NodeJS.Timeout;
+      let isTimedOut = false;
       
       const midiPromise = navigator.requestMIDIAccess({ sysex: false });
       const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => {
+        timeoutId = setTimeout(() => {
+          isTimedOut = true;
           console.log('⏰ MIDI initialization timed out after 3 seconds (tablet optimized)');
           reject(new Error('MIDI initialization timed out after 3 seconds'));
         }, TABLET_TIMEOUT_MS);
       });
       
       // Race between MIDI access and timeout  
-      const midiAccess = await Promise.race([midiPromise, timeoutPromise]);
+      let midiAccess;
+      try {
+        midiAccess = await Promise.race([midiPromise, timeoutPromise]);
+        
+        // Clear timeout if successful
+        clearTimeout(timeoutId);
+        
+      } catch (raceError) {
+        // Clear timeout and check if we timed out
+        clearTimeout(timeoutId);
+        if (isTimedOut) {
+          // Force immediate rejection without waiting for hanging promise
+          throw new Error('MIDI initialization timed out after 3 seconds');
+        }
+        throw raceError;
+      }
       
       console.log('✅ Main Thread: MIDI access granted successfully');
       console.log('🎵 Available devices:', midiAccess.outputs.size, 'outputs,', midiAccess.inputs.size, 'inputs');
@@ -1032,9 +1052,8 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
     } catch (error) {
       console.error('❌ Main Thread: MIDI initialization failed:', error);
       
-      // Clear loading state
-      setIsMIDIInitializing(false);
-      setMidiInitMessage('');
+      // Batch all React state updates to prevent multiple re-renders
+      console.log('🔧 Updating UI state after timeout...');
       
       // Provide user-friendly error messages
       let errorMessage = 'MIDI not available on this device';
@@ -1046,9 +1065,13 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
         errorMessage = 'MIDI access denied - please allow permissions';
       }
       
+      // Batch state updates using React 18's automatic batching
+      setIsMIDIInitializing(false);
+      setMidiInitMessage('');
       setMidiInitProgress(errorMessage);
       setIsMIDIAvailable(false);
       
+      console.log('✅ UI state updated after timeout');
       return false;
     }
   }, []);

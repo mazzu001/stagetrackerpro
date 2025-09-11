@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Minus, Edit, ChevronUp, ChevronDown } from "lucide-react";
+import { Plus, Minus, Edit, ChevronUp, ChevronDown, Music } from "lucide-react";
+import { useMidiDevices } from "@/hooks/useMidiDevices";
 
 interface LyricsLine {
   timestamp: number; // in seconds
   text: string;
+  displayText: string; // Text without MIDI commands for display
+  midiCommands: string[]; // Extracted MIDI commands like [[PC:2:1]]
 }
 
 interface LyricsDisplayProps {
@@ -17,6 +20,11 @@ interface LyricsDisplayProps {
 
 export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPlaying }: LyricsDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  
+  // MIDI integration
+  const { sendMidiCommand, parseMidiCommand, connectedDevices } = useMidiDevices();
+  const [executedCommands, setExecutedCommands] = useState<Set<string>>(new Set());
+  const [previousTime, setPreviousTime] = useState<number>(0);
 
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');
@@ -64,7 +72,23 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
     };
   }, []);
 
-  // Parse lyrics with timestamps and filter out anything in brackets for display
+  // Extract MIDI commands from text
+  const extractMidiCommands = (text: string): { displayText: string; midiCommands: string[] } => {
+    const midiCommandRegex = /\[\[([A-Z_]+:[0-9]+(?::[0-9]+)?(?::[0-9]+)?)\]\]/g;
+    const midiCommands: string[] = [];
+    let displayText = text;
+    
+    // Find all MIDI commands
+    let match;
+    while ((match = midiCommandRegex.exec(text)) !== null) {
+      midiCommands.push(match[0]); // Include the full [[...]] format
+      displayText = displayText.replace(match[0], '').trim();
+    }
+    
+    return { displayText, midiCommands };
+  };
+
+  // Parse lyrics with timestamps and extract MIDI commands
   const parseLyrics = (lyricsText: string): LyricsLine[] => {
     if (!lyricsText) return [];
     
@@ -86,20 +110,18 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
         const timestamp = minutes * 60 + seconds;
         let text = trimmed.substring(timestampMatch[0].length).trim();
         
-        text = text.trim();
-        
         if (text) {
-          parsedLines.push({ timestamp, text });
+          const { displayText, midiCommands } = extractMidiCommands(text);
+          parsedLines.push({ timestamp, text, displayText, midiCommands });
           estimatedTime = timestamp + 4; // Update estimated time for next non-timestamped line
         }
       } else {
         // Line without timestamp - still include it with estimated timing
         let text = trimmed;
         
-        text = text.trim();
-        
         if (text) {
-          parsedLines.push({ timestamp: estimatedTime, text });
+          const { displayText, midiCommands } = extractMidiCommands(text);
+          parsedLines.push({ timestamp: estimatedTime, text, displayText, midiCommands });
           estimatedTime += 4; // Increment by 4 seconds for next line
         }
       }
@@ -121,21 +143,71 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
       return /^\[\d{1,2}:\d{2}\]/.test(trimmed);
     }) : false;
   
-  // Split lyrics by lines for non-timestamped lyrics
-  const plainLines = song?.lyrics && !hasTimestamps ? 
-    song.lyrics.split('\n')
-      .map((line: string) => {
-        return line.trim();
-      })
-      .filter((line: string) => line.trim()) : [];
+  // Note: plainLines no longer needed - using unified lyrics array for both modes
   
 
   
-  // Find current line based on timestamp (for timestamped lyrics)
-  const currentLineIndex = hasTimestamps ? lyrics.findIndex((line, index) => {
+  // Find current line based on timestamp (for both timestamped and non-timestamped lyrics)
+  const currentLineIndex = lyrics.length > 0 ? lyrics.findIndex((line, index) => {
     const nextLine = lyrics[index + 1];
     return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
   }) : -1;
+
+  // Execute MIDI commands when a new line becomes active
+  useEffect(() => {
+    if (!isPlaying || currentLineIndex < 0 || lyrics.length === 0) return;
+    
+    const currentLine = lyrics[currentLineIndex];
+    if (!currentLine || currentLine.midiCommands.length === 0) return;
+    
+    // Create unique key for this line's commands
+    const lineKey = `${currentLine.timestamp}_${currentLineIndex}`;
+    
+    // Check if we've already executed commands for this line
+    if (executedCommands.has(lineKey)) return;
+    
+    // Only execute if we have connected MIDI output devices
+    const outputDevices = connectedDevices.filter(d => d.type === 'output');
+    if (outputDevices.length === 0) return;
+    
+    // Execute all MIDI commands for this line
+    currentLine.midiCommands.forEach((commandString, index) => {
+      const command = parseMidiCommand(commandString);
+      if (command) {
+        const success = sendMidiCommand(command);
+        if (success) {
+          console.log(`🎹 Executed MIDI command from lyrics: ${commandString} at ${currentLine.timestamp}s`);
+        } else {
+          console.warn(`❌ Failed to execute MIDI command: ${commandString}`);
+        }
+      } else {
+        console.warn(`❌ Invalid MIDI command format: ${commandString}`);
+      }
+    });
+    
+    // Mark this line's commands as executed
+    setExecutedCommands(prev => new Set(prev).add(lineKey));
+  }, [currentLineIndex, isPlaying, hasTimestamps, lyrics, connectedDevices, sendMidiCommand, parseMidiCommand, executedCommands]);
+
+  // Reset executed commands when song changes or playback restarts
+  useEffect(() => {
+    setExecutedCommands(new Set());
+  }, [song?.id]);
+
+  // Detect seeks and reset executed commands when seeking backward or jumping significantly
+  useEffect(() => {
+    const timeDifference = currentTime - previousTime;
+    const isBackwardSeek = timeDifference < -1; // More than 1 second backward
+    const isLargeJump = Math.abs(timeDifference) > 5 && previousTime > 0; // Jump more than 5 seconds
+    const isNearBeginning = currentTime < 2; // Near beginning
+    
+    if (isBackwardSeek || isLargeJump || isNearBeginning) {
+      console.log(`🔄 Seek detected: ${previousTime.toFixed(1)}s → ${currentTime.toFixed(1)}s, resetting MIDI commands`);
+      setExecutedCommands(new Set());
+    }
+    
+    setPreviousTime(currentTime);
+  }, [currentTime, previousTime]);
 
   
   
@@ -176,7 +248,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
   useEffect(() => {
     let scrollTimer: NodeJS.Timeout | null = null;
     
-    if (!hasTimestamps && plainLines.length > 0 && containerRef.current && autoScrollEnabled && currentTime > 0) {
+    if (!hasTimestamps && lyrics.length > 0 && containerRef.current && autoScrollEnabled && currentTime > 0) {
       const container = containerRef.current;
       
       // Calculate scroll increment based on speed setting for ultra-smooth scrolling
@@ -203,7 +275,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
         clearInterval(scrollTimer);
       }
     };
-  }, [currentTime > 0, hasTimestamps, plainLines.length, scrollSpeed, autoScrollEnabled]);
+  }, [currentTime > 0, hasTimestamps, lyrics.length, scrollSpeed, autoScrollEnabled]);
 
   const adjustFontSize = (delta: number) => {
     const newSize = Math.max(12, Math.min(32, fontSize + delta));
@@ -271,8 +343,9 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
               </Button>
             )}
           </div>
-        ) : hasTimestamps ? (
-          <div className="space-y-6" style={{ fontSize: `${fontSize}px` }}>
+        ) : (
+          // Unified rendering for both timestamped and non-timestamped lyrics
+          <div className={hasTimestamps ? "space-y-6" : "space-y-4"} style={{ fontSize: `${fontSize}px` }}>
             {lyrics.map((line, index) => {
               const isCurrent = index === currentLineIndex;
               const isPast = line.timestamp < currentTime && !isCurrent;
@@ -283,37 +356,63 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
                   key={index}
                   data-line={index}
                   className={`transition-all duration-300 leading-relaxed ${
-                    isCurrent
-                      ? 'text-white bg-blue-600/20 px-4 py-2 rounded-lg border-l-4 border-blue-500 font-medium'
-                      : isPast
-                      ? 'text-gray-500'
-                      : isFuture
-                      ? 'text-gray-400'
-                      : 'text-gray-300'
+                    hasTimestamps ? (
+                      isCurrent
+                        ? 'text-white bg-blue-600/20 px-4 py-2 rounded-lg border-l-4 border-blue-500 font-medium'
+                        : isPast
+                        ? 'text-gray-500'
+                        : isFuture
+                        ? 'text-gray-400'
+                        : 'text-gray-300'
+                    ) : (
+                      isCurrent
+                        ? 'text-white bg-blue-600/20 px-4 py-2 rounded-lg border-l-4 border-blue-500 font-medium'
+                        : 'text-gray-300'
+                    )
                   }`}
                   data-testid={`lyrics-line-${index}`}
+                  id={!hasTimestamps ? `auto-scroll-line-${index}` : undefined}
                 >
-                  <div className="flex items-start">
-                    <span className="flex-1">{line.text}</span>
+                  <div className="flex items-start gap-2">
+                    <span className="flex-1">{line.displayText}</span>
+                    {line.midiCommands.length > 0 && (
+                      <div className="flex items-center gap-1 ml-2">
+                        <Music className={`h-3 w-3 ${
+                          hasTimestamps ? (
+                            isCurrent 
+                              ? 'text-blue-300' 
+                              : isPast 
+                              ? 'text-gray-600' 
+                              : 'text-gray-500'
+                          ) : (
+                            isCurrent
+                              ? 'text-blue-300'
+                              : 'text-gray-500'
+                          )
+                        }`} />
+                        <span className={`text-xs font-mono ${
+                          hasTimestamps ? (
+                            isCurrent 
+                              ? 'text-blue-300' 
+                              : isPast 
+                              ? 'text-gray-600' 
+                              : 'text-gray-500'
+                          ) : (
+                            isCurrent
+                              ? 'text-blue-300'
+                              : 'text-gray-500'
+                          )
+                        }`}>
+                          {line.midiCommands.length}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
             })}
-          </div>
-        ) : (
-          <div style={{ fontSize: `${fontSize}px` }}>
-            {plainLines.map((line: string, index: number) => (
-              <div
-                key={index}
-                className="text-gray-300 leading-relaxed mb-4"
-                data-testid={`lyrics-line-${index}`}
-                id={`auto-scroll-line-${index}`}
-              >
-                {line}
-              </div>
-            ))}
-            {/* Spacer for scrolling */}
-            <div style={{ height: '50vh' }} />
+            {/* Spacer for scrolling in non-timestamped mode */}
+            {!hasTimestamps && <div style={{ height: '50vh' }} />}
           </div>
         )}
       </div>

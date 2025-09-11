@@ -94,33 +94,51 @@ export function useSimpleMIDI() {
       midiAccessRef.current = midiAccess;
       console.log('🎵 Timeout MIDI: Access granted successfully!');
       
-      // Update real connection status
+      // **FIX: Build both device list AND connection status from real outputs**
+      const realDevices: MIDIDevice[] = [];
       const realStatus: Record<string, boolean> = {};
+      
       Array.from(midiAccess.outputs.values()).forEach((output: any) => {
-        if (output?.id) {
+        if (output?.id && output?.name) {
+          // Add to real device list
+          realDevices.push({
+            id: output.id,
+            name: output.name,
+            state: output.state as 'connected' | 'disconnected'
+          });
+          
+          // Update connection status
           realStatus[output.id] = output.state === 'connected';
-          if (output.name) {
-            realStatus[output.name] = output.state === 'connected';
-          }
+          realStatus[output.name] = output.state === 'connected';
         }
       });
+      
+      console.log(`🎵 Timeout MIDI: Found ${realDevices.length} real devices:`, 
+        realDevices.map(d => `${d.name} (${d.state})`));
       
       // Set up device state change listener
       midiAccess.onstatechange = (event: any) => {
         console.log('🎵 Timeout MIDI: Device state changed:', event.port?.name, event.port?.state);
         
+        // **FIX: Update BOTH devices and connection status on changes**
+        const refreshedDevices: MIDIDevice[] = [];
         const updatedStatus: Record<string, boolean> = {};
+        
         Array.from(midiAccessRef.current.outputs.values()).forEach((output: any) => {
-          if (output?.id) {
+          if (output?.id && output?.name) {
+            refreshedDevices.push({
+              id: output.id,
+              name: output.name,
+              state: output.state as 'connected' | 'disconnected'
+            });
             updatedStatus[output.id] = output.state === 'connected';
-            if (output.name) {
-              updatedStatus[output.name] = output.state === 'connected';
-            }
+            updatedStatus[output.name] = output.state === 'connected';
           }
         });
         
         setState(prev => ({
           ...prev,
+          devices: refreshedDevices, // **FIX: Update real device list**
           realConnectionStatus: updatedStatus
         }));
       };
@@ -129,8 +147,11 @@ export function useSimpleMIDI() {
         ...prev,
         isInitializing: false,
         midiInitialized: true,
+        devices: realDevices, // **FIX: Replace cached with real devices!**
         realConnectionStatus: realStatus,
-        errorMessage: ''
+        errorMessage: realDevices.length === 0 
+          ? 'No MIDI outputs detected - check device connections'
+          : `Found ${realDevices.length} MIDI devices`
       }));
 
     } catch (error) {

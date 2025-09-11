@@ -315,13 +315,39 @@ export function useSimpleMIDI() {
     } else {
       console.log(`🎵 No MIDI access yet - requesting access for user connection: ${device.name}`);
       // **FIX: Always try to get MIDI access when user clicks Connect, regardless of safe mode**
-      console.log('🎵 User clicked Connect - requesting MIDI access without timeout...');
+      console.log('🎵 User clicked Connect - requesting MIDI access with 6-second timeout...');
       
       try {
+        // **FIX: Check Web MIDI API support first**
+        if (!('requestMIDIAccess' in navigator)) {
+          setState(prev => ({ 
+            ...prev, 
+            isInitializing: false, 
+            errorMessage: 'Web MIDI not supported in this browser' 
+          }));
+          return;
+        }
+        
         setState(prev => ({ ...prev, isInitializing: true, errorMessage: 'Getting MIDI access...' }));
         
-        // Direct MIDI access without timeout for user-initiated connections
-        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+        // **FIX: Add timeout wrapper to prevent hanging forever (like Edge can do)**
+        const waitLog = setInterval(() => console.log('🎵 Waiting for MIDI access... (user permission may be needed)'), 1000);
+        
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          setTimeout(() => {
+            reject(new Error('MIDI access request timed out after 6 seconds'));
+          }, 6000);
+        });
+        
+        const midiPromise = navigator.requestMIDIAccess({ sysex: false })
+          .catch(error => {
+            console.error('🎵 MIDI access rejected:', error);
+            throw error;
+          });
+        
+        // Race the MIDI request against the timeout
+        const midiAccess = await Promise.race([midiPromise, timeoutPromise]);
+        clearInterval(waitLog);
         midiAccessRef.current = midiAccess;
         
         // **FIX: Update device list with real devices immediately after access**
@@ -401,12 +427,35 @@ export function useSimpleMIDI() {
         }
         
       } catch (error) {
-        console.error('🎵 User MIDI access failed:', error);
+        const isTimeout = error instanceof Error && error.message.includes('timed out');
+        const isPermissionDenied = error instanceof Error && 
+          (error.name === 'SecurityError' || error.name === 'NotAllowedError');
+        
+        let errorMessage = 'MIDI access failed';
+        if (isTimeout) {
+          errorMessage = 'MIDI access timed out - try enabling Web MIDI in browser settings';
+        } else if (isPermissionDenied) {
+          errorMessage = 'MIDI access denied - check browser permissions';
+        } else {
+          errorMessage = `MIDI access error: ${error instanceof Error ? error.message : 'Unknown error'}`;
+        }
+        
+        console.error('🎵 User MIDI access failed:', { 
+          error, 
+          isTimeout, 
+          isPermissionDenied,
+          userAgent: navigator.userAgent 
+        });
+        
         setState(prev => ({ 
           ...prev, 
           isInitializing: false,
-          errorMessage: `MIDI access denied: ${error instanceof Error ? error.message : 'Unknown error'}` 
+          midiInitialized: false,
+          errorMessage 
         }));
+      } finally {
+        // **FIX: Always clear loading state in finally block**
+        setState(prev => ({ ...prev, isInitializing: false }));
       }
     }
   }, [state.devices, state.cachedDevices, state.safeMode, initializeMIDIWithTimeout]);

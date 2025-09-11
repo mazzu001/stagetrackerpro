@@ -11,7 +11,6 @@ interface CompactTransportControlsProps {
   isPlaying: boolean;
   currentTime: number;
   duration: number;
-  isMidiConnected: boolean;
   onPlay: () => void;
   onPause: () => void;
   onStop: () => void;
@@ -21,7 +20,6 @@ export default function CompactTransportControls({
   isPlaying,
   currentTime,
   duration,
-  isMidiConnected,
   onPlay,
   onPause,
   onStop

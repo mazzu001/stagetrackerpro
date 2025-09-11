@@ -286,7 +286,6 @@
     background-color: hsl(217, 19%, 20%);
   }
   
-  /* Animation for MIDI indicator */
   @keyframes pulse {
     0%, 100% { 
       opacity: 0.5; 

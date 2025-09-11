@@ -174,8 +174,8 @@ export default function Plans() {
                     <span className="text-white text-xs font-bold">M</span>
                   </div>
                   <div>
-                    <span className="text-sm font-medium">MIDI integration</span>
-                    <p className="text-xs text-gray-400">Advanced MIDI control and sequencing (coming soon)</p>
+                    <span className="text-sm font-medium">Professional audio controls</span>
+                    <p className="text-xs text-gray-400">Enhanced audio mixing and control features</p>
                   </div>
                 </div>
                 <div className="flex items-start">

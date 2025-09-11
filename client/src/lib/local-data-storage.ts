@@ -2,7 +2,7 @@
 // Uses the local file system exclusively
 
 import { LocalFileSystem } from "./local-file-system";
-import type { Song, Track, MidiEvent } from "@shared/schema";
+import type { Song, Track } from "@shared/schema";
 
 export interface LocalSong {
   id: string;
@@ -15,7 +15,6 @@ export interface LocalSong {
   createdAt: number;
   lastModified: number;
   tracks: LocalTrack[];
-  midiEvents: LocalMidiEvent[];
 }
 
 export interface LocalTrack {
@@ -31,13 +30,6 @@ export interface LocalTrack {
   hasAudioData: boolean;
 }
 
-export interface LocalMidiEvent {
-  id: string;
-  songId: string;
-  timestamp: number;
-  eventType: string;
-  data: any;
-}
 
 export class LocalDataStorage {
   private static instance: LocalDataStorage;
@@ -76,7 +68,7 @@ export class LocalDataStorage {
     return songs.map(song => ({
       ...song,
       tracks: [],
-      midiEvents: []
+
     }));
   }
 
@@ -87,7 +79,7 @@ export class LocalDataStorage {
     return {
       ...song,
       tracks: [],
-      midiEvents: []
+
     };
   }
 
@@ -104,7 +96,7 @@ export class LocalDataStorage {
       createdAt: songData.createdAt || now,
       lastModified: now,
       tracks: [],
-      midiEvents: []
+
     };
 
     await this.localFS.saveSong(song.id, song);
@@ -211,31 +203,6 @@ export class LocalDataStorage {
     return false;
   }
 
-  // MIDI Event operations
-  async getMidiEventsBySongId(songId: string): Promise<LocalMidiEvent[]> {
-    const song = this.localFS.getSong(songId);
-    return song?.midiEvents || [];
-  }
-
-  async createMidiEvent(songId: string, eventData: Partial<LocalMidiEvent>): Promise<LocalMidiEvent> {
-    const song = this.localFS.getSong(songId);
-    if (!song) throw new Error('Song not found');
-
-    const event: LocalMidiEvent = {
-      id: eventData.id || crypto.randomUUID(),
-      songId: songId,
-      timestamp: eventData.timestamp || 0,
-      eventType: eventData.eventType || 'note',
-      data: eventData.data || {}
-    };
-
-    if (!song.midiEvents) song.midiEvents = [];
-    song.midiEvents.push(event);
-
-    await this.localFS.saveSong(songId, song);
-    console.log('MIDI event created locally:', event.eventType);
-    return event;
-  }
 
   // Waveform operations
   async saveWaveform(songId: string, waveformData: number[]): Promise<void> {

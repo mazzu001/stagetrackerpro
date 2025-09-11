@@ -40,7 +40,6 @@ async function migrate() {
       )
     `);
 
-    // MIDI events table creation removed - MIDI functionality disabled
 
     await db.run(sql`
       CREATE TABLE IF NOT EXISTS sessions (

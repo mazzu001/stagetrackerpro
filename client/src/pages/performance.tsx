@@ -822,7 +822,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 className="h-8 px-2 md:px-3"
               >
                 <Bluetooth className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                <span className="hidden sm:inline text-xs md:text-sm">MIDI Devices</span>
+                <span className="hidden sm:inline text-xs md:text-sm">Devices</span>
               </Button>
             )}
 

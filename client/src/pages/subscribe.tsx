@@ -53,8 +53,8 @@ const plans: PlanOption[] = [
     priceId: 'price_professional_placeholder',
     features: [
       'All Premium features',
-      'MIDI integration (Coming Soon)',
-      'Bluetooth MIDI connectivity (Coming Soon)', 
+      'Advanced audio control (Coming Soon)',
+      'Wireless audio connectivity (Coming Soon)', 
       'Advanced performance tools (Coming Soon)',
       'Professional stage features (Coming Soon)',
       'Priority support'

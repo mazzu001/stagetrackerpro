@@ -28,7 +28,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   const [masterStereoLevels, setMasterStereoLevels] = useState<{ left: number; right: number }>({ left: 0, right: 0 });
   const [cpuUsage, setCpuUsage] = useState(23);
   const [isAudioEngineOnline, setIsAudioEngineOnline] = useState(true);
-  const [isMidiConnected, setIsMidiConnected] = useState(true);
   const [masterVolume, setMasterVolume] = useState(85);
   const [isLoadingTracks, setIsLoadingTracks] = useState(false);
 
@@ -289,7 +288,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     masterStereoLevels,
     cpuUsage,
     isAudioEngineOnline,
-    isMidiConnected,
     masterVolume,
     isLoadingTracks,
     play,

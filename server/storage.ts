@@ -27,12 +27,6 @@ export interface IStorage {
   updateTrack(id: string, track: Partial<InsertTrack>): Promise<Track | undefined>;
   deleteTrack(id: string): Promise<boolean>;
 
-  // MIDI Events (removed but interface kept for compatibility)
-  // getMidiEvent(id: string): Promise<MidiEvent | undefined>;
-  // getMidiEventsBySongId(songId: string): Promise<MidiEvent[]>;
-  // createMidiEvent(midiEvent: InsertMidiEvent): Promise<MidiEvent>;
-  // updateMidiEvent(id: string, midiEvent: Partial<InsertMidiEvent>): Promise<MidiEvent | undefined>;
-  // deleteMidiEvent(id: string): Promise<boolean>;
 
   // Waveform caching
   saveWaveform(songId: string, waveformData: number[]): Promise<void>;
@@ -318,7 +312,6 @@ export class DatabaseStorage implements IStorage {
     return false;
   }
 
-  // MIDI functionality has been completely removed
 
   // Waveform operations (handled locally in browser - these are no-op on server)
   async saveWaveform(songId: string, waveformData: number[]): Promise<void> {

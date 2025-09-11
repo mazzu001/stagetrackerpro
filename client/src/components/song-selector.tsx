@@ -356,7 +356,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                 </div>
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <Label htmlFor="lyrics">Lyrics (with timestamps and MIDI commands)</Label>
+                    <Label htmlFor="lyrics">Lyrics (with timestamps)</Label>
                     <Button
                       type="button"
                       variant="outline"
@@ -379,12 +379,12 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
                     id="lyrics"
                     value={newSong.lyrics || ""}
                     onChange={(e) => setNewSong({ ...newSong, lyrics: e.target.value })}
-                    placeholder="[00:15] First line of lyrics&#10;[00:30] <!-- MIDI: Program Change 1 -->&#10;[00:32] Second line..."
+                    placeholder="[00:15] First line of lyrics&#10;[00:30] Second line...&#10;[00:45] Third line..."
                     className="min-h-[200px] resize-y"
                     data-testid="input-song-lyrics"
                   />
                   <div className="text-xs text-muted-foreground mt-1">
-                    Tip: Use timestamps like [01:30] and add MIDI commands with &lt;!-- MIDI: Program Change 1 --&gt;
+                    Tip: Use timestamps like [01:30] for synchronized lyrics display
                   </div>
                 </div>
                 <div className="flex justify-end space-x-2">

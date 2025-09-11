@@ -75,7 +75,7 @@ export function UpgradeDialog({
               </li>
               <li className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-green-500" />
-                <span>MIDI integration</span>
+                <span>Professional audio features</span>
               </li>
               <li className="flex items-center gap-2">
                 <Check className="w-4 h-4 text-green-500" />

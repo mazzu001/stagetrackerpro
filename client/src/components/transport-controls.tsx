@@ -14,7 +14,6 @@ interface TransportControlsProps {
   currentTime: number;
   duration: number;
   progress: number;
-  isMidiConnected: boolean;
   onPlay: () => void;
   onPause: () => void;
   onStop: () => void;
@@ -26,7 +25,6 @@ export default function TransportControls({
   currentTime,
   duration,
   progress,
-  isMidiConnected,
   onPlay,
   onPause,
   onStop,
@@ -58,8 +56,8 @@ export default function TransportControls({
             Position: <span className="text-white font-mono">{formatTime(currentTime)} / {formatTime(duration)}</span>
           </div>
           <div className="flex items-center space-x-1">
-            <span className="text-xs text-gray-400">MIDI</span>
-            <div className={`w-2 h-2 rounded-full ${isMidiConnected ? 'bg-secondary animate-pulse' : 'bg-gray-500'}`} />
+            <span className="text-xs text-gray-400">Audio</span>
+            <div className="w-2 h-2 rounded-full bg-secondary" />
           </div>
         </div>
       </div>

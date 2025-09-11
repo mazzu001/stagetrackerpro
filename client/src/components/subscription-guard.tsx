@@ -73,7 +73,7 @@ export function SubscriptionGuard({ songCount, onUpgrade }: SubscriptionGuardPro
                 </div>
                 <div className="flex items-center space-x-2 text-green-400">
                   <Check className="w-4 h-4" />
-                  <span>Advanced MIDI control</span>
+                  <span>Advanced audio control</span>
                 </div>
                 <div className="flex items-center space-x-2 text-green-400">
                   <Check className="w-4 h-4" />

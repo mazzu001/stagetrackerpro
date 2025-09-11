@@ -218,7 +218,7 @@ export default function Unsubscribe() {
                         <Star className="w-6 h-6 text-yellow-500" />
                         <div>
                           <h3 className="font-semibold">Professional Plan</h3>
-                          <p className="text-sm text-muted-foreground">Full MIDI integration and advanced features</p>
+                          <p className="text-sm text-muted-foreground">Full audio integration and advanced features</p>
                         </div>
                       </>
                     ) : (
@@ -284,7 +284,7 @@ export default function Unsubscribe() {
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Zap className="w-4 h-4 text-yellow-500" />
-                      Timestamped lyrics with MIDI
+                      Timestamped lyrics with automation
                     </div>
                   </div>
                   <div className="space-y-2">
@@ -294,7 +294,7 @@ export default function Unsubscribe() {
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Zap className="w-4 h-4 text-yellow-500" />
-                      MIDI device integration
+                      Audio device integration
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <Zap className="w-4 h-4 text-yellow-500" />

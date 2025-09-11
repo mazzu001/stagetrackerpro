@@ -62,14 +62,14 @@ const subscriptionTiers: SubscriptionTier[] = [
     priceId: 'price_professional_placeholder', // Will be set when you create it
     features: [
       'All Premium features',
-      'MIDI integration (Coming Soon)',
-      'Bluetooth MIDI connectivity (Coming Soon)',
+      'Advanced audio control (Coming Soon)',
+      'Wireless audio connectivity (Coming Soon)',
       'Advanced performance tools (Coming Soon)',
       'Professional stage features (Coming Soon)',
       'Priority support'
     ],
     icon: Star,
-    description: 'For professional musicians who need advanced MIDI control'
+    description: 'For professional musicians who need advanced audio control'
   }
 ];
 
@@ -379,7 +379,7 @@ export default function SubscribeNew({ onClose }: { onClose: () => void }) {
       
       <div className="text-center mt-8 text-gray-600">
         <p>All plans include 30-day money-back guarantee • Cancel anytime</p>
-        <p className="text-sm mt-2">MIDI features in Professional plan coming in future updates</p>
+        <p className="text-sm mt-2">Advanced audio features in Professional plan coming in future updates</p>
       </div>
     </div>
   );

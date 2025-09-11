@@ -19,14 +19,14 @@ export default function Landing() {
             <Music className="w-12 h-12 text-purple-400" />
             <h1 className="text-4xl font-bold text-white">StageTracker Pro</h1>
           </div>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">Professional live music performance application with multi-track audio for pre recorded backing tracks, MIDI sequencing, and synchronized lyrics display.</p>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">Professional live music performance application with multi-track audio for pre recorded backing tracks and synchronized lyrics display.</p>
         </div>
 
         {/* Demo Video Section */}
         <div className="mb-16">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-white mb-4">See StageTracker Pro in Action</h2>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto">Watch how professional musicians use StageTracker Pro for live performances with multi-track backing tracks and MIDI control.</p>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto">Watch how professional musicians use StageTracker Pro for live performances with multi-track backing tracks.</p>
           </div>
           <div className="max-w-4xl mx-auto">
             <div className="relative w-full h-0 pb-[56.25%] rounded-lg overflow-hidden shadow-2xl">
@@ -56,8 +56,8 @@ export default function Landing() {
           <Card className="bg-slate-800/50 border-slate-700">
             <CardHeader>
               <Zap className="w-8 h-8 text-yellow-400 mb-2" />
-              <CardTitle className="text-white">MIDI Integration and Time Stamps</CardTitle>
-              <CardDescription className="text-gray-400">Timed MIDI events embedded in lyrics for lighting and effects control. Time stamps help your lyrics scroll in perfect time with the music Karaoke style as well as firing midi commands to the second to control your lighting, instrunments and gear.</CardDescription>
+              <CardTitle className="text-white">Timestamped Lyrics</CardTitle>
+              <CardDescription className="text-gray-400">Precise timing embedded in lyrics for synchronized display. Time stamps help your lyrics scroll in perfect time with the music Karaoke style for professional live performances.</CardDescription>
             </CardHeader>
           </Card>
 
@@ -127,7 +127,7 @@ export default function Landing() {
               </div>
               <div className="text-blue-400">
                 <p className="font-semibold">✓ 2 Free Songs Forever</p>
-                <p className="font-semibold">✓ Full MIDI Features</p>
+                <p className="font-semibold">✓ Professional Audio Features</p>
                 <p className="font-semibold">✓ Offline Performance</p>
               </div>
             </div>

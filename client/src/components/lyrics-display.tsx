@@ -121,7 +121,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
       return /^\[\d{1,2}:\d{2}\]/.test(trimmed);
     }) : false;
   
-  // Split lyrics by lines for non-timestamped lyrics, only filtering out MIDI commands
+  // Split lyrics by lines for non-timestamped lyrics
   const plainLines = song?.lyrics && !hasTimestamps ? 
     song.lyrics.split('\n')
       .map((line: string) => {

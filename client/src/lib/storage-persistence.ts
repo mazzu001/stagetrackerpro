@@ -1,9 +1,8 @@
-import type { Song, Track, MidiEvent } from "@shared/schema";
+import type { Song, Track } from "@shared/schema";
 
 interface PersistedData {
   songs: Song[];
   tracks: Track[];
-  midiEvents: MidiEvent[];
   blobUrls: Record<string, string>; // Map track IDs to blob URLs
   fileData: Record<string, string>; // Map track IDs to base64 file data
   lastSaved: string;
@@ -109,7 +108,7 @@ export class StoragePersistence {
   }
 
   // Save all data to localStorage
-  saveData(songs: Song[], tracks: Track[], midiEvents: MidiEvent[]): void {
+  saveData(songs: Song[], tracks: Track[]): void {
     try {
       const blobUrls: Record<string, string> = {};
       const fileData: Record<string, string> = {};
@@ -125,21 +124,20 @@ export class StoragePersistence {
       const data: PersistedData = {
         songs,
         tracks,
-        midiEvents,
         blobUrls,
         fileData,
         lastSaved: new Date().toISOString()
       };
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-      console.log(`Saved ${songs.length} songs, ${tracks.length} tracks, ${midiEvents.length} MIDI events`);
+      console.log(`Saved ${songs.length} songs, ${tracks.length} tracks`);
     } catch (error) {
       console.error("Failed to save data to localStorage:", error);
     }
   }
 
   // Load all data from localStorage
-  loadData(): { songs: Song[]; tracks: Track[]; midiEvents: MidiEvent[] } | null {
+  loadData(): { songs: Song[]; tracks: Track[] } | null {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (!stored) {
@@ -160,12 +158,11 @@ export class StoragePersistence {
         this.fileDataMap.set(trackId, fileData);
       });
 
-      console.log(`Loaded ${data.songs.length} songs, ${data.tracks.length} tracks, ${data.midiEvents.length} MIDI events from ${data.lastSaved}`);
+      console.log(`Loaded ${data.songs.length} songs, ${data.tracks.length} tracks from ${data.lastSaved}`);
       
       return {
         songs: data.songs,
-        tracks: data.tracks,
-        midiEvents: data.midiEvents
+        tracks: data.tracks
       };
     } catch (error) {
       console.error("Failed to load data from localStorage:", error);

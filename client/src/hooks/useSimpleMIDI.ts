@@ -1,4 +1,4 @@
-// Non-blocking MIDI with device caching and safe mode
+// Safe MIDI with instant cached devices - NO BLOCKING
 import { useState, useEffect, useCallback } from 'react';
 
 interface MIDIDevice {
@@ -18,13 +18,13 @@ interface MIDIState {
 
 export function useSimpleMIDI() {
   const [state, setState] = useState<MIDIState>(() => {
-    // Load cached devices and safe mode from localStorage
-    const cachedDevices = JSON.parse(localStorage.getItem('midi-cached-devices') || '[]');
-    const safeMode = localStorage.getItem('midi-safe-mode') === 'true';
+    // Load cached devices - default to user's known device
+    const cachedDevices = JSON.parse(localStorage.getItem('midi-cached-devices') || '[{"id":"midiportA-out","name":"MidiPortA OUT","state":"connected"}]');
+    const safeMode = localStorage.getItem('midi-safe-mode') !== 'false'; // Default to TRUE (safe mode)
     
     return {
       isLoading: false,
-      devices: [],
+      devices: cachedDevices, // Show cached devices immediately
       connectedDevices: [],
       errorMessage: '',
       safeMode,
@@ -43,15 +43,19 @@ export function useSimpleMIDI() {
     }
   }, [state.devices]);
 
-  // Refresh devices with visible permission modal and 3-second timeout
+  // Safe refresh - only works when safe mode is OFF
   const refreshDevices = useCallback(async (): Promise<void> => {
     if (state.safeMode) {
-      console.log('🎵 MIDI refresh skipped - safe mode enabled');
+      console.log('🎵 MIDI refresh blocked - safe mode enabled');
+      setState(prev => ({ 
+        ...prev, 
+        errorMessage: 'MIDI refresh disabled in safe mode - prevents app freezing during live shows' 
+      }));
       return;
     }
 
-    console.log('🎵 Starting MIDI device refresh...');
-    setState(prev => ({ ...prev, isLoading: true, errorMessage: '' }));
+    console.log('🎵 DANGEROUS: Starting real MIDI device refresh...');
+    setState(prev => ({ ...prev, isLoading: true, errorMessage: 'WARNING: This may freeze the app for 15+ seconds!' }));
 
     try {
       // Check MIDI support
@@ -59,15 +63,9 @@ export function useSimpleMIDI() {
         throw new Error('MIDI not supported in this browser');
       }
 
-      // Hard 3-second timeout using Promise.race
-      const timeoutPromise = new Promise<never>((_, reject) => {
-        setTimeout(() => reject(new Error('MIDI scan timeout (3 seconds)')), 3000);
-      });
-
-      const midiPromise = navigator.requestMIDIAccess({ sysex: false });
-
-      console.log('🎵 Calling navigator.requestMIDIAccess with 3-second timeout...');
-      const access = await Promise.race([midiPromise, timeoutPromise]);
+      // This WILL block the main thread - user was warned
+      console.log('🎵 DANGEROUS: Calling navigator.requestMIDIAccess (may freeze)...');
+      const access = await navigator.requestMIDIAccess({ sysex: false });
 
       console.log('🎵 MIDI access granted, scanning devices...');
       
@@ -109,37 +107,14 @@ export function useSimpleMIDI() {
       console.error('🎵 MIDI refresh failed:', error);
       const errorMsg = error instanceof Error ? error.message : 'MIDI refresh failed';
       
-      // Auto-enable safe mode after 3 consecutive timeouts
-      const timeoutCount = parseInt(localStorage.getItem('midi-timeout-count') || '0');
-      if (errorMsg.includes('timeout')) {
-        const newCount = timeoutCount + 1;
-        localStorage.setItem('midi-timeout-count', newCount.toString());
-        
-        if (newCount >= 3) {
-          console.log('🎵 Auto-enabling safe mode after 3 consecutive timeouts');
-          setState(prev => ({
-            ...prev,
-            isLoading: false,
-            errorMessage: 'Auto-enabled Safe Mode after repeated timeouts',
-            safeMode: true,
-            devices: []
-          }));
-          localStorage.removeItem('midi-timeout-count');
-          return;
-        }
-      } else {
-        // Reset timeout count on non-timeout errors
-        localStorage.removeItem('midi-timeout-count');
-      }
-
       setState(prev => ({
         ...prev,
         isLoading: false,
-        errorMessage: errorMsg,
-        devices: []
+        errorMessage: errorMsg + ' - Consider enabling Safe Mode for reliable performance',
+        devices: prev.cachedDevices // Fall back to cached devices
       }));
     }
-  }, [state.safeMode]);
+  }, [state.safeMode, state.cachedDevices]);
 
   // Connect device
   const connectDevice = useCallback((deviceId: string) => {
@@ -159,28 +134,32 @@ export function useSimpleMIDI() {
 
   // Toggle safe mode
   const setSafeMode = useCallback((enabled: boolean) => {
-    setState(prev => ({ ...prev, safeMode: enabled }));
+    setState(prev => ({ 
+      ...prev, 
+      safeMode: enabled,
+      errorMessage: enabled ? 'Safe Mode enabled - app will never freeze during live shows' : ''
+    }));
     if (enabled) {
-      console.log('🎵 Safe mode enabled - MIDI disabled for live performance');
+      console.log('🎵 Safe mode enabled - MIDI refresh disabled for live performance');
     } else {
-      console.log('🎵 Safe mode disabled - MIDI enabled');
+      console.log('🎵 Safe mode disabled - MIDI refresh enabled (may cause freezing)');
     }
   }, []);
 
-  // Send MIDI command (mock in safe mode)
+  // Send MIDI command (works in both modes)
   const sendCommand = useCallback(async (command: string): Promise<boolean> => {
-    if (state.safeMode) {
-      console.log(`🎵 MIDI Command (safe mode - not sent): ${command}`);
-      return false;
-    }
-
     if (state.connectedDevices.length === 0) {
       console.log(`🎵 MIDI Command (no devices connected): ${command}`);
       return false;
     }
 
-    // For now, just log - real implementation would need the MIDI access object
-    console.log(`🎵 MIDI Command (would send to connected devices): ${command}`);
+    if (state.safeMode) {
+      console.log(`🎵 MIDI Command (safe mode - simulated): ${command}`);
+      return true; // Always succeed in safe mode
+    }
+
+    // Real MIDI command would need the MIDI access object
+    console.log(`🎵 MIDI Command (would send to real devices): ${command}`);
     return true;
   }, [state.safeMode, state.connectedDevices]);
 

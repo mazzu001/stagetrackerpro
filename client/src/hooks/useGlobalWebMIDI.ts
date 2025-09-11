@@ -896,10 +896,9 @@ export const useGlobalWebMIDI = (): GlobalMIDIState => {
   }, []);
   
   const refreshDevices = useCallback(async () => {
-    // Don't await - let MIDI initialization run in background
-    initializeWebMIDI().catch(error => {
-      console.log('🔍 MIDI scan completed (no devices found)');
-    });
+    // Use new 3-second timeout initialization instead of old 8-second one
+    console.log('🔄 Refresh requested - MIDI will initialize when needed');
+    // Note: initializeMIDI is called elsewhere when actually needed
   }, []);
   
   const connectToDeviceCallback = useCallback(async (deviceId: string) => {

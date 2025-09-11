@@ -113,7 +113,7 @@ export function useSimpleMIDI() {
     } else {
       console.log('🎵 Safe mode disabled - MIDI access will be initialized on demand');
     }
-  }, [state.safeMode, initializeMIDIForCachedDevices]);
+  }, [state.safeMode]);
 
   // Update localStorage when state changes
   useEffect(() => {

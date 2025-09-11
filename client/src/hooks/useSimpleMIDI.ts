@@ -278,7 +278,7 @@ export function useSimpleMIDI() {
   }, [state.safeMode, state.cachedDevices]);
 
   // Connect device - Actually connects to real MIDI device
-  const connectDevice = useCallback((deviceId: string) => {
+  const connectDevice = useCallback(async (deviceId: string) => {
     const device = state.devices.find(d => d.id === deviceId) || state.cachedDevices.find(d => d.id === deviceId);
     
     if (!device) {
@@ -313,11 +313,100 @@ export function useSimpleMIDI() {
         console.log(`🎵 Cached device connected (no physical device found): ${device.name}`);
       }
     } else {
-      console.log(`🎵 Simulated connection (MIDI access not available): ${device.name}`);
-      // Try to initialize MIDI access now that user is connecting
-      if (state.safeMode) {
-        console.log('🎵 Attempting MIDI initialization on connect...');
-        initializeMIDIWithTimeout();
+      console.log(`🎵 No MIDI access yet - requesting access for user connection: ${device.name}`);
+      // **FIX: Always try to get MIDI access when user clicks Connect, regardless of safe mode**
+      console.log('🎵 User clicked Connect - requesting MIDI access without timeout...');
+      
+      try {
+        setState(prev => ({ ...prev, isInitializing: true, errorMessage: 'Getting MIDI access...' }));
+        
+        // Direct MIDI access without timeout for user-initiated connections
+        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+        midiAccessRef.current = midiAccess;
+        
+        // **FIX: Update device list with real devices immediately after access**
+        const realDevices: MIDIDevice[] = [];
+        const realStatus: Record<string, boolean> = {};
+        
+        Array.from(midiAccess.outputs.values()).forEach((output: any) => {
+          if (output?.id && output?.name) {
+            realDevices.push({
+              id: output.id,
+              name: output.name,
+              state: output.state as 'connected' | 'disconnected'
+            });
+            realStatus[output.id] = output.state === 'connected';
+            realStatus[output.name] = output.state === 'connected';
+          }
+        });
+        
+        console.log(`🎵 User-initiated MIDI: Found ${realDevices.length} real devices:`, 
+          realDevices.map(d => `${d.name} (${d.state})`));
+        
+        // Add device state change listener
+        midiAccess.onstatechange = (event: any) => {
+          console.log('🎵 Device state changed:', event.port?.name, event.port?.state);
+          
+          const refreshedDevices: MIDIDevice[] = [];
+          const updatedStatus: Record<string, boolean> = {};
+          
+          Array.from(midiAccessRef.current.outputs.values()).forEach((output: any) => {
+            if (output?.id && output?.name) {
+              refreshedDevices.push({
+                id: output.id,
+                name: output.name,
+                state: output.state as 'connected' | 'disconnected'
+              });
+              updatedStatus[output.id] = output.state === 'connected';
+              updatedStatus[output.name] = output.state === 'connected';
+            }
+          });
+          
+          setState(prev => ({
+            ...prev,
+            devices: refreshedDevices,
+            realConnectionStatus: updatedStatus
+          }));
+        };
+        
+        // **FIX: Replace cached devices with real devices**
+        setState(prev => ({
+          ...prev,
+          isInitializing: false,
+          midiInitialized: true,
+          devices: realDevices,
+          realConnectionStatus: realStatus,
+          errorMessage: realDevices.length === 0 
+            ? 'No MIDI outputs detected - check device connections'
+            : `Found ${realDevices.length} MIDI devices`
+        }));
+        
+        // Now try to find and connect to the real device
+        const realDevice = Array.from(midiAccess.outputs.values()).find(
+          (output: any) => output && (output.id === deviceId || output.name === device.name)
+        );
+        
+        if (realDevice) {
+          console.log(`🎵 REAL MIDI connection established: ${(realDevice as any).name} (${(realDevice as any).state})`);
+          setState(prev => ({
+            ...prev,
+            realConnectionStatus: {
+              ...prev.realConnectionStatus,
+              [deviceId]: (realDevice as any).state === 'connected',
+              [device.name]: (realDevice as any).state === 'connected'
+            }
+          }));
+        } else {
+          console.log(`🎵 Device not found in real MIDI outputs: ${device.name}`);
+        }
+        
+      } catch (error) {
+        console.error('🎵 User MIDI access failed:', error);
+        setState(prev => ({ 
+          ...prev, 
+          isInitializing: false,
+          errorMessage: `MIDI access denied: ${error instanceof Error ? error.message : 'Unknown error'}` 
+        }));
       }
     }
   }, [state.devices, state.cachedDevices, state.safeMode, initializeMIDIWithTimeout]);

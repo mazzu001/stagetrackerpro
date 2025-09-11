@@ -1,4 +1,4 @@
-// Ultra-Simple MIDI Manager Component with Safe Mode
+// Ultra-Simple MIDI Manager Component - No React Hook Issues
 import { useState } from 'react';
 import React from 'react';
 import { Button } from '@/components/ui/button';
@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Switch } from '@/components/ui/switch';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, RefreshCw, Plug, Unplug, AlertCircle, Settings, Zap } from 'lucide-react';
@@ -202,7 +202,7 @@ export function SimpleMIDIManager({ onSendCommandReady }: SimpleMIDIManagerProps
         </CardContent>
       </Card>
 
-      {/* Settings Modal */}
+      {/* Settings Modal - Using Checkbox instead of Switch */}
       <Dialog open={showSettings} onOpenChange={setShowSettings}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
@@ -212,18 +212,20 @@ export function SimpleMIDIManager({ onSendCommandReady }: SimpleMIDIManagerProps
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <div className="space-y-1">
-                <Label htmlFor="safe-mode">Safe Mode</Label>
-                <p className="text-sm text-muted-foreground">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="safe-mode"
+                checked={midi.safeMode}
+                onCheckedChange={(checked) => midi.setSafeMode(!!checked)}
+              />
+              <div className="grid gap-1.5 leading-none">
+                <Label htmlFor="safe-mode" className="text-sm font-medium">
+                  Enable Safe Mode
+                </Label>
+                <p className="text-xs text-muted-foreground">
                   Disable MIDI to prevent any delays during live performance
                 </p>
               </div>
-              <Switch
-                id="safe-mode"
-                checked={midi.safeMode}
-                onCheckedChange={midi.setSafeMode}
-              />
             </div>
             
             {!midi.safeMode && (

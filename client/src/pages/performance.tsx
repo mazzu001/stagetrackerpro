@@ -27,9 +27,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import type { SongWithTracks } from "@shared/schema";
-import { PersistentWebMIDIManager } from "@/components/PersistentWebMIDIManager";
-import { useGlobalWebMIDI, setupGlobalMIDIEventListener } from "@/hooks/useGlobalWebMIDI";
-import { MIDILoadingModal } from "@/components/MIDILoadingModal";
+import { SimpleMIDIManager } from "@/components/SimpleMIDIManager";
+// MIDI imports removed - using SimpleMIDIManager now
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
 import { useBroadcast } from "@/hooks/useBroadcast";
@@ -108,43 +107,15 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     };
   }, []);
 
-  // Global Web MIDI integration - persistent across dialog closures
-  const globalMidi = useGlobalWebMIDI();
-  
-  // Extract MIDI loading states for loading modal
-  const { isMIDIInitializing, midiInitMessage, midiInitProgress, retryMIDIInitialization } = globalMidi;
+  // Simplified MIDI - no global state needed
+  // const globalMidi = useGlobalWebMIDI(); // REMOVED
+  // const { isMIDIInitializing, midiInitMessage, midiInitProgress, retryMIDIInitialization } = globalMidi; // REMOVED
 
-  // Initialize global MIDI event listener for external commands
-  useEffect(() => {
-    console.log('🎵 Setting up persistent Web MIDI event listener...');
-    const cleanup = setupGlobalMIDIEventListener();
-    return cleanup;
-  }, []);
+  // MIDI simplified - no event listener needed
 
-  // Update local state when global MIDI connection changes
-  useEffect(() => {
-    setIsMidiConnected(globalMidi.isConnected);
-    setSelectedMidiDeviceName(globalMidi.deviceName);
-    console.log(`🔄 Global Web MIDI status: ${globalMidi.isConnected ? 'Connected' : 'Disconnected'} - ${globalMidi.deviceName}`);
-  }, [globalMidi.isConnected, globalMidi.deviceName]);
+  // MIDI simplified - using local state only
 
-  // Listen for legacy Bluetooth MIDI connection status changes (fallback)
-  useEffect(() => {
-    const handleStatusChange = (event: any) => {
-      const { connected, deviceName, midiReady } = event.detail;
-      // Only use if global MIDI is not connected
-      if (!globalMidi.isConnected) {
-        setIsMidiConnected(connected && midiReady);
-        setSelectedMidiDeviceName(deviceName);
-        console.log(`🔄 Legacy Bluetooth MIDI status: ${connected ? 'Connected' : 'Disconnected'} ${midiReady ? '(MIDI Ready)' : '(No MIDI)'}`);
-      }
-    };
-
-    window.addEventListener('bluetoothMidiStatusChanged', handleStatusChange);
-    return () => {
-      window.removeEventListener('bluetoothMidiStatusChanged', handleStatusChange);
-    };
-  }, [globalMidi.isConnected]);
+  // Bluetooth MIDI removed for simplicity
 
   // Trigger blue blink effect for MIDI status light
   const triggerMidiBlink = useCallback(() => {
@@ -169,7 +140,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
     try {
       // Don't await - handle MIDI sending in background
-      globalMidi.sendCommand(footerMidiCommand.trim())
+      // MIDI temporarily disabled during simplification
+      Promise.resolve(false)
         .then((success) => {
           if (success) {
             console.log('✅ Manual MIDI command sent via global Web MIDI');
@@ -357,7 +329,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       console.log(`🎼 Sending MIDI command from lyrics: ${command}`);
       
       // Don't await - handle MIDI sending in background
-      globalMidi.sendCommand(command.trim())
+      // MIDI temporarily disabled during simplification
+      Promise.resolve(false)
         .then((success) => {
           if (success) {
             console.log('✅ MIDI command sent via global Web MIDI');
@@ -378,7 +351,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     } catch (error) {
       console.error('❌ Failed to send lyrics MIDI command:', error);
     }
-  }, [userType, triggerMidiBlink, globalMidi]);
+  }, [userType, triggerMidiBlink]); // globalMidi removed
 
   // Instant audio engine (now with zero decode delays)
   const audioEngine = useAudioEngine({ 
@@ -1097,13 +1070,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   return (
     <div className={`h-screen flex flex-col bg-background text-foreground overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       
-      {/* MIDI Loading Modal - appears during MIDI initialization */}
-      <MIDILoadingModal 
-        isVisible={isMIDIInitializing}
-        message={midiInitMessage}
-        progress={midiInitProgress}
-        onRetry={retryMIDIInitialization}
-      />
+      {/* MIDI Loading Modal removed - using simplified MIDI system */}
       
       {/* Header */}
       <div className="bg-surface border-b border-gray-700 p-2 md:p-4 flex-shrink-0">
@@ -1728,7 +1695,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 Connections persist even when this dialog is closed - perfect for live performance automation
               </DialogDescription>
             </DialogHeader>
-            <PersistentWebMIDIManager />
+            <SimpleMIDIManager />
           </DialogContent>
         </Dialog>
       )}

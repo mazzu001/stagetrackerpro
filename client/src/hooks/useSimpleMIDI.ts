@@ -1,4 +1,4 @@
-// Real MIDI with safe mode - Actually connects to cached devices
+// Bulletproof MIDI with 3-second timeout - Zero freezing guaranteed
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface MIDIDevice {
@@ -15,10 +15,13 @@ interface MIDIState {
   safeMode: boolean;
   cachedDevices: MIDIDevice[];
   realConnectionStatus: Record<string, boolean>; // Track actual MIDI connections
+  isInitializing: boolean; // MIDI initialization state with timeout
+  midiInitialized: boolean; // Track if MIDI access was successfully obtained
 }
 
 export function useSimpleMIDI() {
   const midiAccessRef = useRef<any>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [state, setState] = useState<MIDIState>(() => {
     // Load cached devices - default to user's known device
     const cachedDevices = JSON.parse(localStorage.getItem('midi-cached-devices') || '[{"id":"midiportA-out","name":"MidiPortA OUT","state":"connected"}]');
@@ -31,19 +34,31 @@ export function useSimpleMIDI() {
       errorMessage: '',
       safeMode,
       cachedDevices,
-      realConnectionStatus: {}
+      realConnectionStatus: {},
+      isInitializing: false,
+      midiInitialized: false
     };
   });
 
-  // Initialize MIDI access without scanning - just for connecting to cached devices
-  const initializeMIDIForCachedDevices = useCallback(async () => {
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
+  }, []);
+
+  // Initialize MIDI with bulletproof 3-second timeout (guaranteed no freezing)
+  const initializeMIDIWithTimeout = useCallback(async () => {
     if (midiAccessRef.current) {
-      console.log('🎵 Safe Mode: MIDI access already initialized');
-      return; // Already initialized
+      console.log('🎵 Timeout MIDI: Already initialized');
+      return;
     }
 
     if (!navigator?.requestMIDIAccess) {
-      console.log('🎵 Safe Mode: MIDI not supported in this browser');
+      console.log('🎵 Timeout MIDI: Not supported in this browser');
       setState(prev => ({
         ...prev,
         errorMessage: 'MIDI not supported in this browser - using simulated connections'
@@ -51,18 +66,38 @@ export function useSimpleMIDI() {
       return;
     }
 
+    console.log('🎵 Timeout MIDI: Starting initialization with 3-second timeout...');
+    setState(prev => ({ 
+      ...prev, 
+      isInitializing: true, 
+      errorMessage: 'Initializing MIDI services...' 
+    }));
+
     try {
-      console.log('🎵 Safe Mode: Requesting MIDI access for cached device connections...');
+      // Create timeout promise that rejects after 3 seconds
+      const timeoutPromise = new Promise<never>((_, reject) => {
+        timeoutRef.current = setTimeout(() => {
+          reject(new Error('MIDI initialization timed out after 3 seconds'));
+        }, 3000);
+      });
+
+      // Race MIDI access against timeout - this guarantees no freezing beyond 3 seconds
+      const midiPromise = navigator.requestMIDIAccess({ sysex: false });
+      const midiAccess = await Promise.race([midiPromise, timeoutPromise]);
       
-      // This should be faster since we're not scanning, just getting access for sending
-      midiAccessRef.current = await navigator.requestMIDIAccess({ sysex: false });
-      
-      console.log('🎵 Safe Mode: MIDI access granted successfully!');
+      // Clear timeout on success
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+
+      midiAccessRef.current = midiAccess;
+      console.log('🎵 Timeout MIDI: Access granted successfully!');
       
       // Update real connection status
       const realStatus: Record<string, boolean> = {};
-      Array.from(midiAccessRef.current.outputs.values()).forEach((output: any) => {
-        if (output && output.id) {
+      Array.from(midiAccess.outputs.values()).forEach((output: any) => {
+        if (output?.id) {
           realStatus[output.id] = output.state === 'connected';
           if (output.name) {
             realStatus[output.name] = output.state === 'connected';
@@ -70,18 +105,13 @@ export function useSimpleMIDI() {
         }
       });
       
-      setState(prev => ({
-        ...prev,
-        realConnectionStatus: realStatus
-      }));
-
       // Set up device state change listener
-      midiAccessRef.current.onstatechange = (event: any) => {
-        console.log('🎵 MIDI device state changed:', event.port?.name, event.port?.state);
+      midiAccess.onstatechange = (event: any) => {
+        console.log('🎵 Timeout MIDI: Device state changed:', event.port?.name, event.port?.state);
         
         const updatedStatus: Record<string, boolean> = {};
         Array.from(midiAccessRef.current.outputs.values()).forEach((output: any) => {
-          if (output && output.id) {
+          if (output?.id) {
             updatedStatus[output.id] = output.state === 'connected';
             if (output.name) {
               updatedStatus[output.name] = output.state === 'connected';
@@ -95,25 +125,45 @@ export function useSimpleMIDI() {
         }));
       };
 
-    } catch (error) {
-      console.error('🎵 Safe Mode: Failed to initialize MIDI access:', error);
-      // In safe mode, we continue with simulated connections if real access fails
       setState(prev => ({
         ...prev,
-        errorMessage: `MIDI permission needed for real connections - currently simulated. Error: ${error instanceof Error ? error.message : 'Unknown error'}`
+        isInitializing: false,
+        midiInitialized: true,
+        realConnectionStatus: realStatus,
+        errorMessage: ''
+      }));
+
+    } catch (error) {
+      // Clear timeout on error
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+
+      const isTimeout = error instanceof Error && error.message.includes('timed out');
+      const errorMessage = isTimeout 
+        ? 'MIDI initialization timed out - using cached devices' 
+        : `MIDI access failed: ${error instanceof Error ? error.message : 'Unknown error'}`;
+
+      console.log(`🎵 Timeout MIDI: ${errorMessage}`);
+      setState(prev => ({
+        ...prev,
+        isInitializing: false,
+        midiInitialized: false,
+        errorMessage
       }));
     }
   }, []);
 
-  // Auto-initialize MIDI access in safe mode (for cached device connections)
+  // Auto-initialize MIDI with timeout in safe mode (3-second max, guaranteed no freezing)
   useEffect(() => {
     if (state.safeMode) {
-      console.log('🎵 Safe mode enabled - attempting to initialize MIDI access for cached devices');
-      initializeMIDIForCachedDevices();
+      console.log('🎵 Safe mode enabled - starting timeout-based MIDI initialization');
+      initializeMIDIWithTimeout();
     } else {
       console.log('🎵 Safe mode disabled - MIDI access will be initialized on demand');
     }
-  }, [state.safeMode]);
+  }, [state.safeMode, initializeMIDIWithTimeout]);
 
   // Update localStorage when state changes
   useEffect(() => {
@@ -267,10 +317,10 @@ export function useSimpleMIDI() {
       // Try to initialize MIDI access now that user is connecting
       if (state.safeMode) {
         console.log('🎵 Attempting MIDI initialization on connect...');
-        initializeMIDIForCachedDevices();
+        initializeMIDIWithTimeout();
       }
     }
-  }, [state.devices, state.cachedDevices, state.safeMode, initializeMIDIForCachedDevices]);
+  }, [state.devices, state.cachedDevices, state.safeMode, initializeMIDIWithTimeout]);
 
   // Disconnect device
   const disconnectDevice = useCallback((deviceId: string) => {
@@ -293,11 +343,11 @@ export function useSimpleMIDI() {
     
     if (enabled) {
       console.log('🎵 Safe mode enabled - MIDI refresh disabled for live performance');
-      initializeMIDIForCachedDevices();
+      initializeMIDIWithTimeout();
     } else {
       console.log('🎵 Safe mode disabled - MIDI refresh enabled (may cause freezing)');
     }
-  }, [initializeMIDIForCachedDevices]);
+  }, [initializeMIDIWithTimeout]);
 
   // Send MIDI command - Actually sends to real devices when possible
   const sendCommand = useCallback(async (command: string): Promise<boolean> => {

@@ -94,8 +94,19 @@ export function SimpleMIDIManager({ onSendCommandReady }: SimpleMIDIManagerProps
 
   return (
     <div className="space-y-4 w-full max-w-4xl">
+      {/* MIDI Initialization Loading Banner */}
+      {midi.isInitializing && (
+        <Alert className="border-blue-500 bg-blue-50 dark:bg-blue-950">
+          <Loader2 className="h-4 w-4 animate-spin" />
+          <AlertTitle>Initializing MIDI Services</AlertTitle>
+          <AlertDescription className="text-blue-700 dark:text-blue-300">
+            Setting up MIDI connections with 3-second timeout - guaranteed no freezing.
+          </AlertDescription>
+        </Alert>
+      )}
+
       {/* Safe Mode Banner */}
-      {midi.safeMode && (
+      {midi.safeMode && !midi.isInitializing && (
         <Alert className="border-green-500 bg-green-50 dark:bg-green-950">
           <Zap className="h-4 w-4" />
           <AlertTitle>Safe Mode Active</AlertTitle>

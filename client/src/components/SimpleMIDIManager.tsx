@@ -1,14 +1,26 @@
 // Ultra-Simple MIDI Manager Component
 import { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, RefreshCw, Plug, Unplug } from 'lucide-react';
 import { useSimpleMIDI } from '@/hooks/useSimpleMIDI';
 
-export function SimpleMIDIManager() {
+interface SimpleMIDIManagerProps {
+  onSendCommandReady?: (sendCommand: (command: string) => Promise<boolean>) => void;
+}
+
+export function SimpleMIDIManager({ onSendCommandReady }: SimpleMIDIManagerProps = {}) {
   const { toast } = useToast();
   const midi = useSimpleMIDI();
+
+  // Expose sendCommand function to parent component
+  React.useEffect(() => {
+    if (onSendCommandReady) {
+      onSendCommandReady(midi.sendCommand);
+    }
+  }, [midi.sendCommand, onSendCommandReady]);
 
   const handleRefresh = async () => {
     await midi.refreshDevices();

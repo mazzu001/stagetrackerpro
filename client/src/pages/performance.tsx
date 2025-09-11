@@ -107,9 +107,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     };
   }, []);
 
-  // Simplified MIDI - no global state needed
-  // const globalMidi = useGlobalWebMIDI(); // REMOVED
-  // const { isMIDIInitializing, midiInitMessage, midiInitProgress, retryMIDIInitialization } = globalMidi; // REMOVED
+  // Simple MIDI sending function
+  const [midiSendCommand, setMidiSendCommand] = useState<((command: string) => Promise<boolean>) | null>(null);
 
   // MIDI simplified - no event listener needed
 
@@ -140,27 +139,22 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
     try {
       // Don't await - handle MIDI sending in background
-      // MIDI temporarily disabled during simplification
-      Promise.resolve(false)
+      // Use real MIDI sending if available
+      (midiSendCommand ? midiSendCommand(footerMidiCommand.trim()) : Promise.resolve(false))
         .then((success) => {
           if (success) {
-            console.log('✅ Manual MIDI command sent via global Web MIDI');
+            console.log('✅ Manual MIDI command sent via SimpleMIDI');
             triggerMidiBlink();
             toast({
               title: "MIDI Command Sent",
-              description: `Sent via Web MIDI: ${footerMidiCommand.trim()}`,
+              description: `Sent: ${footerMidiCommand.trim()}`,
             });
           } else {
-            console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
-            // Send via custom event to Bluetooth MIDI manager as fallback
-            const event = new CustomEvent('sendBluetoothMIDI', {
-              detail: { command: footerMidiCommand.trim() }
-            });
-            window.dispatchEvent(event);
-            triggerMidiBlink();
+            console.log('⚠️ No MIDI devices connected');
             toast({
-              title: "MIDI Command Sent",
-              description: `Sent via Bluetooth: ${footerMidiCommand.trim()}`,
+              title: "MIDI Not Available",
+              description: "Connect a MIDI device and try again",
+              variant: "destructive"
             });
           }
         })
@@ -329,20 +323,14 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       console.log(`🎼 Sending MIDI command from lyrics: ${command}`);
       
       // Don't await - handle MIDI sending in background
-      // MIDI temporarily disabled during simplification
-      Promise.resolve(false)
+      // Use real MIDI sending if available
+      (midiSendCommand ? midiSendCommand(command.trim()) : Promise.resolve(false))
         .then((success) => {
           if (success) {
-            console.log('✅ MIDI command sent via global Web MIDI');
+            console.log('✅ Lyrics MIDI command sent via SimpleMIDI');
             triggerMidiBlink();
           } else {
-            console.log('⚠️ Global Web MIDI failed, falling back to legacy Bluetooth MIDI');
-            // Send via custom event to Bluetooth MIDI manager as fallback
-            const event = new CustomEvent('sendBluetoothMIDI', {
-              detail: { command: command.trim() }
-            });
-            window.dispatchEvent(event);
-            triggerMidiBlink();
+            console.log('⚠️ No MIDI devices connected for lyrics command');
           }
         })
         .catch((error) => {
@@ -1695,7 +1683,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 Connections persist even when this dialog is closed - perfect for live performance automation
               </DialogDescription>
             </DialogHeader>
-            <SimpleMIDIManager />
+            <SimpleMIDIManager 
+              onSendCommandReady={(sendCommand) => setMidiSendCommand(() => sendCommand)}
+            />
           </DialogContent>
         </Dialog>
       )}

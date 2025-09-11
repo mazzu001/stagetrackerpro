@@ -35,16 +35,6 @@ export function useSimpleMIDI() {
     };
   });
 
-  // Auto-initialize MIDI access in safe mode (for cached device connections)
-  useEffect(() => {
-    if (state.safeMode) {
-      console.log('🎵 Safe mode enabled - attempting to initialize MIDI access for cached devices');
-      initializeMIDIForCachedDevices();
-    } else {
-      console.log('🎵 Safe mode disabled - MIDI access will be initialized on demand');
-    }
-  }, [state.safeMode, initializeMIDIForCachedDevices]);
-
   // Initialize MIDI access without scanning - just for connecting to cached devices
   const initializeMIDIForCachedDevices = useCallback(async () => {
     if (midiAccessRef.current) {
@@ -114,6 +104,16 @@ export function useSimpleMIDI() {
       }));
     }
   }, []);
+
+  // Auto-initialize MIDI access in safe mode (for cached device connections)
+  useEffect(() => {
+    if (state.safeMode) {
+      console.log('🎵 Safe mode enabled - attempting to initialize MIDI access for cached devices');
+      initializeMIDIForCachedDevices();
+    } else {
+      console.log('🎵 Safe mode disabled - MIDI access will be initialized on demand');
+    }
+  }, [state.safeMode, initializeMIDIForCachedDevices]);
 
   // Update localStorage when state changes
   useEffect(() => {

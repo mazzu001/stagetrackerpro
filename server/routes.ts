@@ -1,4 +1,4 @@
-import type { Express, Request } from "express";
+import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import bcrypt from "bcrypt";
@@ -9,13 +9,12 @@ import { db } from "./db";
 import { setupAuth, isAuthenticated } from "./replitAuth";
 import { subscriptionManager } from "./subscriptionManager";
 import { setupBroadcastServer } from "./broadcast-server";
-// MIDI functionality removed
 import Stripe from "stripe";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { promises as fsPromises } from "fs";
-import { WebSocketServer, WebSocket } from 'ws';
+import { WebSocketServer } from 'ws';
 
 let stripe: Stripe | null = null;
 let isStripeEnabled = false;
@@ -1606,7 +1605,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // MIDI routes have been completely removed
 
   // Legacy persistence routes (no-op - data is now in cloud database)
   app.post("/api/persistence/save", (req, res) => {
@@ -1946,7 +1944,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log('🔍 Registering lyrics search routes...');
   console.log('📁 Registering file registry routes...');
 
-  // MIDI functionality has been completely removed
   
   console.log('🌐 Creating HTTP server...');
   const httpServer = createServer(app);
@@ -1957,7 +1954,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   setupBroadcastServer(httpServer);
   console.log('✅ Broadcast server initialized');
 
-  // MIDI WebSocket functionality has been completely removed
   console.log('🎯 Route registration completed successfully');
   
   return httpServer;

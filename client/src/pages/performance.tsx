@@ -50,8 +50,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [lyricsText, setLyricsText] = useState("");
   const [isDeleteSongOpen, setIsDeleteSongOpen] = useState(false);
   const [currentLyricsTab, setCurrentLyricsTab] = useState("lyrics");
-  const [editingCommandIndex, setEditingCommandIndex] = useState<number | null>(null);
-  const [editingCommandText, setEditingCommandText] = useState("");
   const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -630,8 +628,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Cancel editing
   const handleCancelEdit = () => {
-    setEditingCommandIndex(null);
-    setEditingCommandText("");
   };
 
 
@@ -785,7 +781,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   return (
     <div className={`h-screen flex flex-col bg-background text-foreground overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       
-      {/* MIDI Loading Modal removed - using simplified MIDI system */}
       
       {/* Header */}
       <div className="bg-surface border-b border-gray-700 p-2 md:p-4 flex-shrink-0">
@@ -1221,40 +1216,19 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   onStop={handleStop}
                 />
                 
-                {/* Mobile Manual MIDI Send */}
-                <div className="flex items-center gap-2 pt-2 border-t border-gray-700">
-                  <Input
-                    value={footerMidiCommand}
-                    onChange={(e) => setFooterMidiCommand(e.target.value)}
-                    placeholder="[[PC:12:1]], [[CC:7:64:1]]"
-                    className="font-mono text-sm flex-1"
-                    data-testid="input-mobile-midi-command"
-                  />
-                  <Button 
-                    onClick={handleFooterSendMessage}
-                    disabled={!isMidiConnected || !footerMidiCommand.trim()}
-                    data-testid="button-send-mobile-midi"
-                    size="sm"
-                  >
-                    <Send className="h-4 w-4 mr-1" />
-                    Send
-                  </Button>
-                </div>
               </div>
             </div>
           </div>
 
         </div>
       </div>
-      {/* Status Bar & Manual MIDI Send - Desktop only */}
+      {/* Status Bar - Desktop only */}
       <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 mobile-hidden">
         <div className="flex items-center justify-between gap-4">
           <StatusBar
             isAudioEngineOnline={isAudioEngineOnline}
 
-            midiDeviceName={selectedMidiDeviceName}
             latency={latency}
-            midiCommandSent={midiCommandSent}
             isHost={isHost}
             isViewer={isViewer}
             currentRoom={currentRoom?.name || null}
@@ -1316,17 +1290,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 )}
                 {isSearchingLyrics ? 'Searching...' : 'Search Online'}
               </Button>
-              <Button
-                variant={isMidiListening ? "default" : "outline"}
-                size="sm"
-                onClick={handleToggleMidiListen}
-                disabled={!isMidiConnected}
-                data-testid="button-midi-listen"
-                className="h-8 px-3"
-              >
-                <Volume2 className="w-3 h-3 mr-1" />
-                {isMidiListening ? 'Stop Listen' : 'MIDI Listen'}
-              </Button>
             </div>
           </div>
 
@@ -1337,7 +1300,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               id="lyrics"
               value={lyricsText}
               onChange={(e) => setLyricsText(e.target.value)}
-              placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] and add MIDI commands with [[PC:1:1]] or use MIDI Listen button"
+              placeholder="Enter song lyrics here...&#10;&#10;Tip: Use timestamps like [01:30] for synchronized playback"
               className="w-full h-full resize-none font-mono text-sm border border-gray-600 bg-background"
               data-testid="textarea-lyrics"
             />
@@ -1351,8 +1314,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               onClick={() => {
                 setIsEditLyricsOpen(false);
                 setLyricsText("");
-                setEditingCommandIndex(null);
-                setEditingCommandText("");
               }}
               data-testid="button-cancel-lyrics"
             >
@@ -1399,22 +1360,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           )}
         </DialogContent>
       </Dialog>
-      {/* Persistent Web MIDI Manager Dialog - Professional Users Only */}
-      {userType === 'professional' && isBluetoothDevicesOpen && (
-        <Dialog open={isBluetoothDevicesOpen} onOpenChange={setIsBluetoothDevicesOpen}>
-          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle>Persistent Web MIDI Devices</DialogTitle>
-              <DialogDescription>
-                Connections persist even when this dialog is closed - perfect for live performance automation
-              </DialogDescription>
-            </DialogHeader>
-            <SimpleMIDIManager 
-              onSendCommandReady={(sendCommand) => setMidiSendCommand(() => sendCommand)}
-            />
-          </DialogContent>
-        </Dialog>
-      )}
       {/* Export Filename Dialog */}
       <Dialog open={isExportDialogOpen} onOpenChange={setIsExportDialogOpen}>
         <DialogContent className="sm:max-w-md">

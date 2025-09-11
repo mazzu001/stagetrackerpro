@@ -1,9 +1,6 @@
 interface StatusBarProps {
   isAudioEngineOnline: boolean;
-  isMidiConnected: boolean;
-  midiDeviceName?: string;
   latency: number;
-  midiCommandSent?: boolean;
   // Broadcast status
   isHost?: boolean;
   isViewer?: boolean;
@@ -12,10 +9,7 @@ interface StatusBarProps {
 
 export default function StatusBar({ 
   isAudioEngineOnline, 
-  isMidiConnected, 
-  midiDeviceName,
   latency,
-  midiCommandSent = false,
   isHost = false,
   isViewer = false,
   currentRoom = null
@@ -29,23 +23,6 @@ export default function StatusBar({
             <span className="text-sm">
               Audio Engine: <span className={isAudioEngineOnline ? 'text-secondary' : 'text-error'}>
                 {isAudioEngineOnline ? 'Online' : 'Offline'}
-              </span>
-            </span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className={`w-3 h-3 rounded-full transition-colors duration-150 ${
-              midiCommandSent ? 'bg-blue-500' : 
-              isMidiConnected ? 'bg-green-500' : 'bg-gray-500'
-            }`} />
-            <span className="text-sm">
-              MIDI: <span className={
-                midiCommandSent ? 'text-blue-500' :
-                isMidiConnected ? 'text-green-500' : 'text-gray-400'
-              }>
-                {isMidiConnected ? 'Connected' : 'Disconnected'}
-                {midiDeviceName && (
-                  <span className="text-gray-400 ml-1">({midiDeviceName})</span>
-                )}
               </span>
             </span>
           </div>

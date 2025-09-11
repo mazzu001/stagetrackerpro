@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { sqliteTable, text, integer, blob } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
 import { pgTable, text as pgText, integer as pgInteger, timestamp, varchar, index, jsonb, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -34,7 +34,6 @@ export const tracks = sqliteTable("tracks", {
   isSolo: integer("is_solo", { mode: 'boolean' }).default(false),
 });
 
-// MIDI events table removed - MIDI functionality disabled
 
 export const insertSongSchema = createInsertSchema(songs).omit({
   id: true,
@@ -45,7 +44,6 @@ export const insertTrackSchema = createInsertSchema(tracks).omit({
   id: true,
 });
 
-// MIDI event schema removed - MIDI functionality disabled
 
 export type InsertSong = z.infer<typeof insertSongSchema>;
 export type Song = typeof songs.$inferSelect;
@@ -53,7 +51,6 @@ export type Song = typeof songs.$inferSelect;
 export type InsertTrack = z.infer<typeof insertTrackSchema>;
 export type Track = typeof tracks.$inferSelect;
 
-// MIDI event types removed - MIDI functionality disabled
 
 export type SongWithTracks = Song & {
   tracks: Track[];

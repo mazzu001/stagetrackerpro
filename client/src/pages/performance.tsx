@@ -27,8 +27,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import type { SongWithTracks } from "@shared/schema";
-import { SimpleMIDIManager } from "@/components/SimpleMIDIManager";
-// MIDI imports removed - using SimpleMIDIManager now
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
 import { useBroadcast } from "@/hooks/useBroadcast";
@@ -58,13 +56,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isBluetoothDevicesOpen, setIsBluetoothDevicesOpen] = useState(false);
-  const [footerMidiCommand, setFooterMidiCommand] = useState('');
-  const [midiCommandSent, setMidiCommandSent] = useState(false);
-  const [isMidiConnected, setIsMidiConnected] = useState(false);
-  const [selectedMidiDeviceName, setSelectedMidiDeviceName] = useState<string>('');
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
-  const [isMidiListening, setIsMidiListening] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [importProgress, setImportProgress] = useState(0);
@@ -107,75 +100,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     };
   }, []);
 
-  // Simple MIDI sending function
-  const [midiSendCommand, setMidiSendCommand] = useState<((command: string) => Promise<boolean>) | null>(null);
 
 
-  // MIDI simplified - no event listener needed
 
-  // MIDI simplified - using local state only
 
-  // Bluetooth MIDI removed for simplicity
 
-  // Trigger blue blink effect for MIDI status light
-  const triggerMidiBlink = useCallback(() => {
-    setMidiCommandSent(true);
-    setTimeout(() => {
-      setMidiCommandSent(false);
-    }, 300); // Blink for 300ms
-  }, []);
 
-  // Manual MIDI send function - restricted to professional subscribers only
-  const handleFooterSendMessage = async () => {
-    if (!footerMidiCommand.trim()) return;
-    
-    if (userType !== 'professional') {
-      toast({
-        title: "Professional Subscription Required",
-        description: "MIDI commands are only available for Professional subscribers",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      // Don't await - handle MIDI sending in background
-      // Use real MIDI sending if available
-      (midiSendCommand ? midiSendCommand(footerMidiCommand.trim()) : Promise.resolve(false))
-        .then((success) => {
-          if (success) {
-            console.log('✅ Manual MIDI command sent via SimpleMIDI');
-            triggerMidiBlink();
-            toast({
-              title: "MIDI Command Sent",
-              description: `Sent: ${footerMidiCommand.trim()}`,
-            });
-          } else {
-            console.log('⚠️ No MIDI devices connected');
-            toast({
-              title: "MIDI Not Available",
-              description: "Connect a MIDI device and try again",
-              variant: "destructive"
-            });
-          }
-        })
-        .catch((error) => {
-          toast({
-            title: "MIDI Send Failed",
-            description: "Failed to send MIDI command",
-            variant: "destructive",
-          });
-        });
-      
-      setFooterMidiCommand('');
-    } catch (error) {
-      toast({
-        title: "MIDI Send Failed",
-        description: "Failed to send MIDI command",
-        variant: "destructive",
-      });
-    }
-  };
 
   // Show export dialog with filename input
   const handleExportData = () => {
@@ -313,34 +243,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
-  // Auto-send MIDI command from timestamped lyrics
-  const handleLyricsMidiCommand = useCallback(async (command: string) => {
-    if (userType !== 'professional') {
-      console.log('🎼 MIDI command ignored - professional subscription required');
-      return;
-    }
-
-    try {
-      console.log(`🎼 Sending MIDI command from lyrics: ${command}`);
-      
-      // Don't await - handle MIDI sending in background
-      // Use real MIDI sending if available
-      (midiSendCommand ? midiSendCommand(command.trim()) : Promise.resolve(false))
-        .then((success) => {
-          if (success) {
-            console.log('✅ Lyrics MIDI command sent via SimpleMIDI');
-            triggerMidiBlink();
-          } else {
-            console.log('⚠️ No MIDI devices connected for lyrics command');
-          }
-        })
-        .catch((error) => {
-          console.error('❌ Failed to send lyrics MIDI command:', error);
-        });
-    } catch (error) {
-      console.error('❌ Failed to send lyrics MIDI command:', error);
-    }
-  }, [userType, triggerMidiBlink]); // globalMidi removed
 
   // Instant audio engine (now with zero decode delays)
   const audioEngine = useAudioEngine({ 
@@ -723,43 +625,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
-  // Add generic MIDI command at current timestamp (functionality removed)
-  const handleAddMidiCommand = () => {
-    toast({
-      title: "MIDI Functionality Removed",
-      description: "MIDI commands are no longer supported",
-      variant: "destructive",
-    });
-  };
 
-  // Start editing a MIDI command
-  const handleEditCommand = (index: number) => {
-    if (userType !== 'professional') {
-      toast({
-        title: "Professional Subscription Required",
-        description: "MIDI editing is only available for Professional subscribers",
-        variant: "destructive",
-      });
-      return;
-    }
 
-    // MIDI functionality removed
-    if (false) {
-      setEditingCommandIndex(index);
-      setEditingCommandText('');
-      setCurrentLyricsTab("midi");
-      setIsEditLyricsOpen(true);
-    }
-  };
-
-  // Save edited MIDI command (functionality removed)
-  const handleSaveEditedCommand = () => {
-    toast({
-      title: "MIDI Functionality Removed",
-      description: "MIDI commands are no longer supported",
-      variant: "destructive",
-    });
-  };
 
   // Cancel editing
   const handleCancelEdit = () => {
@@ -767,14 +634,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     setEditingCommandText("");
   };
 
-  // Remove MIDI command (functionality removed)
-  const handleRemoveMidiCommand = (index: number) => {
-    toast({
-      title: "MIDI Functionality Removed",
-      description: "MIDI commands are no longer supported",
-      variant: "destructive",
-    });
-  };
 
   // Format timestamp for display
   const formatTimestamp = (seconds: number) => {
@@ -898,142 +757,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
   };
 
-  // Convert raw MIDI data to bracket format
-  const formatMIDIDataToBracket = (data: number[]): string | null => {
-    if (data.length < 2) return null;
-    
-    const status = data[0];
-    const channel = (status & 0x0F) + 1; // Convert to 1-based channel
-    const messageType = status & 0xF0;
-    
-    switch (messageType) {
-      case 0xC0: // Program Change
-        if (data.length >= 2) {
-          const program = data[1];
-          return `[[PC:${program}:${channel}]]`;
-        }
-        break;
-      case 0xB0: // Control Change
-        if (data.length >= 3) {
-          const controller = data[1];
-          const value = data[2];
-          return `[[CC:${controller}:${value}:${channel}]]`;
-        }
-        break;
-      case 0x90: // Note On
-        if (data.length >= 3) {
-          const note = data[1];
-          const velocity = data[2];
-          return `[[NOTE:${note}:${velocity}:${channel}]]`;
-        }
-        break;
-    }
-    
-    return null;
-  };
 
-  // Handle incoming MIDI messages for insertion
-  const handleIncomingMIDIMessage = useCallback((event: any) => {
-    if (!isMidiListening || !lyricsTextareaRef.current) return;
-    
-    const midiData = Array.from(event.data) as number[];
-    const bracketFormat = formatMIDIDataToBracket(midiData);
-    
-    if (bracketFormat) {
-      const textarea = lyricsTextareaRef.current;
-      const startPos = textarea.selectionStart;
-      const endPos = textarea.selectionEnd;
-      const currentValue = textarea.value;
-      
-      // Insert MIDI command, replacing any selected text
-      const newValue = currentValue.substring(0, startPos) + bracketFormat + currentValue.substring(endPos);
-      
-      // Update both DOM and React state
-      textarea.value = newValue;
-      setLyricsText(newValue);
-      
-      // Position cursor after inserted command
-      const newCursorPos = startPos + bracketFormat.length;
-      textarea.setSelectionRange(newCursorPos, newCursorPos);
-      textarea.focus();
-      
-      console.log('🎵 Inserted MIDI command:', bracketFormat);
-      
-      toast({
-        title: "MIDI Command Inserted",
-        description: bracketFormat,
-      });
-    }
-  }, [isMidiListening, toast]);
 
-  // Toggle MIDI listening mode
-  const handleToggleMidiListen = useCallback(async () => {
-    if (!isMidiConnected) {
-      toast({
-        title: "MIDI Not Connected",
-        description: "Please connect a MIDI device first",
-        variant: "destructive"
-      });
-      return;
-    }
 
-    setIsMidiListening(prev => !prev);
-    
-    if (!isMidiListening) {
-      // Starting to listen
-      toast({
-        title: "MIDI Listen Active",
-        description: "Play MIDI to insert commands at cursor position",
-      });
-    } else {
-      // Stopping listen
-      toast({
-        title: "MIDI Listen Stopped",
-        description: "No longer capturing MIDI input",
-      });
-    }
-  }, [isMidiConnected, isMidiListening, toast]);
-
-  // Set up MIDI input listeners when listening mode is active
-  useEffect(() => {
-    if (!isMidiListening) return;
-
-    let midiAccess: any = null;
-    
-    const setupMIDIListeners = async () => {
-      try {
-        // Don't await - handle MIDI access in background
-        navigator.requestMIDIAccess()
-          .then((access) => {
-            midiAccess = access;
-            
-            // Add listeners to all input devices
-            midiAccess.inputs.forEach((input: any) => {
-              input.addEventListener('midimessage', handleIncomingMIDIMessage);
-              console.log('🎵 Added MIDI listener to:', input.name);
-            });
-          })
-          .catch((error) => {
-            console.error('❌ Failed to set up MIDI listeners:', error);
-            setIsMidiListening(false);
-          });
-        
-      } catch (error) {
-        console.error('❌ Failed to set up MIDI listeners:', error);
-        setIsMidiListening(false);
-      }
-    };
-
-    setupMIDIListeners();
-    
-    return () => {
-      if (midiAccess) {
-        midiAccess.inputs.forEach((input: any) => {
-          input.removeEventListener('midimessage', handleIncomingMIDIMessage);
-        });
-      }
-    };
-  }, [isMidiListening, handleIncomingMIDIMessage]);
 
   const toggleFullscreen = useCallback(async () => {
     try {
@@ -1101,7 +827,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 className="h-8 px-2 md:px-3"
               >
                 <Bluetooth className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-                <span className="hidden sm:inline text-xs md:text-sm">Bluetooth</span>
+                <span className="hidden sm:inline text-xs md:text-sm">MIDI Devices</span>
               </Button>
             )}
 
@@ -1435,7 +1161,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               isPlaying={isPlaying}
               currentTime={currentTime}
               duration={duration}
-              isMidiConnected={isMidiConnected}
+  
               onPlay={play}
               onPause={pause}
               onStop={stop}
@@ -1478,7 +1204,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 currentTime={currentTime}
                 duration={duration}
                 onEditLyrics={selectedSong ? handleEditLyrics : undefined}
-                onMidiCommand={handleLyricsMidiCommand}
                 isPlaying={isPlaying}
               />
             </div>
@@ -1490,7 +1215,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   isPlaying={isPlaying}
                   currentTime={currentTime}
                   duration={duration}
-                  isMidiConnected={isMidiConnected}
+      
                   onPlay={handlePlay}
                   onPause={handlePause}
                   onStop={handleStop}
@@ -1526,7 +1251,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         <div className="flex items-center justify-between gap-4">
           <StatusBar
             isAudioEngineOnline={isAudioEngineOnline}
-            isMidiConnected={isMidiConnected}
+
             midiDeviceName={selectedMidiDeviceName}
             latency={latency}
             midiCommandSent={midiCommandSent}

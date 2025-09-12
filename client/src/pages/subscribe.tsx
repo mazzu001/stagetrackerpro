@@ -49,8 +49,8 @@ const plans: PlanOption[] = [
   {
     id: 'professional',
     name: 'Professional', 
-    price: '$14.99',
-    priceId: 'price_professional_placeholder',
+    price: '$6.99',
+    priceId: 'price_1S6geUK3Nj4A0Az4kYc5HopM',
     features: [
       'All Premium features',
       'Advanced audio control (Coming Soon)',

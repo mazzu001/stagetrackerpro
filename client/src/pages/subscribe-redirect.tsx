@@ -32,7 +32,7 @@ const plans: PlanOption[] = [
   {
     id: 'professional',
     name: 'Professional', 
-    price: '$14.99',
+    price: '$6.99',
     features: [
       'All Premium features',
       'Advanced audio control (Coming Soon)',
@@ -73,7 +73,7 @@ export default function SubscribeRedirect() {
       const requestData = {
         email: userData.email,
         tier: plan.id,
-        priceAmount: plan.id === 'premium' ? 499 : 1499, // cents
+        priceAmount: plan.id === 'premium' ? 499 : 699, // cents
         successUrl: `${window.location.origin}/`,
         cancelUrl: `${window.location.origin}/subscribe`
       };

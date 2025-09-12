@@ -751,7 +751,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         // Determine subscription tier from amount or metadata
         let newStatus = 2; // Default to premium
-        if (session.amount_total >= 1499) { // $14.99 or higher = professional
+        if (session.amount_total >= 699) { // $6.99 or higher = professional
           newStatus = 3; // Professional
         }
 
@@ -848,7 +848,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           activeSubscription = subscription;
           // Determine tier based on price
           const priceAmount = subscription.items.data[0]?.price?.unit_amount || 0;
-          if (priceAmount >= 1499) { // $14.99 or more = Professional
+          if (priceAmount >= 699) { // $6.99 or more = Professional
             newStatus = 3;
           } else if (priceAmount > 0) { // Any payment = Premium
             newStatus = 2;
@@ -1222,7 +1222,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               currency: 'usd',
               product_data: {
                 name: `StageTracker Pro - ${tier.charAt(0).toUpperCase() + tier.slice(1)}`,
-                description: `${tier === 'premium' ? '$4.99' : '$14.99'}/month subscription`,
+                description: `${tier === 'premium' ? '$4.99' : '$6.99'}/month subscription`,
               },
               unit_amount: priceAmount,
               recurring: {

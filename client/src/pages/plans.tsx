@@ -158,7 +158,7 @@ export default function Plans() {
               <CardTitle className="text-3xl font-bold text-white">Professional</CardTitle>
               <CardDescription className="text-lg text-gray-400">For touring professionals</CardDescription>
               <div className="text-5xl font-bold text-white mt-6">
-                $14.99<span className="text-xl font-normal text-gray-400">/month</span>
+                $6.99<span className="text-xl font-normal text-gray-400">/month</span>
               </div>
               <p className="text-sm text-purple-400 mt-2 font-medium">Ultimate performance suite</p>
             </CardHeader>

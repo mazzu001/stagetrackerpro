@@ -1023,28 +1023,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const status = parseInt(user.subscriptionStatus as any);
         console.log('🔍 Database subscription status:', status);
         
-        let userType = 'free';
+        let userType = 'trial';
         let isPaid = false;
         
         switch (status) {
           case 1:
-            userType = 'free';
-            isPaid = false;
+            // Check if user is still in trial period
+            const trialStartDate = user.trialStartDate || user.createdAt;
+            const oneMonthInMs = 30 * 24 * 60 * 60 * 1000; // 30 days
+            const isInTrialPeriod = trialStartDate && (Date.now() - new Date(trialStartDate).getTime()) < oneMonthInMs;
+            
+            if (isInTrialPeriod) {
+              userType = 'trial';
+              isPaid = true; // Trial users get full access
+            } else {
+              userType = 'free';
+              isPaid = false; // Trial expired, limited access
+            }
             break;
           case 2:
-            userType = 'premium';
+            userType = 'paid';
             isPaid = true;
             break;
           case 3:
-            userType = 'professional';
+            userType = 'paid';
             isPaid = true;
             break;
           default:
-            userType = 'free';
-            isPaid = false;
+            userType = 'trial';
+            isPaid = true; // Default to trial for new users
         }
         
-        console.log('🔍 Final userType:', userType);
+        console.log('🔍 Final userType:', userType, 'isPaid:', isPaid);
         
         return res.json({
           isPaid: isPaid,
@@ -1059,7 +1069,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json({
         isPaid: verificationResult.isPaid,
-        userType: verificationResult.isPaid ? 'premium' : 'free',
+        userType: verificationResult.isPaid ? 'paid' : 'trial', // New users default to trial
         subscriptionData: verificationResult.subscriptionData || null,
         source: verificationResult.source
       });

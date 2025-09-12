@@ -306,6 +306,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
               onClick={handleRefresh}
               disabled={isRefreshing || !isInitialized}
               data-testid="button-refresh-devices"
+              className="ml-[53px] mr-[53px]"
             >
               <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
               Refresh

@@ -79,18 +79,13 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
     const midiCommands: string[] = [];
     let displayText = text;
     
-    // Debug logging
-    console.log(`🔍 Extracting MIDI commands from text: "${text}"`);
-    
     // Find all MIDI commands
     let match;
     while ((match = midiCommandRegex.exec(text)) !== null) {
       midiCommands.push(match[0]); // Include the full [[...]] format
       displayText = displayText.replace(match[0], '').trim();
-      console.log(`🎹 Found MIDI command: ${match[0]}`);
     }
     
-    console.log(`🔍 Result: displayText="${displayText}", midiCommands=${JSON.stringify(midiCommands)}`);
     return { displayText, midiCommands };
   };
 
@@ -221,48 +216,24 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
 
   // Execute non-timestamped MIDI commands when opening a song
   useEffect(() => {
-    console.log(`🔍 Setup effect triggered for song: ${song?.title || 'No song'}`);
-    console.log(`🔍 Song ID: ${song?.id}`);
-    console.log(`🔍 Has lyrics: ${!!song?.lyrics}`);
-    console.log(`🔍 Already executed: ${songSetupCommandsExecuted === song?.id}`);
-    console.log(`🔍 Connected devices: ${connectedDevices.length}`, connectedDevices.map(d => `${d.name} (${d.type})`));
-    
-    if (!song?.id || !song?.lyrics) {
-      console.log(`🔍 Early return: missing song ID or lyrics`);
-      return;
-    }
+    if (!song?.id || !song?.lyrics) return;
     
     // Check if we've already executed setup commands for this song
-    if (songSetupCommandsExecuted === song.id) {
-      console.log(`🔍 Early return: setup commands already executed for this song`);
-      return;
-    }
+    if (songSetupCommandsExecuted === song.id) return;
     
     // Only execute if we have connected MIDI output devices
     const outputDevices = connectedDevices.filter(d => d.type === 'output');
-    if (outputDevices.length === 0) {
-      console.log(`🔍 Early return: no connected output devices`);
-      return;
-    }
+    if (outputDevices.length === 0) return;
     
-    console.log(`🔍 Extracting setup commands from lyrics...`);
     // Extract and execute setup commands
     const setupCommands = extractSetupMidiCommands(song.lyrics);
-    console.log(`🔍 Setup commands extracted: ${setupCommands.length}`, setupCommands);
-    
-    if (setupCommands.length === 0) {
-      console.log(`🔍 Early return: no setup commands found`);
-      return;
-    }
+    if (setupCommands.length === 0) return;
     
     console.log(`🎵 Executing ${setupCommands.length} setup MIDI commands for song: ${song.title || 'Untitled'}`);
     
     // Execute all setup MIDI commands
     setupCommands.forEach((commandString, index) => {
-      console.log(`🔍 Processing setup command ${index + 1}/${setupCommands.length}: ${commandString}`);
       const command = parseMidiCommand(commandString);
-      console.log(`🔍 Parsed command:`, command);
-      
       if (command) {
         const success = sendMidiCommand(command);
         if (success) {
@@ -277,7 +248,6 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
     
     // Mark setup commands as executed for this song
     setSongSetupCommandsExecuted(song.id);
-    console.log(`🔍 Marked setup commands as executed for song: ${song.id}`);
   }, [song?.id, song?.lyrics, connectedDevices, sendMidiCommand, parseMidiCommand, extractSetupMidiCommands, songSetupCommandsExecuted]);
 
   // Reset executed commands when song changes or playback restarts
@@ -439,6 +409,11 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
           // Unified rendering for both timestamped and non-timestamped lyrics
           <div className={hasTimestamps ? "space-y-6" : "space-y-4"} style={{ fontSize: `${fontSize}px` }}>
             {lyrics.map((line, index) => {
+              // Skip rendering lines with empty displayText (MIDI-only lines) to avoid blank lines
+              if (!line.displayText.trim()) {
+                return null;
+              }
+              
               const isCurrent = index === currentLineIndex;
               const isPast = line.timestamp < currentTime && !isCurrent;
               const isFuture = line.timestamp > currentTime;

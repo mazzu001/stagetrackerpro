@@ -42,7 +42,7 @@ const subscriptionTiers: SubscriptionTier[] = [
     id: 'premium',
     name: 'Premium',
     price: '$4.99',
-    priceId: 'price_premium_placeholder', // Will be set when you create it
+    priceId: 'price_1RygaOK3Nj4A0Az4jtovDojK',
     features: [
       'Unlimited songs',
       'Multi-track audio engine (6 tracks)',

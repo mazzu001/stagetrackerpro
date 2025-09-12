@@ -36,7 +36,7 @@ const plans: PlanOption[] = [
     id: 'premium',
     name: 'Premium',
     price: '$4.99',
-    priceId: 'price_premium_placeholder',
+    priceId: 'price_1RygaOK3Nj4A0Az4jtovDojK',
     features: [
       'Unlimited songs',
       'Advanced lyrics with timestamps', 

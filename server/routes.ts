@@ -1128,7 +1128,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Use a fixed price ID to prevent creating duplicate products/prices
       // In production, you would create these once in Stripe dashboard
-      let priceId = 'price_stagetracker_premium'; // Fixed price ID
+      let priceId = 'price_1RygaOK3Nj4A0Az4jtovDojK'; // Real premium price ID
       
       try {
         // Try to retrieve existing price first

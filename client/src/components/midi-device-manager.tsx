@@ -22,7 +22,8 @@ import {
   Activity,
   Keyboard
 } from 'lucide-react';
-import { useMidiDevices, MidiDevice, MidiCommand } from '@/hooks/useMidiDevices';
+import { MidiDevice, MidiCommand } from '@/hooks/useMidiDevices';
+import { useMidi } from '@/contexts/MidiProvider';
 
 interface MidiDeviceManagerProps {
   isOpen: boolean;
@@ -40,8 +41,8 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     disconnectDevice,
     sendMidiCommand,
     parseMidiCommand,
-    refreshDevices
-  } = useMidiDevices();
+    initializeMidi
+  } = useMidi();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [testCommand, setTestCommand] = useState('[[PC:1:1]]');
@@ -57,7 +58,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
-      await refreshDevices();
+      await initializeMidi();
     } finally {
       setIsRefreshing(false);
     }

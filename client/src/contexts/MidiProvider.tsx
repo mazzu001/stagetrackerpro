@@ -5,6 +5,7 @@ import { useMidiDevices } from '@/hooks/useMidiDevices';
 interface MidiContextType {
   devices: any[];
   connectedDevices: any[];
+  isSupported: boolean;
   isInitialized: boolean;
   error: string | null;
   connectDevice: (deviceId: string) => Promise<boolean>;

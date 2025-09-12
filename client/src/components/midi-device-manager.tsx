@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
@@ -87,6 +87,81 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     }
   };
 
+  // Handle unified device connections (both input and output)
+  const handleUnifiedConnect = async (unifiedDevice: any) => {
+    const deviceIds = [];
+    if (unifiedDevice.inputDevice) deviceIds.push(unifiedDevice.inputDevice.id);
+    if (unifiedDevice.outputDevice) deviceIds.push(unifiedDevice.outputDevice.id);
+    
+    // Set connecting state for all device IDs
+    const newStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+    deviceIds.forEach(id => newStates[id] = 'connecting');
+    setConnectionStates(prev => ({ ...prev, ...newStates }));
+    
+    try {
+      // Connect both input and output devices
+      const results = await Promise.all(deviceIds.map(id => connectDevice(id)));
+      const anyFailed = results.some(success => !success);
+      if (anyFailed) {
+        console.error('Failed to connect to some devices:', deviceIds);
+      }
+    } finally {
+      // Reset states
+      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+      deviceIds.forEach(id => resetStates[id] = 'idle');
+      setConnectionStates(prev => ({ ...prev, ...resetStates }));
+    }
+  };
+
+  const handleUnifiedDisconnect = async (unifiedDevice: any) => {
+    const deviceIds = [];
+    if (unifiedDevice.inputDevice) deviceIds.push(unifiedDevice.inputDevice.id);
+    if (unifiedDevice.outputDevice) deviceIds.push(unifiedDevice.outputDevice.id);
+    
+    // Set disconnecting state for all device IDs
+    const newStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+    deviceIds.forEach(id => newStates[id] = 'disconnecting');
+    setConnectionStates(prev => ({ ...prev, ...newStates }));
+    
+    try {
+      // Disconnect both input and output devices
+      const results = await Promise.all(deviceIds.map(id => disconnectDevice(id)));
+      const anyFailed = results.some(success => !success);
+      if (anyFailed) {
+        console.error('Failed to disconnect from some devices:', deviceIds);
+      }
+    } finally {
+      // Reset states
+      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+      deviceIds.forEach(id => resetStates[id] = 'idle');
+      setConnectionStates(prev => ({ ...prev, ...resetStates }));
+    }
+  };
+
+  // Check if unified device is connected
+  const isUnifiedDeviceConnected = (unifiedDevice: any) => {
+    const inputConnected = unifiedDevice.inputDevice ? 
+      connectedDevices.some(d => d.id === unifiedDevice.inputDevice.id) : true;
+    const outputConnected = unifiedDevice.outputDevice ? 
+      connectedDevices.some(d => d.id === unifiedDevice.outputDevice.id) : true;
+    return inputConnected && outputConnected;
+  };
+
+  // Get unified device connection state
+  const getUnifiedDeviceState = (unifiedDevice: any) => {
+    const states = [];
+    if (unifiedDevice.inputDevice) {
+      states.push(connectionStates[unifiedDevice.inputDevice.id] || 'idle');
+    }
+    if (unifiedDevice.outputDevice) {
+      states.push(connectionStates[unifiedDevice.outputDevice.id] || 'idle');
+    }
+    
+    if (states.some(s => s === 'connecting')) return 'connecting';
+    if (states.some(s => s === 'disconnecting')) return 'disconnecting';
+    return 'idle';
+  };
+
   const handleTestCommand = () => {
     const command = parseMidiCommand(testCommand);
     if (!command) {
@@ -144,8 +219,43 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     return 'Available';
   };
 
-  const inputDevices = devices.filter(d => d.type === 'input');
-  const outputDevices = devices.filter(d => d.type === 'output');
+  // Group devices by physical device (name + manufacturer) for unified list
+  const unifiedDevices = React.useMemo(() => {
+    const deviceMap = new Map<string, {
+      name: string;
+      manufacturer: string;
+      isUSB: boolean;
+      isBluetooth: boolean;
+      inputDevice?: MidiDevice;
+      outputDevice?: MidiDevice;
+      capabilities: string[];
+    }>();
+
+    devices.forEach(device => {
+      const key = `${device.name}-${device.manufacturer}`;
+      
+      if (!deviceMap.has(key)) {
+        deviceMap.set(key, {
+          name: device.name,
+          manufacturer: device.manufacturer,
+          isUSB: device.isUSB,
+          isBluetooth: device.isBluetooth,
+          capabilities: []
+        });
+      }
+      
+      const unified = deviceMap.get(key)!;
+      if (device.type === 'input') {
+        unified.inputDevice = device;
+        unified.capabilities.push('Input');
+      } else {
+        unified.outputDevice = device;
+        unified.capabilities.push('Output');
+      }
+    });
+
+    return Array.from(deviceMap.values());
+  }, [devices]);
 
   if (!isSupported) {
     return (
@@ -207,52 +317,60 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
         <ScrollArea className="max-h-[60vh]">
           <div className="space-y-6">
             
-            {/* MIDI Output Devices */}
+            {/* Unified MIDI Devices */}
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Volume2 className="h-4 w-4" />
-                <h3 className="font-semibold">MIDI Output Devices</h3>
-                <Badge variant="outline">{outputDevices.length}</Badge>
+                <Activity className="h-4 w-4" />
+                <h3 className="font-semibold">MIDI Devices</h3>
+                <Badge variant="outline">{unifiedDevices.length}</Badge>
               </div>
               
-              {outputDevices.length === 0 ? (
+              {unifiedDevices.length === 0 ? (
                 <Card>
                   <CardContent className="pt-6">
                     <div className="text-center text-muted-foreground">
-                      <VolumeX className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">No MIDI output devices found</p>
+                      <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
+                      <p className="text-sm">No MIDI devices found</p>
                       <p className="text-xs">Connect a MIDI device and click Refresh</p>
                     </div>
                   </CardContent>
                 </Card>
               ) : (
                 <div className="grid gap-3">
-                  {outputDevices.map((device) => {
-                    const isConnected = connectedDevices.some(d => d.id === device.id);
-                    const state = connectionStates[device.id] || 'idle';
+                  {unifiedDevices.map((unifiedDevice, index) => {
+                    const isConnected = isUnifiedDeviceConnected(unifiedDevice);
+                    const state = getUnifiedDeviceState(unifiedDevice);
+                    const deviceForIcon = unifiedDevice.outputDevice || unifiedDevice.inputDevice;
                     
                     return (
-                      <Card key={device.id}>
+                      <Card key={`${unifiedDevice.name}-${unifiedDevice.manufacturer}-${index}`}>
                         <CardContent className="pt-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              {getDeviceIcon(device)}
+                              {deviceForIcon && getDeviceIcon(deviceForIcon)}
                               <div>
                                 <div className="flex items-center gap-2">
-                                  <span className="font-medium text-sm" data-testid={`device-name-${device.id}`}>
-                                    {device.name}
+                                  <span className="font-medium text-sm" data-testid={`device-name-unified-${index}`}>
+                                    {unifiedDevice.name}
                                   </span>
-                                  {device.manufacturer && (
+                                  {unifiedDevice.manufacturer && (
                                     <span className="text-xs text-muted-foreground">
-                                      by {device.manufacturer}
+                                      by {unifiedDevice.manufacturer}
                                     </span>
                                   )}
                                 </div>
                                 <div className="flex items-center gap-2 mt-1">
-                                  {getConnectionIcon(device)}
-                                  <span className="text-xs text-muted-foreground" data-testid={`device-status-${device.id}`}>
-                                    {getConnectionStatus(device)}
+                                  {deviceForIcon && getConnectionIcon(deviceForIcon)}
+                                  <span className="text-xs text-muted-foreground" data-testid={`device-status-unified-${index}`}>
+                                    {isConnected ? 'Connected' : 'Available'}
                                   </span>
+                                  <div className="flex gap-1">
+                                    {unifiedDevice.capabilities.map((capability) => (
+                                      <span key={capability} className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded">
+                                        {capability}
+                                      </span>
+                                    ))}
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -260,84 +378,9 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                             <Button
                               variant={isConnected ? "destructive" : "outline"}
                               size="sm"
-                              onClick={() => isConnected ? handleDisconnect(device.id) : handleConnect(device.id)}
-                              disabled={state !== 'idle' || device.state === 'disconnected'}
-                              data-testid={`button-${isConnected ? 'disconnect' : 'connect'}-${device.id}`}
-                            >
-                              {state === 'connecting' && 'Connecting...'}
-                              {state === 'disconnecting' && 'Disconnecting...'}
-                              {state === 'idle' && (isConnected ? 'Disconnect' : 'Connect')}
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-
-            <Separator />
-
-            {/* MIDI Input Devices */}
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <Keyboard className="h-4 w-4" />
-                <h3 className="font-semibold">MIDI Input Devices</h3>
-                <Badge variant="outline">{inputDevices.length}</Badge>
-              </div>
-              
-              {inputDevices.length === 0 ? (
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center text-muted-foreground">
-                      <Keyboard className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">No MIDI input devices found</p>
-                      <p className="text-xs">Connect a MIDI controller and click Refresh</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="grid gap-3">
-                  {inputDevices.map((device) => {
-                    const isConnected = connectedDevices.some(d => d.id === device.id);
-                    const state = connectionStates[device.id] || 'idle';
-                    
-                    return (
-                      <Card key={device.id}>
-                        <CardContent className="pt-4">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                              {getDeviceIcon(device)}
-                              <div>
-                                <div className="flex items-center gap-2">
-                                  <span className="font-medium text-sm" data-testid={`device-name-${device.id}`}>
-                                    {device.name}
-                                  </span>
-                                  {device.manufacturer && (
-                                    <span className="text-xs text-muted-foreground">
-                                      by {device.manufacturer}
-                                    </span>
-                                  )}
-                                </div>
-                                <div className="flex items-center gap-2 mt-1">
-                                  {getConnectionIcon(device)}
-                                  <span className="text-xs text-muted-foreground" data-testid={`device-status-${device.id}`}>
-                                    {getConnectionStatus(device)}
-                                  </span>
-                                  <span className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded">
-                                    Input
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                            
-                            <Button
-                              variant={isConnected ? "destructive" : "outline"}
-                              size="sm"
-                              onClick={() => isConnected ? handleDisconnect(device.id) : handleConnect(device.id)}
-                              disabled={state !== 'idle' || device.state === 'disconnected'}
-                              data-testid={`button-${isConnected ? 'disconnect' : 'connect'}-${device.id}`}
+                              onClick={() => isConnected ? handleUnifiedDisconnect(unifiedDevice) : handleUnifiedConnect(unifiedDevice)}
+                              disabled={state !== 'idle'}
+                              data-testid={`button-${isConnected ? 'disconnect' : 'connect'}-unified-${index}`}
                             >
                               {state === 'connecting' && 'Connecting...'}
                               {state === 'disconnecting' && 'Disconnecting...'}

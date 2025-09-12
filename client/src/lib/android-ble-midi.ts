@@ -55,15 +55,78 @@ export class AndroidBleMidiAdapter {
     }
 
     try {
-      console.log('🔵 Requesting BLE MIDI device connection...');
+      console.log(`🔵 Requesting BLE MIDI device connection...${deviceName ? ` (looking for: ${deviceName})` : ''}`);
       
-      // Request device with BLE-MIDI service filter
-      const device = await navigator.bluetooth.requestDevice({
-        filters: [
-          { services: [BLE_MIDI_SERVICE_UUID] }
-        ],
-        optionalServices: [BLE_MIDI_SERVICE_UUID]
-      });
+      let device: BluetoothDevice | undefined;
+      
+      // If specific device name is provided, use it for precise matching
+      if (deviceName) {
+        try {
+          console.log(`🔵 Looking for specific device: ${deviceName}`);
+          device = await navigator.bluetooth.requestDevice({
+            filters: [
+              { name: deviceName },
+              { namePrefix: deviceName }
+            ],
+            optionalServices: [BLE_MIDI_SERVICE_UUID]
+          });
+          console.log(`✅ Found specific device: ${device.name}`);
+        } catch (specificError) {
+          console.log(`🔍 Specific device "${deviceName}" not found, falling back to general discovery`);
+          console.log('🔍 Specific device error:', {
+            name: (specificError as DOMException).name,
+            message: (specificError as DOMException).message
+          });
+          // Fall through to general discovery strategies below
+        }
+      }
+      
+      // If no specific device name provided or specific device not found, try multiple discovery strategies
+      if (!device) {
+        try {
+          // Strategy 1: Look for devices by name (WIDI, MIDI, etc.)
+          console.log('🔵 Trying name-based device discovery...');
+          device = await navigator.bluetooth.requestDevice({
+            filters: [
+              { namePrefix: 'WIDI' },
+              { namePrefix: 'MIDI' },
+              { namePrefix: 'BLE' }
+            ],
+            optionalServices: [BLE_MIDI_SERVICE_UUID]
+          });
+          console.log('✅ Found device via name filter:', device.name);
+        } catch (nameError) {
+          console.log('🔵 Name-based discovery failed, trying service-based...');
+          console.log('🔍 Name discovery error:', {
+            name: (nameError as DOMException).name,
+            message: (nameError as DOMException).message
+          });
+          
+          try {
+            // Strategy 2: Look for devices advertising BLE-MIDI service
+            device = await navigator.bluetooth.requestDevice({
+              filters: [
+                { services: [BLE_MIDI_SERVICE_UUID] }
+              ],
+              optionalServices: [BLE_MIDI_SERVICE_UUID]
+            });
+            console.log('✅ Found device via service filter:', device.name);
+          } catch (serviceError) {
+            console.log('🔵 Service-based discovery failed, trying acceptAllDevices...');
+            console.log('🔍 Service discovery error:', {
+              name: (serviceError as DOMException).name,
+              message: (serviceError as DOMException).message
+            });
+            
+            // Strategy 3: Show all devices and let user choose
+            device = await navigator.bluetooth.requestDevice({
+              acceptAllDevices: true,
+              optionalServices: [BLE_MIDI_SERVICE_UUID]
+            });
+            console.log('✅ Found device via acceptAllDevices:', device.name);
+          }
+        }
+      }
 
       if (!device.gatt) {
         throw new Error('Device does not support GATT');
@@ -105,8 +168,24 @@ export class AndroidBleMidiAdapter {
       return bleMidiDevice;
 
     } catch (error) {
-      console.error('❌ BLE-MIDI connection failed:', error);
-      throw error;
+      const bleError = error as DOMException;
+      console.error('❌ BLE-MIDI connection failed:', {
+        name: bleError.name,
+        message: bleError.message,
+        code: bleError.code,
+        stack: bleError.stack
+      });
+      
+      // Provide user-friendly error messages
+      if (bleError.name === 'NotAllowedError') {
+        throw new Error('Permission denied. Please allow Bluetooth access and try again.');
+      } else if (bleError.name === 'NotFoundError') {
+        throw new Error('No compatible BLE MIDI devices found. Make sure your device is powered on and in pairing mode.');
+      } else if (bleError.name === 'SecurityError') {
+        throw new Error('BLE access requires a secure connection (HTTPS). Please use HTTPS.');
+      } else {
+        throw new Error(`BLE connection failed: ${bleError.message || 'Unknown error'}`);
+      }
     }
   }
 

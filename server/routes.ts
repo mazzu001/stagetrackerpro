@@ -1348,11 +1348,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const user = await storage.getUser(userId);
       const songs = await storage.getAllSongs(userId);
       
-      // Check song count limits for free users
-      const isFreeTier = !user?.stripeSubscriptionId && req.user.claims.email !== 'paid@demo.com';
-      if (isFreeTier && songs.length > 2) {
-        // Return only first 2 songs for free tier users
-        res.json(songs.slice(0, 2));
+      // Check song count limits - only apply after trial period expires
+      const hasActiveSubscription = user?.stripeSubscriptionId || req.user.claims.email === 'paid@demo.com';
+      
+      if (!hasActiveSubscription) {
+        // Check if user is within 1-month trial period
+        const trialStartDate = user?.trialStartDate || user?.createdAt;
+        const oneMonthInMs = 30 * 24 * 60 * 60 * 1000; // 30 days
+        const isInTrialPeriod = trialStartDate && (Date.now() - new Date(trialStartDate).getTime()) < oneMonthInMs;
+        
+        if (!isInTrialPeriod && songs.length > 2) {
+          // Trial expired and no subscription - return only first 2 songs
+          res.json(songs.slice(0, 2));
+        } else {
+          res.json(songs);
+        }
       } else {
         res.json(songs);
       }
@@ -1379,15 +1389,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
       
-      // Check song limits for free tier users
-      const isFreeTier = !user?.stripeSubscriptionId && req.user.claims.email !== 'paid@demo.com';
-      if (isFreeTier) {
-        const existingSongs = await storage.getAllSongs(userId);
-        if (existingSongs.length >= 2) {
-          return res.status(403).json({ 
-            error: 'song_limit_exceeded',
-            message: 'Free tier is limited to 2 songs. Please upgrade to Premium for unlimited songs.' 
-          });
+      // Check song limits - allow unlimited during 1-month trial period
+      const hasActiveSubscription = user?.stripeSubscriptionId || req.user.claims.email === 'paid@demo.com';
+      
+      if (!hasActiveSubscription) {
+        // Check if user is within 1-month trial period
+        const trialStartDate = user?.trialStartDate || user?.createdAt;
+        const oneMonthInMs = 30 * 24 * 60 * 60 * 1000; // 30 days
+        const isInTrialPeriod = trialStartDate && (Date.now() - new Date(trialStartDate).getTime()) < oneMonthInMs;
+        
+        if (!isInTrialPeriod) {
+          // Trial expired and no subscription - enforce 2 song limit
+          const existingSongs = await storage.getAllSongs(userId);
+          if (existingSongs.length >= 2) {
+            return res.status(403).json({ 
+              error: 'song_limit_exceeded',
+              message: 'Your 1-month free trial has ended. Please upgrade to Premium for unlimited songs.' 
+            });
+          }
         }
       }
       

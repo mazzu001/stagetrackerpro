@@ -562,7 +562,7 @@ export default function Dashboard() {
                 </Badge>
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6 pt-0 bg-[#000000]">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <div>
                   <Label className="text-sm font-medium">Room ID</Label>

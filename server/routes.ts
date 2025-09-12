@@ -1002,167 +1002,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Secure authentication check endpoint (no email spoofing)
-  app.get('/api/auth/trial-status', async (req: any, res) => {
-    try {
-      // First try to get user from Replit auth session
-      let user = null;
-      let email = null;
-      
-      if (req.isAuthenticated?.() && req.user?.claims?.email) {
-        // Replit authenticated user
-        email = req.user.claims.email;
-        user = await storage.getUserByEmail(email);
-      } else {
-        // Check for local auth email in query params (backward compatibility)
-        const queryEmail = req.query.email;
-        if (queryEmail && typeof queryEmail === 'string') {
-          email = queryEmail;
-          user = await storage.getUserByEmail(email);
-          console.log('⚠️ Local auth backward compatibility mode for:', email);
-        }
-      }
-      
-      if (!email || !user) {
-        return res.status(401).json({ 
-          error: 'Authentication required',
-          message: 'Valid user session is required to check trial status',
-          isPaid: false,
-          isTrialActive: false,
-          userType: 'trial'
-        });
-      }
-      
-      console.log('🔍 Checking trial status for authenticated user:', email);
-      
-      const status = parseInt(user.subscriptionStatus as any) || 1;
-      const trialStartDate = user.trialStartDate || user.createdAt;
-      const now = Date.now();
-      const trialDurationMs = 30 * 24 * 60 * 60 * 1000; // 30 days
-      const trialEndTime = trialStartDate ? new Date(trialStartDate).getTime() + trialDurationMs : now + trialDurationMs;
-      
-      let userType: 'trial' | 'paid' = 'trial';
-      let isPaid = false;
-      let isTrialActive = false;
-      
-      switch (status) {
-        case 1: // Trial user
-          isTrialActive = now < trialEndTime;
-          if (isTrialActive) {
-            userType = 'trial';
-            isPaid = true; // Trial users get full access during trial period
-          } else {
-            userType = 'trial'; // Keep as trial type but no access
-            isPaid = false; // Trial expired, limited access
-          }
-          break;
-        case 2:
-        case 3: // Paid users
-          userType = 'paid';
-          isPaid = true;
-          isTrialActive = false; // Not applicable for paid users
-          break;
-        default:
-          // New users get trial access
-          isTrialActive = true;
-          userType = 'trial';
-          isPaid = true;
-      }
-      
-      const response = {
-        isPaid,
-        isTrialActive,
-        trialEndsAt: status === 1 ? trialEndTime : null,
-        userType,
-        subscriptionData: { status },
-        source: 'database',
-        email
-      };
-      
-      console.log('🔍 Trial status response:', response);
-      return res.json(response);
-      
-    } catch (error: any) {
-      console.error('❌ Error checking trial status:', error);
-      res.status(500).json({ 
-        error: 'Failed to check trial status',
-        isPaid: false,
-        isTrialActive: false,
-        userType: 'trial'
-      });
-    }
-  });
-  
-  // Legacy subscription verification endpoint (deprecated - use /api/auth/trial-status)
+  // Subscription verification endpoint
   app.post('/api/verify-subscription', async (req, res) => {
-    console.warn('⚠️ /api/verify-subscription is deprecated and insecure - use /api/auth/trial-status');
-    
-    // For backward compatibility, redirect to secure endpoint
     try {
       const { email } = req.body;
       
       if (!email) {
         return res.status(400).json({ 
           error: 'Email required',
-          message: 'This endpoint is deprecated. Use /api/auth/trial-status instead.'
+          message: 'Email address is required to verify subscription' 
         });
       }
       
-      console.log('🔍 Legacy verification for email:', email);
+      console.log('🔍 Verifying subscription for email:', email);
       
-      // Only allow for local development/testing
-      if (process.env.NODE_ENV === 'production') {
-        return res.status(403).json({
-          error: 'Endpoint disabled in production',
-          message: 'Use /api/auth/trial-status with proper authentication',
-          isPaid: false,
-          userType: 'trial'
-        });
-      }
-      
+      // First check database for subscription status
       const user = await storage.getUserByEmail(email);
       
-      if (!user) {
+      if (user && user.subscriptionStatus) {
+        const status = parseInt(user.subscriptionStatus as any);
+        console.log('🔍 Database subscription status:', status);
+        
+        let userType = 'free';
+        let isPaid = false;
+        
+        switch (status) {
+          case 1:
+            userType = 'free';
+            isPaid = false;
+            break;
+          case 2:
+            userType = 'premium';
+            isPaid = true;
+            break;
+          case 3:
+            userType = 'professional';
+            isPaid = true;
+            break;
+          default:
+            userType = 'free';
+            isPaid = false;
+        }
+        
+        console.log('🔍 Final userType:', userType);
+        
         return res.json({
-          isPaid: false,
-          userType: 'trial',
-          isTrialActive: false,
-          message: 'User not found'
+          isPaid: isPaid,
+          userType: userType,
+          subscriptionData: { status: status },
+          source: 'database'
         });
       }
       
-      const status = parseInt(user.subscriptionStatus as any) || 1;
-      const trialStartDate = user.trialStartDate || user.createdAt;
-      const now = Date.now();
-      const trialDurationMs = 30 * 24 * 60 * 60 * 1000;
-      const trialEndTime = trialStartDate ? new Date(trialStartDate).getTime() + trialDurationMs : now + trialDurationMs;
-      
-      let userType: 'trial' | 'paid' = 'trial';
-      let isPaid = false;
-      let isTrialActive = false;
-      
-      switch (status) {
-        case 1:
-          isTrialActive = now < trialEndTime;
-          userType = 'trial';
-          isPaid = isTrialActive; // Only paid access during active trial
-          break;
-        case 2:
-        case 3:
-          userType = 'paid';
-          isPaid = true;
-          isTrialActive = false;
-          break;
-      }
+      // Fallback to subscription manager if no database record
+      const verificationResult = await subscriptionManager.verifySubscriptionStatus(email);
       
       res.json({
-        isPaid,
-        userType,
-        isTrialActive,
-        trialEndsAt: status === 1 ? trialEndTime : null,
-        subscriptionData: { status },
-        source: 'database',
-        deprecated: true
+        isPaid: verificationResult.isPaid,
+        userType: verificationResult.isPaid ? 'premium' : 'free',
+        subscriptionData: verificationResult.subscriptionData || null,
+        source: verificationResult.source
       });
       
     } catch (error: any) {
@@ -1449,21 +1348,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const user = await storage.getUser(userId);
       const songs = await storage.getAllSongs(userId);
       
-      // Check song count limits - only apply after trial period expires
-      const hasActiveSubscription = user?.stripeSubscriptionId || req.user.claims.email === 'paid@demo.com';
-      
-      if (!hasActiveSubscription) {
-        // Check if user is within 1-month trial period
-        const trialStartDate = user?.trialStartDate || user?.createdAt;
-        const oneMonthInMs = 30 * 24 * 60 * 60 * 1000; // 30 days
-        const isInTrialPeriod = trialStartDate && (Date.now() - new Date(trialStartDate).getTime()) < oneMonthInMs;
-        
-        if (!isInTrialPeriod && songs.length > 2) {
-          // Trial expired and no subscription - return only first 2 songs
-          res.json(songs.slice(0, 2));
-        } else {
-          res.json(songs);
-        }
+      // Check song count limits for free users
+      const isFreeTier = !user?.stripeSubscriptionId && req.user.claims.email !== 'paid@demo.com';
+      if (isFreeTier && songs.length > 2) {
+        // Return only first 2 songs for free tier users
+        res.json(songs.slice(0, 2));
       } else {
         res.json(songs);
       }
@@ -1490,24 +1379,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = req.user.claims.sub;
       const user = await storage.getUser(userId);
       
-      // Check song limits - allow unlimited during 1-month trial period
-      const hasActiveSubscription = user?.stripeSubscriptionId || req.user.claims.email === 'paid@demo.com';
-      
-      if (!hasActiveSubscription) {
-        // Check if user is within 1-month trial period
-        const trialStartDate = user?.trialStartDate || user?.createdAt;
-        const oneMonthInMs = 30 * 24 * 60 * 60 * 1000; // 30 days
-        const isInTrialPeriod = trialStartDate && (Date.now() - new Date(trialStartDate).getTime()) < oneMonthInMs;
-        
-        if (!isInTrialPeriod) {
-          // Trial expired and no subscription - enforce 2 song limit
-          const existingSongs = await storage.getAllSongs(userId);
-          if (existingSongs.length >= 2) {
-            return res.status(403).json({ 
-              error: 'song_limit_exceeded',
-              message: 'Your 1-month free trial has ended. Please upgrade to Premium for unlimited songs.' 
-            });
-          }
+      // Check song limits for free tier users
+      const isFreeTier = !user?.stripeSubscriptionId && req.user.claims.email !== 'paid@demo.com';
+      if (isFreeTier) {
+        const existingSongs = await storage.getAllSongs(userId);
+        if (existingSongs.length >= 2) {
+          return res.status(403).json({ 
+            error: 'song_limit_exceeded',
+            message: 'Free tier is limited to 2 songs. Please upgrade to Premium for unlimited songs.' 
+          });
         }
       }
       

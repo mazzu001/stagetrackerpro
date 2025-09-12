@@ -231,12 +231,21 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       capabilities: string[];
     }>();
 
+    // Function to normalize device name by removing common input/output suffixes
+    const normalizeDeviceName = (name: string): string => {
+      return name
+        .replace(/\s+(IN|OUT|Input|Output)$/i, '')  // Remove trailing IN/OUT/Input/Output
+        .replace(/A\s+(IN|OUT)$/i, '')  // Handle "MidiPortA IN" -> "MidiPort"
+        .trim();
+    };
+
     devices.forEach(device => {
-      const key = `${device.name}-${device.manufacturer}`;
+      const normalizedName = normalizeDeviceName(device.name);
+      const key = `${normalizedName}-${device.manufacturer}`;
       
       if (!deviceMap.has(key)) {
         deviceMap.set(key, {
-          name: device.name,
+          name: normalizedName,
           manufacturer: device.manufacturer,
           isUSB: device.isUSB,
           isBluetooth: device.isBluetooth,

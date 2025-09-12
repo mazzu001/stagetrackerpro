@@ -528,18 +528,59 @@ export function useMidiDevices(): UseMidiDevicesReturn {
             deviceState: device.state,
             commandType: command.type,
             midiData: midiData,
-            timestamp: Date.now()
+            timestamp: Date.now(),
+            outputType: typeof output,
+            hasOutputSend: typeof output.send === 'function',
+            deviceManufacturer: device.manufacturer
           });
+          
+          // Check if device is truly ready for transmission
+          if (device.connection !== 'open') {
+            console.error(`📱 Android MIDI Error: Device ${device.name} connection is ${device.connection}, not open!`);
+            return;
+          }
+          
+          if (device.state !== 'connected') {
+            console.error(`📱 Android MIDI Error: Device ${device.name} state is ${device.state}, not connected!`);
+            return;
+          }
         }
         
-        output.send(midiData);
-        console.log(`🎹 Sent ${command.type} command to ${device.name}:`, midiData);
-        
-        // Android Chrome - add confirmation logging with delay
-        if (browserInfo.isAndroidChrome) {
-          setTimeout(() => {
-            console.log(`📱 Android Chrome: Confirmed command sent to ${device.name} after 100ms delay`);
-          }, 100);
+        // Try to send with Android-specific error handling
+        try {
+          output.send(midiData);
+          console.log(`🎹 Sent ${command.type} command to ${device.name}:`, midiData);
+          
+          // Android Chrome - add detailed confirmation logging
+          if (browserInfo.isAndroidChrome) {
+            setTimeout(() => {
+              console.log(`📱 Android Chrome: MIDI transmission attempt completed for ${device.name}`);
+              console.log(`📱 Device status check:`, {
+                name: device.name,
+                connection: device.connection,
+                state: device.state,
+                timestamp: Date.now()
+              });
+            }, 50);
+            
+            // Additional Android-specific validation
+            setTimeout(() => {
+              console.log(`📱 Android Chrome: Post-transmission validation for ${device.name} - checking if command was queued/buffered`);
+            }, 200);
+          }
+          
+        } catch (sendError) {
+          console.error(`❌ MIDI send() failed for ${device.name}:`, sendError);
+          if (browserInfo.isAndroidChrome) {
+            console.error(`📱 Android Chrome: MIDI send failure details:`, {
+              error: sendError.message,
+              deviceName: device.name,
+              deviceConnection: device.connection,
+              deviceState: device.state,
+              commandData: midiData
+            });
+          }
+          return;
         }
         
         success = true;

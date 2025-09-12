@@ -41,6 +41,19 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   const midiAccessRef = useRef<MIDIAccess | null>(null);
   const deviceConnectionsRef = useRef<Map<string, MIDIInput | MIDIOutput>>(new Map());
 
+  // Mobile browser detection for Android MIDI compatibility
+  const getBrowserInfo = () => {
+    const userAgent = navigator.userAgent;
+    return {
+      isAndroid: /Android/i.test(userAgent),
+      isChrome: /Chrome/i.test(userAgent) && !/Edg|Edge/i.test(userAgent),
+      isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent),
+      isAndroidChrome: /Android/i.test(userAgent) && /Chrome/i.test(userAgent) && !/Edg|Edge/i.test(userAgent)
+    };
+  };
+
+  const browserInfo = getBrowserInfo();
+
   // Check if Web MIDI API is supported
   useEffect(() => {
     const checkSupport = () => {
@@ -61,6 +74,13 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     try {
       setError(null);
       console.log('🎹 Initializing MIDI access...');
+      
+      // Android Chrome browser detection and compatibility logging
+      if (browserInfo.isAndroidChrome) {
+        console.log('📱 Android Chrome detected - using mobile MIDI compatibility mode');
+      } else if (browserInfo.isAndroid) {
+        console.log('📱 Android device detected - using mobile compatibility mode');
+      }
       
       const access = await navigator.requestMIDIAccess({ sysex: false });
       midiAccessRef.current = access;
@@ -228,14 +248,15 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         await new Promise<void>((resolve, reject) => {
           let resolved = false;
           
-          // Set up timeout
+          // Set up timeout with Android compatibility
+          const timeoutMs = browserInfo.isAndroidChrome ? 12000 : browserInfo.isMobile ? 8000 : 5000;
           const timeout = setTimeout(() => {
             if (!resolved) {
               resolved = true;
               device!.onstatechange = null;
-              reject(new Error(`Connection timeout after 5 seconds`));
+              reject(new Error(`Connection timeout after ${timeoutMs/1000} seconds`));
             }
-          }, 5000);
+          }, timeoutMs);
           
           // Set up state change handler
           const originalHandler = device!.onstatechange;

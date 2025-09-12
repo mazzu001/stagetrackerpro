@@ -14,10 +14,26 @@ const STORAGE_KEY = 'lpp_local_user';
 const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 const VERIFICATION_INTERVAL = 4 * 60 * 60 * 1000; // 4 hours
 
-// Edge browser detection
-const isEdgeBrowser = () => {
+// Browser detection utilities
+const getBrowserInfo = () => {
   const userAgent = navigator.userAgent;
-  return userAgent.includes('Edg/') || userAgent.includes('Edge/');
+  
+  // Check for Android first (prevents false Edge detection)
+  const isAndroid = /Android/i.test(userAgent);
+  const isChrome = /Chrome/i.test(userAgent) && !/Edg|Edge/i.test(userAgent);
+  const isEdge = (/Edg\/|Edge\//i.test(userAgent)) && !isAndroid;
+  
+  return {
+    isAndroid,
+    isChrome,
+    isEdge,
+    isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent),
+    isAndroidChrome: isAndroid && isChrome
+  };
+};
+
+const isEdgeBrowser = () => {
+  return getBrowserInfo().isEdge;
 };
 
 export function useLocalAuth() {

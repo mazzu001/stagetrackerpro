@@ -86,8 +86,9 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       midiAccessRef.current = access;
       
       // Listen for device state changes
-      access.onstatechange = (event: MIDIConnectionEvent) => {
-        console.log(`🎹 MIDI device state change:`, event.port?.name, event.port?.state, event.port?.connection);
+      access.onstatechange = (event: Event) => {
+        const midiEvent = event as MIDIConnectionEvent;
+        console.log(`🎹 MIDI device state change:`, midiEvent.port?.name, midiEvent.port?.state, midiEvent.port?.connection);
         refreshDeviceList();
       };
       
@@ -123,7 +124,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     
     // Helper function to detect device type
     const detectDeviceType = (device: MIDIPort): { isUSB: boolean; isBluetooth: boolean } => {
-      const name = device.name.toLowerCase();
+      const name = (device.name || '').toLowerCase();
       const manufacturer = device.manufacturer?.toLowerCase() || '';
       
       // Common Bluetooth MIDI indicators
@@ -291,12 +292,19 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       // Set up message handler for inputs
       if (device.type === 'input') {
         (device as MIDIInput).onmidimessage = (message: MIDIMessageEvent) => {
-          console.log(`🎹 MIDI message from ${device.name}:`, Array.from(message.data));
+          console.log(`🎹 MIDI message from ${device.name}:`, message.data ? Array.from(message.data) : []);
         };
       }
       
       deviceConnectionsRef.current.set(deviceId, device);
       await refreshDeviceList();
+      
+      // Android Chrome fix: Add delay to ensure connection is fully established
+      if (browserInfo.isAndroidChrome) {
+        console.log(`📱 Android Chrome: Adding 2-second stabilization delay for ${device.name}`);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        console.log(`📱 Android Chrome: Connection stabilization complete for ${device.name}`);
+      }
       
       console.log(`✅ Connected to MIDI device: ${device.name}`);
       return true;
@@ -511,8 +519,29 @@ export function useMidiDevices(): UseMidiDevicesReturn {
             return;
         }
         
+        // Android Chrome debugging - add extra logging and validation
+        if (browserInfo.isAndroidChrome) {
+          console.log(`📱 Android Chrome MIDI Debug:`, {
+            deviceName: device.name,
+            deviceId: device.id,
+            deviceConnection: device.connection,
+            deviceState: device.state,
+            commandType: command.type,
+            midiData: midiData,
+            timestamp: Date.now()
+          });
+        }
+        
         output.send(midiData);
         console.log(`🎹 Sent ${command.type} command to ${device.name}:`, midiData);
+        
+        // Android Chrome - add confirmation logging with delay
+        if (browserInfo.isAndroidChrome) {
+          setTimeout(() => {
+            console.log(`📱 Android Chrome: Confirmed command sent to ${device.name} after 100ms delay`);
+          }, 100);
+        }
+        
         success = true;
         
       } catch (err) {

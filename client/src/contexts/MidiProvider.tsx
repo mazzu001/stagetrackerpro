@@ -12,8 +12,7 @@ interface MidiContextType {
   disconnectDevice: (deviceId: string) => Promise<boolean>;
   sendMidiCommand: (command: any) => boolean;
   parseMidiCommand: (commandString: string) => any;
-  formatMidiMessage: (data: Uint8Array | number[]) => string;
-  initializeMidi: () => Promise<void>;
+  refreshDevices: () => Promise<void>;
 }
 
 // Create the context

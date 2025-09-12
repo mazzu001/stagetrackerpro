@@ -41,7 +41,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     disconnectDevice,
     sendMidiCommand,
     parseMidiCommand,
-    initializeMidi
+    refreshDevices
   } = useMidi();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -58,7 +58,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
-      await initializeMidi();
+      await refreshDevices();
     } finally {
       setIsRefreshing(false);
     }

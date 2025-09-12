@@ -16,9 +16,10 @@ interface LyricsDisplayProps {
   duration: number;
   onEditLyrics?: () => void;
   isPlaying: boolean;
+  allowMidi?: boolean; // Optional prop to disable MIDI execution (for viewers)
 }
 
-export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPlaying }: LyricsDisplayProps) {
+export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPlaying, allowMidi = true }: LyricsDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   
   // MIDI integration
@@ -180,7 +181,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
 
   // Execute MIDI commands when a new line becomes active
   useEffect(() => {
-    if (!isPlaying || currentLineIndex < 0 || lyrics.length === 0) return;
+    if (!allowMidi || !isPlaying || currentLineIndex < 0 || lyrics.length === 0) return;
     
     const currentLine = lyrics[currentLineIndex];
     if (!currentLine || currentLine.midiCommands.length === 0) return;
@@ -216,7 +217,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
 
   // Execute non-timestamped MIDI commands when opening a song
   useEffect(() => {
-    if (!song?.id || !song?.lyrics) return;
+    if (!allowMidi || !song?.id || !song?.lyrics) return;
     
     // Check if we've already executed setup commands for this song
     if (songSetupCommandsExecuted === song.id) return;

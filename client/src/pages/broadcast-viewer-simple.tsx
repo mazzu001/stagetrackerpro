@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { LogOut, Play, Pause, Volume2 } from "lucide-react";
+import { LyricsDisplay } from "@/components/lyrics-display";
 
 interface SongData {
   id: string;
@@ -21,12 +22,6 @@ interface BroadcastState {
   waveformProgress: number;
 }
 
-interface ParsedLyricLine {
-  text: string;
-  timestamp: number; // in seconds
-  isCurrent: boolean;
-  isPast: boolean;
-}
 
 export default function SimpleBroadcastViewer() {
   const [, setLocation] = useLocation();
@@ -39,33 +34,6 @@ export default function SimpleBroadcastViewer() {
   // Get broadcast ID from URL
   const broadcastId = new URLSearchParams(window.location.search).get('id') || 'Matt';
 
-  // Lightweight current line detection - only calculate current line index
-  const getCurrentLine = () => {
-    if (!currentSong?.lyrics || !broadcastState?.position) return null;
-    
-    const lines = currentSong.lyrics.split('\n');
-    const currentPosition = broadcastState.position;
-    
-    for (let i = lines.length - 1; i >= 0; i--) {
-      const line = lines[i].trim();
-      const timestampMatch = line.match(/^\[(\d{1,2}):(\d{2})\]/);
-      if (timestampMatch) {
-        const minutes = parseInt(timestampMatch[1]);
-        const seconds = parseInt(timestampMatch[2]);
-        const timestamp = minutes * 60 + seconds;
-        
-        if (currentPosition >= timestamp) {
-          return {
-            index: i,
-            text: line.replace(/^\[(\d{1,2}):(\d{2})\]/, '').replace(/\[\[[^\]]+\]\]/g, '').trim()
-          };
-        }
-      }
-    }
-    return null;
-  };
-
-  const currentLine = getCurrentLine();
 
   useEffect(() => {
     // Simple WebSocket connection - no complex service layer
@@ -204,28 +172,25 @@ export default function SimpleBroadcastViewer() {
               </div>
             </div>
 
-            {/* Current Lyric - Karaoke Style */}
-            {currentLine && (
-              <div className="bg-black/20 rounded-lg p-8 text-center">
-                <p className="text-2xl font-semibold leading-relaxed text-blue-300">
-                  {currentLine.text}
-                </p>
-              </div>
-            )}
-
-            {/* Simple Lyrics Display */}
+            {/* Karaoke-Style Lyrics Display */}
             {currentSong.lyrics && (
-              <div className="bg-black/20 rounded-lg p-6">
+              <div className="bg-black/20 rounded-lg p-6 flex-grow">
                 <h3 className="text-lg font-semibold mb-4 flex items-center">
                   <Volume2 className="mr-2 h-5 w-5" />
                   Lyrics
                 </h3>
-                <div className="text-gray-300 leading-relaxed whitespace-pre-line max-h-96 overflow-y-auto">
-                  {currentSong.lyrics
-                    .split('\n')
-                    .map(line => line.replace(/^\[(\d{1,2}):(\d{2})\]/, '').replace(/\[\[[^\]]+\]\]/g, '').trim())
-                    .filter(line => line)
-                    .join('\n')}
+                <div className="h-96">
+                  <LyricsDisplay
+                    song={{
+                      id: currentSong.id,
+                      title: currentSong.songTitle,
+                      lyrics: currentSong.lyrics
+                    }}
+                    currentTime={broadcastState?.position || 0}
+                    duration={currentSong.duration || 0}
+                    isPlaying={broadcastState?.isPlaying || false}
+                    allowMidi={false}
+                  />
                 </div>
               </div>
             )}

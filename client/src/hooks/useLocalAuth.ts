@@ -8,6 +8,8 @@ interface LocalUser {
   userType: UserType;
   loginTime: number;
   lastVerified?: number;
+  isTrialActive?: boolean; // Track if trial is still active
+  trialEndsAt?: number; // When trial expires (timestamp)
 }
 
 const STORAGE_KEY = 'lpp_local_user';
@@ -113,36 +115,52 @@ export function useLocalAuth() {
                   setTimeout(() => reject(new Error('Authentication timeout')), 10000) // 10 second timeout
                 );
                 
-                const responsePromise = apiRequest('POST', '/api/verify-subscription', {
-                  email: userData.email
+                // Use secure trial status endpoint (GET request with email in query params)
+                const response = await fetch(`/api/auth/trial-status?email=${encodeURIComponent(userData.email)}`, {
+                  method: 'GET',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  signal: AbortSignal.timeout(10000) // 10 second timeout
                 });
-                
-                const response = await Promise.race([responsePromise, timeoutPromise]) as Response;
                 
                 if (response.ok && mounted) {
                   const verificationResult = await response.json();
-                  console.log('✅ Fresh subscription status:', verificationResult.userType);
+                  console.log('✅ Fresh trial status:', verificationResult);
                   
-                  // Always update with fresh subscription status from server
+                  // Use server-computed trial status
                   const updatedUserData = {
                     ...userData,
                     userType: verificationResult.userType as UserType,
+                    isTrialActive: verificationResult.isTrialActive || false,
+                    trialEndsAt: verificationResult.trialEndsAt || null,
                     lastVerified: Date.now()
                   };
+                  
+                  // Log trial status for debugging
+                  if (verificationResult.userType === 'trial') {
+                    if (verificationResult.isTrialActive) {
+                      console.log('✅ Trial is active until:', new Date(verificationResult.trialEndsAt || 0));
+                    } else {
+                      console.log('⚠️ Trial has expired - access blocked');
+                    }
+                  }
                   
                   localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
                   setUser(updatedUserData);
                 } else if (mounted) {
-                  console.log('❌ Subscription verification failed, using cached data');
-                  // Use cached data instead of logging out on verification failure
-                  setUser(userData);
+                  console.log('❌ Trial verification failed - logging out for security');
+                  // For security, log out the user if verification fails
+                  localStorage.removeItem(STORAGE_KEY);
+                  setUser(null);
                 }
               } catch (verificationError) {
-                console.error('❌ Error verifying subscription (Edge browser compatibility):', verificationError);
+                console.error('❌ Error verifying subscription:', verificationError);
                 if (mounted) {
-                  // Always use cached data if verification fails - don't block Edge users
-                  console.log('📱 Using cached authentication data for Edge browser');
-                  setUser(userData);
+                  // For security, log out the user if verification fails
+                  console.log('❌ Authentication verification failed - logging out for security');
+                  localStorage.removeItem(STORAGE_KEY);
+                  setUser(null);
                 }
               }
             } else {
@@ -155,8 +173,11 @@ export function useLocalAuth() {
                   setTimeout(async () => {
                     try {
                       console.log('📱 Edge browser: Starting background verification');
-                      const response = await apiRequest('POST', '/api/verify-subscription', {
-                        email: userData.email
+                      const response = await fetch(`/api/auth/trial-status?email=${encodeURIComponent(userData.email)}`, {
+                        method: 'GET',
+                        headers: {
+                          'Content-Type': 'application/json'
+                        }
                       });
                       
                       if (response.ok && mounted) {
@@ -167,12 +188,27 @@ export function useLocalAuth() {
                           lastVerified: Date.now()
                         };
                         
+                        // Update with server trial state
+                        updatedUserData.isTrialActive = verificationResult.isTrialActive || false;
+                        updatedUserData.trialEndsAt = verificationResult.trialEndsAt || null;
+                        
+                        // Log trial status
+                        if (verificationResult.userType === 'trial') {
+                          if (verificationResult.isTrialActive) {
+                            console.log('✅ Background verification: Trial is active');
+                          } else {
+                            console.log('⚠️ Background verification: Trial has expired');
+                          }
+                        }
+                        
                         localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
                         setUser(updatedUserData);
-                        console.log('✅ Edge browser: Background verification complete');
+                        console.log('✅ Background verification complete');
                       }
                     } catch (error) {
-                      console.log('📱 Edge browser: Background verification failed, keeping cached data');
+                      console.log('❌ Background verification failed - logging out for security');
+                      localStorage.removeItem(STORAGE_KEY);
+                      setUser(null);
                     }
                   }, 2000); // 2 second delay for background verification
                 }
@@ -186,23 +222,11 @@ export function useLocalAuth() {
         }
       } catch (error) {
         console.error('Error checking local session:', error);
-        // Don't remove localStorage for Edge browser compatibility
-        // Edge sometimes has issues accessing localStorage during initial load
+        // For security, don't use cached data if session check fails
         if (mounted) {
-          try {
-            // Try fallback session read for Edge browser
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-              const userData = JSON.parse(stored) as LocalUser;
-              console.log('📱 Using fallback authentication for Edge browser compatibility');
-              setUser(userData);
-            } else {
-              setUser(null);
-            }
-          } catch (fallbackError) {
-            console.error('❌ Fallback session check failed:', fallbackError);
-            setUser(null);
-          }
+          console.error('❌ Session check failed - clearing authentication for security');
+          localStorage.removeItem(STORAGE_KEY);
+          setUser(null);
         }
       } finally {
         if (mounted) {
@@ -304,19 +328,33 @@ export function useLocalAuth() {
     
     try {
       console.log('🔄 Force refreshing subscription status for:', user.email);
-      const response = await apiRequest('POST', '/api/verify-subscription', {
-        email: user.email
+      const response = await fetch(`/api/auth/trial-status?email=${encodeURIComponent(user.email)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
       
       if (response.ok) {
         const verificationResult = await response.json();
-        console.log('✅ Force refresh result:', verificationResult.userType);
+        console.log('✅ Force refresh result:', verificationResult);
         
         const updatedUserData = {
           ...user,
           userType: verificationResult.userType as UserType,
+          isTrialActive: verificationResult.isTrialActive || false,
+          trialEndsAt: verificationResult.trialEndsAt || null,
           lastVerified: Date.now()
         };
+        
+        // Log trial status
+        if (verificationResult.userType === 'trial') {
+          if (verificationResult.isTrialActive) {
+            console.log('✅ Force refresh: Trial is active until:', new Date(verificationResult.trialEndsAt || 0));
+          } else {
+            console.log('⚠️ Force refresh: Trial has expired');
+          }
+        }
         
         localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
         setUser(updatedUserData);
@@ -326,12 +364,21 @@ export function useLocalAuth() {
     }
   };
 
+  // Check if trial has expired based on local state
+  const isTrialExpired = user?.userType === 'trial' && 
+    (user.isTrialActive === false || 
+     (user.trialEndsAt && Date.now() > user.trialEndsAt));
+
   return {
     user,
     isLoading,
     isAuthenticated: !!user,
     isPaidUser: user?.userType === 'paid',
     isTrialUser: user?.userType === 'trial',
+    isTrialActive: user?.isTrialActive && !isTrialExpired,
+    isTrialExpired,
+    trialEndsAt: user?.trialEndsAt,
+    hasAccess: user?.userType === 'paid' || (user?.userType === 'trial' && !isTrialExpired),
     login,
     logout,
     upgrade,

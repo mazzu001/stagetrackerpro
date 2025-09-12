@@ -219,7 +219,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     return 'Available';
   };
 
-  // Group devices by physical device using simple " IN"/" OUT" suffix pattern
+  // Group devices by physical device (name + manufacturer) for unified list
   const unifiedDevices = React.useMemo(() => {
     const deviceMap = new Map<string, {
       name: string;
@@ -231,20 +231,21 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       capabilities: string[];
     }>();
 
+    // Function to normalize device name by removing common input/output suffixes
+    const normalizeDeviceName = (name: string): string => {
+      return name
+        .replace(/\s+(IN|OUT|Input|Output)$/i, '')  // Remove trailing IN/OUT/Input/Output
+        .replace(/A\s+(IN|OUT)$/i, '')  // Handle "MidiPortA IN" -> "MidiPort"
+        .trim();
+    };
+
     devices.forEach(device => {
-      // Get base device name by stripping " IN" or " OUT" suffix
-      let baseName = device.name;
-      if (baseName.endsWith(' IN')) {
-        baseName = baseName.slice(0, -3); // Remove " IN"
-      } else if (baseName.endsWith(' OUT')) {
-        baseName = baseName.slice(0, -4); // Remove " OUT"
-      }
-      
-      const key = `${baseName}-${device.manufacturer}`;
+      const normalizedName = normalizeDeviceName(device.name);
+      const key = `${normalizedName}-${device.manufacturer}`;
       
       if (!deviceMap.has(key)) {
         deviceMap.set(key, {
-          name: baseName,
+          name: normalizedName,
           manufacturer: device.manufacturer,
           isUSB: device.isUSB,
           isBluetooth: device.isBluetooth,
@@ -255,14 +256,10 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       const unified = deviceMap.get(key)!;
       if (device.type === 'input') {
         unified.inputDevice = device;
-        if (!unified.capabilities.includes('Input')) {
-          unified.capabilities.push('Input');
-        }
+        unified.capabilities.push('Input');
       } else {
         unified.outputDevice = device;
-        if (!unified.capabilities.includes('Output')) {
-          unified.capabilities.push('Output');
-        }
+        unified.capabilities.push('Output');
       }
     });
 

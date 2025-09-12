@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { androidBleMidi, BleMidiDevice } from '@/lib/android-ble-midi';
 
 export interface MidiDevice {
   id: string;
@@ -9,6 +10,7 @@ export interface MidiDevice {
   state: 'connected' | 'disconnected';
   isUSB: boolean;
   isBluetooth: boolean;
+  usesBleAdapter?: boolean; // Flag for Android BLE devices using BLE adapter
 }
 
 export interface MidiCommand {
@@ -40,6 +42,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   
   const midiAccessRef = useRef<MIDIAccess | null>(null);
   const deviceConnectionsRef = useRef<Map<string, MIDIInput | MIDIOutput>>(new Map());
+  const bleDevicesRef = useRef<Map<string, BleMidiDevice>>(new Map()); // Track BLE devices
 
   // Mobile browser detection for Android MIDI compatibility
   const getBrowserInfo = () => {
@@ -56,6 +59,29 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   };
 
   const browserInfo = getBrowserInfo();
+  
+  // Detect if a device should use BLE adapter on Android
+  const shouldUseBleAdapter = useCallback((device: MIDIInput | MIDIOutput): boolean => {
+    // Only use BLE adapter on Android browsers
+    if (!browserInfo.isAndroidBrowser) return false;
+    
+    // Only use for Bluetooth devices (especially WIDI devices)
+    const deviceName = device.name?.toLowerCase() || '';
+    const isBluetoothDevice = deviceName.includes('widi') || 
+                             deviceName.includes('bluetooth') || 
+                             deviceName.includes('ble');
+    
+    // Check if Web Bluetooth is supported
+    const hasWebBluetooth = androidBleMidi.isBluetoothSupported();
+    
+    const shouldUse = isBluetoothDevice && hasWebBluetooth;
+    
+    if (shouldUse) {
+      console.log(`🔵 Device "${device.name}" will use BLE adapter on Android`);
+    }
+    
+    return shouldUse;
+  }, [browserInfo.isAndroidBrowser]);
   
   // Debug browser detection for Android MIDI troubleshooting
   console.log('🔍 Browser detection debug:', {
@@ -159,6 +185,10 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       const { isUSB, isBluetooth } = detectDeviceType(input);
       currentDeviceIds.add(input.id);
       
+      // Check if this device is connected via BLE adapter
+      const bleDevice = bleDevicesRef.current.get(input.id);
+      const usesBleAdapter = !!bleDevice;
+      
       deviceList.push({
         id: input.id,
         name: input.name || 'Unknown Input Device',
@@ -167,7 +197,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         connection: input.connection as 'open' | 'closed' | 'pending',
         state: input.state as 'connected' | 'disconnected',
         isUSB,
-        isBluetooth
+        isBluetooth,
+        usesBleAdapter
       });
     });
     
@@ -175,6 +206,10 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     access.outputs.forEach((output: MIDIOutput) => {
       const { isUSB, isBluetooth } = detectDeviceType(output);
       currentDeviceIds.add(output.id);
+      
+      // Check if this device is connected via BLE adapter
+      const bleDevice = bleDevicesRef.current.get(output.id);
+      const usesBleAdapter = !!bleDevice;
       
       deviceList.push({
         id: output.id,
@@ -184,7 +219,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         connection: output.connection as 'open' | 'closed' | 'pending',
         state: output.state as 'connected' | 'disconnected',
         isUSB,
-        isBluetooth
+        isBluetooth,
+        usesBleAdapter
       });
     });
     
@@ -217,12 +253,19 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     console.log(`🎹 Found ${deviceList.length} MIDI devices:`, deviceList);
     setDevices(deviceList);
     
-    // Update connected devices list - more robust logic
+    // Update connected devices list - include both Web MIDI and BLE devices
     const connected = deviceList.filter(device => {
       // Device must be physically connected
       if (device.state !== 'connected') return false;
       
-      // Check if we have this device in our connections and it's actually open
+      // Check if device is connected via BLE adapter
+      const bleDevice = bleDevicesRef.current.get(device.id);
+      if (bleDevice) {
+        console.log(`🔵 BLE device ${device.name} marked as connected via BLE adapter`);
+        return true; // BLE devices are connected if they exist in our BLE map
+      }
+      
+      // Check if we have this device in our Web MIDI connections and it's actually open
       const managedDevice = deviceConnectionsRef.current.get(device.id);
       return managedDevice && device.connection === 'open';
     });
@@ -251,7 +294,26 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         return false;
       }
       
-      // Check if already connected
+      // Check if this device should use BLE adapter on Android
+      if (shouldUseBleAdapter(device)) {
+        console.log(`🔵 Connecting via BLE adapter: ${device.name}`);
+        
+        try {
+          // Connect via BLE adapter (requires user gesture)
+          const bleDevice = await androidBleMidi.connectDevice(device.name || undefined);
+          bleDevicesRef.current.set(deviceId, bleDevice);
+          
+          console.log(`✅ Connected via BLE adapter: ${device.name}`);
+          await refreshDeviceList();
+          return true;
+          
+        } catch (bleError) {
+          console.error(`❌ BLE connection failed, falling back to Web MIDI:`, bleError);
+          // Fall through to regular Web MIDI connection
+        }
+      }
+      
+      // Check if already connected via Web MIDI
       if (deviceConnectionsRef.current.has(deviceId) && device.connection === 'open') {
         console.log(`⚠️ Device ${device.name} already connected`);
         return true;
@@ -333,6 +395,20 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   // Disconnect from a specific device
   const disconnectDevice = useCallback(async (deviceId: string): Promise<boolean> => {
     try {
+      // Check if this is a BLE device first
+      const bleDevice = bleDevicesRef.current.get(deviceId);
+      if (bleDevice) {
+        console.log(`🔵 Disconnecting BLE device: ${bleDevice.name}`);
+        const result = await androidBleMidi.disconnectDevice(bleDevice.id);
+        if (result) {
+          bleDevicesRef.current.delete(deviceId);
+          await refreshDeviceList();
+          console.log(`✅ Disconnected BLE device: ${bleDevice.name}`);
+        }
+        return result;
+      }
+      
+      // Regular Web MIDI disconnection
       const device = deviceConnectionsRef.current.get(deviceId);
       if (!device) {
         console.log(`⚠️ Device ${deviceId} not in connections map`);
@@ -496,10 +572,63 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       return false;
     }
     
-    const targetDevices = deviceIds || Array.from(deviceConnectionsRef.current.keys());
+    const targetDevices = deviceIds ?? Array.from(new Set([...Array.from(deviceConnectionsRef.current.keys()), ...Array.from(bleDevicesRef.current.keys())]));
     let success = false;
     
     targetDevices.forEach(deviceId => {
+      // Check if this device is connected via BLE adapter
+      const bleDevice = bleDevicesRef.current.get(deviceId);
+      if (bleDevice) {
+        // Send via BLE adapter
+        console.log(`🔵 Sending MIDI command via BLE to ${bleDevice.name}:`, command);
+        
+        try {
+          const channel = command.channel - 1; // MIDI channels are 0-based internally
+          let midiData: number[];
+          
+          switch (command.type) {
+            case 'PC': // Program Change
+              midiData = [0xC0 + channel, command.value];
+              break;
+              
+            case 'CC': // Control Change
+              const ccValue = command.velocity !== undefined ? command.velocity : 127;
+              midiData = [0xB0 + channel, command.value, ccValue];
+              break;
+              
+            case 'NOTE_ON':
+              const noteOnVel = command.velocity || 127;
+              midiData = [0x90 + channel, command.value, noteOnVel];
+              break;
+              
+            case 'NOTE_OFF':
+              const noteOffVel = command.velocity || 0;
+              midiData = [0x80 + channel, command.value, noteOffVel];
+              break;
+              
+            default:
+              console.error('❌ Unsupported MIDI command type:', command.type);
+              return;
+          }
+          
+          // Send via BLE adapter
+          androidBleMidi.sendMidiCommand(bleDevice.id, midiData).then(result => {
+            if (result) {
+              console.log(`✅ BLE MIDI command sent to ${bleDevice.name}:`, midiData);
+            } else {
+              console.error(`❌ Failed to send BLE MIDI command to ${bleDevice.name}`);
+            }
+          });
+          
+          success = true;
+        } catch (error) {
+          console.error(`❌ BLE MIDI command error for ${bleDevice.name}:`, error);
+        }
+        
+        return; // Skip Web MIDI processing for BLE devices
+      }
+      
+      // Regular Web MIDI processing
       const device = deviceConnectionsRef.current.get(deviceId);
       if (!device || device.type !== 'output') return;
       

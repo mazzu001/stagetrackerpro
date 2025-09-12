@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Edit, ChevronUp, ChevronDown, Music } from "lucide-react";
 import { useMidiDevices } from "@/hooks/useMidiDevices";
@@ -25,6 +25,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
   const { sendMidiCommand, parseMidiCommand, connectedDevices } = useMidiDevices();
   const [executedCommands, setExecutedCommands] = useState<Set<string>>(new Set());
   const [previousTime, setPreviousTime] = useState<number>(0);
+  const [songSetupCommandsExecuted, setSongSetupCommandsExecuted] = useState<string | null>(null);
 
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');
@@ -132,6 +133,30 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
 
   const lyrics = song?.lyrics ? parseLyrics(song.lyrics) : [];
   
+  // Extract MIDI commands from non-timestamped lines for song setup
+  const extractSetupMidiCommands = useCallback((lyricsText: string): string[] => {
+    if (!lyricsText) return [];
+    
+    const lines = lyricsText.split('\n');
+    const setupCommands: string[] = [];
+    
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      
+      // Check if line has timestamp pattern at start
+      const hasTimestamp = /^\[\d{1,2}:\d{2}\]/.test(trimmed);
+      
+      // If no timestamp, extract MIDI commands for setup
+      if (!hasTimestamp) {
+        const { midiCommands } = extractMidiCommands(trimmed);
+        setupCommands.push(...midiCommands);
+      }
+    }
+    
+    return setupCommands;
+  }, []);
+  
 
   
   // Check if lyrics actually contain timestamp patterns at start of lines
@@ -189,9 +214,46 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
     setExecutedCommands(prev => new Set(prev).add(lineKey));
   }, [currentLineIndex, isPlaying, hasTimestamps, lyrics, connectedDevices, sendMidiCommand, parseMidiCommand, executedCommands]);
 
+  // Execute non-timestamped MIDI commands when opening a song
+  useEffect(() => {
+    if (!song?.id || !song?.lyrics) return;
+    
+    // Check if we've already executed setup commands for this song
+    if (songSetupCommandsExecuted === song.id) return;
+    
+    // Only execute if we have connected MIDI output devices
+    const outputDevices = connectedDevices.filter(d => d.type === 'output');
+    if (outputDevices.length === 0) return;
+    
+    // Extract and execute setup commands
+    const setupCommands = extractSetupMidiCommands(song.lyrics);
+    if (setupCommands.length === 0) return;
+    
+    console.log(`🎵 Executing ${setupCommands.length} setup MIDI commands for song: ${song.title || 'Untitled'}`);
+    
+    // Execute all setup MIDI commands
+    setupCommands.forEach((commandString, index) => {
+      const command = parseMidiCommand(commandString);
+      if (command) {
+        const success = sendMidiCommand(command);
+        if (success) {
+          console.log(`🎹 Executed setup MIDI command: ${commandString}`);
+        } else {
+          console.warn(`❌ Failed to execute setup MIDI command: ${commandString}`);
+        }
+      } else {
+        console.warn(`❌ Invalid setup MIDI command format: ${commandString}`);
+      }
+    });
+    
+    // Mark setup commands as executed for this song
+    setSongSetupCommandsExecuted(song.id);
+  }, [song?.id, song?.lyrics, connectedDevices, sendMidiCommand, parseMidiCommand, extractSetupMidiCommands, songSetupCommandsExecuted]);
+
   // Reset executed commands when song changes or playback restarts
   useEffect(() => {
     setExecutedCommands(new Set());
+    setSongSetupCommandsExecuted(null); // Reset setup commands for new song
   }, [song?.id]);
 
   // Detect seeks and reset executed commands when seeking backward or jumping significantly

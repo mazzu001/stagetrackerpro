@@ -78,12 +78,13 @@ export const users = pgTable("users", {
   phone: varchar("phone"),
   profileImageUrl: varchar("profile_image_url"),
   profilePhoto: pgText("profile_photo"), // Base64 encoded image data
-  userType: varchar("user_type"), // free, premium, professional
+  userType: varchar("user_type"), // trial, paid
   customBroadcastId: varchar("custom_broadcast_id", { length: 50 }), // User's custom broadcast ID
-  subscriptionStatus: pgInteger("subscription_status").default(1), // 1 = free, 2 = premium, 3 = professional
+  subscriptionStatus: pgInteger("subscription_status").default(1), // 1 = trial, 2 = paid
   stripeCustomerId: varchar("stripe_customer_id"),
   stripeSubscriptionId: varchar("stripe_subscription_id"),
   subscriptionEndDate: timestamp("subscription_end_date"),
+  trialStartDate: timestamp("trial_start_date").defaultNow(), // Track when trial started
   songCount: pgInteger("song_count").default(0),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),

@@ -47,12 +47,27 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     return {
       isAndroid: /Android/i.test(userAgent),
       isChrome: /Chrome/i.test(userAgent) && !/Edg|Edge/i.test(userAgent),
+      isEdge: /Edg|Edge/i.test(userAgent),
       isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent),
-      isAndroidChrome: /Android/i.test(userAgent) && /Chrome/i.test(userAgent) && !/Edg|Edge/i.test(userAgent)
+      isAndroidChrome: /Android/i.test(userAgent) && /Chrome/i.test(userAgent) && !/Edg|Edge/i.test(userAgent),
+      isAndroidEdge: /Android/i.test(userAgent) && /Edg|Edge/i.test(userAgent),
+      isAndroidBrowser: /Android/i.test(userAgent) && (/Chrome/i.test(userAgent) || /Edg|Edge/i.test(userAgent))
     };
   };
 
   const browserInfo = getBrowserInfo();
+  
+  // Debug browser detection for Android MIDI troubleshooting
+  console.log('🔍 Browser detection debug:', {
+    userAgent: navigator.userAgent,
+    isAndroid: browserInfo.isAndroid,
+    isChrome: browserInfo.isChrome,
+    isEdge: browserInfo.isEdge,
+    isAndroidChrome: browserInfo.isAndroidChrome,
+    isAndroidEdge: browserInfo.isAndroidEdge,
+    isAndroidBrowser: browserInfo.isAndroidBrowser,
+    isMobile: browserInfo.isMobile
+  });
 
   // Check if Web MIDI API is supported
   useEffect(() => {
@@ -519,9 +534,9 @@ export function useMidiDevices(): UseMidiDevicesReturn {
             return;
         }
         
-        // Android Chrome debugging - add extra logging and validation
-        if (browserInfo.isAndroidChrome) {
-          console.log(`📱 Android Chrome MIDI Debug:`, {
+        // Android browser debugging - add extra logging and validation
+        if (browserInfo.isAndroidBrowser) {
+          console.log(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'} MIDI Debug:`, {
             deviceName: device.name,
             deviceId: device.id,
             deviceConnection: device.connection,
@@ -531,17 +546,18 @@ export function useMidiDevices(): UseMidiDevicesReturn {
             timestamp: Date.now(),
             outputType: typeof output,
             hasOutputSend: typeof output.send === 'function',
-            deviceManufacturer: device.manufacturer
+            deviceManufacturer: device.manufacturer,
+            browserType: browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'
           });
           
           // Check if device is truly ready for transmission
           if (device.connection !== 'open') {
-            console.error(`📱 Android MIDI Error: Device ${device.name} connection is ${device.connection}, not open!`);
+            console.error(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'} MIDI Error: Device ${device.name} connection is ${device.connection}, not open!`);
             return;
           }
           
           if (device.state !== 'connected') {
-            console.error(`📱 Android MIDI Error: Device ${device.name} state is ${device.state}, not connected!`);
+            console.error(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'} MIDI Error: Device ${device.name} state is ${device.state}, not connected!`);
             return;
           }
         }
@@ -551,33 +567,35 @@ export function useMidiDevices(): UseMidiDevicesReturn {
           output.send(midiData);
           console.log(`🎹 Sent ${command.type} command to ${device.name}:`, midiData);
           
-          // Android Chrome - add detailed confirmation logging
-          if (browserInfo.isAndroidChrome) {
+          // Android browser - add detailed confirmation logging
+          if (browserInfo.isAndroidBrowser) {
             setTimeout(() => {
-              console.log(`📱 Android Chrome: MIDI transmission attempt completed for ${device.name}`);
+              console.log(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'}: MIDI transmission attempt completed for ${device.name}`);
               console.log(`📱 Device status check:`, {
                 name: device.name,
                 connection: device.connection,
                 state: device.state,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                browserType: browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'
               });
             }, 50);
             
             // Additional Android-specific validation
             setTimeout(() => {
-              console.log(`📱 Android Chrome: Post-transmission validation for ${device.name} - checking if command was queued/buffered`);
+              console.log(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'}: Post-transmission validation for ${device.name} - checking if command was queued/buffered`);
             }, 200);
           }
           
         } catch (sendError) {
           console.error(`❌ MIDI send() failed for ${device.name}:`, sendError);
-          if (browserInfo.isAndroidChrome) {
-            console.error(`📱 Android Chrome: MIDI send failure details:`, {
-              error: sendError.message,
+          if (browserInfo.isAndroidBrowser) {
+            console.error(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'}: MIDI send failure details:`, {
+              error: sendError instanceof Error ? sendError.message : String(sendError),
               deviceName: device.name,
               deviceConnection: device.connection,
               deviceState: device.state,
-              commandData: midiData
+              commandData: midiData,
+              browserType: browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'
             });
           }
           return;

@@ -294,11 +294,8 @@ export class StreamingAudioEngine {
     this.state.tracks.forEach(track => this.ensureTrackAudioNodes(track));
     
     // Resume audio context if suspended
-    console.log(`🔊 AudioContext state before resume: ${this.audioContext.state}`);
     if (this.audioContext.state === 'suspended') {
-      console.log(`🔊 Resuming suspended AudioContext...`);
       await this.audioContext.resume();
-      console.log(`🔊 AudioContext state after resume: ${this.audioContext.state}`);
     }
     
     console.log(`▶️ Starting streaming playback: ${this.state.tracks.length} tracks`);
@@ -307,11 +304,8 @@ export class StreamingAudioEngine {
     const playPromises = this.state.tracks.map(track => {
       if (track.audioElement) {
         try {
-          console.log(`🔊 Starting track: ${track.name}, muted: ${track.audioElement.muted}, volume: ${track.audioElement.volume}`);
           track.audioElement.currentTime = this.state.currentTime;
-          return track.audioElement.play().then(() => {
-            console.log(`✅ Track ${track.name} started successfully`);
-          }).catch(err => {
+          return track.audioElement.play().catch(err => {
             console.warn(`⚠️ Failed to start streaming track ${track.name}:`, err);
             // Don't crash - just skip this track and continue
             return Promise.resolve();

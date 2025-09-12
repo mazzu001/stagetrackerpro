@@ -66,8 +66,9 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       midiAccessRef.current = access;
       
       // Listen for device state changes
-      access.onstatechange = (event: MIDIConnectionEvent) => {
-        console.log(`🎹 MIDI device state change:`, event.port?.name, event.port?.state, event.port?.connection);
+      access.onstatechange = (event: Event) => {
+        const midiEvent = event as MIDIConnectionEvent;
+        console.log(`🎹 MIDI device state change:`, midiEvent.port?.name, midiEvent.port?.state, midiEvent.port?.connection);
         refreshDeviceList();
       };
       
@@ -103,7 +104,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     
     // Helper function to detect device type
     const detectDeviceType = (device: MIDIPort): { isUSB: boolean; isBluetooth: boolean } => {
-      const name = device.name.toLowerCase();
+      const name = (device.name || '').toLowerCase();
       const manufacturer = device.manufacturer?.toLowerCase() || '';
       
       // Common Bluetooth MIDI indicators
@@ -270,7 +271,9 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       // Set up message handler for inputs
       if (device.type === 'input') {
         (device as MIDIInput).onmidimessage = (message: MIDIMessageEvent) => {
-          console.log(`🎹 MIDI message from ${device.name}:`, Array.from(message.data));
+          if (message.data) {
+            console.log(`🎹 MIDI message from ${device.name}:`, Array.from(message.data));
+          }
         };
       }
       

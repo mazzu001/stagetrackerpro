@@ -22,6 +22,7 @@ import Unsubscribe from "@/pages/unsubscribe";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
+import { MidiProvider } from '@/contexts/MidiProvider';
 
 function AppContent() {
   const [isLocalFSReady, setIsLocalFSReady] = useState(false);
@@ -191,7 +192,9 @@ function AppContent() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AppContent />
+      <MidiProvider>
+        <AppContent />
+      </MidiProvider>
     </QueryClientProvider>
   );
 }

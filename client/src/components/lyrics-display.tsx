@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Edit, ChevronUp, ChevronDown, Music } from "lucide-react";
-import { useMidiDevices } from "@/hooks/useMidiDevices";
+import { useMidi } from "@/contexts/MidiProvider";
 
 interface LyricsLine {
   timestamp: number; // in seconds
@@ -22,7 +22,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
   const containerRef = useRef<HTMLDivElement>(null);
   
   // MIDI integration
-  const { sendMidiCommand, parseMidiCommand, connectedDevices } = useMidiDevices();
+  const { sendMidiCommand, parseMidiCommand, connectedDevices } = useMidi();
   const [executedCommands, setExecutedCommands] = useState<Set<string>>(new Set());
   const [previousTime, setPreviousTime] = useState<number>(0);
   const [songSetupCommandsExecuted, setSongSetupCommandsExecuted] = useState<string | null>(null);

@@ -219,7 +219,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     return 'Available';
   };
 
-  // Group devices by physical device (name + manufacturer) for unified list
+  // Group devices by physical device using simple " IN"/" OUT" suffix pattern
   const unifiedDevices = React.useMemo(() => {
     const deviceMap = new Map<string, {
       name: string;
@@ -232,11 +232,19 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     }>();
 
     devices.forEach(device => {
-      const key = `${device.name}-${device.manufacturer}`;
+      // Get base device name by stripping " IN" or " OUT" suffix
+      let baseName = device.name;
+      if (baseName.endsWith(' IN')) {
+        baseName = baseName.slice(0, -3); // Remove " IN"
+      } else if (baseName.endsWith(' OUT')) {
+        baseName = baseName.slice(0, -4); // Remove " OUT"
+      }
+      
+      const key = `${baseName}-${device.manufacturer}`;
       
       if (!deviceMap.has(key)) {
         deviceMap.set(key, {
-          name: device.name,
+          name: baseName,
           manufacturer: device.manufacturer,
           isUSB: device.isUSB,
           isBluetooth: device.isBluetooth,
@@ -247,10 +255,14 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       const unified = deviceMap.get(key)!;
       if (device.type === 'input') {
         unified.inputDevice = device;
-        unified.capabilities.push('Input');
+        if (!unified.capabilities.includes('Input')) {
+          unified.capabilities.push('Input');
+        }
       } else {
         unified.outputDevice = device;
-        unified.capabilities.push('Output');
+        if (!unified.capabilities.includes('Output')) {
+          unified.capabilities.push('Output');
+        }
       }
     });
 

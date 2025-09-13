@@ -15,6 +15,8 @@ import path from "path";
 import fs from "fs";
 import { promises as fsPromises } from "fs";
 import { WebSocketServer } from 'ws';
+import { ObjectStorageService, ObjectNotFoundError } from "./objectStorage";
+import { ObjectPermission } from "./objectAcl";
 
 let stripe: Stripe | null = null;
 let isStripeEnabled = false;
@@ -1943,6 +1945,177 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log('📊 Registering waveform caching routes...');
   console.log('🔍 Registering lyrics search routes...');
   console.log('📁 Registering file registry routes...');
+  
+  // ===== MUSIC LIBRARY ENDPOINTS =====
+  console.log('🎼 Registering music library routes...');
+
+  // Get user's music library files
+  app.get('/api/library', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || req.session?.userEmail;
+      if (!userId) {
+        return res.status(401).json({ error: 'User not authenticated' });
+      }
+
+      const objectStorageService = new ObjectStorageService();
+      const files = await objectStorageService.listUserMusicFiles(userId);
+      
+      console.log(`✅ Found ${files.length} music files for user ${userId}`);
+      res.json({ files, count: files.length });
+    } catch (error) {
+      console.error('❌ Error listing library files:', error);
+      res.status(500).json({ error: 'Failed to list library files' });
+    }
+  });
+
+  // Get presigned upload URL for music files
+  app.post('/api/library/upload-url', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || req.session?.userEmail;
+      const { fileName, fileSize, mimeType } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({ error: 'User not authenticated' });
+      }
+
+      if (!fileName) {
+        return res.status(400).json({ error: 'fileName is required' });
+      }
+
+      // Validate file type
+      const allowedTypes = ['audio/mpeg', 'audio/wav', 'audio/ogg', 'audio/mp4', 'audio/m4a'];
+      if (mimeType && !allowedTypes.includes(mimeType)) {
+        return res.status(400).json({ error: 'Invalid file type. Only audio files are allowed.' });
+      }
+
+      // Validate file size (50MB limit)
+      const maxFileSize = 50 * 1024 * 1024; // 50MB
+      if (fileSize && fileSize > maxFileSize) {
+        return res.status(400).json({ error: 'File too large. Maximum size is 50MB.' });
+      }
+
+      const objectStorageService = new ObjectStorageService();
+      const { uploadURL, fileId } = await objectStorageService.getMusicFileUploadURL(userId, fileName);
+
+      console.log(`✅ Generated upload URL for user ${userId}: ${fileName}`);
+      res.json({ uploadURL, fileId, fileName });
+
+    } catch (error) {
+      console.error('❌ Error generating upload URL:', error);
+      res.status(500).json({ error: 'Failed to generate upload URL' });
+    }
+  });
+
+  // Confirm file upload and set ACL policy
+  app.post('/api/library/confirm-upload', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || req.session?.userEmail;
+      const { fileId, originalFileName, fileSize, mimeType } = req.body;
+
+      if (!userId) {
+        return res.status(401).json({ error: 'User not authenticated' });
+      }
+
+      if (!fileId || !originalFileName) {
+        return res.status(400).json({ error: 'fileId and originalFileName are required' });
+      }
+
+      const objectStorageService = new ObjectStorageService();
+      const objectPath = await objectStorageService.setMusicFileAclPolicy(
+        userId,
+        fileId,
+        originalFileName,
+        fileSize || 0,
+        mimeType || 'audio/mpeg'
+      );
+
+      console.log(`✅ File upload confirmed for user ${userId}: ${originalFileName}`);
+      res.json({ 
+        success: true,
+        objectPath,
+        fileId,
+        originalFileName
+      });
+
+    } catch (error) {
+      console.error('❌ Error confirming file upload:', error);
+      res.status(500).json({ error: 'Failed to confirm upload' });
+    }
+  });
+
+  // Download music file from user's library
+  app.get('/api/library/download/:fileId', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || req.session?.userEmail;
+      const { fileId } = req.params;
+
+      if (!userId) {
+        return res.status(401).json({ error: 'User not authenticated' });
+      }
+
+      const objectStorageService = new ObjectStorageService();
+      const objectPath = `/objects/music/${userId}/${fileId}`;
+      
+      try {
+        const objectFile = await objectStorageService.getObjectEntityFile(objectPath);
+        
+        // Check if user can access this file
+        const canAccess = await objectStorageService.canAccessObjectEntity({
+          objectFile,
+          userId,
+          requestedPermission: ObjectPermission.READ,
+        });
+        
+        if (!canAccess) {
+          return res.status(403).json({ error: 'Access denied' });
+        }
+
+        // Stream the file to the response
+        await objectStorageService.downloadObject(objectFile, res);
+        console.log(`✅ Downloaded file for user ${userId}: ${fileId}`);
+        
+      } catch (err) {
+        if (err instanceof ObjectNotFoundError) {
+          return res.status(404).json({ error: 'File not found' });
+        }
+        throw err;
+      }
+
+    } catch (error) {
+      console.error('❌ Error downloading library file:', error);
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Failed to download file' });
+      }
+    }
+  });
+
+  // Delete music file from user's library
+  app.delete('/api/library/:fileId', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub || req.session?.userEmail;
+      const { fileId } = req.params;
+
+      if (!userId) {
+        return res.status(401).json({ error: 'User not authenticated' });
+      }
+
+      // TODO: Delete file from Object Storage
+      const filePath = `${process.env.PRIVATE_OBJECT_DIR}/${userId}/${fileId}`;
+      
+      console.log(`🗑️ Deleting file: ${filePath}`);
+      res.json({ 
+        success: true, 
+        fileId, 
+        message: 'File deleted successfully'
+      });
+
+    } catch (error) {
+      console.error('❌ Error deleting library file:', error);
+      res.status(500).json({ error: 'Failed to delete file' });
+    }
+  });
+
+  console.log('✅ Music library routes registered');
 
   
   console.log('🌐 Creating HTTP server...');

@@ -19,7 +19,7 @@ import SubscribeTest from "@/pages/subscribe-test";
 import Plans from "@/pages/plans";
 import Landing from "@/pages/landing";
 import Unsubscribe from "@/pages/unsubscribe";
-import { LibraryFolderDialog } from '@/components/library-folder-dialog';
+import { CloudLibraryDialog } from '@/components/cloud-library-dialog';
 import { useSecureStorage } from '@/hooks/use-secure-storage';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { MidiProvider } from '@/contexts/MidiProvider';
@@ -152,12 +152,9 @@ function AppContent() {
         <Landing />
       ) : storageState.needsLibrarySelection ? (
         <>
-          <LibraryFolderDialog
+          <CloudLibraryDialog
             isOpen={true}
-            onFolderSelected={handleLibraryFolderSelected}
-            onSelectFolder={storageActions.selectLibraryFolder}
-            isSelecting={storageState.isLoading}
-            error={storageState.error}
+            onLibraryReady={handleLibraryFolderSelected}
           />
           <Toaster />
         </>

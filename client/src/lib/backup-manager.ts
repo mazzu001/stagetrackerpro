@@ -202,6 +202,11 @@ export class BackupManager {
     const manifestText = await manifestFile.async('text');
     const manifest: BackupManifest = JSON.parse(manifestText);
     
+    // Validate backup belongs to current user
+    if (manifest.userEmail !== userEmail) {
+      throw new Error(`This backup was created by ${manifest.userEmail} and can only be imported by that user.`);
+    }
+    
     console.log(`📋 Importing backup from ${manifest.createdAt}: ${manifest.songCount} songs, ${manifest.trackCount} tracks`);
 
     // Get existing songs to check for conflicts

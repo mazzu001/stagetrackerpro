@@ -1,3 +1,13 @@
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { X } from "lucide-react";
+
+interface ExportTask {
+  progress: number;
+  status: string;
+  onCancel?: () => void;
+}
+
 interface StatusBarProps {
   isAudioEngineOnline: boolean;
   latency: number;
@@ -5,6 +15,8 @@ interface StatusBarProps {
   isHost?: boolean;
   isViewer?: boolean;
   currentRoom?: string | null;
+  // Export task
+  exportTask?: ExportTask;
 }
 
 export default function StatusBar({ 
@@ -12,10 +24,36 @@ export default function StatusBar({
   latency,
   isHost = false,
   isViewer = false,
-  currentRoom = null
+  currentRoom = null,
+  exportTask
 }: StatusBarProps) {
   return (
     <div className="bg-surface rounded-xl p-4 border border-gray-700" data-testid="status-bar">
+      {/* Export Progress Bar */}
+      {exportTask && (
+        <div className="mb-3 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg" data-testid="status-export">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-3">
+              <span className="text-sm font-medium text-blue-300">Exporting Library</span>
+              <span className="text-sm text-blue-200" data-testid="text-export-percentage">{exportTask.progress}%</span>
+            </div>
+            {exportTask.onCancel && (
+              <Button
+                variant="ghost" 
+                size="sm" 
+                onClick={exportTask.onCancel}
+                className="h-6 w-6 p-0 hover:bg-red-500/20 text-gray-400 hover:text-red-300"
+                data-testid="button-cancel-export"
+              >
+                <X className="h-3 w-3" />
+              </Button>
+            )}
+          </div>
+          <Progress value={exportTask.progress} className="w-full h-2 mb-1" data-testid="progress-export" />
+          <div className="text-xs text-blue-300/70">{exportTask.status}</div>
+        </div>
+      )}
+      
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-6">
           <div className="flex items-center space-x-2">

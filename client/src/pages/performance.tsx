@@ -60,6 +60,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isExporting, setIsExporting] = useState(false);
   const [exportProgress, setExportProgress] = useState(0);
   const [exportStatus, setExportStatus] = useState("");
+  const [exportController, setExportController] = useState<AbortController | null>(null);
   const [isImporting, setIsImporting] = useState(false);
   const [importProgress, setImportProgress] = useState(0);
   const [importStatus, setImportStatus] = useState("");
@@ -137,6 +138,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       setExportStatus("Starting export...");
       setIsExportDialogOpen(false);
       
+      // Create AbortController for cancellation
+      const controller = new AbortController();
+      setExportController(controller);
+      
       const backupManager = BackupManager.getInstance();
       
       // Create progress callback
@@ -145,7 +150,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         setExportStatus(status);
       };
       
-      const zipBlob = await backupManager.exportAllData(user.email, onProgress);
+      const zipBlob = await backupManager.exportAllData(user.email, onProgress, { signal: controller.signal });
       
       // Create download with explicit MIME type for Android compatibility
       const zipBlobWithMime = new Blob([zipBlob], { type: 'application/zip' });
@@ -182,15 +187,32 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       });
     } catch (error) {
       console.error('Export failed:', error);
-      toast({
-        title: "Export Failed",
-        description: error instanceof Error ? error.message : "Failed to export data",
-        variant: "destructive",
-      });
+      
+      // Handle cancellation vs real errors differently
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        toast({
+          title: "Export Cancelled",
+          description: "Library export was cancelled by user",
+        });
+      } else {
+        toast({
+          title: "Export Failed",
+          description: error instanceof Error ? error.message : "Failed to export data",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsExporting(false);
       setExportProgress(0);
       setExportStatus("");
+      setExportController(null);
+    }
+  };
+
+  // Cancel export operation
+  const handleCancelExport = () => {
+    if (exportController) {
+      exportController.abort();
     }
   };
 
@@ -1241,11 +1263,15 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         <div className="flex items-center justify-between gap-4">
           <StatusBar
             isAudioEngineOnline={isAudioEngineOnline}
-
             latency={latency}
             isHost={isHost}
             isViewer={isViewer}
             currentRoom={currentRoom?.name || null}
+            exportTask={isExporting ? {
+              progress: exportProgress,
+              status: exportStatus,
+              onCancel: handleCancelExport
+            } : undefined}
           />
           
           
@@ -1423,37 +1449,6 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   </>
                 )}
               </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-      {/* Export Progress Dialog */}
-      <Dialog open={isExporting} onOpenChange={() => {}}>
-        <DialogContent className="sm:max-w-md" data-testid="dialog-export-progress">
-          <DialogHeader>
-            <DialogTitle>Exporting Music Library</DialogTitle>
-            <p className="text-sm text-muted-foreground">
-              Please wait while your library is being exported
-            </p>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>Progress</span>
-                <span>{exportProgress}%</span>
-              </div>
-              <Progress value={exportProgress} className="w-full" data-testid="progress-export" />
-            </div>
-            {exportStatus && (
-              <div className="text-sm text-muted-foreground">
-                <p data-testid="text-export-status">{exportStatus}</p>
-              </div>
-            )}
-            <div className="flex justify-center">
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                <span>Do not close this window</span>
-              </div>
             </div>
           </div>
         </DialogContent>

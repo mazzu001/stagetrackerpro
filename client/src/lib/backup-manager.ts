@@ -37,9 +37,14 @@ export class BackupManager {
   /**
    * Export all user data (songs, tracks, audio files, waveforms) to a zip file
    */
-  async exportAllData(userEmail: string, onProgress?: (progress: number, status: string) => void): Promise<Blob> {
+  async exportAllData(userEmail: string, onProgress?: (progress: number, status: string) => void, options?: { signal?: AbortSignal }): Promise<Blob> {
     console.log(`🎒 Starting complete backup export for user: ${userEmail}`);
     onProgress?.(0, "Initializing backup export...");
+    
+    // Check for cancellation at start
+    if (options?.signal?.aborted) {
+      throw new DOMException('Export cancelled', 'AbortError');
+    }
     
     const zip = new JSZip();
     const browserFS = BrowserFileSystem.getInstance();
@@ -71,6 +76,11 @@ export class BackupManager {
     let currentSongIndex = 0;
     
     for (const song of songs) {
+      // Check for cancellation before processing each song
+      if (options?.signal?.aborted) {
+        throw new DOMException('Export cancelled', 'AbortError');
+      }
+      
       currentSongIndex++;
       console.log(`🎵 Processing song: "${song.title}"`);
       onProgress?.(15 + (currentSongIndex / songs.length) * 60, `Processing song ${currentSongIndex}/${songs.length}: "${song.title}"`);
@@ -93,6 +103,11 @@ export class BackupManager {
 
       // Process tracks for this song
       for (const track of song.tracks) {
+        // Check for cancellation before processing each track
+        if (options?.signal?.aborted) {
+          throw new DOMException('Export cancelled', 'AbortError');
+        }
+        
         const newTrackId = crypto.randomUUID();
         processedTracks++;
         
@@ -186,10 +201,21 @@ export class BackupManager {
       compressionOptions: { level: 6 }
     });
 
+    // Final cancellation check before zip generation
+    if (options?.signal?.aborted) {
+      throw new DOMException('Export cancelled', 'AbortError');
+    }
+    
     onProgress?.(80, "Creating manifest and preparing zip file...");
     console.log(`✅ Backup complete: ${songs.length} songs, ${totalTracks} tracks`);
     
     onProgress?.(90, "Generating zip file...");
+    
+    // Check for cancellation before expensive zip generation
+    if (options?.signal?.aborted) {
+      throw new DOMException('Export cancelled', 'AbortError');
+    }
+    
     // Generate zip file with Android-compatible settings
     const zipBlob = await zip.generateAsync({ 
       type: 'blob',

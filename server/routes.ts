@@ -1950,15 +1950,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const emailSuccess = await sendEmail({
         to: 'mazzu001@hotmail.com',
-        from: 'mazzu001@hotmail.com', // Use the same verified email as both sender and recipient
-        subject: subject || 'BandMaestro Help Request',
-        text: `Help request from: ${name || 'Unknown'} (${email})\n\nMessage:\n${message}`,
+        from: 'mazzu001@hotmail.com',
+        subject: `🎵 BandMaestro Help: ${subject || 'Support Request'}`,
+        text: `BandMaestro Help Request\n\nFrom: ${name || 'User'} (${email})\nSubject: ${subject || 'Help Request'}\n\nMessage:\n${message}\n\n---\nSent via BandMaestro Help System`,
         html: `
-          <h3>BandMaestro Help Request</h3>
-          <p><strong>From:</strong> ${name || 'Unknown'} (${email})</p>
-          <p><strong>Subject:</strong> ${subject || 'Help Request'}</p>
-          <h4>Message:</h4>
-          <p style="background: #f5f5f5; padding: 10px; border-radius: 5px;">${message.replace(/\n/g, '<br>')}</p>
+          <div style="max-width: 600px; font-family: Arial, sans-serif;">
+            <h2 style="color: #2563eb; border-bottom: 2px solid #2563eb; padding-bottom: 10px;">🎵 BandMaestro Help Request</h2>
+            <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <p><strong>From:</strong> ${name || 'User'}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Subject:</strong> ${subject || 'Help Request'}</p>
+            </div>
+            <h3>Message:</h3>
+            <div style="background: white; border-left: 4px solid #2563eb; padding: 15px; margin: 15px 0;">
+              ${message.replace(/\n/g, '<br>')}
+            </div>
+            <p style="color: #64748b; font-size: 12px; margin-top: 30px;">Sent via BandMaestro Help System</p>
+          </div>
         `
       });
 

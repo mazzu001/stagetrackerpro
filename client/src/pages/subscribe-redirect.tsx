@@ -35,7 +35,7 @@ const plans: PlanOption[] = [
     price: '$6.99',
     features: [
       'All Premium features',
-      'Advanced audio control (Coming Soon)',
+      'Advanced MIDI device control',
       'Wireless audio connectivity (Coming Soon)', 
       'Advanced performance tools (Coming Soon)',
       'Professional stage features (Coming Soon)',

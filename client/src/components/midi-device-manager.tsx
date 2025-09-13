@@ -339,36 +339,10 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
               {unifiedDevices.length === 0 ? (
                 <Card>
                   <CardContent className="pt-6">
-                    <div className="text-center text-muted-foreground space-y-3">
+                    <div className="text-center text-muted-foreground">
                       <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                      <div>
-                        <p className="text-sm font-medium">No MIDI devices found</p>
-                        <p className="text-xs">This is normal in development environments</p>
-                      </div>
-                      
-                      <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg text-left space-y-2">
-                        <p className="text-xs font-medium text-blue-900 dark:text-blue-100">Windows Users:</p>
-                        <ul className="text-xs text-blue-800 dark:text-blue-200 space-y-1 list-disc list-inside">
-                          <li>BLE MIDI devices (like WIDI Jack) may not appear in browsers</li>
-                          <li>Use USB MIDI devices for better compatibility</li>
-                          <li>Try opening this app in a new browser tab</li>
-                        </ul>
-                      </div>
-                      
-                      <div className="flex flex-col gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => window.open(window.location.href, '_blank')}
-                          data-testid="button-open-new-tab"
-                          className="text-xs"
-                        >
-                          Open in New Tab
-                        </Button>
-                        <p className="text-xs opacity-75">
-                          MIDI devices work best when opened directly in the browser
-                        </p>
-                      </div>
+                      <p className="text-sm">No MIDI devices found</p>
+                      <p className="text-xs">Connect a MIDI device and click Refresh</p>
                     </div>
                   </CardContent>
                 </Card>

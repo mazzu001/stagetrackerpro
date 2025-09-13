@@ -166,13 +166,21 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     const deviceList: MidiDevice[] = [];
     const currentDeviceIds = new Set<string>();
     
+    // Debug: Log access details
+    console.log('🔍 Refreshing devices - access details:', {
+      inputs: access.inputs.size,
+      outputs: access.outputs.size,
+      inputsType: access.inputs.constructor.name,
+      outputsType: access.outputs.constructor.name
+    });
+    
     // Helper function to detect device type
     const detectDeviceType = (device: MIDIPort): { isUSB: boolean; isBluetooth: boolean } => {
       const name = (device.name || '').toLowerCase();
       const manufacturer = device.manufacturer?.toLowerCase() || '';
       
       // Common Bluetooth MIDI indicators
-      const bluetoothIndicators = ['bluetooth', 'bt', 'wireless', 'ble'];
+      const bluetoothIndicators = ['bluetooth', 'bt', 'wireless', 'ble', 'widi'];
       const isBluetooth = bluetoothIndicators.some(indicator => 
         name.includes(indicator) || manufacturer.includes(indicator)
       );
@@ -184,7 +192,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     };
     
     // Process input devices
-    access.inputs.forEach((input: MIDIInput) => {
+    for (const input of access.inputs.values()) {
       const { isUSB, isBluetooth } = detectDeviceType(input);
       currentDeviceIds.add(input.id);
       
@@ -203,10 +211,10 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         isBluetooth,
         usesBleAdapter
       });
-    });
+    }
     
     // Process output devices
-    access.outputs.forEach((output: MIDIOutput) => {
+    for (const output of access.outputs.values()) {
       const { isUSB, isBluetooth } = detectDeviceType(output);
       currentDeviceIds.add(output.id);
       
@@ -225,7 +233,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         isBluetooth,
         usesBleAdapter
       });
-    });
+    }
     
     // Clean up stale device connections (devices no longer available)
     const staleDeviceIds: string[] = [];

@@ -1228,11 +1228,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         <div className="flex items-center justify-between gap-4">
           <StatusBar
             isAudioEngineOnline={isAudioEngineOnline}
+
             latency={latency}
             isHost={isHost}
             isViewer={isViewer}
             currentRoom={currentRoom?.name || null}
-            userEmail={user?.email}
           />
           
           

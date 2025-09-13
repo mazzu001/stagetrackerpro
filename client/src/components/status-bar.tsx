@@ -1,5 +1,3 @@
-import { BackupStatusIndicator } from '@/components/backup-status-indicator';
-
 interface StatusBarProps {
   isAudioEngineOnline: boolean;
   latency: number;
@@ -7,8 +5,6 @@ interface StatusBarProps {
   isHost?: boolean;
   isViewer?: boolean;
   currentRoom?: string | null;
-  // Backup status
-  userEmail?: string;
 }
 
 export default function StatusBar({ 
@@ -16,8 +12,7 @@ export default function StatusBar({
   latency,
   isHost = false,
   isViewer = false,
-  currentRoom = null,
-  userEmail
+  currentRoom = null
 }: StatusBarProps) {
   return (
     <div className="bg-surface rounded-xl p-4 border border-gray-700" data-testid="status-bar">
@@ -49,11 +44,6 @@ export default function StatusBar({
                 )}
               </span>
             </div>
-          )}
-
-          {/* Backup Status Indicator */}
-          {userEmail && (
-            <BackupStatusIndicator userEmail={userEmail} />
           )}
 
         </div>

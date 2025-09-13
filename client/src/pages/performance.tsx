@@ -954,7 +954,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         <div className="w-72 md:w-80 border-r border-gray-700 bg-surface flex flex-col min-h-0">
           <div className="p-2 md:p-4 border-b border-gray-700 flex-shrink-0">
             <div className="flex items-center justify-between mb-2 md:mb-4">
-              <h2 className="text-sm md:text-lg font-semibold">Songs</h2>
+              <h2 className="text-sm md:text-lg font-semibold">Songs ({allSongs.length})</h2>
               <div className="flex items-center gap-2">
                 <Dialog open={isAddSongOpen} onOpenChange={setIsAddSongOpen}>
                   <DialogTrigger asChild>

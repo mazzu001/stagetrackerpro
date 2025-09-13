@@ -1,0 +1,310 @@
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'battery'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ framework-87e4a596bb9cb438.js:1
+uD @ framework-87e4a596bb9cb438.js:1
+uI @ framework-87e4a596bb9cb438.js:1
+uM @ framework-87e4a596bb9cb438.js:1
+uS @ framework-87e4a596bb9cb438.js:1
+C @ framework-87e4a596bb9cb438.js:1
+z @ framework-87e4a596bb9cb438.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+BandMaestro:1  Access to fetch at 'https://sp.replit.com/v1/m' from origin 'https://replit.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+sp.replit.com/v1/m:1   Failed to load resource: net::ERR_FAILED
+_app-1ae87f7f7b922a17.js:38  Error sending segment performance metrics TypeError: Failed to fetch
+    at _app-1ae87f7f7b922a17.js:38:9046
+    at _app-1ae87f7f7b922a17.js:1:216965
+    at o (_app-1ae87f7f7b922a17.js:1:498131)
+    at o (sdk.min.js:1:23763)
+    at t.<anonymous> (remote-metrics.ts:138:12)
+    at tslib.es6.js:103:23
+    at Object.next (tslib.es6.js:108:37)
+    at tslib.es6.js:80:8
+    at new Promise (<anonymous>)
+    at u (tslib.es6.js:72:27)
+    at i.148.t.send (sdk.min.js:1:22021)
+    at t.<anonymous> (remote-metrics.ts:125:16)
+    at tslib.es6.js:103:23
+    at Object.next (tslib.es6.js:108:37)
+    at tslib.es6.js:80:8
+    at new Promise (<anonymous>)
+    at u (tslib.es6.js:72:27)
+    at t.flush (sdk.min.js:1:21754)
+    at l (remote-metrics.ts:83:14)
+    at n (_app-1ae87f7f7b922a17.js:38:2959)
+(anonymous) @ _app-1ae87f7f7b922a17.js:38
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3fm%3A:1  Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=jdvuP1cHcN67' failed: 
+t @ eruda.js:2
+eruda.js:2  Uncaught (in promise) 
+ 🔵 Android BLE-MIDI adapter initialized
+ Loaded 12 audio file path references from localStorage
+ 🔄 Auto-loading 12 stored audio files...
+ 🔍 BrowserFS.getAudioFile: Looking for track 1e7e1113-9c39-4e2e-9e35-c716ff484ef8
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 1e7e1113-9c39-4e2e-9e35-c716ff484ef8
+ ❌ Database not initialized for track 1e7e1113-9c39-4e2e-9e35-c716ff484ef8
+ Expected audio files for tracks:
+   - 3AM - Backups.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/1e7e1113-9c39-4e2e-9e35-c716ff484ef8)
+   - 3AM - Bass.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/0502d06b-2960-40ec-af92-e4f0dce833e7)
+   - 3AM - Click.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/a01ca0fe-6a9a-40cb-93db-3562a5f158a1)
+   - 3AM - Drums.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/5a6ce544-da11-4a9a-8840-fff46c5c6842)
+   - 3AM - Guitars.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/0d19fd08-8591-40a0-baa0-886de1b0f628)
+   - 3AM - Organ.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/6ce234a1-0d49-4000-867a-d1d7d64b4110)
+   - Comfortably Numb - Acoustic.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/ea0b3fa1-a6f9-4065-92f1-a89e416e657f)
+   - Comfortably Numb - Backups.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/895c267f-4b7f-4123-8464-1d5ca0ccf33a)
+   - Comfortably Numb - Bass.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/b2343569-e1d2-42fe-89f0-95e32de86820)
+   - Comfortably Numb - Click.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/82275465-e025-43c4-845f-c6ed70672454)
+   - Comfortably Numb - Drums.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/7e0441f1-3413-4c5c-bfd2-c88f74e3285a)
+   - Comfortably Numb - Keys.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/851e57d4-3aec-4cad-b734-c6e4ed23f720)
+ These files will be loaded when you select them through the file picker.
+ 🔍 BrowserFS.getAudioFile: Looking for track 0502d06b-2960-40ec-af92-e4f0dce833e7
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 0502d06b-2960-40ec-af92-e4f0dce833e7
+ ❌ Database not initialized for track 0502d06b-2960-40ec-af92-e4f0dce833e7
+ 🔍 BrowserFS.getAudioFile: Looking for track a01ca0fe-6a9a-40cb-93db-3562a5f158a1
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for a01ca0fe-6a9a-40cb-93db-3562a5f158a1
+Console.js:61 ❌ Database not initialized for track a01ca0fe-6a9a-40cb-93db-3562a5f158a1
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 5a6ce544-da11-4a9a-8840-fff46c5c6842
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 5a6ce544-da11-4a9a-8840-fff46c5c6842
+Console.js:61 ❌ Database not initialized for track 5a6ce544-da11-4a9a-8840-fff46c5c6842
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 0d19fd08-8591-40a0-baa0-886de1b0f628
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 0d19fd08-8591-40a0-baa0-886de1b0f628
+Console.js:61 ❌ Database not initialized for track 0d19fd08-8591-40a0-baa0-886de1b0f628
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 6ce234a1-0d49-4000-867a-d1d7d64b4110
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 6ce234a1-0d49-4000-867a-d1d7d64b4110
+Console.js:61 ❌ Database not initialized for track 6ce234a1-0d49-4000-867a-d1d7d64b4110
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track ea0b3fa1-a6f9-4065-92f1-a89e416e657f
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for ea0b3fa1-a6f9-4065-92f1-a89e416e657f
+Console.js:61 ❌ Database not initialized for track ea0b3fa1-a6f9-4065-92f1-a89e416e657f
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 895c267f-4b7f-4123-8464-1d5ca0ccf33a
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 895c267f-4b7f-4123-8464-1d5ca0ccf33a
+Console.js:61 ❌ Database not initialized for track 895c267f-4b7f-4123-8464-1d5ca0ccf33a
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track b2343569-e1d2-42fe-89f0-95e32de86820
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for b2343569-e1d2-42fe-89f0-95e32de86820
+Console.js:61 ❌ Database not initialized for track b2343569-e1d2-42fe-89f0-95e32de86820
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 82275465-e025-43c4-845f-c6ed70672454
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 82275465-e025-43c4-845f-c6ed70672454
+Console.js:61 ❌ Database not initialized for track 82275465-e025-43c4-845f-c6ed70672454
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 7e0441f1-3413-4c5c-bfd2-c88f74e3285a
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 7e0441f1-3413-4c5c-bfd2-c88f74e3285a
+Console.js:61 ❌ Database not initialized for track 7e0441f1-3413-4c5c-bfd2-c88f74e3285a
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 851e57d4-3aec-4cad-b734-c6e4ed23f720
+Console.js:61 💾 Memory cache has: []
+Console.js:61 🗃️ Database initialized: false
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 851e57d4-3aec-4cad-b734-c6e4ed23f720
+Console.js:61 ❌ Database not initialized for track 851e57d4-3aec-4cad-b734-c6e4ed23f720
+Console.js:61 ✅ Auto-loaded 0/12 audio files into cache
+Console.js:61 🔍 Browser detection debug: Object
+Console.js:61 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+Console.js:61 🔍 Parsed values: Object
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 🎹 Initializing MIDI access...
+Console.js:61 Browser file system already initialized - auto-initializing
+Console.js:61 ✅ BrowserFileSystem database auto-initialized
+Console.js:61 🔍 Browser detection debug: Object
+Console.js:61 Browser file system initialized successfully
+Console.js:61 🎹 Found 0 MIDI devices: Array(0)
+Console.js:61 🎹 Connected devices: 0/0 Array(0)
+Console.js:61 ✅ MIDI system initialized successfully
+Console.js:61 🔍 Browser detection debug: Object
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+Console.js:61 🔍 Initial service isHost check: Object
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: Object
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 📋 Loaded 0 songs from local storage (alphabetically sorted)
+Console.js:61 🔍 Debug values: Object
+Console.js:61 📱 Edge browser: Forcing memory cleanup
+Console.js:61 🔍 Initial service isHost check: Object
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 ✅ User profile data loaded successfully
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/api/help:1   Failed to load resource: the server responded with a status of 500 (Internal Server Error)

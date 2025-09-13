@@ -1950,11 +1950,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const emailSuccess = await sendEmail({
         to: 'mazzu001@hotmail.com',
-        from: 'noreply@stagetracker.com', // You'll need to verify this domain with SendGrid
-        subject: subject || 'Help Request from StageTracker',
+        from: 'mazzu001@hotmail.com', // Use the same verified email as both sender and recipient
+        subject: subject || 'BandMaestro Help Request',
         text: `Help request from: ${name || 'Unknown'} (${email})\n\nMessage:\n${message}`,
         html: `
-          <h3>Help Request from StageTracker</h3>
+          <h3>BandMaestro Help Request</h3>
           <p><strong>From:</strong> ${name || 'Unknown'} (${email})</p>
           <p><strong>Subject:</strong> ${subject || 'Help Request'}</p>
           <h4>Message:</h4>

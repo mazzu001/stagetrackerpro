@@ -1936,6 +1936,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Help request endpoint
+  app.post('/api/help', async (req, res) => {
+    try {
+      const { email, name, subject, message } = req.body;
+      
+      if (!email || !message) {
+        return res.status(400).json({ error: 'Email and message are required' });
+      }
+
+      // Use SendGrid to send help request
+      const { sendEmail } = await import('./sendgrid');
+      
+      const emailSuccess = await sendEmail({
+        to: 'mazzu001@hotmail.com',
+        from: 'noreply@stagetracker.com', // You'll need to verify this domain with SendGrid
+        subject: subject || 'Help Request from StageTracker',
+        text: `Help request from: ${name || 'Unknown'} (${email})\n\nMessage:\n${message}`,
+        html: `
+          <h3>Help Request from StageTracker</h3>
+          <p><strong>From:</strong> ${name || 'Unknown'} (${email})</p>
+          <p><strong>Subject:</strong> ${subject || 'Help Request'}</p>
+          <h4>Message:</h4>
+          <p style="background: #f5f5f5; padding: 10px; border-radius: 5px;">${message.replace(/\n/g, '<br>')}</p>
+        `
+      });
+
+      if (emailSuccess) {
+        console.log(`📧 Help request sent successfully from ${email}`);
+        res.json({ success: true, message: 'Help request sent successfully' });
+      } else {
+        throw new Error('Failed to send email');
+      }
+    } catch (error) {
+      console.error('❌ Error sending help request:', error);
+      res.status(500).json({ error: 'Failed to send help request' });
+    }
+  });
+
   console.log('📡 Registering broadcast session routes...');
   console.log('🗄️ Registering database storage routes...');
   console.log('🎵 Registering song management routes...');

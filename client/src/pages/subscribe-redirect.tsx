@@ -38,7 +38,7 @@ const plans: PlanOption[] = [
       'Advanced MIDI device control',
       'Multiple simultaneous MIDI device connections', 
       'Advanced Bluetooth connectivity and device control',
-      'Professional stage features (Coming Soon)',
+      'Embedded time stamped MIDI commands with to-the-second accuracy',
       'Priority support'
     ],
     icon: Star

@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Cast, Users, Radio, Link2, LogOut, Upload, User, Copy, Crown, X, HelpCircle, Send } from 'lucide-react';
+import { Cast, Users, Radio, Link2, LogOut, Upload, User, Copy, Crown, X, HelpCircle } from 'lucide-react';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { useBroadcast } from '@/hooks/useBroadcast';
 import { useToast } from '@/hooks/use-toast';
@@ -45,12 +44,6 @@ export default function Dashboard() {
   
   // Inline editing states
   
-  // Help form state  
-  const [helpForm, setHelpForm] = useState({
-    subject: '',
-    message: ''
-  });
-  const [isSubmittingHelp, setIsSubmittingHelp] = useState(false);
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editValues, setEditValues] = useState({
     firstName: '',
@@ -438,50 +431,6 @@ export default function Dashboard() {
     });
   };
 
-  // Help form submission
-  const handleSubmitHelp = async () => {
-    if (!user?.email || !helpForm.message.trim()) {
-      toast({
-        title: "Error", 
-        description: "Please fill in your message",
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setIsSubmittingHelp(true);
-    try {
-      const response = await fetch('/api/help', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: user.email,
-          name: `${profileData.firstName || ''} ${profileData.lastName || ''}`.trim() || 'User',
-          subject: helpForm.subject.trim() || 'Help Request',
-          message: helpForm.message.trim()
-        }),
-      });
-
-      if (response.ok) {
-        toast({
-          title: "Help request sent",
-          description: "We'll get back to you soon!"
-        });
-        setHelpForm({ subject: '', message: '' });
-      } else {
-        throw new Error('Failed to send');
-      }
-    } catch (error) {
-      toast({
-        title: "Error sending help request",
-        description: "Please try again later",
-        variant: "destructive"
-      });
-    }
-    setIsSubmittingHelp(false);
-  };
 
   // Phone number formatting utility
   const formatPhoneNumber = (phone: string) => {
@@ -990,49 +939,16 @@ export default function Dashboard() {
                       <HelpCircle className="h-4 w-4 mr-2" />
                       Need Help?
                     </h4>
-                    <div className="space-y-3">
-                      <div>
-                        <Label htmlFor="help-subject" className="text-xs text-muted-foreground">Subject (Optional)</Label>
-                        <Input
-                          id="help-subject"
-                          value={helpForm.subject}
-                          onChange={(e) => setHelpForm(prev => ({ ...prev, subject: e.target.value }))}
-                          placeholder="What do you need help with?"
-                          className="h-8 text-sm"
-                          data-testid="input-help-subject"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="help-message" className="text-xs text-muted-foreground">Message *</Label>
-                        <Textarea
-                          id="help-message"
-                          value={helpForm.message}
-                          onChange={(e) => setHelpForm(prev => ({ ...prev, message: e.target.value }))}
-                          placeholder="Describe your issue or question..."
-                          className="min-h-[80px] text-sm resize-none"
-                          data-testid="textarea-help-message"
-                        />
-                      </div>
-                      <Button 
-                        onClick={handleSubmitHelp}
-                        disabled={isSubmittingHelp || !helpForm.message.trim()}
-                        size="sm"
-                        className="w-full"
-                        data-testid="button-submit-help"
+                    <p className="text-sm text-muted-foreground">
+                      Send help requests to{' '}
+                      <a 
+                        href="mailto:mazzu001@hotmail.com" 
+                        className="text-blue-600 hover:underline"
+                        data-testid="link-help-email"
                       >
-                        {isSubmittingHelp ? (
-                          <>
-                            <div className="animate-spin w-3 h-3 border border-white border-t-transparent rounded-full mr-2" />
-                            Sending...
-                          </>
-                        ) : (
-                          <>
-                            <Send className="h-3 w-3 mr-2" />
-                            Send Help Request
-                          </>
-                        )}
-                      </Button>
-                    </div>
+                        mazzu001@hotmail.com
+                      </a>
+                    </p>
                   </div>
                 </CardContent>
               </Card>

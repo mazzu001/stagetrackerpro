@@ -153,21 +153,10 @@ export class LocalDiskFileSystem {
    */
   async writeSongData(songId: string, songData: any): Promise<boolean> {
     if (!await this.verifyPermission()) {
-      console.log('❌ writeSongData: Permission verification failed');
       return false;
     }
 
     try {
-      console.log(`🔍 writeSongData: Writing song ${songId} (${songData.title})`);
-      
-      // Ensure folder structure exists
-      const folderCreated = await this.createFolderStructure();
-      if (!folderCreated) {
-        console.error('❌ writeSongData: Failed to create folder structure');
-        return false;
-      }
-      console.log('✅ writeSongData: Folder structure verified');
-      
       const backupFolder = await this.directoryHandle!.getDirectoryHandle('StageTracker-Backup');
       const songsFolder = await backupFolder.getDirectoryHandle('songs');
       const fileHandle = await songsFolder.getFileHandle(`${songId}.json`, { create: true });
@@ -193,13 +182,6 @@ export class LocalDiskFileSystem {
     }
 
     try {
-      // Ensure folder structure exists
-      const folderCreated = await this.createFolderStructure();
-      if (!folderCreated) {
-        console.error('❌ writeAudioFile: Failed to create folder structure');
-        return false;
-      }
-      
       const backupFolder = await this.directoryHandle!.getDirectoryHandle('StageTracker-Backup');
       const audioFolder = await backupFolder.getDirectoryHandle('audio');
       const fileHandle = await audioFolder.getFileHandle(filename, { create: true });
@@ -225,13 +207,6 @@ export class LocalDiskFileSystem {
     }
 
     try {
-      // Ensure folder structure exists
-      const folderCreated = await this.createFolderStructure();
-      if (!folderCreated) {
-        console.error('❌ writeManifest: Failed to create folder structure');
-        return false;
-      }
-      
       const backupFolder = await this.directoryHandle!.getDirectoryHandle('StageTracker-Backup');
       const fileHandle = await backupFolder.getFileHandle('manifest.json', { create: true });
       const writable = await fileHandle.createWritable();
@@ -318,32 +293,20 @@ export class LocalDiskFileSystem {
    */
   async listSongFiles(): Promise<string[]> {
     if (!await this.verifyPermission()) {
-      console.log('❌ listSongFiles: Permission verification failed');
       return [];
     }
 
     try {
-      console.log('🔍 listSongFiles: Accessing backup folder...');
       const backupFolder = await this.directoryHandle!.getDirectoryHandle('StageTracker-Backup');
-      console.log('✅ listSongFiles: Found backup folder');
-      
-      console.log('🔍 listSongFiles: Accessing songs folder...');
       const songsFolder = await backupFolder.getDirectoryHandle('songs');
-      console.log('✅ listSongFiles: Found songs folder');
       
       const songFiles: string[] = [];
-      console.log('🔍 listSongFiles: Scanning for JSON files...');
-      
       for await (const [name, handle] of (songsFolder as ExtendedFileSystemDirectoryHandle).entries()) {
-        console.log(`🔍 listSongFiles: Found entry: ${name} (${handle.kind})`);
         if (handle.kind === 'file' && name.endsWith('.json')) {
-          const songId = name.replace('.json', '');
-          songFiles.push(songId);
-          console.log(`✅ listSongFiles: Added song: ${songId}`);
+          songFiles.push(name.replace('.json', ''));
         }
       }
       
-      console.log(`✅ listSongFiles: Found ${songFiles.length} song files:`, songFiles);
       return songFiles;
     } catch (error) {
       console.error('❌ Failed to list song files:', error);

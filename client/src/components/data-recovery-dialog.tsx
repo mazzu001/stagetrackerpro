@@ -37,9 +37,6 @@ export function DataRecoveryDialog({
   const { toast } = useToast();
 
   const handleRestore = async () => {
-    console.log('🔄 Starting handleRestore with userEmail:', userEmail);
-    console.log('🔄 Backup status:', status);
-    
     setIsRestoring(true);
     setRestoreProgress(0);
     setRestoreStatus('Scanning local folder...');
@@ -61,9 +58,7 @@ export function DataRecoveryDialog({
       }
 
       // Perform actual restoration
-      console.log('🔄 Calling actions.restoreFromBackup()');
       const result = await actions.restoreFromBackup();
-      console.log('✅ Restore result:', result);
       setRestoreResult(result);
 
       if (result.success) {

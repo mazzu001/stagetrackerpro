@@ -267,11 +267,7 @@ export class StorageOrchestrator {
    * Restore data from local folder with email validation
    */
   async restoreFromLocalFolder(userEmail: string): Promise<{success: boolean, restored: number, errors: string[]}> {
-    console.log('🔄 restoreFromLocalFolder called with userEmail:', userEmail);
-    console.log('🔄 autoSaveStatus:', this.autoSaveStatus);
-    
     if (!this.autoSaveStatus.isEnabled) {
-      console.log('❌ Backup not enabled, returning error');
       return {
         success: false,
         restored: 0,
@@ -377,7 +373,7 @@ export class StorageOrchestrator {
               bpm: song.bpm,
               duration: song.duration,
               lyrics: song.lyrics,
-              waveformData: "" // Empty waveform data for restored songs
+              waveformData: [] // Empty waveform data for restored songs
             });
             console.log(`✅ Added new song: ${newSong.title}`);
           }

@@ -50,12 +50,9 @@ export function useLocalFolderBackup(userEmail: string): [BackupStatus, BackupAc
     const autoSaveStatus = orchestrator.getAutoSaveStatus();
     const storageStats = await orchestrator.getStorageStats(userEmail);
     const diskStatus = LocalDiskFileSystem.getInstance().getStatus();
-    
-    // Check actual folder permission, not just the autoSave flag
-    const hasFolderAccess = await LocalDiskFileSystem.getInstance().silentVerifyPermission();
 
     setStatus({
-      isEnabled: autoSaveStatus.isEnabled && hasFolderAccess,
+      isEnabled: autoSaveStatus.isEnabled,
       isSupported: diskStatus.isSupported,
       lastSaveTime: autoSaveStatus.lastSaveTime,
       lastSaveStatus: autoSaveStatus.lastSaveStatus,

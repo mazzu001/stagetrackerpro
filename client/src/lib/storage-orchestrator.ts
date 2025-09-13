@@ -264,16 +264,161 @@ export class StorageOrchestrator {
   }
 
   /**
-   * Restore data from local folder - simplified version just shows message
+   * Restore data from local folder with email validation
    */
   async restoreFromLocalFolder(userEmail: string): Promise<{success: boolean, restored: number, errors: string[]}> {
-    // For the simplified version, we'll just return a message that restoration 
-    // is not implemented yet, but the backup is protecting their data
-    return {
-      success: false,
-      restored: 0,
-      errors: ['Restore feature coming soon. Your data is being backed up to the selected folder.']
-    };
+    if (!this.autoSaveStatus.isEnabled) {
+      return {
+        success: false,
+        restored: 0,
+        errors: ['No backup folder selected. Please set up local backup first.']
+      };
+    }
+
+    console.log('🔄 Starting restore from local folder...');
+    const errors: string[] = [];
+
+    try {
+      // Step 1: Read and validate manifest
+      console.log('📋 Reading backup manifest...');
+      const manifest = await this.localDisk.readManifest();
+      
+      if (!manifest) {
+        return {
+          success: false,
+          restored: 0,
+          errors: ['No backup manifest found. The selected folder may not contain a valid StageTracker backup.']
+        };
+      }
+
+      // Step 2: Validate backup email against current user
+      console.log('🔐 Validating backup ownership...');
+      if (!manifest.userEmail) {
+        return {
+          success: false,
+          restored: 0,
+          errors: ['Invalid backup: Missing user information. This backup may be corrupted.']
+        };
+      }
+
+      if (manifest.userEmail !== userEmail) {
+        return {
+          success: false,
+          restored: 0,
+          errors: [
+            `⛔ Access Denied: This backup belongs to "${manifest.userEmail}".`,
+            `You are logged in as "${userEmail}".`,
+            '',
+            '🔒 This security measure prevents trial abuse and protects user data.',
+            '💡 To use this backup, please log in with the original email address.',
+            '',
+            '📧 Need help? Contact support if you need to transfer backups between accounts.'
+          ]
+        };
+      }
+
+      // Step 3: Get list of songs to restore
+      console.log('📂 Scanning backup folder...');
+      const songIds = await this.localDisk.listSongFiles();
+      
+      if (songIds.length === 0) {
+        return {
+          success: false,
+          restored: 0,
+          errors: ['No songs found in backup folder.']
+        };
+      }
+
+      console.log(`📦 Found ${songIds.length} songs to restore`);
+      let restoredCount = 0;
+
+      // Step 4: Restore each song
+      for (const songId of songIds) {
+        try {
+          console.log(`🔄 Restoring song: ${songId}`);
+          
+          // Read song data from backup
+          const songData = await this.localDisk.readSongData(songId);
+          if (!songData) {
+            errors.push(`Failed to read song data: ${songId}`);
+            continue;
+          }
+
+          // Create song in local storage
+          const song = {
+            id: songData.id,
+            title: songData.title || 'Untitled',
+            artist: songData.artist || 'Unknown',
+            key: songData.key || 'C',
+            bpm: songData.bpm || 120,
+            duration: songData.duration || 0,
+            lyrics: songData.lyrics || '',
+            createdAt: songData.createdAt || Date.now(),
+            tracks: []
+          };
+
+          // Check if song already exists to avoid duplicates
+          const existingSongs = LocalSongStorage.getAllSongs(userEmail);
+          const existingIndex = existingSongs.findIndex(s => s.id === song.id);
+          
+          if (existingIndex >= 0) {
+            // Update existing song
+            LocalSongStorage.updateSong(userEmail, song.id, song);
+          } else {
+            // Add new song - use addSong method but first construct the song object properly
+            const newSong = LocalSongStorage.addSong(userEmail, {
+              title: song.title,
+              artist: song.artist,
+              key: song.key,
+              bpm: song.bpm,
+              duration: song.duration,
+              lyrics: song.lyrics,
+              waveformData: [] // Empty waveform data for restored songs
+            });
+            console.log(`✅ Added new song: ${newSong.title}`);
+          }
+          
+          restoredCount++;
+          
+          console.log(`✅ Restored song: ${song.title}`);
+          
+        } catch (error) {
+          console.error(`❌ Failed to restore song ${songId}:`, error);
+          errors.push(`Failed to restore song: ${songId}`);
+        }
+      }
+
+      // Step 5: Return results
+      if (restoredCount > 0) {
+        console.log(`✅ Restore complete: ${restoredCount} songs restored`);
+        return {
+          success: true,
+          restored: restoredCount,
+          errors: errors.length > 0 ? [
+            `Successfully restored ${restoredCount} songs.`,
+            '',
+            '⚠️ Audio tracks not restored automatically.',
+            '💡 Please re-add your audio files to the restored songs.',
+            '',
+            ...errors
+          ] : []
+        };
+      } else {
+        return {
+          success: false,
+          restored: 0,
+          errors: ['Failed to restore any songs.', ...errors]
+        };
+      }
+
+    } catch (error) {
+      console.error('❌ Restore failed:', error);
+      return {
+        success: false,
+        restored: 0,
+        errors: [`Restore failed: ${error instanceof Error ? error.message : 'Unknown error'}`]
+      };
+    }
   }
 
   /**

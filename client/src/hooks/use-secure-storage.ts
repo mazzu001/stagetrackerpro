@@ -3,7 +3,7 @@
  * Manages user's music library with built-in security and trial protection
  */
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import SecureDirectStorage, { type DirectStorageStatus } from '@/lib/secure-direct-storage';
 
 interface SecureStorageState {
@@ -42,12 +42,23 @@ export function useSecureStorage(): [SecureStorageState, SecureStorageActions] {
   // Update state from storage status
   const refreshStatus = useCallback(() => {
     const status = storage.getStatus();
-    setState(prev => ({
-      ...prev,
-      status,
-      needsLibrarySelection: status.isSupported && !status.isInitialized,
-      error: status.lastError || null
-    }));
+    setState(prev => {
+      // Only update if something actually changed to prevent infinite loops
+      if (
+        prev.status.isInitialized !== status.isInitialized ||
+        prev.status.hasLibraryFolder !== status.hasLibraryFolder ||
+        prev.status.libraryPath !== status.libraryPath ||
+        prev.status.lastError !== status.lastError
+      ) {
+        return {
+          ...prev,
+          status,
+          needsLibrarySelection: status.isSupported && !status.isInitialized,
+          error: status.lastError || null
+        };
+      }
+      return prev; // No change, return same state object
+    });
   }, [storage]);
 
   // Initialize storage with user email
@@ -197,7 +208,7 @@ export function useSecureStorage(): [SecureStorageState, SecureStorageActions] {
     }
   }, [state.error]);
 
-  const actions: SecureStorageActions = {
+  const actions: SecureStorageActions = useMemo(() => ({
     initialize,
     selectLibraryFolder,
     writeSong,
@@ -206,7 +217,7 @@ export function useSecureStorage(): [SecureStorageState, SecureStorageActions] {
     readAudio,
     listSongs,
     refreshStatus
-  };
+  }), [initialize, selectLibraryFolder, writeSong, readSong, writeAudio, readAudio, listSongs, refreshStatus]);
 
   return [state, actions];
 }

@@ -37,8 +37,9 @@ export class BackupManager {
   /**
    * Export all user data (songs, tracks, audio files, waveforms) to a zip file
    */
-  async exportAllData(userEmail: string): Promise<Blob> {
+  async exportAllData(userEmail: string, onProgress?: (progress: number, status: string) => void): Promise<Blob> {
     console.log(`🎒 Starting complete backup export for user: ${userEmail}`);
+    onProgress?.(0, "Initializing backup export...");
     
     const zip = new JSZip();
     const browserFS = BrowserFileSystem.getInstance();
@@ -46,6 +47,7 @@ export class BackupManager {
     // Get all songs
     const songs = LocalSongStorage.getAllSongs(userEmail);
     console.log(`📋 Found ${songs.length} songs to export`);
+    onProgress?.(5, `Found ${songs.length} songs to export`);
     
     if (songs.length === 0) {
       throw new Error('No songs found to export');
@@ -53,6 +55,11 @@ export class BackupManager {
 
     let totalTracks = 0;
     const manifestSongs = [];
+    
+    // Calculate total tracks for progress calculation
+    songs.forEach(song => totalTracks += song.tracks.length);
+    console.log(`📊 Total tracks to process: ${totalTracks}`);
+    onProgress?.(10, `Processing ${songs.length} songs with ${totalTracks} tracks...`);
 
     // Create folders in zip
     const songsFolder = zip.folder('songs')!;
@@ -60,8 +67,13 @@ export class BackupManager {
     const waveformsFolder = zip.folder('waveforms')!;
 
     // Process each song
+    let processedTracks = 0;
+    let currentSongIndex = 0;
+    
     for (const song of songs) {
+      currentSongIndex++;
       console.log(`🎵 Processing song: "${song.title}"`);
+      onProgress?.(15 + (currentSongIndex / songs.length) * 60, `Processing song ${currentSongIndex}/${songs.length}: "${song.title}"`);
       
       // Generate new IDs for import (prevents conflicts)
       const newSongId = crypto.randomUUID();
@@ -82,7 +94,11 @@ export class BackupManager {
       // Process tracks for this song
       for (const track of song.tracks) {
         const newTrackId = crypto.randomUUID();
-        totalTracks++;
+        processedTracks++;
+        
+        // Update progress for track processing
+        const trackProgress = 15 + (processedTracks / totalTracks) * 60;
+        onProgress?.(trackProgress, `Processing track ${processedTracks}/${totalTracks}: "${track.name}"`);
         
         try {
           // Get audio file data from browser storage first to determine proper extension
@@ -170,16 +186,21 @@ export class BackupManager {
       compressionOptions: { level: 6 }
     });
 
+    onProgress?.(80, "Creating manifest and preparing zip file...");
     console.log(`✅ Backup complete: ${songs.length} songs, ${totalTracks} tracks`);
     
+    onProgress?.(90, "Generating zip file...");
     // Generate zip file with Android-compatible settings
-    return await zip.generateAsync({ 
+    const zipBlob = await zip.generateAsync({ 
       type: 'blob',
       mimeType: 'application/zip',
       compression: "DEFLATE",
       compressionOptions: { level: 6 },
       platform: "UNIX" // Better Android compatibility
     });
+    
+    onProgress?.(100, "Export complete!");
+    return zipBlob;
   }
 
   /**

@@ -58,6 +58,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isExporting, setIsExporting] = useState(false);
+  const [exportProgress, setExportProgress] = useState(0);
+  const [exportStatus, setExportStatus] = useState("");
   const [isImporting, setIsImporting] = useState(false);
   const [importProgress, setImportProgress] = useState(0);
   const [importStatus, setImportStatus] = useState("");
@@ -131,10 +133,19 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
     try {
       setIsExporting(true);
+      setExportProgress(0);
+      setExportStatus("Starting export...");
       setIsExportDialogOpen(false);
       
       const backupManager = BackupManager.getInstance();
-      const zipBlob = await backupManager.exportAllData(user.email);
+      
+      // Create progress callback
+      const onProgress = (progress: number, status: string) => {
+        setExportProgress(progress);
+        setExportStatus(status);
+      };
+      
+      const zipBlob = await backupManager.exportAllData(user.email, onProgress);
       
       // Create download with explicit MIME type for Android compatibility
       const zipBlobWithMime = new Blob([zipBlob], { type: 'application/zip' });
@@ -178,6 +189,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       });
     } finally {
       setIsExporting(false);
+      setExportProgress(0);
+      setExportStatus("");
     }
   };
 
@@ -858,7 +871,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   ) : (
                     <Download className="h-4 w-4 mr-2" />
                   )}
-                  {isExporting ? 'Exporting...' : 'Export Library'}
+                  {isExporting ? `Exporting... ${exportProgress}%` : 'Export Library'}
                 </DropdownMenuItem>
                 
                 <DropdownMenuItem onClick={handleImportData} disabled={isImporting} data-testid="menuitem-import-data">
@@ -1414,6 +1427,38 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           </div>
         </DialogContent>
       </Dialog>
+      {/* Export Progress Dialog */}
+      <Dialog open={isExporting} onOpenChange={() => {}}>
+        <DialogContent className="sm:max-w-md" data-testid="dialog-export-progress">
+          <DialogHeader>
+            <DialogTitle>Exporting Music Library</DialogTitle>
+            <p className="text-sm text-muted-foreground">
+              Please wait while your library is being exported
+            </p>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span>Progress</span>
+                <span>{exportProgress}%</span>
+              </div>
+              <Progress value={exportProgress} className="w-full" data-testid="progress-export" />
+            </div>
+            {exportStatus && (
+              <div className="text-sm text-muted-foreground">
+                <p data-testid="text-export-status">{exportStatus}</p>
+              </div>
+            )}
+            <div className="flex justify-center">
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Do not close this window</span>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Import Progress Dialog */}
       <Dialog open={isImporting} onOpenChange={() => {}}>
         <DialogContent className="sm:max-w-md" data-testid="dialog-import-progress">

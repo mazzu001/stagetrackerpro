@@ -23,7 +23,7 @@ interface SecureFileHeader {
   version: string;
 }
 
-interface DirectStorageStatus {
+export interface DirectStorageStatus {
   isSupported: boolean;
   isInitialized: boolean;
   hasLibraryFolder: boolean;

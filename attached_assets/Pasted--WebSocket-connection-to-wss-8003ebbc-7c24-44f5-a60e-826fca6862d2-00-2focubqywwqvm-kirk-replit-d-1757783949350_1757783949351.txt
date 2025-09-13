@@ -1,0 +1,1070 @@
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=7gcAY-h0_yAo' failed: 
+setupWebSocket @ client:536
+  Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+y @ content.js:2
+  Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+y @ content.js:2
+  Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+y @ content.js:2
+  Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+y @ content.js:2
+ ✅ Got audio URL from browser storage for track: e763456b-4181-44c6-b55d-dcab8f123c95
+ ✅ Got audio URL from browser storage for track: 183f338f-9864-4481-9d4d-2dd2225ebe7e
+ 🚀 Streaming load: 3 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 3 tracks ready
+ ✅ Streaming ready for "3 AM" - instant playback available
+ Duration updated from streaming engine: 229s
+ ✅ Streaming ready: 3 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: 3AM - Backups
+ 🔧 Audio nodes created on demand for: 3AM - Bass
+ 🔧 Audio nodes created on demand for: 3AM - Click
+ 🔄 Loading started for 3AM - Backups
+  ⚠️ Audio error for 3AM - Backups: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Bass
+  ⚠️ Audio error for 3AM - Bass: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Backups
+ 🔄 Loading started for 3AM - Bass
+ 🔄 Loading started for 3AM - Click
+ 📊 Duration added: 228.9s (total: 686.6s)
+ 📁 Processing file 4/6: 3AM - Drums.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Drums.mp3...
+ Processing file 0/0: 3AM - Drums.mp3
+ Adding track "3AM - Drums" with file: 3AM - Drums.mp3
+ LocalSongStorage.addTrack: Track added successfully: f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ Storing audio file in browser: 3AM - Drums.mp3, size: 9154836 bytes
+ 🔄 BrowserFS.addAudioFile: Storing 3AM - Drums.mp3 as track f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ ✅ Memory cache updated for f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ 📱 Edge on Windows: clearing memory cache for f5e426c0-0c6e-4bc5-8774-9f6f468581e5 to save memory
+ ✅ Audio file stored: 3AM - Drums.mp3 for track: 3AM - Drums
+ Saved 78 audio file path references to localStorage (22KB)
+ Successfully stored audio file for track: 3AM - Drums (8940KB)
+ Audio file stored successfully for track: f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ 🔍 Requesting audio URL for track: f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (4): Array(4)
+ 🔍 BrowserFS.getAudioFile: Looking for track f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ 💾 Memory cache has: [7551a17d-5916-4f91-bbdc-3ac7df57a5f6, e763456b-4181-44c6-b55d-dcab8f123c95, 183f338f-9864-4481-9d4d-2dd2225ebe7e]
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ ✅ Found in IndexedDB: f5e426c0-0c6e-4bc5-8774-9f6f468581e5 (3AM - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+ Detected audio duration: 229s from file: 3AM - Drums.mp3
+ Track added successfully
+ Track data updated, refreshing song with 4 tracks
+ Performance: Received song update with 4 tracks
+ Cleared waveform cache for "3 AM" - will regenerate on next view
+ Successfully processed: 3AM - Drums.mp3
+ ✅ File 4 completely processed and stored
+ Song selected: "3 AM" with 4 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🔍 Requesting audio URL for track: 7551a17d-5916-4f91-bbdc-3ac7df57a5f6
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (4): Array(4)
+ 🔍 Requesting audio URL for track: e763456b-4181-44c6-b55d-dcab8f123c95
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (4): Array(4)
+ 🔍 Requesting audio URL for track: 183f338f-9864-4481-9d4d-2dd2225ebe7e
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (4): Array(4)
+ 🔍 Requesting audio URL for track: f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (4): Array(4)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Got audio URL from browser storage for track: 7551a17d-5916-4f91-bbdc-3ac7df57a5f6
+ ✅ Got audio URL from browser storage for track: e763456b-4181-44c6-b55d-dcab8f123c95
+ ✅ Got audio URL from browser storage for track: 183f338f-9864-4481-9d4d-2dd2225ebe7e
+ ✅ Got audio URL from browser storage for track: f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ 🚀 Streaming load: 4 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 4 tracks ready
+ ✅ Streaming ready for "3 AM" - instant playback available
+ Duration updated from streaming engine: 229s
+ ✅ Streaming ready: 4 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: 3AM - Backups
+ 🔧 Audio nodes created on demand for: 3AM - Bass
+ 🔧 Audio nodes created on demand for: 3AM - Click
+ 🔧 Audio nodes created on demand for: 3AM - Drums
+ 🔄 Loading started for 3AM - Backups
+  ⚠️ Audio error for 3AM - Backups: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Bass
+  ⚠️ Audio error for 3AM - Bass: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Click
+  ⚠️ Audio error for 3AM - Click: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Backups
+ 🔄 Loading started for 3AM - Bass
+ 🔄 Loading started for 3AM - Click
+ 🔄 Loading started for 3AM - Drums
+ 📊 Duration added: 228.9s (total: 915.5s)
+ 📁 Processing file 5/6: 3AM - Guitars.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Guitars.mp3...
+ Processing file 0/0: 3AM - Guitars.mp3
+ Adding track "3AM - Guitars" with file: 3AM - Guitars.mp3
+ LocalSongStorage.addTrack: Track added successfully: aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ Storing audio file in browser: 3AM - Guitars.mp3, size: 9154836 bytes
+ 🔄 BrowserFS.addAudioFile: Storing 3AM - Guitars.mp3 as track aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ ✅ Memory cache updated for aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ 📱 Edge on Windows: clearing memory cache for aca2aafe-85ab-4db7-aac1-ec6c85a2af15 to save memory
+ ✅ Audio file stored: 3AM - Guitars.mp3 for track: 3AM - Guitars
+ Saved 79 audio file path references to localStorage (22KB)
+ Successfully stored audio file for track: 3AM - Guitars (8940KB)
+ Audio file stored successfully for track: aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ 🔍 Requesting audio URL for track: aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ 📂 Available audio files (79): Array(79)
+ 💾 Memory cache files (5): Array(5)
+ 🔍 BrowserFS.getAudioFile: Looking for track aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ 💾 Memory cache has: [7551a17d-5916-4f91-bbdc-3ac7df57a5f6, e763456b-4181-44c6-b55d-dcab8f123c95, 183f338f-9864-4481-9d4d-2dd2225ebe7e, f5e426c0-0c6e-4bc5-8774-9f6f468581e5]
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ ✅ Found in IndexedDB: aca2aafe-85ab-4db7-aac1-ec6c85a2af15 (3AM - Guitars.mp3)
+ ✅ Got audio URL from browser storage for track: aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+ Detected audio duration: 229s from file: 3AM - Guitars.mp3
+ Track added successfully
+ Track data updated, refreshing song with 5 tracks
+ Performance: Received song update with 5 tracks
+ Cleared waveform cache for "3 AM" - will regenerate on next view
+ Successfully processed: 3AM - Guitars.mp3
+ ✅ File 5 completely processed and stored
+ Song selected: "3 AM" with 5 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🔍 Requesting audio URL for track: 7551a17d-5916-4f91-bbdc-3ac7df57a5f6
+ 📂 Available audio files (79): Array(79)
+ 💾 Memory cache files (5): Array(5)
+ 🔍 Requesting audio URL for track: e763456b-4181-44c6-b55d-dcab8f123c95
+ 📂 Available audio files (79): Array(79)
+ 💾 Memory cache files (5): Array(5)
+ 🔍 Requesting audio URL for track: 183f338f-9864-4481-9d4d-2dd2225ebe7e
+ 📂 Available audio files (79): Array(79)
+ 💾 Memory cache files (5): Array(5)
+ 🔍 Requesting audio URL for track: f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ 📂 Available audio files (79): Array(79)
+ 💾 Memory cache files (5): Array(5)
+ 🔍 Requesting audio URL for track: aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ 📂 Available audio files (79): Array(79)
+ 💾 Memory cache files (5): Array(5)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Got audio URL from browser storage for track: 7551a17d-5916-4f91-bbdc-3ac7df57a5f6
+ ✅ Got audio URL from browser storage for track: e763456b-4181-44c6-b55d-dcab8f123c95
+ ✅ Got audio URL from browser storage for track: 183f338f-9864-4481-9d4d-2dd2225ebe7e
+ ✅ Got audio URL from browser storage for track: f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ ✅ Got audio URL from browser storage for track: aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ 🚀 Streaming load: 5 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 5 tracks ready
+ ✅ Streaming ready for "3 AM" - instant playback available
+ Duration updated from streaming engine: 229s
+ ✅ Streaming ready: 5 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: 3AM - Backups
+ 🔧 Audio nodes created on demand for: 3AM - Bass
+ 🔧 Audio nodes created on demand for: 3AM - Click
+ 🔧 Audio nodes created on demand for: 3AM - Drums
+ 🔧 Audio nodes created on demand for: 3AM - Guitars
+ 🔄 Loading started for 3AM - Backups
+  ⚠️ Audio error for 3AM - Backups: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Bass
+  ⚠️ Audio error for 3AM - Bass: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Click
+  ⚠️ Audio error for 3AM - Click: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Drums
+  ⚠️ Audio error for 3AM - Drums: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Backups
+ 🔄 Loading started for 3AM - Bass
+ 🔄 Loading started for 3AM - Click
+ 🔄 Loading started for 3AM - Drums
+ 🔄 Loading started for 3AM - Guitars
+ 📊 Duration added: 228.9s (total: 1144.4s)
+ 📁 Processing file 6/6: 3AM - Organ.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Organ.mp3...
+ Processing file 0/0: 3AM - Organ.mp3
+ Adding track "3AM - Organ" with file: 3AM - Organ.mp3
+ LocalSongStorage.addTrack: Track added successfully: ad521065-70e1-49bd-8dae-5aa12de76f44
+ Storing audio file in browser: 3AM - Organ.mp3, size: 9154836 bytes
+ 🔄 BrowserFS.addAudioFile: Storing 3AM - Organ.mp3 as track ad521065-70e1-49bd-8dae-5aa12de76f44
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for ad521065-70e1-49bd-8dae-5aa12de76f44
+ ✅ Memory cache updated for ad521065-70e1-49bd-8dae-5aa12de76f44
+ 📱 Edge on Windows: clearing memory cache for ad521065-70e1-49bd-8dae-5aa12de76f44 to save memory
+ ✅ Audio file stored: 3AM - Organ.mp3 for track: 3AM - Organ
+ Saved 80 audio file path references to localStorage (23KB)
+ Successfully stored audio file for track: 3AM - Organ (8940KB)
+ Audio file stored successfully for track: ad521065-70e1-49bd-8dae-5aa12de76f44
+ 🔍 Requesting audio URL for track: ad521065-70e1-49bd-8dae-5aa12de76f44
+ 📂 Available audio files (80): Array(80)
+ 💾 Memory cache files (6): Array(6)
+ 🔍 BrowserFS.getAudioFile: Looking for track ad521065-70e1-49bd-8dae-5aa12de76f44
+ 💾 Memory cache has: [7551a17d-5916-4f91-bbdc-3ac7df57a5f6, e763456b-4181-44c6-b55d-dcab8f123c95, 183f338f-9864-4481-9d4d-2dd2225ebe7e, f5e426c0-0c6e-4bc5-8774-9f6f468581e5, aca2aafe-85ab-4db7-aac1-ec6c85a2af15]
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for ad521065-70e1-49bd-8dae-5aa12de76f44
+ ✅ Found in IndexedDB: ad521065-70e1-49bd-8dae-5aa12de76f44 (3AM - Organ.mp3)
+ ✅ Got audio URL from browser storage for track: ad521065-70e1-49bd-8dae-5aa12de76f44
+ Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+ Detected audio duration: 229s from file: 3AM - Organ.mp3
+ Track added successfully
+ Track data updated, refreshing song with 6 tracks
+ Performance: Received song update with 6 tracks
+ Cleared waveform cache for "3 AM" - will regenerate on next view
+ Successfully processed: 3AM - Organ.mp3
+ ✅ File 6 completely processed and stored
+ Song selected: "3 AM" with 6 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🔍 Requesting audio URL for track: 7551a17d-5916-4f91-bbdc-3ac7df57a5f6
+ 📂 Available audio files (80): Array(80)
+ 💾 Memory cache files (6): Array(6)
+ 🔍 Requesting audio URL for track: e763456b-4181-44c6-b55d-dcab8f123c95
+ 📂 Available audio files (80): Array(80)
+ 💾 Memory cache files (6): Array(6)
+ 🔍 Requesting audio URL for track: 183f338f-9864-4481-9d4d-2dd2225ebe7e
+ 📂 Available audio files (80): Array(80)
+ 💾 Memory cache files (6): Array(6)
+ 🔍 Requesting audio URL for track: f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ 📂 Available audio files (80): Array(80)
+ 💾 Memory cache files (6): Array(6)
+ 🔍 Requesting audio URL for track: aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ 📂 Available audio files (80): Array(80)
+ 💾 Memory cache files (6): Array(6)
+ 🔍 Requesting audio URL for track: ad521065-70e1-49bd-8dae-5aa12de76f44
+ 📂 Available audio files (80): Array(80)
+ 💾 Memory cache files (6): Array(6)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Got audio URL from browser storage for track: 7551a17d-5916-4f91-bbdc-3ac7df57a5f6
+ ✅ Got audio URL from browser storage for track: e763456b-4181-44c6-b55d-dcab8f123c95
+ ✅ Got audio URL from browser storage for track: 183f338f-9864-4481-9d4d-2dd2225ebe7e
+ ✅ Got audio URL from browser storage for track: f5e426c0-0c6e-4bc5-8774-9f6f468581e5
+ ✅ Got audio URL from browser storage for track: aca2aafe-85ab-4db7-aac1-ec6c85a2af15
+ ✅ Got audio URL from browser storage for track: ad521065-70e1-49bd-8dae-5aa12de76f44
+ 🚀 Streaming load: 6 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 6 tracks ready
+ ✅ Streaming ready for "3 AM" - instant playback available
+ Duration updated from streaming engine: 229s
+ ✅ Streaming ready: 6 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: 3AM - Backups
+ 🔧 Audio nodes created on demand for: 3AM - Bass
+ 🔧 Audio nodes created on demand for: 3AM - Click
+ 🔧 Audio nodes created on demand for: 3AM - Drums
+ 🔧 Audio nodes created on demand for: 3AM - Guitars
+ 🔧 Audio nodes created on demand for: 3AM - Organ
+ 🔄 Loading started for 3AM - Backups
+  ⚠️ Audio error for 3AM - Backups: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Bass
+  ⚠️ Audio error for 3AM - Bass: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Click
+  ⚠️ Audio error for 3AM - Click: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Drums
+  ⚠️ Audio error for 3AM - Drums: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Guitars
+  ⚠️ Audio error for 3AM - Guitars: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Backups
+ 🔄 Loading started for 3AM - Bass
+ 🔄 Loading started for 3AM - Click
+ 🔄 Loading started for 3AM - Drums
+ 🔄 Loading started for 3AM - Guitars
+ 🔄 Loading started for 3AM - Organ
+ 📊 Duration added: 228.9s (total: 1373.2s)
+ === Web Track Manager: Cleaning up file selection ===
+ Duration updated from streaming engine: 229s
+ 🎵 Loading song: Comfortably Numb
+ 📡 Not uploading to database: Object
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ No tracks or cached waveform for "Comfortably Numb"
+ Song selected: "Comfortably Numb" with 0 tracks - loading for streaming
+ Setting up streaming for: "Comfortably Numb" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "Comfortably Numb" - instant playback available
+ Duration updated from streaming engine: 229s
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Loading started for 3AM - Backups
+  ⚠️ Audio error for 3AM - Backups: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Bass
+  ⚠️ Audio error for 3AM - Bass: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Click
+  ⚠️ Audio error for 3AM - Click: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Drums
+  ⚠️ Audio error for 3AM - Drums: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Guitars
+  ⚠️ Audio error for 3AM - Guitars: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Organ
+  ⚠️ Audio error for 3AM - Organ: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 229s
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=dec187b7:344
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ @radix-ui_react-dialog.js?v=dec187b7:330
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=dec187b7:344
+ 📱 Edge browser detected - using compatibility mode
+ === Web Track Manager: Starting file selection ===
+ === Web Track Manager: File change event triggered ===
+ Files selected: 6
+ 📁 Processing file 1/6: Comfortably Numb - Acoustic.mp3 (15.0MB)
+ ⏳ Starting processing of Comfortably Numb - Acoustic.mp3...
+ Processing file 0/0: Comfortably Numb - Acoustic.mp3
+ Adding track "Comfortably Numb - Acoustic" with file: Comfortably Numb - Acoustic.mp3
+ LocalSongStorage.addTrack: Track added successfully: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ Storing audio file in browser: Comfortably Numb - Acoustic.mp3, size: 15768576 bytes
+ 🔄 BrowserFS.addAudioFile: Storing Comfortably Numb - Acoustic.mp3 as track ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ ✅ Memory cache updated for ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 📱 Edge on Windows: clearing memory cache for ab6e8336-6677-4693-9cc9-e1595db3eaf7 to save memory
+ ✅ Audio file stored: Comfortably Numb - Acoustic.mp3 for track: Comfortably Numb - Acoustic
+ Saved 81 audio file path references to localStorage (23KB)
+ Successfully stored audio file for track: Comfortably Numb - Acoustic (15399KB)
+ Audio file stored successfully for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 🔍 Requesting audio URL for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 📂 Available audio files (81): Array(81)
+ 💾 Memory cache files (7): Array(7)
+ 🔍 BrowserFS.getAudioFile: Looking for track ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 💾 Memory cache has: [7551a17d-5916-4f91-bbdc-3ac7df57a5f6, e763456b-4181-44c6-b55d-dcab8f123c95, 183f338f-9864-4481-9d4d-2dd2225ebe7e, f5e426c0-0c6e-4bc5-8774-9f6f468581e5, aca2aafe-85ab-4db7-aac1-ec6c85a2af15, ad521065-70e1-49bd-8dae-5aa12de76f44]
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ ✅ Found in IndexedDB: ab6e8336-6677-4693-9cc9-e1595db3eaf7 (Comfortably Numb - Acoustic.mp3)
+ ✅ Got audio URL from browser storage for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+ Detected audio duration: 394s from file: Comfortably Numb - Acoustic.mp3
+ Track added successfully
+ Track data updated, refreshing song with 1 tracks
+ Performance: Received song update with 1 tracks
+ Cleared waveform cache for "Comfortably Numb" - will regenerate on next view
+ Successfully processed: Comfortably Numb - Acoustic.mp3
+ ✅ File 1 completely processed and stored
+ Song selected: "Comfortably Numb" with 1 tracks - loading for streaming
+ Setting up streaming for: "Comfortably Numb" - UI stays responsive
+ 🔍 Requesting audio URL for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 📂 Available audio files (81): Array(81)
+ 💾 Memory cache files (7): Array(7)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Got audio URL from browser storage for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 🚀 Streaming load: 1 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 1 tracks ready
+ ✅ Streaming ready for "Comfortably Numb" - instant playback available
+ Duration updated from streaming engine: 229s
+ ✅ Streaming ready: 1 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Acoustic
+ 🔄 Loading started for Comfortably Numb - Acoustic
+ 📊 Duration added: 394.2s (total: 394.2s)
+ 📁 Processing file 2/6: Comfortably Numb - Backups.mp3 (15.0MB)
+ ⏳ Starting processing of Comfortably Numb - Backups.mp3...
+ Processing file 0/0: Comfortably Numb - Backups.mp3
+ Adding track "Comfortably Numb - Backups" with file: Comfortably Numb - Backups.mp3
+ LocalSongStorage.addTrack: Track added successfully: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ Storing audio file in browser: Comfortably Numb - Backups.mp3, size: 15768576 bytes
+ 🔄 BrowserFS.addAudioFile: Storing Comfortably Numb - Backups.mp3 as track 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 🗃️ Database initialized: true
+ Duration updated from streaming engine: 394s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ IndexedDB storage successful for 869c795c-c363-49fb-bcab-5e06ff8998ee
+ ✅ Memory cache updated for 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 📱 Edge on Windows: clearing memory cache for 869c795c-c363-49fb-bcab-5e06ff8998ee to save memory
+ ✅ Audio file stored: Comfortably Numb - Backups.mp3 for track: Comfortably Numb - Backups
+ Saved 82 audio file path references to localStorage (23KB)
+ Successfully stored audio file for track: Comfortably Numb - Backups (15399KB)
+ Audio file stored successfully for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 🔍 Requesting audio URL for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 📂 Available audio files (82): Array(82)
+ 💾 Memory cache files (8): Array(8)
+ 🔍 BrowserFS.getAudioFile: Looking for track 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 💾 Memory cache has: [7551a17d-5916-4f91-bbdc-3ac7df57a5f6, e763456b-4181-44c6-b55d-dcab8f123c95, 183f338f-9864-4481-9d4d-2dd2225ebe7e, f5e426c0-0c6e-4bc5-8774-9f6f468581e5, aca2aafe-85ab-4db7-aac1-ec6c85a2af15, ad521065-70e1-49bd-8dae-5aa12de76f44, ab6e8336-6677-4693-9cc9-e1595db3eaf7]
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for 869c795c-c363-49fb-bcab-5e06ff8998ee
+ ✅ Found in IndexedDB: 869c795c-c363-49fb-bcab-5e06ff8998ee (Comfortably Numb - Backups.mp3)
+ ✅ Got audio URL from browser storage for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+ Duration updated from streaming engine: 394s
+ Detected audio duration: 394s from file: Comfortably Numb - Backups.mp3
+ Track added successfully
+ Track data updated, refreshing song with 2 tracks
+ Performance: Received song update with 2 tracks
+ Cleared waveform cache for "Comfortably Numb" - will regenerate on next view
+ Successfully processed: Comfortably Numb - Backups.mp3
+ ✅ File 2 completely processed and stored
+ Song selected: "Comfortably Numb" with 2 tracks - loading for streaming
+ Setting up streaming for: "Comfortably Numb" - UI stays responsive
+ 🔍 Requesting audio URL for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 📂 Available audio files (82): Array(82)
+ 💾 Memory cache files (8): Array(8)
+ 🔍 Requesting audio URL for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 📂 Available audio files (82): Array(82)
+ 💾 Memory cache files (8): Array(8)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Got audio URL from browser storage for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ ✅ Got audio URL from browser storage for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 🚀 Streaming load: 2 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 2 tracks ready
+ ✅ Streaming ready for "Comfortably Numb" - instant playback available
+ Duration updated from streaming engine: 394s
+ ✅ Streaming ready: 2 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Acoustic
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Backups
+ 🔄 Loading started for Comfortably Numb - Acoustic
+  ⚠️ Audio error for Comfortably Numb - Acoustic: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Acoustic
+ 🔄 Loading started for Comfortably Numb - Backups
+ 📊 Duration added: 394.2s (total: 788.4s)
+ 📁 Processing file 3/6: Comfortably Numb - Bass.mp3 (15.0MB)
+ ⏳ Starting processing of Comfortably Numb - Bass.mp3...
+ Processing file 0/0: Comfortably Numb - Bass.mp3
+ Adding track "Comfortably Numb - Bass" with file: Comfortably Numb - Bass.mp3
+ LocalSongStorage.addTrack: Track added successfully: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ Storing audio file in browser: Comfortably Numb - Bass.mp3, size: 15768576 bytes
+ 🔄 BrowserFS.addAudioFile: Storing Comfortably Numb - Bass.mp3 as track ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ ✅ Memory cache updated for ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ 📱 Edge on Windows: clearing memory cache for ea0cf366-3119-4f7b-a55f-a659bbaf968f to save memory
+ ✅ Audio file stored: Comfortably Numb - Bass.mp3 for track: Comfortably Numb - Bass
+ Saved 83 audio file path references to localStorage (24KB)
+ Successfully stored audio file for track: Comfortably Numb - Bass (15399KB)
+ Audio file stored successfully for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ 🔍 Requesting audio URL for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ 📂 Available audio files (83): Array(83)
+ 💾 Memory cache files (9): Array(9)
+ 🔍 BrowserFS.getAudioFile: Looking for track ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ 💾 Memory cache has: [7551a17d-5916-4f91-bbdc-3ac7df57a5f6, e763456b-4181-44c6-b55d-dcab8f123c95, 183f338f-9864-4481-9d4d-2dd2225ebe7e, f5e426c0-0c6e-4bc5-8774-9f6f468581e5, aca2aafe-85ab-4db7-aac1-ec6c85a2af15, ad521065-70e1-49bd-8dae-5aa12de76f44, ab6e8336-6677-4693-9cc9-e1595db3eaf7, 869c795c-c363-49fb-bcab-5e06ff8998ee]
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ ✅ Found in IndexedDB: ea0cf366-3119-4f7b-a55f-a659bbaf968f (Comfortably Numb - Bass.mp3)
+ ✅ Got audio URL from browser storage for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+ Detected audio duration: 394s from file: Comfortably Numb - Bass.mp3
+ Track added successfully
+ Track data updated, refreshing song with 3 tracks
+ Performance: Received song update with 3 tracks
+ Cleared waveform cache for "Comfortably Numb" - will regenerate on next view
+ Successfully processed: Comfortably Numb - Bass.mp3
+ ✅ File 3 completely processed and stored
+ Song selected: "Comfortably Numb" with 3 tracks - loading for streaming
+ Setting up streaming for: "Comfortably Numb" - UI stays responsive
+ 🔍 Requesting audio URL for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 📂 Available audio files (83): Array(83)
+ 💾 Memory cache files (9): Array(9)
+ 🔍 Requesting audio URL for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 📂 Available audio files (83): Array(83)
+ 💾 Memory cache files (9): Array(9)
+ 🔍 Requesting audio URL for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ 📂 Available audio files (83): Array(83)
+ 💾 Memory cache files (9): Array(9)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Got audio URL from browser storage for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ ✅ Got audio URL from browser storage for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ ✅ Got audio URL from browser storage for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ 🚀 Streaming load: 3 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 3 tracks ready
+ ✅ Streaming ready for "Comfortably Numb" - instant playback available
+ Duration updated from streaming engine: 394s
+ ✅ Streaming ready: 3 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Acoustic
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Backups
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Bass
+ 🔄 Loading started for Comfortably Numb - Acoustic
+  ⚠️ Audio error for Comfortably Numb - Acoustic: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Backups
+  ⚠️ Audio error for Comfortably Numb - Backups: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Acoustic
+ 🔄 Loading started for Comfortably Numb - Backups
+ 🔄 Loading started for Comfortably Numb - Bass
+ 📊 Duration added: 394.2s (total: 1182.6s)
+ 📁 Processing file 4/6: Comfortably Numb - Click.mp3 (15.0MB)
+ ⏳ Starting processing of Comfortably Numb - Click.mp3...
+ Processing file 0/0: Comfortably Numb - Click.mp3
+ Adding track "Comfortably Numb - Click" with file: Comfortably Numb - Click.mp3
+ LocalSongStorage.addTrack: Track added successfully: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ Storing audio file in browser: Comfortably Numb - Click.mp3, size: 15768576 bytes
+ 🔄 BrowserFS.addAudioFile: Storing Comfortably Numb - Click.mp3 as track 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ ✅ Memory cache updated for 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ 📱 Edge on Windows: clearing memory cache for 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e to save memory
+ ✅ Audio file stored: Comfortably Numb - Click.mp3 for track: Comfortably Numb - Click
+ Saved 84 audio file path references to localStorage (24KB)
+ Successfully stored audio file for track: Comfortably Numb - Click (15399KB)
+ Audio file stored successfully for track: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ 🔍 Requesting audio URL for track: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ 📂 Available audio files (84): Array(84)
+ 💾 Memory cache files (10): Array(10)
+ 🔍 BrowserFS.getAudioFile: Looking for track 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ 💾 Memory cache has: [7551a17d-5916-4f91-bbdc-3ac7df57a5f6, e763456b-4181-44c6-b55d-dcab8f123c95, 183f338f-9864-4481-9d4d-2dd2225ebe7e, f5e426c0-0c6e-4bc5-8774-9f6f468581e5, aca2aafe-85ab-4db7-aac1-ec6c85a2af15, ad521065-70e1-49bd-8dae-5aa12de76f44, ab6e8336-6677-4693-9cc9-e1595db3eaf7, 869c795c-c363-49fb-bcab-5e06ff8998ee, ea0cf366-3119-4f7b-a55f-a659bbaf968f]
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ ✅ Found in IndexedDB: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e (Comfortably Numb - Click.mp3)
+ ✅ Got audio URL from browser storage for track: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+ Detected audio duration: 394s from file: Comfortably Numb - Click.mp3
+ Track added successfully
+ Track data updated, refreshing song with 4 tracks
+ Performance: Received song update with 4 tracks
+ Cleared waveform cache for "Comfortably Numb" - will regenerate on next view
+ Successfully processed: Comfortably Numb - Click.mp3
+ ✅ File 4 completely processed and stored
+ Song selected: "Comfortably Numb" with 4 tracks - loading for streaming
+ Setting up streaming for: "Comfortably Numb" - UI stays responsive
+ 🔍 Requesting audio URL for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 📂 Available audio files (84): Array(84)
+ 💾 Memory cache files (10): Array(10)
+ 🔍 Requesting audio URL for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 📂 Available audio files (84): Array(84)
+ 💾 Memory cache files (10): Array(10)
+ 🔍 Requesting audio URL for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ 📂 Available audio files (84): Array(84)
+ 💾 Memory cache files (10): Array(10)
+ 🔍 Requesting audio URL for track: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ 📂 Available audio files (84): Array(84)
+ 💾 Memory cache files (10): Array(10)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Got audio URL from browser storage for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ ✅ Got audio URL from browser storage for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ ✅ Got audio URL from browser storage for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ ✅ Got audio URL from browser storage for track: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ 🚀 Streaming load: 4 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 4 tracks ready
+ ✅ Streaming ready for "Comfortably Numb" - instant playback available
+ Duration updated from streaming engine: 394s
+ ✅ Streaming ready: 4 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Acoustic
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Backups
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Bass
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Click
+ 🔄 Loading started for Comfortably Numb - Acoustic
+  ⚠️ Audio error for Comfortably Numb - Acoustic: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Backups
+  ⚠️ Audio error for Comfortably Numb - Backups: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Bass
+  ⚠️ Audio error for Comfortably Numb - Bass: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Acoustic
+ 🔄 Loading started for Comfortably Numb - Backups
+ 🔄 Loading started for Comfortably Numb - Bass
+ 🔄 Loading started for Comfortably Numb - Click
+ 📊 Duration added: 394.2s (total: 1576.9s)
+ 📁 Processing file 5/6: Comfortably Numb - Drums.mp3 (15.0MB)
+ ⏳ Starting processing of Comfortably Numb - Drums.mp3...
+ Processing file 0/0: Comfortably Numb - Drums.mp3
+ Adding track "Comfortably Numb - Drums" with file: Comfortably Numb - Drums.mp3
+ LocalSongStorage.addTrack: Track added successfully: f70a0e09-e2f2-40fc-a88a-10bcce321549
+ Storing audio file in browser: Comfortably Numb - Drums.mp3, size: 15768576 bytes
+ 🔄 BrowserFS.addAudioFile: Storing Comfortably Numb - Drums.mp3 as track f70a0e09-e2f2-40fc-a88a-10bcce321549
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for f70a0e09-e2f2-40fc-a88a-10bcce321549
+ ✅ Memory cache updated for f70a0e09-e2f2-40fc-a88a-10bcce321549
+ 📱 Edge on Windows: clearing memory cache for f70a0e09-e2f2-40fc-a88a-10bcce321549 to save memory
+ ✅ Audio file stored: Comfortably Numb - Drums.mp3 for track: Comfortably Numb - Drums
+ Saved 85 audio file path references to localStorage (24KB)
+ Successfully stored audio file for track: Comfortably Numb - Drums (15399KB)
+ Audio file stored successfully for track: f70a0e09-e2f2-40fc-a88a-10bcce321549
+ 🔍 Requesting audio URL for track: f70a0e09-e2f2-40fc-a88a-10bcce321549
+ 📂 Available audio files (85): Array(85)
+ 💾 Memory cache files (11): Array(11)
+ 🔍 BrowserFS.getAudioFile: Looking for track f70a0e09-e2f2-40fc-a88a-10bcce321549
+ 💾 Memory cache has: [7551a17d-5916-4f91-bbdc-3ac7df57a5f6, e763456b-4181-44c6-b55d-dcab8f123c95, 183f338f-9864-4481-9d4d-2dd2225ebe7e, f5e426c0-0c6e-4bc5-8774-9f6f468581e5, aca2aafe-85ab-4db7-aac1-ec6c85a2af15, ad521065-70e1-49bd-8dae-5aa12de76f44, ab6e8336-6677-4693-9cc9-e1595db3eaf7, 869c795c-c363-49fb-bcab-5e06ff8998ee, ea0cf366-3119-4f7b-a55f-a659bbaf968f, 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e]
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for f70a0e09-e2f2-40fc-a88a-10bcce321549
+ ✅ Found in IndexedDB: f70a0e09-e2f2-40fc-a88a-10bcce321549 (Comfortably Numb - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: f70a0e09-e2f2-40fc-a88a-10bcce321549
+ Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+ Detected audio duration: 394s from file: Comfortably Numb - Drums.mp3
+ Track added successfully
+ Track data updated, refreshing song with 5 tracks
+ Performance: Received song update with 5 tracks
+ Cleared waveform cache for "Comfortably Numb" - will regenerate on next view
+ Successfully processed: Comfortably Numb - Drums.mp3
+ ✅ File 5 completely processed and stored
+ Song selected: "Comfortably Numb" with 5 tracks - loading for streaming
+ Setting up streaming for: "Comfortably Numb" - UI stays responsive
+ 🔍 Requesting audio URL for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 📂 Available audio files (85): Array(85)
+ 💾 Memory cache files (11): Array(11)
+ 🔍 Requesting audio URL for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 📂 Available audio files (85): Array(85)
+ 💾 Memory cache files (11): Array(11)
+ 🔍 Requesting audio URL for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ 📂 Available audio files (85): Array(85)
+ 💾 Memory cache files (11): Array(11)
+ 🔍 Requesting audio URL for track: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ 📂 Available audio files (85): Array(85)
+ 💾 Memory cache files (11): Array(11)
+ 🔍 Requesting audio URL for track: f70a0e09-e2f2-40fc-a88a-10bcce321549
+ 📂 Available audio files (85): Array(85)
+ 💾 Memory cache files (11): Array(11)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Got audio URL from browser storage for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ ✅ Got audio URL from browser storage for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ ✅ Got audio URL from browser storage for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ ✅ Got audio URL from browser storage for track: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ ✅ Got audio URL from browser storage for track: f70a0e09-e2f2-40fc-a88a-10bcce321549
+ 🚀 Streaming load: 5 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 5 tracks ready
+ ✅ Streaming ready for "Comfortably Numb" - instant playback available
+ Duration updated from streaming engine: 394s
+ ✅ Streaming ready: 5 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Acoustic
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Backups
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Bass
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Click
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Drums
+ 🔄 Loading started for Comfortably Numb - Acoustic
+  ⚠️ Audio error for Comfortably Numb - Acoustic: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Backups
+  ⚠️ Audio error for Comfortably Numb - Backups: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Bass
+  ⚠️ Audio error for Comfortably Numb - Bass: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Click
+  ⚠️ Audio error for Comfortably Numb - Click: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Acoustic
+ 🔄 Loading started for Comfortably Numb - Backups
+ 🔄 Loading started for Comfortably Numb - Bass
+ 🔄 Loading started for Comfortably Numb - Click
+ 🔄 Loading started for Comfortably Numb - Drums
+ 📊 Duration added: 394.2s (total: 1971.1s)
+ 📁 Processing file 6/6: Comfortably Numb - Keys.mp3 (15.0MB)
+ ⏳ Starting processing of Comfortably Numb - Keys.mp3...
+ Processing file 0/0: Comfortably Numb - Keys.mp3
+ Adding track "Comfortably Numb - Keys" with file: Comfortably Numb - Keys.mp3
+ LocalSongStorage.addTrack: Track added successfully: e04fb451-c266-48a9-aa07-fb83b5e0c861
+ Storing audio file in browser: Comfortably Numb - Keys.mp3, size: 15768576 bytes
+ 🔄 BrowserFS.addAudioFile: Storing Comfortably Numb - Keys.mp3 as track e04fb451-c266-48a9-aa07-fb83b5e0c861
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for e04fb451-c266-48a9-aa07-fb83b5e0c861
+ ✅ Memory cache updated for e04fb451-c266-48a9-aa07-fb83b5e0c861
+ 📱 Edge on Windows: clearing memory cache for e04fb451-c266-48a9-aa07-fb83b5e0c861 to save memory
+ ✅ Audio file stored: Comfortably Numb - Keys.mp3 for track: Comfortably Numb - Keys
+ Saved 86 audio file path references to localStorage (24KB)
+ Successfully stored audio file for track: Comfortably Numb - Keys (15399KB)
+ Audio file stored successfully for track: e04fb451-c266-48a9-aa07-fb83b5e0c861
+ 🔍 Requesting audio URL for track: e04fb451-c266-48a9-aa07-fb83b5e0c861
+ 📂 Available audio files (86): Array(86)
+ 💾 Memory cache files (12): Array(12)
+ 🔍 BrowserFS.getAudioFile: Looking for track e04fb451-c266-48a9-aa07-fb83b5e0c861
+ 💾 Memory cache has: [7551a17d-5916-4f91-bbdc-3ac7df57a5f6, e763456b-4181-44c6-b55d-dcab8f123c95, 183f338f-9864-4481-9d4d-2dd2225ebe7e, f5e426c0-0c6e-4bc5-8774-9f6f468581e5, aca2aafe-85ab-4db7-aac1-ec6c85a2af15, ad521065-70e1-49bd-8dae-5aa12de76f44, ab6e8336-6677-4693-9cc9-e1595db3eaf7, 869c795c-c363-49fb-bcab-5e06ff8998ee, ea0cf366-3119-4f7b-a55f-a659bbaf968f, 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e, f70a0e09-e2f2-40fc-a88a-10bcce321549]
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for e04fb451-c266-48a9-aa07-fb83b5e0c861
+ ✅ Found in IndexedDB: e04fb451-c266-48a9-aa07-fb83b5e0c861 (Comfortably Numb - Keys.mp3)
+ ✅ Got audio URL from browser storage for track: e04fb451-c266-48a9-aa07-fb83b5e0c861
+ Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+ Duration updated from streaming engine: 394s
+ Detected audio duration: 394s from file: Comfortably Numb - Keys.mp3
+ Track added successfully
+ Track data updated, refreshing song with 6 tracks
+ Performance: Received song update with 6 tracks
+ Cleared waveform cache for "Comfortably Numb" - will regenerate on next view
+ Successfully processed: Comfortably Numb - Keys.mp3
+ ✅ File 6 completely processed and stored
+ Song selected: "Comfortably Numb" with 6 tracks - loading for streaming
+ Setting up streaming for: "Comfortably Numb" - UI stays responsive
+ 🔍 Requesting audio URL for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ 📂 Available audio files (86): Array(86)
+ 💾 Memory cache files (12): Array(12)
+ 🔍 Requesting audio URL for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ 📂 Available audio files (86): Array(86)
+ 💾 Memory cache files (12): Array(12)
+ 🔍 Requesting audio URL for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ 📂 Available audio files (86): Array(86)
+ 💾 Memory cache files (12): Array(12)
+ 🔍 Requesting audio URL for track: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ 📂 Available audio files (86): Array(86)
+ 💾 Memory cache files (12): Array(12)
+ 🔍 Requesting audio URL for track: f70a0e09-e2f2-40fc-a88a-10bcce321549
+ 📂 Available audio files (86): Array(86)
+ 💾 Memory cache files (12): Array(12)
+ 🔍 Requesting audio URL for track: e04fb451-c266-48a9-aa07-fb83b5e0c861
+ 📂 Available audio files (86): Array(86)
+ 💾 Memory cache files (12): Array(12)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Got audio URL from browser storage for track: ab6e8336-6677-4693-9cc9-e1595db3eaf7
+ ✅ Got audio URL from browser storage for track: 869c795c-c363-49fb-bcab-5e06ff8998ee
+ ✅ Got audio URL from browser storage for track: ea0cf366-3119-4f7b-a55f-a659bbaf968f
+ ✅ Got audio URL from browser storage for track: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e
+ ✅ Got audio URL from browser storage for track: f70a0e09-e2f2-40fc-a88a-10bcce321549
+ ✅ Got audio URL from browser storage for track: e04fb451-c266-48a9-aa07-fb83b5e0c861
+ 🚀 Streaming load: 6 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 6 tracks ready
+ ✅ Streaming ready for "Comfortably Numb" - instant playback available
+ Duration updated from streaming engine: 394s
+ ✅ Streaming ready: 6 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Acoustic
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Backups
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Bass
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Click
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Drums
+ 🔧 Audio nodes created on demand for: Comfortably Numb - Keys
+ 🔄 Loading started for Comfortably Numb - Acoustic
+  ⚠️ Audio error for Comfortably Numb - Acoustic: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Backups
+  ⚠️ Audio error for Comfortably Numb - Backups: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Bass
+  ⚠️ Audio error for Comfortably Numb - Bass: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Click
+  ⚠️ Audio error for Comfortably Numb - Click: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Drums
+  ⚠️ Audio error for Comfortably Numb - Drums: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Acoustic
+ 🔄 Loading started for Comfortably Numb - Backups
+ 🔄 Loading started for Comfortably Numb - Bass
+ 🔄 Loading started for Comfortably Numb - Click
+ 🔄 Loading started for Comfortably Numb - Drums
+ 🔄 Loading started for Comfortably Numb - Keys
+ 📊 Duration added: 394.2s (total: 2365.3s)
+ === Web Track Manager: Cleaning up file selection ===
+ Duration updated from streaming engine: 394s
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=dec187b7:344
+ 🔄 Performing full backup...
+ ✅ Saved song data: 3 AM
+ ✅ Saved audio file: 7551a17d-5916-4f91-bbdc-3ac7df57a5f6_3AM___Backups.mp3
+ ✅ Saved audio file: e763456b-4181-44c6-b55d-dcab8f123c95_3AM___Bass.mp3
+ ✅ Saved audio file: 183f338f-9864-4481-9d4d-2dd2225ebe7e_3AM___Click.mp3
+ ✅ Saved audio file: f5e426c0-0c6e-4bc5-8774-9f6f468581e5_3AM___Drums.mp3
+ ✅ Saved audio file: aca2aafe-85ab-4db7-aac1-ec6c85a2af15_3AM___Guitars.mp3
+ ✅ Saved audio file: ad521065-70e1-49bd-8dae-5aa12de76f44_3AM___Organ.mp3
+ ✅ Saved song data: Comfortably Numb
+ ✅ Saved audio file: ab6e8336-6677-4693-9cc9-e1595db3eaf7_Comfortably_Numb___Acoustic.mp3
+ ✅ Saved audio file: 869c795c-c363-49fb-bcab-5e06ff8998ee_Comfortably_Numb___Backups.mp3
+ ✅ Saved audio file: ea0cf366-3119-4f7b-a55f-a659bbaf968f_Comfortably_Numb___Bass.mp3
+ ✅ Saved audio file: 6b5651eb-c8bf-4c8c-af2e-d8bb3a5e191e_Comfortably_Numb___Click.mp3
+ ✅ Saved audio file: f70a0e09-e2f2-40fc-a88a-10bcce321549_Comfortably_Numb___Drums.mp3
+ ✅ Saved audio file: e04fb451-c266-48a9-aa07-fb83b5e0c861_Comfortably_Numb___Keys.mp3
+ ✅ Updated backup manifest
+ ✅ Full backup complete: 2 songs, 12 tracks
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=dec187b7:344
+ 🔄 Starting handleRestore with userEmail: mazzu001@hotmail.com
+ 🔄 Backup status: Object
+ 🔄 Calling actions.restoreFromBackup()
+ 🔄 restoreFromLocalFolder called with userEmail: mazzu001@hotmail.com
+ 🔄 autoSaveStatus: Object
+ 🔄 Starting restore from local folder...
+ 📋 Reading backup manifest...
+ ✅ Read backup manifest
+ 🔐 Validating backup ownership...
+ 📂 Scanning backup folder...
+ 📦 Found 8 songs to restore
+ 🔄 Restoring song: c60f8ef2-9932-4c40-ba30-45155d6741e3
+ ✅ Restored song: 3 AM
+ 🔄 Restoring song: ad37179a-c0b6-4f49-bfd7-f7e564207dd2
+ ✅ Restored song: Comfortably Numb
+ 🔄 Restoring song: 7e303f1a-e8f9-4ce5-8c1c-086256e04acd
+ ✅ Added new song: new song
+ ✅ Restored song: new song
+ 🔄 Restoring song: d2915788-afb6-43ab-aea8-b719c43064dc
+ ✅ Added new song: 2
+ ✅ Restored song: 2
+ 🔄 Restoring song: e5610781-fc58-47a5-a2d9-83c09c3a8659
+ ✅ Added new song: 1
+ ✅ Restored song: 1
+ 🔄 Restoring song: 916fc2ad-cdbc-47e2-bab3-d3e45dda8ef2
+ ✅ Added new song: gghh
+ ✅ Restored song: gghh
+ 🔄 Restoring song: b6dbd296-c35b-4eb0-89fe-7cfb68a766fc
+ ✅ Added new song: 3
+ ✅ Restored song: 3
+ 🔄 Restoring song: 2d45984c-e1ff-404c-b4a3-f91c4561286f
+ ✅ Added new song: teset
+ ✅ Restored song: teset
+ ✅ Restore complete: 8 songs restored
+ ✅ Restore result: Object
+ Successfully restored 8 songs
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=dec187b7:344
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: 1
+ 📡 Not uploading to database: Object
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ No tracks or cached waveform for "1"
+ Song selected: "1" with 0 tracks - loading for streaming
+ Setting up streaming for: "1" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "1" - instant playback available
+ Duration updated from streaming engine: 394s
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ 🔄 Loading started for Comfortably Numb - Acoustic
+  ⚠️ Audio error for Comfortably Numb - Acoustic: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Backups
+  ⚠️ Audio error for Comfortably Numb - Backups: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Bass
+  ⚠️ Audio error for Comfortably Numb - Bass: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Click
+  ⚠️ Audio error for Comfortably Numb - Click: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Drums
+  ⚠️ Audio error for Comfortably Numb - Drums: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+ 🔄 Loading started for Comfortably Numb - Keys
+  ⚠️ Audio error for Comfortably Numb - Keys: error Event
+errorHandler @ streaming-audio-engine.ts:87
+ Duration updated from streaming engine: 394s
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=dec187b7:344
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: 2
+ 📡 Not uploading to database: Object
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ No tracks or cached waveform for "2"
+ Song selected: "2" with 0 tracks - loading for streaming
+ Setting up streaming for: "2" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "2" - instant playback available
+ Duration updated from streaming engine: 394s
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=dec187b7:344
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: 3
+ 📡 Not uploading to database: Object
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ No tracks or cached waveform for "3"
+ Song selected: "3" with 0 tracks - loading for streaming
+ Setting up streaming for: "3" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "3" - instant playback available
+ Duration updated from streaming engine: 394s
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=dec187b7:344
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: 3 AM
+ 📡 Not uploading to database: Object
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ No tracks or cached waveform for "3 AM"
+ Song selected: "3 AM" with 0 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+streaming-audio-engine.ts:75 🎵 Track loading complete: 0 tracks ready
+use-audio-engine.tsx:139 ✅ Streaming ready for "3 AM" - instant playback available
+use-audio-engine.tsx:63 Duration updated from streaming engine: 394s
+streaming-audio-engine.ts:114 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+performance.tsx:361 🔍 Debug values: Object
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+performance.tsx:346 🎵 Loading song: gghh
+performance.tsx:355 📡 Not uploading to database: Object
+performance.tsx:361 🔍 Debug values: Object
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+waveform-visualizer.tsx:61 No tracks or cached waveform for "gghh"
+use-audio-engine.tsx:103 Song selected: "gghh" with 0 tracks - loading for streaming
+use-audio-engine.tsx:111 Setting up streaming for: "gghh" - UI stays responsive
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+streaming-audio-engine.ts:81 🚀 Streaming load: 0 tracks (deferred setup)
+streaming-audio-engine.ts:72 🎵 Loading original tracks...
+streaming-audio-engine.ts:75 🎵 Track loading complete: 0 tracks ready
+use-audio-engine.tsx:139 ✅ Streaming ready for "gghh" - instant playback available
+use-audio-engine.tsx:63 Duration updated from streaming engine: 394s
+streaming-audio-engine.ts:114 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+performance.tsx:361 🔍 Debug values: Object
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+performance.tsx:346 🎵 Loading song: new song
+performance.tsx:355 📡 Not uploading to database: Object
+performance.tsx:361 🔍 Debug values: Object
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+waveform-visualizer.tsx:61 No tracks or cached waveform for "new song"
+use-audio-engine.tsx:103 Song selected: "new song" with 0 tracks - loading for streaming
+use-audio-engine.tsx:111 Setting up streaming for: "new song" - UI stays responsive
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+streaming-audio-engine.ts:81 🚀 Streaming load: 0 tracks (deferred setup)
+streaming-audio-engine.ts:72 🎵 Loading original tracks...
+streaming-audio-engine.ts:75 🎵 Track loading complete: 0 tracks ready
+use-audio-engine.tsx:139 ✅ Streaming ready for "new song" - instant playback available
+use-audio-engine.tsx:63 Duration updated from streaming engine: 394s
+streaming-audio-engine.ts:114 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+performance.tsx:361 🔍 Debug values: Object
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+performance.tsx:346 🎵 Loading song: teset
+performance.tsx:355 📡 Not uploading to database: Object
+performance.tsx:361 🔍 Debug values: Object
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+waveform-visualizer.tsx:61 No tracks or cached waveform for "teset"
+use-audio-engine.tsx:103 Song selected: "teset" with 0 tracks - loading for streaming
+use-audio-engine.tsx:111 Setting up streaming for: "teset" - UI stays responsive
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+streaming-audio-engine.ts:81 🚀 Streaming load: 0 tracks (deferred setup)
+streaming-audio-engine.ts:72 🎵 Loading original tracks...
+streaming-audio-engine.ts:75 🎵 Track loading complete: 0 tracks ready
+use-audio-engine.tsx:139 ✅ Streaming ready for "teset" - instant playback available
+use-audio-engine.tsx:63 Duration updated from streaming engine: 394s
+streaming-audio-engine.ts:114 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+performance.tsx:361 🔍 Debug values: Object
+performance.tsx:435 🎭 Broadcast host effect: Object
+performance.tsx:444 🎭 Not broadcasting - not host
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542

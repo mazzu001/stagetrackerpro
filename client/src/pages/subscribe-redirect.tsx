@@ -26,8 +26,7 @@ const plans: PlanOption[] = [
       'Waveform visualization',
       'Fullscreen performance mode'
     ],
-    icon: Crown,
-    popular: true
+    icon: Crown
   },
   {
     id: 'professional',
@@ -41,7 +40,8 @@ const plans: PlanOption[] = [
       'Embedded time stamped MIDI commands with to-the-second accuracy',
       'Priority support'
     ],
-    icon: Star
+    icon: Star,
+    popular: true
   }
 ];
 

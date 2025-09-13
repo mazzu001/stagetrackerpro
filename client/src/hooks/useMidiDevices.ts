@@ -135,7 +135,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         refreshDeviceList();
       };
       
-      await refreshDeviceList();
+      // Allow Web MIDI API time to populate device collections
+      setTimeout(() => refreshDeviceList(), 100);
       setIsInitialized(true);
       console.log('✅ MIDI system initialized successfully');
       

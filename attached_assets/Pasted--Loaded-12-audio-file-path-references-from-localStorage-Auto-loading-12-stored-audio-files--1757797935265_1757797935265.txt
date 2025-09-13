@@ -1,0 +1,157 @@
+ Loaded 12 audio file path references from localStorage
+ 🔄 Auto-loading 12 stored audio files...
+ 🔍 BrowserFS.getAudioFile: Looking for track 35af4a25-b69d-43b8-a80b-920eeb581e31
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 35af4a25-b69d-43b8-a80b-920eeb581e31
+ ❌ Database not initialized for track 35af4a25-b69d-43b8-a80b-920eeb581e31
+ Expected audio files for tracks:
+   - Comfortably Numb - Acoustic.mp3 (browser://85eeae38-8dfa-4e45-96be-35d72e8ab64c/35af4a25-b69d-43b8-a80b-920eeb581e31)
+   - Comfortably Numb - Backups.mp3 (browser://85eeae38-8dfa-4e45-96be-35d72e8ab64c/365ceccd-c721-4e10-97ab-cacfa8970646)
+   - Comfortably Numb - Bass.mp3 (browser://85eeae38-8dfa-4e45-96be-35d72e8ab64c/53537512-402c-44fb-9173-978c51edf49e)
+   - Comfortably Numb - Click.mp3 (browser://85eeae38-8dfa-4e45-96be-35d72e8ab64c/6f083590-f647-4f86-8f39-e1c79f922a37)
+   - Comfortably Numb - Drums.mp3 (browser://85eeae38-8dfa-4e45-96be-35d72e8ab64c/936bd5b4-6c20-4faf-a6f0-80d2e7030f9d)
+   - Comfortably Numb - Keys.mp3 (browser://85eeae38-8dfa-4e45-96be-35d72e8ab64c/ddeab7c1-91eb-4227-a93b-001f926dd2fe)
+   - Comfortably Numb - Acoustic.mp3 (browser://05bdb22e-814c-4b18-be7b-a39da3fba8c3/312738dd-e313-4dbc-bb25-7be7256432e7)
+   - Comfortably Numb - Backups.mp3 (browser://05bdb22e-814c-4b18-be7b-a39da3fba8c3/d5daf7e5-f468-4c5f-8891-621607be2684)
+   - Comfortably Numb - Bass.mp3 (browser://05bdb22e-814c-4b18-be7b-a39da3fba8c3/ce326eab-8ce1-4156-9c56-63cbbcb0c226)
+   - Comfortably Numb - Click.mp3 (browser://05bdb22e-814c-4b18-be7b-a39da3fba8c3/d4adbe61-3aef-43cc-8087-c343ac3b3995)
+   - Comfortably Numb - Drums.mp3 (browser://05bdb22e-814c-4b18-be7b-a39da3fba8c3/5f233248-f4ac-46a2-b31f-2f791faea76a)
+   - Comfortably Numb - Keys.mp3 (browser://05bdb22e-814c-4b18-be7b-a39da3fba8c3/93fbcf00-5293-4fc0-a6c2-b463075823e5)
+ These files will be loaded when you select them through the file picker.
+ 🔍 BrowserFS.getAudioFile: Looking for track 365ceccd-c721-4e10-97ab-cacfa8970646
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 365ceccd-c721-4e10-97ab-cacfa8970646
+ ❌ Database not initialized for track 365ceccd-c721-4e10-97ab-cacfa8970646
+ 🔍 BrowserFS.getAudioFile: Looking for track 53537512-402c-44fb-9173-978c51edf49e
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 53537512-402c-44fb-9173-978c51edf49e
+ ❌ Database not initialized for track 53537512-402c-44fb-9173-978c51edf49e
+ 🔍 BrowserFS.getAudioFile: Looking for track 6f083590-f647-4f86-8f39-e1c79f922a37
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 6f083590-f647-4f86-8f39-e1c79f922a37
+ ❌ Database not initialized for track 6f083590-f647-4f86-8f39-e1c79f922a37
+ 🔍 BrowserFS.getAudioFile: Looking for track 936bd5b4-6c20-4faf-a6f0-80d2e7030f9d
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 936bd5b4-6c20-4faf-a6f0-80d2e7030f9d
+ ❌ Database not initialized for track 936bd5b4-6c20-4faf-a6f0-80d2e7030f9d
+ 🔍 BrowserFS.getAudioFile: Looking for track ddeab7c1-91eb-4227-a93b-001f926dd2fe
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for ddeab7c1-91eb-4227-a93b-001f926dd2fe
+ ❌ Database not initialized for track ddeab7c1-91eb-4227-a93b-001f926dd2fe
+index-CmT-RCNR.js:338 🔍 BrowserFS.getAudioFile: Looking for track 312738dd-e313-4dbc-bb25-7be7256432e7
+index-CmT-RCNR.js:338 💾 Memory cache has: []
+index-CmT-RCNR.js:338 🗃️ Database initialized: false
+index-CmT-RCNR.js:338 💾 Not in memory cache, checking IndexedDB for 312738dd-e313-4dbc-bb25-7be7256432e7
+index-CmT-RCNR.js:338 ❌ Database not initialized for track 312738dd-e313-4dbc-bb25-7be7256432e7
+index-CmT-RCNR.js:338 🔍 BrowserFS.getAudioFile: Looking for track d5daf7e5-f468-4c5f-8891-621607be2684
+index-CmT-RCNR.js:338 💾 Memory cache has: []
+index-CmT-RCNR.js:338 🗃️ Database initialized: false
+index-CmT-RCNR.js:338 💾 Not in memory cache, checking IndexedDB for d5daf7e5-f468-4c5f-8891-621607be2684
+index-CmT-RCNR.js:338 ❌ Database not initialized for track d5daf7e5-f468-4c5f-8891-621607be2684
+index-CmT-RCNR.js:338 🔍 BrowserFS.getAudioFile: Looking for track ce326eab-8ce1-4156-9c56-63cbbcb0c226
+index-CmT-RCNR.js:338 💾 Memory cache has: []
+index-CmT-RCNR.js:338 🗃️ Database initialized: false
+index-CmT-RCNR.js:338 💾 Not in memory cache, checking IndexedDB for ce326eab-8ce1-4156-9c56-63cbbcb0c226
+index-CmT-RCNR.js:338 ❌ Database not initialized for track ce326eab-8ce1-4156-9c56-63cbbcb0c226
+index-CmT-RCNR.js:338 🔍 BrowserFS.getAudioFile: Looking for track d4adbe61-3aef-43cc-8087-c343ac3b3995
+index-CmT-RCNR.js:338 💾 Memory cache has: []
+index-CmT-RCNR.js:338 🗃️ Database initialized: false
+index-CmT-RCNR.js:338 💾 Not in memory cache, checking IndexedDB for d4adbe61-3aef-43cc-8087-c343ac3b3995
+index-CmT-RCNR.js:338 ❌ Database not initialized for track d4adbe61-3aef-43cc-8087-c343ac3b3995
+index-CmT-RCNR.js:338 🔍 BrowserFS.getAudioFile: Looking for track 5f233248-f4ac-46a2-b31f-2f791faea76a
+index-CmT-RCNR.js:338 💾 Memory cache has: []
+index-CmT-RCNR.js:338 🗃️ Database initialized: false
+index-CmT-RCNR.js:338 💾 Not in memory cache, checking IndexedDB for 5f233248-f4ac-46a2-b31f-2f791faea76a
+index-CmT-RCNR.js:338 ❌ Database not initialized for track 5f233248-f4ac-46a2-b31f-2f791faea76a
+index-CmT-RCNR.js:338 🔍 BrowserFS.getAudioFile: Looking for track 93fbcf00-5293-4fc0-a6c2-b463075823e5
+index-CmT-RCNR.js:338 💾 Memory cache has: []
+index-CmT-RCNR.js:338 🗃️ Database initialized: false
+index-CmT-RCNR.js:338 💾 Not in memory cache, checking IndexedDB for 93fbcf00-5293-4fc0-a6c2-b463075823e5
+index-CmT-RCNR.js:338 ❌ Database not initialized for track 93fbcf00-5293-4fc0-a6c2-b463075823e5
+index-CmT-RCNR.js:338 ✅ Auto-loaded 0/12 audio files into cache
+index-CmT-RCNR.js:402 🔍 Checking URL for payment success: https://stagetrackerpro.com/
+index-CmT-RCNR.js:402 🔍 Parsed values: Object
+index-CmT-RCNR.js:402 🔍 No payment success detected in URL
+index-CmT-RCNR.js:402 Browser file system already initialized - auto-initializing
+index-CmT-RCNR.js:338 ✅ BrowserFileSystem database auto-initialized
+index-CmT-RCNR.js:338 Browser file system initialized successfully
+stripe.js:1 Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+stripe.js:1 Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+index-CmT-RCNR.js:338 🔄 Checking fresh subscription status for: mnbtransport2024@gmail.com
+index-CmT-RCNR.js:338 ✅ Fresh subscription status: professional
+index-CmT-RCNR.js:338 🔄 Resetting processed timestamps - Song changed to: none
+index-CmT-RCNR.js:338 ⏹️ Resetting processed timestamps - Playback stopped
+index-CmT-RCNR.js:338 ⏮️ Resetting processed timestamps - Playback at beginning (0s)
+index-CmT-RCNR.js:387 🎵 Initializing global Web MIDI access...
+index-CmT-RCNR.js:398 🎵 Setting up persistent Web MIDI event listener...
+index-CmT-RCNR.js:398 🔄 Global Web MIDI status: Disconnected - 
+index-CmT-RCNR.js:338 🎵 Master output initialized
+index-CmT-RCNR.js:398 📋 Loaded 2 songs from local storage (alphabetically sorted)
+index-CmT-RCNR.js:387 ✅ Global Web MIDI access initialized
+index-CmT-RCNR.js:387 📱 Found last connected MIDI device: MidiPort
+index-CmT-RCNR.js:387 🔄 Attempting auto-reconnect to: MidiPort
+index-CmT-RCNR.js:387 ⚠️ Last connected device not available: MidiPort
+index-CmT-RCNR.js:382 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ index-CmT-RCNR.js:382
+index-CmT-RCNR.js:387 🔄 Refreshed MIDI devices: 0 outputs found
+index-CmT-RCNR.js:387 🔄 Refreshed MIDI devices: 0 outputs found
+index-CmT-RCNR.js:382 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ index-CmT-RCNR.js:382
+index-CmT-RCNR.js:387 🔄 Refreshed MIDI devices: 0 outputs found
+index-CmT-RCNR.js:387 🔄 Refreshed MIDI devices: 0 outputs found
+index-CmT-RCNR.js:382 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ index-CmT-RCNR.js:382
+index-CmT-RCNR.js:387 🔄 Refreshed MIDI devices: 0 outputs found
+index-CmT-RCNR.js:387 🔄 Global MIDI device state changed: MidiPort connected
+index-CmT-RCNR.js:387 🔄 Global MIDI device state changed: MidiPort connected
+index-CmT-RCNR.js:387 🔄 Global MIDI device state changed: MidiPort disconnected
+index-CmT-RCNR.js:387 🔄 Global MIDI device state changed: MidiPort disconnected
+index-CmT-RCNR.js:382 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ index-CmT-RCNR.js:382
+index-CmT-RCNR.js:387 🔄 Refreshed MIDI devices: 0 outputs found
+index-CmT-RCNR.js:387 🔄 Global MIDI device state changed: MidiPort connected
+index-CmT-RCNR.js:387 🔄 Global MIDI device state changed: MidiPort connected
+index-CmT-RCNR.js:382 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ index-CmT-RCNR.js:382
+index-CmT-RCNR.js:387 🔄 Global MIDI device state changed: MidiPort connected
+index-CmT-RCNR.js:387 💾 Saved last connected MIDI device: MidiPort
+index-CmT-RCNR.js:387 ✅ Connected to MIDI device: MidiPort
+index-CmT-RCNR.js:398 🔄 Global Web MIDI status: Connected - MidiPort
+index-CmT-RCNR.js:382 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ index-CmT-RCNR.js:382
+index-CmT-RCNR.js:387 🔄 Refreshed MIDI devices: 1 outputs found
+index-CmT-RCNR.js:382 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ index-CmT-RCNR.js:382
+index-CmT-RCNR.js:387 🔄 Refreshed MIDI devices: 1 outputs found
+index-CmT-RCNR.js:382 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ index-CmT-RCNR.js:382
+$l @ index-CmT-RCNR.js:40
+Ho @ index-CmT-RCNR.js:40
+nk @ index-CmT-RCNR.js:40
+Xr @ index-CmT-RCNR.js:40
+Um @ index-CmT-RCNR.js:40
+Yr @ index-CmT-RCNR.js:38
+po @ index-CmT-RCNR.js:40
+Kt.flushSync @ index-CmT-RCNR.js:40
+Of @ index-CmT-RCNR.js:40
+f @ index-CmT-RCNR.js:387
+(anonymous) @ index-CmT-RCNR.js:40
+bS @ index-CmT-RCNR.js:37
+kS @ index-CmT-RCNR.js:37
+CS @ index-CmT-RCNR.js:37
+dm @ index-CmT-RCNR.js:37
+Sv @ index-CmT-RCNR.js:37
+(anonymous) @ index-CmT-RCNR.js:37
+Nf @ index-CmT-RCNR.js:40
+Kg @ index-CmT-RCNR.js:37
+Uc @ index-CmT-RCNR.js:37
+Jd @ index-CmT-RCNR.js:37
+$S @ index-CmT-RCNR.js:37

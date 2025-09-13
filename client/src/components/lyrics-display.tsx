@@ -76,7 +76,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
 
   // Extract MIDI commands from text
   const extractMidiCommands = (text: string): { displayText: string; midiCommands: string[] } => {
-    const midiCommandRegex = /\[\[([A-Z_]+:[0-9]+(?::[0-9]+)?(?::[0-9]+)?)\]\]/g;
+    const midiCommandRegex = /\[\[([A-Za-z_]+:[0-9]+(?::[0-9]+)?(?::[0-9]+)?)\]\]/g;
     const midiCommands: string[] = [];
     let displayText = text;
     

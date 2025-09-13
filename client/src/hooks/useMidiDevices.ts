@@ -118,6 +118,22 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       setError(null);
       console.log('🎹 Initializing MIDI access...');
       
+      // Check MIDI permission state first
+      if (navigator.permissions) {
+        try {
+          const midiPermission = await navigator.permissions.query({ name: 'midi' as any, sysex: true });
+          console.log('🔐 MIDI Permission State:', midiPermission.state);
+          
+          if (midiPermission.state === 'denied') {
+            setError('MIDI access denied. Please reset MIDI permissions in your browser settings and refresh the page.');
+            console.error('❌ MIDI permission denied by user');
+            return;
+          }
+        } catch (permErr) {
+          console.log('🔍 Permission API not available or failed:', permErr);
+        }
+      }
+      
       // Android Chrome browser detection and compatibility logging
       if (browserInfo.isAndroidChrome) {
         console.log('📱 Android Chrome detected - using mobile MIDI compatibility mode');
@@ -173,6 +189,17 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       inputsType: access.inputs.constructor.name,
       outputsType: access.outputs.constructor.name
     });
+    
+    // If no devices found, provide guidance for permission reset
+    if (access.inputs.size === 0 && access.outputs.size === 0) {
+      console.log('⚠️ No MIDI devices found. This could be due to:');
+      console.log('1. No physical MIDI devices connected');
+      console.log('2. MIDI permissions denied or blocked');
+      console.log('3. Browser security restrictions');
+      console.log('💡 To reset MIDI permissions:');
+      console.log('   - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions');
+      console.log('   - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site');
+    }
     
     // Helper function to detect device type
     const detectDeviceType = (device: MIDIPort): { isUSB: boolean; isBluetooth: boolean } => {

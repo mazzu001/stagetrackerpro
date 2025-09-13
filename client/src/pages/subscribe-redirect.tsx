@@ -36,7 +36,7 @@ const plans: PlanOption[] = [
     features: [
       'All Premium features',
       'Advanced MIDI device control',
-      'Wireless audio connectivity (Coming Soon)', 
+      'Multiple simultaneous MIDI device connections', 
       'Advanced performance tools (Coming Soon)',
       'Professional stage features (Coming Soon)',
       'Priority support'

@@ -19,15 +19,14 @@ import SubscribeTest from "@/pages/subscribe-test";
 import Plans from "@/pages/plans";
 import Landing from "@/pages/landing";
 import Unsubscribe from "@/pages/unsubscribe";
-import { LocalFileSystemInit } from '@/components/local-file-system-init';
-import { BrowserFileSystem } from '@/lib/browser-file-system';
+import { LibraryFolderDialog } from '@/components/library-folder-dialog';
+import { useSecureStorage } from '@/hooks/use-secure-storage';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { MidiProvider } from '@/contexts/MidiProvider';
 
 function AppContent() {
-  const [isLocalFSReady, setIsLocalFSReady] = useState(false);
-  const [isCheckingFS, setIsCheckingFS] = useState(true);
-  const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
+  const { isAuthenticated, isLoading, isPaidUser, user } = useLocalAuth();
+  const [storageState, storageActions] = useSecureStorage();
 
   useEffect(() => {
     // Check URL parameters for successful payment - handle both valid and invalid query formats
@@ -111,47 +110,32 @@ function AppContent() {
     } else {
       console.log('🔍 No payment success detected in URL');
     }
-    
-    // Check if local file system is already initialized
-    const checkLocalFS = async () => {
-      try {
-        const browserFS = BrowserFileSystem.getInstance();
-        const isAlreadyInitialized = await browserFS.isAlreadyInitialized();
-        
-        if (isAlreadyInitialized) {
-          console.log('Browser file system already initialized - auto-initializing');
-          // Auto-initialize since it was already set up before
-          const success = await browserFS.initialize();
-          if (success) {
-            setIsLocalFSReady(true);
-          } else {
-            console.log('Auto-initialization failed - showing setup screen');
-          }
-        } else {
-          console.log('Browser file system needs initialization');
-        }
-      } catch (error) {
-        console.error('Error checking browser file system:', error);
-      } finally {
-        setIsCheckingFS(false);
-      }
-    };
-
-    checkLocalFS();
   }, []);
 
-  const handleLocalFSInitialized = () => {
-    setIsLocalFSReady(true);
+  // Initialize secure storage when user is available
+  useEffect(() => {
+    if (isAuthenticated && user?.email && !storageState.isLoading) {
+      if (!storageState.status.isInitialized) {
+        console.log('🔧 Initializing secure storage for user:', user.email);
+        storageActions.initialize(user.email);
+      }
+    }
+  }, [isAuthenticated, user?.email, storageState.status.isInitialized, storageState.isLoading, storageActions]);
+
+  const handleLibraryFolderSelected = () => {
+    // Close the folder selection dialog and refresh the app
+    storageActions.refreshStatus();
   };
 
-  if (isCheckingFS || isLoading) {
+  // Show loading state while checking authentication or initializing storage
+  if (isLoading || (isAuthenticated && storageState.isLoading)) {
     return (
       <TooltipProvider>
         <div className="min-h-screen min-h-[100dvh] bg-background flex items-center justify-center mobile-vh-fix">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
             <p className="text-gray-400">
-              {isLoading ? 'Checking authentication...' : 'Checking local storage...'}
+              {isLoading ? 'Checking authentication...' : 'Initializing secure storage...'}
             </p>
           </div>
         </div>
@@ -164,11 +148,20 @@ function AppContent() {
     <TooltipProvider>
       {!isAuthenticated ? (
         <Landing />
-      ) : !isLocalFSReady ? (
-        <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
+      ) : storageState.needsLibrarySelection ? (
+        <>
+          <LibraryFolderDialog
+            isOpen={true}
+            onFolderSelected={handleLibraryFolderSelected}
+            onSelectFolder={storageActions.selectLibraryFolder}
+            isSelecting={storageState.isLoading}
+            error={storageState.error}
+          />
+          <Toaster />
+        </>
       ) : (
         <Router>
-          <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
+          <Route path="/" component={() => <Performance userType={user?.userType || 'free'} />} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
           <Route path="/broadcast-viewer-old" component={BroadcastViewer} />

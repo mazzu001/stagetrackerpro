@@ -40,35 +40,6 @@ if (process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== 'placehol
   console.log('💡 For production deployment, ensure STRIPE_SECRET_KEY is properly configured');
 }
 
-// Helper function to determine user type from subscription status and trial end date
-function getUserTypeFromSubscription(subscriptionStatus: number, subscriptionEndDate: Date | null): {
-  userType: 'free' | 'premium' | 'professional';
-  isPaid: boolean;
-} {
-  // Handle trial status (4) - check if trial is still active
-  if (subscriptionStatus === 4) {
-    if (subscriptionEndDate && new Date() < subscriptionEndDate) {
-      // Active trial - give professional access
-      return { userType: 'professional', isPaid: true };
-    } else {
-      // Expired trial - downgrade to free
-      return { userType: 'free', isPaid: false };
-    }
-  }
-  
-  // Handle standard subscription statuses
-  switch (subscriptionStatus) {
-    case 1:
-      return { userType: 'free', isPaid: false };
-    case 2:
-      return { userType: 'premium', isPaid: true };
-    case 3:
-      return { userType: 'professional', isPaid: true };
-    default:
-      return { userType: 'free', isPaid: false };
-  }
-}
-
 // Configure multer for file uploads
 const uploadDir = path.join(process.cwd(), "uploads");
 if (!fs.existsSync(uploadDir)) {
@@ -248,8 +219,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log(`📋 Getting profile for ${email}`);
       
-      // Calculate correct userType from subscriptionStatus using helper function
-      const { userType } = getUserTypeFromSubscription(user.subscriptionStatus, user.subscriptionEndDate);
+      // Calculate correct userType from subscriptionStatus
+      const userType = user.subscriptionStatus === 1 ? 'free' : 
+                       user.subscriptionStatus === 2 ? 'premium' : 'professional';
       
       // Set proper content type for JSON response
       res.setHeader('Content-Type', 'application/json');
@@ -282,14 +254,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Create new user with hashed password
       const passwordHash = await bcrypt.hash(password, 10);
       
-      // Create new user with trial status (let storage handle trial assignment)
       const newUser = await storage.upsertUser({
         id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         email: email.toLowerCase(),
         firstName: null,
         lastName: null,
         profileImageUrl: null,
-        // Don't specify subscriptionStatus - let storage.upsertUser assign trial status (4) with 30-day expiry
+        subscriptionStatus: 1, // 1 = free user
       });
       
       console.log('✅ New user registered:', newUser.email);
@@ -298,7 +269,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: { 
           id: newUser.id, 
           email: newUser.email,
-          userType: getUserTypeFromSubscription(newUser.subscriptionStatus, newUser.subscriptionEndDate).userType
+          userType: newUser.subscriptionStatus === 1 ? 'free' : 
+                   newUser.subscriptionStatus === 2 ? 'premium' : 'professional'
         }
       });
     } catch (error: any) {
@@ -322,17 +294,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
       
-      // CRITICAL SECURITY FIX: Verify password hash
-      // For now, bypass password verification for demo users only
-      // TODO: Implement proper password storage and verification
-      if (!email.includes('@demo.com') && !email.includes('@test.com')) {
-        // Production users would need proper password verification here
-        console.log('⚠️ Password verification temporarily bypassed for demo');
-      }
-      
       console.log('✅ User authenticated:', user.email);
       
-      const { userType } = getUserTypeFromSubscription(user.subscriptionStatus, user.subscriptionEndDate);
+      const userType = user.subscriptionStatus === 1 ? 'free' : 
+                      user.subscriptionStatus === 2 ? 'premium' : 'professional';
       
       res.json({ 
         success: true, 
@@ -394,7 +359,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     });
     
-    // Simple fallback endpoint removed - unified verification below
+    app.post('/api/verify-subscription', (req, res) => {
+      res.json({ isPaid: false, userType: 'free' });
+    });
     
     console.log('✅ Disabled payment routes registered');
   } else {
@@ -458,7 +425,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Removed duplicate verify-subscription endpoint - using universal one below
+  // Check subscription status
+  app.post('/api/verify-subscription', async (req, res) => {
+    try {
+      const { email } = req.body;
+      console.log('🔍 Verifying subscription for email:', email);
+      
+      if (!email) {
+        return res.status(400).json({ error: 'Email is required' });
+      }
+
+      // Get user from database
+      const user = await storage.getUserByEmail(email.toLowerCase());
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      console.log('🔍 Database subscription status:', user.subscriptionStatus);
+      
+      // Map subscription status to user type
+      let userType = 'free';
+      let isPaid = false;
+      
+      if (user.subscriptionStatus === 2) {
+        userType = 'premium';
+        isPaid = true;
+      } else if (user.subscriptionStatus === 3) {
+        userType = 'professional';
+        isPaid = true;
+      }
+      
+      console.log('🔍 Final userType:', userType);
+      
+      res.json({
+        isPaid,
+        userType,
+        subscriptionStatus: user.subscriptionStatus,
+        email: user.email
+      });
+    } catch (error: any) {
+      console.error('❌ Error verifying subscription:', error);
+      res.status(500).json({ 
+        error: 'Verification failed',
+        message: 'Unable to verify subscription status' 
+      });
+    }
+  });
 
   // Cancel subscription endpoint
   app.post('/api/cancel-subscription', async (req, res) => {
@@ -1011,8 +1023,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const status = parseInt(user.subscriptionStatus as any);
         console.log('🔍 Database subscription status:', status);
         
-        // Use helper function to determine user type and paid status including trial logic
-        const { userType, isPaid } = getUserTypeFromSubscription(status, user.subscriptionEndDate);
+        let userType = 'free';
+        let isPaid = false;
+        
+        switch (status) {
+          case 1:
+            userType = 'free';
+            isPaid = false;
+            break;
+          case 2:
+            userType = 'premium';
+            isPaid = true;
+            break;
+          case 3:
+            userType = 'professional';
+            isPaid = true;
+            break;
+          default:
+            userType = 'free';
+            isPaid = false;
+        }
         
         console.log('🔍 Final userType:', userType);
         

@@ -9,7 +9,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLocalFolderBackup } from '@/hooks/use-local-folder-backup';
-import { Shield, FolderOpen, AlertTriangle, CheckCircle, Clock, Settings } from 'lucide-react';
+import { DataRecoveryDialog } from '@/components/data-recovery-dialog';
+import { Shield, FolderOpen, AlertTriangle, CheckCircle, Clock, Settings, Download } from 'lucide-react';
 
 interface BackupStatusIndicatorProps {
   userEmail: string;
@@ -19,6 +20,7 @@ interface BackupStatusIndicatorProps {
 export function BackupStatusIndicator({ userEmail, className = '' }: BackupStatusIndicatorProps) {
   const [status, actions] = useLocalFolderBackup(userEmail);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [isRecoveryOpen, setIsRecoveryOpen] = useState(false);
 
   const getStatusIcon = () => {
     if (!status.isSupported) return <Shield className="w-4 h-4 text-gray-400" />;
@@ -157,25 +159,41 @@ export function BackupStatusIndicator({ userEmail, className = '' }: BackupStatu
               )}
 
               {status.isEnabled && (
-                <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="outline"
+                      onClick={async () => {
+                        await actions.performFullBackup();
+                      }}
+                      disabled={status.lastSaveStatus === 'pending'}
+                      data-testid="button-backup-now"
+                    >
+                      Backup Now
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        actions.disableBackup();
+                      }}
+                      data-testid="button-disable-backup"
+                    >
+                      Disable
+                    </Button>
+                  </div>
+                  
+                  {/* Restore from Backup button */}
                   <Button
-                    variant="outline"
-                    onClick={async () => {
-                      await actions.performFullBackup();
-                    }}
-                    disabled={status.lastSaveStatus === 'pending'}
-                    data-testid="button-backup-now"
-                  >
-                    Backup Now
-                  </Button>
-                  <Button
-                    variant="outline"
+                    variant="secondary"
+                    className="w-full"
                     onClick={() => {
-                      actions.disableBackup();
+                      setIsRecoveryOpen(true);
+                      setIsDetailsOpen(false);
                     }}
-                    data-testid="button-disable-backup"
+                    data-testid="button-restore-backup"
                   >
-                    Disable
+                    <Download className="w-4 h-4 mr-2" />
+                    Restore from Backup
                   </Button>
                 </div>
               )}
@@ -191,6 +209,17 @@ export function BackupStatusIndicator({ userEmail, className = '' }: BackupStatu
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Data Recovery Dialog */}
+      <DataRecoveryDialog
+        isOpen={isRecoveryOpen}
+        onClose={() => setIsRecoveryOpen(false)}
+        onRecoveryComplete={(restoredCount) => {
+          // Optionally show a success message or refresh the page
+          console.log(`Successfully restored ${restoredCount} songs`);
+        }}
+        userEmail={userEmail}
+      />
     </div>
   );
 }

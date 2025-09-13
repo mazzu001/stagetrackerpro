@@ -37,6 +37,7 @@ export class SecureDirectStorage {
   private isInitialized = false;
   private currentUserEmail: string = '';
   private accountId: string = '';
+  private lastError: string | undefined = undefined;
 
   static getInstance(): SecureDirectStorage {
     if (!SecureDirectStorage.instance) {
@@ -82,11 +83,17 @@ export class SecureDirectStorage {
   async selectLibraryFolder(): Promise<boolean> {
     if (!SecureDirectStorage.isSupported()) {
       console.error('❌ File System Access API not supported');
+      this.lastError = 'File System Access API is not supported in this browser';
       return false;
     }
 
     try {
       console.log('📁 Requesting user to select music library folder...');
+      
+      // Check if we have a secure context
+      if (!window.isSecureContext) {
+        throw new Error('File System Access API requires a secure context (HTTPS)');
+      }
       
       const handle = await window.showDirectoryPicker({
         mode: 'readwrite',
@@ -102,11 +109,32 @@ export class SecureDirectStorage {
       await this.persistLibraryFolder(handle);
       
       this.isInitialized = true;
+      this.lastError = undefined;
       console.log('✅ Music library folder selected and initialized');
       return true;
       
     } catch (error) {
-      console.error('❌ Failed to select library folder:', error);
+      let errorMessage = 'Unknown error occurred';
+      
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          errorMessage = 'Folder selection was cancelled';
+          console.log('ℹ️ User cancelled folder selection');
+        } else if (error.name === 'SecurityError') {
+          errorMessage = 'File System Access API is blocked by browser security settings';
+          console.error('❌ Security error - API blocked:', error.message);
+        } else if (error.name === 'NotAllowedError') {
+          errorMessage = 'Permission to access files was denied';
+          console.error('❌ Permission denied:', error.message);
+        } else {
+          errorMessage = error.message;
+          console.error('❌ Failed to select library folder:', error.message);
+        }
+      } else {
+        console.error('❌ Failed to select library folder:', error);
+      }
+      
+      this.lastError = errorMessage;
       return false;
     }
   }

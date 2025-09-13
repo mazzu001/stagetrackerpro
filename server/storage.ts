@@ -177,8 +177,9 @@ export class DatabaseStorage implements IStorage {
         target: users.id,
         set: {
           ...userData,
-          subscriptionStatus: userData.subscriptionStatus || (userData.subscriptionEndDate ? userData.subscriptionStatus : 4),
-          subscriptionEndDate: userData.subscriptionEndDate || trialEndDate,
+          // Only update subscription fields if explicitly provided - preserve existing values
+          ...(userData.subscriptionStatus && { subscriptionStatus: userData.subscriptionStatus }),
+          ...(userData.subscriptionEndDate && { subscriptionEndDate: userData.subscriptionEndDate }),
           updatedAt: new Date(),
         },
       })

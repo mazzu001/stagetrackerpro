@@ -161,24 +161,30 @@ export class DatabaseStorage implements IStorage {
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
+    // Calculate 30-day trial end date for new users
+    const trialEndDate = new Date();
+    trialEndDate.setDate(trialEndDate.getDate() + 30);
+    
     const [user] = await db
       .insert(users)
       .values({
         ...userData,
-        subscriptionStatus: userData.subscriptionStatus || 1, // Default to 1 (free)
+        subscriptionStatus: userData.subscriptionStatus || 4, // Default to 4 (30-day professional trial)
+        subscriptionEndDate: userData.subscriptionEndDate || trialEndDate, // 30 days from now
         updatedAt: new Date(),
       })
       .onConflictDoUpdate({
         target: users.id,
         set: {
           ...userData,
-          subscriptionStatus: userData.subscriptionStatus || 1,
+          subscriptionStatus: userData.subscriptionStatus || (userData.subscriptionEndDate ? userData.subscriptionStatus : 4),
+          subscriptionEndDate: userData.subscriptionEndDate || trialEndDate,
           updatedAt: new Date(),
         },
       })
       .returning();
     
-    console.log('User upserted in database:', user.id, user.email, `subscription: ${user.subscriptionStatus}`);
+    console.log('User upserted in database:', user.id, user.email, `subscription: ${user.subscriptionStatus}`, user.subscriptionStatus === 4 ? `trial ends: ${user.subscriptionEndDate}` : '');
     return user;
   }
 

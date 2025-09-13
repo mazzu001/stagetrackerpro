@@ -40,6 +40,35 @@ if (process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== 'placehol
   console.log('💡 For production deployment, ensure STRIPE_SECRET_KEY is properly configured');
 }
 
+// Helper function to determine user type from subscription status and trial end date
+function getUserTypeFromSubscription(subscriptionStatus: number, subscriptionEndDate: Date | null): {
+  userType: 'free' | 'premium' | 'professional';
+  isPaid: boolean;
+} {
+  // Handle trial status (4) - check if trial is still active
+  if (subscriptionStatus === 4) {
+    if (subscriptionEndDate && new Date() < subscriptionEndDate) {
+      // Active trial - give professional access
+      return { userType: 'professional', isPaid: true };
+    } else {
+      // Expired trial - downgrade to free
+      return { userType: 'free', isPaid: false };
+    }
+  }
+  
+  // Handle standard subscription statuses
+  switch (subscriptionStatus) {
+    case 1:
+      return { userType: 'free', isPaid: false };
+    case 2:
+      return { userType: 'premium', isPaid: true };
+    case 3:
+      return { userType: 'professional', isPaid: true };
+    default:
+      return { userType: 'free', isPaid: false };
+  }
+}
+
 // Configure multer for file uploads
 const uploadDir = path.join(process.cwd(), "uploads");
 if (!fs.existsSync(uploadDir)) {
@@ -219,9 +248,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log(`📋 Getting profile for ${email}`);
       
-      // Calculate correct userType from subscriptionStatus
-      const userType = user.subscriptionStatus === 1 ? 'free' : 
-                       user.subscriptionStatus === 2 ? 'premium' : 'professional';
+      // Calculate correct userType from subscriptionStatus using helper function
+      const { userType } = getUserTypeFromSubscription(user.subscriptionStatus, user.subscriptionEndDate);
       
       // Set proper content type for JSON response
       res.setHeader('Content-Type', 'application/json');
@@ -269,8 +297,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         user: { 
           id: newUser.id, 
           email: newUser.email,
-          userType: newUser.subscriptionStatus === 1 ? 'free' : 
-                   newUser.subscriptionStatus === 2 ? 'premium' : 'professional'
+          userType: getUserTypeFromSubscription(newUser.subscriptionStatus, newUser.subscriptionEndDate).userType
         }
       });
     } catch (error: any) {
@@ -296,8 +323,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log('✅ User authenticated:', user.email);
       
-      const userType = user.subscriptionStatus === 1 ? 'free' : 
-                      user.subscriptionStatus === 2 ? 'premium' : 'professional';
+      const { userType } = getUserTypeFromSubscription(user.subscriptionStatus, user.subscriptionEndDate);
       
       res.json({ 
         success: true, 
@@ -1023,26 +1049,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const status = parseInt(user.subscriptionStatus as any);
         console.log('🔍 Database subscription status:', status);
         
-        let userType = 'free';
-        let isPaid = false;
-        
-        switch (status) {
-          case 1:
-            userType = 'free';
-            isPaid = false;
-            break;
-          case 2:
-            userType = 'premium';
-            isPaid = true;
-            break;
-          case 3:
-            userType = 'professional';
-            isPaid = true;
-            break;
-          default:
-            userType = 'free';
-            isPaid = false;
-        }
+        // Use helper function to determine user type and paid status including trial logic
+        const { userType, isPaid } = getUserTypeFromSubscription(status, user.subscriptionEndDate);
         
         console.log('🔍 Final userType:', userType);
         

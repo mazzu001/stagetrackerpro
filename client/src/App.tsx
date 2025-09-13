@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -27,6 +27,7 @@ import { MidiProvider } from '@/contexts/MidiProvider';
 function AppContent() {
   const { isAuthenticated, isLoading, isPaidUser, user } = useLocalAuth();
   const [storageState, storageActions] = useSecureStorage();
+  const initStartedRef = useRef<string | null>(null);
 
   useEffect(() => {
     // Check URL parameters for successful payment - handle both valid and invalid query formats
@@ -112,15 +113,16 @@ function AppContent() {
     }
   }, []);
 
-  // Initialize secure storage when user is available
+  // Initialize secure storage when user is available (prevent infinite loop with ref)
   useEffect(() => {
-    if (isAuthenticated && user?.email && !storageState.isLoading) {
-      if (!storageState.status.isInitialized) {
-        console.log('🔧 Initializing secure storage for user:', user.email);
-        storageActions.initialize(user.email);
-      }
-    }
-  }, [isAuthenticated, user?.email, storageState.status.isInitialized, storageState.isLoading, storageActions]);
+    if (!isAuthenticated || !user?.email) return;
+    if (storageState.status.isInitialized) return;
+    if (initStartedRef.current === user.email) return; // prevent repeats
+    
+    console.log('🔧 Initializing secure storage for user:', user.email);
+    initStartedRef.current = user.email;
+    storageActions.initialize(user.email);
+  }, [isAuthenticated, user?.email, storageState.status.isInitialized]);
 
   const handleLibraryFolderSelected = () => {
     // Close the folder selection dialog and refresh the app

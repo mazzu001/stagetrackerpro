@@ -125,7 +125,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         console.log('📱 Android device detected - using mobile compatibility mode');
       }
       
-      const access = await navigator.requestMIDIAccess({ sysex: false });
+      const access = await navigator.requestMIDIAccess({ sysex: true });
       midiAccessRef.current = access;
       
       // Listen for device state changes

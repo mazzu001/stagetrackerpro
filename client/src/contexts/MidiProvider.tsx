@@ -13,6 +13,8 @@ interface MidiContextType {
   sendMidiCommand: (command: any) => boolean;
   parseMidiCommand: (commandString: string) => any;
   refreshDevices: () => Promise<void>;
+  registerMessageListener: (id: string, callback: (message: any) => void) => void;
+  unregisterMessageListener: (id: string) => void;
 }
 
 // Create the context

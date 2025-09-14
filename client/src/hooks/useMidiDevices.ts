@@ -33,6 +33,8 @@ export interface UseMidiDevicesReturn {
   parseMidiCommand: (commandString: string) => MidiCommand | null;
   refreshDevices: () => Promise<void>;
   shouldUseBleAdapter: (device: { name?: string | null }) => boolean; // Helper for UI
+  registerMessageListener: (id: string, callback: (message: MIDIMessageEvent) => void) => void;
+  unregisterMessageListener: (id: string) => void;
 }
 
 export function useMidiDevices(): UseMidiDevicesReturn {
@@ -45,6 +47,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   const midiAccessRef = useRef<MIDIAccess | null>(null);
   const deviceConnectionsRef = useRef<Map<string, MIDIInput | MIDIOutput>>(new Map());
   const bleDevicesRef = useRef<Map<string, BleMidiDevice>>(new Map()); // Track BLE devices
+  const messageListenersRef = useRef<Map<string, (message: MIDIMessageEvent) => void>>(new Map());
 
   // Mobile browser detection for Android MIDI compatibility
   const getBrowserInfo = () => {
@@ -424,6 +427,15 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       if (device.type === 'input') {
         (device as MIDIInput).onmidimessage = (message: MIDIMessageEvent) => {
           console.log(`🎹 MIDI message from ${device.name}:`, message.data ? Array.from(message.data) : []);
+          
+          // Call all registered message listeners
+          messageListenersRef.current.forEach((callback, id) => {
+            try {
+              callback(message);
+            } catch (error) {
+              console.error(`❌ Error in MIDI message listener '${id}':`, error);
+            }
+          });
         };
       }
       
@@ -799,6 +811,18 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     await refreshDeviceList();
   }, [refreshDeviceList]);
 
+  // Register a message listener
+  const registerMessageListener = useCallback((id: string, callback: (message: MIDIMessageEvent) => void) => {
+    console.log(`🎹 Registering MIDI message listener: ${id}`);
+    messageListenersRef.current.set(id, callback);
+  }, []);
+
+  // Unregister a message listener
+  const unregisterMessageListener = useCallback((id: string) => {
+    console.log(`🎹 Unregistering MIDI message listener: ${id}`);
+    messageListenersRef.current.delete(id);
+  }, []);
+
   return {
     devices,
     connectedDevices,
@@ -825,6 +849,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       const hasWebBluetooth = androidBleMidi.isBluetoothSupported();
       
       return isBluetoothDevice && hasWebBluetooth;
-    }
+    },
+    registerMessageListener,
+    unregisterMessageListener
   };
 }

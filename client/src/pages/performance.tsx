@@ -580,6 +580,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       selectedSong: !!selectedSong, 
       selectedSongId, 
       songTitle: selectedSong?.title,
+      songEntryId: songEntryId,
       hasLyrics: !!selectedSong?.lyrics 
     });
     
@@ -590,6 +591,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     
     if (!selectedSong) {
       console.log('🎭 Not broadcasting - no song selected');
+      return;
+    }
+    
+    // CRITICAL FIX: Only broadcast when songEntryId exists and matches current song
+    // This prevents race conditions where songEntryId and songTitle are mismatched
+    if (!songEntryId) {
+      console.log('🎭 Not broadcasting - waiting for songEntryId');
       return;
     }
     

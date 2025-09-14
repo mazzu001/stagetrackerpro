@@ -803,6 +803,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         // If we're deleting the currently selected song, clear the selection
         if (selectedSongId === selectedSong.id) {
           setSelectedSongId(null);
+          setSongEntryId(null); // Also clear songEntryId to prevent race condition
         }
         
         setIsDeleteSongOpen(false);
@@ -1250,7 +1251,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                           ? 'bg-primary/20 border-l-4 border-l-primary'
                           : 'bg-transparent border-l-4 border-l-transparent hover:border-l-gray-600'
                       }`}
-                      onClick={() => !isPlaying && setSelectedSongId(song.id)}
+                      onClick={() => {
+                        if (!isPlaying) {
+                          setSelectedSongId(song.id);
+                          setSongEntryId(null); // Reset songEntryId to prevent race condition
+                        }
+                      }}
                       data-testid={`song-item-${song.id}`}
                     >
                       <div className="flex items-center justify-between mt-[-8px] mb-[-8px]">
@@ -1262,6 +1268,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                               e.stopPropagation();
                               if (!isPlaying) {
                                 setSelectedSongId(song.id);
+                                setSongEntryId(null); // Reset songEntryId to prevent race condition
                                 setIsTrackManagerOpen(true);
                               }
                             }}

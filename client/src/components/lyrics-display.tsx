@@ -192,10 +192,6 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
     // Check if we've already executed commands for this line
     if (executedCommands.has(lineKey)) return;
     
-    // Only execute if we have connected MIDI output devices
-    const outputDevices = connectedDevices.filter(d => d.type === 'output');
-    if (outputDevices.length === 0) return;
-    
     // Execute all MIDI commands for this line
     currentLine.midiCommands.forEach((commandString, index) => {
       const command = parseMidiCommand(commandString);

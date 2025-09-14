@@ -173,43 +173,72 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
   
 
   
-  // Find current line based on timestamp (for both timestamped and non-timestamped lyrics)
-  const currentLineIndex = lyrics.length > 0 ? lyrics.findIndex((line, index) => {
-    const nextLine = lyrics[index + 1];
-    return line.timestamp <= currentTime && (!nextLine || nextLine.timestamp > currentTime);
-  }) : -1;
-
-  // Execute MIDI commands when a new line becomes active
-  useEffect(() => {
-    if (!allowMidi || !isPlaying || currentLineIndex < 0 || lyrics.length === 0) return;
+  // Find all current lines at the current timestamp (handle multiple lines with same timestamp)
+  const getCurrentLines = () => {
+    if (lyrics.length === 0) return [];
     
-    const currentLine = lyrics[currentLineIndex];
-    if (!currentLine || currentLine.midiCommands.length === 0) return;
+    // Find all lines that should be active at current time
+    const activeLines: LyricsLine[] = [];
     
-    // Create unique key for this line's commands
-    const lineKey = `${currentLine.timestamp}_${currentLineIndex}`;
+    // Get unique timestamps in chronological order
+    const timestamps = Array.from(new Set(lyrics.map(line => line.timestamp))).sort((a, b) => a - b);
     
-    // Check if we've already executed commands for this line
-    if (executedCommands.has(lineKey)) return;
-    
-    // Execute all MIDI commands for this line
-    currentLine.midiCommands.forEach((commandString, index) => {
-      const command = parseMidiCommand(commandString);
-      if (command) {
-        const success = sendMidiCommand(command);
-        if (success) {
-          console.log(`🎹 Executed MIDI command from lyrics: ${commandString} at ${currentLine.timestamp}s`);
-        } else {
-          console.warn(`❌ Failed to execute MIDI command: ${commandString}`);
-        }
-      } else {
-        console.warn(`❌ Invalid MIDI command format: ${commandString}`);
+    // Find the current timestamp range
+    let currentTimestamp = -1;
+    for (let i = 0; i < timestamps.length; i++) {
+      const timestamp = timestamps[i];
+      const nextTimestamp = timestamps[i + 1];
+      
+      if (timestamp <= currentTime && (!nextTimestamp || nextTimestamp > currentTime)) {
+        currentTimestamp = timestamp;
+        break;
       }
-    });
+    }
     
-    // Mark this line's commands as executed
-    setExecutedCommands(prev => new Set(prev).add(lineKey));
-  }, [currentLineIndex, isPlaying, hasTimestamps, lyrics, connectedDevices, sendMidiCommand, parseMidiCommand, executedCommands]);
+    // If we found a current timestamp, get all lines with that timestamp
+    if (currentTimestamp >= 0) {
+      return lyrics.filter(line => line.timestamp === currentTimestamp);
+    }
+    
+    return [];
+  };
+  
+  const currentLines = getCurrentLines();
+  const currentLineIndex = currentLines.length > 0 ? lyrics.findIndex(line => line === currentLines[0]) : -1;
+
+  // Execute MIDI commands from ALL current lines at current timestamp
+  useEffect(() => {
+    if (!allowMidi || !isPlaying || currentLines.length === 0 || lyrics.length === 0) return;
+    
+    // Process ALL lines at the current timestamp
+    currentLines.forEach((line, lineIndex) => {
+      if (line.midiCommands.length === 0) return;
+      
+      // Create unique key for this line's commands
+      const lineKey = `${line.timestamp}_${lyrics.indexOf(line)}`;
+      
+      // Check if we've already executed commands for this line
+      if (executedCommands.has(lineKey)) return;
+      
+      // Execute all MIDI commands for this line
+      line.midiCommands.forEach((commandString, commandIndex) => {
+        const command = parseMidiCommand(commandString);
+        if (command) {
+          const success = sendMidiCommand(command);
+          if (success) {
+            console.log(`🎹 Executed MIDI command from lyrics: ${commandString} at ${line.timestamp}s (line ${lineIndex + 1}/${currentLines.length})`);
+          } else {
+            console.warn(`❌ Failed to execute MIDI command: ${commandString}`);
+          }
+        } else {
+          console.warn(`❌ Invalid MIDI command format: ${commandString}`);
+        }
+      });
+      
+      // Mark this line's commands as executed
+      setExecutedCommands(prev => new Set(prev).add(lineKey));
+    });
+  }, [currentLines, isPlaying, hasTimestamps, lyrics, connectedDevices, sendMidiCommand, parseMidiCommand, executedCommands]);
 
   // Execute non-timestamped MIDI commands when opening a song
   useEffect(() => {

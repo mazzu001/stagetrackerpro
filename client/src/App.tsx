@@ -23,6 +23,15 @@ import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { MidiProvider } from '@/contexts/MidiProvider';
+// Google Analytics integration - Added from blueprint:javascript_google_analytics
+import { initGA } from "./lib/analytics";
+import { useAnalytics } from "./hooks/use-analytics";
+
+// Analytics Router component with page tracking
+function AnalyticsRouter({ children }: { children: React.ReactNode }) {
+  useAnalytics(); // Track page views
+  return <Router>{children}</Router>;
+}
 
 function AppContent() {
   const [isLocalFSReady, setIsLocalFSReady] = useState(false);
@@ -167,7 +176,7 @@ function AppContent() {
       ) : !isLocalFSReady ? (
         <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
       ) : (
-        <Router>
+        <AnalyticsRouter>
           <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
@@ -182,7 +191,7 @@ function AppContent() {
           <Route path="/subscribe-test" component={SubscribeTest} />
           <Route path="/plans" component={Plans} />
           <Route path="/unsubscribe" component={Unsubscribe} />
-        </Router>
+        </AnalyticsRouter>
       )}
       <Toaster />
     </TooltipProvider>
@@ -190,6 +199,16 @@ function AppContent() {
 }
 
 function App() {
+  // Initialize Google Analytics when app loads
+  useEffect(() => {
+    // Verify required environment variable is present
+    if (!import.meta.env.VITE_GA_MEASUREMENT_ID) {
+      console.warn('Missing required Google Analytics key: VITE_GA_MEASUREMENT_ID');
+    } else {
+      initGA();
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <MidiProvider>

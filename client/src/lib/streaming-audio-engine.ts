@@ -43,7 +43,7 @@ export class StreamingAudioEngine {
       currentTime: 0,
       duration: 0,
       tracks: [],
-      masterVolume: 80, // Use percentage values (0-100) to match UI sliders
+      masterVolume: 0.8,
       masterGainNode: null,
       masterOutputNode: null,
     };
@@ -52,17 +52,10 @@ export class StreamingAudioEngine {
 
   // Tone.js initialization removed
 
-  private normalizeVolume(volume: number): number {
-    // Convert percentage (0-100) to gain value (0-1)
-    // Handle both 0-1 and 0-100 input ranges safely
-    const normalized = volume > 1 ? volume / 100 : volume;
-    return Math.min(1, Math.max(0, normalized));
-  }
-
   private setupMasterOutput() {
     // Create master gain node (for volume control)
     this.state.masterGainNode = this.audioContext.createGain();
-    this.state.masterGainNode.gain.value = this.normalizeVolume(this.state.masterVolume);
+    this.state.masterGainNode.gain.value = this.state.masterVolume;
     
     // Create master output node
     this.state.masterOutputNode = this.audioContext.createGain();
@@ -104,7 +97,7 @@ export class StreamingAudioEngine {
       panNode: null as StereoPannerNode | null,
       analyzerNode: null as AnalyserNode | null,
       // Pitch shifting node removed
-      volume: 100, // Use percentage values (0-100) to match UI sliders
+      volume: 1,
       balance: 0,
       isMuted: false,
       isSolo: false,
@@ -385,8 +378,7 @@ export class StreamingAudioEngine {
       track.volume = volume;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        const normalizedVolume = this.normalizeVolume(volume);
-        track.gainNode.gain.value = track.isMuted ? 0 : normalizedVolume;
+        track.gainNode.gain.value = track.isMuted ? 0 : volume;
       }
     }
   }
@@ -397,8 +389,7 @@ export class StreamingAudioEngine {
       track.isMuted = !track.isMuted;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        const normalizedVolume = this.normalizeVolume(track.volume);
-        track.gainNode.gain.value = track.isMuted ? 0 : normalizedVolume;
+        track.gainNode.gain.value = track.isMuted ? 0 : track.volume;
       }
     }
   }
@@ -429,8 +420,7 @@ export class StreamingAudioEngine {
       this.ensureTrackAudioNodes(track);
       const shouldMute = hasSoloTracks && !track.isSolo;
       if (track.gainNode) {
-        const normalizedVolume = this.normalizeVolume(track.volume);
-        track.gainNode.gain.value = shouldMute ? 0 : normalizedVolume;
+        track.gainNode.gain.value = shouldMute ? 0 : track.volume;
       }
     });
   }
@@ -438,8 +428,7 @@ export class StreamingAudioEngine {
   setMasterVolume(volume: number) {
     this.state.masterVolume = volume;
     if (this.state.masterGainNode) {
-      const normalizedVolume = this.normalizeVolume(volume);
-      this.state.masterGainNode.gain.value = normalizedVolume;
+      this.state.masterGainNode.gain.value = volume;
     }
   }
 

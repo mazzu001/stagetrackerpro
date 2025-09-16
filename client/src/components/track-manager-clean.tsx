@@ -69,12 +69,11 @@ export default function TrackManager({
       const initialValues: Record<string, { volume: number; balance: number }> = {};
       tracks.forEach(track => {
         initialValues[track.id] = {
-          volume: 100, // Always start at 100% - tracks load at full volume
-          balance: track.balance ?? 0.0
+          volume: track.volume || 1.0,
+          balance: track.balance || 0.0
         };
       });
       setLocalTrackValues(initialValues);
-      console.log('🎛️ Track Manager: Forced all volumes to 100% for', tracks.length, 'tracks');
     }
   }, [tracks]);
 
@@ -682,7 +681,7 @@ export default function TrackManager({
       ) : (
         <div className="space-y-3">
           {tracks.map((track, index) => {
-            const localValues = localTrackValues[track.id] || { volume: 100, balance: track.balance };
+            const localValues = localTrackValues[track.id] || { volume: track.volume, balance: track.balance };
             const level = audioLevels[track.id] || 0;
             
             return (

@@ -43,7 +43,7 @@ export class StreamingAudioEngine {
       currentTime: 0,
       duration: 0,
       tracks: [],
-      masterVolume: 0.8,
+      masterVolume: 80, // Use percentage values (0-100) to match UI sliders
       masterGainNode: null,
       masterOutputNode: null,
     };
@@ -62,7 +62,7 @@ export class StreamingAudioEngine {
   private setupMasterOutput() {
     // Create master gain node (for volume control)
     this.state.masterGainNode = this.audioContext.createGain();
-    this.state.masterGainNode.gain.value = this.state.masterVolume;
+    this.state.masterGainNode.gain.value = this.normalizeVolume(this.state.masterVolume);
     
     // Create master output node
     this.state.masterOutputNode = this.audioContext.createGain();
@@ -104,7 +104,7 @@ export class StreamingAudioEngine {
       panNode: null as StereoPannerNode | null,
       analyzerNode: null as AnalyserNode | null,
       // Pitch shifting node removed
-      volume: 1,
+      volume: 100, // Use percentage values (0-100) to match UI sliders
       balance: 0,
       isMuted: false,
       isSolo: false,

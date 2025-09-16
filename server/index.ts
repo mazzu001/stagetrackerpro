@@ -310,18 +310,37 @@ app.use((req, res, next) => {
     const env = app.get("env") || process.env.NODE_ENV || "development";
     console.log(`🔍 Environment mode: ${env}`);
     
-    // Auto-detect production mode for published domains by checking REPL_SLUG
-    const isPublishedDeployment = process.env.REPL_SLUG && !process.env.REPL_ID;
+    // Force production mode for deployed apps - check multiple deployment indicators
+    const isDeployedApp = (
+      process.env.REPL_DEPLOYMENT === 'true' ||      // Replit deployment flag
+      process.env.NODE_ENV === 'production' ||       // Production environment
+      process.env.REPL_SLUG && !process.env.REPL_ID  // Published deployment without editor
+    );
+    
+    console.log(`🔍 Deployment detection:`, {
+      REPL_DEPLOYMENT: process.env.REPL_DEPLOYMENT,
+      NODE_ENV: process.env.NODE_ENV, 
+      REPL_SLUG: !!process.env.REPL_SLUG,
+      REPL_ID: !!process.env.REPL_ID,
+      isDeployedApp
+    });
     
     try {
-      if (env === "development" && !isPublishedDeployment) {
+      if (!isDeployedApp && env === "development") {
         console.log('🔧 Setting up Vite development server...');
         await setupVite(app, server);
         startupChecks.fileServing = true;
         console.log('✅ Step 4/5: Vite development server configured');
       } else {
         console.log('📁 Setting up static file serving for production...');
-        console.log(`🔍 Production mode detected: env=${env}, isPublished=${isPublishedDeployment}`);
+        console.log(`🔍 Production mode forced: env=${env}, deployment=${isDeployedApp}`);
+        
+        // Add MIME type fix before serving static files
+        app.use('*.js', (req, res, next) => {
+          res.setHeader('Content-Type', 'application/javascript');
+          next();
+        });
+        
         serveStatic(app);
         startupChecks.fileServing = true;
         console.log('✅ Step 4/5: Static file serving configured');

@@ -52,6 +52,13 @@ export class StreamingAudioEngine {
 
   // Tone.js initialization removed
 
+  private normalizeVolume(volume: number): number {
+    // Convert percentage (0-100) to gain value (0-1)
+    // Handle both 0-1 and 0-100 input ranges safely
+    const normalized = volume > 1 ? volume / 100 : volume;
+    return Math.min(1, Math.max(0, normalized));
+  }
+
   private setupMasterOutput() {
     // Create master gain node (for volume control)
     this.state.masterGainNode = this.audioContext.createGain();
@@ -378,7 +385,8 @@ export class StreamingAudioEngine {
       track.volume = volume;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        track.gainNode.gain.value = volume;
+        const normalizedVolume = this.normalizeVolume(volume);
+        track.gainNode.gain.value = track.isMuted ? 0 : normalizedVolume;
       }
     }
   }
@@ -389,7 +397,8 @@ export class StreamingAudioEngine {
       track.isMuted = !track.isMuted;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        track.gainNode.gain.value = track.isMuted ? 0 : track.volume;
+        const normalizedVolume = this.normalizeVolume(track.volume);
+        track.gainNode.gain.value = track.isMuted ? 0 : normalizedVolume;
       }
     }
   }
@@ -420,7 +429,8 @@ export class StreamingAudioEngine {
       this.ensureTrackAudioNodes(track);
       const shouldMute = hasSoloTracks && !track.isSolo;
       if (track.gainNode) {
-        track.gainNode.gain.value = shouldMute ? 0 : track.volume;
+        const normalizedVolume = this.normalizeVolume(track.volume);
+        track.gainNode.gain.value = shouldMute ? 0 : normalizedVolume;
       }
     });
   }
@@ -428,7 +438,8 @@ export class StreamingAudioEngine {
   setMasterVolume(volume: number) {
     this.state.masterVolume = volume;
     if (this.state.masterGainNode) {
-      this.state.masterGainNode.gain.value = volume;
+      const normalizedVolume = this.normalizeVolume(volume);
+      this.state.masterGainNode.gain.value = normalizedVolume;
     }
   }
 

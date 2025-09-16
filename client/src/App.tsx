@@ -19,6 +19,7 @@ import SubscribeTest from "@/pages/subscribe-test";
 import Plans from "@/pages/plans";
 import Landing from "@/pages/landing";
 import Unsubscribe from "@/pages/unsubscribe";
+import PrivacyPolicy from "@/pages/privacy-policy";
 import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
@@ -172,7 +173,10 @@ function AppContent() {
   return (
     <TooltipProvider>
       {!isAuthenticated ? (
-        <Landing />
+        <AnalyticsRouter>
+          <Route path="/" component={Landing} />
+          <Route path="/privacy-policy" component={PrivacyPolicy} />
+        </AnalyticsRouter>
       ) : !isLocalFSReady ? (
         <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
       ) : (
@@ -191,6 +195,7 @@ function AppContent() {
           <Route path="/subscribe-test" component={SubscribeTest} />
           <Route path="/plans" component={Plans} />
           <Route path="/unsubscribe" component={Unsubscribe} />
+          <Route path="/privacy-policy" component={PrivacyPolicy} />
         </AnalyticsRouter>
       )}
       <Toaster />

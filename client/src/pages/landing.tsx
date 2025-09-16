@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Music, Shield, Zap } from "lucide-react";
 import { LoginPopup } from '@/components/login-popup';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
+import { Link } from 'wouter';
 
 export default function Landing() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -104,6 +105,15 @@ export default function Landing() {
             >
               Already Have an Account? Sign In
             </Button>
+
+            {/* Privacy Policy Link */}
+            <div className="text-center pt-2">
+              <Link href="/privacy-policy">
+                <span className="text-xs text-gray-400 hover:text-purple-400 underline cursor-pointer">
+                  Privacy Policy
+                </span>
+              </Link>
+            </div>
 
           </CardContent>
         </Card>

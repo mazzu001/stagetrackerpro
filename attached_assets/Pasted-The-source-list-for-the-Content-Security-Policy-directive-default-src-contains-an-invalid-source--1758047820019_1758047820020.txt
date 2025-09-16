@@ -1,0 +1,639 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-41e4bc5a61e43d57.js:38 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-41e4bc5a61e43d57.js:38 [LaunchDarkly] LaunchDarkly client initialized
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'battery'.
+_ @ framework-deb7d82c589fc1fb.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-deb7d82c589fc1fb.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-deb7d82c589fc1fb.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-deb7d82c589fc1fb.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-deb7d82c589fc1fb.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-deb7d82c589fc1fb.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-deb7d82c589fc1fb.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-deb7d82c589fc1fb.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-deb7d82c589fc1fb.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-deb7d82c589fc1fb.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-deb7d82c589fc1fb.js:1
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+Error: <svg> attribute viewBox: Expected number, "0 0 100% 1".
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+content.js:2  TypeError: Cannot read properties of undefined (reading 'autoCorrectionCache')
+    at setInitializationProgress (content.js:2:2273825)
+    at content.js:2:2173303
+    at Ea (content.js:2:824493)
+    at ja (content.js:2:824951)
+    at Object.useState (content.js:2:831307)
+    at t.useState (content.js:2:595353)
+    at content.js:2:2172174
+    at _a (content.js:2:823675)
+    at xs (content.js:2:835266)
+    at _l (content.js:2:881051)
+fs @ content.js:2
+workspace_iframe.html?initialPath=%2F&id=%3Arsm%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Arsm%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Arsm%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Arsm%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Arsm%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Arsm%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Arsm%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Arsm%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Arsm%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Arsm%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=KwIYlyGBRAdW' failed: 
+setupWebSocket @ client:536
+ StageTracker Pro Service Worker loaded
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=KwIYlyGBRAdW' failed: 
+setupWebSocket @ client:536
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=KwIYlyGBRAdW' failed: 
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) 
+ 🔵 Android BLE-MIDI adapter initialized
+ Loaded 48 audio file path references from localStorage
+ 🔄 Auto-loading 48 stored audio files...
+ 🔍 BrowserFS.getAudioFile: Looking for track 1e7e1113-9c39-4e2e-9e35-c716ff484ef8
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 1e7e1113-9c39-4e2e-9e35-c716ff484ef8
+ ❌ Database not initialized for track 1e7e1113-9c39-4e2e-9e35-c716ff484ef8
+ Expected audio files for tracks:
+   - 3AM - Backups.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/1e7e1113-9c39-4e2e-9e35-c716ff484ef8)
+   - 3AM - Bass.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/0502d06b-2960-40ec-af92-e4f0dce833e7)
+   - 3AM - Click.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/a01ca0fe-6a9a-40cb-93db-3562a5f158a1)
+   - 3AM - Drums.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/5a6ce544-da11-4a9a-8840-fff46c5c6842)
+   - 3AM - Guitars.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/0d19fd08-8591-40a0-baa0-886de1b0f628)
+   - 3AM - Organ.mp3 (browser://07c3e4eb-1aa7-4bf9-8f0c-880317b6faee/6ce234a1-0d49-4000-867a-d1d7d64b4110)
+   - Comfortably Numb - Acoustic.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/ea0b3fa1-a6f9-4065-92f1-a89e416e657f)
+   - Comfortably Numb - Backups.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/895c267f-4b7f-4123-8464-1d5ca0ccf33a)
+   - Comfortably Numb - Bass.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/b2343569-e1d2-42fe-89f0-95e32de86820)
+   - Comfortably Numb - Click.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/82275465-e025-43c4-845f-c6ed70672454)
+   - Comfortably Numb - Drums.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/7e0441f1-3413-4c5c-bfd2-c88f74e3285a)
+   - Comfortably Numb - Keys.mp3 (browser://43d8bf08-a5ff-4f94-8fa8-f06d45e2843b/851e57d4-3aec-4cad-b734-c6e4ed23f720)
+   - 3AM - Backups.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/ab49ff08-1f10-46f9-a10f-bf8816ea243c)
+   - 3AM - Bass.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/24e6c752-3bfe-4ccf-8ddb-77ff023e311a)
+   - 3AM - Click.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/ea5b1b47-fce8-45c9-9c51-01080a58095c)
+   - 3AM - Drums.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/3203de63-8602-4cf4-8a93-b159bb3f9c5e)
+   - 3AM - Guitars.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/e7979db9-04da-4767-b3cc-cb09ecf80aa3)
+   - 3AM - Organ.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/f895d550-c3ea-4bd9-b7a6-04c733180789)
+   - Comfortably Numb - Acoustic.mp3 (browser://df1b8465-2408-4b9d-a030-97eaf939def7/bfbc9373-b691-482d-8761-b2bae3918a49)
+   - Comfortably Numb - Backups.mp3 (browser://df1b8465-2408-4b9d-a030-97eaf939def7/dbffd38a-8a91-43cf-9c1a-29c4c643cda3)
+   - Comfortably Numb - Bass.mp3 (browser://df1b8465-2408-4b9d-a030-97eaf939def7/af8027f5-3989-4070-82de-b718751bc5f4)
+   - Comfortably Numb - Click.mp3 (browser://df1b8465-2408-4b9d-a030-97eaf939def7/e6b9cf4a-4801-4739-9e6b-7761895e39e6)
+   - Comfortably Numb - Drums.mp3 (browser://df1b8465-2408-4b9d-a030-97eaf939def7/8a220007-8db5-4220-9e1d-a04e26349d46)
+   - Comfortably Numb - Keys.mp3 (browser://df1b8465-2408-4b9d-a030-97eaf939def7/01f602a1-d998-4ef0-bbd4-5841bf5aaf68)
+   - 3AM - Backups.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/abdf0b8f-df61-4e9e-bbc9-f24666f1d055)
+   - 3AM - Bass.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/06590357-eb37-4e23-8370-e07c4ae8ac66)
+   - 3AM - Click.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/2de8e47a-c151-47a0-9414-b37fbe3c5518)
+   - 3AM - Drums.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/79dd5745-324a-42ff-b35d-94d526f929d6)
+   - 3AM - Guitars.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/9f9ae1ce-47a6-45de-a808-3cf1c761f8fd)
+   - 3AM - Organ.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/daa0b67b-fb23-47bb-af9b-b2ee47a9d2b4)
+   - 3AM - Backups.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/27bd1db1-826f-4855-848b-57189bddc10b)
+   - 3AM - Bass.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/dd6117c9-5e00-4f58-a513-7b04d4807fce)
+   - 3AM - Click.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/7ff81b39-a175-4cb0-be09-e3c2d04cc649)
+   - 3AM - Drums.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/d992b47d-7a6b-48be-8294-672d15ab65ff)
+   - 3AM - Guitars.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/669f85e0-f829-496f-8cbe-49c86dbe580a)
+   - 3AM - Organ.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/dcb172bb-625c-4d2f-9ac4-77aecf914ae0)
+   - 3AM - Backups.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/3169cb25-5062-4511-a635-b60667316707)
+   - 3AM - Bass.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/a3d15e35-61b8-4986-95a0-fffb2d653021)
+   - 3AM - Click.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/4766952a-611c-4eb3-8956-7953a3fc1b5e)
+   - 3AM - Drums.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/d82d897f-c650-45cd-b223-28f202d9b2a9)
+   - 3AM - Guitars.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/1ed4ace3-7d0b-4959-ad5f-467066631cda)
+   - 3AM - Organ.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/e827731b-de32-493d-83f9-cabbdacd1002)
+   - 3AM - Backups.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/b41cef51-de2e-4944-8359-09bbd62cdb44)
+   - 3AM - Bass.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/3ba71ed3-8c6e-4e4e-90a6-a1037c32e48a)
+   - 3AM - Click.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/4bef23ef-b3d9-46d3-b9c9-12b5798b182a)
+   - 3AM - Drums.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/b5e21d15-f134-4813-8427-2502b02b2179)
+   - 3AM - Guitars.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/48c96cc9-f35f-4e7e-9bbc-adaeb7231533)
+   - 3AM - Organ.mp3 (browser://594f5dc9-36fa-4375-99a4-7c5bdc3c267a/ee32765c-8d9e-4dfa-bb6e-aad2f3cf9f12)
+ These files will be loaded when you select them through the file picker.
+ 🔍 BrowserFS.getAudioFile: Looking for track 0502d06b-2960-40ec-af92-e4f0dce833e7
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 0502d06b-2960-40ec-af92-e4f0dce833e7
+ ❌ Database not initialized for track 0502d06b-2960-40ec-af92-e4f0dce833e7
+ 🔍 BrowserFS.getAudioFile: Looking for track a01ca0fe-6a9a-40cb-93db-3562a5f158a1
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for a01ca0fe-6a9a-40cb-93db-3562a5f158a1
+ ❌ Database not initialized for track a01ca0fe-6a9a-40cb-93db-3562a5f158a1
+ 🔍 BrowserFS.getAudioFile: Looking for track 5a6ce544-da11-4a9a-8840-fff46c5c6842
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 5a6ce544-da11-4a9a-8840-fff46c5c6842
+ ❌ Database not initialized for track 5a6ce544-da11-4a9a-8840-fff46c5c6842
+ 🔍 BrowserFS.getAudioFile: Looking for track 0d19fd08-8591-40a0-baa0-886de1b0f628
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 0d19fd08-8591-40a0-baa0-886de1b0f628
+ ❌ Database not initialized for track 0d19fd08-8591-40a0-baa0-886de1b0f628
+ 🔍 BrowserFS.getAudioFile: Looking for track 6ce234a1-0d49-4000-867a-d1d7d64b4110
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 6ce234a1-0d49-4000-867a-d1d7d64b4110
+ ❌ Database not initialized for track 6ce234a1-0d49-4000-867a-d1d7d64b4110
+ 🔍 BrowserFS.getAudioFile: Looking for track ea0b3fa1-a6f9-4065-92f1-a89e416e657f
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for ea0b3fa1-a6f9-4065-92f1-a89e416e657f
+ ❌ Database not initialized for track ea0b3fa1-a6f9-4065-92f1-a89e416e657f
+ 🔍 BrowserFS.getAudioFile: Looking for track 895c267f-4b7f-4123-8464-1d5ca0ccf33a
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 895c267f-4b7f-4123-8464-1d5ca0ccf33a
+ ❌ Database not initialized for track 895c267f-4b7f-4123-8464-1d5ca0ccf33a
+ 🔍 BrowserFS.getAudioFile: Looking for track b2343569-e1d2-42fe-89f0-95e32de86820
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for b2343569-e1d2-42fe-89f0-95e32de86820
+ ❌ Database not initialized for track b2343569-e1d2-42fe-89f0-95e32de86820
+ 🔍 BrowserFS.getAudioFile: Looking for track 82275465-e025-43c4-845f-c6ed70672454
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 82275465-e025-43c4-845f-c6ed70672454
+ ❌ Database not initialized for track 82275465-e025-43c4-845f-c6ed70672454
+ 🔍 BrowserFS.getAudioFile: Looking for track 7e0441f1-3413-4c5c-bfd2-c88f74e3285a
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 7e0441f1-3413-4c5c-bfd2-c88f74e3285a
+ ❌ Database not initialized for track 7e0441f1-3413-4c5c-bfd2-c88f74e3285a
+ 🔍 BrowserFS.getAudioFile: Looking for track 851e57d4-3aec-4cad-b734-c6e4ed23f720
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 851e57d4-3aec-4cad-b734-c6e4ed23f720
+ ❌ Database not initialized for track 851e57d4-3aec-4cad-b734-c6e4ed23f720
+ 🔍 BrowserFS.getAudioFile: Looking for track ab49ff08-1f10-46f9-a10f-bf8816ea243c
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for ab49ff08-1f10-46f9-a10f-bf8816ea243c
+ ❌ Database not initialized for track ab49ff08-1f10-46f9-a10f-bf8816ea243c
+ 🔍 BrowserFS.getAudioFile: Looking for track 24e6c752-3bfe-4ccf-8ddb-77ff023e311a
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 24e6c752-3bfe-4ccf-8ddb-77ff023e311a
+ ❌ Database not initialized for track 24e6c752-3bfe-4ccf-8ddb-77ff023e311a
+ 🔍 BrowserFS.getAudioFile: Looking for track ea5b1b47-fce8-45c9-9c51-01080a58095c
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for ea5b1b47-fce8-45c9-9c51-01080a58095c
+ ❌ Database not initialized for track ea5b1b47-fce8-45c9-9c51-01080a58095c
+ 🔍 BrowserFS.getAudioFile: Looking for track 3203de63-8602-4cf4-8a93-b159bb3f9c5e
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 3203de63-8602-4cf4-8a93-b159bb3f9c5e
+ ❌ Database not initialized for track 3203de63-8602-4cf4-8a93-b159bb3f9c5e
+ 🔍 BrowserFS.getAudioFile: Looking for track e7979db9-04da-4767-b3cc-cb09ecf80aa3
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for e7979db9-04da-4767-b3cc-cb09ecf80aa3
+ ❌ Database not initialized for track e7979db9-04da-4767-b3cc-cb09ecf80aa3
+ 🔍 BrowserFS.getAudioFile: Looking for track f895d550-c3ea-4bd9-b7a6-04c733180789
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for f895d550-c3ea-4bd9-b7a6-04c733180789
+ ❌ Database not initialized for track f895d550-c3ea-4bd9-b7a6-04c733180789
+ 🔍 BrowserFS.getAudioFile: Looking for track bfbc9373-b691-482d-8761-b2bae3918a49
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for bfbc9373-b691-482d-8761-b2bae3918a49
+ ❌ Database not initialized for track bfbc9373-b691-482d-8761-b2bae3918a49
+ 🔍 BrowserFS.getAudioFile: Looking for track dbffd38a-8a91-43cf-9c1a-29c4c643cda3
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for dbffd38a-8a91-43cf-9c1a-29c4c643cda3
+ ❌ Database not initialized for track dbffd38a-8a91-43cf-9c1a-29c4c643cda3
+ 🔍 BrowserFS.getAudioFile: Looking for track af8027f5-3989-4070-82de-b718751bc5f4
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for af8027f5-3989-4070-82de-b718751bc5f4
+ ❌ Database not initialized for track af8027f5-3989-4070-82de-b718751bc5f4
+ 🔍 BrowserFS.getAudioFile: Looking for track e6b9cf4a-4801-4739-9e6b-7761895e39e6
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for e6b9cf4a-4801-4739-9e6b-7761895e39e6
+ ❌ Database not initialized for track e6b9cf4a-4801-4739-9e6b-7761895e39e6
+ 🔍 BrowserFS.getAudioFile: Looking for track 8a220007-8db5-4220-9e1d-a04e26349d46
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 8a220007-8db5-4220-9e1d-a04e26349d46
+ ❌ Database not initialized for track 8a220007-8db5-4220-9e1d-a04e26349d46
+ 🔍 BrowserFS.getAudioFile: Looking for track 01f602a1-d998-4ef0-bbd4-5841bf5aaf68
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 01f602a1-d998-4ef0-bbd4-5841bf5aaf68
+ ❌ Database not initialized for track 01f602a1-d998-4ef0-bbd4-5841bf5aaf68
+ 🔍 BrowserFS.getAudioFile: Looking for track abdf0b8f-df61-4e9e-bbc9-f24666f1d055
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for abdf0b8f-df61-4e9e-bbc9-f24666f1d055
+ ❌ Database not initialized for track abdf0b8f-df61-4e9e-bbc9-f24666f1d055
+ 🔍 BrowserFS.getAudioFile: Looking for track 06590357-eb37-4e23-8370-e07c4ae8ac66
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 06590357-eb37-4e23-8370-e07c4ae8ac66
+ ❌ Database not initialized for track 06590357-eb37-4e23-8370-e07c4ae8ac66
+ 🔍 BrowserFS.getAudioFile: Looking for track 2de8e47a-c151-47a0-9414-b37fbe3c5518
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 2de8e47a-c151-47a0-9414-b37fbe3c5518
+ ❌ Database not initialized for track 2de8e47a-c151-47a0-9414-b37fbe3c5518
+ 🔍 BrowserFS.getAudioFile: Looking for track 79dd5745-324a-42ff-b35d-94d526f929d6
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 79dd5745-324a-42ff-b35d-94d526f929d6
+ ❌ Database not initialized for track 79dd5745-324a-42ff-b35d-94d526f929d6
+ 🔍 BrowserFS.getAudioFile: Looking for track 9f9ae1ce-47a6-45de-a808-3cf1c761f8fd
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 9f9ae1ce-47a6-45de-a808-3cf1c761f8fd
+ ❌ Database not initialized for track 9f9ae1ce-47a6-45de-a808-3cf1c761f8fd
+ 🔍 BrowserFS.getAudioFile: Looking for track daa0b67b-fb23-47bb-af9b-b2ee47a9d2b4
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for daa0b67b-fb23-47bb-af9b-b2ee47a9d2b4
+ ❌ Database not initialized for track daa0b67b-fb23-47bb-af9b-b2ee47a9d2b4
+ 🔍 BrowserFS.getAudioFile: Looking for track 27bd1db1-826f-4855-848b-57189bddc10b
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 27bd1db1-826f-4855-848b-57189bddc10b
+ ❌ Database not initialized for track 27bd1db1-826f-4855-848b-57189bddc10b
+ 🔍 BrowserFS.getAudioFile: Looking for track dd6117c9-5e00-4f58-a513-7b04d4807fce
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for dd6117c9-5e00-4f58-a513-7b04d4807fce
+ ❌ Database not initialized for track dd6117c9-5e00-4f58-a513-7b04d4807fce
+ 🔍 BrowserFS.getAudioFile: Looking for track 7ff81b39-a175-4cb0-be09-e3c2d04cc649
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 7ff81b39-a175-4cb0-be09-e3c2d04cc649
+ ❌ Database not initialized for track 7ff81b39-a175-4cb0-be09-e3c2d04cc649
+ 🔍 BrowserFS.getAudioFile: Looking for track d992b47d-7a6b-48be-8294-672d15ab65ff
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for d992b47d-7a6b-48be-8294-672d15ab65ff
+ ❌ Database not initialized for track d992b47d-7a6b-48be-8294-672d15ab65ff
+ 🔍 BrowserFS.getAudioFile: Looking for track 669f85e0-f829-496f-8cbe-49c86dbe580a
+ 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 669f85e0-f829-496f-8cbe-49c86dbe580a
+browser-file-system.ts:236 ❌ Database not initialized for track 669f85e0-f829-496f-8cbe-49c86dbe580a
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track dcb172bb-625c-4d2f-9ac4-77aecf914ae0
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for dcb172bb-625c-4d2f-9ac4-77aecf914ae0
+browser-file-system.ts:236 ❌ Database not initialized for track dcb172bb-625c-4d2f-9ac4-77aecf914ae0
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 3169cb25-5062-4511-a635-b60667316707
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 3169cb25-5062-4511-a635-b60667316707
+browser-file-system.ts:236 ❌ Database not initialized for track 3169cb25-5062-4511-a635-b60667316707
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track a3d15e35-61b8-4986-95a0-fffb2d653021
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for a3d15e35-61b8-4986-95a0-fffb2d653021
+browser-file-system.ts:236 ❌ Database not initialized for track a3d15e35-61b8-4986-95a0-fffb2d653021
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 4766952a-611c-4eb3-8956-7953a3fc1b5e
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 4766952a-611c-4eb3-8956-7953a3fc1b5e
+browser-file-system.ts:236 ❌ Database not initialized for track 4766952a-611c-4eb3-8956-7953a3fc1b5e
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track d82d897f-c650-45cd-b223-28f202d9b2a9
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for d82d897f-c650-45cd-b223-28f202d9b2a9
+browser-file-system.ts:236 ❌ Database not initialized for track d82d897f-c650-45cd-b223-28f202d9b2a9
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 1ed4ace3-7d0b-4959-ad5f-467066631cda
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 1ed4ace3-7d0b-4959-ad5f-467066631cda
+browser-file-system.ts:236 ❌ Database not initialized for track 1ed4ace3-7d0b-4959-ad5f-467066631cda
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track e827731b-de32-493d-83f9-cabbdacd1002
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for e827731b-de32-493d-83f9-cabbdacd1002
+browser-file-system.ts:236 ❌ Database not initialized for track e827731b-de32-493d-83f9-cabbdacd1002
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track b41cef51-de2e-4944-8359-09bbd62cdb44
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for b41cef51-de2e-4944-8359-09bbd62cdb44
+browser-file-system.ts:236 ❌ Database not initialized for track b41cef51-de2e-4944-8359-09bbd62cdb44
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 3ba71ed3-8c6e-4e4e-90a6-a1037c32e48a
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 3ba71ed3-8c6e-4e4e-90a6-a1037c32e48a
+browser-file-system.ts:236 ❌ Database not initialized for track 3ba71ed3-8c6e-4e4e-90a6-a1037c32e48a
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 4bef23ef-b3d9-46d3-b9c9-12b5798b182a
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 4bef23ef-b3d9-46d3-b9c9-12b5798b182a
+browser-file-system.ts:236 ❌ Database not initialized for track 4bef23ef-b3d9-46d3-b9c9-12b5798b182a
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track b5e21d15-f134-4813-8427-2502b02b2179
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for b5e21d15-f134-4813-8427-2502b02b2179
+browser-file-system.ts:236 ❌ Database not initialized for track b5e21d15-f134-4813-8427-2502b02b2179
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 48c96cc9-f35f-4e7e-9bbc-adaeb7231533
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 48c96cc9-f35f-4e7e-9bbc-adaeb7231533
+browser-file-system.ts:236 ❌ Database not initialized for track 48c96cc9-f35f-4e7e-9bbc-adaeb7231533
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track ee32765c-8d9e-4dfa-bb6e-aad2f3cf9f12
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for ee32765c-8d9e-4dfa-bb6e-aad2f3cf9f12
+browser-file-system.ts:236 ❌ Database not initialized for track ee32765c-8d9e-4dfa-bb6e-aad2f3cf9f12
+audio-file-storage.ts:212 ✅ Auto-loaded 0/48 audio files into cache
+react.development.js:209  Warning: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.
+printWarning @ react.development.js:209
+react.development.js:209  Warning: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.
+printWarning @ react.development.js:209
+react.development.js:1622  Uncaught TypeError: Cannot read properties of null (reading 'useState')
+    at useState (react.development.js:1622:21)
+    at useMidiDevices (useMidiDevices.ts:41:33)
+    at MidiProvider (MidiProvider.tsx:26:23)
+    at renderWithHooks (react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (react-dom.development.js:20103:13)
+    at beginWork (react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback2 (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+    at invokeGuardedCallback (react-dom.development.js:4277:31)
+    at beginWork$1 (react-dom.development.js:27490:7)
+react.development.js:209  Warning: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.
+printWarning @ react.development.js:209
+react.development.js:209  Warning: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.
+printWarning @ react.development.js:209
+react.development.js:1622  Uncaught TypeError: Cannot read properties of null (reading 'useState')
+    at useState (react.development.js:1622:21)
+    at useMidiDevices (useMidiDevices.ts:41:33)
+    at MidiProvider (MidiProvider.tsx:26:23)
+    at renderWithHooks (react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (react-dom.development.js:20103:13)
+    at beginWork (react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback2 (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+    at invokeGuardedCallback (react-dom.development.js:4277:31)
+    at beginWork$1 (react-dom.development.js:27490:7)
+react-dom.development.js:18704  The above error occurred in the <MidiProvider> component:
+
+    at MidiProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/contexts/MidiProvider.tsx:21:32)
+    at QueryClientProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=170c6354:2805:3)
+    at App (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?v=-SvjHKHw-RHv9kIh4txQq:289:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+logCapturedError @ react-dom.development.js:18704
+react-dom.development.js:26962  Uncaught TypeError: Cannot read properties of null (reading 'useState')
+    at useState (react.development.js:1622:21)
+    at useMidiDevices (useMidiDevices.ts:41:33)
+    at MidiProvider (MidiProvider.tsx:26:23)
+    at renderWithHooks (react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (react-dom.development.js:20103:13)
+    at beginWork (react-dom.development.js:21626:16)
+    at beginWork$1 (react-dom.development.js:27465:14)
+    at performUnitOfWork (react-dom.development.js:26596:12)
+    at workLoopSync (react-dom.development.js:26505:5)
+    at renderRootSync (react-dom.development.js:26473:7)
+browser-file-system.ts:63 ✅ BrowserFileSystem database auto-initialized
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+main.tsx:10 SW registered:  ServiceWorkerRegistration

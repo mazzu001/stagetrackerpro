@@ -69,11 +69,13 @@ export default function TrackManager({
       const initialValues: Record<string, { volume: number; balance: number }> = {};
       tracks.forEach(track => {
         initialValues[track.id] = {
-          volume: track.volume || 1.0,
-          balance: track.balance || 0.0
+          volume: track.volume ?? 100, // Use percentage values (0-100) to match UI sliders
+          balance: track.balance ?? 0.0
         };
       });
       setLocalTrackValues(initialValues);
+      console.log('🎛️ Track Manager: Initialized volumes for', tracks.length, 'tracks:', 
+        Object.entries(initialValues).map(([id, vals]) => `${id.slice(-4)}: ${vals.volume}%`).join(', '));
     }
   }, [tracks]);
 

@@ -683,7 +683,7 @@ export default function TrackManager({
       ) : (
         <div className="space-y-3">
           {tracks.map((track, index) => {
-            const localValues = localTrackValues[track.id] || { volume: track.volume, balance: track.balance };
+            const localValues = localTrackValues[track.id] || { volume: 100, balance: track.balance };
             const level = audioLevels[track.id] || 0;
             
             return (

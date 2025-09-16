@@ -335,12 +335,6 @@ app.use((req, res, next) => {
         console.log('📁 Setting up static file serving for production...');
         console.log(`🔍 Production mode forced: env=${env}, deployment=${isDeployedApp}`);
         
-        // Add MIME type fix before serving static files
-        app.use('*.js', (req, res, next) => {
-          res.setHeader('Content-Type', 'application/javascript');
-          next();
-        });
-        
         serveStatic(app);
         startupChecks.fileServing = true;
         console.log('✅ Step 4/5: Static file serving configured');

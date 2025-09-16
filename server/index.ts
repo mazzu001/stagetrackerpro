@@ -310,14 +310,18 @@ app.use((req, res, next) => {
     const env = app.get("env") || process.env.NODE_ENV || "development";
     console.log(`🔍 Environment mode: ${env}`);
     
+    // Auto-detect production mode for published domains by checking REPL_SLUG
+    const isPublishedDeployment = process.env.REPL_SLUG && !process.env.REPL_ID;
+    
     try {
-      if (env === "development") {
+      if (env === "development" && !isPublishedDeployment) {
         console.log('🔧 Setting up Vite development server...');
         await setupVite(app, server);
         startupChecks.fileServing = true;
         console.log('✅ Step 4/5: Vite development server configured');
       } else {
         console.log('📁 Setting up static file serving for production...');
+        console.log(`🔍 Production mode detected: env=${env}, isPublished=${isPublishedDeployment}`);
         serveStatic(app);
         startupChecks.fileServing = true;
         console.log('✅ Step 4/5: Static file serving configured');

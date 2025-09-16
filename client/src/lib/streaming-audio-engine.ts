@@ -378,7 +378,9 @@ export class StreamingAudioEngine {
       track.volume = volume;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        track.gainNode.gain.value = track.isMuted ? 0 : volume;
+        // Convert percentage (0-100) to gain value (0-1) for Web Audio API
+        const gainValue = volume > 1 ? volume / 100 : volume;
+        track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
       }
     }
   }
@@ -389,7 +391,9 @@ export class StreamingAudioEngine {
       track.isMuted = !track.isMuted;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        track.gainNode.gain.value = track.isMuted ? 0 : track.volume;
+        // Convert percentage (0-100) to gain value (0-1) for Web Audio API
+        const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
+        track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
       }
     }
   }
@@ -420,7 +424,9 @@ export class StreamingAudioEngine {
       this.ensureTrackAudioNodes(track);
       const shouldMute = hasSoloTracks && !track.isSolo;
       if (track.gainNode) {
-        track.gainNode.gain.value = shouldMute ? 0 : track.volume;
+        // Convert percentage (0-100) to gain value (0-1) for Web Audio API
+        const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
+        track.gainNode.gain.value = shouldMute ? 0 : gainValue;
       }
     });
   }

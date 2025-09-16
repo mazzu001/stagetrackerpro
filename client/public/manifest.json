@@ -1,0 +1,41 @@
+{
+  "name": "StageTracker Pro - Live Music Performance",
+  "short_name": "StageTracker Pro",
+  "description": "Professional live music performance software with MIDI integration, synchronized lyrics, and multi-track audio playback",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#8b5cf6",
+  "orientation": "landscape-primary",
+  "categories": ["music", "entertainment", "productivity"],
+  "lang": "en-US",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Performance Mode",
+      "short_name": "Perform",
+      "description": "Start live performance",
+      "url": "/?mode=performance",
+      "icons": [
+        {
+          "src": "/favicon.svg",
+          "sizes": "any"
+        }
+      ]
+    }
+  ],
+  "screenshots": []
+}

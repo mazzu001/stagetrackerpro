@@ -1,0 +1,268 @@
+index-DM42c4rH.js:348 🔵 Android BLE-MIDI adapter initialized
+ Loaded 36 audio file path references from localStorage
+ 🔄 Auto-loading 36 stored audio files...
+ 🔍 BrowserFS.getAudioFile: Looking for track dba878d7-278d-4de4-b768-956eef25a5ed
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for dba878d7-278d-4de4-b768-956eef25a5ed
+ ❌ Database not initialized for track dba878d7-278d-4de4-b768-956eef25a5ed
+ Expected audio files for tracks:
+   - 3AM - Backups.mp3 (3AM - Backups.mp3)
+   - 3AM - Bass.mp3 (3AM - Bass.mp3)
+   - 3AM - Click.mp3 (3AM - Click.mp3)
+   - 3AM - Drums.mp3 (3AM - Drums.mp3)
+   - 3AM - Guitars.mp3 (3AM - Guitars.mp3)
+   - 3AM - Organ.mp3 (3AM - Organ.mp3)
+   - Comfortably Numb - Acoustic.mp3 (Comfortably Numb - Acoustic.mp3)
+   - Comfortably Numb - Backups.mp3 (Comfortably Numb - Backups.mp3)
+   - Comfortably Numb - Bass.mp3 (Comfortably Numb - Bass.mp3)
+   - Comfortably Numb - Click.mp3 (Comfortably Numb - Click.mp3)
+   - Comfortably Numb - Drums.mp3 (Comfortably Numb - Drums.mp3)
+   - Comfortably Numb - Keys.mp3 (Comfortably Numb - Keys.mp3)
+   - 3AM - Backups.mp3 (browser://12c5759d-ac6a-4534-aa10-4580c4606caa/2a5c09ce-9f90-422a-8b80-905a064b4082)
+   - 3AM - Bass.mp3 (browser://12c5759d-ac6a-4534-aa10-4580c4606caa/73d0c484-c5a5-4e66-8900-fa29b94566bb)
+   - 3AM - Click.mp3 (browser://12c5759d-ac6a-4534-aa10-4580c4606caa/faa4abe8-85d9-48a3-af52-bcc53c0551e1)
+   - 3AM - Drums.mp3 (browser://12c5759d-ac6a-4534-aa10-4580c4606caa/f9dfa50d-0755-4223-a73a-b915b0f4bfc9)
+   - 3AM - Guitars.mp3 (browser://12c5759d-ac6a-4534-aa10-4580c4606caa/da0d27d6-b392-4456-a131-86e6592c468f)
+   - 3AM - Organ.mp3 (browser://12c5759d-ac6a-4534-aa10-4580c4606caa/a01f0ac5-d5b3-4c38-9426-4b11b04d20e0)
+   - Comfortably Numb - Acoustic.mp3 (browser://5e045e94-b9a3-495b-acd0-c44f89f5b426/ea65750f-dda1-4263-8361-a0fa2dc70236)
+   - Comfortably Numb - Backups.mp3 (browser://5e045e94-b9a3-495b-acd0-c44f89f5b426/5a77817b-912d-4e1d-ac10-077a4d8d73f1)
+   - Comfortably Numb - Bass.mp3 (browser://5e045e94-b9a3-495b-acd0-c44f89f5b426/87c5379a-f1d7-459b-a134-98325bd61e8b)
+   - Comfortably Numb - Click.mp3 (browser://5e045e94-b9a3-495b-acd0-c44f89f5b426/8528082c-3722-4879-8344-341d9d3b5143)
+   - Comfortably Numb - Drums.mp3 (browser://5e045e94-b9a3-495b-acd0-c44f89f5b426/a8eb033a-3164-4a9c-80cf-4a3044086798)
+   - Comfortably Numb - Keys.mp3 (browser://5e045e94-b9a3-495b-acd0-c44f89f5b426/8060cf99-6e04-4b10-b8e7-ad6f85df3e03)
+   - Footloose_(1984_film)_Hurts_So_Good(Organ_Custom_Backing_Track-2).mp3 (browser://5fc96b69-93c3-40d1-87e6-ee407e246716/64d4ccac-34f5-4bbe-b833-9889e8e78dfa)
+index-DM42c4rH.js:356   - Footloose_(1984_film)_Hurts_So_Good(Custom_Backing_Track-2).mp3 (browser://5fc96b69-93c3-40d1-87e6-ee407e246716/bca22729-5868-4ff9-b2a7-39ad53f7c9c1)
+index-DM42c4rH.js:356   - Footloose_(1984_film)_Hurts_So_Good(Bass_Custom_Backing_Track-2).mp3 (browser://5fc96b69-93c3-40d1-87e6-ee407e246716/7dd800d5-e065-4e03-920a-8d73640d8d6b)
+index-DM42c4rH.js:356   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (1).mp3 (browser://5fc96b69-93c3-40d1-87e6-ee407e246716/30dbb562-8a2f-4f7c-81ef-ccc0a57064d6)
+index-DM42c4rH.js:356   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2).mp3 (browser://5fc96b69-93c3-40d1-87e6-ee407e246716/73222c0f-ed02-45b1-a007-94c8e31df562)
+index-DM42c4rH.js:356   - Footloose_(1984_film)_Hurts_So_Good(Click_Custom_Backing_Track-2).mp3 (browser://5fc96b69-93c3-40d1-87e6-ee407e246716/f5a45990-ecd6-489c-a31b-b8f547f1c541)
+index-DM42c4rH.js:356   - Every Breath - Backups.mp3 (browser://e42fe87e-5c1f-40dc-868c-621cf03ac487/2eab448a-7b63-457c-b02a-c5bacee7ed6e)
+index-DM42c4rH.js:356   - Every Breath - Bass.mp3 (browser://e42fe87e-5c1f-40dc-868c-621cf03ac487/4de60c61-6a34-429f-bbec-f9e8332973fb)
+index-DM42c4rH.js:356   - Every Breath - Click.mp3 (browser://e42fe87e-5c1f-40dc-868c-621cf03ac487/70e83cde-886c-4f37-ba6e-7ac165d041a8)
+index-DM42c4rH.js:356   - Every Breath - Drums.mp3 (browser://e42fe87e-5c1f-40dc-868c-621cf03ac487/88e5c9fc-3004-4425-a9e3-d015e3f4df66)
+index-DM42c4rH.js:356   - Every Breath - Guitars.mp3 (browser://e42fe87e-5c1f-40dc-868c-621cf03ac487/d5d0bac1-4a6d-4c8f-a8e5-486494710d1a)
+index-DM42c4rH.js:356   - Every Breath - Keys.mp3 (browser://e42fe87e-5c1f-40dc-868c-621cf03ac487/566f8450-720c-4834-932c-07f16ddab50d)
+index-DM42c4rH.js:356 These files will be loaded when you select them through the file picker.
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track f1b63146-aee3-4ed8-928e-a0648164669e
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for f1b63146-aee3-4ed8-928e-a0648164669e
+index-DM42c4rH.js:356 ❌ Database not initialized for track f1b63146-aee3-4ed8-928e-a0648164669e
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 2c0778df-378b-45d4-9726-55f964013146
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 2c0778df-378b-45d4-9726-55f964013146
+index-DM42c4rH.js:356 ❌ Database not initialized for track 2c0778df-378b-45d4-9726-55f964013146
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 8e425581-548e-45b0-ad5a-e10a3f0d79b7
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 8e425581-548e-45b0-ad5a-e10a3f0d79b7
+index-DM42c4rH.js:356 ❌ Database not initialized for track 8e425581-548e-45b0-ad5a-e10a3f0d79b7
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 37aa2ab0-57b8-45d1-bae5-1a9248f364c7
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 37aa2ab0-57b8-45d1-bae5-1a9248f364c7
+index-DM42c4rH.js:356 ❌ Database not initialized for track 37aa2ab0-57b8-45d1-bae5-1a9248f364c7
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track cfbbbdf3-0818-403a-9c61-e241f8231b70
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for cfbbbdf3-0818-403a-9c61-e241f8231b70
+index-DM42c4rH.js:356 ❌ Database not initialized for track cfbbbdf3-0818-403a-9c61-e241f8231b70
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 96a3d028-0438-4adc-864a-6accb7b1d160
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 96a3d028-0438-4adc-864a-6accb7b1d160
+index-DM42c4rH.js:356 ❌ Database not initialized for track 96a3d028-0438-4adc-864a-6accb7b1d160
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 6d1995fb-1cb3-4c95-82ef-6948df0ed53b
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 6d1995fb-1cb3-4c95-82ef-6948df0ed53b
+index-DM42c4rH.js:356 ❌ Database not initialized for track 6d1995fb-1cb3-4c95-82ef-6948df0ed53b
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 018b21e4-82b8-4b36-8563-e308596d92ab
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 018b21e4-82b8-4b36-8563-e308596d92ab
+index-DM42c4rH.js:356 ❌ Database not initialized for track 018b21e4-82b8-4b36-8563-e308596d92ab
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track ae3de50e-37e5-4f7f-8baa-9ce7ec64abda
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for ae3de50e-37e5-4f7f-8baa-9ce7ec64abda
+index-DM42c4rH.js:356 ❌ Database not initialized for track ae3de50e-37e5-4f7f-8baa-9ce7ec64abda
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track bbf334a0-5da8-445c-b5a5-d200ac8ae2dc
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for bbf334a0-5da8-445c-b5a5-d200ac8ae2dc
+index-DM42c4rH.js:356 ❌ Database not initialized for track bbf334a0-5da8-445c-b5a5-d200ac8ae2dc
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 080f94a6-91c6-4b30-aa37-05e615a19d0a
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 080f94a6-91c6-4b30-aa37-05e615a19d0a
+index-DM42c4rH.js:356 ❌ Database not initialized for track 080f94a6-91c6-4b30-aa37-05e615a19d0a
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 2a5c09ce-9f90-422a-8b80-905a064b4082
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 2a5c09ce-9f90-422a-8b80-905a064b4082
+index-DM42c4rH.js:356 ❌ Database not initialized for track 2a5c09ce-9f90-422a-8b80-905a064b4082
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 73d0c484-c5a5-4e66-8900-fa29b94566bb
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 73d0c484-c5a5-4e66-8900-fa29b94566bb
+index-DM42c4rH.js:356 ❌ Database not initialized for track 73d0c484-c5a5-4e66-8900-fa29b94566bb
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track faa4abe8-85d9-48a3-af52-bcc53c0551e1
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for faa4abe8-85d9-48a3-af52-bcc53c0551e1
+index-DM42c4rH.js:356 ❌ Database not initialized for track faa4abe8-85d9-48a3-af52-bcc53c0551e1
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track f9dfa50d-0755-4223-a73a-b915b0f4bfc9
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for f9dfa50d-0755-4223-a73a-b915b0f4bfc9
+index-DM42c4rH.js:356 ❌ Database not initialized for track f9dfa50d-0755-4223-a73a-b915b0f4bfc9
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track da0d27d6-b392-4456-a131-86e6592c468f
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for da0d27d6-b392-4456-a131-86e6592c468f
+index-DM42c4rH.js:356 ❌ Database not initialized for track da0d27d6-b392-4456-a131-86e6592c468f
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track a01f0ac5-d5b3-4c38-9426-4b11b04d20e0
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for a01f0ac5-d5b3-4c38-9426-4b11b04d20e0
+index-DM42c4rH.js:356 ❌ Database not initialized for track a01f0ac5-d5b3-4c38-9426-4b11b04d20e0
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track ea65750f-dda1-4263-8361-a0fa2dc70236
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for ea65750f-dda1-4263-8361-a0fa2dc70236
+index-DM42c4rH.js:356 ❌ Database not initialized for track ea65750f-dda1-4263-8361-a0fa2dc70236
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 5a77817b-912d-4e1d-ac10-077a4d8d73f1
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 5a77817b-912d-4e1d-ac10-077a4d8d73f1
+index-DM42c4rH.js:356 ❌ Database not initialized for track 5a77817b-912d-4e1d-ac10-077a4d8d73f1
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 87c5379a-f1d7-459b-a134-98325bd61e8b
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 87c5379a-f1d7-459b-a134-98325bd61e8b
+index-DM42c4rH.js:356 ❌ Database not initialized for track 87c5379a-f1d7-459b-a134-98325bd61e8b
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 8528082c-3722-4879-8344-341d9d3b5143
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 8528082c-3722-4879-8344-341d9d3b5143
+index-DM42c4rH.js:356 ❌ Database not initialized for track 8528082c-3722-4879-8344-341d9d3b5143
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track a8eb033a-3164-4a9c-80cf-4a3044086798
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for a8eb033a-3164-4a9c-80cf-4a3044086798
+index-DM42c4rH.js:356 ❌ Database not initialized for track a8eb033a-3164-4a9c-80cf-4a3044086798
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 8060cf99-6e04-4b10-b8e7-ad6f85df3e03
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 8060cf99-6e04-4b10-b8e7-ad6f85df3e03
+index-DM42c4rH.js:356 ❌ Database not initialized for track 8060cf99-6e04-4b10-b8e7-ad6f85df3e03
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 64d4ccac-34f5-4bbe-b833-9889e8e78dfa
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 64d4ccac-34f5-4bbe-b833-9889e8e78dfa
+index-DM42c4rH.js:356 ❌ Database not initialized for track 64d4ccac-34f5-4bbe-b833-9889e8e78dfa
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track bca22729-5868-4ff9-b2a7-39ad53f7c9c1
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for bca22729-5868-4ff9-b2a7-39ad53f7c9c1
+index-DM42c4rH.js:356 ❌ Database not initialized for track bca22729-5868-4ff9-b2a7-39ad53f7c9c1
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 7dd800d5-e065-4e03-920a-8d73640d8d6b
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 7dd800d5-e065-4e03-920a-8d73640d8d6b
+index-DM42c4rH.js:356 ❌ Database not initialized for track 7dd800d5-e065-4e03-920a-8d73640d8d6b
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 30dbb562-8a2f-4f7c-81ef-ccc0a57064d6
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 30dbb562-8a2f-4f7c-81ef-ccc0a57064d6
+index-DM42c4rH.js:356 ❌ Database not initialized for track 30dbb562-8a2f-4f7c-81ef-ccc0a57064d6
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 73222c0f-ed02-45b1-a007-94c8e31df562
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 73222c0f-ed02-45b1-a007-94c8e31df562
+index-DM42c4rH.js:356 ❌ Database not initialized for track 73222c0f-ed02-45b1-a007-94c8e31df562
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track f5a45990-ecd6-489c-a31b-b8f547f1c541
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for f5a45990-ecd6-489c-a31b-b8f547f1c541
+index-DM42c4rH.js:356 ❌ Database not initialized for track f5a45990-ecd6-489c-a31b-b8f547f1c541
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 2eab448a-7b63-457c-b02a-c5bacee7ed6e
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 2eab448a-7b63-457c-b02a-c5bacee7ed6e
+index-DM42c4rH.js:356 ❌ Database not initialized for track 2eab448a-7b63-457c-b02a-c5bacee7ed6e
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 4de60c61-6a34-429f-bbec-f9e8332973fb
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 4de60c61-6a34-429f-bbec-f9e8332973fb
+index-DM42c4rH.js:356 ❌ Database not initialized for track 4de60c61-6a34-429f-bbec-f9e8332973fb
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 70e83cde-886c-4f37-ba6e-7ac165d041a8
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 70e83cde-886c-4f37-ba6e-7ac165d041a8
+index-DM42c4rH.js:356 ❌ Database not initialized for track 70e83cde-886c-4f37-ba6e-7ac165d041a8
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 88e5c9fc-3004-4425-a9e3-d015e3f4df66
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 88e5c9fc-3004-4425-a9e3-d015e3f4df66
+index-DM42c4rH.js:356 ❌ Database not initialized for track 88e5c9fc-3004-4425-a9e3-d015e3f4df66
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track d5d0bac1-4a6d-4c8f-a8e5-486494710d1a
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for d5d0bac1-4a6d-4c8f-a8e5-486494710d1a
+index-DM42c4rH.js:356 ❌ Database not initialized for track d5d0bac1-4a6d-4c8f-a8e5-486494710d1a
+index-DM42c4rH.js:356 🔍 BrowserFS.getAudioFile: Looking for track 566f8450-720c-4834-932c-07f16ddab50d
+index-DM42c4rH.js:356 💾 Memory cache has: []
+index-DM42c4rH.js:356 🗃️ Database initialized: false
+index-DM42c4rH.js:356 💾 Not in memory cache, checking IndexedDB for 566f8450-720c-4834-932c-07f16ddab50d
+index-DM42c4rH.js:356 ❌ Database not initialized for track 566f8450-720c-4834-932c-07f16ddab50d
+index-DM42c4rH.js:356 ✅ Auto-loaded 0/36 audio files into cache
+index-DM42c4rH.js:348 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+index-DM42c4rH.js:421 🔍 Checking URL for payment success: https://stagetrackerpro.com/index.htnl
+index-DM42c4rH.js:421 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+index-DM42c4rH.js:421 🔍 No payment success detected in URL
+index-DM42c4rH.js:348 🎹 Initializing MIDI access...
+index-DM42c4rH.js:421 Browser file system already initialized - auto-initializing
+index-DM42c4rH.js:356 ✅ BrowserFileSystem database auto-initialized
+index-DM42c4rH.js:348 🔐 MIDI Permission State: granted
+index-DM42c4rH.js:348 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+index-DM42c4rH.js:356 Browser file system initialized successfully
+index-DM42c4rH.js:348 ✅ MIDI system initialized successfully
+index-DM42c4rH.js:348 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+Iy @ stripe.js:1
+EA @ index-DM42c4rH.js:415
+(anonymous) @ index-DM42c4rH.js:415
+Promise.then
+qi @ index-DM42c4rH.js:415
+(anonymous) @ index-DM42c4rH.js:416
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+Iy @ stripe.js:1
+EA @ index-DM42c4rH.js:415
+(anonymous) @ index-DM42c4rH.js:415
+Promise.then
+qi @ index-DM42c4rH.js:415
+(anonymous) @ index-DM42c4rH.js:416
+index-DM42c4rH.js:356 📱 Edge browser detected - using compatibility mode
+index-DM42c4rH.js:348 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+index-DM42c4rH.js:348 ⚠️ No MIDI devices found. This could be due to:
+index-DM42c4rH.js:348 1. No physical MIDI devices connected
+index-DM42c4rH.js:348 2. MIDI permissions denied or blocked
+index-DM42c4rH.js:348 3. Browser security restrictions
+index-DM42c4rH.js:348 💡 To reset MIDI permissions:
+index-DM42c4rH.js:348    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+index-DM42c4rH.js:348    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+index-DM42c4rH.js:348 🎹 Found 0 MIDI devices: []
+index-DM42c4rH.js:348 🎹 Connected devices: 0/0 []
+index-DM42c4rH.js:348 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+index-DM42c4rH.js:421 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://stagetrackerpro.com/', …}
+index.htnl:1  <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes">

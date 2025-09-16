@@ -32,5 +32,42 @@
     }
   ],
   "categories": ["music", "entertainment", "productivity"],
+  "screenshots": [
+    {
+      "src": "/screenshot1.png",
+      "sizes": "1024x616",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Main performance interface with synchronized lyrics and waveform"
+    },
+    {
+      "src": "/screenshot2.png", 
+      "sizes": "1024x616",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Song selection and management interface"
+    },
+    {
+      "src": "/screenshot3.png",
+      "sizes": "1024x768",
+      "type": "image/png", 
+      "form_factor": "wide",
+      "label": "Mobile-optimized performance view with lyrics display"
+    },
+    {
+      "src": "/screenshot4.png",
+      "sizes": "1024x768",
+      "type": "image/png",
+      "form_factor": "wide", 
+      "label": "Desktop performance interface with multi-track controls"
+    },
+    {
+      "src": "/screenshot5.png",
+      "sizes": "1024x616",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Live broadcast collaboration feature with viewer interface"
+    }
+  ],
   "id": "STP1"
 }

@@ -350,26 +350,27 @@ export function TrackWaveformEditor({
     });
   };
 
-  const handleMouseUp = () => {
-    console.log('Mouse up - dragState:', dragState);
-    if (dragState?.isDragging && dragState.endTime !== undefined) {
-      const startTime = Math.min(dragState.startTime, dragState.endTime);
-      const endTime = Math.max(dragState.startTime, dragState.endTime);
-      console.log('Creating selection from', startTime, 'to', endTime, 'duration:', endTime - startTime);
+  const handleMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    console.log('🖱️ MOUSEUP - dragState exists:', !!dragState, 'isDragging:', dragState?.isDragging);
+    
+    if (dragState?.isDragging) {
+      const endTime = getTimeFromX(e.clientX);
+      const startTime = Math.min(dragState.startTime, endTime);
+      const finalEndTime = Math.max(dragState.startTime, endTime);
+      const duration = finalEndTime - startTime;
       
-      // Only create pending selection if it's larger than 0.05 seconds (reduced threshold)
-      if (endTime - startTime >= 0.05) {
-        console.log('✅ Setting pending selection:', { start: startTime, end: endTime, duration: endTime - startTime });
-        setPendingSelection({ start: startTime, end: endTime });
-        setSelectedRegion(null); // Clear any selected regions
+      console.log('🎯 CREATING SELECTION:', { start: startTime, end: finalEndTime, duration });
+      
+      // Very permissive threshold - even tiny selections should work
+      if (duration >= 0.01) {
+        console.log('✅ SETTING PENDING SELECTION!');
+        setPendingSelection({ start: startTime, end: finalEndTime });
+        setSelectedRegion(null);
       } else {
-        console.log('❌ Selection too small:', { start: startTime, end: endTime, duration: endTime - startTime });
+        console.log('❌ Selection too small:', duration);
       }
-    } else {
-      console.log('❌ No valid drag state for selection');
     }
     
-    console.log('Clearing drag state');
     setDragState(null);
   };
 
@@ -535,6 +536,18 @@ export function TrackWaveformEditor({
                         </Button>
                       </>
                     )}
+                    {/* TEST BUTTON - to debug selection issue */}
+                    <Button
+                      onClick={() => {
+                        console.log('🧪 FORCE SETTING SELECTION FOR TEST');
+                        setPendingSelection({ start: 10, end: 15 });
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="text-xs bg-yellow-600 hover:bg-yellow-500 text-white border-yellow-500"
+                    >
+                      TEST
+                    </Button>
                   </div>
                   {zoomLevel > 1 && (
                     <div className="text-xs text-gray-300">

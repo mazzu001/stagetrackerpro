@@ -569,6 +569,17 @@ export default function TrackManager({
       [trackId]: { ...prev[trackId], volume }
     }));
 
+    // ALSO update song object immediately to fix fallback values
+    if (song && onSongUpdate) {
+      const updatedSong = {
+        ...song,
+        tracks: song.tracks?.map(track => 
+          track.id === trackId ? { ...track, volume } : track
+        ) || []
+      };
+      onSongUpdate(updatedSong);
+    }
+
     // Clear any existing timeout for this track
     if (debounceTimeouts.current[trackId]) {
       clearTimeout(debounceTimeouts.current[trackId]);
@@ -576,7 +587,6 @@ export default function TrackManager({
 
     // Set new timeout to update audio engine and database
     debounceTimeouts.current[trackId] = setTimeout(() => {
-      console.log(`Updated track ${trackId} volume to ${volume}`);
       onTrackVolumeChange?.(trackId, volume);
       
       // Update database
@@ -589,7 +599,7 @@ export default function TrackManager({
       
       delete debounceTimeouts.current[trackId];
     }, 150);
-  }, [tracks, song?.id, user?.email, onTrackVolumeChange]);
+  }, [tracks, song, user?.email, onTrackVolumeChange, onSongUpdate]);
 
   // Debounced balance change handler
   const handleBalanceChange = useCallback((trackId: string, balance: number) => {
@@ -599,6 +609,17 @@ export default function TrackManager({
       [trackId]: { ...prev[trackId], balance }
     }));
 
+    // ALSO update song object immediately to fix fallback values
+    if (song && onSongUpdate) {
+      const updatedSong = {
+        ...song,
+        tracks: song.tracks?.map(track => 
+          track.id === trackId ? { ...track, balance } : track
+        ) || []
+      };
+      onSongUpdate(updatedSong);
+    }
+
     // Clear any existing timeout for this track
     const balanceTimeoutKey = `${trackId}_balance`;
     if (debounceTimeouts.current[balanceTimeoutKey]) {
@@ -607,7 +628,6 @@ export default function TrackManager({
 
     // Set new timeout to update audio engine and database
     debounceTimeouts.current[balanceTimeoutKey] = setTimeout(() => {
-      console.log(`Updated track ${trackId} balance to ${balance}`);
       onTrackBalanceChange?.(trackId, balance);
       
       // Update database
@@ -620,7 +640,7 @@ export default function TrackManager({
       
       delete debounceTimeouts.current[balanceTimeoutKey];
     }, 150);
-  }, [tracks, song?.id, user?.email, onTrackBalanceChange]);
+  }, [tracks, song, user?.email, onTrackBalanceChange, onSongUpdate]);
 
   // Mute toggle handler
   const handleMuteToggle = useCallback((trackId: string) => {

@@ -72,7 +72,79 @@ export function TrackWaveformEditor({
     if (!collapsed && waveformData && canvasRef.current) {
       drawWaveform();
     }
-  }, [collapsed, waveformData, regions, dragState, selectedRegion, zoomLevel, zoomOffset]); // Include zoom deps for auto-redraw
+  }, [collapsed, waveformData, regions, dragState, selectedRegion, zoomLevel, zoomOffset, pendingSelection]);
+
+  // Native mouse event listeners (React events weren't working)
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    console.log('🔧 Setting up native mouse listeners');
+    
+    let isMouseDown = false;
+    let startTime = 0;
+    
+    const handleNativeMouseDown = (e: MouseEvent) => {
+      console.log('🖱️ NATIVE MOUSE DOWN!');
+      e.preventDefault();
+      
+      isMouseDown = true;
+      startTime = getTimeFromX(e.clientX);
+      
+      setSelectedRegion(null);
+      setPendingSelection(null);
+      setDragState({
+        isDragging: true,
+        startX: e.clientX,
+        startTime,
+      });
+    };
+    
+    const handleNativeMouseMove = (e: MouseEvent) => {
+      if (!isMouseDown) return;
+      
+      const endTime = getTimeFromX(e.clientX);
+      setDragState(prev => prev ? {
+        ...prev,
+        endTime
+      } : null);
+    };
+    
+    const handleNativeMouseUp = (e: MouseEvent) => {
+      console.log('🖱️ NATIVE MOUSE UP!');
+      
+      if (isMouseDown) {
+        const endTime = getTimeFromX(e.clientX);
+        const finalStartTime = Math.min(startTime, endTime);
+        const finalEndTime = Math.max(startTime, endTime);
+        const duration = finalEndTime - finalStartTime;
+        
+        console.log('🎯 NATIVE SELECTION:', { start: finalStartTime, end: finalEndTime, duration });
+        
+        if (duration >= 0.01) {
+          console.log('✅ SETTING SELECTION VIA NATIVE EVENTS!');
+          setPendingSelection({ start: finalStartTime, end: finalEndTime });
+        }
+      }
+      
+      isMouseDown = false;
+      setDragState(null);
+    };
+    
+    canvas.addEventListener('mousedown', handleNativeMouseDown);
+    canvas.addEventListener('mousemove', handleNativeMouseMove);
+    canvas.addEventListener('mouseup', handleNativeMouseUp);
+    canvas.addEventListener('mouseleave', () => {
+      isMouseDown = false;
+      setDragState(null);
+    });
+    
+    return () => {
+      canvas.removeEventListener('mousedown', handleNativeMouseDown);
+      canvas.removeEventListener('mousemove', handleNativeMouseMove);
+      canvas.removeEventListener('mouseup', handleNativeMouseUp);
+    };
+  }, [canvasRef.current]);
 
   const generateWaveform = async () => {
     if (!audioUrl || isGenerating) return;

@@ -1,0 +1,2212 @@
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+performance.tsx:379 🎵 Loading song: Hurt So Good
+performance.tsx:386 📡 Not uploading to database: {isHost: false, hasCurrentRoom: false, roomId: undefined}
+performance.tsx:390 🔍 Debug values: {selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: true, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+@radix-ui_react-dialog.js?v=170c6354:330  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ VM768 @radix-ui_react-dialog.js:330
+commitHookEffectListMount @ VM683 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM683 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM683 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM683 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM683 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM683 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM683 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM683 chunk-UZOKQUDP.js:19416
+commitRoot @ VM683 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM683 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM683 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM683 chunk-UZOKQUDP.js:18627
+@radix-ui_react-dialog.js?v=170c6354:344  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ VM768 @radix-ui_react-dialog.js:344
+commitHookEffectListMount @ VM683 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM683 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM683 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM683 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM683 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM683 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM683 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM683 chunk-UZOKQUDP.js:19416
+commitRoot @ VM683 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM683 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM683 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM683 chunk-UZOKQUDP.js:18627
+waveform-visualizer.tsx:48 No cached waveform found for "Hurt So Good", generating...
+waveform-generator.ts:54 Auto-generating waveform for "Hurt So Good" from 1 tracks...
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 3fa4451d-99fc-42d8-a49b-bfde061ca513
+audio-file-storage.ts:51 📂 Available audio files (26): (26) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 3fa4451d-99fc-42d8-a49b-bfde061ca513
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 3fa4451d-99fc-42d8-a49b-bfde061ca513
+use-audio-engine.tsx:95 Song selected: "Hurt So Good" with 1 tracks - loading for streaming
+use-audio-engine.tsx:99 Setting up streaming for: "Hurt So Good" - UI stays responsive
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 3fa4451d-99fc-42d8-a49b-bfde061ca513
+audio-file-storage.ts:51 📂 Available audio files (26): (26) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 3fa4451d-99fc-42d8-a49b-bfde061ca513
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 3fa4451d-99fc-42d8-a49b-bfde061ca513
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+browser-file-system.ts:172 ✅ Found in IndexedDB: 3fa4451d-99fc-42d8-a49b-bfde061ca513 (Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 3fa4451d-99fc-42d8-a49b-bfde061ca513
+streaming-audio-engine.ts:39 🚀 Streaming load: 1 tracks (deferred setup)
+streaming-audio-engine.ts:33 🎵 Loading original tracks...
+streaming-audio-engine.ts:34 🎵 Track loading complete: 1 tracks ready
+use-audio-engine.tsx:130 ✅ Streaming ready for "Hurt So Good" - instant playback available
+streaming-audio-engine.ts:62 ✅ Streaming ready: 1 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:133 🔧 Audio nodes created on demand for: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+streaming-audio-engine.ts:99 🔄 Loading started for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+browser-file-system.ts:172 ✅ Found in IndexedDB: 3fa4451d-99fc-42d8-a49b-bfde061ca513 (Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 3fa4451d-99fc-42d8-a49b-bfde061ca513
+use-audio-engine.tsx:64 Duration updated from streaming engine: 228s
+use-audio-engine.tsx:64 Duration updated from streaming engine: 228s
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+waveform-generator.ts:99 Processed track: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2) (228.2s)
+waveform-generator.ts:123 Generated comprehensive waveform from 1 tracks, duration: 228.2s
+waveform-generator.ts:35 Waveform cached for song: eb0b1875-d049-4dc9-b6a0-e3959d3c08f1
+waveform-generator.ts:139 🔇 Closed temporary AudioContext for waveform generation
+track-manager-clean.tsx:354 All tracks cleared, refreshing song with 0 tracks
+performance.tsx:1994 Performance: Received song update with 0 tracks
+track-manager-clean.tsx:360 Cleared waveform cache for "Hurt So Good" - all tracks removed
+use-audio-engine.tsx:95 Song selected: "Hurt So Good" with 0 tracks - loading for streaming
+use-audio-engine.tsx:99 Setting up streaming for: "Hurt So Good" - UI stays responsive
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+streaming-audio-engine.ts:39 🚀 Streaming load: 0 tracks (deferred setup)
+streaming-audio-engine.ts:33 🎵 Loading original tracks...
+streaming-audio-engine.ts:34 🎵 Track loading complete: 0 tracks ready
+use-audio-engine.tsx:130 ✅ Streaming ready for "Hurt So Good" - instant playback available
+use-audio-engine.tsx:64 Duration updated from streaming engine: 228s
+streaming-audio-engine.ts:62 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:99 🔄 Loading started for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+streaming-audio-engine.ts:89  ⚠️ Audio error for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2): error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM782 streaming-audio-engine.ts:89
+use-audio-engine.tsx:64 Duration updated from streaming engine: 228s
+track-manager-clean.tsx:108 === Web Track Manager: Starting file selection ===
+track-manager-clean.tsx:115 === Web Track Manager: File change event triggered ===
+track-manager-clean.tsx:123 Files selected: 1
+track-manager-clean.tsx:158 📁 Processing file 1/1: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (8.7MB)
+track-manager-clean.tsx:163 ⏳ Starting processing of Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3...
+track-manager-clean.tsx:259 Processing file 0/0: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+track-manager-clean.tsx:262 Adding track "Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)" with file: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+local-song-storage.ts:86 LocalSongStorage.addTrack: Track added successfully: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:23 Storing audio file in browser: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3, size: 9170423 bytes
+browser-file-system.ts:101 🔄 BrowserFS.addAudioFile: Storing Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 as track 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:102 🗃️ Database initialized: true
+browser-file-system.ts:124 ✅ IndexedDB storage successful for 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:133 ✅ Memory cache updated for 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:139 📱 Edge on Windows: clearing memory cache for 5ccf7282-a4c7-4737-bd17-2a776d812f88 to save memory
+browser-file-system.ts:142 ✅ Audio file stored: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 for track: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+audio-file-storage.ts:229 Saved 27 audio file path references to localStorage (8KB)
+audio-file-storage.ts:42 Successfully stored audio file for track: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2) (8955KB)
+track-manager-clean.tsx:284 Audio file stored successfully for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:51 📂 Available audio files (27): (27) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513', '5ccf7282-a4c7-4737-bd17-2a776d812f88']
+audio-file-storage.ts:52 💾 Memory cache files (1): ['5ccf7282-a4c7-4737-bd17-2a776d812f88']
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:152 💾 Memory cache has: [3fa4451d-99fc-42d8-a49b-bfde061ca513]
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:172 ✅ Found in IndexedDB: 5ccf7282-a4c7-4737-bd17-2a776d812f88 (Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+track-manager-clean.tsx:288 Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+track-manager-clean.tsx:89 Detected audio duration: 228s from file: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+track-manager-clean.tsx:292 Track added successfully
+track-manager-clean.tsx:295 Track data updated, refreshing song with 1 tracks
+performance.tsx:1994 Performance: Received song update with 1 tracks
+track-manager-clean.tsx:301 Cleared waveform cache for "Hurt So Good" - will regenerate on next view
+track-manager-clean.tsx:307 Successfully processed: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+track-manager-clean.tsx:165 ✅ File 1 completely processed and stored
+use-audio-engine.tsx:95 Song selected: "Hurt So Good" with 1 tracks - loading for streaming
+use-audio-engine.tsx:99 Setting up streaming for: "Hurt So Good" - UI stays responsive
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:51 📂 Available audio files (27): (27) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513', '5ccf7282-a4c7-4737-bd17-2a776d812f88']
+audio-file-storage.ts:52 💾 Memory cache files (1): ['5ccf7282-a4c7-4737-bd17-2a776d812f88']
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+streaming-audio-engine.ts:39 🚀 Streaming load: 1 tracks (deferred setup)
+streaming-audio-engine.ts:33 🎵 Loading original tracks...
+streaming-audio-engine.ts:34 🎵 Track loading complete: 1 tracks ready
+use-audio-engine.tsx:130 ✅ Streaming ready for "Hurt So Good" - instant playback available
+use-audio-engine.tsx:64 Duration updated from streaming engine: 228s
+streaming-audio-engine.ts:62 ✅ Streaming ready: 1 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:133 🔧 Audio nodes created on demand for: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+streaming-audio-engine.ts:99 🔄 Loading started for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+track-manager-clean.tsx:202 📊 Duration added: 228.2s (total: 228.2s)
+track-manager-clean.tsx:239 === Web Track Manager: Cleaning up file selection ===
+use-audio-engine.tsx:64 Duration updated from streaming engine: 228s
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+track-waveform-editor.tsx:239 Mouse down at time: 5.384095966385072
+track-waveform-editor.tsx:248 Starting new selection
+track-waveform-editor.tsx:267 🖱️ MOUSEUP - dragState exists: true isDragging: true
+track-waveform-editor.tsx:273 🎯 CREATING SELECTION: {start: 0, end: 5.384095966385072, duration: 5.384095966385072}
+track-waveform-editor.tsx:275 ✅ SETTING PENDING SELECTION!
+track-waveform-editor.tsx:581 🧪 FORCE SETTING SELECTION FOR TEST
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+client:560 [vite] server connection lost. Polling for restart...
+framework-7ab2dcf8b4e5f748.js:1  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Unrecognized feature: 'battery'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Unrecognized feature: 'layout-animations'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-7ab2dcf8b4e5f748.js:1
+(anonymous) @ framework-7ab2dcf8b4e5f748.js:1
+uD @ framework-7ab2dcf8b4e5f748.js:1
+uI @ framework-7ab2dcf8b4e5f748.js:1
+uM @ framework-7ab2dcf8b4e5f748.js:1
+uS @ framework-7ab2dcf8b4e5f748.js:1
+C @ framework-7ab2dcf8b4e5f748.js:1
+z @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+e @ framework-7ab2dcf8b4e5f748.js:1
+e @ framework-7ab2dcf8b4e5f748.js:1
+e @ framework-7ab2dcf8b4e5f748.js:1
+oK @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+e @ framework-7ab2dcf8b4e5f748.js:1
+e @ framework-7ab2dcf8b4e5f748.js:1
+e @ framework-7ab2dcf8b4e5f748.js:1
+oK @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+framework-7ab2dcf8b4e5f748.js:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+e @ framework-7ab2dcf8b4e5f748.js:1
+e @ framework-7ab2dcf8b4e5f748.js:1
+e @ framework-7ab2dcf8b4e5f748.js:1
+oK @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+oQ @ framework-7ab2dcf8b4e5f748.js:1
+oq @ framework-7ab2dcf8b4e5f748.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1qv%3A:1  Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
+android-ble-midi.ts:36 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:176 Loaded 27 audio file path references from localStorage
+audio-file-storage.ts:194 🔄 Auto-loading 27 stored audio files...
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:236 ❌ Database not initialized for track 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:218 Expected audio files for tracks:
+audio-file-storage.ts:221   - 3AM - Backups.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/85516371-6892-485e-baaa-ad929b71972f)
+audio-file-storage.ts:221   - 3AM - Bass.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/309057cb-8ab5-4870-a132-86ee5fe872a8)
+audio-file-storage.ts:221   - 3AM - Click.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/a754bc46-1864-4f6c-9a45-ad641b33b538)
+audio-file-storage.ts:221   - 3AM - Drums.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/30b310ee-1ae1-45a6-9139-a19e54966cf7)
+audio-file-storage.ts:221   - 3AM - Guitars.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/a4167cc8-6335-41c0-9828-3e29f7391cbb)
+audio-file-storage.ts:221   - 3AM - Organ.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/f2252245-afb5-4355-ab87-0f458372cd74)
+audio-file-storage.ts:221   - 3AM - Backups.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/72654398-de52-474f-bebf-2aa37fd338e8)
+audio-file-storage.ts:221   - 3AM - Bass.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/908aa7b1-2db1-4a7c-93b7-655ca9da6042)
+audio-file-storage.ts:221   - 3AM - Click.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/1d0353dd-00e3-4d5f-a2af-110155f2b663)
+audio-file-storage.ts:221   - 3AM - Drums.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/58d94ea4-e283-4023-9cbd-90b90efe4cef)
+audio-file-storage.ts:221   - 3AM - Guitars.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/26b27820-c6e8-45b5-bf99-02a5932a02fe)
+audio-file-storage.ts:221   - 3AM - Organ.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/37fc4fd4-bfae-4ba0-9aae-66204bd913f7)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Backing_Vocals_Custom_Backing_Track-2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/75e2a628-f67a-4ad2-a001-c83cb08e91de)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Bass_Custom_Backing_Track-2) (1).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/541404da-882d-470d-88c4-c320bc197a25)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Click_Custom_Backing_Track-2) (1).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/83d8ec0e-45d5-4aac-a278-16e0a362e9c4)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/03baf2ac-a6b5-433a-9ee0-8e4c23eacb91)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Guitars Custom_Backing_Track-2) (1).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/13598e26-4fe8-4a29-9910-b2c3ceddc819)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Organ_Custom_Backing_Track-2) (1).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/6e67d178-f106-48a6-a4ea-01962e8eaa8d)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/e1daa7ed-a462-4355-8da0-cd2ffd2b2c68)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/1fdc8fe1-d09d-44fb-9a86-48b4985cc5df)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/2021d63a-45c4-49be-91da-5964d50a54f9)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/b3285538-a8b5-4d00-ba37-aad469b0738f)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/189a8077-71f1-4533-8d96-08340e2dacef)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/fb6bf368-db9d-4516-aa46-5ccad05975b9)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/8a1fb1cc-f49e-47f8-aef1-5376153c9615)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/3fa4451d-99fc-42d8-a49b-bfde061ca513)
+audio-file-storage.ts:221   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://eb0b1875-d049-4dc9-b6a0-e3959d3c08f1/5ccf7282-a4c7-4737-bd17-2a776d812f88)
+audio-file-storage.ts:223 These files will be loaded when you select them through the file picker.
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:236 ❌ Database not initialized for track 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:236 ❌ Database not initialized for track a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:236 ❌ Database not initialized for track 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:236 ❌ Database not initialized for track a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:236 ❌ Database not initialized for track f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 72654398-de52-474f-bebf-2aa37fd338e8
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 72654398-de52-474f-bebf-2aa37fd338e8
+browser-file-system.ts:236 ❌ Database not initialized for track 72654398-de52-474f-bebf-2aa37fd338e8
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 908aa7b1-2db1-4a7c-93b7-655ca9da6042
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 908aa7b1-2db1-4a7c-93b7-655ca9da6042
+browser-file-system.ts:236 ❌ Database not initialized for track 908aa7b1-2db1-4a7c-93b7-655ca9da6042
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 1d0353dd-00e3-4d5f-a2af-110155f2b663
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 1d0353dd-00e3-4d5f-a2af-110155f2b663
+browser-file-system.ts:236 ❌ Database not initialized for track 1d0353dd-00e3-4d5f-a2af-110155f2b663
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 58d94ea4-e283-4023-9cbd-90b90efe4cef
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 58d94ea4-e283-4023-9cbd-90b90efe4cef
+browser-file-system.ts:236 ❌ Database not initialized for track 58d94ea4-e283-4023-9cbd-90b90efe4cef
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 26b27820-c6e8-45b5-bf99-02a5932a02fe
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 26b27820-c6e8-45b5-bf99-02a5932a02fe
+browser-file-system.ts:236 ❌ Database not initialized for track 26b27820-c6e8-45b5-bf99-02a5932a02fe
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 37fc4fd4-bfae-4ba0-9aae-66204bd913f7
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 37fc4fd4-bfae-4ba0-9aae-66204bd913f7
+browser-file-system.ts:236 ❌ Database not initialized for track 37fc4fd4-bfae-4ba0-9aae-66204bd913f7
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 75e2a628-f67a-4ad2-a001-c83cb08e91de
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 75e2a628-f67a-4ad2-a001-c83cb08e91de
+browser-file-system.ts:236 ❌ Database not initialized for track 75e2a628-f67a-4ad2-a001-c83cb08e91de
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 541404da-882d-470d-88c4-c320bc197a25
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 541404da-882d-470d-88c4-c320bc197a25
+browser-file-system.ts:236 ❌ Database not initialized for track 541404da-882d-470d-88c4-c320bc197a25
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 83d8ec0e-45d5-4aac-a278-16e0a362e9c4
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 83d8ec0e-45d5-4aac-a278-16e0a362e9c4
+browser-file-system.ts:236 ❌ Database not initialized for track 83d8ec0e-45d5-4aac-a278-16e0a362e9c4
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 03baf2ac-a6b5-433a-9ee0-8e4c23eacb91
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 03baf2ac-a6b5-433a-9ee0-8e4c23eacb91
+browser-file-system.ts:236 ❌ Database not initialized for track 03baf2ac-a6b5-433a-9ee0-8e4c23eacb91
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 13598e26-4fe8-4a29-9910-b2c3ceddc819
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 13598e26-4fe8-4a29-9910-b2c3ceddc819
+browser-file-system.ts:236 ❌ Database not initialized for track 13598e26-4fe8-4a29-9910-b2c3ceddc819
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 6e67d178-f106-48a6-a4ea-01962e8eaa8d
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 6e67d178-f106-48a6-a4ea-01962e8eaa8d
+browser-file-system.ts:236 ❌ Database not initialized for track 6e67d178-f106-48a6-a4ea-01962e8eaa8d
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track e1daa7ed-a462-4355-8da0-cd2ffd2b2c68
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for e1daa7ed-a462-4355-8da0-cd2ffd2b2c68
+browser-file-system.ts:236 ❌ Database not initialized for track e1daa7ed-a462-4355-8da0-cd2ffd2b2c68
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 1fdc8fe1-d09d-44fb-9a86-48b4985cc5df
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 1fdc8fe1-d09d-44fb-9a86-48b4985cc5df
+browser-file-system.ts:236 ❌ Database not initialized for track 1fdc8fe1-d09d-44fb-9a86-48b4985cc5df
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 2021d63a-45c4-49be-91da-5964d50a54f9
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 2021d63a-45c4-49be-91da-5964d50a54f9
+browser-file-system.ts:236 ❌ Database not initialized for track 2021d63a-45c4-49be-91da-5964d50a54f9
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track b3285538-a8b5-4d00-ba37-aad469b0738f
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for b3285538-a8b5-4d00-ba37-aad469b0738f
+browser-file-system.ts:236 ❌ Database not initialized for track b3285538-a8b5-4d00-ba37-aad469b0738f
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 189a8077-71f1-4533-8d96-08340e2dacef
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 189a8077-71f1-4533-8d96-08340e2dacef
+browser-file-system.ts:236 ❌ Database not initialized for track 189a8077-71f1-4533-8d96-08340e2dacef
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track fb6bf368-db9d-4516-aa46-5ccad05975b9
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for fb6bf368-db9d-4516-aa46-5ccad05975b9
+browser-file-system.ts:236 ❌ Database not initialized for track fb6bf368-db9d-4516-aa46-5ccad05975b9
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 8a1fb1cc-f49e-47f8-aef1-5376153c9615
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 8a1fb1cc-f49e-47f8-aef1-5376153c9615
+browser-file-system.ts:236 ❌ Database not initialized for track 8a1fb1cc-f49e-47f8-aef1-5376153c9615
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 3fa4451d-99fc-42d8-a49b-bfde061ca513
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 3fa4451d-99fc-42d8-a49b-bfde061ca513
+browser-file-system.ts:236 ❌ Database not initialized for track 3fa4451d-99fc-42d8-a49b-bfde061ca513
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:236 ❌ Database not initialized for track 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:212 ✅ Auto-loaded 0/27 audio files into cache
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx:44 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx:66 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx:122 🔍 No payment success detected in URL
+useMidiDevices.ts:122 🎹 Initializing MIDI access...
+App.tsx:132 Browser file system already initialized - auto-initializing
+useMidiDevices.ts:128 🔐 MIDI Permission State: granted
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:63 ✅ BrowserFileSystem database auto-initialized
+browser-file-system.ts:87 Browser file system initialized successfully
+useMidiDevices.ts:160 ✅ MIDI system initialized successfully
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+jy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-simple.tsx:9
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+jy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-elements-test.tsx:9
+main.tsx:10 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+useMidiDevices.ts:189 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:198 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:199 1. No physical MIDI devices connected
+useMidiDevices.ts:200 2. MIDI permissions denied or blocked
+useMidiDevices.ts:201 3. Browser security restrictions
+useMidiDevices.ts:202 💡 To reset MIDI permissions:
+useMidiDevices.ts:203    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:204    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:294 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:314 🎹 Connected devices: 0/0 []
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+lyrics-display.tsx:293 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:31 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:71 🎵 Master output initialized
+performance.tsx:505 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+performance.tsx:451 📋 Loaded 2 songs from local storage (alphabetically sorted)
+performance.tsx:505 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:490 🎵 Loading song: Hurt So Good
+performance.tsx:499 📡 Not uploading to database: {isHost: false, hasCurrentRoom: false, roomId: undefined}
+performance.tsx:505 🔍 Debug values: {selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: true, …}
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: undefined, songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+dialog.tsx:519  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ dialog.tsx:519
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+waveform-visualizer.tsx:49 No cached waveform found for "Hurt So Good", generating...
+waveform-generator.ts:69 Auto-generating waveform for "Hurt So Good" from 1 tracks...
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:79 📂 Available audio files (27): (27) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513', '5ccf7282-a4c7-4737-bd17-2a776d812f88']
+audio-file-storage.ts:80 💾 Memory cache files (0): []
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 5ccf7282-a4c7-4737-bd17-2a776d812f88
+use-audio-engine.tsx:107 Song selected: "Hurt So Good" with 1 tracks - loading for streaming
+use-audio-engine.tsx:115 Setting up streaming for: "Hurt So Good" - UI stays responsive
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:79 📂 Available audio files (27): (27) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513', '5ccf7282-a4c7-4737-bd17-2a776d812f88']
+audio-file-storage.ts:80 💾 Memory cache files (0): []
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 5ccf7282-a4c7-4737-bd17-2a776d812f88
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+browser-file-system.ts:251 ✅ Found in IndexedDB: 5ccf7282-a4c7-4737-bd17-2a776d812f88 (Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+streaming-audio-engine.ts:85 🚀 Streaming load: 1 tracks (deferred setup)
+streaming-audio-engine.ts:76 🎵 Loading original tracks...
+streaming-audio-engine.ts:79 🎵 Track loading complete: 1 tracks ready
+use-audio-engine.tsx:158 ✅ Streaming ready for "Hurt So Good" - instant playback available
+streaming-audio-engine.ts:118 ✅ Streaming ready: 1 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:220 🔧 Audio nodes created on demand for: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+browser-file-system.ts:251 ✅ Found in IndexedDB: 5ccf7282-a4c7-4737-bd17-2a776d812f88 (Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+streaming-audio-engine.ts:170 🔄 Loading started for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+waveform-generator.ts:130 Processed track: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2) (228.2s)
+waveform-generator.ts:162 Generated comprehensive waveform from 1 tracks, duration: 228.2s
+waveform-generator.ts:46 Waveform cached for song: eb0b1875-d049-4dc9-b6a0-e3959d3c08f1
+waveform-generator.ts:184 🔇 Closed temporary AudioContext for waveform generation
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+track-manager-clean.tsx:470 All tracks cleared, refreshing song with 0 tracks
+performance.tsx:1527 Performance: Received song update with 0 tracks
+track-manager-clean.tsx:478 Cleared waveform cache for "Hurt So Good" - all tracks removed
+use-audio-engine.tsx:107 Song selected: "Hurt So Good" with 0 tracks - loading for streaming
+use-audio-engine.tsx:115 Setting up streaming for: "Hurt So Good" - UI stays responsive
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+streaming-audio-engine.ts:85 🚀 Streaming load: 0 tracks (deferred setup)
+streaming-audio-engine.ts:76 🎵 Loading original tracks...
+streaming-audio-engine.ts:79 🎵 Track loading complete: 0 tracks ready
+use-audio-engine.tsx:158 ✅ Streaming ready for "Hurt So Good" - instant playback available
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+streaming-audio-engine.ts:118 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:170 🔄 Loading started for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+streaming-audio-engine.ts:155  ⚠️ Audio error for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2): error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ streaming-audio-engine.ts:155
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+track-manager-clean.tsx:147 === Web Track Manager: Starting file selection ===
+track-manager-clean.tsx:156 === Web Track Manager: File change event triggered ===
+track-manager-clean.tsx:166 Files selected: 1
+track-manager-clean.tsx:215 📁 Processing file 1/1: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (8.7MB)
+track-manager-clean.tsx:225 ⏳ Starting processing of Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3...
+track-manager-clean.tsx:347 Processing file 0/0: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+track-manager-clean.tsx:352 Adding track "Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)" with file: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+local-song-storage.ts:108 LocalSongStorage.addTrack: Track added successfully: db2ae386-a42e-4557-ab87-fad5fad34d16
+audio-file-storage.ts:38 Storing audio file in browser: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3, size: 9170423 bytes
+browser-file-system.ts:161 🔄 BrowserFS.addAudioFile: Storing Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 as track db2ae386-a42e-4557-ab87-fad5fad34d16
+browser-file-system.ts:162 🗃️ Database initialized: true
+browser-file-system.ts:189 ✅ IndexedDB storage successful for db2ae386-a42e-4557-ab87-fad5fad34d16
+browser-file-system.ts:200 ✅ Memory cache updated for db2ae386-a42e-4557-ab87-fad5fad34d16
+browser-file-system.ts:208 📱 Edge on Windows: clearing memory cache for db2ae386-a42e-4557-ab87-fad5fad34d16 to save memory
+browser-file-system.ts:212 ✅ Audio file stored: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 for track: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+audio-file-storage.ts:304 Saved 28 audio file path references to localStorage (9KB)
+audio-file-storage.ts:69 Successfully stored audio file for track: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2) (8955KB)
+track-manager-clean.tsx:378 Audio file stored successfully for track: db2ae386-a42e-4557-ab87-fad5fad34d16
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: db2ae386-a42e-4557-ab87-fad5fad34d16
+audio-file-storage.ts:79 📂 Available audio files (28): (28) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513', '5ccf7282-a4c7-4737-bd17-2a776d812f88', 'db2ae386-a42e-4557-ab87-fad5fad34d16']
+audio-file-storage.ts:80 💾 Memory cache files (1): ['db2ae386-a42e-4557-ab87-fad5fad34d16']
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track db2ae386-a42e-4557-ab87-fad5fad34d16
+browser-file-system.ts:224 💾 Memory cache has: [5ccf7282-a4c7-4737-bd17-2a776d812f88]
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for db2ae386-a42e-4557-ab87-fad5fad34d16
+browser-file-system.ts:251 ✅ Found in IndexedDB: db2ae386-a42e-4557-ab87-fad5fad34d16 (Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: db2ae386-a42e-4557-ab87-fad5fad34d16
+track-manager-clean.tsx:384 Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+track-manager-clean.tsx:124 Detected audio duration: 228s from file: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+track-manager-clean.tsx:391 Track added successfully
+track-manager-clean.tsx:396 Track data updated, refreshing song with 1 tracks
+performance.tsx:1527 Performance: Received song update with 1 tracks
+track-manager-clean.tsx:404 Cleared waveform cache for "Hurt So Good" - will regenerate on next view
+track-manager-clean.tsx:412 Successfully processed: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+track-manager-clean.tsx:227 ✅ File 1 completely processed and stored
+use-audio-engine.tsx:107 Song selected: "Hurt So Good" with 1 tracks - loading for streaming
+use-audio-engine.tsx:115 Setting up streaming for: "Hurt So Good" - UI stays responsive
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: db2ae386-a42e-4557-ab87-fad5fad34d16
+audio-file-storage.ts:79 📂 Available audio files (28): (28) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513', '5ccf7282-a4c7-4737-bd17-2a776d812f88', 'db2ae386-a42e-4557-ab87-fad5fad34d16']
+audio-file-storage.ts:80 💾 Memory cache files (1): ['db2ae386-a42e-4557-ab87-fad5fad34d16']
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: db2ae386-a42e-4557-ab87-fad5fad34d16
+streaming-audio-engine.ts:85 🚀 Streaming load: 1 tracks (deferred setup)
+streaming-audio-engine.ts:76 🎵 Loading original tracks...
+streaming-audio-engine.ts:79 🎵 Track loading complete: 1 tracks ready
+use-audio-engine.tsx:158 ✅ Streaming ready for "Hurt So Good" - instant playback available
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+streaming-audio-engine.ts:118 ✅ Streaming ready: 1 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:220 🔧 Audio nodes created on demand for: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+streaming-audio-engine.ts:170 🔄 Loading started for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+track-manager-clean.tsx:279 📊 Duration added: 228.2s (total: 228.2s)
+track-manager-clean.tsx:324 === Web Track Manager: Cleaning up file selection ===
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+track-waveform-editor.tsx:322 🖱️ Mouse down at time: 9.504577894095915
+track-waveform-editor.tsx:334 🎆 Starting new selection
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 9.229879098915191
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 8.680481508553745
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 8.405782713373025
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 8.131083918192301
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 8.131083918192301
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 7.581686327830855
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 7.032288737469409
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 7.032288737469409
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 6.482891147107963
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 6.208192351927241
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 5.933493556746517
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 5.933493556746517
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 5.658794761565794
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 5.109397171204349
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 4.834698376023625
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 4.559999580842903
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 4.010601990481456
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 3.7359031953007342
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 3.4612044001200113
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 2.9118068097585654
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 2.6371080145778425
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 2.6371080145778425
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 2.0877104242163966
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 1.8130116290356737
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 1.538312833854951
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0.9889152434935053
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0.7142164483127824
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0.4395176531320595
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0
+track-waveform-editor.tsx:322 🖱️ Mouse down at time: 9.504577894095915
+track-waveform-editor.tsx:334 🎆 Starting new selection
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 9.229879098915191
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 9.229879098915191
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 8.680481508553745
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 8.405782713373025
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 8.405782713373025
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 8.131083918192301
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 7.856385123011577
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 7.3069875326501315
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 7.032288737469409
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 6.757589942288686
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 6.208192351927241
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 5.933493556746517
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 5.658794761565794
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 5.109397171204349
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 4.834698376023625
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 4.559999580842903
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 4.28530078566218
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 3.7359031953007342
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 3.4612044001200113
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 3.4612044001200113
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 3.1865056049392884
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 2.6371080145778425
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 2.6371080145778425
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 2.36240921939712
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 2.0877104242163966
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 2.0877104242163966
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 1.8130116290356737
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 1.538312833854951
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 1.538312833854951
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0.9889152434935053
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0.7142164483127824
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0.4395176531320595
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0.1648188579513366
+track-waveform-editor.tsx:350 🖱️ Mouse move - updating endTime to: 0.1648188579513366
+track-waveform-editor.tsx:361 🖱️ MOUSEUP EVENT FIRED!
+track-waveform-editor.tsx:362 🖱️ dragState: {isDragging: true, startX: 115, startTime: 9.504577894095915, endTime: 0.1648188579513366}
+track-waveform-editor.tsx:370 🎯 CREATING SELECTION: {start: 0.1648188579513366, end: 9.504577894095915, duration: 9.339759036144578}
+track-waveform-editor.tsx:374 ✅ SETTING PENDING SELECTION NOW!
+track-waveform-editor.tsx:380 🔄 State should be updated now
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28

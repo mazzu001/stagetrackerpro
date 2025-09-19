@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Trash2, Activity, ChevronDown, ChevronRight, ZoomIn, ZoomOut, VolumeX, Focus, Play } from 'lucide-react';
 import type { MuteRegion } from '@shared/schema';
 import { LocalSongStorage } from '@/lib/local-song-storage';
+import { BrowserFileSystem } from '@/lib/browser-file-system';
 import type { StreamingAudioEngine } from '@/lib/streaming-audio-engine';
 
 interface TrackWaveformEditorProps {
@@ -79,10 +80,37 @@ export function TrackWaveformEditor({
     if (!audioUrl || isGenerating) return;
     
     setIsGenerating(true);
-    console.log('🎵 Starting waveform generation for:', audioUrl);
+    
+    let workingAudioUrl = audioUrl;
+    console.log('🎵 Starting waveform generation for:', workingAudioUrl);
+    
     try {
-      // Create audio element to load the track
-      const audio = new Audio(audioUrl);
+      // Try the current audioUrl first, but if it fails, get a fresh one
+      let audio = new Audio(workingAudioUrl);
+      
+      // Test if the current blob URL is valid
+      const testLoad = new Promise<boolean>((resolve) => {
+        const testAudio = new Audio(workingAudioUrl);
+        testAudio.addEventListener('canplaythrough', () => resolve(true), { once: true });
+        testAudio.addEventListener('error', () => resolve(false), { once: true });
+        testAudio.load();
+      });
+      
+      const isValidUrl = await testLoad;
+      
+      if (!isValidUrl) {
+        console.log('🔄 Current blob URL is invalid, getting fresh one from storage...');
+        const browserFS = BrowserFileSystem.getInstance();
+        const freshUrl = await browserFS.getAudioUrl(trackId);
+        
+        if (freshUrl) {
+          workingAudioUrl = freshUrl;
+          audio = new Audio(workingAudioUrl);
+          console.log('✅ Got fresh blob URL:', workingAudioUrl);
+        } else {
+          throw new Error('Unable to get valid audio URL from storage');
+        }
+      }
       
       // Wait for the audio to load
       await new Promise<void>((resolve, reject) => {
@@ -93,7 +121,7 @@ export function TrackWaveformEditor({
 
       // Create AudioContext and decode audio
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const response = await fetch(audioUrl);
+      const response = await fetch(workingAudioUrl);
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
       
@@ -273,7 +301,15 @@ export function TrackWaveformEditor({
     setIsPlayingSelection(true);
     
     try {
-      const audio = new Audio(audioUrl);
+      // Get a fresh audio URL to ensure it's valid
+      let workingUrl = audioUrl;
+      const browserFS = BrowserFileSystem.getInstance();
+      const freshUrl = await browserFS.getAudioUrl(trackId);
+      if (freshUrl) {
+        workingUrl = freshUrl;
+      }
+      
+      const audio = new Audio(workingUrl);
       audio.currentTime = pendingSelection.start;
       
       const stopPlayback = () => {

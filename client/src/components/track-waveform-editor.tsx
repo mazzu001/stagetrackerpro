@@ -301,7 +301,9 @@ export function TrackWaveformEditor({
     if (!rect) return 0;
     
     const relativeX = x - rect.left - MARGIN;
-    const waveWidth = CANVAS_WIDTH - 2 * MARGIN;
+    // Use actual rendered width instead of hardcoded CANVAS_WIDTH
+    const actualCanvasWidth = rect.width;
+    const waveWidth = actualCanvasWidth - 2 * MARGIN;
     const normalizedX = Math.max(0, Math.min(1, relativeX / waveWidth));
     
     // Apply zoom calculations

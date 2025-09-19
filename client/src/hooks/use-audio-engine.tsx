@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 import type { SongWithTracks } from "@shared/schema";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
+import { LocalSongStorage } from "@/lib/local-song-storage";
+import { useLocalAuth } from "@/hooks/useLocalAuth";
 
 interface UseAudioEngineProps {
   song?: SongWithTracks;
@@ -21,6 +23,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     // Old calling pattern: useAudioEngine(song)
     song = songOrProps as SongWithTracks | undefined;
   }
+
+  const { user } = useLocalAuth();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -131,6 +135,21 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
           // Load tracks without blocking the UI
           audioEngineRef.current?.loadTracks(trackData);
           
+          // Load and apply mute regions for each track
+          if (audioEngineRef.current && user?.email && song) {
+            song.tracks.forEach(track => {
+              try {
+                const muteRegions = LocalSongStorage.getMuteRegions(user.email, song.id, track.id);
+                if (muteRegions && muteRegions.length > 0) {
+                  audioEngineRef.current?.setTrackMuteRegions(track.id, muteRegions);
+                  console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
+                }
+              } catch (error) {
+                console.warn(`Failed to load mute regions for track ${track.name}:`, error);
+              }
+            });
+          }
+          
           // Auto-generate waveform in background (restored functionality from AudioEngine)
           if (audioEngineRef.current && typeof (audioEngineRef.current as any).autoGenerateWaveform === 'function') {
             (audioEngineRef.current as any).autoGenerateWaveform(song);
@@ -145,7 +164,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       // Run setup in background without blocking UI
       setupStreamingAsync();
     }
-  }, [song?.id, song?.tracks?.length]);
+  }, [song?.id, song?.tracks?.length, user?.email]);
 
   // Animation loop for real-time updates
 

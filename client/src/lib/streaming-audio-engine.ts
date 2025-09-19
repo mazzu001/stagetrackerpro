@@ -1,6 +1,8 @@
 // Streaming audio engine with lazy initialization to prevent UI blocking
 // Pitch shifting libraries removed - focusing on streaming audio only
 
+import type { MuteRegion } from "@shared/schema";
+
 export interface StreamingTrack {
   id: string;
   name: string;
@@ -15,6 +17,7 @@ export interface StreamingTrack {
   balance: number;
   isMuted: boolean;
   isSolo: boolean;
+  muteRegions?: MuteRegion[];
 }
 
 export interface StreamingAudioEngineState {
@@ -35,6 +38,7 @@ export class StreamingAudioEngine {
   private syncTimeouts: number[] = [];
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
+  private scheduledGainChanges: Map<string, number[]> = new Map(); // Track scheduled gain automation IDs
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -322,6 +326,10 @@ export class StreamingAudioEngine {
     
     this.state.isPlaying = true;
     this.startTimeTracking();
+    
+    // Schedule mute regions for all tracks based on current position
+    this.scheduleAllMuteRegions(this.state.currentTime);
+    
     this.notifyListeners();
     
     console.log(`✅ Streaming playback started instantly`);
@@ -366,6 +374,11 @@ export class StreamingAudioEngine {
         track.audioElement.currentTime = this.state.currentTime;
       }
     });
+    
+    // Reschedule mute regions from new position if playing
+    if (this.state.isPlaying) {
+      this.scheduleAllMuteRegions(this.state.currentTime);
+    }
     
     this.notifyListeners();
     console.log(`⏯️ Streamed to ${this.state.currentTime.toFixed(1)}s`);
@@ -436,6 +449,75 @@ export class StreamingAudioEngine {
     if (this.state.masterGainNode) {
       this.state.masterGainNode.gain.value = volume;
     }
+  }
+
+  // Mute region scheduling methods
+  setTrackMuteRegions(trackId: string, muteRegions: MuteRegion[]) {
+    const track = this.state.tracks.find(t => t.id === trackId);
+    if (track) {
+      track.muteRegions = muteRegions;
+      console.log(`🔇 Set ${muteRegions.length} mute regions for track: ${track.name}`);
+    }
+  }
+
+  private clearScheduledGainChanges(trackId: string) {
+    // Clear any existing scheduled automation for this track
+    const track = this.state.tracks.find(t => t.id === trackId);
+    if (track && track.gainNode) {
+      track.gainNode.gain.cancelScheduledValues(this.audioContext.currentTime);
+    }
+    this.scheduledGainChanges.delete(trackId);
+  }
+
+  private scheduleTrackMuteRegions(track: StreamingTrack, currentTime: number) {
+    if (!track.gainNode || !track.muteRegions || track.muteRegions.length === 0) {
+      return;
+    }
+
+    this.clearScheduledGainChanges(track.id);
+    const timeoutIds: number[] = [];
+
+    // Calculate the base gain value (considering volume, mute, solo states)
+    const hasSoloTracks = this.state.tracks.some(t => t.isSolo);
+    const shouldBeMuted = track.isMuted || (hasSoloTracks && !track.isSolo);
+    const baseGain = shouldBeMuted ? 0 : (track.volume > 1 ? track.volume / 100 : track.volume);
+
+    // Start with current state
+    track.gainNode.gain.cancelScheduledValues(this.audioContext.currentTime);
+    track.gainNode.gain.setValueAtTime(baseGain, this.audioContext.currentTime);
+
+    // Schedule mute regions that are relevant from current playback position
+    track.muteRegions.forEach(region => {
+      const regionStartTime = this.audioContext.currentTime + Math.max(0, region.start - currentTime);
+      const regionEndTime = this.audioContext.currentTime + Math.max(0, region.end - currentTime);
+
+      // Only schedule future events
+      if (region.end > currentTime && track.gainNode) {
+        // If we're currently in a mute region, start muted
+        if (region.start <= currentTime && region.end > currentTime) {
+          track.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+        }
+        
+        // Schedule mute start (if in future)
+        if (region.start > currentTime) {
+          track.gainNode.gain.setValueAtTime(0, regionStartTime);
+        }
+        
+        // Schedule mute end (if in future) 
+        if (region.end > currentTime) {
+          track.gainNode.gain.setValueAtTime(baseGain, regionEndTime);
+        }
+      }
+    });
+
+    this.scheduledGainChanges.set(track.id, timeoutIds);
+    console.log(`⏰ Scheduled mute automation for track: ${track.name} from position ${Math.round(currentTime)}s`);
+  }
+
+  private scheduleAllMuteRegions(currentTime: number) {
+    this.state.tracks.forEach(track => {
+      this.scheduleTrackMuteRegions(track, currentTime);
+    });
   }
 
 

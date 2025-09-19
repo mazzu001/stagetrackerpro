@@ -52,7 +52,23 @@ export default function TrackManager({
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
-  const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
+  const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>(() => {
+    // Load saved values IMMEDIATELY on first render
+    if (song?.id && user?.email) {
+      const freshSong = LocalSongStorage.getSong(user.email, song.id);
+      const freshTracks = freshSong?.tracks || [];
+      
+      const savedValues: Record<string, { volume: number; balance: number }> = {};
+      freshTracks.forEach(track => {
+        savedValues[track.id] = {
+          volume: track.volume || 1.0,
+          balance: track.balance || 0.0
+        };
+      });
+      return savedValues;
+    }
+    return {};
+  });
   // Pitch and speed control removed
 
   // Recording state
@@ -65,25 +81,7 @@ export default function TrackManager({
   // Get tracks for the current song
   const tracks = song?.tracks || [];
 
-  // Load values from storage INSTANTLY when dialog opens
-  useEffect(() => {
-    if (isOpen && song?.id && user?.email) {
-      // Get fresh data from storage to remember user's changes
-      const freshSong = LocalSongStorage.getSong(user.email, song.id);
-      const freshTracks = freshSong?.tracks;
-      
-      if (freshTracks && freshTracks.length > 0) {
-        const storageValues: Record<string, { volume: number; balance: number }> = {};
-        freshTracks.forEach(track => {
-          storageValues[track.id] = {
-            volume: track.volume || 1.0,
-            balance: track.balance || 0.0
-          };
-        });
-        setLocalTrackValues(storageValues);
-      }
-    }
-  }, [isOpen, song?.id, user?.email]);
+  // No useEffect needed - values loaded immediately in useState initializer
 
   // Initialize audio inputs on component mount
   // Recording features removed

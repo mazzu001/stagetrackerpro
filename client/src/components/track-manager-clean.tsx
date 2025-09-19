@@ -28,6 +28,7 @@ interface TrackManagerProps {
   isLoadingTracks?: boolean;
   onPlay?: () => void;
   onPause?: () => void;
+  isOpen?: boolean; // Track if dialog is open to trigger refresh
 }
 
 export default function TrackManager({ 
@@ -42,7 +43,8 @@ export default function TrackManager({
   isPlaying = false,
   isLoadingTracks = false,
   onPlay,
-  onPause
+  onPause,
+  isOpen = false
 }: TrackManagerProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [trackName, setTrackName] = useState("");
@@ -63,19 +65,60 @@ export default function TrackManager({
   // Get tracks for the current song
   const tracks = song?.tracks || [];
 
-  // Initialize local track values from song data
-  useEffect(() => {
-    if (tracks.length > 0) {
+  // Flush any pending debounced updates
+  const flushPendingUpdates = useCallback(() => {
+    Object.keys(debounceTimeouts.current).forEach(key => {
+      if (debounceTimeouts.current[key]) {
+        clearTimeout(debounceTimeouts.current[key]);
+        delete debounceTimeouts.current[key];
+      }
+    });
+  }, []);
+
+  // Initialize/refresh local track values from storage
+  const refreshTrackValues = useCallback(() => {
+    if (!song?.id || !user?.email) return;
+    
+    // Get fresh track data from storage
+    const freshSong = LocalSongStorage.getSong(user.email, song.id);
+    const freshTracks = freshSong?.tracks || [];
+    
+    if (freshTracks.length > 0) {
       const initialValues: Record<string, { volume: number; balance: number }> = {};
-      tracks.forEach(track => {
+      freshTracks.forEach(track => {
+        // Convert 0-1 range to 0-100 for UI, with migration for legacy values
+        let volume = track.volume || 80; // Default to 80%
+        if (volume <= 1.0) {
+          // Legacy 0-1 range, convert to 0-100
+          volume = Math.round(volume * 100);
+          // Update storage with converted value
+          LocalSongStorage.updateTrack(user.email, song.id, track.id, { volume });
+        }
+        
         initialValues[track.id] = {
-          volume: track.volume || 1.0,
+          volume,
           balance: track.balance || 0.0
         };
       });
       setLocalTrackValues(initialValues);
     }
-  }, [tracks]);
+  }, [song?.id, user?.email]);
+
+  // Refresh track values when dialog opens or song changes
+  useEffect(() => {
+    if (isOpen) {
+      refreshTrackValues();
+    }
+  }, [isOpen, refreshTrackValues]);
+
+  // Note: Dialog close is handled by parent component
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      flushPendingUpdates();
+    };
+  }, [flushPendingUpdates]);
 
   // Initialize audio inputs on component mount
   // Recording features removed

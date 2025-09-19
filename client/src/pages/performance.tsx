@@ -1521,6 +1521,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               {/* Track Manager */}
               <TrackManager
                 song={selectedSong as any}
+                isOpen={isTrackManagerOpen}
                 onSongUpdate={(updatedSong: any) => {
                   console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
                 setSelectedSong(updatedSong);

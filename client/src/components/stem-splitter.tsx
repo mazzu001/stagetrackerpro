@@ -221,6 +221,11 @@ export default function StemSplitter({
           songId: song.id,
           name: stem.name,
           trackNumber: (song.tracks?.length || 0) + 1,
+          audioUrl: '', // Will be set by AudioFileStorage
+          localFileName: null,
+          audioData: null,
+          mimeType: 'audio/wav',
+          fileSize: stem.size,
           volume: 0.8,
           balance: 0,
           isMuted: false,
@@ -237,7 +242,12 @@ export default function StemSplitter({
       // Trigger song update
       const updatedSong = LocalSongStorage.getSong(user.email, song.id);
       if (updatedSong && onSongUpdate) {
-        onSongUpdate(updatedSong);
+        // Convert LocalSong to SongWithTracks format
+        const songWithTracks: SongWithTracks = {
+          ...updatedSong,
+          userId: user.email || '',
+        };
+        onSongUpdate(songWithTracks);
       }
       
       toast({
@@ -341,7 +351,7 @@ export default function StemSplitter({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => open ? setIsOpen(true) : handleClose()}>
       <DialogTrigger asChild>
         <Button 
           variant="outline" 

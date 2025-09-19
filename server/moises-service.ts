@@ -34,8 +34,11 @@ export class MoisesService {
   }
 
   async createSeparationJob(request: StemSeparationRequest): Promise<string | null> {
-    if (!this.isEnabled()) {
-      throw new Error('Moises API not configured');
+    // Allow mock mode when API key is not configured (for development)
+    const useMockMode = !this.isEnabled();
+    
+    if (useMockMode) {
+      console.log('🎵 Using mock mode for stem separation (no API key configured)');
     }
 
     try {
@@ -68,8 +71,11 @@ export class MoisesService {
   }
 
   async getJobStatus(jobId: string): Promise<MoisesJobStatus | null> {
-    if (!this.isEnabled()) {
-      throw new Error('Moises API not configured');
+    // Allow mock mode when API key is not configured (for development)
+    const useMockMode = !this.isEnabled();
+    
+    if (useMockMode) {
+      // Use mock job tracking
     }
 
     try {

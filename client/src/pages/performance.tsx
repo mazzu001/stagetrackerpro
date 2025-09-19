@@ -7,6 +7,7 @@ import { LyricsControls } from "@/components/lyrics-controls";
 import SongSelector from "@/components/song-selector";
 import StatusBar from "@/components/status-bar";
 import TrackManager from "@/components/track-manager-clean";
+import StemSplitter from "@/components/stem-splitter";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
 
@@ -1513,10 +1514,12 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           <DialogHeader>
           </DialogHeader>
           {selectedSong && (
-            <TrackManager
-              song={selectedSong as any}
-              onSongUpdate={(updatedSong: any) => {
-                console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
+            <div className="space-y-4">
+              {/* Track Manager */}
+              <TrackManager
+                song={selectedSong as any}
+                onSongUpdate={(updatedSong: any) => {
+                  console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
                 setSelectedSong(updatedSong);
                 setAllSongs(prev => prev.map(song => 
                   song.id === updatedSong.id ? updatedSong : song
@@ -1534,6 +1537,27 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               audioLevels={audioLevels}
               data-testid="track-manager"
             />
+            
+            {/* Stem Splitter - Add stem separation functionality */}
+            <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+              <div className="flex items-center gap-2 mb-3">
+                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Advanced Tools</h3>
+              </div>
+              <StemSplitter
+                song={selectedSong as any}
+                onStemGenerated={(stems) => {
+                  console.log('Performance: Generated stems:', stems);
+                }}
+                onSongUpdate={(updatedSong: any) => {
+                  console.log('Performance: Stem splitter updated song with', updatedSong.tracks?.length || 0, 'tracks');
+                  setSelectedSong(updatedSong);
+                  setAllSongs(prev => prev.map(song => 
+                    song.id === updatedSong.id ? updatedSong : song
+                  ));
+                }}
+              />
+            </div>
+            </div>
           )}
         </DialogContent>
       </Dialog>

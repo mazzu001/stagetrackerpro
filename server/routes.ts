@@ -1983,10 +1983,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // 🎵 Stem Splitter API routes (isolated feature)
-  console.log('🎵 Registering stem splitter routes...');
+  const stemSplitterEnabled = process.env.ENABLE_STEM_SPLITTER !== 'false'; // Enabled by default for development
   
-  try {
-    const { moisesService } = await import('./moises-service');
+  if (stemSplitterEnabled) {
+    console.log('🎵 Registering stem splitter routes...');
+    
+    try {
+      const { moisesService } = await import('./moises-service');
     
     // Create stem separation job
     app.post('/api/stem-splitter/create', upload.single('audio'), async (req: any, res) => {
@@ -2056,10 +2059,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     });
 
-    console.log('✅ Stem splitter routes registered successfully');
-  } catch (error) {
-    console.error('❌ Failed to register stem splitter routes:', error);
-    console.log('⚠️ Stem splitter features will be disabled');
+      console.log('✅ Stem splitter routes registered successfully');
+    } catch (error) {
+      console.error('❌ Failed to register stem splitter routes:', error);
+      console.log('⚠️ Stem splitter features will be disabled');
+    }
+  } else {
+    console.log('⚠️ Stem splitter disabled via ENABLE_STEM_SPLITTER environment variable');
   }
 
   console.log('📡 Registering broadcast session routes...');

@@ -1123,6 +1123,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 <DialogContent data-testid="dialog-add-song">
                   <DialogHeader>
                     <DialogTitle>Add New Song</DialogTitle>
+                    <DialogDescription>
+                      Create a new song to add tracks and practice with.
+                    </DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4">
                     <div>

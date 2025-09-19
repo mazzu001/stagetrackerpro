@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -75,16 +75,16 @@ export default function TrackManager({
     });
   }, []);
 
-  // Initialize/refresh local track values from storage
-  const refreshTrackValues = useCallback(() => {
-    if (!song?.id || !user?.email) return;
+  // Get track values from storage immediately (no async delay)
+  const getTrackValuesFromStorage = useCallback(() => {
+    if (!song?.id || !user?.email) return {};
     
-    // Get fresh track data from storage
-    const freshSong = LocalSongStorage.getSong(user.email, song.id);
-    const freshTracks = freshSong?.tracks || [];
-    
-    if (freshTracks.length > 0) {
-      const initialValues: Record<string, { volume: number; balance: number }> = {};
+    try {
+      // Get fresh track data from storage synchronously
+      const freshSong = LocalSongStorage.getSong(user.email, song.id);
+      const freshTracks = freshSong?.tracks || [];
+      
+      const values: Record<string, { volume: number; balance: number }> = {};
       freshTracks.forEach(track => {
         // Convert 0-1 range to 0-100 for UI, with migration for legacy values
         let volume = track.volume || 80; // Default to 80%
@@ -95,23 +95,56 @@ export default function TrackManager({
           LocalSongStorage.updateTrack(user.email, song.id, track.id, { volume });
         }
         
-        initialValues[track.id] = {
+        values[track.id] = {
           volume,
           balance: track.balance || 0.0
         };
       });
-      setLocalTrackValues(initialValues);
+      return values;
+    } catch (error) {
+      console.warn('Error loading track values from storage:', error);
+      return {};
     }
   }, [song?.id, user?.email]);
 
-  // Refresh track values when dialog opens or song changes
+  // Initialize with storage values immediately (no delay)
+  const initialTrackValues = useMemo(() => {
+    const storageValues = getTrackValuesFromStorage();
+    
+    // If we have storage values, use them; otherwise fall back to song data
+    if (Object.keys(storageValues).length > 0) {
+      return storageValues;
+    }
+    
+    // Fallback to song data with unit conversion
+    const fallbackValues: Record<string, { volume: number; balance: number }> = {};
+    tracks.forEach(track => {
+      let volume = track.volume || 80;
+      if (volume <= 1.0) {
+        volume = Math.round(volume * 100);
+      }
+      fallbackValues[track.id] = {
+        volume,
+        balance: track.balance || 0.0
+      };
+    });
+    return fallbackValues;
+  }, [getTrackValuesFromStorage, tracks]);
+
+  // Set local track values from computed initial values
+  useEffect(() => {
+    setLocalTrackValues(initialTrackValues);
+  }, [initialTrackValues]);
+
+  // Refresh track values when dialog opens (for any external changes)
   useEffect(() => {
     if (isOpen) {
-      refreshTrackValues();
+      const freshValues = getTrackValuesFromStorage();
+      if (Object.keys(freshValues).length > 0) {
+        setLocalTrackValues(freshValues);
+      }
     }
-  }, [isOpen, refreshTrackValues]);
-
-  // Note: Dialog close is handled by parent component
+  }, [isOpen, getTrackValuesFromStorage]);
 
   // Cleanup on unmount
   useEffect(() => {

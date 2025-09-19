@@ -328,13 +328,24 @@ export function TrackWaveformEditor({
       }
       
       const audio = new Audio(workingUrl);
-      audio.currentTime = pendingSelection.start;
+      
+      // Wait for audio to be ready before setting currentTime
+      await new Promise<void>((resolve) => {
+        audio.addEventListener('canplay', () => {
+          console.log(`🎵 Audio ready, setting currentTime to ${pendingSelection.start.toFixed(2)}s`);
+          audio.currentTime = pendingSelection.start;
+          console.log(`🎵 Audio currentTime actually set to: ${audio.currentTime.toFixed(2)}s`);
+          resolve();
+        }, { once: true });
+        audio.load();
+      });
       
       // Calculate exact duration to play
       const selectionDuration = pendingSelection.end - pendingSelection.start;
       let timeoutId: ReturnType<typeof setTimeout>;
       
       const stopPlayback = () => {
+        console.log(`🎵 Stopping playback at: ${audio.currentTime.toFixed(2)}s`);
         audio.pause();
         if (timeoutId) {
           clearTimeout(timeoutId);
@@ -348,6 +359,7 @@ export function TrackWaveformEditor({
       audio.addEventListener('ended', stopPlayback);
       
       await audio.play();
+      console.log(`🎵 Playback started at: ${audio.currentTime.toFixed(2)}s`);
     } catch (error) {
       console.error('Error playing selection:', error);
       setIsPlayingSelection(false);

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Trash2, Activity, ChevronDown, ChevronRight, ZoomIn, ZoomOut, VolumeX, Focus } from 'lucide-react';
+import { Trash2, Activity, ChevronDown, ChevronRight, ZoomIn, ZoomOut, VolumeX, Focus, Play } from 'lucide-react';
 import type { MuteRegion } from '@shared/schema';
 import { LocalSongStorage } from '@/lib/local-song-storage';
 import type { StreamingAudioEngine } from '@/lib/streaming-audio-engine';
@@ -40,6 +40,7 @@ export function TrackWaveformEditor({
   } | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
   const [pendingSelection, setPendingSelection] = useState<{start: number, end: number} | null>(null); // For dual-function buttons
+  const [isPlayingSelection, setIsPlayingSelection] = useState(false); // Track if selection is playing
   const [zoomLevel, setZoomLevel] = useState(1); // Zoom level for precision editing
   const [zoomOffset, setZoomOffset] = useState(0); // Offset for zoomed view
 
@@ -263,6 +264,38 @@ export function TrackWaveformEditor({
     setPendingSelection(null); // Clear selection after use
   };
 
+  // Simple play selection function
+  const playSelection = async () => {
+    if (!pendingSelection || !audioUrl || isPlayingSelection) return;
+    
+    setIsPlayingSelection(true);
+    
+    try {
+      const audio = new Audio(audioUrl);
+      audio.currentTime = pendingSelection.start;
+      
+      const stopPlayback = () => {
+        audio.pause();
+        audio.removeEventListener('timeupdate', checkTime);
+        setIsPlayingSelection(false);
+      };
+      
+      const checkTime = () => {
+        if (audio.currentTime >= pendingSelection.end) {
+          stopPlayback();
+        }
+      };
+      
+      audio.addEventListener('timeupdate', checkTime);
+      audio.addEventListener('ended', stopPlayback);
+      
+      await audio.play();
+    } catch (error) {
+      console.error('Error playing selection:', error);
+      setIsPlayingSelection(false);
+    }
+  };
+
   const getTimeFromX = (x: number): number => {
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return 0;
@@ -456,6 +489,17 @@ export function TrackWaveformEditor({
                     {/* Dual-function selection buttons */}
                     {pendingSelection && (
                       <>
+                        <Button
+                          onClick={playSelection}
+                          variant="outline"
+                          size="sm"
+                          className="text-xs bg-green-50 hover:bg-green-100 text-green-700 border-green-200"
+                          disabled={isPlayingSelection}
+                          data-testid={`button-play-selection-${trackId}`}
+                        >
+                          <Play className="h-3 w-3 mr-1" />
+                          {isPlayingSelection ? 'Playing...' : 'Play'}
+                        </Button>
                         <Button
                           onClick={muteSelection}
                           variant="outline"

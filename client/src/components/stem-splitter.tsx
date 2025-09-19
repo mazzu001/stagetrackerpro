@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
@@ -385,6 +385,9 @@ export default function StemSplitter({
             <Music className="h-5 w-5" />
             Stem Splitter
           </DialogTitle>
+          <DialogDescription>
+            Separate instruments from your audio files. Remove vocals, drums, or other stems to create backing tracks or isolated parts.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">

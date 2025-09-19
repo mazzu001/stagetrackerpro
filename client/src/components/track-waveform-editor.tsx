@@ -44,8 +44,8 @@ export function TrackWaveformEditor({
   const [zoomLevel, setZoomLevel] = useState(1); // Zoom level for precision editing
   const [zoomOffset, setZoomOffset] = useState(0); // Offset for zoomed view
 
-  // Canvas dimensions
-  const CANVAS_WIDTH = 600;
+  // Canvas dimensions - full width of container
+  const CANVAS_WIDTH = 850; // Wider for full container width
   const CANVAS_HEIGHT = 80;
   const MARGIN = 10;
 
@@ -97,7 +97,7 @@ export function TrackWaveformEditor({
       
       // Generate peak data for visualization (reduce resolution for performance)
       const channelData = audioBuffer.getChannelData(0);
-      const samples = 500; // Reduce sample count for performance
+      const samples = 2000; // Higher resolution for detailed waveform
       const blockSize = Math.floor(channelData.length / samples);
       const peaks = new Float32Array(samples);
       
@@ -129,8 +129,8 @@ export function TrackWaveformEditor({
     // Clear canvas
     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     
-    // Draw background
-    ctx.fillStyle = '#f3f4f6';
+    // Draw background (dark gray to match performance page)
+    ctx.fillStyle = '#374151';
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     const waveWidth = CANVAS_WIDTH - 2 * MARGIN;
@@ -150,7 +150,7 @@ export function TrackWaveformEditor({
     const barWidth = waveWidth / visibleSamples;
 
     // Draw waveform bars (only visible portion when zoomed)
-    ctx.fillStyle = '#3b82f6';
+    ctx.fillStyle = '#ffffff'; // White waveform on dark background
     for (let i = 0; i < visibleSamples; i++) {
       const sampleIndex = startSample + i;
       if (sampleIndex >= 0 && sampleIndex < waveformData.length) {
@@ -217,7 +217,7 @@ export function TrackWaveformEditor({
 
   // Zoom control functions
   const zoomIn = () => {
-    setZoomLevel(prev => Math.min(prev * 2, 10)); // Max 10x zoom
+    setZoomLevel(prev => Math.min(prev * 2, 20)); // Max 20x zoom
   };
 
   const zoomOut = () => {
@@ -249,7 +249,7 @@ export function TrackWaveformEditor({
     const padding = selectionDuration * 0.1; // 10% padding on each side
     const paddedDuration = selectionDuration + 2 * padding; // Total duration with symmetric padding
     
-    const newZoomLevel = Math.min(duration / paddedDuration, 10); // Max 10x zoom
+    const newZoomLevel = Math.min(duration / paddedDuration, 20); // Max 20x zoom
     const visibleDuration = duration / newZoomLevel;
     const desiredOffset = pendingSelection.start - padding; // Center selection with padding
     
@@ -324,9 +324,11 @@ export function TrackWaveformEditor({
     
     if (clickedRegion) {
       setSelectedRegion(clickedRegion.id);
+      setPendingSelection(null); // Clear pending selection when selecting existing region
     } else {
-      // Start new region selection
+      // Clear existing selections and start new region selection
       setSelectedRegion(null);
+      setPendingSelection(null);
       setDragState({
         isDragging: true,
         startX: e.clientX,
@@ -417,19 +419,19 @@ export function TrackWaveformEditor({
   };
 
   return (
-    <div className="border rounded-lg bg-white dark:bg-gray-800">
+    <div className="border rounded-lg bg-gray-700 border-gray-600">
       {/* Header with toggle */}
       <div 
-        className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700"
+        className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-600"
         onClick={() => setCollapsed(!collapsed)}
         data-testid={`toggle-waveform-editor-${trackId}`}
       >
         <div className="flex items-center gap-2">
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           <Activity className="h-4 w-4" />
-          <span className="text-sm font-medium">Waveform & Mute Regions</span>
+          <span className="text-sm font-medium text-white">Waveform & Mute Regions</span>
           {regions.length > 0 && (
-            <span className="text-xs bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
+            <span className="text-xs bg-red-900 text-red-200 px-2 py-1 rounded">
               {regions.length} muted
             </span>
           )}
@@ -440,10 +442,10 @@ export function TrackWaveformEditor({
       {!collapsed && (
         <div className="p-3 pt-0 space-y-3">
           {/* Waveform canvas */}
-          <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-4">
+          <div className="bg-gray-800 rounded-lg p-4">
             {isGenerating ? (
               <div className="flex items-center justify-center h-20">
-                <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex items-center gap-2 text-sm text-gray-300">
                   <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-500 border-t-transparent"></div>
                   Generating waveform...
                 </div>
@@ -453,7 +455,7 @@ export function TrackWaveformEditor({
                 {/* Zoom controls */}
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-600 dark:text-gray-400">Zoom:</span>
+                    <span className="text-xs text-gray-300">Zoom:</span>
                     <Button
                       onClick={zoomOut}
                       variant="outline"
@@ -463,14 +465,14 @@ export function TrackWaveformEditor({
                     >
                       <ZoomOut className="h-3 w-3" />
                     </Button>
-                    <span className="text-xs text-gray-600 dark:text-gray-400 min-w-[30px] text-center">
+                    <span className="text-xs text-gray-300 min-w-[30px] text-center">
                       {zoomLevel.toFixed(1)}x
                     </span>
                     <Button
                       onClick={zoomIn}
                       variant="outline"
                       size="sm"
-                      disabled={zoomLevel >= 10}
+                      disabled={zoomLevel >= 20}
                       data-testid={`button-zoom-in-${trackId}`}
                     >
                       <ZoomIn className="h-3 w-3" />
@@ -524,7 +526,7 @@ export function TrackWaveformEditor({
                     )}
                   </div>
                   {zoomLevel > 1 && (
-                    <div className="text-xs text-gray-600 dark:text-gray-400">
+                    <div className="text-xs text-gray-300">
                       Viewing: {formatTime(zoomOffset)} - {formatTime(Math.min(zoomOffset + duration / zoomLevel, duration))}
                     </div>
                   )}
@@ -533,14 +535,27 @@ export function TrackWaveformEditor({
                   ref={canvasRef}
                   width={CANVAS_WIDTH}
                   height={CANVAS_HEIGHT}
-                  className="border rounded cursor-crosshair"
+                  className="border border-gray-500 rounded cursor-crosshair w-full"
                   onMouseDown={handleMouseDown}
                   onMouseMove={handleMouseMove}
                   onMouseUp={handleMouseUp}
                   onMouseLeave={() => setDragState(null)}
+                  onClick={(e) => {
+                    // Clear pending selection if clicking in empty space (not dragging)
+                    if (!dragState && pendingSelection) {
+                      const clickTime = getTimeFromX(e.clientX);
+                      const clickedRegion = regions.find(region => 
+                        clickTime >= region.start && clickTime <= region.end
+                      );
+                      if (!clickedRegion) {
+                        setPendingSelection(null);
+                        setSelectedRegion(null);
+                      }
+                    }
+                  }}
                   data-testid={`waveform-canvas-${trackId}`}
                 />
-                <div className="text-xs text-gray-500 mt-2">
+                <div className="text-xs text-gray-300 mt-2">
                   {pendingSelection 
                     ? `Selection: ${formatTime(pendingSelection.start)} - ${formatTime(pendingSelection.end)} (${formatTime(pendingSelection.end - pendingSelection.start)}). Choose Mute or Zoom above.`
                     : "Click and drag to select. Click existing regions to select them."
@@ -566,7 +581,7 @@ export function TrackWaveformEditor({
           {regions.length > 0 && (
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium">Muted Regions ({regions.length})</h4>
+                <h4 className="text-sm font-medium text-white">Muted Regions ({regions.length})</h4>
                 <Button
                   onClick={clearAllRegions}
                   variant="outline"
@@ -584,8 +599,8 @@ export function TrackWaveformEditor({
                     key={region.id}
                     className={`flex items-center justify-between p-2 rounded text-sm ${
                       selectedRegion === region.id 
-                        ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800' 
-                        : 'bg-gray-50 dark:bg-gray-700'
+                        ? 'bg-red-900/20 border border-red-800 text-white' 
+                        : 'bg-gray-600 text-white'
                     }`}
                     data-testid={`mute-region-${region.id}`}
                   >

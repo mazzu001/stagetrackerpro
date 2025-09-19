@@ -181,7 +181,7 @@ function AppContent() {
         <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
       ) : (
         <AnalyticsRouter>
-          <Route path="/" component={() => <Performance userType={isPaidUser ? 'paid' : 'free'} />} />
+          <Route path="/" component={() => <Performance userType={isPaidUser ? 'premium' : 'free'} />} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
           <Route path="/broadcast-viewer-old" component={BroadcastViewer} />

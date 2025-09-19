@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Trash2, Waveform, ChevronDown, ChevronRight } from 'lucide-react';
+import { Trash2, Activity, ChevronDown, ChevronRight } from 'lucide-react';
 import type { MuteRegion } from '@shared/schema';
 import { LocalSongStorage } from '@/lib/local-song-storage';
 
@@ -273,7 +273,7 @@ export function TrackWaveformEditor({
       >
         <div className="flex items-center gap-2">
           {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-          <Waveform className="h-4 w-4" />
+          <Activity className="h-4 w-4" />
           <span className="text-sm font-medium">Waveform & Mute Regions</span>
           {regions.length > 0 && (
             <span className="text-xs bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 px-2 py-1 rounded">
@@ -320,7 +320,7 @@ export function TrackWaveformEditor({
                   size="sm"
                   data-testid={`button-generate-waveform-${trackId}`}
                 >
-                  <Waveform className="h-4 w-4 mr-2" />
+                  <Activity className="h-4 w-4 mr-2" />
                   Generate Waveform
                 </Button>
               </div>

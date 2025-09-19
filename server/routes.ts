@@ -2077,7 +2077,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Setup broadcast WebSocket server
   console.log('📡 Setting up broadcast server...');
-  setupBroadcastServer(httpServer);
+  const broadcastServer = setupBroadcastServer(httpServer);
+  
+  // Add upgrade handler for broadcast WebSockets only
+  httpServer.on('upgrade', (request, socket, head) => {
+    const { pathname } = new URL(request.url!, `http://${request.headers.host}`);
+    if (pathname.startsWith('/ws/broadcast/')) {
+      const wss = broadcastServer.getWebSocketServer();
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request);
+      });
+    }
+    // Otherwise, do nothing - allow Vite HMR and other WebSockets to handle
+  });
+  
   console.log('✅ Broadcast server initialized');
 
   console.log('🎯 Route registration completed successfully');

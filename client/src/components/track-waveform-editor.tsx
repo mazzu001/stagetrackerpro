@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Trash2, Activity, ChevronDown, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
+import { Trash2, Activity, ChevronDown, ChevronRight, ZoomIn, ZoomOut, VolumeX, Focus } from 'lucide-react';
 import type { MuteRegion } from '@shared/schema';
 import { LocalSongStorage } from '@/lib/local-song-storage';
 import type { StreamingAudioEngine } from '@/lib/streaming-audio-engine';
@@ -39,6 +39,7 @@ export function TrackWaveformEditor({
     endTime?: number;
   } | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [pendingSelection, setPendingSelection] = useState<{start: number, end: number} | null>(null); // For dual-function buttons
   const [zoomLevel, setZoomLevel] = useState(1); // Zoom level for precision editing
   const [zoomOffset, setZoomOffset] = useState(0); // Offset for zoomed view
 
@@ -70,7 +71,7 @@ export function TrackWaveformEditor({
     if (!collapsed && waveformData && canvasRef.current) {
       drawWaveform();
     }
-  }, [collapsed, waveformData, regions, dragState, selectedRegion]);
+  }, [collapsed, waveformData, regions, dragState, selectedRegion, zoomLevel, zoomOffset]); // Include zoom deps for auto-redraw
 
   const generateWaveform = async () => {
     if (!audioUrl || isGenerating) return;
@@ -181,10 +182,11 @@ export function TrackWaveformEditor({
       }
     });
 
-    // Draw drag selection
+    // Draw drag selection (with proper zoom coordinate transformation)
     if (dragState?.isDragging && dragState.endTime !== undefined) {
-      const startX = MARGIN + (dragState.startTime / duration) * waveWidth;
-      const endX = MARGIN + (dragState.endTime / duration) * waveWidth;
+      // Transform drag times to canvas coordinates using zoom view
+      const startX = MARGIN + ((dragState.startTime - visibleStart) / (visibleEnd - visibleStart)) * waveWidth;
+      const endX = MARGIN + ((dragState.endTime - visibleStart) / (visibleEnd - visibleStart)) * waveWidth;
       const width = Math.abs(endX - startX);
       const x = Math.min(startX, endX);
 
@@ -192,6 +194,21 @@ export function TrackWaveformEditor({
       ctx.fillRect(x, MARGIN, width, waveHeight);
       
       ctx.strokeStyle = '#3b82f6';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(x, MARGIN, width, waveHeight);
+    }
+
+    // Draw pending selection (same as drag but persistent)
+    if (pendingSelection) {
+      const startX = MARGIN + ((pendingSelection.start - visibleStart) / (visibleEnd - visibleStart)) * waveWidth;
+      const endX = MARGIN + ((pendingSelection.end - visibleStart) / (visibleEnd - visibleStart)) * waveWidth;
+      const width = Math.abs(endX - startX);
+      const x = Math.min(startX, endX);
+
+      ctx.fillStyle = 'rgba(34, 197, 94, 0.3)';
+      ctx.fillRect(x, MARGIN, width, waveHeight);
+      
+      ctx.strokeStyle = '#22c55e';
       ctx.lineWidth = 2;
       ctx.strokeRect(x, MARGIN, width, waveHeight);
     }
@@ -215,6 +232,35 @@ export function TrackWaveformEditor({
   const resetZoom = () => {
     setZoomLevel(1);
     setZoomOffset(0);
+  };
+
+  // Dual-function actions for pending selection
+  const muteSelection = async () => {
+    if (!pendingSelection) return;
+    await createMuteRegion(pendingSelection.start, pendingSelection.end);
+    setPendingSelection(null); // Clear selection after use
+  };
+
+  const zoomToSelection = () => {
+    if (!pendingSelection) return;
+    
+    const selectionDuration = pendingSelection.end - pendingSelection.start;
+    const padding = selectionDuration * 0.1; // 10% padding on each side
+    const paddedDuration = selectionDuration + 2 * padding; // Total duration with symmetric padding
+    
+    const newZoomLevel = Math.min(duration / paddedDuration, 10); // Max 10x zoom
+    const visibleDuration = duration / newZoomLevel;
+    const desiredOffset = pendingSelection.start - padding; // Center selection with padding
+    
+    // Clamp offset to valid range to prevent truncation
+    const newZoomOffset = Math.min(
+      Math.max(0, desiredOffset), 
+      Math.max(0, duration - visibleDuration)
+    );
+    
+    setZoomLevel(newZoomLevel);
+    setZoomOffset(newZoomOffset);
+    setPendingSelection(null); // Clear selection after use
   };
 
   const getTimeFromX = (x: number): number => {
@@ -271,9 +317,10 @@ export function TrackWaveformEditor({
       const startTime = Math.min(dragState.startTime, dragState.endTime);
       const endTime = Math.max(dragState.startTime, dragState.endTime);
       
-      // Only create region if it's larger than 0.1 seconds
+      // Only create pending selection if it's larger than 0.1 seconds
       if (endTime - startTime >= 0.1) {
-        createMuteRegion(startTime, endTime);
+        setPendingSelection({ start: startTime, end: endTime });
+        setSelectedRegion(null); // Clear any selected regions
       }
     }
     
@@ -406,6 +453,31 @@ export function TrackWaveformEditor({
                         Reset
                       </Button>
                     )}
+                    {/* Dual-function selection buttons */}
+                    {pendingSelection && (
+                      <>
+                        <Button
+                          onClick={muteSelection}
+                          variant="outline"
+                          size="sm"
+                          className="text-xs bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
+                          data-testid={`button-mute-selection-${trackId}`}
+                        >
+                          <VolumeX className="h-3 w-3 mr-1" />
+                          Mute
+                        </Button>
+                        <Button
+                          onClick={zoomToSelection}
+                          variant="outline"
+                          size="sm"
+                          className="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200"
+                          data-testid={`button-zoom-to-selection-${trackId}`}
+                        >
+                          <Focus className="h-3 w-3 mr-1" />
+                          Zoom
+                        </Button>
+                      </>
+                    )}
                   </div>
                   {zoomLevel > 1 && (
                     <div className="text-xs text-gray-600 dark:text-gray-400">
@@ -425,7 +497,10 @@ export function TrackWaveformEditor({
                   data-testid={`waveform-canvas-${trackId}`}
                 />
                 <div className="text-xs text-gray-500 mt-2">
-                  Click and drag to create mute regions. Click existing regions to select them.
+                  {pendingSelection 
+                    ? `Selection: ${formatTime(pendingSelection.start)} - ${formatTime(pendingSelection.end)} (${formatTime(pendingSelection.end - pendingSelection.start)}). Choose Mute or Zoom above.`
+                    : "Click and drag to select. Click existing regions to select them."
+                  }
                 </div>
               </div>
             ) : (

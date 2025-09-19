@@ -1542,26 +1542,28 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               data-testid="track-manager"
             />
             
-            {/* Stem Splitter - Add stem separation functionality */}
-            <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
-              <div className="flex items-center gap-2 mb-3">
-                <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Advanced Tools</h3>
+            {/* Stem Splitter - TEMPORARILY HIDDEN - Add stem separation functionality */}
+            {false && (
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">Advanced Tools</h3>
+                </div>
+                <StemSplitter
+                  song={selectedSong as any}
+                  userEmail={user?.email} // Pass userEmail to StemSplitter
+                  onStemGenerated={(stems) => {
+                    console.log('Performance: Generated stems:', stems);
+                  }}
+                  onSongUpdate={(updatedSong: any) => {
+                    console.log('Performance: Stem splitter updated song with', updatedSong.tracks?.length || 0, 'tracks');
+                    setSelectedSong(updatedSong);
+                    setAllSongs(prev => prev.map(song => 
+                      song.id === updatedSong.id ? updatedSong : song
+                    ));
+                  }}
+                />
               </div>
-              <StemSplitter
-                song={selectedSong as any}
-                userEmail={user?.email} // Pass userEmail to StemSplitter
-                onStemGenerated={(stems) => {
-                  console.log('Performance: Generated stems:', stems);
-                }}
-                onSongUpdate={(updatedSong: any) => {
-                  console.log('Performance: Stem splitter updated song with', updatedSong.tracks?.length || 0, 'tracks');
-                  setSelectedSong(updatedSong);
-                  setAllSongs(prev => prev.map(song => 
-                    song.id === updatedSong.id ? updatedSong : song
-                  ));
-                }}
-              />
-            </div>
+            )}
             </div>
           )}
         </DialogContent>

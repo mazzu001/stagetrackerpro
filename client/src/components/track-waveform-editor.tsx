@@ -137,19 +137,28 @@ export function TrackWaveformEditor({
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
       
-      // Generate peak data for visualization (reduce resolution for performance)
+      // Generate high-resolution waveform data for smooth zooming
       const channelData = audioBuffer.getChannelData(0);
-      const samples = 2000; // Higher resolution for detailed waveform
+      const samples = 8000; // Much higher resolution for smooth zoom experience
       const blockSize = Math.floor(channelData.length / samples);
       const peaks = new Float32Array(samples);
       
       for (let i = 0; i < samples; i++) {
         let peak = 0;
-        for (let j = 0; j < blockSize; j++) {
-          const sample = Math.abs(channelData[i * blockSize + j] || 0);
-          if (sample > peak) peak = sample;
+        let sum = 0;
+        const actualBlockSize = Math.min(blockSize, channelData.length - i * blockSize);
+        
+        // Use RMS (Root Mean Square) for better visual representation
+        for (let j = 0; j < actualBlockSize; j++) {
+          const sample = channelData[i * blockSize + j] || 0;
+          const abs = Math.abs(sample);
+          if (abs > peak) peak = abs;
+          sum += sample * sample;
         }
-        peaks[i] = peak;
+        
+        // Combine peak and RMS for optimal visual balance
+        const rms = Math.sqrt(sum / actualBlockSize);
+        peaks[i] = (peak * 0.7) + (rms * 0.3); // Weighted combination
       }
       
       setWaveformData(peaks);
@@ -193,19 +202,37 @@ export function TrackWaveformEditor({
     const endSample = Math.ceil((visibleEnd / duration) * totalSamples);
     const visibleSamples = endSample - startSample;
     
-    const barWidth = waveWidth / visibleSamples;
+    // Smooth rendering: use more bars than samples for interpolation when zoomed
+    const renderBars = Math.min(visibleSamples * 2, waveWidth); // Up to 2x interpolation
+    const barWidth = waveWidth / renderBars;
 
-    // Draw waveform bars (only visible portion when zoomed)
+    // Draw high-quality waveform with smooth interpolation
     ctx.fillStyle = '#ffffff'; // White waveform on dark background
-    for (let i = 0; i < visibleSamples; i++) {
-      const sampleIndex = startSample + i;
+    
+    for (let i = 0; i < renderBars; i++) {
+      // Map render bar to sample position with interpolation
+      const samplePosition = (i / renderBars) * visibleSamples;
+      const sampleIndex = startSample + samplePosition;
+      
+      let amplitude;
       if (sampleIndex >= 0 && sampleIndex < waveformData.length) {
-        const barHeight = Math.max(1, waveformData[sampleIndex] * waveHeight);
-        const x = MARGIN + i * barWidth;
-        const y = MARGIN + (waveHeight - barHeight) / 2;
+        // Linear interpolation between adjacent samples for smoothness
+        const baseIndex = Math.floor(sampleIndex);
+        const nextIndex = Math.min(baseIndex + 1, waveformData.length - 1);
+        const fraction = sampleIndex - baseIndex;
         
-        ctx.fillRect(x, y, Math.max(1, barWidth - 1), barHeight);
+        const baseValue = waveformData[baseIndex] || 0;
+        const nextValue = waveformData[nextIndex] || 0;
+        amplitude = baseValue + (nextValue - baseValue) * fraction;
+      } else {
+        amplitude = 0;
       }
+      
+      const barHeight = Math.max(1, amplitude * waveHeight);
+      const x = MARGIN + i * barWidth;
+      const y = MARGIN + (waveHeight - barHeight) / 2;
+      
+      ctx.fillRect(x, y, Math.max(0.5, barWidth), barHeight);
     }
 
     // Draw mute regions (only if visible in current zoom)
@@ -310,50 +337,29 @@ export function TrackWaveformEditor({
     setPendingSelection(null); // Clear selection after use
   };
 
-  // Simple play selection function
+  // Play selection function
   const playSelection = async () => {
-    console.log('🎵 Step 1: Function called');
-    if (!pendingSelection || !audioUrl || isPlayingSelection) {
-      console.log('🎵 Step 1 FAIL: Missing requirements', { pendingSelection: !!pendingSelection, audioUrl: !!audioUrl, isPlayingSelection });
-      return;
-    }
+    if (!pendingSelection || !audioUrl || isPlayingSelection) return;
     
-    console.log(`🎵 Step 2: Playing selection: ${pendingSelection.start.toFixed(2)}s to ${pendingSelection.end.toFixed(2)}s (duration: ${(pendingSelection.end - pendingSelection.start).toFixed(2)}s)`);
-    
-    console.log('🎵 Step 3: Setting isPlayingSelection to true');
     setIsPlayingSelection(true);
     
-    console.log('🎵 Step 4: Entering try block');
     try {
-      console.log('🎵 Step 5: Getting fresh audio URL');
       // Always get a fresh audio URL to ensure it's valid
       const browserFS = BrowserFileSystem.getInstance();
-      console.log('🎵 Step 6: BrowserFS instance created');
       const freshUrl = await browserFS.getAudioUrl(trackId);
-      console.log('🎵 Step 7: Fresh URL obtained:', !!freshUrl);
       
       if (!freshUrl) {
         throw new Error('Could not get valid audio URL for track');
       }
       
-      const workingUrl = freshUrl;
-      
-      console.log(`🎵 Step 8: Creating audio element with URL: ${workingUrl.substring(0, 50)}...`);
-      const audio = new Audio(workingUrl);
-      console.log('🎵 Step 9: Audio element created');
-      
-      // Simple approach - set currentTime directly and play
-      console.log(`🎵 Step 10: Setting currentTime to ${pendingSelection.start.toFixed(2)}s`);
+      const audio = new Audio(freshUrl);
       audio.currentTime = pendingSelection.start;
-      console.log(`🎵 Step 11: currentTime was set to: ${audio.currentTime.toFixed(2)}s`);
       
       // Calculate exact duration to play
       const selectionDuration = pendingSelection.end - pendingSelection.start;
-      console.log(`🎵 Step 12: Calculated duration: ${selectionDuration.toFixed(2)}s`);
       let timeoutId: ReturnType<typeof setTimeout>;
       
       const stopPlayback = () => {
-        console.log(`🎵 Stopping playback at: ${audio.currentTime.toFixed(2)}s`);
         audio.pause();
         if (timeoutId) {
           clearTimeout(timeoutId);
@@ -361,18 +367,13 @@ export function TrackWaveformEditor({
         setIsPlayingSelection(false);
       };
       
-      console.log('🎵 Step 13: Setting up timeout');
       // Use setTimeout for precise duration control
       timeoutId = setTimeout(stopPlayback, selectionDuration * 1000);
-      
-      console.log('🎵 Step 14: Adding event listener');
       audio.addEventListener('ended', stopPlayback);
       
-      console.log(`🎵 Step 15: Starting playback...`);
       await audio.play();
-      console.log(`🎵 Step 16: Playback actually started at: ${audio.currentTime.toFixed(2)}s`);
     } catch (error) {
-      console.error('🎵 Error playing selection:', error);
+      console.error('Error playing selection:', error);
       setIsPlayingSelection(false);
     }
   };
@@ -621,38 +622,6 @@ export function TrackWaveformEditor({
                         >
                           <Play className="h-3 w-3 mr-1" />
                           {isPlayingSelection ? 'Playing...' : 'Play'}
-                        </Button>
-                        <Button
-                          onClick={async () => {
-                            console.log('🧪 TEST: Direct audio test starting...');
-                            try {
-                              // Get fresh URL like the main function
-                              const browserFS = BrowserFileSystem.getInstance();
-                              const freshUrl = await browserFS.getAudioUrl(trackId);
-                              if (!freshUrl) {
-                                throw new Error('Could not get valid audio URL for track');
-                              }
-                              
-                              console.log('🧪 TEST: Got fresh URL:', freshUrl.substring(0, 50));
-                              const audio = new Audio(freshUrl);
-                              console.log('🧪 TEST: Setting currentTime to 10 seconds');
-                              audio.currentTime = 10;
-                              console.log('🧪 TEST: Audio currentTime is now:', audio.currentTime);
-                              await audio.play();
-                              console.log('🧪 TEST: Playback started at:', audio.currentTime);
-                              setTimeout(() => {
-                                console.log('🧪 TEST: Stopping at:', audio.currentTime);
-                                audio.pause();
-                              }, 3000);
-                            } catch (error) {
-                              console.error('🧪 TEST: Error:', error);
-                            }
-                          }}
-                          variant="outline"
-                          size="sm"
-                          className="text-xs bg-yellow-700 hover:bg-yellow-600 text-white border-yellow-600"
-                        >
-                          Test 10s
                         </Button>
                         <Button
                           onClick={muteSelection}

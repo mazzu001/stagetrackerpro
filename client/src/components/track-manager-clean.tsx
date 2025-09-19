@@ -504,11 +504,23 @@ export default function TrackManager({
     debounceTimeouts.current[trackId] = setTimeout(() => {
       onTrackVolumeChange?.(trackId, volume);
       
-      // Update database
+      // Update database AND Performance page's song state
       if (song?.id && user?.email) {
         const track = tracks.find(t => t.id === trackId);
         if (track) {
+          // Update storage
           LocalSongStorage.updateTrack(user.email, song.id, trackId, { volume });
+          
+          // Update Performance page's selectedSong state so next time Track Manager opens it has the right values
+          if (song && onSongUpdate) {
+            const updatedSong = {
+              ...song,
+              tracks: song.tracks.map(t => 
+                t.id === trackId ? { ...t, volume } : t
+              )
+            };
+            onSongUpdate(updatedSong as any);
+          }
         }
       }
       
@@ -534,11 +546,23 @@ export default function TrackManager({
     debounceTimeouts.current[balanceTimeoutKey] = setTimeout(() => {
       onTrackBalanceChange?.(trackId, balance);
       
-      // Update database
+      // Update database AND Performance page's song state
       if (song?.id && user?.email) {
         const track = tracks.find(t => t.id === trackId);
         if (track) {
+          // Update storage
           LocalSongStorage.updateTrack(user.email, song.id, trackId, { balance });
+          
+          // Update Performance page's selectedSong state so next time Track Manager opens it has the right values
+          if (song && onSongUpdate) {
+            const updatedSong = {
+              ...song,
+              tracks: song.tracks.map(t => 
+                t.id === trackId ? { ...t, balance } : t
+              )
+            };
+            onSongUpdate(updatedSong as any);
+          }
         }
       }
       

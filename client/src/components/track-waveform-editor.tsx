@@ -75,9 +75,11 @@ export function TrackWaveformEditor({
   }, [collapsed, waveformData, regions, dragState, selectedRegion, zoomLevel, zoomOffset, pendingSelection]);
 
   const generateWaveform = async () => {
+    console.log('🎵 generateWaveform called:', { audioUrl, isGenerating, collapsed, waveformData: !!waveformData });
     if (!audioUrl || isGenerating) return;
     
     setIsGenerating(true);
+    console.log('🎵 Starting waveform generation for:', audioUrl);
     try {
       // Create audio element to load the track
       const audio = new Audio(audioUrl);

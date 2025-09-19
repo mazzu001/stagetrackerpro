@@ -1,0 +1,1208 @@
+dialog.tsx:519  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ dialog.tsx:519
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+track-waveform-editor.tsx?t=1758319582590:67 ✅ Using cached waveform for track 26b27820-c6e8-45b5-bf99-02a5932a02fe
+track-waveform-editor.tsx?t=1758319582590:236 🎵 Playing selection: 13.29s to 22.13s (duration: 8.84s)
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+track-waveform-editor.tsx?t=1758319678096:236 🎵 Playing selection: 9.84s to 16.75s (duration: 6.92s)
+track-waveform-editor.tsx?t=1758319678096:248 🎵 Audio ready, setting currentTime to 9.84s
+track-waveform-editor.tsx?t=1758319678096:250 🎵 Audio currentTime actually set to: 9.84s
+track-waveform-editor.tsx?t=1758319678096:268 🎵 Playback started at: 9.84s
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+track-waveform-editor.tsx?t=1758319678096:258 🎵 Stopping playback at: 16.69s
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+track-waveform-editor.tsx:317 🎵 Playing selection: 11.37s to 19.82s (duration: 8.45s)
+track-waveform-editor.tsx:330 🎵 Creating audio element with URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+track-waveform-editor.tsx:334 🎵 Setting currentTime to 11.37s
+track-waveform-editor.tsx:336 🎵 currentTime was set to: 11.37s
+track-waveform-editor.tsx:356 🎵 Starting playback...
+track-waveform-editor.tsx:358 🎵 Playback actually started at: 11.37s
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28

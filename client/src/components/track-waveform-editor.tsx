@@ -76,13 +76,11 @@ export function TrackWaveformEditor({
   }, [collapsed, waveformData, regions, dragState, selectedRegion, zoomLevel, zoomOffset, pendingSelection]);
 
   const generateWaveform = async () => {
-    console.log('🎵 generateWaveform called:', { audioUrl, isGenerating, collapsed, waveformData: !!waveformData });
     if (!audioUrl || isGenerating) return;
     
     setIsGenerating(true);
     
     let workingAudioUrl = audioUrl;
-    console.log('🎵 Starting waveform generation for:', workingAudioUrl);
     
     try {
       // Try the current audioUrl first, but if it fails, get a fresh one
@@ -99,14 +97,12 @@ export function TrackWaveformEditor({
       const isValidUrl = await testLoad;
       
       if (!isValidUrl) {
-        console.log('🔄 Current blob URL is invalid, getting fresh one from storage...');
         const browserFS = BrowserFileSystem.getInstance();
         const freshUrl = await browserFS.getAudioUrl(trackId);
         
         if (freshUrl) {
           workingAudioUrl = freshUrl;
           audio = new Audio(workingAudioUrl);
-          console.log('✅ Got fresh blob URL:', workingAudioUrl);
         } else {
           throw new Error('Unable to get valid audio URL from storage');
         }

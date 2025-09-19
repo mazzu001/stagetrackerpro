@@ -352,10 +352,13 @@ export function TrackWaveformEditor({
       const startTime = Math.min(dragState.startTime, dragState.endTime);
       const endTime = Math.max(dragState.startTime, dragState.endTime);
       
-      // Only create pending selection if it's larger than 0.1 seconds
-      if (endTime - startTime >= 0.1) {
+      // Only create pending selection if it's larger than 0.05 seconds (reduced threshold)
+      if (endTime - startTime >= 0.05) {
+        console.log('Setting pending selection:', { start: startTime, end: endTime, duration: endTime - startTime });
         setPendingSelection({ start: startTime, end: endTime });
         setSelectedRegion(null); // Clear any selected regions
+      } else {
+        console.log('Selection too small:', { start: startTime, end: endTime, duration: endTime - startTime });
       }
     }
     
@@ -557,9 +560,13 @@ export function TrackWaveformEditor({
                 />
                 <div className="text-xs text-gray-300 mt-2">
                   {pendingSelection 
-                    ? `Selection: ${formatTime(pendingSelection.start)} - ${formatTime(pendingSelection.end)} (${formatTime(pendingSelection.end - pendingSelection.start)}). Choose Mute or Zoom above.`
+                    ? `Selection: ${formatTime(pendingSelection.start)} - ${formatTime(pendingSelection.end)} (${formatTime(pendingSelection.end - pendingSelection.start)}). Choose action above.`
                     : "Click and drag to select. Click existing regions to select them."
                   }
+                  {/* Debug info */}
+                  <div className="text-xs text-yellow-400 mt-1">
+                    Debug: pendingSelection={pendingSelection ? 'EXISTS' : 'NULL'}, dragState={dragState ? 'ACTIVE' : 'NULL'}
+                  </div>
                 </div>
               </div>
             ) : (

@@ -314,6 +314,8 @@ export function TrackWaveformEditor({
   const playSelection = async () => {
     if (!pendingSelection || !audioUrl || isPlayingSelection) return;
     
+    console.log(`🎵 Playing selection: ${pendingSelection.start.toFixed(2)}s to ${pendingSelection.end.toFixed(2)}s (duration: ${(pendingSelection.end - pendingSelection.start).toFixed(2)}s)`);
+    
     setIsPlayingSelection(true);
     
     try {

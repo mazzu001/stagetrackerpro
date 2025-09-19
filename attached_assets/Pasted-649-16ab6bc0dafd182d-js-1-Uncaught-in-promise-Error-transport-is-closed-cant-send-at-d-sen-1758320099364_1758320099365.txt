@@ -1,0 +1,113 @@
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+track-waveform-editor.tsx:627 🧪 TEST: Direct audio test starting...
+track-waveform-editor.tsx:636 🧪 TEST: Got fresh URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-
+track-waveform-editor.tsx:638 🧪 TEST: Setting currentTime to 10 seconds
+track-waveform-editor.tsx:640 🧪 TEST: Audio currentTime is now: 10
+track-waveform-editor.tsx:642 🧪 TEST: Playback started at: 10
+track-waveform-editor.tsx:644 🧪 TEST: Stopping at: 12.938294
+track-waveform-editor.tsx:315 🎵 Step 1: Function called
+track-waveform-editor.tsx:321 🎵 Step 2: Playing selection: 13.68s to 19.06s (duration: 5.38s)
+track-waveform-editor.tsx:323 🎵 Step 3: Setting isPlayingSelection to true
+track-waveform-editor.tsx:326 🎵 Step 4: Entering try block
+track-waveform-editor.tsx:328 🎵 Step 5: Getting fresh audio URL
+track-waveform-editor.tsx:331 🎵 Step 6: BrowserFS instance created
+track-waveform-editor.tsx:333 🎵 Step 7: Fresh URL obtained: true
+track-waveform-editor.tsx:341 🎵 Step 8: Creating audio element with URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+track-waveform-editor.tsx:343 🎵 Step 9: Audio element created
+track-waveform-editor.tsx:346 🎵 Step 10: Setting currentTime to 13.68s
+track-waveform-editor.tsx:348 🎵 Step 11: currentTime was set to: 13.68s
+track-waveform-editor.tsx:352 🎵 Step 12: Calculated duration: 5.38s
+track-waveform-editor.tsx:364 🎵 Step 13: Setting up timeout
+track-waveform-editor.tsx:368 🎵 Step 14: Adding event listener
+track-waveform-editor.tsx:371 🎵 Step 15: Starting playback...
+track-waveform-editor.tsx:373 🎵 Step 16: Playback actually started at: 13.68s
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+track-waveform-editor.tsx:356 🎵 Stopping playback at: 18.99s

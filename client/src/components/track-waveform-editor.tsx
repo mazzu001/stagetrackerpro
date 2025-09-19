@@ -5,6 +5,7 @@ import { Trash2, Activity, ChevronDown, ChevronRight, ZoomIn, ZoomOut, VolumeX, 
 import type { MuteRegion } from '@shared/schema';
 import { LocalSongStorage } from '@/lib/local-song-storage';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
+import { waveformGenerator } from '@/lib/waveform-generator';
 import type { StreamingAudioEngine } from '@/lib/streaming-audio-engine';
 
 interface TrackWaveformEditorProps {
@@ -64,7 +65,14 @@ export function TrackWaveformEditor({
   // Generate waveform data when expanded
   useEffect(() => {
     if (!collapsed && !waveformData && audioUrl) {
-      generateWaveform();
+      // Check cache first before generating
+      const cachedWaveform = waveformGenerator.getCachedTrackWaveform(trackId);
+      if (cachedWaveform) {
+        console.log(`✅ Using cached waveform for track ${trackId}`);
+        setWaveformData(cachedWaveform);
+      } else {
+        generateWaveform();
+      }
     }
   }, [collapsed, waveformData, audioUrl]);
 
@@ -137,6 +145,10 @@ export function TrackWaveformEditor({
       }
       
       setWaveformData(peaks);
+      
+      // Save to cache for future use
+      waveformGenerator.saveTrackWaveformToCache(trackId, peaks);
+      
       audioContext.close();
     } catch (error) {
       console.error('Error generating waveform:', error);

@@ -309,6 +309,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     isAudioEngineOnline,
     masterVolume,
     isLoadingTracks,
+    audioEngine: audioEngineRef.current, // Expose audio engine for direct access
     play,
     pause,
     stop,

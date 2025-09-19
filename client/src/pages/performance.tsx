@@ -1522,6 +1522,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               <TrackManager
                 song={selectedSong as any}
                 isOpen={isTrackManagerOpen}
+                audioEngine={audioEngine.audioEngine} // Pass audio engine for mute region sync
                 onSongUpdate={(updatedSong: any) => {
                   console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
                 setSelectedSong(updatedSong);

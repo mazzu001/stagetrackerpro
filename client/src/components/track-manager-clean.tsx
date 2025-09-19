@@ -15,9 +15,11 @@ import { TrackWaveformEditor } from "./track-waveform-editor";
 
 
 import type { Track, SongWithTracks } from "@shared/schema";
+import type { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 
 interface TrackManagerProps {
   song?: SongWithTracks;
+  audioEngine?: StreamingAudioEngine; // Audio engine for mute region sync
   onSongUpdate?: (updatedSong: SongWithTracks) => void;
   onTrackVolumeChange?: (trackId: string, volume: number) => void;
   onTrackMuteToggle?: (trackId: string) => void;
@@ -34,6 +36,7 @@ interface TrackManagerProps {
 
 export default function TrackManager({ 
   song, 
+  audioEngine,
   onSongUpdate,
   onTrackVolumeChange, 
   onTrackMuteToggle, 
@@ -820,6 +823,7 @@ export default function TrackManager({
                       audioUrl={track.audioUrl}
                       duration={song?.duration || 240}
                       isCollapsed={true}
+                      audioEngine={audioEngine} // Pass audio engine for real-time mute sync
                       onRegionsChange={(regions) => {
                         console.log(`Track ${track.name}: Updated mute regions:`, regions);
                         // Regions are automatically saved by TrackWaveformEditor

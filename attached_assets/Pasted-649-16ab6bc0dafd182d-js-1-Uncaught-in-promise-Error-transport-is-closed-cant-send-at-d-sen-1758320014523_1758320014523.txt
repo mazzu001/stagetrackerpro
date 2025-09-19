@@ -1,0 +1,84 @@
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+track-waveform-editor.tsx:625 🧪 TEST: Direct audio test starting...
+track-waveform-editor.tsx:628 🧪 TEST: Setting currentTime to 10 seconds
+track-waveform-editor.tsx:630 🧪 TEST: Audio currentTime is now: 10
+blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/d4566b08-30b4-46e0-98fc-7e03e902f1ec:1   GET blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/d4566b08-30b4-46e0-98fc-7e03e902f1ec net::ERR_FILE_NOT_FOUND
+track-waveform-editor.tsx:638  🧪 TEST: Error: NotSupportedError: Failed to load because no supported source was found.
+onClick @ track-waveform-editor.tsx:638
+await in onClick
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28

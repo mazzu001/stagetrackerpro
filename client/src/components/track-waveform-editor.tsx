@@ -326,15 +326,17 @@ export function TrackWaveformEditor({
     console.log('🎵 Step 4: Entering try block');
     try {
       console.log('🎵 Step 5: Getting fresh audio URL');
-      // Get a fresh audio URL to ensure it's valid
-      let workingUrl = audioUrl;
+      // Always get a fresh audio URL to ensure it's valid
       const browserFS = BrowserFileSystem.getInstance();
       console.log('🎵 Step 6: BrowserFS instance created');
       const freshUrl = await browserFS.getAudioUrl(trackId);
       console.log('🎵 Step 7: Fresh URL obtained:', !!freshUrl);
-      if (freshUrl) {
-        workingUrl = freshUrl;
+      
+      if (!freshUrl) {
+        throw new Error('Could not get valid audio URL for track');
       }
+      
+      const workingUrl = freshUrl;
       
       console.log(`🎵 Step 8: Creating audio element with URL: ${workingUrl.substring(0, 50)}...`);
       const audio = new Audio(workingUrl);
@@ -624,7 +626,15 @@ export function TrackWaveformEditor({
                           onClick={async () => {
                             console.log('🧪 TEST: Direct audio test starting...');
                             try {
-                              const audio = new Audio(audioUrl);
+                              // Get fresh URL like the main function
+                              const browserFS = BrowserFileSystem.getInstance();
+                              const freshUrl = await browserFS.getAudioUrl(trackId);
+                              if (!freshUrl) {
+                                throw new Error('Could not get valid audio URL for track');
+                              }
+                              
+                              console.log('🧪 TEST: Got fresh URL:', freshUrl.substring(0, 50));
+                              const audio = new Audio(freshUrl);
                               console.log('🧪 TEST: Setting currentTime to 10 seconds');
                               audio.currentTime = 10;
                               console.log('🧪 TEST: Audio currentTime is now:', audio.currentTime);

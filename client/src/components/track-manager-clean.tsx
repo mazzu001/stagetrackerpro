@@ -11,6 +11,7 @@ import { useLocalAuth } from "@/hooks/useLocalAuth";
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
+import { TrackWaveformEditor } from "./track-waveform-editor";
 
 
 import type { Track, SongWithTracks } from "@shared/schema";
@@ -808,6 +809,22 @@ export default function TrackManager({
                         />
                       </div>
                     </div>
+                  </div>
+                  
+                  {/* Waveform Editor */}
+                  <div className="mt-4">
+                    <TrackWaveformEditor
+                      trackId={track.id}
+                      songId={song?.id || ''}
+                      userEmail={user?.email || ''}
+                      audioUrl={track.audioUrl}
+                      duration={song?.duration || 240}
+                      isCollapsed={true}
+                      onRegionsChange={(regions) => {
+                        console.log(`Track ${track.name}: Updated mute regions:`, regions);
+                        // Regions are automatically saved by TrackWaveformEditor
+                      }}
+                    />
                   </div>
                 </CardContent>
               </Card>

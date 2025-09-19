@@ -231,8 +231,7 @@ export default function StemSplitter({
         return;
       }
       
-      // Continue with alternative identifier
-      user = { ...user, email: userIdentifier } as any;
+      // Continue with alternative identifier - can't reassign user, so we'll just proceed
     }
 
     try {
@@ -268,20 +267,20 @@ export default function StemSplitter({
         
         // Add track to song
         console.log(`📝 Adding track to song: ${song.id}`);
-        const result = LocalSongStorage.addTrack(user.email, song.id, newTrack);
+        const result = LocalSongStorage.addTrack(userIdentifier, song.id, newTrack);
         console.log(`📝 LocalSongStorage.addTrack result:`, result);
       }
       
       // Trigger song update
       console.log(`🔄 Getting updated song from storage`);
-      const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+      const updatedSong = LocalSongStorage.getSong(userIdentifier, song.id);
       console.log(`🔄 Updated song:`, { id: updatedSong?.id, tracksCount: updatedSong?.tracks?.length });
       
       if (updatedSong && onSongUpdate) {
         // Convert LocalSong to SongWithTracks format
         const songWithTracks: SongWithTracks = {
           ...updatedSong,
-          userId: user.email || '',
+          userId: userIdentifier,
         };
         console.log(`🔄 Calling onSongUpdate with:`, { id: songWithTracks.id, tracksCount: songWithTracks.tracks?.length });
         onSongUpdate(songWithTracks);
@@ -291,7 +290,7 @@ export default function StemSplitter({
       
       toast({
         title: "Stems added to song",
-        description: `${stems.length} stems added to ${song.title}.`,
+        description: `${stems.length} stems added to ${song?.title || 'the song'}.`,
       });
       
     } catch (error) {

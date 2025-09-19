@@ -1994,9 +1994,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Create stem separation job
     app.post('/api/stem-splitter/create', upload.single('audio'), async (req: any, res) => {
       try {
-        if (!moisesService.isEnabled()) {
-          return res.status(503).json({ error: 'Stem splitter service not available' });
-        }
+        // Service handles mock mode when API key is not available
 
         if (!req.file) {
           return res.status(400).json({ error: 'Audio file required' });
@@ -2024,9 +2022,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Check job status
     app.get('/api/stem-splitter/status/:jobId', async (req: any, res) => {
       try {
-        if (!moisesService.isEnabled()) {
-          return res.status(503).json({ error: 'Stem splitter service not available' });
-        }
+        // Service handles mock mode when API key is not available
 
         const status = await moisesService.getJobStatus(req.params.jobId);
         if (status) {
@@ -2042,9 +2038,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // Download stem file
     app.get('/api/stem-splitter/download/:jobId/:stemName', async (req: any, res) => {
       try {
-        if (!moisesService.isEnabled()) {
-          return res.status(503).json({ error: 'Stem splitter service not available' });
-        }
+        // Service handles mock mode when API key is not available
 
         const stemData = await moisesService.getMockStemData(req.params.jobId, req.params.stemName);
         if (stemData) {

@@ -1,0 +1,1030 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'battery'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+ StageTracker Pro Service Worker loaded
+workspace_iframe.html?initialPath=%2F&id=%3Ark9%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ark9%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ark9%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ark9%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ark9%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ark9%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ark9%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ark9%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ark9%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ark9%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=UoHli_SbFZlz' failed: 
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) 
+ 🔵 Android BLE-MIDI adapter initialized
+ Loaded 12 audio file path references from localStorage
+ 🔄 Auto-loading 12 stored audio files...
+ 🔍 BrowserFS.getAudioFile: Looking for track 4b44d1e1-27fc-414c-8ef1-2aef24520cab
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 4b44d1e1-27fc-414c-8ef1-2aef24520cab
+ ❌ Database not initialized for track 4b44d1e1-27fc-414c-8ef1-2aef24520cab
+ Expected audio files for tracks:
+   - vocals.wav (browser://143a8efa-f27e-4b2b-ab44-fde18c1760a5/4b44d1e1-27fc-414c-8ef1-2aef24520cab)
+   - instrumental.wav (browser://143a8efa-f27e-4b2b-ab44-fde18c1760a5/13c80786-737c-4e4d-8d5f-4ab442a6c47a)
+   - 3AM - Backups.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/f472be09-53e4-4af1-9f61-19068ca1b998)
+   - 3AM - Bass.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/0e02abcc-e9ee-4c42-bc57-4fb93fae50b3)
+   - 3AM - Click.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/31e81c19-6617-4179-a07a-78b3fc2e5a1c)
+   - 3AM - Drums.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/38584707-f76e-4ac4-878f-722e8bbf1d18)
+   - 3AM - Guitars.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/c518f8a7-e496-4b08-92e2-c1bbb3187a0d)
+   - 3AM - Organ.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/134eed31-48ee-4f13-80cc-1cedcb491e2f)
+   - vocals.wav (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/6ca09b48-2d64-4d56-a835-9793ac9de5fe)
+   - instrumental.wav (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/27f7dd8e-a55b-47c4-991c-f822d47aab4e)
+   - vocals.wav (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/42f7d270-a081-423f-8ecf-9e073e26a6c8)
+   - instrumental.wav (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/18af0d0b-9916-4180-a24e-55df07f7e9a4)
+ These files will be loaded when you select them through the file picker.
+ 🔍 BrowserFS.getAudioFile: Looking for track 13c80786-737c-4e4d-8d5f-4ab442a6c47a
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 13c80786-737c-4e4d-8d5f-4ab442a6c47a
+ ❌ Database not initialized for track 13c80786-737c-4e4d-8d5f-4ab442a6c47a
+ 🔍 BrowserFS.getAudioFile: Looking for track f472be09-53e4-4af1-9f61-19068ca1b998
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for f472be09-53e4-4af1-9f61-19068ca1b998
+ ❌ Database not initialized for track f472be09-53e4-4af1-9f61-19068ca1b998
+ 🔍 BrowserFS.getAudioFile: Looking for track 0e02abcc-e9ee-4c42-bc57-4fb93fae50b3
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 0e02abcc-e9ee-4c42-bc57-4fb93fae50b3
+ ❌ Database not initialized for track 0e02abcc-e9ee-4c42-bc57-4fb93fae50b3
+ 🔍 BrowserFS.getAudioFile: Looking for track 31e81c19-6617-4179-a07a-78b3fc2e5a1c
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 31e81c19-6617-4179-a07a-78b3fc2e5a1c
+ ❌ Database not initialized for track 31e81c19-6617-4179-a07a-78b3fc2e5a1c
+ 🔍 BrowserFS.getAudioFile: Looking for track 38584707-f76e-4ac4-878f-722e8bbf1d18
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 38584707-f76e-4ac4-878f-722e8bbf1d18
+ ❌ Database not initialized for track 38584707-f76e-4ac4-878f-722e8bbf1d18
+ 🔍 BrowserFS.getAudioFile: Looking for track c518f8a7-e496-4b08-92e2-c1bbb3187a0d
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for c518f8a7-e496-4b08-92e2-c1bbb3187a0d
+ ❌ Database not initialized for track c518f8a7-e496-4b08-92e2-c1bbb3187a0d
+ 🔍 BrowserFS.getAudioFile: Looking for track 134eed31-48ee-4f13-80cc-1cedcb491e2f
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 134eed31-48ee-4f13-80cc-1cedcb491e2f
+ ❌ Database not initialized for track 134eed31-48ee-4f13-80cc-1cedcb491e2f
+ 🔍 BrowserFS.getAudioFile: Looking for track 6ca09b48-2d64-4d56-a835-9793ac9de5fe
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 6ca09b48-2d64-4d56-a835-9793ac9de5fe
+ ❌ Database not initialized for track 6ca09b48-2d64-4d56-a835-9793ac9de5fe
+ 🔍 BrowserFS.getAudioFile: Looking for track 27f7dd8e-a55b-47c4-991c-f822d47aab4e
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 27f7dd8e-a55b-47c4-991c-f822d47aab4e
+ ❌ Database not initialized for track 27f7dd8e-a55b-47c4-991c-f822d47aab4e
+ 🔍 BrowserFS.getAudioFile: Looking for track 42f7d270-a081-423f-8ecf-9e073e26a6c8
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 42f7d270-a081-423f-8ecf-9e073e26a6c8
+ ❌ Database not initialized for track 42f7d270-a081-423f-8ecf-9e073e26a6c8
+ 🔍 BrowserFS.getAudioFile: Looking for track 18af0d0b-9916-4180-a24e-55df07f7e9a4
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 18af0d0b-9916-4180-a24e-55df07f7e9a4
+ ❌ Database not initialized for track 18af0d0b-9916-4180-a24e-55df07f7e9a4
+ ✅ Auto-loaded 0/12 audio files into cache
+ 🔍 Browser detection debug: Object
+ 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 Initializing MIDI access...
+ Browser file system already initialized - auto-initializing
+ ✅ BrowserFileSystem database auto-initialized
+ 🔐 MIDI Permission State: granted
+ 🔍 Browser detection debug: Object
+ Browser file system initialized successfully
+ ✅ MIDI system initialized successfully
+ 🔍 Browser detection debug: Object
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+ SW registered:  ServiceWorkerRegistration
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found. This could be due to:
+ 1. No physical MIDI devices connected
+ 2. MIDI permissions denied or blocked
+ 3. Browser security restrictions
+ 💡 To reset MIDI permissions:
+    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Browser detection debug: Object
+ 📱 Edge browser detected - using compatibility mode
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 📱 Edge browser detected - using compatibility mode
+ 📋 Loaded 2 songs from local storage (alphabetically sorted)
+ 🔍 Debug values: Object
+ 🎵 Loading song: dfgf
+ 📡 Not uploading to database: Object
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ @radix-ui_react-dialog.js?v=170c6354:330
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=170c6354:344
+ Loading cached waveform for "dfgf" (400 data points)
+ Song selected: "dfgf" with 2 tracks - loading for streaming
+ Setting up streaming for: "dfgf" - UI stays responsive
+ 🔍 Requesting audio URL for track: 42f7d270-a081-423f-8ecf-9e073e26a6c8
+ 📂 Available audio files (12): Array(12)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 42f7d270-a081-423f-8ecf-9e073e26a6c8
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for 42f7d270-a081-423f-8ecf-9e073e26a6c8
+ 🔍 Requesting audio URL for track: 18af0d0b-9916-4180-a24e-55df07f7e9a4
+ 📂 Available audio files (12): Array(12)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 18af0d0b-9916-4180-a24e-55df07f7e9a4
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ 💾 Not in memory cache, checking IndexedDB for 18af0d0b-9916-4180-a24e-55df07f7e9a4
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Found in IndexedDB: 42f7d270-a081-423f-8ecf-9e073e26a6c8 (vocals.wav)
+ ✅ Got audio URL from browser storage for track: 42f7d270-a081-423f-8ecf-9e073e26a6c8
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Found in IndexedDB: 18af0d0b-9916-4180-a24e-55df07f7e9a4 (instrumental.wav)
+ ✅ Got audio URL from browser storage for track: 18af0d0b-9916-4180-a24e-55df07f7e9a4
+ 🚀 Streaming load: 2 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 2 tracks ready
+ ✅ Streaming ready for "dfgf" - instant playback available
+ ✅ Streaming ready: 2 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created on demand for: vocals
+ 🔧 Audio nodes created on demand for: instrumental
+ 🔄 Loading started for vocals
+ 🔄 Loading started for instrumental
+ Duration updated from streaming engine: 2s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 2s
+ 📱 Edge browser detected - using compatibility mode
+ 📱 Edge browser detected - using compatibility mode
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Performance: Received song update with 2 tracks
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:1526 Performance: Received song update with 2 tracks
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host

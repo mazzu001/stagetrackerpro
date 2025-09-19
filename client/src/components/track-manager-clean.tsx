@@ -569,17 +569,6 @@ export default function TrackManager({
       [trackId]: { ...prev[trackId], volume }
     }));
 
-    // ALSO update song object immediately to fix fallback values
-    if (song && onSongUpdate) {
-      const updatedSong = {
-        ...song,
-        tracks: song.tracks?.map(track => 
-          track.id === trackId ? { ...track, volume } : track
-        ) || []
-      };
-      onSongUpdate(updatedSong);
-    }
-
     // Clear any existing timeout for this track
     if (debounceTimeouts.current[trackId]) {
       clearTimeout(debounceTimeouts.current[trackId]);
@@ -599,7 +588,7 @@ export default function TrackManager({
       
       delete debounceTimeouts.current[trackId];
     }, 150);
-  }, [tracks, song, user?.email, onTrackVolumeChange, onSongUpdate]);
+  }, [tracks, song?.id, user?.email, onTrackVolumeChange]);
 
   // Debounced balance change handler
   const handleBalanceChange = useCallback((trackId: string, balance: number) => {
@@ -608,17 +597,6 @@ export default function TrackManager({
       ...prev,
       [trackId]: { ...prev[trackId], balance }
     }));
-
-    // ALSO update song object immediately to fix fallback values
-    if (song && onSongUpdate) {
-      const updatedSong = {
-        ...song,
-        tracks: song.tracks?.map(track => 
-          track.id === trackId ? { ...track, balance } : track
-        ) || []
-      };
-      onSongUpdate(updatedSong);
-    }
 
     // Clear any existing timeout for this track
     const balanceTimeoutKey = `${trackId}_balance`;
@@ -640,7 +618,7 @@ export default function TrackManager({
       
       delete debounceTimeouts.current[balanceTimeoutKey];
     }, 150);
-  }, [tracks, song, user?.email, onTrackBalanceChange, onSongUpdate]);
+  }, [tracks, song?.id, user?.email, onTrackBalanceChange]);
 
   // Mute toggle handler
   const handleMuteToggle = useCallback((trackId: string) => {

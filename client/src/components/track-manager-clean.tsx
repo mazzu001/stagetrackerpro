@@ -757,7 +757,16 @@ export default function TrackManager({
       ) : (
         <div className="space-y-3">
           {tracks.map((track, index) => {
-            const localValues = localTrackValues[track.id] || { volume: track.volume, balance: track.balance };
+            // Get local values with proper fallback that handles unit conversion
+            const storedValues = localTrackValues[track.id];
+            const localValues = storedValues || (() => {
+              // Convert track.volume from 0-1 to 0-100 range for consistent UI
+              let volume = track.volume || 80;
+              if (volume <= 1.0) {
+                volume = Math.round(volume * 100);
+              }
+              return { volume, balance: track.balance || 0.0 };
+            })();
             const level = audioLevels[track.id] || 0;
             
             return (

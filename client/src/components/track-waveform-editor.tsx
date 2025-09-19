@@ -495,7 +495,7 @@ export function TrackWaveformEditor({
                           onClick={playSelection}
                           variant="outline"
                           size="sm"
-                          className="text-xs bg-green-50 hover:bg-green-100 text-green-700 border-green-200"
+                          className="text-xs bg-green-700 hover:bg-green-600 text-white border-green-600"
                           disabled={isPlayingSelection}
                           data-testid={`button-play-selection-${trackId}`}
                         >
@@ -506,7 +506,7 @@ export function TrackWaveformEditor({
                           onClick={muteSelection}
                           variant="outline"
                           size="sm"
-                          className="text-xs bg-red-50 hover:bg-red-100 text-red-700 border-red-200"
+                          className="text-xs bg-red-700 hover:bg-red-600 text-white border-red-600"
                           data-testid={`button-mute-selection-${trackId}`}
                         >
                           <VolumeX className="h-3 w-3 mr-1" />
@@ -516,7 +516,7 @@ export function TrackWaveformEditor({
                           onClick={zoomToSelection}
                           variant="outline"
                           size="sm"
-                          className="text-xs bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200"
+                          className="text-xs bg-blue-700 hover:bg-blue-600 text-white border-blue-600"
                           data-testid={`button-zoom-to-selection-${trackId}`}
                         >
                           <Focus className="h-3 w-3 mr-1" />
@@ -586,7 +586,7 @@ export function TrackWaveformEditor({
                   onClick={clearAllRegions}
                   variant="outline"
                   size="sm"
-                  className="text-red-600 hover:text-red-700"
+                  className="text-red-400 hover:text-red-300 border-red-600"
                   data-testid={`button-clear-all-regions-${trackId}`}
                 >
                   Clear All
@@ -606,7 +606,7 @@ export function TrackWaveformEditor({
                   >
                     <span>
                       {formatTime(region.start)} - {formatTime(region.end)} 
-                      <span className="text-gray-500 ml-2">
+                      <span className="text-gray-400 ml-2">
                         ({formatTime(region.end - region.start)})
                       </span>
                     </span>
@@ -614,7 +614,7 @@ export function TrackWaveformEditor({
                       onClick={() => deleteRegion(region.id)}
                       variant="ghost"
                       size="sm"
-                      className="h-6 w-6 p-0 text-red-600 hover:text-red-700"
+                      className="h-6 w-6 p-0 text-red-400 hover:text-red-300"
                       data-testid={`button-delete-region-${region.id}`}
                     >
                       <Trash2 className="h-3 w-3" />

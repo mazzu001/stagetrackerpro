@@ -172,20 +172,15 @@ export function TrackWaveformEditor({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Use actual rendered canvas dimensions (consistent with coordinate calculation)
-    const rect = canvas.getBoundingClientRect();
-    const actualCanvasWidth = rect.width;
-    const actualCanvasHeight = rect.height;
-
     // Clear canvas
-    ctx.clearRect(0, 0, actualCanvasWidth, actualCanvasHeight);
+    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     
     // Draw background (dark gray to match performance page)
     ctx.fillStyle = '#374151';
-    ctx.fillRect(0, 0, actualCanvasWidth, actualCanvasHeight);
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    const waveWidth = actualCanvasWidth - 2 * MARGIN;
-    const waveHeight = actualCanvasHeight - 2 * MARGIN;
+    const waveWidth = CANVAS_WIDTH - 2 * MARGIN;
+    const waveHeight = CANVAS_HEIGHT - 2 * MARGIN;
     
     // Apply zoom to waveform display
     const visibleDuration = duration / zoomLevel;
@@ -362,10 +357,10 @@ export function TrackWaveformEditor({
     if (!rect) return 0;
     
     const relativeX = x - rect.left - MARGIN;
-    // Use actual rendered width instead of hardcoded CANVAS_WIDTH
-    const actualCanvasWidth = rect.width;
-    const waveWidth = actualCanvasWidth - 2 * MARGIN;
-    const normalizedX = Math.max(0, Math.min(1, relativeX / waveWidth));
+    // Scale from display coordinates to internal canvas coordinates
+    const scaledX = relativeX * (CANVAS_WIDTH / rect.width);
+    const waveWidth = CANVAS_WIDTH - 2 * MARGIN;
+    const normalizedX = Math.max(0, Math.min(1, scaledX / waveWidth));
     
     // Apply zoom calculations
     const visibleDuration = duration / zoomLevel;

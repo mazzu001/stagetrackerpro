@@ -172,15 +172,20 @@ export function TrackWaveformEditor({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Use actual rendered canvas dimensions (consistent with coordinate calculation)
+    const rect = canvas.getBoundingClientRect();
+    const actualCanvasWidth = rect.width;
+    const actualCanvasHeight = rect.height;
+
     // Clear canvas
-    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.clearRect(0, 0, actualCanvasWidth, actualCanvasHeight);
     
     // Draw background (dark gray to match performance page)
     ctx.fillStyle = '#374151';
-    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    ctx.fillRect(0, 0, actualCanvasWidth, actualCanvasHeight);
 
-    const waveWidth = CANVAS_WIDTH - 2 * MARGIN;
-    const waveHeight = CANVAS_HEIGHT - 2 * MARGIN;
+    const waveWidth = actualCanvasWidth - 2 * MARGIN;
+    const waveHeight = actualCanvasHeight - 2 * MARGIN;
     
     // Apply zoom to waveform display
     const visibleDuration = duration / zoomLevel;

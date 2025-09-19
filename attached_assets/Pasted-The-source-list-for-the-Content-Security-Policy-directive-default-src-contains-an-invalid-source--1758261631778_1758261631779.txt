@@ -1,0 +1,195 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-0ca3e0d0bb71f44c.js:28 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-0ca3e0d0bb71f44c.js:28 [LaunchDarkly] LaunchDarkly client initialized
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'battery'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Arng%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Arng%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Arng%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Arng%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Arng%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Arng%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Arng%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Arng%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Arng%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Arng%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=0cV_2fIigLJw' failed: 
+setupWebSocket @ client:536
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=0cV_2fIigLJw' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+android-ble-midi.ts:36 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:184 No stored audio file references found
+useMidiDevices.ts:92 🔍 Browser detection debug: Object
+App.tsx:44 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx:66 🔍 Parsed values: Object
+App.tsx:122 🔍 No payment success detected in URL
+useMidiDevices.ts:122 🎹 Initializing MIDI access...
+App.tsx:132 Browser file system already initialized - auto-initializing
+useMidiDevices.ts:128 🔐 MIDI Permission State: granted
+useMidiDevices.ts:92 🔍 Browser detection debug: Object
+browser-file-system.ts:63 ✅ BrowserFileSystem database auto-initialized
+browser-file-system.ts:87 Browser file system initialized successfully
+useMidiDevices.ts:160 ✅ MIDI system initialized successfully
+useMidiDevices.ts:92 🔍 Browser detection debug: Object
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+main.tsx:10 SW registered:  ServiceWorkerRegistration
+useMidiDevices.ts:189 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:198 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:199 1. No physical MIDI devices connected
+useMidiDevices.ts:200 2. MIDI permissions denied or blocked
+useMidiDevices.ts:201 3. Browser security restrictions
+useMidiDevices.ts:202 💡 To reset MIDI permissions:
+useMidiDevices.ts:203    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:204    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:294 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:314 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:92 🔍 Browser detection debug: Object
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+lyrics-display.tsx:293 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:31 🔍 Initial service isHost check: Object
+streaming-audio-engine.ts:67 🎵 Master output initialized
+performance.tsx:505 🔍 Debug values: Object
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+performance.tsx:451 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:505 🔍 Debug values: Object
+performance.tsx:490 🎵 Loading song: 3 AM
+performance.tsx:499 📡 Not uploading to database: Object
+performance.tsx:505 🔍 Debug values: Object
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+dialog.tsx:519  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ dialog.tsx:519
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+waveform-visualizer.tsx:61 No tracks or cached waveform for "3 AM"
+use-audio-engine.tsx:103 Song selected: "3 AM" with 0 tracks - loading for streaming
+use-audio-engine.tsx:111 Setting up streaming for: "3 AM" - UI stays responsive
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+streaming-audio-engine.ts:81 🚀 Streaming load: 0 tracks (deferred setup)
+streaming-audio-engine.ts:72 🎵 Loading original tracks...
+streaming-audio-engine.ts:75 🎵 Track loading complete: 0 tracks ready
+use-audio-engine.tsx:139 ✅ Streaming ready for "3 AM" - instant playback available
+streaming-audio-engine.ts:114 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+sw.js:76 StageTracker Pro Service Worker loaded
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690

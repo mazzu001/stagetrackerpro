@@ -201,7 +201,10 @@ export default function StemSplitter({
   };
 
   const addStemsToSong = async (stems: GeneratedStem[]) => {
+    console.log('🎵 addStemsToSong called with:', { stemsCount: stems.length, song: song?.id, userEmail: user?.email });
+    
     if (!song || !user?.email) {
+      console.error('❌ Missing song or user email:', { song: !!song, userEmail: user?.email });
       toast({
         title: "Cannot add to song",
         description: "No active song or user session.",
@@ -212,12 +215,15 @@ export default function StemSplitter({
 
     try {
       for (const stem of stems) {
+        console.log(`🎵 Processing stem: ${stem.name} (${stem.size} bytes)`);
+        
         // Convert blob to File
         const file = new File([stem.blob], `${stem.name}.wav`, { type: 'audio/wav' });
+        console.log(`📁 Created file object: ${file.name}, size: ${file.size}`);
         
-        // Create new track
+        // Create new track - DON'T use stem.id, let LocalSongStorage generate the ID
         const newTrack: Track = {
-          id: stem.id,
+          id: crypto.randomUUID(), // Generate unique ID here
           songId: song.id,
           name: stem.name,
           trackNumber: (song.tracks?.length || 0) + 1,
@@ -231,23 +237,34 @@ export default function StemSplitter({
           isMuted: false,
           isSolo: false,
         };
+        console.log(`🎧 Created track object: ${newTrack.id} - ${newTrack.name}`);
         
         // Store audio file
-        await AudioFileStorage.getInstance().storeAudioFile(stem.id, file, newTrack);
+        console.log(`💾 Storing audio file for track: ${newTrack.id}`);
+        await AudioFileStorage.getInstance().storeAudioFile(newTrack.id, file, newTrack);
+        console.log(`✅ Audio file stored successfully`);
         
         // Add track to song
-        LocalSongStorage.addTrack(user.email, song.id, newTrack);
+        console.log(`📝 Adding track to song: ${song.id}`);
+        const result = LocalSongStorage.addTrack(user.email, song.id, newTrack);
+        console.log(`📝 LocalSongStorage.addTrack result:`, result);
       }
       
       // Trigger song update
+      console.log(`🔄 Getting updated song from storage`);
       const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+      console.log(`🔄 Updated song:`, { id: updatedSong?.id, tracksCount: updatedSong?.tracks?.length });
+      
       if (updatedSong && onSongUpdate) {
         // Convert LocalSong to SongWithTracks format
         const songWithTracks: SongWithTracks = {
           ...updatedSong,
           userId: user.email || '',
         };
+        console.log(`🔄 Calling onSongUpdate with:`, { id: songWithTracks.id, tracksCount: songWithTracks.tracks?.length });
         onSongUpdate(songWithTracks);
+      } else {
+        console.warn(`⚠️ No song update: updatedSong=${!!updatedSong}, onSongUpdate=${!!onSongUpdate}`);
       }
       
       toast({
@@ -256,7 +273,7 @@ export default function StemSplitter({
       });
       
     } catch (error) {
-      console.error('Error adding stems to song:', error);
+      console.error('❌ Error adding stems to song:', error);
       toast({
         title: "Failed to add stems",
         description: "Could not add stems to the current song.",

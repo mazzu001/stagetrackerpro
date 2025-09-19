@@ -1548,6 +1548,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               </div>
               <StemSplitter
                 song={selectedSong as any}
+                userEmail={user?.email} // Pass userEmail to StemSplitter
                 onStemGenerated={(stems) => {
                   console.log('Performance: Generated stems:', stems);
                 }}

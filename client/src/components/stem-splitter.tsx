@@ -30,6 +30,7 @@ interface StemSplitterProps {
   song?: SongWithTracks;
   onStemGenerated?: (stems: GeneratedStem[]) => void;
   onSongUpdate?: (updatedSong: SongWithTracks) => void;
+  userEmail?: string; // Add userEmail as a prop
 }
 
 interface GeneratedStem {
@@ -50,7 +51,8 @@ interface JobStatus {
 export default function StemSplitter({ 
   song, 
   onStemGenerated,
-  onSongUpdate
+  onSongUpdate,
+  userEmail: propUserEmail
 }: StemSplitterProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -207,32 +209,37 @@ export default function StemSplitter({
   };
 
   const addStemsToSong = async (stems: GeneratedStem[]) => {
-    console.log('🎵 addStemsToSong called with:', { stemsCount: stems.length, song: song?.id, userEmail: user?.email });
+    console.log('🎵 addStemsToSong called with:', { stemsCount: stems.length, song: song?.id, userEmail: user?.email, propUserEmail });
     console.log('🔍 Full user object:', user);
     console.log('🔍 User keys:', user ? Object.keys(user) : 'user is null/undefined');
     
-    if (!song || !user?.email) {
-      console.error('❌ Missing song or user email:', { song: !!song, userEmail: user?.email, user: user });
-      
-      // Try alternative ways to get user identifier
-      let userIdentifier = user?.email;
-      if (!userIdentifier && user) {
-        // Try other possible user identifier fields
-        userIdentifier = (user as any).id || (user as any).username || (user as any).name || 'default_user';
-        console.log('🔄 Using alternative user identifier:', userIdentifier);
-      }
-      
-      if (!userIdentifier) {
-        toast({
-          title: "Cannot add to song",
-          description: "No active song or user session.",
-          variant: "destructive",
-        });
-        return;
-      }
-      
-      // Continue with alternative identifier - can't reassign user, so we'll just proceed
+    if (!song) {
+      console.error('❌ Missing song:', { song: !!song });
+      toast({
+        title: "Cannot add to song",
+        description: "No active song selected.",
+        variant: "destructive",
+      });
+      return;
     }
+
+    // Get user identifier - try prop first, then auth hook, then fallback  
+    let userIdentifier = propUserEmail || user?.email;
+    if (!userIdentifier && user) {
+      // Try other possible user identifier fields
+      userIdentifier = (user as any).id || (user as any).username || (user as any).name;
+      console.log('🔄 Using alternative user identifier:', userIdentifier);
+    }
+    
+    // If still no user identifier, use a default for local storage
+    if (!userIdentifier) {
+      userIdentifier = 'local_user'; // Default identifier for local songs
+      console.log('🔄 No user found, using default identifier:', userIdentifier);
+    }
+    
+    console.log('✅ Proceeding with userIdentifier:', userIdentifier);
+
+    // User identifier resolved above - ready to proceed
 
     try {
       for (const stem of stems) {

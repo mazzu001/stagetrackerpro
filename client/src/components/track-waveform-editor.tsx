@@ -313,10 +313,13 @@ export function TrackWaveformEditor({
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (!canvasRef.current) return;
     
     const startTime = getTimeFromX(e.clientX);
-    console.log('Mouse down at time:', startTime);
+    console.log('🖱️ Mouse down at time:', startTime);
     
     // Check if clicking on existing region
     const clickedRegion = regions.find(region => 
@@ -324,11 +327,11 @@ export function TrackWaveformEditor({
     );
     
     if (clickedRegion) {
-      console.log('Clicked existing region:', clickedRegion.id);
+      console.log('🎯 Clicked existing region:', clickedRegion.id);
       setSelectedRegion(clickedRegion.id);
       setPendingSelection(null); // Clear pending selection when selecting existing region
     } else {
-      console.log('Starting new selection');
+      console.log('🎆 Starting new selection');
       // Clear existing selections and start new region selection
       setSelectedRegion(null);
       setPendingSelection(null);
@@ -344,6 +347,7 @@ export function TrackWaveformEditor({
     if (!dragState?.isDragging) return;
     
     const endTime = getTimeFromX(e.clientX);
+    console.log('🖱️ Mouse move - updating endTime to:', endTime);
     setDragState({
       ...dragState,
       endTime
@@ -351,7 +355,11 @@ export function TrackWaveformEditor({
   };
 
   const handleMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    console.log('🖱️ MOUSEUP - dragState exists:', !!dragState, 'isDragging:', dragState?.isDragging);
+    e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('🖱️ MOUSEUP EVENT FIRED!');
+    console.log('🖱️ dragState:', dragState);
     
     if (dragState?.isDragging) {
       const endTime = getTimeFromX(e.clientX);
@@ -363,12 +371,19 @@ export function TrackWaveformEditor({
       
       // Very permissive threshold - even tiny selections should work
       if (duration >= 0.01) {
-        console.log('✅ SETTING PENDING SELECTION!');
+        console.log('✅ SETTING PENDING SELECTION NOW!');
         setPendingSelection({ start: startTime, end: finalEndTime });
         setSelectedRegion(null);
+        
+        // Force a small delay to ensure state updates
+        setTimeout(() => {
+          console.log('🔄 State should be updated now');
+        }, 100);
       } else {
         console.log('❌ Selection too small:', duration);
       }
+    } else {
+      console.log('❌ No drag state to process');
     }
     
     setDragState(null);
@@ -536,18 +551,6 @@ export function TrackWaveformEditor({
                         </Button>
                       </>
                     )}
-                    {/* TEST BUTTON - to debug selection issue */}
-                    <Button
-                      onClick={() => {
-                        console.log('🧪 FORCE SETTING SELECTION FOR TEST');
-                        setPendingSelection({ start: 10, end: 15 });
-                      }}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs bg-yellow-600 hover:bg-yellow-500 text-white border-yellow-500"
-                    >
-                      TEST
-                    </Button>
                   </div>
                   {zoomLevel > 1 && (
                     <div className="text-xs text-gray-300">
@@ -586,7 +589,7 @@ export function TrackWaveformEditor({
                   }
                   {/* Debug info */}
                   <div className="text-xs text-yellow-400 mt-1">
-                    Debug: pendingSelection={pendingSelection ? 'EXISTS' : 'NULL'}, dragState={dragState ? 'ACTIVE' : 'NULL'}
+                    Debug: pendingSelection={pendingSelection ? `EXISTS (${pendingSelection.start.toFixed(1)}-${pendingSelection.end.toFixed(1)})` : 'NULL'}, dragState={dragState ? `ACTIVE (${dragState.isDragging})` : 'NULL'}
                   </div>
                 </div>
               </div>

@@ -1,0 +1,324 @@
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+performance.tsx:490 🎵 Loading song: Hurt So Good
+performance.tsx:499 📡 Not uploading to database: {isHost: false, hasCurrentRoom: false, roomId: undefined}
+performance.tsx:505 🔍 Debug values: {selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: true, …}
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: undefined, songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+dialog.tsx:519  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ dialog.tsx:519
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+waveform-visualizer.tsx:49 No cached waveform found for "Hurt So Good", generating...
+waveform-generator.ts:69 Auto-generating waveform for "Hurt So Good" from 1 tracks...
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 3fa4451d-99fc-42d8-a49b-bfde061ca513
+audio-file-storage.ts:79 📂 Available audio files (26): (26) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513']
+audio-file-storage.ts:80 💾 Memory cache files (0): []
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 3fa4451d-99fc-42d8-a49b-bfde061ca513
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 3fa4451d-99fc-42d8-a49b-bfde061ca513
+use-audio-engine.tsx:107 Song selected: "Hurt So Good" with 1 tracks - loading for streaming
+use-audio-engine.tsx:115 Setting up streaming for: "Hurt So Good" - UI stays responsive
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 3fa4451d-99fc-42d8-a49b-bfde061ca513
+audio-file-storage.ts:79 📂 Available audio files (26): (26) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513']
+audio-file-storage.ts:80 💾 Memory cache files (0): []
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 3fa4451d-99fc-42d8-a49b-bfde061ca513
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 3fa4451d-99fc-42d8-a49b-bfde061ca513
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+browser-file-system.ts:251 ✅ Found in IndexedDB: 3fa4451d-99fc-42d8-a49b-bfde061ca513 (Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 3fa4451d-99fc-42d8-a49b-bfde061ca513
+streaming-audio-engine.ts:85 🚀 Streaming load: 1 tracks (deferred setup)
+streaming-audio-engine.ts:76 🎵 Loading original tracks...
+streaming-audio-engine.ts:79 🎵 Track loading complete: 1 tracks ready
+use-audio-engine.tsx:158 ✅ Streaming ready for "Hurt So Good" - instant playback available
+streaming-audio-engine.ts:118 ✅ Streaming ready: 1 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:220 🔧 Audio nodes created on demand for: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+streaming-audio-engine.ts:170 🔄 Loading started for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+browser-file-system.ts:251 ✅ Found in IndexedDB: 3fa4451d-99fc-42d8-a49b-bfde061ca513 (Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 3fa4451d-99fc-42d8-a49b-bfde061ca513
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+waveform-generator.ts:130 Processed track: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2) (228.2s)
+waveform-generator.ts:162 Generated comprehensive waveform from 1 tracks, duration: 228.2s
+waveform-generator.ts:46 Waveform cached for song: eb0b1875-d049-4dc9-b6a0-e3959d3c08f1
+waveform-generator.ts:184 🔇 Closed temporary AudioContext for waveform generation
+track-manager-clean.tsx:470 All tracks cleared, refreshing song with 0 tracks
+performance.tsx:1527 Performance: Received song update with 0 tracks
+track-manager-clean.tsx:478 Cleared waveform cache for "Hurt So Good" - all tracks removed
+use-audio-engine.tsx:107 Song selected: "Hurt So Good" with 0 tracks - loading for streaming
+use-audio-engine.tsx:115 Setting up streaming for: "Hurt So Good" - UI stays responsive
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+streaming-audio-engine.ts:85 🚀 Streaming load: 0 tracks (deferred setup)
+streaming-audio-engine.ts:76 🎵 Loading original tracks...
+streaming-audio-engine.ts:79 🎵 Track loading complete: 0 tracks ready
+use-audio-engine.tsx:158 ✅ Streaming ready for "Hurt So Good" - instant playback available
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+streaming-audio-engine.ts:118 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:170 🔄 Loading started for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+streaming-audio-engine.ts:155  ⚠️ Audio error for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2): error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ streaming-audio-engine.ts:155
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+track-manager-clean.tsx:147 === Web Track Manager: Starting file selection ===
+track-manager-clean.tsx:156 === Web Track Manager: File change event triggered ===
+track-manager-clean.tsx:166 Files selected: 1
+track-manager-clean.tsx:215 📁 Processing file 1/1: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (8.7MB)
+track-manager-clean.tsx:225 ⏳ Starting processing of Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3...
+track-manager-clean.tsx:347 Processing file 0/0: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+track-manager-clean.tsx:352 Adding track "Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)" with file: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+local-song-storage.ts:108 LocalSongStorage.addTrack: Track added successfully: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:38 Storing audio file in browser: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3, size: 9170423 bytes
+browser-file-system.ts:161 🔄 BrowserFS.addAudioFile: Storing Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 as track 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:162 🗃️ Database initialized: true
+browser-file-system.ts:189 ✅ IndexedDB storage successful for 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:200 ✅ Memory cache updated for 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:208 📱 Edge on Windows: clearing memory cache for 5ccf7282-a4c7-4737-bd17-2a776d812f88 to save memory
+browser-file-system.ts:212 ✅ Audio file stored: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 for track: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+audio-file-storage.ts:304 Saved 27 audio file path references to localStorage (8KB)
+audio-file-storage.ts:69 Successfully stored audio file for track: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2) (8955KB)
+track-manager-clean.tsx:378 Audio file stored successfully for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:79 📂 Available audio files (27): (27) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513', '5ccf7282-a4c7-4737-bd17-2a776d812f88']
+audio-file-storage.ts:80 💾 Memory cache files (1): ['5ccf7282-a4c7-4737-bd17-2a776d812f88']
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:224 💾 Memory cache has: [3fa4451d-99fc-42d8-a49b-bfde061ca513]
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 5ccf7282-a4c7-4737-bd17-2a776d812f88
+browser-file-system.ts:251 ✅ Found in IndexedDB: 5ccf7282-a4c7-4737-bd17-2a776d812f88 (Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+track-manager-clean.tsx:384 Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+track-manager-clean.tsx:124 Detected audio duration: 228s from file: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+track-manager-clean.tsx:391 Track added successfully
+track-manager-clean.tsx:396 Track data updated, refreshing song with 1 tracks
+performance.tsx:1527 Performance: Received song update with 1 tracks
+track-manager-clean.tsx:404 Cleared waveform cache for "Hurt So Good" - will regenerate on next view
+track-manager-clean.tsx:412 Successfully processed: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3
+track-manager-clean.tsx:227 ✅ File 1 completely processed and stored
+use-audio-engine.tsx:107 Song selected: "Hurt So Good" with 1 tracks - loading for streaming
+use-audio-engine.tsx:115 Setting up streaming for: "Hurt So Good" - UI stays responsive
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+audio-file-storage.ts:79 📂 Available audio files (27): (27) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74', '72654398-de52-474f-bebf-2aa37fd338e8', '908aa7b1-2db1-4a7c-93b7-655ca9da6042', '1d0353dd-00e3-4d5f-a2af-110155f2b663', '58d94ea4-e283-4023-9cbd-90b90efe4cef', '26b27820-c6e8-45b5-bf99-02a5932a02fe', '37fc4fd4-bfae-4ba0-9aae-66204bd913f7', '75e2a628-f67a-4ad2-a001-c83cb08e91de', '541404da-882d-470d-88c4-c320bc197a25', '83d8ec0e-45d5-4aac-a278-16e0a362e9c4', '03baf2ac-a6b5-433a-9ee0-8e4c23eacb91', '13598e26-4fe8-4a29-9910-b2c3ceddc819', '6e67d178-f106-48a6-a4ea-01962e8eaa8d', 'e1daa7ed-a462-4355-8da0-cd2ffd2b2c68', '1fdc8fe1-d09d-44fb-9a86-48b4985cc5df', '2021d63a-45c4-49be-91da-5964d50a54f9', 'b3285538-a8b5-4d00-ba37-aad469b0738f', '189a8077-71f1-4533-8d96-08340e2dacef', 'fb6bf368-db9d-4516-aa46-5ccad05975b9', '8a1fb1cc-f49e-47f8-aef1-5376153c9615', '3fa4451d-99fc-42d8-a49b-bfde061ca513', '5ccf7282-a4c7-4737-bd17-2a776d812f88']
+audio-file-storage.ts:80 💾 Memory cache files (1): ['5ccf7282-a4c7-4737-bd17-2a776d812f88']
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: 'eb0b1875-d049-4dc9-b6a0-e3959d3c08f1', songTitle: 'Hurt So Good', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 5ccf7282-a4c7-4737-bd17-2a776d812f88
+streaming-audio-engine.ts:85 🚀 Streaming load: 1 tracks (deferred setup)
+streaming-audio-engine.ts:76 🎵 Loading original tracks...
+streaming-audio-engine.ts:79 🎵 Track loading complete: 1 tracks ready
+use-audio-engine.tsx:158 ✅ Streaming ready for "Hurt So Good" - instant playback available
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+streaming-audio-engine.ts:118 ✅ Streaming ready: 1 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:220 🔧 Audio nodes created on demand for: Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+streaming-audio-engine.ts:170 🔄 Loading started for Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2)
+track-manager-clean.tsx:279 📊 Duration added: 228.2s (total: 228.2s)
+track-manager-clean.tsx:324 === Web Track Manager: Cleaning up file selection ===
+use-audio-engine.tsx:67 Duration updated from streaming engine: 228s
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+track-waveform-editor.tsx:319 Mouse down at time: 5.384095966385072
+track-waveform-editor.tsx:331 Starting new selection
+track-waveform-editor.tsx:354 🖱️ MOUSEUP - dragState exists: true isDragging: true
+track-waveform-editor.tsx:362 🎯 CREATING SELECTION: {start: 0, end: 5.384095966385072, duration: 5.384095966385072}
+track-waveform-editor.tsx:366 ✅ SETTING PENDING SELECTION!
+track-waveform-editor.tsx:542 🧪 FORCE SETTING SELECTION FOR TEST
+649-16ab6bc0dafd182d.js:1  Uncaught (in promise) Error: transport is closed, cant send
+    at d.send (649-16ab6bc0dafd182d.js:1:58772)
+    at _app-c908726ae7e1bba5.js:1:157691
+    at Object.apply (_app-c908726ae7e1bba5.js:1:157369)
+    at e.<anonymous> (4945-4c91c1123fa957a2.js:1:23188)
+    at Object.next (main-e08e5eed52b1a919.js:1:192963)
+    at n (main-e08e5eed52b1a919.js:1:59305)
+    at u (main-e08e5eed52b1a919.js:1:59502)
+    at main-e08e5eed52b1a919.js:1:59561
+    at new Promise (<anonymous>)
+    at e.<anonymous> (main-e08e5eed52b1a919.js:1:59443)
+    at u (4945-4c91c1123fa957a2.js:1:23571)
+    at n (_app-c908726ae7e1bba5.js:28:2959)
+send @ 649-16ab6bc0dafd182d.js:1
+(anonymous) @ _app-c908726ae7e1bba5.js:1
+apply @ _app-c908726ae7e1bba5.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28
+setTimeout
+(anonymous) @ _app-c908726ae7e1bba5.js:28
+l @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ 4945-4c91c1123fa957a2.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+n @ main-e08e5eed52b1a919.js:1
+c @ main-e08e5eed52b1a919.js:1
+Promise.then
+n @ main-e08e5eed52b1a919.js:1
+u @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+(anonymous) @ main-e08e5eed52b1a919.js:1
+u @ 4945-4c91c1123fa957a2.js:1
+n @ _app-c908726ae7e1bba5.js:28

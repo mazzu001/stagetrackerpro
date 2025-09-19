@@ -327,18 +327,13 @@ export function TrackWaveformEditor({
         workingUrl = freshUrl;
       }
       
+      console.log(`🎵 Creating audio element with URL: ${workingUrl.substring(0, 50)}...`);
       const audio = new Audio(workingUrl);
       
-      // Wait for audio to be ready before setting currentTime
-      await new Promise<void>((resolve) => {
-        audio.addEventListener('canplay', () => {
-          console.log(`🎵 Audio ready, setting currentTime to ${pendingSelection.start.toFixed(2)}s`);
-          audio.currentTime = pendingSelection.start;
-          console.log(`🎵 Audio currentTime actually set to: ${audio.currentTime.toFixed(2)}s`);
-          resolve();
-        }, { once: true });
-        audio.load();
-      });
+      // Simple approach - set currentTime directly and play
+      console.log(`🎵 Setting currentTime to ${pendingSelection.start.toFixed(2)}s`);
+      audio.currentTime = pendingSelection.start;
+      console.log(`🎵 currentTime was set to: ${audio.currentTime.toFixed(2)}s`);
       
       // Calculate exact duration to play
       const selectionDuration = pendingSelection.end - pendingSelection.start;
@@ -354,14 +349,15 @@ export function TrackWaveformEditor({
       };
       
       // Use setTimeout for precise duration control
-      timeoutId = setTimeout(stopPlayback, selectionDuration * 1000); // Convert to milliseconds
+      timeoutId = setTimeout(stopPlayback, selectionDuration * 1000);
       
       audio.addEventListener('ended', stopPlayback);
       
+      console.log(`🎵 Starting playback...`);
       await audio.play();
-      console.log(`🎵 Playback started at: ${audio.currentTime.toFixed(2)}s`);
+      console.log(`🎵 Playback actually started at: ${audio.currentTime.toFixed(2)}s`);
     } catch (error) {
-      console.error('Error playing selection:', error);
+      console.error('🎵 Error playing selection:', error);
       setIsPlayingSelection(false);
     }
   };

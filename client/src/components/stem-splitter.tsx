@@ -178,12 +178,18 @@ export default function StemSplitter({
     setGeneratedStems(stems);
     
     // Handle output mode
+    console.log('🎯 Output mode is:', outputMode);
+    
     if (outputMode === 'download' || outputMode === 'both') {
+      console.log('📥 Downloading stems to computer...');
       downloadStemsToComputer(stems);
     }
     
     if (outputMode === 'add-to-song' || outputMode === 'both') {
+      console.log('➕ Adding stems to song...');
       await addStemsToSong(stems);
+    } else {
+      console.log('❌ Not adding to song, outputMode is:', outputMode);
     }
   };
 
@@ -478,7 +484,10 @@ export default function StemSplitter({
                       name="output"
                       value="add-to-song"
                       checked={outputMode === 'add-to-song'}
-                      onChange={(e) => setOutputMode(e.target.value as any)}
+                      onChange={(e) => {
+                        console.log('🔘 Radio changed to:', e.target.value);
+                        setOutputMode(e.target.value as any);
+                      }}
                       data-testid="radio-add-to-song"
                     />
                     <Label htmlFor="add-to-song" className="flex items-center gap-2 cursor-pointer">
@@ -493,7 +502,10 @@ export default function StemSplitter({
                       name="output"
                       value="download"
                       checked={outputMode === 'download'}
-                      onChange={(e) => setOutputMode(e.target.value as any)}
+                      onChange={(e) => {
+                        console.log('🔘 Radio changed to:', e.target.value);
+                        setOutputMode(e.target.value as any);
+                      }}
                       data-testid="radio-download"
                     />
                     <Label htmlFor="download" className="flex items-center gap-2 cursor-pointer">
@@ -508,7 +520,10 @@ export default function StemSplitter({
                       name="output"
                       value="both"
                       checked={outputMode === 'both'}
-                      onChange={(e) => setOutputMode(e.target.value as any)}
+                      onChange={(e) => {
+                        console.log('🔘 Radio changed to:', e.target.value);
+                        setOutputMode(e.target.value as any);
+                      }}
                       data-testid="radio-both"
                     />
                     <Label htmlFor="both" className="flex items-center gap-2 cursor-pointer">

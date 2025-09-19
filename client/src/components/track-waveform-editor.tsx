@@ -62,6 +62,14 @@ export function TrackWaveformEditor({
     }
   }, [userEmail, songId, trackId, audioEngine]);
 
+  // Cleanup document listeners on unmount
+  useEffect(() => {
+    return () => {
+      document.removeEventListener('mousemove', handleDocumentMouseMove);
+      document.removeEventListener('mouseup', handleDocumentMouseUp);
+    };
+  }, []);
+
   // Generate waveform data when expanded
   useEffect(() => {
     if (!collapsed && !waveformData && audioUrl) {
@@ -320,19 +328,27 @@ export function TrackWaveformEditor({
       const audio = new Audio(workingUrl);
       audio.currentTime = pendingSelection.start;
       
+      // Use requestAnimationFrame for more precise timing
+      let animationFrameId: number;
+      
       const stopPlayback = () => {
         audio.pause();
-        audio.removeEventListener('timeupdate', checkTime);
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
         setIsPlayingSelection(false);
       };
       
       const checkTime = () => {
-        if (audio.currentTime >= pendingSelection.end) {
+        if (audio.currentTime >= pendingSelection.end - 0.05) { // Stop 50ms early for precision
           stopPlayback();
+        } else {
+          animationFrameId = requestAnimationFrame(checkTime);
         }
       };
       
-      audio.addEventListener('timeupdate', checkTime);
+      // Start the precise timing check
+      animationFrameId = requestAnimationFrame(checkTime);
       audio.addEventListener('ended', stopPlayback);
       
       await audio.play();
@@ -382,7 +398,40 @@ export function TrackWaveformEditor({
         startX: e.clientX,
         startTime,
       });
+      
+      // Add document listeners for dragging outside canvas
+      document.addEventListener('mousemove', handleDocumentMouseMove);
+      document.addEventListener('mouseup', handleDocumentMouseUp);
     }
+  };
+
+  const handleDocumentMouseMove = (e: MouseEvent) => {
+    if (!dragState?.isDragging) return;
+    
+    const endTime = getTimeFromX(e.clientX);
+    setDragState({
+      ...dragState,
+      endTime
+    });
+  };
+
+  const handleDocumentMouseUp = () => {
+    // Remove document listeners
+    document.removeEventListener('mousemove', handleDocumentMouseMove);
+    document.removeEventListener('mouseup', handleDocumentMouseUp);
+    
+    if (dragState?.isDragging && dragState.endTime !== undefined) {
+      const startTime = Math.min(dragState.startTime, dragState.endTime);
+      const endTime = Math.max(dragState.startTime, dragState.endTime);
+      
+      // Create selection if larger than 0.1 seconds
+      if (endTime - startTime >= 0.1) {
+        setPendingSelection({ start: startTime, end: endTime });
+        setSelectedRegion(null);
+      }
+    }
+    
+    setDragState(null);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -396,6 +445,10 @@ export function TrackWaveformEditor({
   };
 
   const handleMouseUp = () => {
+    // Canvas mouse up - just remove document listeners if they exist
+    document.removeEventListener('mousemove', handleDocumentMouseMove);
+    document.removeEventListener('mouseup', handleDocumentMouseUp);
+    
     if (dragState?.isDragging && dragState.endTime !== undefined) {
       const startTime = Math.min(dragState.startTime, dragState.endTime);
       const endTime = Math.max(dragState.startTime, dragState.endTime);

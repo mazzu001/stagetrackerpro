@@ -1,9 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Trash2, Activity, ChevronDown, ChevronRight } from 'lucide-react';
+import { Trash2, Activity, ChevronDown, ChevronRight, ZoomIn, ZoomOut } from 'lucide-react';
 import type { MuteRegion } from '@shared/schema';
 import { LocalSongStorage } from '@/lib/local-song-storage';
+import type { StreamingAudioEngine } from '@/lib/streaming-audio-engine';
 
 interface TrackWaveformEditorProps {
   trackId: string;
@@ -13,6 +14,7 @@ interface TrackWaveformEditorProps {
   duration: number; // Track duration in seconds
   isCollapsed?: boolean;
   onRegionsChange?: (regions: MuteRegion[]) => void;
+  audioEngine?: StreamingAudioEngine; // Audio engine to sync mute regions
 }
 
 export function TrackWaveformEditor({
@@ -22,7 +24,8 @@ export function TrackWaveformEditor({
   audioUrl,
   duration,
   isCollapsed = true,
-  onRegionsChange
+  onRegionsChange,
+  audioEngine
 }: TrackWaveformEditorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [collapsed, setCollapsed] = useState(isCollapsed);
@@ -36,17 +39,24 @@ export function TrackWaveformEditor({
     endTime?: number;
   } | null>(null);
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null);
+  const [zoomLevel, setZoomLevel] = useState(1); // Zoom level for precision editing
+  const [zoomOffset, setZoomOffset] = useState(0); // Offset for zoomed view
 
   // Canvas dimensions
   const CANVAS_WIDTH = 600;
   const CANVAS_HEIGHT = 80;
   const MARGIN = 10;
 
-  // Load mute regions from storage
+  // Load mute regions from storage and sync with audio engine
   useEffect(() => {
     const savedRegions = LocalSongStorage.getMuteRegions(userEmail, songId, trackId);
     setRegions(savedRegions);
-  }, [userEmail, songId, trackId]);
+    // Sync regions with audio engine
+    if (audioEngine && savedRegions.length > 0) {
+      audioEngine.setTrackMuteRegions(trackId, savedRegions);
+      console.log(`🔇 Loaded ${savedRegions.length} mute regions for track ${trackId}`);
+    }
+  }, [userEmail, songId, trackId, audioEngine]);
 
   // Generate waveform data when expanded
   useEffect(() => {
@@ -123,32 +133,52 @@ export function TrackWaveformEditor({
 
     const waveWidth = CANVAS_WIDTH - 2 * MARGIN;
     const waveHeight = CANVAS_HEIGHT - 2 * MARGIN;
-    const barWidth = waveWidth / waveformData.length;
+    
+    // Apply zoom to waveform display
+    const visibleDuration = duration / zoomLevel;
+    const visibleStart = zoomOffset;
+    const visibleEnd = Math.min(visibleStart + visibleDuration, duration);
+    
+    // Calculate which samples to display based on zoom
+    const totalSamples = waveformData.length;
+    const startSample = Math.floor((visibleStart / duration) * totalSamples);
+    const endSample = Math.ceil((visibleEnd / duration) * totalSamples);
+    const visibleSamples = endSample - startSample;
+    
+    const barWidth = waveWidth / visibleSamples;
 
-    // Draw waveform bars
+    // Draw waveform bars (only visible portion when zoomed)
     ctx.fillStyle = '#3b82f6';
-    for (let i = 0; i < waveformData.length; i++) {
-      const barHeight = Math.max(1, waveformData[i] * waveHeight);
-      const x = MARGIN + i * barWidth;
-      const y = MARGIN + (waveHeight - barHeight) / 2;
-      
-      ctx.fillRect(x, y, Math.max(1, barWidth - 1), barHeight);
+    for (let i = 0; i < visibleSamples; i++) {
+      const sampleIndex = startSample + i;
+      if (sampleIndex >= 0 && sampleIndex < waveformData.length) {
+        const barHeight = Math.max(1, waveformData[sampleIndex] * waveHeight);
+        const x = MARGIN + i * barWidth;
+        const y = MARGIN + (waveHeight - barHeight) / 2;
+        
+        ctx.fillRect(x, y, Math.max(1, barWidth - 1), barHeight);
+      }
     }
 
-    // Draw mute regions
+    // Draw mute regions (only if visible in current zoom)
     regions.forEach(region => {
-      const startX = MARGIN + (region.start / duration) * waveWidth;
-      const endX = MARGIN + (region.end / duration) * waveWidth;
-      const width = endX - startX;
+      // Check if region is visible in current zoom level
+      if (region.end >= visibleStart && region.start <= visibleEnd) {
+        const regionStart = Math.max(region.start, visibleStart);
+        const regionEnd = Math.min(region.end, visibleEnd);
+        const startX = MARGIN + ((regionStart - visibleStart) / (visibleEnd - visibleStart)) * waveWidth;
+        const endX = MARGIN + ((regionEnd - visibleStart) / (visibleEnd - visibleStart)) * waveWidth;
+        const width = endX - startX;
 
-      // Draw semi-transparent overlay
-      ctx.fillStyle = selectedRegion === region.id ? 'rgba(239, 68, 68, 0.6)' : 'rgba(239, 68, 68, 0.4)';
-      ctx.fillRect(startX, MARGIN, width, waveHeight);
+        // Draw semi-transparent overlay
+        ctx.fillStyle = selectedRegion === region.id ? 'rgba(239, 68, 68, 0.6)' : 'rgba(239, 68, 68, 0.4)';
+        ctx.fillRect(startX, MARGIN, width, waveHeight);
 
-      // Draw border
-      ctx.strokeStyle = selectedRegion === region.id ? '#dc2626' : '#ef4444';
-      ctx.lineWidth = selectedRegion === region.id ? 2 : 1;
-      ctx.strokeRect(startX, MARGIN, width, waveHeight);
+        // Draw border
+        ctx.strokeStyle = selectedRegion === region.id ? '#dc2626' : '#ef4444';
+        ctx.lineWidth = selectedRegion === region.id ? 2 : 1;
+        ctx.strokeRect(startX, MARGIN, width, waveHeight);
+      }
     });
 
     // Draw drag selection
@@ -167,15 +197,40 @@ export function TrackWaveformEditor({
     }
   };
 
+  // Zoom control functions
+  const zoomIn = () => {
+    setZoomLevel(prev => Math.min(prev * 2, 10)); // Max 10x zoom
+  };
+
+  const zoomOut = () => {
+    setZoomLevel(prev => {
+      const newZoom = Math.max(prev / 2, 1); // Min 1x zoom
+      if (newZoom === 1) {
+        setZoomOffset(0); // Reset offset when fully zoomed out
+      }
+      return newZoom;
+    });
+  };
+
+  const resetZoom = () => {
+    setZoomLevel(1);
+    setZoomOffset(0);
+  };
+
   const getTimeFromX = (x: number): number => {
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return 0;
     
     const relativeX = x - rect.left - MARGIN;
     const waveWidth = CANVAS_WIDTH - 2 * MARGIN;
-    const time = (relativeX / waveWidth) * duration;
+    const normalizedX = Math.max(0, Math.min(1, relativeX / waveWidth));
     
-    return Math.max(0, Math.min(duration, time));
+    // Apply zoom calculations
+    const visibleDuration = duration / zoomLevel;
+    const visibleStart = zoomOffset;
+    const visibleEnd = Math.min(visibleStart + visibleDuration, duration);
+    
+    return visibleStart + normalizedX * (visibleEnd - visibleStart);
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -235,6 +290,12 @@ export function TrackWaveformEditor({
       const updatedRegions = [...regions, newRegion];
       setRegions(updatedRegions);
       onRegionsChange?.(updatedRegions);
+      
+      // Sync with audio engine for real-time muting
+      if (audioEngine) {
+        audioEngine.setTrackMuteRegions(trackId, updatedRegions);
+        console.log(`🔇 Added mute region ${start.toFixed(1)}s-${end.toFixed(1)}s to track ${trackId}`);
+      }
     }
   };
 
@@ -245,6 +306,12 @@ export function TrackWaveformEditor({
       setRegions(updatedRegions);
       setSelectedRegion(null);
       onRegionsChange?.(updatedRegions);
+      
+      // Sync with audio engine
+      if (audioEngine) {
+        audioEngine.setTrackMuteRegions(trackId, updatedRegions);
+        console.log(`🔇 Removed mute region from track ${trackId}`);
+      }
     }
   };
 
@@ -255,6 +322,12 @@ export function TrackWaveformEditor({
     setRegions([]);
     setSelectedRegion(null);
     onRegionsChange?.([]);
+    
+    // Clear from audio engine
+    if (audioEngine) {
+      audioEngine.setTrackMuteRegions(trackId, []);
+      console.log(`🔇 Cleared all mute regions from track ${trackId}`);
+    }
   };
 
   const formatTime = (seconds: number): string => {
@@ -297,6 +370,49 @@ export function TrackWaveformEditor({
               </div>
             ) : waveformData ? (
               <div>
+                {/* Zoom controls */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-600 dark:text-gray-400">Zoom:</span>
+                    <Button
+                      onClick={zoomOut}
+                      variant="outline"
+                      size="sm"
+                      disabled={zoomLevel <= 1}
+                      data-testid={`button-zoom-out-${trackId}`}
+                    >
+                      <ZoomOut className="h-3 w-3" />
+                    </Button>
+                    <span className="text-xs text-gray-600 dark:text-gray-400 min-w-[30px] text-center">
+                      {zoomLevel.toFixed(1)}x
+                    </span>
+                    <Button
+                      onClick={zoomIn}
+                      variant="outline"
+                      size="sm"
+                      disabled={zoomLevel >= 10}
+                      data-testid={`button-zoom-in-${trackId}`}
+                    >
+                      <ZoomIn className="h-3 w-3" />
+                    </Button>
+                    {zoomLevel > 1 && (
+                      <Button
+                        onClick={resetZoom}
+                        variant="outline"
+                        size="sm"
+                        className="text-xs"
+                        data-testid={`button-reset-zoom-${trackId}`}
+                      >
+                        Reset
+                      </Button>
+                    )}
+                  </div>
+                  {zoomLevel > 1 && (
+                    <div className="text-xs text-gray-600 dark:text-gray-400">
+                      Viewing: {formatTime(zoomOffset)} - {formatTime(Math.min(zoomOffset + duration / zoomLevel, duration))}
+                    </div>
+                  )}
+                </div>
                 <canvas
                   ref={canvasRef}
                   width={CANVAS_WIDTH}

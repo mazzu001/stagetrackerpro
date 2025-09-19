@@ -19,6 +19,10 @@ export class WaveformGenerator {
     return `waveform_${songId}`;
   }
 
+  private getTrackWaveformCacheKey(trackId: string): string {
+    return `waveform_track_${trackId}`;
+  }
+
   /**
    * Check if waveform is already cached for a song
    */
@@ -46,6 +50,49 @@ export class WaveformGenerator {
       console.log(`Waveform cached for song: ${songId}`);
     } catch (error) {
       console.error('Failed to save waveform to cache:', error);
+    }
+  }
+
+  /**
+   * Check if waveform is already cached for a track
+   */
+  getCachedTrackWaveform(trackId: string): Float32Array | null {
+    try {
+      const cached = localStorage.getItem(this.getTrackWaveformCacheKey(trackId));
+      if (cached) {
+        const data = JSON.parse(cached);
+        if (Array.isArray(data)) {
+          return new Float32Array(data);
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load cached track waveform:', error);
+    }
+    return null;
+  }
+
+  /**
+   * Save track waveform data to cache
+   */
+  saveTrackWaveformToCache(trackId: string, waveformData: Float32Array): void {
+    try {
+      const dataArray = Array.from(waveformData);
+      localStorage.setItem(this.getTrackWaveformCacheKey(trackId), JSON.stringify(dataArray));
+      console.log(`Track waveform cached for track: ${trackId}`);
+    } catch (error) {
+      console.error('Failed to save track waveform to cache:', error);
+    }
+  }
+
+  /**
+   * Clear cached waveform for a track
+   */
+  clearCachedTrackWaveform(trackId: string): void {
+    try {
+      localStorage.removeItem(this.getTrackWaveformCacheKey(trackId));
+      console.log(`Cleared cached track waveform for track: ${trackId}`);
+    } catch (error) {
+      console.error('Failed to clear cached track waveform:', error);
     }
   }
 

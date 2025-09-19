@@ -65,11 +65,15 @@ export default function TrackManager({
   // Get tracks for the current song
   const tracks = song?.tracks || [];
 
-  // Initialize local track values from song data
+  // Initialize local track values from storage (to remember changes)
   useEffect(() => {
-    if (tracks.length > 0) {
+    if (tracks.length > 0 && song?.id && user?.email) {
+      // Get fresh data from storage to remember user's changes
+      const freshSong = LocalSongStorage.getSong(user.email, song.id);
+      const freshTracks = freshSong?.tracks || tracks;
+      
       const initialValues: Record<string, { volume: number; balance: number }> = {};
-      tracks.forEach(track => {
+      freshTracks.forEach(track => {
         initialValues[track.id] = {
           volume: track.volume || 1.0,
           balance: track.balance || 0.0
@@ -77,7 +81,7 @@ export default function TrackManager({
       });
       setLocalTrackValues(initialValues);
     }
-  }, [tracks]);
+  }, [tracks, song?.id, user?.email]);
 
   // Initialize audio inputs on component mount
   // Recording features removed

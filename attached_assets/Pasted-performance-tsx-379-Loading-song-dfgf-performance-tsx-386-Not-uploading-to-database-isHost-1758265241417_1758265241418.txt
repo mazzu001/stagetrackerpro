@@ -1,0 +1,1647 @@
+performance.tsx:379 🎵 Loading song: dfgf
+performance.tsx:386 📡 Not uploading to database: {isHost: false, hasCurrentRoom: false, roomId: undefined}
+performance.tsx:390 🔍 Debug values: {selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: true, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+@radix-ui_react-dialog.js?v=170c6354:330  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ dialog.tsx:519
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+@radix-ui_react-dialog.js?v=170c6354:344  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+waveform-visualizer.tsx:42 Loading cached waveform for "dfgf" (400 data points)
+use-audio-engine.tsx:92 Song selected: "dfgf" with 2 tracks - loading for streaming
+use-audio-engine.tsx:96 Setting up streaming for: "dfgf" - UI stays responsive
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 42f7d270-a081-423f-8ecf-9e073e26a6c8
+audio-file-storage.ts:51 📂 Available audio files (12): (12) ['4b44d1e1-27fc-414c-8ef1-2aef24520cab', '13c80786-737c-4e4d-8d5f-4ab442a6c47a', 'f472be09-53e4-4af1-9f61-19068ca1b998', '0e02abcc-e9ee-4c42-bc57-4fb93fae50b3', '31e81c19-6617-4179-a07a-78b3fc2e5a1c', '38584707-f76e-4ac4-878f-722e8bbf1d18', 'c518f8a7-e496-4b08-92e2-c1bbb3187a0d', '134eed31-48ee-4f13-80cc-1cedcb491e2f', '6ca09b48-2d64-4d56-a835-9793ac9de5fe', '27f7dd8e-a55b-47c4-991c-f822d47aab4e', '42f7d270-a081-423f-8ecf-9e073e26a6c8', '18af0d0b-9916-4180-a24e-55df07f7e9a4']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 42f7d270-a081-423f-8ecf-9e073e26a6c8
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 42f7d270-a081-423f-8ecf-9e073e26a6c8
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 18af0d0b-9916-4180-a24e-55df07f7e9a4
+audio-file-storage.ts:51 📂 Available audio files (12): (12) ['4b44d1e1-27fc-414c-8ef1-2aef24520cab', '13c80786-737c-4e4d-8d5f-4ab442a6c47a', 'f472be09-53e4-4af1-9f61-19068ca1b998', '0e02abcc-e9ee-4c42-bc57-4fb93fae50b3', '31e81c19-6617-4179-a07a-78b3fc2e5a1c', '38584707-f76e-4ac4-878f-722e8bbf1d18', 'c518f8a7-e496-4b08-92e2-c1bbb3187a0d', '134eed31-48ee-4f13-80cc-1cedcb491e2f', '6ca09b48-2d64-4d56-a835-9793ac9de5fe', '27f7dd8e-a55b-47c4-991c-f822d47aab4e', '42f7d270-a081-423f-8ecf-9e073e26a6c8', '18af0d0b-9916-4180-a24e-55df07f7e9a4']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 18af0d0b-9916-4180-a24e-55df07f7e9a4
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 18af0d0b-9916-4180-a24e-55df07f7e9a4
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+browser-file-system.ts:172 ✅ Found in IndexedDB: 42f7d270-a081-423f-8ecf-9e073e26a6c8 (vocals.wav)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 42f7d270-a081-423f-8ecf-9e073e26a6c8
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+browser-file-system.ts:172 ✅ Found in IndexedDB: 18af0d0b-9916-4180-a24e-55df07f7e9a4 (instrumental.wav)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 18af0d0b-9916-4180-a24e-55df07f7e9a4
+streaming-audio-engine.ts:37 🚀 Streaming load: 2 tracks (deferred setup)
+streaming-audio-engine.ts:31 🎵 Loading original tracks...
+streaming-audio-engine.ts:32 🎵 Track loading complete: 2 tracks ready
+use-audio-engine.tsx:114 ✅ Streaming ready for "dfgf" - instant playback available
+streaming-audio-engine.ts:60 ✅ Streaming ready: 2 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: vocals
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: instrumental
+streaming-audio-engine.ts:97 🔄 Loading started for vocals
+streaming-audio-engine.ts:97 🔄 Loading started for instrumental
+use-audio-engine.tsx:61 Duration updated from streaming engine: 2s
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+use-audio-engine.tsx:61 Duration updated from streaming engine: 2s
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+@radix-ui_react-dialog.js?v=170c6354:330  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ dialog.tsx:519
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+@radix-ui_react-dialog.js?v=170c6354:344  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+framework-7f2c8ab1a6e80f5e.js:1  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'battery'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'layout-animations'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+e @ framework-7f2c8ab1a6e80f5e.js:1
+e @ framework-7f2c8ab1a6e80f5e.js:1
+e @ framework-7f2c8ab1a6e80f5e.js:1
+oK @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+e @ framework-7f2c8ab1a6e80f5e.js:1
+e @ framework-7f2c8ab1a6e80f5e.js:1
+e @ framework-7f2c8ab1a6e80f5e.js:1
+oK @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+framework-7f2c8ab1a6e80f5e.js:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+e @ framework-7f2c8ab1a6e80f5e.js:1
+e @ framework-7f2c8ab1a6e80f5e.js:1
+e @ framework-7f2c8ab1a6e80f5e.js:1
+oK @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+oQ @ framework-7f2c8ab1a6e80f5e.js:1
+oq @ framework-7f2c8ab1a6e80f5e.js:1
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ setImmediate.js:40
+y @ setImmediate.js:69
+c @ setImmediate.js:109
+postMessage
+n @ setImmediate.js:120
+YBdB.f.setImmediate @ setImmediate.js:27
+r @ framework-7f2c8ab1a6e80f5e.js:1
+I @ framework-7f2c8ab1a6e80f5e.js:1
+t.unstable_scheduleCallback @ framework-7f2c8ab1a6e80f5e.js:1
+uw @ framework-7f2c8ab1a6e80f5e.js:1
+uk @ framework-7f2c8ab1a6e80f5e.js:1
+lH @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ 6256-07cc7c4192739a8e.js:1
+n @ _app-0ca3e0d0bb71f44c.js:1
+update @ _app-0ca3e0d0bb71f44c.js:1
+g @ 4034-edf77af1341289d4.js:1
+(anonymous) @ 4034-edf77af1341289d4.js:1
+s.emit @ 2372-2a227e20178cac5a.js:1
+(anonymous) @ 3082-790f0293217a940c.js:1
+(anonymous) @ 6504-210dff929b6c7e9f.js:1
+handleCommand @ 6504-210dff929b6c7e9f.js:1
+onSocketMessage @ 6504-210dff929b6c7e9f.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Arp3%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=M8_s06bNgxgD' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=M8_s06bNgxgD' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+android-ble-midi.ts:36 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:176 Loaded 12 audio file path references from localStorage
+audio-file-storage.ts:194 🔄 Auto-loading 12 stored audio files...
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 4b44d1e1-27fc-414c-8ef1-2aef24520cab
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 4b44d1e1-27fc-414c-8ef1-2aef24520cab
+browser-file-system.ts:236 ❌ Database not initialized for track 4b44d1e1-27fc-414c-8ef1-2aef24520cab
+audio-file-storage.ts:218 Expected audio files for tracks:
+audio-file-storage.ts:221   - vocals.wav (browser://143a8efa-f27e-4b2b-ab44-fde18c1760a5/4b44d1e1-27fc-414c-8ef1-2aef24520cab)
+audio-file-storage.ts:221   - instrumental.wav (browser://143a8efa-f27e-4b2b-ab44-fde18c1760a5/13c80786-737c-4e4d-8d5f-4ab442a6c47a)
+audio-file-storage.ts:221   - 3AM - Backups.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/f472be09-53e4-4af1-9f61-19068ca1b998)
+audio-file-storage.ts:221   - 3AM - Bass.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/0e02abcc-e9ee-4c42-bc57-4fb93fae50b3)
+audio-file-storage.ts:221   - 3AM - Click.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/31e81c19-6617-4179-a07a-78b3fc2e5a1c)
+audio-file-storage.ts:221   - 3AM - Drums.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/38584707-f76e-4ac4-878f-722e8bbf1d18)
+audio-file-storage.ts:221   - 3AM - Guitars.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/c518f8a7-e496-4b08-92e2-c1bbb3187a0d)
+audio-file-storage.ts:221   - 3AM - Organ.mp3 (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/134eed31-48ee-4f13-80cc-1cedcb491e2f)
+audio-file-storage.ts:221   - vocals.wav (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/6ca09b48-2d64-4d56-a835-9793ac9de5fe)
+audio-file-storage.ts:221   - instrumental.wav (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/27f7dd8e-a55b-47c4-991c-f822d47aab4e)
+audio-file-storage.ts:221   - vocals.wav (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/42f7d270-a081-423f-8ecf-9e073e26a6c8)
+audio-file-storage.ts:221   - instrumental.wav (browser://18e60924-fe03-4c07-b4cb-bb4dc25d4894/18af0d0b-9916-4180-a24e-55df07f7e9a4)
+audio-file-storage.ts:223 These files will be loaded when you select them through the file picker.
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 13c80786-737c-4e4d-8d5f-4ab442a6c47a
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 13c80786-737c-4e4d-8d5f-4ab442a6c47a
+browser-file-system.ts:236 ❌ Database not initialized for track 13c80786-737c-4e4d-8d5f-4ab442a6c47a
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track f472be09-53e4-4af1-9f61-19068ca1b998
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for f472be09-53e4-4af1-9f61-19068ca1b998
+browser-file-system.ts:236 ❌ Database not initialized for track f472be09-53e4-4af1-9f61-19068ca1b998
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 0e02abcc-e9ee-4c42-bc57-4fb93fae50b3
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 0e02abcc-e9ee-4c42-bc57-4fb93fae50b3
+browser-file-system.ts:236 ❌ Database not initialized for track 0e02abcc-e9ee-4c42-bc57-4fb93fae50b3
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 31e81c19-6617-4179-a07a-78b3fc2e5a1c
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 31e81c19-6617-4179-a07a-78b3fc2e5a1c
+browser-file-system.ts:236 ❌ Database not initialized for track 31e81c19-6617-4179-a07a-78b3fc2e5a1c
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 38584707-f76e-4ac4-878f-722e8bbf1d18
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 38584707-f76e-4ac4-878f-722e8bbf1d18
+browser-file-system.ts:236 ❌ Database not initialized for track 38584707-f76e-4ac4-878f-722e8bbf1d18
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track c518f8a7-e496-4b08-92e2-c1bbb3187a0d
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for c518f8a7-e496-4b08-92e2-c1bbb3187a0d
+browser-file-system.ts:236 ❌ Database not initialized for track c518f8a7-e496-4b08-92e2-c1bbb3187a0d
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 134eed31-48ee-4f13-80cc-1cedcb491e2f
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 134eed31-48ee-4f13-80cc-1cedcb491e2f
+browser-file-system.ts:236 ❌ Database not initialized for track 134eed31-48ee-4f13-80cc-1cedcb491e2f
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 6ca09b48-2d64-4d56-a835-9793ac9de5fe
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 6ca09b48-2d64-4d56-a835-9793ac9de5fe
+browser-file-system.ts:236 ❌ Database not initialized for track 6ca09b48-2d64-4d56-a835-9793ac9de5fe
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 27f7dd8e-a55b-47c4-991c-f822d47aab4e
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 27f7dd8e-a55b-47c4-991c-f822d47aab4e
+browser-file-system.ts:236 ❌ Database not initialized for track 27f7dd8e-a55b-47c4-991c-f822d47aab4e
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 42f7d270-a081-423f-8ecf-9e073e26a6c8
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 42f7d270-a081-423f-8ecf-9e073e26a6c8
+browser-file-system.ts:236 ❌ Database not initialized for track 42f7d270-a081-423f-8ecf-9e073e26a6c8
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 18af0d0b-9916-4180-a24e-55df07f7e9a4
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 18af0d0b-9916-4180-a24e-55df07f7e9a4
+browser-file-system.ts:236 ❌ Database not initialized for track 18af0d0b-9916-4180-a24e-55df07f7e9a4
+audio-file-storage.ts:212 ✅ Auto-loaded 0/12 audio files into cache
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx:44 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx:66 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx:122 🔍 No payment success detected in URL
+useMidiDevices.ts:122 🎹 Initializing MIDI access...
+App.tsx:132 Browser file system already initialized - auto-initializing
+browser-file-system.ts:63 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:128 🔐 MIDI Permission State: granted
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:87 Browser file system initialized successfully
+useMidiDevices.ts:160 ✅ MIDI system initialized successfully
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+xy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-simple.tsx:9
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+xy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-elements-test.tsx:9
+main.tsx:10 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useMidiDevices.ts:189 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:198 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:199 1. No physical MIDI devices connected
+useMidiDevices.ts:200 2. MIDI permissions denied or blocked
+useMidiDevices.ts:201 3. Browser security restrictions
+useMidiDevices.ts:202 💡 To reset MIDI permissions:
+useMidiDevices.ts:203    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:204    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:294 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:314 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+lyrics-display.tsx:293 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:31 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:67 🎵 Master output initialized
+performance.tsx:505 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+performance.tsx:451 📋 Loaded 2 songs from local storage (alphabetically sorted)
+performance.tsx:505 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:490 🎵 Loading song: dfgf
+performance.tsx:499 📡 Not uploading to database: {isHost: false, hasCurrentRoom: false, roomId: undefined}
+performance.tsx:505 🔍 Debug values: {selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: true, …}
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: undefined, songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+dialog.tsx:519  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ dialog.tsx:519
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+waveform-visualizer.tsx:41 Loading cached waveform for "dfgf" (400 data points)
+use-audio-engine.tsx:103 Song selected: "dfgf" with 2 tracks - loading for streaming
+use-audio-engine.tsx:111 Setting up streaming for: "dfgf" - UI stays responsive
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 42f7d270-a081-423f-8ecf-9e073e26a6c8
+audio-file-storage.ts:79 📂 Available audio files (12): (12) ['4b44d1e1-27fc-414c-8ef1-2aef24520cab', '13c80786-737c-4e4d-8d5f-4ab442a6c47a', 'f472be09-53e4-4af1-9f61-19068ca1b998', '0e02abcc-e9ee-4c42-bc57-4fb93fae50b3', '31e81c19-6617-4179-a07a-78b3fc2e5a1c', '38584707-f76e-4ac4-878f-722e8bbf1d18', 'c518f8a7-e496-4b08-92e2-c1bbb3187a0d', '134eed31-48ee-4f13-80cc-1cedcb491e2f', '6ca09b48-2d64-4d56-a835-9793ac9de5fe', '27f7dd8e-a55b-47c4-991c-f822d47aab4e', '42f7d270-a081-423f-8ecf-9e073e26a6c8', '18af0d0b-9916-4180-a24e-55df07f7e9a4']
+audio-file-storage.ts:80 💾 Memory cache files (0): []
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 42f7d270-a081-423f-8ecf-9e073e26a6c8
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 42f7d270-a081-423f-8ecf-9e073e26a6c8
+audio-file-storage.ts:78 🔍 Requesting audio URL for track: 18af0d0b-9916-4180-a24e-55df07f7e9a4
+audio-file-storage.ts:79 📂 Available audio files (12): (12) ['4b44d1e1-27fc-414c-8ef1-2aef24520cab', '13c80786-737c-4e4d-8d5f-4ab442a6c47a', 'f472be09-53e4-4af1-9f61-19068ca1b998', '0e02abcc-e9ee-4c42-bc57-4fb93fae50b3', '31e81c19-6617-4179-a07a-78b3fc2e5a1c', '38584707-f76e-4ac4-878f-722e8bbf1d18', 'c518f8a7-e496-4b08-92e2-c1bbb3187a0d', '134eed31-48ee-4f13-80cc-1cedcb491e2f', '6ca09b48-2d64-4d56-a835-9793ac9de5fe', '27f7dd8e-a55b-47c4-991c-f822d47aab4e', '42f7d270-a081-423f-8ecf-9e073e26a6c8', '18af0d0b-9916-4180-a24e-55df07f7e9a4']
+audio-file-storage.ts:80 💾 Memory cache files (0): []
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 18af0d0b-9916-4180-a24e-55df07f7e9a4
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: true
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 18af0d0b-9916-4180-a24e-55df07f7e9a4
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+browser-file-system.ts:251 ✅ Found in IndexedDB: 42f7d270-a081-423f-8ecf-9e073e26a6c8 (vocals.wav)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 42f7d270-a081-423f-8ecf-9e073e26a6c8
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+browser-file-system.ts:251 ✅ Found in IndexedDB: 18af0d0b-9916-4180-a24e-55df07f7e9a4 (instrumental.wav)
+audio-file-storage.ts:86 ✅ Got audio URL from browser storage for track: 18af0d0b-9916-4180-a24e-55df07f7e9a4
+streaming-audio-engine.ts:81 🚀 Streaming load: 2 tracks (deferred setup)
+streaming-audio-engine.ts:72 🎵 Loading original tracks...
+streaming-audio-engine.ts:75 🎵 Track loading complete: 2 tracks ready
+use-audio-engine.tsx:139 ✅ Streaming ready for "dfgf" - instant playback available
+streaming-audio-engine.ts:114 ✅ Streaming ready: 2 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:216 🔧 Audio nodes created on demand for: vocals
+streaming-audio-engine.ts:216 🔧 Audio nodes created on demand for: instrumental
+streaming-audio-engine.ts:166 🔄 Loading started for vocals
+streaming-audio-engine.ts:166 🔄 Loading started for instrumental
+use-audio-engine.tsx:63 Duration updated from streaming engine: 2s
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '18e60924-fe03-4c07-b4cb-bb4dc25d4894', songTitle: 'dfgf', songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+use-audio-engine.tsx:63 Duration updated from streaming engine: 2s
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+dialog.tsx:519  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ dialog.tsx:519
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode

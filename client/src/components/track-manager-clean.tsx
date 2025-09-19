@@ -65,23 +65,25 @@ export default function TrackManager({
   // Get tracks for the current song
   const tracks = song?.tracks || [];
 
-  // Initialize local track values from storage (to remember changes)
+  // Load values from storage INSTANTLY when dialog opens
   useEffect(() => {
-    if (tracks.length > 0 && song?.id && user?.email) {
+    if (isOpen && song?.id && user?.email) {
       // Get fresh data from storage to remember user's changes
       const freshSong = LocalSongStorage.getSong(user.email, song.id);
-      const freshTracks = freshSong?.tracks || tracks;
+      const freshTracks = freshSong?.tracks;
       
-      const initialValues: Record<string, { volume: number; balance: number }> = {};
-      freshTracks.forEach(track => {
-        initialValues[track.id] = {
-          volume: track.volume || 1.0,
-          balance: track.balance || 0.0
-        };
-      });
-      setLocalTrackValues(initialValues);
+      if (freshTracks && freshTracks.length > 0) {
+        const storageValues: Record<string, { volume: number; balance: number }> = {};
+        freshTracks.forEach(track => {
+          storageValues[track.id] = {
+            volume: track.volume || 1.0,
+            balance: track.balance || 0.0
+          };
+        });
+        setLocalTrackValues(storageValues);
+      }
     }
-  }, [tracks, song?.id, user?.email]);
+  }, [isOpen, song?.id, user?.email]);
 
   // Initialize audio inputs on component mount
   // Recording features removed

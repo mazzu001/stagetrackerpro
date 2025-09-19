@@ -74,78 +74,6 @@ export function TrackWaveformEditor({
     }
   }, [collapsed, waveformData, regions, dragState, selectedRegion, zoomLevel, zoomOffset, pendingSelection]);
 
-  // Native mouse event listeners (React events weren't working)
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    console.log('🔧 Setting up native mouse listeners');
-    
-    let isMouseDown = false;
-    let startTime = 0;
-    
-    const handleNativeMouseDown = (e: MouseEvent) => {
-      console.log('🖱️ NATIVE MOUSE DOWN!');
-      e.preventDefault();
-      
-      isMouseDown = true;
-      startTime = getTimeFromX(e.clientX);
-      
-      setSelectedRegion(null);
-      setPendingSelection(null);
-      setDragState({
-        isDragging: true,
-        startX: e.clientX,
-        startTime,
-      });
-    };
-    
-    const handleNativeMouseMove = (e: MouseEvent) => {
-      if (!isMouseDown) return;
-      
-      const endTime = getTimeFromX(e.clientX);
-      setDragState(prev => prev ? {
-        ...prev,
-        endTime
-      } : null);
-    };
-    
-    const handleNativeMouseUp = (e: MouseEvent) => {
-      console.log('🖱️ NATIVE MOUSE UP!');
-      
-      if (isMouseDown) {
-        const endTime = getTimeFromX(e.clientX);
-        const finalStartTime = Math.min(startTime, endTime);
-        const finalEndTime = Math.max(startTime, endTime);
-        const duration = finalEndTime - finalStartTime;
-        
-        console.log('🎯 NATIVE SELECTION:', { start: finalStartTime, end: finalEndTime, duration });
-        
-        if (duration >= 0.01) {
-          console.log('✅ SETTING SELECTION VIA NATIVE EVENTS!');
-          setPendingSelection({ start: finalStartTime, end: finalEndTime });
-        }
-      }
-      
-      isMouseDown = false;
-      setDragState(null);
-    };
-    
-    canvas.addEventListener('mousedown', handleNativeMouseDown);
-    canvas.addEventListener('mousemove', handleNativeMouseMove);
-    canvas.addEventListener('mouseup', handleNativeMouseUp);
-    canvas.addEventListener('mouseleave', () => {
-      isMouseDown = false;
-      setDragState(null);
-    });
-    
-    return () => {
-      canvas.removeEventListener('mousedown', handleNativeMouseDown);
-      canvas.removeEventListener('mousemove', handleNativeMouseMove);
-      canvas.removeEventListener('mouseup', handleNativeMouseUp);
-    };
-  }, [canvasRef.current]);
-
   const generateWaveform = async () => {
     if (!audioUrl || isGenerating) return;
     
@@ -385,13 +313,9 @@ export function TrackWaveformEditor({
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
     if (!canvasRef.current) return;
     
     const startTime = getTimeFromX(e.clientX);
-    console.log('🖱️ Mouse down at time:', startTime);
     
     // Check if clicking on existing region
     const clickedRegion = regions.find(region => 
@@ -399,12 +323,10 @@ export function TrackWaveformEditor({
     );
     
     if (clickedRegion) {
-      console.log('🎯 Clicked existing region:', clickedRegion.id);
       setSelectedRegion(clickedRegion.id);
-      setPendingSelection(null); // Clear pending selection when selecting existing region
+      setPendingSelection(null);
     } else {
-      console.log('🎆 Starting new selection');
-      // Clear existing selections and start new region selection
+      // Start new selection
       setSelectedRegion(null);
       setPendingSelection(null);
       setDragState({
@@ -419,43 +341,22 @@ export function TrackWaveformEditor({
     if (!dragState?.isDragging) return;
     
     const endTime = getTimeFromX(e.clientX);
-    console.log('🖱️ Mouse move - updating endTime to:', endTime);
     setDragState({
       ...dragState,
       endTime
     });
   };
 
-  const handleMouseUp = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    console.log('🖱️ MOUSEUP EVENT FIRED!');
-    console.log('🖱️ dragState:', dragState);
-    
-    if (dragState?.isDragging) {
-      const endTime = getTimeFromX(e.clientX);
-      const startTime = Math.min(dragState.startTime, endTime);
-      const finalEndTime = Math.max(dragState.startTime, endTime);
-      const duration = finalEndTime - startTime;
+  const handleMouseUp = () => {
+    if (dragState?.isDragging && dragState.endTime !== undefined) {
+      const startTime = Math.min(dragState.startTime, dragState.endTime);
+      const endTime = Math.max(dragState.startTime, dragState.endTime);
       
-      console.log('🎯 CREATING SELECTION:', { start: startTime, end: finalEndTime, duration });
-      
-      // Very permissive threshold - even tiny selections should work
-      if (duration >= 0.01) {
-        console.log('✅ SETTING PENDING SELECTION NOW!');
-        setPendingSelection({ start: startTime, end: finalEndTime });
+      // Create selection if larger than 0.1 seconds
+      if (endTime - startTime >= 0.1) {
+        setPendingSelection({ start: startTime, end: endTime });
         setSelectedRegion(null);
-        
-        // Force a small delay to ensure state updates
-        setTimeout(() => {
-          console.log('🔄 State should be updated now');
-        }, 100);
-      } else {
-        console.log('❌ Selection too small:', duration);
       }
-    } else {
-      console.log('❌ No drag state to process');
     }
     
     setDragState(null);
@@ -639,19 +540,6 @@ export function TrackWaveformEditor({
                   onMouseMove={handleMouseMove}
                   onMouseUp={handleMouseUp}
                   onMouseLeave={() => setDragState(null)}
-                  onClick={(e) => {
-                    // Clear pending selection if clicking in empty space (not dragging)
-                    if (!dragState && pendingSelection) {
-                      const clickTime = getTimeFromX(e.clientX);
-                      const clickedRegion = regions.find(region => 
-                        clickTime >= region.start && clickTime <= region.end
-                      );
-                      if (!clickedRegion) {
-                        setPendingSelection(null);
-                        setSelectedRegion(null);
-                      }
-                    }
-                  }}
                   data-testid={`waveform-canvas-${trackId}`}
                 />
                 <div className="text-xs text-gray-300 mt-2">
@@ -659,10 +547,6 @@ export function TrackWaveformEditor({
                     ? `Selection: ${formatTime(pendingSelection.start)} - ${formatTime(pendingSelection.end)} (${formatTime(pendingSelection.end - pendingSelection.start)}). Choose action above.`
                     : "Click and drag to select. Click existing regions to select them."
                   }
-                  {/* Debug info */}
-                  <div className="text-xs text-yellow-400 mt-1">
-                    Debug: pendingSelection={pendingSelection ? `EXISTS (${pendingSelection.start.toFixed(1)}-${pendingSelection.end.toFixed(1)})` : 'NULL'}, dragState={dragState ? `ACTIVE (${dragState.isDragging})` : 'NULL'}
-                  </div>
                 </div>
               </div>
             ) : (

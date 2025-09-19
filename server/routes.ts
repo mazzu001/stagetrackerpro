@@ -1982,6 +1982,86 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // 🎵 Stem Splitter API routes (isolated feature)
+  console.log('🎵 Registering stem splitter routes...');
+  
+  try {
+    const { moisesService } = await import('./moises-service');
+    
+    // Create stem separation job
+    app.post('/api/stem-splitter/create', upload.single('audio'), async (req: any, res) => {
+      try {
+        if (!moisesService.isEnabled()) {
+          return res.status(503).json({ error: 'Stem splitter service not available' });
+        }
+
+        if (!req.file) {
+          return res.status(400).json({ error: 'Audio file required' });
+        }
+
+        const { removeStems } = req.body;
+        const removeArray = Array.isArray(removeStems) ? removeStems : [removeStems];
+
+        const jobId = await moisesService.createSeparationJob({
+          audioFile: req.file.buffer,
+          filename: req.file.originalname,
+          removeStems: removeArray
+        });
+
+        if (jobId) {
+          res.json({ jobId, status: 'created' });
+        } else {
+          res.status(500).json({ error: 'Failed to create separation job' });
+        }
+      } catch (error) {
+        handleRouteError('stem-splitter-create', error, req, res);
+      }
+    });
+
+    // Check job status
+    app.get('/api/stem-splitter/status/:jobId', async (req: any, res) => {
+      try {
+        if (!moisesService.isEnabled()) {
+          return res.status(503).json({ error: 'Stem splitter service not available' });
+        }
+
+        const status = await moisesService.getJobStatus(req.params.jobId);
+        if (status) {
+          res.json(status);
+        } else {
+          res.status(404).json({ error: 'Job not found' });
+        }
+      } catch (error) {
+        handleRouteError('stem-splitter-status', error, req, res);
+      }
+    });
+
+    // Download stem file
+    app.get('/api/stem-splitter/download/:jobId/:stemName', async (req: any, res) => {
+      try {
+        if (!moisesService.isEnabled()) {
+          return res.status(503).json({ error: 'Stem splitter service not available' });
+        }
+
+        const stemData = await moisesService.getMockStemData(req.params.jobId, req.params.stemName);
+        if (stemData) {
+          res.setHeader('Content-Type', 'audio/wav');
+          res.setHeader('Content-Disposition', `attachment; filename="${req.params.stemName}"`);
+          res.send(stemData);
+        } else {
+          res.status(404).json({ error: 'Stem file not found' });
+        }
+      } catch (error) {
+        handleRouteError('stem-splitter-download', error, req, res);
+      }
+    });
+
+    console.log('✅ Stem splitter routes registered successfully');
+  } catch (error) {
+    console.error('❌ Failed to register stem splitter routes:', error);
+    console.log('⚠️ Stem splitter features will be disabled');
+  }
+
   console.log('📡 Registering broadcast session routes...');
   console.log('🗄️ Registering database storage routes...');
   console.log('🎵 Registering song management routes...');

@@ -328,27 +328,20 @@ export function TrackWaveformEditor({
       const audio = new Audio(workingUrl);
       audio.currentTime = pendingSelection.start;
       
-      // Use requestAnimationFrame for more precise timing
-      let animationFrameId: number;
-      
       const stopPlayback = () => {
         audio.pause();
-        if (animationFrameId) {
-          cancelAnimationFrame(animationFrameId);
-        }
+        audio.removeEventListener('timeupdate', checkTime);
         setIsPlayingSelection(false);
       };
       
       const checkTime = () => {
-        if (audio.currentTime >= pendingSelection.end - 0.05) { // Stop 50ms early for precision
+        // Stop slightly before the end for better precision (100ms buffer)
+        if (audio.currentTime >= pendingSelection.end - 0.1) {
           stopPlayback();
-        } else {
-          animationFrameId = requestAnimationFrame(checkTime);
         }
       };
       
-      // Start the precise timing check
-      animationFrameId = requestAnimationFrame(checkTime);
+      audio.addEventListener('timeupdate', checkTime);
       audio.addEventListener('ended', stopPlayback);
       
       await audio.play();

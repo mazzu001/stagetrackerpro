@@ -1,0 +1,67 @@
+dialog.tsx:519  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ dialog.tsx:519
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+stem-splitter.tsx:521 🔘 Radio changed to: download
+stem-splitter.tsx:539 🔘 Radio changed to: both
+stem-splitter.tsx:181 🎯 Output mode is: both
+stem-splitter.tsx:184 📥 Downloading stems to computer...
+stem-splitter.tsx:189 ➕ Adding stems to song...
+stem-splitter.tsx:210 🎵 addStemsToSong called with: {stemsCount: 2, song: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', userEmail: undefined}
+stem-splitter.tsx:211 🔍 Full user object: null
+stem-splitter.tsx:212 🔍 User keys: user is null/undefined
+stem-splitter.tsx:215  ❌ Missing song or user email: {song: true, userEmail: undefined, user: null}
+addStemsToSong @ stem-splitter.tsx:215
+downloadStems @ stem-splitter.tsx:190
+await in downloadStems
+(anonymous) @ stem-splitter.tsx:132
+await in (anonymous)
+(anonymous) @ stem-splitter.tsx:346
+setInterval
+startProcessing @ stem-splitter.tsx:345
+await in startProcessing
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+invokeGuardedCallbackAndCatchFirstError @ react-dom.development.js:4291
+executeDispatch @ react-dom.development.js:9041
+processDispatchQueueItemsInOrder @ react-dom.development.js:9073
+processDispatchQueue @ react-dom.development.js:9086
+dispatchEventsForPlugins @ react-dom.development.js:9097
+(anonymous) @ react-dom.development.js:9288
+batchedUpdates$1 @ react-dom.development.js:26179
+batchedUpdates @ react-dom.development.js:3991
+dispatchEventForPluginEventSystem @ react-dom.development.js:9287
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ react-dom.development.js:6465
+dispatchEvent @ react-dom.development.js:6457
+dispatchDiscreteEvent @ react-dom.development.js:6430

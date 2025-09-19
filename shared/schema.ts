@@ -32,6 +32,7 @@ export const tracks = sqliteTable("tracks", {
   balance: integer("balance").default(0), // -50 to +50 (L to R)
   isMuted: integer("is_muted", { mode: 'boolean' }).default(false),
   isSolo: integer("is_solo", { mode: 'boolean' }).default(false),
+  muteRegions: text("mute_regions"), // JSON array of mute regions {id, start, end}
 });
 
 
@@ -50,6 +51,18 @@ export type Song = typeof songs.$inferSelect;
 
 export type InsertTrack = z.infer<typeof insertTrackSchema>;
 export type Track = typeof tracks.$inferSelect;
+
+// Mute region type for per-track audio editing
+export type MuteRegion = {
+  id: string;
+  start: number; // Start time in seconds
+  end: number;   // End time in seconds
+};
+
+// Extended Track type with parsed mute regions
+export type TrackWithRegions = Omit<Track, 'muteRegions'> & {
+  muteRegions: MuteRegion[];
+};
 
 
 export type SongWithTracks = Song & {

@@ -1,4 +1,4 @@
-import type { SongWithTracks } from '@shared/schema';
+import type { SongWithTracks, MuteRegion } from '@shared/schema';
 
 const STORAGE_KEY = 'lpp_songs';
 
@@ -97,6 +97,7 @@ export class LocalSongStorage {
         balance: track.balance || 0.0,
         isMuted: track.isMuted || false,
         isSolo: track.isSolo || false,
+        muteRegions: track.muteRegions || [],
         filePath: track.filePath || null,
         ...track,
         createdAt: new Date().toISOString()
@@ -176,5 +177,80 @@ export class LocalSongStorage {
     };
 
     return this.updateSong(userEmail, songId, updatedSong);
+  }
+
+  // Mute Region Management
+  static addMuteRegion(userEmail: string, songId: string, trackId: string, region: Omit<MuteRegion, 'id'>): MuteRegion | null {
+    const songs = this.getAllSongs(userEmail);
+    const songIndex = songs.findIndex(song => song.id === songId);
+    
+    if (songIndex === -1) return null;
+    
+    const trackIndex = songs[songIndex].tracks.findIndex(track => track.id === trackId);
+    if (trackIndex === -1) return null;
+
+    const newRegion: MuteRegion = {
+      id: crypto.randomUUID(),
+      ...region
+    };
+
+    const track = songs[songIndex].tracks[trackIndex];
+    if (!track.muteRegions) {
+      track.muteRegions = [];
+    }
+    
+    track.muteRegions.push(newRegion);
+    this.saveSongs(userEmail, songs);
+    return newRegion;
+  }
+
+  static updateMuteRegion(userEmail: string, songId: string, trackId: string, regionId: string, updates: Partial<MuteRegion>): MuteRegion | null {
+    const songs = this.getAllSongs(userEmail);
+    const songIndex = songs.findIndex(song => song.id === songId);
+    
+    if (songIndex === -1) return null;
+    
+    const trackIndex = songs[songIndex].tracks.findIndex(track => track.id === trackId);
+    if (trackIndex === -1) return null;
+
+    const track = songs[songIndex].tracks[trackIndex];
+    if (!track.muteRegions) return null;
+
+    const regionIndex = track.muteRegions.findIndex(region => region.id === regionId);
+    if (regionIndex === -1) return null;
+
+    track.muteRegions[regionIndex] = { ...track.muteRegions[regionIndex], ...updates };
+    this.saveSongs(userEmail, songs);
+    return track.muteRegions[regionIndex];
+  }
+
+  static deleteMuteRegion(userEmail: string, songId: string, trackId: string, regionId: string): boolean {
+    const songs = this.getAllSongs(userEmail);
+    const songIndex = songs.findIndex(song => song.id === songId);
+    
+    if (songIndex === -1) return false;
+    
+    const trackIndex = songs[songIndex].tracks.findIndex(track => track.id === trackId);
+    if (trackIndex === -1) return false;
+
+    const track = songs[songIndex].tracks[trackIndex];
+    if (!track.muteRegions) return false;
+
+    const originalLength = track.muteRegions.length;
+    track.muteRegions = track.muteRegions.filter(region => region.id !== regionId);
+    
+    if (track.muteRegions.length === originalLength) return false;
+
+    this.saveSongs(userEmail, songs);
+    return true;
+  }
+
+  static getMuteRegions(userEmail: string, songId: string, trackId: string): MuteRegion[] {
+    const songs = this.getAllSongs(userEmail);
+    const song = songs.find(song => song.id === songId);
+    if (!song) return [];
+
+    const track = song.tracks.find(track => track.id === trackId);
+    return track?.muteRegions || [];
   }
 }

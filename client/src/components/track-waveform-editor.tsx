@@ -328,20 +328,21 @@ export function TrackWaveformEditor({
       const audio = new Audio(workingUrl);
       audio.currentTime = pendingSelection.start;
       
+      // Calculate exact duration to play
+      const selectionDuration = pendingSelection.end - pendingSelection.start;
+      let timeoutId: ReturnType<typeof setTimeout>;
+      
       const stopPlayback = () => {
         audio.pause();
-        audio.removeEventListener('timeupdate', checkTime);
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
         setIsPlayingSelection(false);
       };
       
-      const checkTime = () => {
-        // Stop slightly before the end for better precision (100ms buffer)
-        if (audio.currentTime >= pendingSelection.end - 0.1) {
-          stopPlayback();
-        }
-      };
+      // Use setTimeout for precise duration control
+      timeoutId = setTimeout(stopPlayback, selectionDuration * 1000); // Convert to milliseconds
       
-      audio.addEventListener('timeupdate', checkTime);
       audio.addEventListener('ended', stopPlayback);
       
       await audio.play();

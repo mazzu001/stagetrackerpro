@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -180,18 +180,12 @@ export default function StemSplitter({
     setGeneratedStems(stems);
     
     // Handle output mode
-    console.log('🎯 Output mode is:', outputMode);
-    
     if (outputMode === 'download' || outputMode === 'both') {
-      console.log('📥 Downloading stems to computer...');
       downloadStemsToComputer(stems);
     }
     
     if (outputMode === 'add-to-song' || outputMode === 'both') {
-      console.log('➕ Adding stems to song...');
       await addStemsToSong(stems);
-    } else {
-      console.log('❌ Not adding to song, outputMode is:', outputMode);
     }
   };
 
@@ -209,12 +203,8 @@ export default function StemSplitter({
   };
 
   const addStemsToSong = async (stems: GeneratedStem[]) => {
-    console.log('🎵 addStemsToSong called with:', { stemsCount: stems.length, song: song?.id, userEmail: user?.email, propUserEmail });
-    console.log('🔍 Full user object:', user);
-    console.log('🔍 User keys:', user ? Object.keys(user) : 'user is null/undefined');
     
     if (!song) {
-      console.error('❌ Missing song:', { song: !!song });
       toast({
         title: "Cannot add to song",
         description: "No active song selected.",
@@ -228,30 +218,21 @@ export default function StemSplitter({
     if (!userIdentifier && user) {
       // Try other possible user identifier fields
       userIdentifier = (user as any).id || (user as any).username || (user as any).name;
-      console.log('🔄 Using alternative user identifier:', userIdentifier);
     }
     
     // If still no user identifier, use a default for local storage
     if (!userIdentifier) {
       userIdentifier = 'local_user'; // Default identifier for local songs
-      console.log('🔄 No user found, using default identifier:', userIdentifier);
     }
-    
-    console.log('✅ Proceeding with userIdentifier:', userIdentifier);
-
-    // User identifier resolved above - ready to proceed
 
     try {
       for (const stem of stems) {
-        console.log(`🎵 Processing stem: ${stem.name} (${stem.size} bytes)`);
-        
         // Convert blob to File
         const file = new File([stem.blob], `${stem.name}.wav`, { type: 'audio/wav' });
-        console.log(`📁 Created file object: ${file.name}, size: ${file.size}`);
         
-        // Create new track - DON'T use stem.id, let LocalSongStorage generate the ID
+        // Create new track
         const newTrack: Track = {
-          id: crypto.randomUUID(), // Generate unique ID here
+          id: crypto.randomUUID(),
           songId: song.id,
           name: stem.name,
           trackNumber: (song.tracks?.length || 0) + 1,
@@ -265,23 +246,16 @@ export default function StemSplitter({
           isMuted: false,
           isSolo: false,
         };
-        console.log(`🎧 Created track object: ${newTrack.id} - ${newTrack.name}`);
         
         // Store audio file
-        console.log(`💾 Storing audio file for track: ${newTrack.id}`);
         await AudioFileStorage.getInstance().storeAudioFile(newTrack.id, file, newTrack);
-        console.log(`✅ Audio file stored successfully`);
         
         // Add track to song
-        console.log(`📝 Adding track to song: ${song.id}`);
         const result = LocalSongStorage.addTrack(userIdentifier, song.id, newTrack);
-        console.log(`📝 LocalSongStorage.addTrack result:`, result);
       }
       
       // Trigger song update
-      console.log(`🔄 Getting updated song from storage`);
       const updatedSong = LocalSongStorage.getSong(userIdentifier, song.id);
-      console.log(`🔄 Updated song:`, { id: updatedSong?.id, tracksCount: updatedSong?.tracks?.length });
       
       if (updatedSong && onSongUpdate) {
         // Convert LocalSong to SongWithTracks format
@@ -289,10 +263,7 @@ export default function StemSplitter({
           ...updatedSong,
           userId: userIdentifier,
         };
-        console.log(`🔄 Calling onSongUpdate with:`, { id: songWithTracks.id, tracksCount: songWithTracks.tracks?.length });
         onSongUpdate(songWithTracks);
-      } else {
-        console.warn(`⚠️ No song update: updatedSong=${!!updatedSong}, onSongUpdate=${!!onSongUpdate}`);
       }
       
       toast({
@@ -301,7 +272,6 @@ export default function StemSplitter({
       });
       
     } catch (error) {
-      console.error('❌ Error adding stems to song:', error);
       toast({
         title: "Failed to add stems",
         description: "Could not add stems to the current song.",

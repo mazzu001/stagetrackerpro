@@ -52,23 +52,7 @@ export default function TrackManager({
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
-  const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>(() => {
-    // Load saved values IMMEDIATELY on first render
-    if (song?.id && user?.email) {
-      const freshSong = LocalSongStorage.getSong(user.email, song.id);
-      const freshTracks = freshSong?.tracks || [];
-      
-      const savedValues: Record<string, { volume: number; balance: number }> = {};
-      freshTracks.forEach(track => {
-        savedValues[track.id] = {
-          volume: track.volume || 1.0,
-          balance: track.balance || 0.0
-        };
-      });
-      return savedValues;
-    }
-    return {};
-  });
+  const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
   // Pitch and speed control removed
 
   // Recording state
@@ -81,7 +65,19 @@ export default function TrackManager({
   // Get tracks for the current song
   const tracks = song?.tracks || [];
 
-  // No useEffect needed - values loaded immediately in useState initializer
+  // Initialize local track values from tracks (once, immediately)
+  useEffect(() => {
+    if (tracks.length > 0) {
+      const initialValues: Record<string, { volume: number; balance: number }> = {};
+      tracks.forEach(track => {
+        initialValues[track.id] = {
+          volume: track.volume || 1.0,
+          balance: track.balance || 0.0
+        };
+      });
+      setLocalTrackValues(initialValues);
+    }
+  }, [tracks]);
 
   // Initialize audio inputs on component mount
   // Recording features removed
@@ -685,7 +681,7 @@ export default function TrackManager({
       ) : (
         <div className="space-y-3">
           {tracks.map((track, index) => {
-            const localValues = localTrackValues[track.id] || { volume: 1.0, balance: 0.0 };
+            const localValues = localTrackValues[track.id] || { volume: track.volume, balance: track.balance };
             const level = audioLevels[track.id] || 0;
             
             return (

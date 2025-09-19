@@ -1,0 +1,2312 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+BandMaestro:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+BandMaestro:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+BandMaestro:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-0ca3e0d0bb71f44c.js:28 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-0ca3e0d0bb71f44c.js:28 [LaunchDarkly] LaunchDarkly client initialized
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'battery'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'layout-animations'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'navigation-override'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'oversized-images'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'unsized-media'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Unrecognized feature: 'pointer-lock'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+framework-7f2c8ab1a6e80f5e.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-7f2c8ab1a6e80f5e.js:1
+(anonymous) @ framework-7f2c8ab1a6e80f5e.js:1
+uD @ framework-7f2c8ab1a6e80f5e.js:1
+uI @ framework-7f2c8ab1a6e80f5e.js:1
+uM @ framework-7f2c8ab1a6e80f5e.js:1
+uS @ framework-7f2c8ab1a6e80f5e.js:1
+C @ framework-7f2c8ab1a6e80f5e.js:1
+z @ framework-7f2c8ab1a6e80f5e.js:1
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=_qkeKhlKlyB7' failed: 
+setupWebSocket @ VM13 client:536
+(anonymous) @ VM13 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=_qkeKhlKlyB7' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM13 client:536
+fallback @ VM13 client:509
+(anonymous) @ VM13 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:133 No stored audio file references found
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM66 @stripe_stripe-js.js:121
+(anonymous) @ VM66 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM66 @stripe_stripe-js.js:150
+(anonymous) @ VM38 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM66 @stripe_stripe-js.js:121
+(anonymous) @ VM66 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM66 @stripe_stripe-js.js:150
+(anonymous) @ VM40 subscribe-elements-test.tsx:25
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+BandMaestro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+sw.js:76 StageTracker Pro Service Worker loaded
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=SJzaMQNMdpis' failed: 
+setupWebSocket @ VM14 client:536
+(anonymous) @ VM14 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=SJzaMQNMdpis' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM14 client:536
+fallback @ VM14 client:509
+(anonymous) @ VM14 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:133 No stored audio file references found
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM137 stripe.js:1
+e @ VM137 stripe.js:1
+xy @ VM137 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM39 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM137 stripe.js:1
+e @ VM137 stripe.js:1
+xy @ VM137 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM41 subscribe-elements-test.tsx:25
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+useLocalAuth.ts:104 📱 Edge browser: Starting background verification
+useLocalAuth.ts:117 ✅ Edge browser: Background verification complete
+streaming-audio-engine.ts:458 📱 Edge browser: Forcing memory cleanup
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+useLocalAuth.ts:104 📱 Edge browser: Starting background verification
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=TQj5AqqFk9js' failed: 
+setupWebSocket @ VM14 client:536
+(anonymous) @ VM14 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=TQj5AqqFk9js' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM14 client:536
+fallback @ VM14 client:509
+(anonymous) @ VM14 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:133 No stored audio file references found
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM38 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM40 subscribe-elements-test.tsx:25
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=r1Y_7D-5NrFd' failed: 
+setupWebSocket @ VM14 client:536
+(anonymous) @ VM14 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=r1Y_7D-5NrFd' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM14 client:536
+fallback @ VM14 client:509
+(anonymous) @ VM14 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:133 No stored audio file references found
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM38 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM40 subscribe-elements-test.tsx:25
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=UoHli_SbFZlz' failed: 
+setupWebSocket @ VM159 client:536
+(anonymous) @ VM159 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=UoHli_SbFZlz' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM159 client:536
+fallback @ VM159 client:509
+(anonymous) @ VM159 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:133 No stored audio file references found
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM270 stripe.js:1
+e @ VM270 stripe.js:1
+xy @ VM270 stripe.js:1
+initStripe2 @ VM185 @stripe_stripe-js.js:121
+(anonymous) @ VM185 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM185 @stripe_stripe-js.js:150
+(anonymous) @ VM189 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM270 stripe.js:1
+e @ VM270 stripe.js:1
+xy @ VM270 stripe.js:1
+initStripe2 @ VM185 @stripe_stripe-js.js:121
+(anonymous) @ VM185 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM185 @stripe_stripe-js.js:150
+(anonymous) @ VM191 subscribe-elements-test.tsx:25
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=oXKBtVg__q9h' failed: 
+setupWebSocket @ VM14 client:536
+(anonymous) @ VM14 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=oXKBtVg__q9h' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM14 client:536
+fallback @ VM14 client:509
+(anonymous) @ VM14 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:133 No stored audio file references found
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM38 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM40 subscribe-elements-test.tsx:25
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=b4eznxzcTY51' failed: 
+setupWebSocket @ VM14 client:536
+(anonymous) @ VM14 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=b4eznxzcTY51' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM14 client:536
+fallback @ VM14 client:509
+(anonymous) @ VM14 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:133 No stored audio file references found
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM38 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM40 subscribe-elements-test.tsx:25
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=M8_s06bNgxgD' failed: 
+setupWebSocket @ VM148 client:536
+(anonymous) @ VM148 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=M8_s06bNgxgD' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM148 client:536
+fallback @ VM148 client:509
+(anonymous) @ VM148 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:133 No stored audio file references found
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM269 stripe.js:1
+e @ VM269 stripe.js:1
+xy @ VM269 stripe.js:1
+initStripe2 @ VM216 @stripe_stripe-js.js:121
+(anonymous) @ VM216 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM216 @stripe_stripe-js.js:150
+(anonymous) @ VM172 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM269 stripe.js:1
+e @ VM269 stripe.js:1
+xy @ VM269 stripe.js:1
+initStripe2 @ VM216 @stripe_stripe-js.js:121
+(anonymous) @ VM216 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM216 @stripe_stripe-js.js:150
+(anonymous) @ VM174 subscribe-elements-test.tsx:25
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=TxS1VL3dgQSw' failed: 
+setupWebSocket @ VM282 client:536
+(anonymous) @ VM282 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=TxS1VL3dgQSw' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM282 client:536
+fallback @ VM282 client:509
+(anonymous) @ VM282 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:133 No stored audio file references found
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM403 stripe.js:1
+e @ VM403 stripe.js:1
+xy @ VM403 stripe.js:1
+initStripe2 @ VM351 @stripe_stripe-js.js:121
+(anonymous) @ VM351 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM351 @stripe_stripe-js.js:150
+(anonymous) @ VM306 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM403 stripe.js:1
+e @ VM403 stripe.js:1
+xy @ VM403 stripe.js:1
+initStripe2 @ VM351 @stripe_stripe-js.js:121
+(anonymous) @ VM351 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM351 @stripe_stripe-js.js:150
+(anonymous) @ VM308 subscribe-elements-test.tsx:25
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=F2VR2OQOQ_ue' failed: 
+setupWebSocket @ VM14 client:536
+(anonymous) @ VM14 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=F2VR2OQOQ_ue' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM14 client:536
+fallback @ VM14 client:509
+(anonymous) @ VM14 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:133 No stored audio file references found
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM37 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM135 stripe.js:1
+e @ VM135 stripe.js:1
+xy @ VM135 stripe.js:1
+initStripe2 @ VM82 @stripe_stripe-js.js:121
+(anonymous) @ VM82 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM82 @stripe_stripe-js.js:150
+(anonymous) @ VM39 subscribe-elements-test.tsx:25
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:379 🎵 Loading song: 3 AM
+performance.tsx:386 📡 Not uploading to database: {isHost: false, hasCurrentRoom: false, roomId: undefined}
+performance.tsx:390 🔍 Debug values: {selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: true, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+@radix-ui_react-dialog.js?v=170c6354:330  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ VM110 @radix-ui_react-dialog.js:330
+commitHookEffectListMount @ VM22 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM22 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM22 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM22 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM22 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM22 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM22 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM22 chunk-UZOKQUDP.js:19416
+commitRoot @ VM22 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM22 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM22 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM22 chunk-UZOKQUDP.js:18627
+@radix-ui_react-dialog.js?v=170c6354:344  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ VM110 @radix-ui_react-dialog.js:344
+commitHookEffectListMount @ VM22 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM22 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM22 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM22 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM22 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM22 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM22 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM22 chunk-UZOKQUDP.js:19416
+commitRoot @ VM22 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM22 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM22 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM22 chunk-UZOKQUDP.js:18627
+waveform-visualizer.tsx:59 No tracks or cached waveform for "3 AM"
+use-audio-engine.tsx:92 Song selected: "3 AM" with 0 tracks - loading for streaming
+use-audio-engine.tsx:96 Setting up streaming for: "3 AM" - UI stays responsive
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: '3 AM', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+streaming-audio-engine.ts:37 🚀 Streaming load: 0 tracks (deferred setup)
+streaming-audio-engine.ts:31 🎵 Loading original tracks...
+streaming-audio-engine.ts:32 🎵 Track loading complete: 0 tracks ready
+use-audio-engine.tsx:114 ✅ Streaming ready for "3 AM" - instant playback available
+streaming-audio-engine.ts:60 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+track-manager-clean.tsx:110 === Web Track Manager: Starting file selection ===
+track-manager-clean.tsx:117 === Web Track Manager: File change event triggered ===
+track-manager-clean.tsx:125 Files selected: 6
+track-manager-clean.tsx:160 📁 Processing file 1/6: 3AM - Backups.mp3 (8.7MB)
+track-manager-clean.tsx:165 ⏳ Starting processing of 3AM - Backups.mp3...
+track-manager-clean.tsx:261 Processing file 0/0: 3AM - Backups.mp3
+track-manager-clean.tsx:264 Adding track "3AM - Backups" with file: 3AM - Backups.mp3
+local-song-storage.ts:85 LocalSongStorage.addTrack: Track added successfully: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:23 Storing audio file in browser: 3AM - Backups.mp3, size: 9154836 bytes
+browser-file-system.ts:101 🔄 BrowserFS.addAudioFile: Storing 3AM - Backups.mp3 as track 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:102 🗃️ Database initialized: true
+browser-file-system.ts:124 ✅ IndexedDB storage successful for 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:133 ✅ Memory cache updated for 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:139 📱 Edge on Windows: clearing memory cache for 85516371-6892-485e-baaa-ad929b71972f to save memory
+browser-file-system.ts:142 ✅ Audio file stored: 3AM - Backups.mp3 for track: 3AM - Backups
+audio-file-storage.ts:229 Saved 1 audio file path references to localStorage (0KB)
+audio-file-storage.ts:42 Successfully stored audio file for track: 3AM - Backups (8940KB)
+track-manager-clean.tsx:286 Audio file stored successfully for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:51 📂 Available audio files (1): ['85516371-6892-485e-baaa-ad929b71972f']
+audio-file-storage.ts:52 💾 Memory cache files (1): ['85516371-6892-485e-baaa-ad929b71972f']
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:172 ✅ Found in IndexedDB: 85516371-6892-485e-baaa-ad929b71972f (3AM - Backups.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 85516371-6892-485e-baaa-ad929b71972f
+track-manager-clean.tsx:290 Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+track-manager-clean.tsx:91 Detected audio duration: 229s from file: 3AM - Backups.mp3
+track-manager-clean.tsx:294 Track added successfully
+track-manager-clean.tsx:297 Track data updated, refreshing song with 1 tracks
+performance.tsx:1993 Performance: Received song update with 1 tracks
+track-manager-clean.tsx:303 Cleared waveform cache for "3 AM" - will regenerate on next view
+track-manager-clean.tsx:309 Successfully processed: 3AM - Backups.mp3
+track-manager-clean.tsx:167 ✅ File 1 completely processed and stored
+use-audio-engine.tsx:92 Song selected: "3 AM" with 1 tracks - loading for streaming
+use-audio-engine.tsx:96 Setting up streaming for: "3 AM" - UI stays responsive
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:51 📂 Available audio files (1): ['85516371-6892-485e-baaa-ad929b71972f']
+audio-file-storage.ts:52 💾 Memory cache files (1): ['85516371-6892-485e-baaa-ad929b71972f']
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: '3 AM', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 85516371-6892-485e-baaa-ad929b71972f
+streaming-audio-engine.ts:37 🚀 Streaming load: 1 tracks (deferred setup)
+streaming-audio-engine.ts:31 🎵 Loading original tracks...
+streaming-audio-engine.ts:32 🎵 Track loading complete: 1 tracks ready
+use-audio-engine.tsx:114 ✅ Streaming ready for "3 AM" - instant playback available
+streaming-audio-engine.ts:60 ✅ Streaming ready: 1 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Backups
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: '3 AM', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+track-manager-clean.tsx:204 📊 Duration added: 228.9s (total: 228.9s)
+track-manager-clean.tsx:160 📁 Processing file 2/6: 3AM - Bass.mp3 (8.7MB)
+track-manager-clean.tsx:165 ⏳ Starting processing of 3AM - Bass.mp3...
+track-manager-clean.tsx:261 Processing file 0/0: 3AM - Bass.mp3
+track-manager-clean.tsx:264 Adding track "3AM - Bass" with file: 3AM - Bass.mp3
+local-song-storage.ts:85 LocalSongStorage.addTrack: Track added successfully: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:23 Storing audio file in browser: 3AM - Bass.mp3, size: 9154836 bytes
+browser-file-system.ts:101 🔄 BrowserFS.addAudioFile: Storing 3AM - Bass.mp3 as track 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:102 🗃️ Database initialized: true
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+browser-file-system.ts:124 ✅ IndexedDB storage successful for 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:133 ✅ Memory cache updated for 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:139 📱 Edge on Windows: clearing memory cache for 309057cb-8ab5-4870-a132-86ee5fe872a8 to save memory
+browser-file-system.ts:142 ✅ Audio file stored: 3AM - Bass.mp3 for track: 3AM - Bass
+audio-file-storage.ts:229 Saved 2 audio file path references to localStorage (1KB)
+audio-file-storage.ts:42 Successfully stored audio file for track: 3AM - Bass (8940KB)
+track-manager-clean.tsx:286 Audio file stored successfully for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:51 📂 Available audio files (2): (2) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8']
+audio-file-storage.ts:52 💾 Memory cache files (2): (2) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8']
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:152 💾 Memory cache has: [85516371-6892-485e-baaa-ad929b71972f]
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:172 ✅ Found in IndexedDB: 309057cb-8ab5-4870-a132-86ee5fe872a8 (3AM - Bass.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+track-manager-clean.tsx:290 Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+track-manager-clean.tsx:91 Detected audio duration: 229s from file: 3AM - Bass.mp3
+track-manager-clean.tsx:294 Track added successfully
+track-manager-clean.tsx:297 Track data updated, refreshing song with 2 tracks
+performance.tsx:1993 Performance: Received song update with 2 tracks
+track-manager-clean.tsx:303 Cleared waveform cache for "3 AM" - will regenerate on next view
+track-manager-clean.tsx:309 Successfully processed: 3AM - Bass.mp3
+track-manager-clean.tsx:167 ✅ File 2 completely processed and stored
+use-audio-engine.tsx:92 Song selected: "3 AM" with 2 tracks - loading for streaming
+use-audio-engine.tsx:96 Setting up streaming for: "3 AM" - UI stays responsive
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:51 📂 Available audio files (2): (2) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8']
+audio-file-storage.ts:52 💾 Memory cache files (2): (2) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:51 📂 Available audio files (2): (2) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8']
+audio-file-storage.ts:52 💾 Memory cache files (2): (2) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8']
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: '3 AM', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+streaming-audio-engine.ts:37 🚀 Streaming load: 2 tracks (deferred setup)
+streaming-audio-engine.ts:31 🎵 Loading original tracks...
+streaming-audio-engine.ts:32 🎵 Track loading complete: 2 tracks ready
+use-audio-engine.tsx:114 ✅ Streaming ready for "3 AM" - instant playback available
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:60 ✅ Streaming ready: 2 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Backups
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Bass
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Backups: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Bass
+track-manager-clean.tsx:204 📊 Duration added: 228.9s (total: 457.7s)
+track-manager-clean.tsx:160 📁 Processing file 3/6: 3AM - Click.mp3 (8.7MB)
+track-manager-clean.tsx:165 ⏳ Starting processing of 3AM - Click.mp3...
+track-manager-clean.tsx:261 Processing file 0/0: 3AM - Click.mp3
+track-manager-clean.tsx:264 Adding track "3AM - Click" with file: 3AM - Click.mp3
+local-song-storage.ts:85 LocalSongStorage.addTrack: Track added successfully: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:23 Storing audio file in browser: 3AM - Click.mp3, size: 9154836 bytes
+browser-file-system.ts:101 🔄 BrowserFS.addAudioFile: Storing 3AM - Click.mp3 as track a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:102 🗃️ Database initialized: true
+browser-file-system.ts:124 ✅ IndexedDB storage successful for a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:133 ✅ Memory cache updated for a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:139 📱 Edge on Windows: clearing memory cache for a754bc46-1864-4f6c-9a45-ad641b33b538 to save memory
+browser-file-system.ts:142 ✅ Audio file stored: 3AM - Click.mp3 for track: 3AM - Click
+audio-file-storage.ts:229 Saved 3 audio file path references to localStorage (1KB)
+audio-file-storage.ts:42 Successfully stored audio file for track: 3AM - Click (8940KB)
+track-manager-clean.tsx:286 Audio file stored successfully for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:51 📂 Available audio files (3): (3) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538']
+audio-file-storage.ts:52 💾 Memory cache files (3): (3) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538']
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:152 💾 Memory cache has: [85516371-6892-485e-baaa-ad929b71972f, 309057cb-8ab5-4870-a132-86ee5fe872a8]
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:172 ✅ Found in IndexedDB: a754bc46-1864-4f6c-9a45-ad641b33b538 (3AM - Click.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+track-manager-clean.tsx:290 Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+track-manager-clean.tsx:91 Detected audio duration: 229s from file: 3AM - Click.mp3
+track-manager-clean.tsx:294 Track added successfully
+track-manager-clean.tsx:297 Track data updated, refreshing song with 3 tracks
+performance.tsx:1993 Performance: Received song update with 3 tracks
+track-manager-clean.tsx:303 Cleared waveform cache for "3 AM" - will regenerate on next view
+track-manager-clean.tsx:309 Successfully processed: 3AM - Click.mp3
+track-manager-clean.tsx:167 ✅ File 3 completely processed and stored
+use-audio-engine.tsx:92 Song selected: "3 AM" with 3 tracks - loading for streaming
+use-audio-engine.tsx:96 Setting up streaming for: "3 AM" - UI stays responsive
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:51 📂 Available audio files (3): (3) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538']
+audio-file-storage.ts:52 💾 Memory cache files (3): (3) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:51 📂 Available audio files (3): (3) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538']
+audio-file-storage.ts:52 💾 Memory cache files (3): (3) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:51 📂 Available audio files (3): (3) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538']
+audio-file-storage.ts:52 💾 Memory cache files (3): (3) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538']
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: '3 AM', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+streaming-audio-engine.ts:37 🚀 Streaming load: 3 tracks (deferred setup)
+streaming-audio-engine.ts:31 🎵 Loading original tracks...
+streaming-audio-engine.ts:32 🎵 Track loading complete: 3 tracks ready
+use-audio-engine.tsx:114 ✅ Streaming ready for "3 AM" - instant playback available
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:60 ✅ Streaming ready: 3 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Backups
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Bass
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Click
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Backups: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Bass
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Bass: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Bass
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Click
+track-manager-clean.tsx:204 📊 Duration added: 228.9s (total: 686.6s)
+track-manager-clean.tsx:160 📁 Processing file 4/6: 3AM - Drums.mp3 (8.7MB)
+track-manager-clean.tsx:165 ⏳ Starting processing of 3AM - Drums.mp3...
+track-manager-clean.tsx:261 Processing file 0/0: 3AM - Drums.mp3
+track-manager-clean.tsx:264 Adding track "3AM - Drums" with file: 3AM - Drums.mp3
+local-song-storage.ts:85 LocalSongStorage.addTrack: Track added successfully: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:23 Storing audio file in browser: 3AM - Drums.mp3, size: 9154836 bytes
+browser-file-system.ts:101 🔄 BrowserFS.addAudioFile: Storing 3AM - Drums.mp3 as track 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:102 🗃️ Database initialized: true
+browser-file-system.ts:124 ✅ IndexedDB storage successful for 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:133 ✅ Memory cache updated for 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:139 📱 Edge on Windows: clearing memory cache for 30b310ee-1ae1-45a6-9139-a19e54966cf7 to save memory
+browser-file-system.ts:142 ✅ Audio file stored: 3AM - Drums.mp3 for track: 3AM - Drums
+audio-file-storage.ts:229 Saved 4 audio file path references to localStorage (1KB)
+audio-file-storage.ts:42 Successfully stored audio file for track: 3AM - Drums (8940KB)
+track-manager-clean.tsx:286 Audio file stored successfully for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:51 📂 Available audio files (4): (4) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7']
+audio-file-storage.ts:52 💾 Memory cache files (4): (4) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7']
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:152 💾 Memory cache has: [85516371-6892-485e-baaa-ad929b71972f, 309057cb-8ab5-4870-a132-86ee5fe872a8, a754bc46-1864-4f6c-9a45-ad641b33b538]
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:172 ✅ Found in IndexedDB: 30b310ee-1ae1-45a6-9139-a19e54966cf7 (3AM - Drums.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+track-manager-clean.tsx:290 Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+track-manager-clean.tsx:91 Detected audio duration: 229s from file: 3AM - Drums.mp3
+track-manager-clean.tsx:294 Track added successfully
+track-manager-clean.tsx:297 Track data updated, refreshing song with 4 tracks
+performance.tsx:1993 Performance: Received song update with 4 tracks
+track-manager-clean.tsx:303 Cleared waveform cache for "3 AM" - will regenerate on next view
+track-manager-clean.tsx:309 Successfully processed: 3AM - Drums.mp3
+track-manager-clean.tsx:167 ✅ File 4 completely processed and stored
+use-audio-engine.tsx:92 Song selected: "3 AM" with 4 tracks - loading for streaming
+use-audio-engine.tsx:96 Setting up streaming for: "3 AM" - UI stays responsive
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:51 📂 Available audio files (4): (4) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7']
+audio-file-storage.ts:52 💾 Memory cache files (4): (4) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:51 📂 Available audio files (4): (4) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7']
+audio-file-storage.ts:52 💾 Memory cache files (4): (4) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:51 📂 Available audio files (4): (4) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7']
+audio-file-storage.ts:52 💾 Memory cache files (4): (4) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:51 📂 Available audio files (4): (4) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7']
+audio-file-storage.ts:52 💾 Memory cache files (4): (4) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7']
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: '3 AM', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+streaming-audio-engine.ts:37 🚀 Streaming load: 4 tracks (deferred setup)
+streaming-audio-engine.ts:31 🎵 Loading original tracks...
+streaming-audio-engine.ts:32 🎵 Track loading complete: 4 tracks ready
+use-audio-engine.tsx:114 ✅ Streaming ready for "3 AM" - instant playback available
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:60 ✅ Streaming ready: 4 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Backups
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Bass
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Click
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Drums
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Backups: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Bass
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Bass: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Click
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Click: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Bass
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Click
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Drums
+track-manager-clean.tsx:204 📊 Duration added: 228.9s (total: 915.5s)
+track-manager-clean.tsx:160 📁 Processing file 5/6: 3AM - Guitars.mp3 (8.7MB)
+track-manager-clean.tsx:165 ⏳ Starting processing of 3AM - Guitars.mp3...
+track-manager-clean.tsx:261 Processing file 0/0: 3AM - Guitars.mp3
+track-manager-clean.tsx:264 Adding track "3AM - Guitars" with file: 3AM - Guitars.mp3
+local-song-storage.ts:85 LocalSongStorage.addTrack: Track added successfully: a4167cc8-6335-41c0-9828-3e29f7391cbb
+audio-file-storage.ts:23 Storing audio file in browser: 3AM - Guitars.mp3, size: 9154836 bytes
+browser-file-system.ts:101 🔄 BrowserFS.addAudioFile: Storing 3AM - Guitars.mp3 as track a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:102 🗃️ Database initialized: true
+browser-file-system.ts:124 ✅ IndexedDB storage successful for a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:133 ✅ Memory cache updated for a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:139 📱 Edge on Windows: clearing memory cache for a4167cc8-6335-41c0-9828-3e29f7391cbb to save memory
+browser-file-system.ts:142 ✅ Audio file stored: 3AM - Guitars.mp3 for track: 3AM - Guitars
+audio-file-storage.ts:229 Saved 5 audio file path references to localStorage (1KB)
+audio-file-storage.ts:42 Successfully stored audio file for track: 3AM - Guitars (8940KB)
+track-manager-clean.tsx:286 Audio file stored successfully for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+audio-file-storage.ts:51 📂 Available audio files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+audio-file-storage.ts:52 💾 Memory cache files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:152 💾 Memory cache has: [85516371-6892-485e-baaa-ad929b71972f, 309057cb-8ab5-4870-a132-86ee5fe872a8, a754bc46-1864-4f6c-9a45-ad641b33b538, 30b310ee-1ae1-45a6-9139-a19e54966cf7]
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:172 ✅ Found in IndexedDB: a4167cc8-6335-41c0-9828-3e29f7391cbb (3AM - Guitars.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+track-manager-clean.tsx:290 Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+track-manager-clean.tsx:91 Detected audio duration: 229s from file: 3AM - Guitars.mp3
+track-manager-clean.tsx:294 Track added successfully
+track-manager-clean.tsx:297 Track data updated, refreshing song with 5 tracks
+performance.tsx:1993 Performance: Received song update with 5 tracks
+track-manager-clean.tsx:303 Cleared waveform cache for "3 AM" - will regenerate on next view
+track-manager-clean.tsx:309 Successfully processed: 3AM - Guitars.mp3
+track-manager-clean.tsx:167 ✅ File 5 completely processed and stored
+use-audio-engine.tsx:92 Song selected: "3 AM" with 5 tracks - loading for streaming
+use-audio-engine.tsx:96 Setting up streaming for: "3 AM" - UI stays responsive
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:51 📂 Available audio files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+audio-file-storage.ts:52 💾 Memory cache files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:51 📂 Available audio files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+audio-file-storage.ts:52 💾 Memory cache files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:51 📂 Available audio files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+audio-file-storage.ts:52 💾 Memory cache files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:51 📂 Available audio files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+audio-file-storage.ts:52 💾 Memory cache files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+audio-file-storage.ts:51 📂 Available audio files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+audio-file-storage.ts:52 💾 Memory cache files (5): (5) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb']
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: '3 AM', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+streaming-audio-engine.ts:37 🚀 Streaming load: 5 tracks (deferred setup)
+streaming-audio-engine.ts:31 🎵 Loading original tracks...
+streaming-audio-engine.ts:32 🎵 Track loading complete: 5 tracks ready
+use-audio-engine.tsx:114 ✅ Streaming ready for "3 AM" - instant playback available
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:60 ✅ Streaming ready: 5 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Backups
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Bass
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Click
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Drums
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Guitars
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Backups: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Bass
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Bass: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Click
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Click: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Drums
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Drums: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Bass
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Click
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Drums
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Guitars
+track-manager-clean.tsx:204 📊 Duration added: 228.9s (total: 1144.4s)
+track-manager-clean.tsx:160 📁 Processing file 6/6: 3AM - Organ.mp3 (8.7MB)
+track-manager-clean.tsx:165 ⏳ Starting processing of 3AM - Organ.mp3...
+track-manager-clean.tsx:261 Processing file 0/0: 3AM - Organ.mp3
+track-manager-clean.tsx:264 Adding track "3AM - Organ" with file: 3AM - Organ.mp3
+local-song-storage.ts:85 LocalSongStorage.addTrack: Track added successfully: f2252245-afb5-4355-ab87-0f458372cd74
+audio-file-storage.ts:23 Storing audio file in browser: 3AM - Organ.mp3, size: 9154836 bytes
+browser-file-system.ts:101 🔄 BrowserFS.addAudioFile: Storing 3AM - Organ.mp3 as track f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:102 🗃️ Database initialized: true
+browser-file-system.ts:124 ✅ IndexedDB storage successful for f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:133 ✅ Memory cache updated for f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:139 📱 Edge on Windows: clearing memory cache for f2252245-afb5-4355-ab87-0f458372cd74 to save memory
+browser-file-system.ts:142 ✅ Audio file stored: 3AM - Organ.mp3 for track: 3AM - Organ
+audio-file-storage.ts:229 Saved 6 audio file path references to localStorage (2KB)
+audio-file-storage.ts:42 Successfully stored audio file for track: 3AM - Organ (8940KB)
+track-manager-clean.tsx:286 Audio file stored successfully for track: f2252245-afb5-4355-ab87-0f458372cd74
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: f2252245-afb5-4355-ab87-0f458372cd74
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:152 💾 Memory cache has: [85516371-6892-485e-baaa-ad929b71972f, 309057cb-8ab5-4870-a132-86ee5fe872a8, a754bc46-1864-4f6c-9a45-ad641b33b538, 30b310ee-1ae1-45a6-9139-a19e54966cf7, a4167cc8-6335-41c0-9828-3e29f7391cbb]
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:172 ✅ Found in IndexedDB: f2252245-afb5-4355-ab87-0f458372cd74 (3AM - Organ.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: f2252245-afb5-4355-ab87-0f458372cd74
+track-manager-clean.tsx:290 Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+track-manager-clean.tsx:91 Detected audio duration: 229s from file: 3AM - Organ.mp3
+track-manager-clean.tsx:294 Track added successfully
+track-manager-clean.tsx:297 Track data updated, refreshing song with 6 tracks
+performance.tsx:1993 Performance: Received song update with 6 tracks
+track-manager-clean.tsx:303 Cleared waveform cache for "3 AM" - will regenerate on next view
+track-manager-clean.tsx:309 Successfully processed: 3AM - Organ.mp3
+track-manager-clean.tsx:167 ✅ File 6 completely processed and stored
+use-audio-engine.tsx:92 Song selected: "3 AM" with 6 tracks - loading for streaming
+use-audio-engine.tsx:96 Setting up streaming for: "3 AM" - UI stays responsive
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: f2252245-afb5-4355-ab87-0f458372cd74
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: '3 AM', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: f2252245-afb5-4355-ab87-0f458372cd74
+streaming-audio-engine.ts:37 🚀 Streaming load: 6 tracks (deferred setup)
+streaming-audio-engine.ts:31 🎵 Loading original tracks...
+streaming-audio-engine.ts:32 🎵 Track loading complete: 6 tracks ready
+use-audio-engine.tsx:114 ✅ Streaming ready for "3 AM" - instant playback available
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:60 ✅ Streaming ready: 6 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Backups
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Bass
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Click
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Drums
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Guitars
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Organ
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Backups: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Bass
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Bass: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Click
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Click: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Drums
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Drums: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Guitars
+streaming-audio-engine.ts:87  ⚠️ Audio error for 3AM - Guitars: error Event {isTrusted: true, type: 'error', target: audio, currentTarget: audio, eventPhase: 2, …}
+errorHandler @ VM106 streaming-audio-engine.ts:87
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Bass
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Click
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Drums
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Guitars
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Organ
+track-manager-clean.tsx:204 📊 Duration added: 228.9s (total: 1373.2s)
+track-manager-clean.tsx:241 === Web Track Manager: Cleaning up file selection ===
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+@radix-ui_react-dialog.js?v=170c6354:330  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ VM110 @radix-ui_react-dialog.js:330
+commitHookEffectListMount @ VM22 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM22 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM22 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM22 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM22 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM22 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM22 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM22 chunk-UZOKQUDP.js:19416
+commitRoot @ VM22 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM22 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM22 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM22 chunk-UZOKQUDP.js:18627
+@radix-ui_react-dialog.js?v=170c6354:344  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ VM110 @radix-ui_react-dialog.js:344
+commitHookEffectListMount @ VM22 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM22 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM22 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM22 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM22 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM22 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM22 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM22 chunk-UZOKQUDP.js:19416
+commitRoot @ VM22 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM22 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM22 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM22 chunk-UZOKQUDP.js:18627
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=LrLORdSsmGB0' failed: 
+setupWebSocket @ VM159 client:536
+(anonymous) @ VM159 client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=LrLORdSsmGB0' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ VM159 client:536
+fallback @ VM159 client:509
+(anonymous) @ VM159 client:555
+android-ble-midi.ts:9 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:129 Loaded 6 audio file path references from localStorage
+audio-file-storage.ts:142 🔄 Auto-loading 6 stored audio files...
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: false
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:160 ❌ Database not initialized for track 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:161 Expected audio files for tracks:
+audio-file-storage.ts:164   - 3AM - Backups.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/85516371-6892-485e-baaa-ad929b71972f)
+audio-file-storage.ts:164   - 3AM - Bass.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/309057cb-8ab5-4870-a132-86ee5fe872a8)
+audio-file-storage.ts:164   - 3AM - Click.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/a754bc46-1864-4f6c-9a45-ad641b33b538)
+audio-file-storage.ts:164   - 3AM - Drums.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/30b310ee-1ae1-45a6-9139-a19e54966cf7)
+audio-file-storage.ts:164   - 3AM - Guitars.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/a4167cc8-6335-41c0-9828-3e29f7391cbb)
+audio-file-storage.ts:164   - 3AM - Organ.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/f2252245-afb5-4355-ab87-0f458372cd74)
+audio-file-storage.ts:166 These files will be loaded when you select them through the file picker.
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: false
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:160 ❌ Database not initialized for track 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: false
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:160 ❌ Database not initialized for track a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: false
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:160 ❌ Database not initialized for track 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: false
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:160 ❌ Database not initialized for track a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: false
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:160 ❌ Database not initialized for track f2252245-afb5-4355-ab87-0f458372cd74
+audio-file-storage.ts:156 ✅ Auto-loaded 0/6 audio files into cache
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:65 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:82 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:123 🔍 No payment success detected in URL
+useMidiDevices.ts:62 🎹 Initializing MIDI access...
+App.tsx?v=RI6rdPecsiGqxMP2hAmgD:130 Browser file system already initialized - auto-initializing
+browser-file-system.ts:15 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:66 🔐 MIDI Permission State: granted
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:41 Browser file system initialized successfully
+useMidiDevices.ts:90 ✅ MIDI system initialized successfully
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM270 stripe.js:1
+e @ VM270 stripe.js:1
+xy @ VM270 stripe.js:1
+initStripe2 @ VM185 @stripe_stripe-js.js:121
+(anonymous) @ VM185 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM185 @stripe_stripe-js.js:150
+(anonymous) @ VM189 subscribe-simple.tsx:25
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ VM270 stripe.js:1
+e @ VM270 stripe.js:1
+xy @ VM270 stripe.js:1
+initStripe2 @ VM185 @stripe_stripe-js.js:121
+(anonymous) @ VM185 @stripe_stripe-js.js:151
+Promise.then
+loadStripe2 @ VM185 @stripe_stripe-js.js:150
+(anonymous) @ VM191 subscribe-elements-test.tsx:25
+main.tsx?v=RI6rdPecsiGqxMP2hAmgD:8 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useMidiDevices.ts:111 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:118 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:119 1. No physical MIDI devices connected
+useMidiDevices.ts:120 2. MIDI permissions denied or blocked
+useMidiDevices.ts:121 3. Browser security restrictions
+useMidiDevices.ts:122 💡 To reset MIDI permissions:
+useMidiDevices.ts:123    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:124    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:190 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:202 🎹 Connected devices: 0/0 []
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useMidiDevices.ts:37 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+lyrics-display.tsx:203 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:21 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:27 🎵 Master output initialized
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+performance.tsx:351 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:390 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:379 🎵 Loading song: 3 AM
+performance.tsx:386 📡 Not uploading to database: {isHost: false, hasCurrentRoom: false, roomId: undefined}
+performance.tsx:390 🔍 Debug values: {selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: true, …}
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: undefined, songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+@radix-ui_react-dialog.js?v=170c6354:330  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ VM236 @radix-ui_react-dialog.js:330
+commitHookEffectListMount @ VM153 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM153 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM153 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM153 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM153 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM153 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM153 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM153 chunk-UZOKQUDP.js:19416
+commitRoot @ VM153 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM153 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM153 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM153 chunk-UZOKQUDP.js:18627
+@radix-ui_react-dialog.js?v=170c6354:344  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ VM236 @radix-ui_react-dialog.js:344
+commitHookEffectListMount @ VM153 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM153 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM153 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM153 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM153 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM153 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM153 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM153 chunk-UZOKQUDP.js:19416
+commitRoot @ VM153 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM153 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM153 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM153 chunk-UZOKQUDP.js:18627
+waveform-visualizer.tsx:48 No cached waveform found for "3 AM", generating...
+waveform-generator.ts:54 Auto-generating waveform for "3 AM" from 6 tracks...
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for a4167cc8-6335-41c0-9828-3e29f7391cbb
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: f2252245-afb5-4355-ab87-0f458372cd74
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for f2252245-afb5-4355-ab87-0f458372cd74
+use-audio-engine.tsx:92 Song selected: "3 AM" with 6 tracks - loading for streaming
+use-audio-engine.tsx:96 Setting up streaming for: "3 AM" - UI stays responsive
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 309057cb-8ab5-4870-a132-86ee5fe872a8
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for a754bc46-1864-4f6c-9a45-ad641b33b538
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for 30b310ee-1ae1-45a6-9139-a19e54966cf7
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for a4167cc8-6335-41c0-9828-3e29f7391cbb
+audio-file-storage.ts:50 🔍 Requesting audio URL for track: f2252245-afb5-4355-ab87-0f458372cd74
+audio-file-storage.ts:51 📂 Available audio files (6): (6) ['85516371-6892-485e-baaa-ad929b71972f', '309057cb-8ab5-4870-a132-86ee5fe872a8', 'a754bc46-1864-4f6c-9a45-ad641b33b538', '30b310ee-1ae1-45a6-9139-a19e54966cf7', 'a4167cc8-6335-41c0-9828-3e29f7391cbb', 'f2252245-afb5-4355-ab87-0f458372cd74']
+audio-file-storage.ts:52 💾 Memory cache files (0): []
+browser-file-system.ts:151 🔍 BrowserFS.getAudioFile: Looking for track f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:152 💾 Memory cache has: []
+browser-file-system.ts:153 🗃️ Database initialized: true
+browser-file-system.ts:158 💾 Not in memory cache, checking IndexedDB for f2252245-afb5-4355-ab87-0f458372cd74
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: '3 AM', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+performance.tsx:448 🎭 Broadcast host effect: {isHost: false, selectedSong: true, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: '3 AM', songEntryId: null, …}
+performance.tsx:457 🎭 Not broadcasting - not host
+browser-file-system.ts:172 ✅ Found in IndexedDB: a754bc46-1864-4f6c-9a45-ad641b33b538 (3AM - Click.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:172 ✅ Found in IndexedDB: 85516371-6892-485e-baaa-ad929b71972f (3AM - Backups.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:172 ✅ Found in IndexedDB: 309057cb-8ab5-4870-a132-86ee5fe872a8 (3AM - Bass.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:172 ✅ Found in IndexedDB: a754bc46-1864-4f6c-9a45-ad641b33b538 (3AM - Click.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:172 ✅ Found in IndexedDB: f2252245-afb5-4355-ab87-0f458372cd74 (3AM - Organ.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:172 ✅ Found in IndexedDB: 85516371-6892-485e-baaa-ad929b71972f (3AM - Backups.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:172 ✅ Found in IndexedDB: 309057cb-8ab5-4870-a132-86ee5fe872a8 (3AM - Bass.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:172 ✅ Found in IndexedDB: f2252245-afb5-4355-ab87-0f458372cd74 (3AM - Organ.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:172 ✅ Found in IndexedDB: 30b310ee-1ae1-45a6-9139-a19e54966cf7 (3AM - Drums.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:172 ✅ Found in IndexedDB: a4167cc8-6335-41c0-9828-3e29f7391cbb (3AM - Guitars.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:172 ✅ Found in IndexedDB: 30b310ee-1ae1-45a6-9139-a19e54966cf7 (3AM - Drums.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:172 ✅ Found in IndexedDB: a4167cc8-6335-41c0-9828-3e29f7391cbb (3AM - Guitars.mp3)
+audio-file-storage.ts:56 ✅ Got audio URL from browser storage for track: a4167cc8-6335-41c0-9828-3e29f7391cbb
+streaming-audio-engine.ts:37 🚀 Streaming load: 6 tracks (deferred setup)
+streaming-audio-engine.ts:31 🎵 Loading original tracks...
+streaming-audio-engine.ts:32 🎵 Track loading complete: 6 tracks ready
+use-audio-engine.tsx:114 ✅ Streaming ready for "3 AM" - instant playback available
+streaming-audio-engine.ts:60 ✅ Streaming ready: 6 tracks setup instantly (audio nodes created on demand)
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Backups
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Bass
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Click
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Drums
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Guitars
+streaming-audio-engine.ts:131 🔧 Audio nodes created on demand for: 3AM - Organ
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Backups
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Bass
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Click
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Drums
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Guitars
+streaming-audio-engine.ts:97 🔄 Loading started for 3AM - Organ
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+waveform-generator.ts:99 Processed track: 3AM - Backups (229.1s)
+waveform-generator.ts:99 Processed track: 3AM - Organ (229.1s)
+waveform-generator.ts:99 Processed track: 3AM - Bass (229.1s)
+waveform-generator.ts:99 Processed track: 3AM - Click (229.1s)
+waveform-generator.ts:99 Processed track: 3AM - Drums (229.1s)
+waveform-generator.ts:99 Processed track: 3AM - Guitars (229.1s)
+waveform-generator.ts:123 Generated comprehensive waveform from 6 tracks, duration: 229.1s
+waveform-generator.ts:35 Waveform cached for song: 0fc7a155-dff2-4487-bf8a-c1f600c9d600
+waveform-generator.ts:139 🔇 Closed temporary AudioContext for waveform generation
+use-audio-engine.tsx:61 Duration updated from streaming engine: 229s
+@radix-ui_react-dialog.js?v=170c6354:330  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ VM236 @radix-ui_react-dialog.js:330
+commitHookEffectListMount @ VM153 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM153 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM153 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM153 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM153 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM153 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM153 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM153 chunk-UZOKQUDP.js:19416
+commitRoot @ VM153 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM153 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM153 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM153 chunk-UZOKQUDP.js:18627
+@radix-ui_react-dialog.js?v=170c6354:344  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ VM236 @radix-ui_react-dialog.js:344
+commitHookEffectListMount @ VM153 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM153 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM153 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM153 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM153 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM153 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM153 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM153 chunk-UZOKQUDP.js:19416
+commitRoot @ VM153 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM153 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM153 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM153 chunk-UZOKQUDP.js:18627
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+@radix-ui_react-dialog.js?v=170c6354:330  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ VM236 @radix-ui_react-dialog.js:330
+commitHookEffectListMount @ VM153 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM153 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM153 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM153 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM153 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM153 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM153 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM153 chunk-UZOKQUDP.js:19416
+commitRoot @ VM153 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM153 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM153 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM153 chunk-UZOKQUDP.js:18627
+@radix-ui_react-dialog.js?v=170c6354:344  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ VM236 @radix-ui_react-dialog.js:344
+commitHookEffectListMount @ VM153 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM153 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM153 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM153 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM153 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM153 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM153 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM153 chunk-UZOKQUDP.js:19416
+commitRoot @ VM153 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM153 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM153 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM153 chunk-UZOKQUDP.js:18627
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+streaming-audio-engine.ts:288  StereoPanner.pan.value -55 outside nominal range [-1, 1]; value will be clamped.
+setTrackBalance @ VM253 streaming-audio-engine.ts:288
+(anonymous) @ VM218 use-audio-engine.tsx:197
+(anonymous) @ VM230 track-manager-clean.tsx:405
+setTimeout
+(anonymous) @ VM230 track-manager-clean.tsx:404
+onValueChange @ VM230 track-manager-clean.tsx:878
+onChange @ VM265 @radix-ui_react-slider.js:93
+(anonymous) @ VM174 chunk-GWBNOCLG.js:17
+(anonymous) @ VM171 chunk-S2SV2MQL.js:28
+updateValues @ VM265 @radix-ui_react-slider.js:114
+handleSlideMove @ VM265 @radix-ui_react-slider.js:102
+onSlideMove @ VM265 @radix-ui_react-slider.js:233
+(anonymous) @ VM265 @radix-ui_react-slider.js:357
+handleEvent @ VM172 chunk-5Q5YC75F.js:6
+callCallback2 @ VM153 chunk-UZOKQUDP.js:3674
+invokeGuardedCallbackDev @ VM153 chunk-UZOKQUDP.js:3699
+invokeGuardedCallback @ VM153 chunk-UZOKQUDP.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM153 chunk-UZOKQUDP.js:3736
+executeDispatch @ VM153 chunk-UZOKQUDP.js:7014
+processDispatchQueueItemsInOrder @ VM153 chunk-UZOKQUDP.js:7034
+processDispatchQueue @ VM153 chunk-UZOKQUDP.js:7043
+dispatchEventsForPlugins @ VM153 chunk-UZOKQUDP.js:7051
+(anonymous) @ VM153 chunk-UZOKQUDP.js:7174
+batchedUpdates$1 @ VM153 chunk-UZOKQUDP.js:18913
+batchedUpdates @ VM153 chunk-UZOKQUDP.js:3579
+dispatchEventForPluginEventSystem @ VM153 chunk-UZOKQUDP.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM153 chunk-UZOKQUDP.js:5478
+dispatchEvent @ VM153 chunk-UZOKQUDP.js:5472
+dispatchContinuousEvent @ VM153 chunk-UZOKQUDP.js:5461
+streaming-audio-engine.ts:288  StereoPanner.pan.value 44 outside nominal range [-1, 1]; value will be clamped.
+setTrackBalance @ VM253 streaming-audio-engine.ts:288
+(anonymous) @ VM218 use-audio-engine.tsx:197
+(anonymous) @ VM230 track-manager-clean.tsx:405
+setTimeout
+(anonymous) @ VM230 track-manager-clean.tsx:404
+onValueChange @ VM230 track-manager-clean.tsx:878
+onChange @ VM265 @radix-ui_react-slider.js:93
+(anonymous) @ VM174 chunk-GWBNOCLG.js:17
+(anonymous) @ VM171 chunk-S2SV2MQL.js:28
+updateValues @ VM265 @radix-ui_react-slider.js:114
+handleSlideMove @ VM265 @radix-ui_react-slider.js:102
+onSlideMove @ VM265 @radix-ui_react-slider.js:233
+(anonymous) @ VM265 @radix-ui_react-slider.js:357
+handleEvent @ VM172 chunk-5Q5YC75F.js:6
+callCallback2 @ VM153 chunk-UZOKQUDP.js:3674
+invokeGuardedCallbackDev @ VM153 chunk-UZOKQUDP.js:3699
+invokeGuardedCallback @ VM153 chunk-UZOKQUDP.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM153 chunk-UZOKQUDP.js:3736
+executeDispatch @ VM153 chunk-UZOKQUDP.js:7014
+processDispatchQueueItemsInOrder @ VM153 chunk-UZOKQUDP.js:7034
+processDispatchQueue @ VM153 chunk-UZOKQUDP.js:7043
+dispatchEventsForPlugins @ VM153 chunk-UZOKQUDP.js:7051
+(anonymous) @ VM153 chunk-UZOKQUDP.js:7174
+batchedUpdates$1 @ VM153 chunk-UZOKQUDP.js:18913
+batchedUpdates @ VM153 chunk-UZOKQUDP.js:3579
+dispatchEventForPluginEventSystem @ VM153 chunk-UZOKQUDP.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM153 chunk-UZOKQUDP.js:5478
+dispatchEvent @ VM153 chunk-UZOKQUDP.js:5472
+dispatchContinuousEvent @ VM153 chunk-UZOKQUDP.js:5461
+@radix-ui_react-dialog.js?v=170c6354:330  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ VM236 @radix-ui_react-dialog.js:330
+commitHookEffectListMount @ VM153 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM153 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM153 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM153 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM153 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM153 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM153 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM153 chunk-UZOKQUDP.js:19416
+commitRoot @ VM153 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM153 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM153 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM153 chunk-UZOKQUDP.js:18627
+@radix-ui_react-dialog.js?v=170c6354:344  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ VM236 @radix-ui_react-dialog.js:344
+commitHookEffectListMount @ VM153 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM153 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM153 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM153 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM153 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM153 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM153 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM153 chunk-UZOKQUDP.js:19416
+commitRoot @ VM153 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM153 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM153 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM153 chunk-UZOKQUDP.js:18627
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+@radix-ui_react-dialog.js?v=170c6354:330  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ VM236 @radix-ui_react-dialog.js:330
+commitHookEffectListMount @ VM153 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM153 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM153 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM153 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM153 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM153 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM153 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM153 chunk-UZOKQUDP.js:19416
+commitRoot @ VM153 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM153 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM153 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM153 chunk-UZOKQUDP.js:18627
+@radix-ui_react-dialog.js?v=170c6354:344  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ VM236 @radix-ui_react-dialog.js:344
+commitHookEffectListMount @ VM153 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM153 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM153 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM153 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM153 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM153 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM153 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM153 chunk-UZOKQUDP.js:19416
+commitRoot @ VM153 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM153 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM153 chunk-UZOKQUDP.js:9119
+(anonymous) @ VM153 chunk-UZOKQUDP.js:18627
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+useLocalAuth.ts:158 📱 Edge browser detected - using compatibility mode
+client:536  WebSocket connection to 'wss://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/?token=O5PM_2lHK0bp' failed: 
+setupWebSocket @ client:536
+(anonymous) @ client:531
+client:536  Uncaught (in promise) SyntaxError: Failed to construct 'WebSocket': The URL 'wss://localhost:undefined/?token=O5PM_2lHK0bp' is invalid.
+    at setupWebSocket (client:536:19)
+    at fallback (client:509:16)
+    at WebSocket.<anonymous> (client:555:7)
+setupWebSocket @ client:536
+fallback @ client:509
+(anonymous) @ client:555
+android-ble-midi.ts:36 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:176 Loaded 6 audio file path references from localStorage
+audio-file-storage.ts:194 🔄 Auto-loading 6 stored audio files...
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 85516371-6892-485e-baaa-ad929b71972f
+browser-file-system.ts:236 ❌ Database not initialized for track 85516371-6892-485e-baaa-ad929b71972f
+audio-file-storage.ts:218 Expected audio files for tracks:
+audio-file-storage.ts:221   - 3AM - Backups.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/85516371-6892-485e-baaa-ad929b71972f)
+audio-file-storage.ts:221   - 3AM - Bass.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/309057cb-8ab5-4870-a132-86ee5fe872a8)
+audio-file-storage.ts:221   - 3AM - Click.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/a754bc46-1864-4f6c-9a45-ad641b33b538)
+audio-file-storage.ts:221   - 3AM - Drums.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/30b310ee-1ae1-45a6-9139-a19e54966cf7)
+audio-file-storage.ts:221   - 3AM - Guitars.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/a4167cc8-6335-41c0-9828-3e29f7391cbb)
+audio-file-storage.ts:221   - 3AM - Organ.mp3 (browser://0fc7a155-dff2-4487-bf8a-c1f600c9d600/f2252245-afb5-4355-ab87-0f458372cd74)
+audio-file-storage.ts:223 These files will be loaded when you select them through the file picker.
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:236 ❌ Database not initialized for track 309057cb-8ab5-4870-a132-86ee5fe872a8
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:236 ❌ Database not initialized for track a754bc46-1864-4f6c-9a45-ad641b33b538
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:236 ❌ Database not initialized for track 30b310ee-1ae1-45a6-9139-a19e54966cf7
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:236 ❌ Database not initialized for track a4167cc8-6335-41c0-9828-3e29f7391cbb
+browser-file-system.ts:223 🔍 BrowserFS.getAudioFile: Looking for track f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:224 💾 Memory cache has: []
+browser-file-system.ts:225 🗃️ Database initialized: false
+browser-file-system.ts:233 💾 Not in memory cache, checking IndexedDB for f2252245-afb5-4355-ab87-0f458372cd74
+browser-file-system.ts:236 ❌ Database not initialized for track f2252245-afb5-4355-ab87-0f458372cd74
+audio-file-storage.ts:212 ✅ Auto-loaded 0/6 audio files into cache
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+App.tsx:44 🔍 Checking URL for payment success: https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/
+App.tsx:66 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+App.tsx:122 🔍 No payment success detected in URL
+useMidiDevices.ts:122 🎹 Initializing MIDI access...
+App.tsx:132 Browser file system already initialized - auto-initializing
+browser-file-system.ts:63 ✅ BrowserFileSystem database auto-initialized
+useMidiDevices.ts:128 🔐 MIDI Permission State: granted
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+browser-file-system.ts:87 Browser file system initialized successfully
+useMidiDevices.ts:160 ✅ MIDI system initialized successfully
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+xy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-simple.tsx:9
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+xy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-elements-test.tsx:9
+useMidiDevices.ts:189 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+useMidiDevices.ts:198 ⚠️ No MIDI devices found. This could be due to:
+useMidiDevices.ts:199 1. No physical MIDI devices connected
+useMidiDevices.ts:200 2. MIDI permissions denied or blocked
+useMidiDevices.ts:201 3. Browser security restrictions
+useMidiDevices.ts:202 💡 To reset MIDI permissions:
+useMidiDevices.ts:203    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+useMidiDevices.ts:204    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+useMidiDevices.ts:294 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:314 🎹 Connected devices: 0/0 []
+main.tsx:10 SW registered:  ServiceWorkerRegistration {installing: null, waiting: null, active: ServiceWorker, navigationPreload: NavigationPreloadManager, scope: 'https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/', …}
+useMidiDevices.ts:92 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+lyrics-display.tsx:293 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:31 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+streaming-audio-engine.ts:67 🎵 Master output initialized
+performance.tsx:505 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+useLocalAuth.ts:215 📱 Edge browser detected - using compatibility mode
+performance.tsx:451 📋 Loaded 1 songs from local storage (alphabetically sorted)
+performance.tsx:505 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+performance.tsx:490 🎵 Loading song: 3 AM
+performance.tsx:499 📡 Not uploading to database: {isHost: false, hasCurrentRoom: false, roomId: undefined}
+performance.tsx:505 🔍 Debug values: {selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: true, …}
+performance.tsx:579 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: '0fc7a155-dff2-4487-bf8a-c1f600c9d600', songTitle: undefined, songEntryId: null, …}
+performance.tsx:589 🎭 Not broadcasting - not host
+dialog.tsx:519  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+(anonymous) @ dialog.tsx:519
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+track-manager-clean.tsx:57  Uncaught ReferenceError: Cannot access 'user' before initialization
+    at track-manager-clean.tsx:57:21
+    at mountState (react-dom.development.js:16167:20)
+    at Object.useState (react-dom.development.js:16880:16)
+    at useState (react.development.js:1622:21)
+    at TrackManager (track-manager-clean.tsx:55:51)
+    at renderWithHooks (react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (react-dom.development.js:20103:13)
+    at beginWork (react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback2 (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+(anonymous) @ track-manager-clean.tsx:57
+mountState @ react-dom.development.js:16167
+useState @ react-dom.development.js:16880
+useState @ react.development.js:1622
+TrackManager @ track-manager-clean.tsx:55
+renderWithHooks @ react-dom.development.js:15486
+mountIndeterminateComponent @ react-dom.development.js:20103
+beginWork @ react-dom.development.js:21626
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+beginWork$1 @ react-dom.development.js:27490
+performUnitOfWork @ react-dom.development.js:26596
+workLoopSync @ react-dom.development.js:26505
+renderRootSync @ react-dom.development.js:26473
+performConcurrentWorkOnRoot @ react-dom.development.js:25777
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+track-manager-clean.tsx:57  Uncaught ReferenceError: Cannot access 'user' before initialization
+    at track-manager-clean.tsx:57:21
+    at mountState (react-dom.development.js:16167:20)
+    at Object.useState (react-dom.development.js:16880:16)
+    at useState (react.development.js:1622:21)
+    at TrackManager (track-manager-clean.tsx:55:51)
+    at renderWithHooks (react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (react-dom.development.js:20103:13)
+    at beginWork (react-dom.development.js:21626:16)
+    at HTMLUnknownElement.callCallback2 (react-dom.development.js:4164:14)
+    at Object.invokeGuardedCallbackDev (react-dom.development.js:4213:16)
+(anonymous) @ track-manager-clean.tsx:57
+mountState @ react-dom.development.js:16167
+useState @ react-dom.development.js:16880
+useState @ react.development.js:1622
+TrackManager @ track-manager-clean.tsx:55
+renderWithHooks @ react-dom.development.js:15486
+mountIndeterminateComponent @ react-dom.development.js:20103
+beginWork @ react-dom.development.js:21626
+callCallback2 @ react-dom.development.js:4164
+invokeGuardedCallbackDev @ react-dom.development.js:4213
+invokeGuardedCallback @ react-dom.development.js:4277
+beginWork$1 @ react-dom.development.js:27490
+performUnitOfWork @ react-dom.development.js:26596
+workLoopSync @ react-dom.development.js:26505
+renderRootSync @ react-dom.development.js:26473
+recoverFromConcurrentError @ react-dom.development.js:25889
+performConcurrentWorkOnRoot @ react-dom.development.js:25789
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+react-dom.development.js:18704  The above error occurred in the <TrackManager> component:
+
+    at TrackManager (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/components/track-manager-clean.tsx:30:3)
+    at div
+    at div
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-IIXSNMYZ.js?v=170c6354:42:13
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-5WQFYA5N.js?v=170c6354:61:7
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-SYX27JUH.js?v=170c6354:43:13
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-SYX27JUH.js?v=170c6354:20:13
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-IIXSNMYZ.js?v=170c6354:42:13
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-2WWUFNRG.js?v=170c6354:29:5
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=170c6354:240:13
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=170c6354:163:58
+    at Presence (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-UOJ2FXPH.js?v=170c6354:24:11)
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=170c6354:154:64
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-SYX27JUH.js?v=170c6354:43:13
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-SYX27JUH.js?v=170c6354:20:13
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-IIXSNMYZ.js?v=170c6354:42:13
+    at https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-5WQFYA5N.js?v=170c6354:260:22
+    at Presence (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-UOJ2FXPH.js?v=170c6354:24:11)
+    at Provider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-B64GZIWT.js?v=170c6354:38:15)
+    at DialogPortal (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=170c6354:116:11)
+    at _c3 (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/components/ui/dialog.tsx:52:12)
+    at Provider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-B64GZIWT.js?v=170c6354:38:15)
+    at Dialog (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=170c6354:57:5)
+    at div
+    at Performance (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/pages/performance.tsx:46:49)
+    at component
+    at Route (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=170c6354:323:16)
+    at Router (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=170c6354:291:17)
+    at AnalyticsRouter (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?v=RI6rdPecsiGqxMP2hAmgD:46:28)
+    at Provider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-B64GZIWT.js?v=170c6354:38:15)
+    at TooltipProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=170c6354:66:5)
+    at AppContent (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?v=RI6rdPecsiGqxMP2hAmgD:61:47)
+    at MidiProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/contexts/MidiProvider.tsx:21:32)
+    at QueryClientProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=170c6354:2805:3)
+    at App (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?v=RI6rdPecsiGqxMP2hAmgD:306:3)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+logCapturedError @ react-dom.development.js:18704
+update.callback @ react-dom.development.js:18737
+callCallback @ react-dom.development.js:15036
+commitUpdateQueue @ react-dom.development.js:15057
+commitLayoutEffectOnFiber @ react-dom.development.js:23430
+commitLayoutMountEffects_complete @ react-dom.development.js:24727
+commitLayoutEffects_begin @ react-dom.development.js:24713
+commitLayoutEffects @ react-dom.development.js:24651
+commitRootImpl @ react-dom.development.js:26862
+commitRoot @ react-dom.development.js:26721
+finishConcurrentRender @ react-dom.development.js:25931
+performConcurrentWorkOnRoot @ react-dom.development.js:25848
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+react-dom.development.js:26962  Uncaught ReferenceError: Cannot access 'user' before initialization
+    at track-manager-clean.tsx:57:21
+    at mountState (react-dom.development.js:16167:20)
+    at Object.useState (react-dom.development.js:16880:16)
+    at useState (react.development.js:1622:21)
+    at TrackManager (track-manager-clean.tsx:55:51)
+    at renderWithHooks (react-dom.development.js:15486:18)
+    at mountIndeterminateComponent (react-dom.development.js:20103:13)
+    at beginWork (react-dom.development.js:21626:16)
+    at beginWork$1 (react-dom.development.js:27465:14)
+    at performUnitOfWork (react-dom.development.js:26596:12)
+(anonymous) @ track-manager-clean.tsx:57
+mountState @ react-dom.development.js:16167
+useState @ react-dom.development.js:16880
+useState @ react.development.js:1622
+TrackManager @ track-manager-clean.tsx:55
+renderWithHooks @ react-dom.development.js:15486
+mountIndeterminateComponent @ react-dom.development.js:20103
+beginWork @ react-dom.development.js:21626
+beginWork$1 @ react-dom.development.js:27465
+performUnitOfWork @ react-dom.development.js:26596
+workLoopSync @ react-dom.development.js:26505
+renderRootSync @ react-dom.development.js:26473
+recoverFromConcurrentError @ react-dom.development.js:25889
+performConcurrentWorkOnRoot @ react-dom.development.js:25789
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+streaming-audio-engine.ts:643 📱 Edge browser: Forcing memory cleanup

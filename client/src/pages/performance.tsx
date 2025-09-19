@@ -1513,7 +1513,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       </Dialog>
       {/* Track Manager Dialog */}
       <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh]" forceMount data-testid="dialog-track-manager">
+        <DialogContent className="max-w-6xl max-h-[90vh]" data-testid="dialog-track-manager">
           <DialogHeader>
           </DialogHeader>
           {selectedSong && (

@@ -621,6 +621,30 @@ export function TrackWaveformEditor({
                           {isPlayingSelection ? 'Playing...' : 'Play'}
                         </Button>
                         <Button
+                          onClick={async () => {
+                            console.log('🧪 TEST: Direct audio test starting...');
+                            try {
+                              const audio = new Audio(audioUrl);
+                              console.log('🧪 TEST: Setting currentTime to 10 seconds');
+                              audio.currentTime = 10;
+                              console.log('🧪 TEST: Audio currentTime is now:', audio.currentTime);
+                              await audio.play();
+                              console.log('🧪 TEST: Playback started at:', audio.currentTime);
+                              setTimeout(() => {
+                                console.log('🧪 TEST: Stopping at:', audio.currentTime);
+                                audio.pause();
+                              }, 3000);
+                            } catch (error) {
+                              console.error('🧪 TEST: Error:', error);
+                            }
+                          }}
+                          variant="outline"
+                          size="sm"
+                          className="text-xs bg-yellow-700 hover:bg-yellow-600 text-white border-yellow-600"
+                        >
+                          Test 10s
+                        </Button>
+                        <Button
                           onClick={muteSelection}
                           variant="outline"
                           size="sm"

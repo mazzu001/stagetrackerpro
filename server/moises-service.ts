@@ -130,23 +130,48 @@ export class MoisesService {
   }
 
   async getMockStemData(jobId: string, stemName: string): Promise<Buffer | null> {
-    // Return empty audio buffer for now
-    // In production, this would return actual separated stems
+    // Return realistic test audio buffer for mock mode
     const job = this.mockJobs.get(jobId);
     if (!job || job.status !== 'completed') {
       return null;
     }
 
-    // Return a small silent audio buffer as placeholder
-    // This is just for development - real implementation would return actual stems
-    const silentWav = Buffer.from([
-      0x52, 0x49, 0x46, 0x46, 0x28, 0x00, 0x00, 0x00, 0x57, 0x41, 0x56, 0x45,
-      0x66, 0x6D, 0x74, 0x20, 0x10, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00,
-      0x44, 0xAC, 0x00, 0x00, 0x88, 0x58, 0x01, 0x00, 0x02, 0x00, 0x10, 0x00,
-      0x64, 0x61, 0x74, 0x61, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-    ]);
-
-    return silentWav;
+    // Generate a realistic WAV file with actual audio content for testing
+    // This creates a 2-second, 44.1kHz, 16-bit mono sine wave tone
+    const sampleRate = 44100;
+    const duration = 2; // 2 seconds
+    const numSamples = sampleRate * duration;
+    const frequency = stemName.includes('vocal') ? 440 : 220; // Different frequencies for different stems
+    
+    // WAV header
+    const header = Buffer.alloc(44);
+    const dataSize = numSamples * 2; // 16-bit = 2 bytes per sample
+    const fileSize = 36 + dataSize;
+    
+    header.write('RIFF', 0);
+    header.writeUInt32LE(fileSize, 4);
+    header.write('WAVE', 8);
+    header.write('fmt ', 12);
+    header.writeUInt32LE(16, 16); // Subchunk1Size
+    header.writeUInt16LE(1, 20);  // AudioFormat (PCM)
+    header.writeUInt16LE(1, 22);  // NumChannels (mono)
+    header.writeUInt32LE(sampleRate, 24); // SampleRate
+    header.writeUInt32LE(sampleRate * 2, 28); // ByteRate
+    header.writeUInt16LE(2, 32);  // BlockAlign
+    header.writeUInt16LE(16, 34); // BitsPerSample
+    header.write('data', 36);
+    header.writeUInt32LE(dataSize, 40);
+    
+    // Generate sine wave audio data
+    const audioData = Buffer.alloc(dataSize);
+    for (let i = 0; i < numSamples; i++) {
+      const sample = Math.sin(2 * Math.PI * frequency * i / sampleRate);
+      const value = Math.round(sample * 32767 * 0.3); // 30% volume to be pleasant
+      audioData.writeInt16LE(value, i * 2);
+    }
+    
+    console.log(`🎵 Generated mock ${stemName} audio: ${(header.length + audioData.length) / 1024}KB`);
+    return Buffer.concat([header, audioData]);
   }
 }
 

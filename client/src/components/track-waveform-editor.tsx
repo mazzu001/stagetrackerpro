@@ -316,6 +316,7 @@ export function TrackWaveformEditor({
     if (!canvasRef.current) return;
     
     const startTime = getTimeFromX(e.clientX);
+    console.log('Mouse down at time:', startTime);
     
     // Check if clicking on existing region
     const clickedRegion = regions.find(region => 
@@ -323,9 +324,11 @@ export function TrackWaveformEditor({
     );
     
     if (clickedRegion) {
+      console.log('Clicked existing region:', clickedRegion.id);
       setSelectedRegion(clickedRegion.id);
       setPendingSelection(null); // Clear pending selection when selecting existing region
     } else {
+      console.log('Starting new selection');
       // Clear existing selections and start new region selection
       setSelectedRegion(null);
       setPendingSelection(null);
@@ -348,20 +351,25 @@ export function TrackWaveformEditor({
   };
 
   const handleMouseUp = () => {
+    console.log('Mouse up - dragState:', dragState);
     if (dragState?.isDragging && dragState.endTime !== undefined) {
       const startTime = Math.min(dragState.startTime, dragState.endTime);
       const endTime = Math.max(dragState.startTime, dragState.endTime);
+      console.log('Creating selection from', startTime, 'to', endTime, 'duration:', endTime - startTime);
       
       // Only create pending selection if it's larger than 0.05 seconds (reduced threshold)
       if (endTime - startTime >= 0.05) {
-        console.log('Setting pending selection:', { start: startTime, end: endTime, duration: endTime - startTime });
+        console.log('✅ Setting pending selection:', { start: startTime, end: endTime, duration: endTime - startTime });
         setPendingSelection({ start: startTime, end: endTime });
         setSelectedRegion(null); // Clear any selected regions
       } else {
-        console.log('Selection too small:', { start: startTime, end: endTime, duration: endTime - startTime });
+        console.log('❌ Selection too small:', { start: startTime, end: endTime, duration: endTime - startTime });
       }
+    } else {
+      console.log('❌ No valid drag state for selection');
     }
     
+    console.log('Clearing drag state');
     setDragState(null);
   };
 

@@ -3,6 +3,13 @@
 
 import type { MuteRegion } from "@shared/schema";
 
+// RubberBand WebAssembly types
+interface RubberBandNode extends AudioWorkletNode {
+  setPitch(ratio: number): void;
+  setTempo(ratio: number): void;
+  setHighQuality(enabled: boolean): void;
+}
+
 export interface StreamingTrack {
   id: string;
   name: string;
@@ -41,6 +48,7 @@ export class StreamingAudioEngine {
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
   private scheduledGainChanges: Map<string, number[]> = new Map(); // Track scheduled gain automation IDs
+  private rubberBandProcessorInitialized: boolean = false;
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -56,7 +64,38 @@ export class StreamingAudioEngine {
     this.setupMasterOutput();
   }
 
-  // Tone.js initialization removed
+  // RubberBand WebAssembly initialization
+  private async initializeRubberBandProcessor() {
+    if (this.rubberBandProcessorInitialized) return;
+
+    try {
+      // Load RubberBand AudioWorklet processor
+      await this.audioContext.audioWorklet.addModule('/rubberband-processor.js');
+      this.rubberBandProcessorInitialized = true;
+      console.log('🎵 RubberBand processor initialized');
+    } catch (error) {
+      console.error('❌ Failed to initialize RubberBand processor:', error);
+      throw error;
+    }
+  }
+
+  // Create RubberBand node for a track
+  private async createRubberBandNode(): Promise<RubberBandNode> {
+    await this.initializeRubberBandProcessor();
+    
+    const rubberBandNode = new AudioWorkletNode(this.audioContext, 'RubberBandProcessor') as RubberBandNode;
+    
+    // Enable high-quality processing by default
+    rubberBandNode.setHighQuality(true);
+    
+    console.log('🎵 RubberBand node created');
+    return rubberBandNode;
+  }
+
+  // Convert semitones to pitch ratio (for RubberBand)
+  private semitonesToRatio(semitones: number): number {
+    return Math.pow(2, semitones / 12);
+  }
 
   private setupMasterOutput() {
     // Create master gain node (for volume control)
@@ -147,7 +186,7 @@ export class StreamingAudioEngine {
   }
 
   // Create audio nodes on demand to avoid blocking UI
-  private ensureTrackAudioNodes(track: StreamingTrack) {
+  private async ensureTrackAudioNodes(track: StreamingTrack) {
     if (track.audioElement) return; // Already created
     
     try {
@@ -211,8 +250,25 @@ export class StreamingAudioEngine {
         track.panNode = this.audioContext.createStereoPanner();
         track.analyzerNode = this.audioContext.createAnalyser();
         
-        // Connect audio graph with error handling
-        track.source.connect(track.gainNode);
+        // Create RubberBand node for pitch shifting
+        try {
+          const rubberBandNode = await this.createRubberBandNode();
+          track.rubberBandNode = rubberBandNode;
+          rubberBandNode.setPitch(this.semitonesToRatio(track.pitchValue));
+        } catch (rbError) {
+          console.warn(`⚠️ RubberBand unavailable for ${track.name}, using direct connection:`, rbError);
+          track.rubberBandNode = null;
+        }
+        
+        // Connect audio graph with or without RubberBand pitch shifting
+        if (track.rubberBandNode) {
+          // With RubberBand: source → rubberBand → gain → pan → analyzer → master
+          track.source.connect(track.rubberBandNode);
+          track.rubberBandNode.connect(track.gainNode);
+        } else {
+          // Fallback: source → gain → pan → analyzer → master
+          track.source.connect(track.gainNode);
+        }
         track.gainNode.connect(track.panNode);
         track.panNode.connect(track.analyzerNode);
         track.analyzerNode.connect(this.state.masterGainNode!);
@@ -221,7 +277,7 @@ export class StreamingAudioEngine {
         track.analyzerNode.fftSize = 512; 
         track.analyzerNode.smoothingTimeConstant = 0.6; // Back to original working smoothing
         
-        console.log(`🔧 Audio nodes created on demand for: ${track.name}`);
+        console.log(`🔧 Audio nodes with RubberBand created for: ${track.name}`);
       } catch (nodeError) {
         console.error(`❌ Failed to create/connect audio nodes for ${track.name}:`, nodeError);
         // Clean up partial audio element
@@ -230,7 +286,7 @@ export class StreamingAudioEngine {
         track.gainNode = null;
         track.panNode = null;
         track.analyzerNode = null;
-        // Pitch shifting cleanup removed
+        track.rubberBandNode = null;
       }
       
     } catch (error) {
@@ -241,6 +297,7 @@ export class StreamingAudioEngine {
       track.gainNode = null;
       track.panNode = null;
       track.analyzerNode = null;
+      track.rubberBandNode = null;
     }
   }
 
@@ -249,8 +306,8 @@ export class StreamingAudioEngine {
     if (this.state.tracks.length === 0) return;
     
     // Set up listeners for each track to detect duration
-    this.state.tracks.forEach(track => {
-      this.ensureTrackAudioNodes(track);
+    this.state.tracks.forEach(async track => {
+      await this.ensureTrackAudioNodes(track);
       if (track.audioElement) {
         const metadataHandler = () => {
           if (this.state.tracks.length > 0) {
@@ -299,7 +356,7 @@ export class StreamingAudioEngine {
     if (this.state.tracks.length === 0) return;
     
     // Ensure all tracks have audio nodes
-    this.state.tracks.forEach(track => this.ensureTrackAudioNodes(track));
+    await Promise.allSettled(this.state.tracks.map(track => this.ensureTrackAudioNodes(track)));
     
     // Resume audio context if suspended
     if (this.audioContext.state === 'suspended') {
@@ -389,11 +446,11 @@ export class StreamingAudioEngine {
   }
 
   // Track control methods
-  setTrackVolume(trackId: string, volume: number) {
+  async setTrackVolume(trackId: string, volume: number) {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (track) {
       track.volume = volume;
-      this.ensureTrackAudioNodes(track);
+      await this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
         // Convert percentage (0-100) to gain value (0-1) for Web Audio API
         const gainValue = volume > 1 ? volume / 100 : volume;
@@ -402,11 +459,11 @@ export class StreamingAudioEngine {
     }
   }
 
-  toggleTrackMute(trackId: string) {
+  async toggleTrackMute(trackId: string) {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (track) {
       track.isMuted = !track.isMuted;
-      this.ensureTrackAudioNodes(track);
+      await this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
         // Convert percentage (0-100) to gain value (0-1) for Web Audio API
         const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
@@ -415,29 +472,29 @@ export class StreamingAudioEngine {
     }
   }
 
-  toggleTrackSolo(trackId: string) {
+  async toggleTrackSolo(trackId: string) {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (track) {
       track.isSolo = !track.isSolo;
-      this.updateSoloStates();
+      await this.updateSoloStates();
     }
   }
 
-  setTrackBalance(trackId: string, balance: number) {
+  async setTrackBalance(trackId: string, balance: number) {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (track) {
       track.balance = balance;
-      this.ensureTrackAudioNodes(track);
+      await this.ensureTrackAudioNodes(track);
       if (track.panNode) {
         track.panNode.pan.value = balance;
       }
     }
   }
 
-  setTrackTempo(trackId: string, tempo: number) {
+  async setTrackTempo(trackId: string, tempo: number) {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (track) {
-      this.ensureTrackAudioNodes(track);
+      await this.ensureTrackAudioNodes(track);
       if (track.audioElement) {
         // HTMLAudioElement.playbackRate controls tempo with automatic pitch preservation
         track.audioElement.playbackRate = tempo;
@@ -446,29 +503,60 @@ export class StreamingAudioEngine {
     }
   }
 
-  setMasterTempo(tempo: number) {
+  async setMasterTempo(tempo: number) {
     // Apply tempo to all tracks for synchronized playback
-    this.state.tracks.forEach(track => {
-      this.ensureTrackAudioNodes(track);
+    await Promise.allSettled(this.state.tracks.map(async track => {
+      await this.ensureTrackAudioNodes(track);
       if (track.audioElement) {
         track.audioElement.playbackRate = tempo;
       }
-    });
+    }));
     console.log(`🎵 Set master tempo: ${tempo}x (${Math.round(tempo * 100)}%)`);
   }
 
-  private updateSoloStates() {
+  // RubberBand pitch control methods
+  async setTrackPitch(trackId: string, semitones: number) {
+    const track = this.state.tracks.find(t => t.id === trackId);
+    if (track) {
+      track.pitchValue = semitones;
+      await this.ensureTrackAudioNodes(track);
+      if (track.rubberBandNode) {
+        const pitchRatio = this.semitonesToRatio(semitones);
+        track.rubberBandNode.setPitch(pitchRatio);
+        console.log(`🎵 Set pitch for track ${track.name}: ${semitones} semitones (${pitchRatio.toFixed(3)}x)`);
+      } else {
+        console.warn(`⚠️ No RubberBand node available for track ${track.name}`);
+      }
+      this.notifyListeners();
+    }
+  }
+
+  async setMasterPitch(semitones: number) {
+    // Apply pitch to all tracks for synchronized playback
+    await Promise.allSettled(this.state.tracks.map(async track => {
+      track.pitchValue = semitones;
+      await this.ensureTrackAudioNodes(track);
+      if (track.rubberBandNode) {
+        const pitchRatio = this.semitonesToRatio(semitones);
+        track.rubberBandNode.setPitch(pitchRatio);
+      }
+    }));
+    console.log(`🎵 Set master pitch: ${semitones} semitones`);
+    this.notifyListeners();
+  }
+
+  private async updateSoloStates() {
     const hasSoloTracks = this.state.tracks.some(t => t.isSolo);
     
-    this.state.tracks.forEach(track => {
-      this.ensureTrackAudioNodes(track);
+    await Promise.allSettled(this.state.tracks.map(async track => {
+      await this.ensureTrackAudioNodes(track);
       const shouldMute = hasSoloTracks && !track.isSolo;
       if (track.gainNode) {
         // Convert percentage (0-100) to gain value (0-1) for Web Audio API
         const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
         track.gainNode.gain.value = shouldMute ? 0 : gainValue;
       }
-    });
+    }));
   }
 
   setMasterVolume(volume: number) {

@@ -120,6 +120,12 @@ const app = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
+// TEMPORARY REDIRECT: Send all users to working version while we fix the current issues
+app.use('*', (req, res) => {
+  console.log(`🔀 Redirecting ${req.method} ${req.originalUrl} to working version`);
+  return res.redirect(301, 'https://stage-tracker-pro-Devices.replit.app');
+});
+
 // Add early health check endpoint for deployment verification
 app.get('/health', async (req, res) => {
   try {

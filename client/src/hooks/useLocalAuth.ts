@@ -1,7 +1,5 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { apiRequest } from '@/lib/queryClient';
-
-const { useState, useEffect } = React;
 
 export type UserType = 'free' | 'premium' | 'professional';
 

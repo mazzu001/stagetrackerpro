@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { apiRequest } from '@/lib/queryClient';
 
 export type UserType = 'free' | 'premium' | 'professional';
@@ -40,6 +40,7 @@ export function useLocalAuth() {
   const [user, setUser] = useState<LocalUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
+  const verifyingRef = useRef(false);
 
   useEffect(() => {
     let mounted = true;
@@ -65,9 +66,9 @@ export function useLocalAuth() {
       }
     };
     
-    // Prevent multiple simultaneous verification requests
+    // Prevent multiple simultaneous verification requests using ref to avoid stale closures
     const checkExistingSession = async () => {
-      if (isVerifying) {
+      if (verifyingRef.current) {
         console.log('🔄 Authentication already in progress, skipping...');
         return; // Prevent concurrent calls
       }
@@ -80,6 +81,7 @@ export function useLocalAuth() {
       }
       
       try {
+        verifyingRef.current = true;
         setIsVerifying(true);
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored) {
@@ -204,6 +206,7 @@ export function useLocalAuth() {
         if (mounted) {
           setIsLoading(false);
           setIsVerifying(false);
+          verifyingRef.current = false;
         }
       }
     };
@@ -220,13 +223,13 @@ export function useLocalAuth() {
     // Debounced auth change handler to prevent rapid-fire calls
     let authChangeTimeout: NodeJS.Timeout;
     const handleAuthChange = () => {
-      if (isVerifying) {
+      if (verifyingRef.current) {
         console.log('🔄 Skipping auth change - verification in progress');
         return;
       }
       clearTimeout(authChangeTimeout);
       authChangeTimeout = setTimeout(() => {
-        if (mounted && !isVerifying) {
+        if (mounted && !verifyingRef.current) {
           setIsLoading(true);
           checkExistingSession();
         }
@@ -283,13 +286,15 @@ export function useLocalAuth() {
     localStorage.removeItem(STORAGE_KEY);
     setUser(null);
     
-    // Force page refresh to ensure clean logout
-    window.location.reload();
+    // Trigger auth change event to update other components without page reload
+    setTimeout(() => {
+      window.dispatchEvent(new Event('auth-change'));
+    }, 0);
   };
 
   const upgrade = () => {
     if (user) {
-      const upgradedUser = { ...user, userType: 'paid' as const };
+      const upgradedUser = { ...user, userType: 'premium' as const };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(upgradedUser));
       setUser(upgradedUser);
     }
@@ -326,7 +331,7 @@ export function useLocalAuth() {
     user,
     isLoading,
     isAuthenticated: !!user,
-    isPaidUser: user?.userType === 'paid',
+    isPaidUser: user?.userType === 'premium' || user?.userType === 'professional',
     isFreeUser: user?.userType === 'free',
     login,
     logout,

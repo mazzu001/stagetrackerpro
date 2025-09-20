@@ -103,12 +103,13 @@ function AppContent() {
             }
             
             const tierName = tier === 'professional' ? 'Professional' : tier === 'premium' ? 'Premium' : 'Free';
-            console.log(`✅ Subscription updated to ${tierName} - refreshing page in 1 second`);
+            console.log(`✅ Subscription updated to ${tierName} - updating UI state`);
             
-            // Force page refresh to load with new subscription
+            // Trigger auth change event to update components without page reload
             setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+              window.dispatchEvent(new Event('auth-change'));
+              window.dispatchEvent(new Event('force-subscription-refresh'));
+            }, 100);
           } else {
             console.error('❌ Failed to update subscription status:', result);
           }

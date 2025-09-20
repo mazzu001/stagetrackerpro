@@ -4,6 +4,57 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
     
+    <!-- Cache Control Meta Tags -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    
+    <!-- Build Version for Update Detection -->
+    <meta name="build-time" content="BUILD_TIME_PLACEHOLDER" />
+    
+    <!-- Dynamic Build ID Script - Sets version from Vite env var -->
+    <script type="module">
+      (function(){
+        const v = import.meta.env.VITE_BUILD_ID || Date.now().toString();
+        let m = document.querySelector('meta[name="build-time"]');
+        if (!m) {
+          m = document.createElement('meta');
+          m.setAttribute('name', 'build-time');
+          document.head.appendChild(m);
+        }
+        m.setAttribute('content', v);
+        window.__BUILD_ID__ = v;
+      })();
+    </script>
+    
+    <!-- Pre-runtime Cache-busting for White Screen Prevention -->
+    <script>
+      (function(){
+        let tried = location.search.includes('v=');
+        
+        // Handle script loading errors (white screen scenario)
+        window.addEventListener('error', function(e) {
+          if (e.target && e.target.tagName === 'SCRIPT' && !tried) {
+            console.warn('Script load failed, forcing cache-busting reload');
+            tried = true;
+            location.replace(location.pathname + '?v=' + Date.now());
+          }
+        }, true);
+        
+        // Handle chunk loading errors (common with stale cache)
+        window.addEventListener('unhandledrejection', function(e) {
+          if (e.reason && (
+            ('' + e.reason).includes('chunk') || 
+            (e.reason.name === 'ChunkLoadError')
+          ) && !tried) {
+            console.warn('Chunk load failed, forcing cache-busting reload');
+            tried = true;
+            location.replace(location.pathname + '?v=' + Date.now());
+          }
+        });
+      })();
+    </script>
+    
     <!-- SEO Meta Tags -->
     <title>StageTracker Pro - Live Music Performance Software with MIDI Control</title>
     <meta name="description" content="Professional live music performance software with real-time MIDI device integration, synchronized lyrics, multi-track audio playback, and collaborative broadcast features. Perfect for musicians, bands, and live performers." />

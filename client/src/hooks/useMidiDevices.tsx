@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { androidBleMidi, BleMidiDevice } from '@/lib/android-ble-midi';
 
 export interface MidiDevice {

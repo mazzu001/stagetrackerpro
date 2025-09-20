@@ -26,6 +26,7 @@ interface TrackManagerProps {
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
   onTempoChange?: (tempo: number) => void; // Master tempo control
+  onPitchChange?: (semitones: number) => void; // Master pitch control
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
@@ -43,6 +44,7 @@ export default function TrackManager({
   onTrackSoloToggle, 
   onTrackBalanceChange,
   onTempoChange,
+  onPitchChange,
   audioLevels = {},
   isPlaying = false,
   isLoadingTracks = false,
@@ -641,8 +643,11 @@ export default function TrackManager({
     // Save to localStorage
     localStorage.setItem('stagetracker_master_pitch', clampedPitch.toString());
     
-    // TODO: Implement pitch control with Tone.js (currently placeholder)
-    console.log(`🎵 Master pitch changed: ${clampedPitch} semitones (NOT IMPLEMENTED)`);
+    // Call the pitch change handler to apply RubberBand pitch shifting
+    if (onPitchChange) {
+      onPitchChange(clampedPitch);
+    }
+    console.log(`🎵 Master pitch changed: ${clampedPitch} semitones (RubberBand)`);
   }, []);
 
   const resetTempoAndPitch = useCallback(() => {
@@ -723,13 +728,13 @@ export default function TrackManager({
                     disabled={masterPitch <= -12}
                     variant="outline"
                     size="sm"
-                    className="h-6 w-6 p-0 opacity-50"
-                    title="Coming soon"
+                    className="h-6 w-6 p-0"
+                    title="Decrease pitch by 1 semitone"
                     data-testid="button-pitch-decrease"
                   >
                     <Minus className="h-3 w-3" />
                   </Button>
-                  <div className="h-6 w-12 text-xs text-center px-1 dark:bg-gray-700 rounded border flex items-center justify-center opacity-50 bg-[#000000]">
+                  <div className="h-6 w-12 text-xs text-center px-1 dark:bg-gray-700 rounded border flex items-center justify-center bg-[#000000]">
                     {masterPitch > 0 ? `+${masterPitch}` : masterPitch}
                   </div>
                   <Button
@@ -737,8 +742,8 @@ export default function TrackManager({
                     disabled={masterPitch >= 12}
                     variant="outline"
                     size="sm"
-                    className="h-6 w-6 p-0 opacity-50"
-                    title="Coming soon"
+                    className="h-6 w-6 p-0"
+                    title="Increase pitch by 1 semitone"
                     data-testid="button-pitch-increase"
                   >
                     <Plus className="h-3 w-3" />

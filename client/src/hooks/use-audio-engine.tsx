@@ -298,6 +298,18 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, []);
 
+  const updateMasterTempo = useCallback(async (tempo: number) => {
+    if (audioEngineRef.current) {
+      await audioEngineRef.current.setMasterTempo(tempo);
+    }
+  }, []);
+
+  const updateMasterPitch = useCallback(async (semitones: number) => {
+    if (audioEngineRef.current) {
+      await audioEngineRef.current.setMasterPitch(semitones);
+    }
+  }, []);
+
 
   return {
     isPlaying,
@@ -319,5 +331,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     updateTrackMute,
     updateTrackSolo,
     updateMasterVolume,
+    updateMasterTempo,
+    updateMasterPitch,
   };
 }

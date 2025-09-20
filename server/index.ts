@@ -128,7 +128,7 @@ app.use((req, res, next) => {
     'http://0.0.0.0:5000'
   ];
   
-  if (allowedOrigins.includes(origin)) {
+  if (origin && allowedOrigins.includes(origin)) {
     res.set('Access-Control-Allow-Origin', origin);
   }
   

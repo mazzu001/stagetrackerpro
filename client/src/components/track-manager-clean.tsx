@@ -673,7 +673,7 @@ export default function TrackManager({
           
           {/* Master Tempo and Pitch Controls */}
           {tracks.length > 0 && (
-            <div className="flex items-center gap-4 p-2 bg-gray-50 dark:bg-gray-800 rounded-lg">
+            <div className="flex items-center gap-4 p-2 dark:bg-gray-800 rounded-lg bg-[#0c75ca]">
               {/* Tempo Control */}
               <div className="flex items-center gap-2">
                 <Label className="text-xs font-medium text-gray-600 dark:text-gray-300">Tempo:</Label>

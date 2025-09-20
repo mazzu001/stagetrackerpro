@@ -26,7 +26,6 @@ interface TrackManagerProps {
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
   onTempoChange?: (tempo: number) => void; // Master tempo control
-  onPitchChange?: (semitones: number) => void; // Master pitch control
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
@@ -44,7 +43,6 @@ export default function TrackManager({
   onTrackSoloToggle, 
   onTrackBalanceChange,
   onTempoChange,
-  onPitchChange,
   audioLevels = {},
   isPlaying = false,
   isLoadingTracks = false,
@@ -63,11 +61,6 @@ export default function TrackManager({
     // Load tempo from localStorage
     const savedTempo = localStorage.getItem('stagetracker_master_tempo');
     return savedTempo ? parseFloat(savedTempo) : 1.0;
-  });
-  const [masterPitch, setMasterPitch] = useState(() => {
-    // Load pitch from localStorage (placeholder for future)
-    const savedPitch = localStorage.getItem('stagetracker_master_pitch');
-    return savedPitch ? parseInt(savedPitch) : 0;
   });
 
   // Recording state

@@ -81,15 +81,24 @@ export class StreamingAudioEngine {
 
   // Create RubberBand node for a track
   private async createRubberBandNode(): Promise<RubberBandNode> {
-    await this.initializeRubberBandProcessor();
-    
-    const rubberBandNode = new AudioWorkletNode(this.audioContext, 'RubberBandProcessor') as RubberBandNode;
-    
-    // Enable high-quality processing by default
-    rubberBandNode.setHighQuality(true);
-    
-    console.log('🎵 RubberBand node created');
-    return rubberBandNode;
+    try {
+      // Import RubberBand dynamically
+      const { createRubberBandNode } = await import('rubberband-web');
+      
+      const rubberBandNode = await createRubberBandNode(
+        this.audioContext,
+        '/rubberband-processor.js'
+      ) as RubberBandNode;
+      
+      // Enable high-quality processing by default
+      rubberBandNode.setHighQuality(true);
+      
+      console.log('🎵 RubberBand node created');
+      return rubberBandNode;
+    } catch (error) {
+      console.error('❌ Failed to create RubberBand node:', error);
+      throw error;
+    }
   }
 
   // Convert semitones to pitch ratio (for RubberBand)
@@ -522,7 +531,7 @@ export class StreamingAudioEngine {
       await this.ensureTrackAudioNodes(track);
       if (track.rubberBandNode) {
         const pitchRatio = this.semitonesToRatio(semitones);
-        track.rubberBandNode.setPitch(pitchRatio);
+        (track.rubberBandNode as RubberBandNode).setPitch(pitchRatio);
         console.log(`🎵 Set pitch for track ${track.name}: ${semitones} semitones (${pitchRatio.toFixed(3)}x)`);
       } else {
         console.warn(`⚠️ No RubberBand node available for track ${track.name}`);
@@ -538,7 +547,7 @@ export class StreamingAudioEngine {
       await this.ensureTrackAudioNodes(track);
       if (track.rubberBandNode) {
         const pitchRatio = this.semitonesToRatio(semitones);
-        track.rubberBandNode.setPitch(pitchRatio);
+        (track.rubberBandNode as RubberBandNode).setPitch(pitchRatio);
       }
     }));
     console.log(`🎵 Set master pitch: ${semitones} semitones`);

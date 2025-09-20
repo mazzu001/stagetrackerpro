@@ -412,7 +412,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     updateTrackBalance,
     updateTrackMute,
     updateTrackSolo,
-    // Pitch and speed control removed
+    updateMasterTempo,
+    updateMasterPitch,
     isAudioEngineOnline,
     masterStereoLevels,
     audioLevels
@@ -1534,7 +1535,8 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               onTrackMuteToggle={toggleTrackMute}
               onTrackSoloToggle={toggleTrackSolo}
               onTrackBalanceChange={updateTrackBalance}
-              // Pitch and speed control removed
+              onTempoChange={updateMasterTempo}
+              onPitchChange={updateMasterPitch}
               onPlay={play}
               onPause={pause}
               isPlaying={isPlaying}

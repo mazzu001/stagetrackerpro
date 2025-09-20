@@ -1,0 +1,169 @@
+index-BXK4yPSj.js:368 🔵 Android BLE-MIDI adapter initialized
+index-BXK4yPSj.js:376 Loaded 12 audio file path references from localStorage
+index-BXK4yPSj.js:376 🔄 Auto-loading 12 stored audio files...
+index-BXK4yPSj.js:376 🔍 BrowserFS.getAudioFile: Looking for track 27a93cb2-9c9c-4f98-9621-0cd4ee7005b5
+index-BXK4yPSj.js:376 💾 Memory cache has: []
+index-BXK4yPSj.js:376 🗃️ Database initialized: false
+index-BXK4yPSj.js:376 ⏳ Waiting for database initialization for track 27a93cb2-9c9c-4f98-9621-0cd4ee7005b5
+index-BXK4yPSj.js:376 Expected audio files for tracks:
+index-BXK4yPSj.js:376   - 3AM - Backups.mp3 (browser://465caf90-f475-49d3-a16e-382b80191463/27a93cb2-9c9c-4f98-9621-0cd4ee7005b5)
+index-BXK4yPSj.js:376   - 3AM - Bass.mp3 (browser://465caf90-f475-49d3-a16e-382b80191463/29fe2952-9ec0-4b0a-9413-7d6e25f22920)
+index-BXK4yPSj.js:376   - 3AM - Click.mp3 (browser://465caf90-f475-49d3-a16e-382b80191463/2892f6b2-9f26-4325-a505-932188b7813a)
+index-BXK4yPSj.js:376   - 3AM - Drums.mp3 (browser://465caf90-f475-49d3-a16e-382b80191463/67a40688-99cd-4e2d-87f2-529e0b238306)
+index-BXK4yPSj.js:376   - 3AM - Guitars.mp3 (browser://465caf90-f475-49d3-a16e-382b80191463/d3f59fd8-922e-4a38-92f8-be25e3fe2296)
+index-BXK4yPSj.js:376   - 3AM - Organ.mp3 (browser://465caf90-f475-49d3-a16e-382b80191463/304fd297-c31e-4d81-8e64-72d2cd620640)
+index-BXK4yPSj.js:376   - Footloose_(1984_film)_Hurts_So_Good(Backing_Vocals_Custom_Backing_Track-2).mp3 (browser://be9444fd-ddf2-4a58-970b-8a47ce735f99/c5aa4783-104d-4a00-9e29-ef1e8763f4dd)
+index-BXK4yPSj.js:376   - Footloose_(1984_film)_Hurts_So_Good(Bass_Custom_Backing_Track-2) (1).mp3 (browser://be9444fd-ddf2-4a58-970b-8a47ce735f99/310e271f-4047-470a-aa0f-c04d390191c1)
+index-BXK4yPSj.js:376   - Footloose_(1984_film)_Hurts_So_Good(Click_Custom_Backing_Track-2) (1).mp3 (browser://be9444fd-ddf2-4a58-970b-8a47ce735f99/26248484-311f-4324-a56a-aeead9151d97)
+index-BXK4yPSj.js:376   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://be9444fd-ddf2-4a58-970b-8a47ce735f99/0388b64e-17d6-4ee4-8414-c5231d7bcd53)
+index-BXK4yPSj.js:376   - Footloose_(1984_film)_Hurts_So_Good(Guitars Custom_Backing_Track-2) (1).mp3 (browser://be9444fd-ddf2-4a58-970b-8a47ce735f99/6a936024-8138-433f-8e65-ec8932e53e76)
+index-BXK4yPSj.js:376   - Footloose_(1984_film)_Hurts_So_Good(Organ_Custom_Backing_Track-2) (1).mp3 (browser://be9444fd-ddf2-4a58-970b-8a47ce735f99/2d7df646-e6a2-4339-ab0a-f3fde7f85811)
+index-BXK4yPSj.js:376 These files will be loaded when you select them through the file picker.
+index-BXK4yPSj.js:368 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+index-BXK4yPSj.js:441 🔍 Checking URL for payment success: https://stagetrackerpro.com/?v=1758394341738
+index-BXK4yPSj.js:441 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+index-BXK4yPSj.js:441 🔍 No payment success detected in URL
+index-BXK4yPSj.js:368 🎹 Initializing MIDI access...
+index-BXK4yPSj.js:441 Browser file system already initialized - auto-initializing
+index-BXK4yPSj.js:368 🔐 MIDI Permission State: granted
+index-BXK4yPSj.js:368 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+ Browser file system initialized successfully
+ ✅ BrowserFileSystem fully initialized with config loaded
+ ✅ Database initialization completed for track 27a93cb2-9c9c-4f98-9621-0cd4ee7005b5
+ 💾 Not in memory cache, checking IndexedDB for 27a93cb2-9c9c-4f98-9621-0cd4ee7005b5
+ Browser file system initialized successfully
+ ✅ MIDI system initialized successfully
+ 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+Zy @ stripe.js:1
+LR @ index-BXK4yPSj.js:435
+(anonymous) @ index-BXK4yPSj.js:435
+Promise.then
+Zi @ index-BXK4yPSj.js:435
+(anonymous) @ index-BXK4yPSj.js:436
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+Zy @ stripe.js:1
+LR @ index-BXK4yPSj.js:435
+(anonymous) @ index-BXK4yPSj.js:435
+Promise.then
+Zi @ index-BXK4yPSj.js:435
+(anonymous) @ index-BXK4yPSj.js:436
+ ✅ Found in IndexedDB: 27a93cb2-9c9c-4f98-9621-0cd4ee7005b5 (3AM - Backups.mp3)
+ ✅ Auto-loaded audio file for track: 27a93cb2-9c9c-4f98-9621-0cd4ee7005b5
+ 🔍 BrowserFS.getAudioFile: Looking for track 29fe2952-9ec0-4b0a-9413-7d6e25f22920
+ 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 29fe2952-9ec0-4b0a-9413-7d6e25f22920
+ ✅ Database initialization completed for track 29fe2952-9ec0-4b0a-9413-7d6e25f22920
+ 💾 Not in memory cache, checking IndexedDB for 29fe2952-9ec0-4b0a-9413-7d6e25f22920
+ 📱 Edge browser detected - using compatibility mode
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+ 🎵 Master output initialized
+ 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+ 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+ 🎭 Not broadcasting - not host
+ ✅ Found in IndexedDB: 29fe2952-9ec0-4b0a-9413-7d6e25f22920 (3AM - Bass.mp3)
+ ✅ Auto-loaded audio file for track: 29fe2952-9ec0-4b0a-9413-7d6e25f22920
+ 🔍 BrowserFS.getAudioFile: Looking for track 2892f6b2-9f26-4325-a505-932188b7813a
+ 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5, 29fe2952-9ec0-4b0a-9413-7d6e25f22920]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 2892f6b2-9f26-4325-a505-932188b7813a
+ ✅ Database initialization completed for track 2892f6b2-9f26-4325-a505-932188b7813a
+ 💾 Not in memory cache, checking IndexedDB for 2892f6b2-9f26-4325-a505-932188b7813a
+ 🔍 Refreshing devices - access details: {inputs: 0, outputs: 0, inputsType: 'MIDIInputMap', outputsType: 'MIDIOutputMap'}
+ ⚠️ No MIDI devices found. This could be due to:
+ 1. No physical MIDI devices connected
+ 2. MIDI permissions denied or blocked
+ 3. Browser security restrictions
+ 💡 To reset MIDI permissions:
+    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+ 🎹 Found 0 MIDI devices: []
+ 🎹 Connected devices: 0/0 []
+ 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+ ✅ Found in IndexedDB: 2892f6b2-9f26-4325-a505-932188b7813a (3AM - Click.mp3)
+ ✅ Auto-loaded audio file for track: 2892f6b2-9f26-4325-a505-932188b7813a
+ 🔍 BrowserFS.getAudioFile: Looking for track 67a40688-99cd-4e2d-87f2-529e0b238306
+ 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5, 29fe2952-9ec0-4b0a-9413-7d6e25f22920, 2892f6b2-9f26-4325-a505-932188b7813a]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 67a40688-99cd-4e2d-87f2-529e0b238306
+ ✅ Database initialization completed for track 67a40688-99cd-4e2d-87f2-529e0b238306
+ 💾 Not in memory cache, checking IndexedDB for 67a40688-99cd-4e2d-87f2-529e0b238306
+ ✅ Found in IndexedDB: 67a40688-99cd-4e2d-87f2-529e0b238306 (3AM - Drums.mp3)
+ ✅ Auto-loaded audio file for track: 67a40688-99cd-4e2d-87f2-529e0b238306
+ 🔍 BrowserFS.getAudioFile: Looking for track d3f59fd8-922e-4a38-92f8-be25e3fe2296
+ 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5, 29fe2952-9ec0-4b0a-9413-7d6e25f22920, 2892f6b2-9f26-4325-a505-932188b7813a, 67a40688-99cd-4e2d-87f2-529e0b238306]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track d3f59fd8-922e-4a38-92f8-be25e3fe2296
+index-BXK4yPSj.js:376 ✅ Database initialization completed for track d3f59fd8-922e-4a38-92f8-be25e3fe2296
+index-BXK4yPSj.js:376 💾 Not in memory cache, checking IndexedDB for d3f59fd8-922e-4a38-92f8-be25e3fe2296
+index-BXK4yPSj.js:376 ✅ Found in IndexedDB: d3f59fd8-922e-4a38-92f8-be25e3fe2296 (3AM - Guitars.mp3)
+index-BXK4yPSj.js:376 ✅ Auto-loaded audio file for track: d3f59fd8-922e-4a38-92f8-be25e3fe2296
+index-BXK4yPSj.js:376 🔍 BrowserFS.getAudioFile: Looking for track 304fd297-c31e-4d81-8e64-72d2cd620640
+index-BXK4yPSj.js:376 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5, 29fe2952-9ec0-4b0a-9413-7d6e25f22920, 2892f6b2-9f26-4325-a505-932188b7813a, 67a40688-99cd-4e2d-87f2-529e0b238306, d3f59fd8-922e-4a38-92f8-be25e3fe2296]
+index-BXK4yPSj.js:376 🗃️ Database initialized: true
+index-BXK4yPSj.js:376 ⏳ Waiting for database initialization for track 304fd297-c31e-4d81-8e64-72d2cd620640
+index-BXK4yPSj.js:376 ✅ Database initialization completed for track 304fd297-c31e-4d81-8e64-72d2cd620640
+index-BXK4yPSj.js:376 💾 Not in memory cache, checking IndexedDB for 304fd297-c31e-4d81-8e64-72d2cd620640
+index-BXK4yPSj.js:376 ✅ Found in IndexedDB: 304fd297-c31e-4d81-8e64-72d2cd620640 (3AM - Organ.mp3)
+index-BXK4yPSj.js:376 ✅ Auto-loaded audio file for track: 304fd297-c31e-4d81-8e64-72d2cd620640
+index-BXK4yPSj.js:376 🔍 BrowserFS.getAudioFile: Looking for track c5aa4783-104d-4a00-9e29-ef1e8763f4dd
+index-BXK4yPSj.js:376 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5, 29fe2952-9ec0-4b0a-9413-7d6e25f22920, 2892f6b2-9f26-4325-a505-932188b7813a, 67a40688-99cd-4e2d-87f2-529e0b238306, d3f59fd8-922e-4a38-92f8-be25e3fe2296, 304fd297-c31e-4d81-8e64-72d2cd620640]
+index-BXK4yPSj.js:376 🗃️ Database initialized: true
+index-BXK4yPSj.js:376 ⏳ Waiting for database initialization for track c5aa4783-104d-4a00-9e29-ef1e8763f4dd
+index-BXK4yPSj.js:376 ✅ Database initialization completed for track c5aa4783-104d-4a00-9e29-ef1e8763f4dd
+index-BXK4yPSj.js:376 💾 Not in memory cache, checking IndexedDB for c5aa4783-104d-4a00-9e29-ef1e8763f4dd
+index-BXK4yPSj.js:376 ✅ Found in IndexedDB: c5aa4783-104d-4a00-9e29-ef1e8763f4dd (Footloose_(1984_film)_Hurts_So_Good(Backing_Vocals_Custom_Backing_Track-2).mp3)
+index-BXK4yPSj.js:376 ✅ Auto-loaded audio file for track: c5aa4783-104d-4a00-9e29-ef1e8763f4dd
+index-BXK4yPSj.js:376 🔍 BrowserFS.getAudioFile: Looking for track 310e271f-4047-470a-aa0f-c04d390191c1
+index-BXK4yPSj.js:376 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5, 29fe2952-9ec0-4b0a-9413-7d6e25f22920, 2892f6b2-9f26-4325-a505-932188b7813a, 67a40688-99cd-4e2d-87f2-529e0b238306, d3f59fd8-922e-4a38-92f8-be25e3fe2296, 304fd297-c31e-4d81-8e64-72d2cd620640, c5aa4783-104d-4a00-9e29-ef1e8763f4dd]
+index-BXK4yPSj.js:376 🗃️ Database initialized: true
+index-BXK4yPSj.js:376 ⏳ Waiting for database initialization for track 310e271f-4047-470a-aa0f-c04d390191c1
+index-BXK4yPSj.js:376 ✅ Database initialization completed for track 310e271f-4047-470a-aa0f-c04d390191c1
+index-BXK4yPSj.js:376 💾 Not in memory cache, checking IndexedDB for 310e271f-4047-470a-aa0f-c04d390191c1
+index-BXK4yPSj.js:376 ✅ Found in IndexedDB: 310e271f-4047-470a-aa0f-c04d390191c1 (Footloose_(1984_film)_Hurts_So_Good(Bass_Custom_Backing_Track-2) (1).mp3)
+index-BXK4yPSj.js:376 ✅ Auto-loaded audio file for track: 310e271f-4047-470a-aa0f-c04d390191c1
+index-BXK4yPSj.js:376 🔍 BrowserFS.getAudioFile: Looking for track 26248484-311f-4324-a56a-aeead9151d97
+index-BXK4yPSj.js:376 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5, 29fe2952-9ec0-4b0a-9413-7d6e25f22920, 2892f6b2-9f26-4325-a505-932188b7813a, 67a40688-99cd-4e2d-87f2-529e0b238306, d3f59fd8-922e-4a38-92f8-be25e3fe2296, 304fd297-c31e-4d81-8e64-72d2cd620640, c5aa4783-104d-4a00-9e29-ef1e8763f4dd, 310e271f-4047-470a-aa0f-c04d390191c1]
+index-BXK4yPSj.js:376 🗃️ Database initialized: true
+index-BXK4yPSj.js:376 ⏳ Waiting for database initialization for track 26248484-311f-4324-a56a-aeead9151d97
+index-BXK4yPSj.js:376 ✅ Database initialization completed for track 26248484-311f-4324-a56a-aeead9151d97
+index-BXK4yPSj.js:376 💾 Not in memory cache, checking IndexedDB for 26248484-311f-4324-a56a-aeead9151d97
+index-BXK4yPSj.js:376 ✅ Found in IndexedDB: 26248484-311f-4324-a56a-aeead9151d97 (Footloose_(1984_film)_Hurts_So_Good(Click_Custom_Backing_Track-2) (1).mp3)
+index-BXK4yPSj.js:376 ✅ Auto-loaded audio file for track: 26248484-311f-4324-a56a-aeead9151d97
+index-BXK4yPSj.js:376 🔍 BrowserFS.getAudioFile: Looking for track 0388b64e-17d6-4ee4-8414-c5231d7bcd53
+index-BXK4yPSj.js:376 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5, 29fe2952-9ec0-4b0a-9413-7d6e25f22920, 2892f6b2-9f26-4325-a505-932188b7813a, 67a40688-99cd-4e2d-87f2-529e0b238306, d3f59fd8-922e-4a38-92f8-be25e3fe2296, 304fd297-c31e-4d81-8e64-72d2cd620640, c5aa4783-104d-4a00-9e29-ef1e8763f4dd, 310e271f-4047-470a-aa0f-c04d390191c1, 26248484-311f-4324-a56a-aeead9151d97]
+index-BXK4yPSj.js:376 🗃️ Database initialized: true
+index-BXK4yPSj.js:376 ⏳ Waiting for database initialization for track 0388b64e-17d6-4ee4-8414-c5231d7bcd53
+index-BXK4yPSj.js:376 ✅ Database initialization completed for track 0388b64e-17d6-4ee4-8414-c5231d7bcd53
+index-BXK4yPSj.js:376 💾 Not in memory cache, checking IndexedDB for 0388b64e-17d6-4ee4-8414-c5231d7bcd53
+index-BXK4yPSj.js:376 ✅ Found in IndexedDB: 0388b64e-17d6-4ee4-8414-c5231d7bcd53 (Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3)
+index-BXK4yPSj.js:376 ✅ Auto-loaded audio file for track: 0388b64e-17d6-4ee4-8414-c5231d7bcd53
+index-BXK4yPSj.js:376 🔍 BrowserFS.getAudioFile: Looking for track 6a936024-8138-433f-8e65-ec8932e53e76
+index-BXK4yPSj.js:376 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5, 29fe2952-9ec0-4b0a-9413-7d6e25f22920, 2892f6b2-9f26-4325-a505-932188b7813a, 67a40688-99cd-4e2d-87f2-529e0b238306, d3f59fd8-922e-4a38-92f8-be25e3fe2296, 304fd297-c31e-4d81-8e64-72d2cd620640, c5aa4783-104d-4a00-9e29-ef1e8763f4dd, 310e271f-4047-470a-aa0f-c04d390191c1, 26248484-311f-4324-a56a-aeead9151d97, 0388b64e-17d6-4ee4-8414-c5231d7bcd53]
+index-BXK4yPSj.js:376 🗃️ Database initialized: true
+index-BXK4yPSj.js:376 ⏳ Waiting for database initialization for track 6a936024-8138-433f-8e65-ec8932e53e76
+index-BXK4yPSj.js:376 ✅ Database initialization completed for track 6a936024-8138-433f-8e65-ec8932e53e76
+index-BXK4yPSj.js:376 💾 Not in memory cache, checking IndexedDB for 6a936024-8138-433f-8e65-ec8932e53e76
+index-BXK4yPSj.js:376 ✅ Found in IndexedDB: 6a936024-8138-433f-8e65-ec8932e53e76 (Footloose_(1984_film)_Hurts_So_Good(Guitars Custom_Backing_Track-2) (1).mp3)
+index-BXK4yPSj.js:376 ✅ Auto-loaded audio file for track: 6a936024-8138-433f-8e65-ec8932e53e76
+index-BXK4yPSj.js:376 🔍 BrowserFS.getAudioFile: Looking for track 2d7df646-e6a2-4339-ab0a-f3fde7f85811
+index-BXK4yPSj.js:376 💾 Memory cache has: [27a93cb2-9c9c-4f98-9621-0cd4ee7005b5, 29fe2952-9ec0-4b0a-9413-7d6e25f22920, 2892f6b2-9f26-4325-a505-932188b7813a, 67a40688-99cd-4e2d-87f2-529e0b238306, d3f59fd8-922e-4a38-92f8-be25e3fe2296, 304fd297-c31e-4d81-8e64-72d2cd620640, c5aa4783-104d-4a00-9e29-ef1e8763f4dd, 310e271f-4047-470a-aa0f-c04d390191c1, 26248484-311f-4324-a56a-aeead9151d97, 0388b64e-17d6-4ee4-8414-c5231d7bcd53, 6a936024-8138-433f-8e65-ec8932e53e76]
+index-BXK4yPSj.js:376 🗃️ Database initialized: true
+index-BXK4yPSj.js:376 ⏳ Waiting for database initialization for track 2d7df646-e6a2-4339-ab0a-f3fde7f85811
+index-BXK4yPSj.js:376 ✅ Database initialization completed for track 2d7df646-e6a2-4339-ab0a-f3fde7f85811
+index-BXK4yPSj.js:376 💾 Not in memory cache, checking IndexedDB for 2d7df646-e6a2-4339-ab0a-f3fde7f85811
+index-BXK4yPSj.js:376 ✅ Found in IndexedDB: 2d7df646-e6a2-4339-ab0a-f3fde7f85811 (Footloose_(1984_film)_Hurts_So_Good(Organ_Custom_Backing_Track-2) (1).mp3)
+index-BXK4yPSj.js:376 ✅ Auto-loaded audio file for track: 2d7df646-e6a2-4339-ab0a-f3fde7f85811
+index-BXK4yPSj.js:376 ✅ Auto-loaded 12/12 audio files into cache
+index-BXK4yPSj.js:376 📱 Edge browser detected - using compatibility mode
+index-BXK4yPSj.js:376 📱 Edge browser detected - using compatibility mode
+index-BXK4yPSj.js:431 📋 Loaded 2 songs from local storage (alphabetically sorted)
+index-BXK4yPSj.js:431 🔍 Debug values: {selectedSongId: null, userEmail: 'testing@stagetracker.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}

@@ -42,6 +42,7 @@ export class BrowserFileSystem {
   private db: IDBDatabase | null = null;
   private audioFiles: Map<string, File> = new Map();
   private blobUrls: Map<string, string> = new Map();
+  private initializationPromise: Promise<boolean> | null = null;
 
   static getInstance(): BrowserFileSystem {
     if (!BrowserFileSystem.instance) {
@@ -58,11 +59,20 @@ export class BrowserFileSystem {
       waveforms: {}
     };
     
-    // Immediately initialize database to avoid race conditions
-    this.initializeDB().then(() => {
-      console.log('✅ BrowserFileSystem database auto-initialized');
+    // FIXED: Store initialization promise to prevent race conditions
+    this.initializationPromise = this.initialize().then(() => {
+      console.log('✅ BrowserFileSystem fully initialized with config loaded');
+      return true;
     }).catch((error) => {
-      console.error('❌ Failed to auto-initialize BrowserFileSystem database:', error);
+      console.error('❌ Failed to auto-initialize BrowserFileSystem:', error);
+      // Fallback: try basic database init only
+      return this.initializeDB().then(() => {
+        console.log('✅ BrowserFileSystem database fallback initialized');
+        return true;
+      }).catch((fallbackError) => {
+        console.error('❌ Even fallback initialization failed:', fallbackError);
+        return false;
+      });
     });
   }
 
@@ -224,6 +234,18 @@ export class BrowserFileSystem {
     console.log(`💾 Memory cache has: [${Array.from(this.audioFiles.keys()).join(', ')}]`);
     console.log(`🗃️ Database initialized: ${!!this.db}`);
     
+    // FIXED: Wait for initialization to complete before accessing database
+    if (this.initializationPromise) {
+      console.log(`⏳ Waiting for database initialization for track ${trackId}`);
+      try {
+        await this.initializationPromise;
+        console.log(`✅ Database initialization completed for track ${trackId}`);
+      } catch (error) {
+        console.error(`❌ Database initialization failed for track ${trackId}:`, error);
+        return null;
+      }
+    }
+    
     // Check memory cache first (may be empty on mobile for memory safety)
     if (this.audioFiles.has(trackId)) {
       console.log(`✅ Found in memory cache: ${trackId}`);
@@ -233,7 +255,7 @@ export class BrowserFileSystem {
     console.log(`💾 Not in memory cache, checking IndexedDB for ${trackId}`);
 
     if (!this.db) {
-      console.log(`❌ Database not initialized for track ${trackId}`);
+      console.log(`❌ Database still not initialized for track ${trackId} after waiting`);
       return null;
     }
 

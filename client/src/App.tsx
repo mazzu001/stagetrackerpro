@@ -200,7 +200,7 @@ function AppContent() {
         </AnalyticsRouter>
       )}
       <Toaster />
-      <UpdateNotification />
+      {/* UpdateNotification DISABLED - was causing constant false alerts and data loss */}
     </TooltipProvider>
   );
 }

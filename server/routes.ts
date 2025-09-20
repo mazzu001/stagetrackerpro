@@ -68,46 +68,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
-  // Version endpoint for cache-busting (no cache headers)
+  // Version endpoint - FIXED to return stable version
   app.get('/api/version', (req, res) => {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    
+    // Use stable version that doesn't change every request
     const version = process.env.VITE_BUILD_ID || 
                    process.env.BUILD_ID || 
                    process.env.REPLIT_DEPLOYMENT_ID ||
-                   Date.now().toString();
+                   'stable-v1.0';  // STABLE fallback instead of Date.now()
     
     res.json({ 
       version,
       timestamp: new Date().toISOString(),
-      deploymentId: process.env.REPLIT_DEPLOYMENT_ID || 'unknown'
+      deploymentId: process.env.REPLIT_DEPLOYMENT_ID || 'stable'
     });
   });
 
-  // Override service worker to disable it (temporary fix for cache issues)
-  app.get('/sw.js', (req, res) => {
-    res.setHeader('Content-Type', 'application/javascript');
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
-    res.send(`
-      // Service Worker Disabled for Cache-Busting
-      self.addEventListener('install', () => {
-        self.skipWaiting();
-      });
-      self.addEventListener('activate', (event) => {
-        event.waitUntil(
-          caches.keys().then(cacheNames => {
-            return Promise.all(
-              cacheNames.map(cacheName => caches.delete(cacheName))
-            );
-          }).then(() => {
-            return self.registration.unregister();
-          })
-        );
-      });
-    `);
-  });
+  // SERVICE WORKER OVERRIDE DISABLED - was destroying user data
 
   console.log('🔧 Starting route registration...');
   

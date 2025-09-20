@@ -1,58 +1,28 @@
 // Emergency cache-busting utilities for production deployment issues
 
 export async function nukeCaches() {
-  console.log('🧹 Starting emergency cache clearing...');
+  console.warn('🚨 CACHE CLEARING DISABLED - was destroying user data');
+  console.log('💾 User data and audio files are now protected');
   
+  // SAFE MINIMAL CLEARING - only clear browser caches, NOT IndexedDB or localStorage
   try {
-    const results = await Promise.all([
-      // Unregister all service workers
-      navigator.serviceWorker?.getRegistrations()
-        .then(registrations => {
-          console.log(`🗑️ Unregistering ${registrations.length} service workers`);
-          return Promise.all(registrations.map(registration => registration.unregister()));
-        })
-        .catch(err => {
-          console.warn('SW unregister failed:', err);
-          return [];
-        }),
+    // Only clear browser HTTP caches, not storage APIs
+    if ('caches' in window) {
+      const cacheNames = await caches.keys();
+      const safeCacheNames = cacheNames.filter(name => 
+        !name.includes('user') && 
+        !name.includes('audio') && 
+        !name.includes('music') &&
+        !name.includes('data')
+      );
       
-      // Clear all caches
-      caches?.keys()
-        .then(cacheNames => {
-          console.log(`🗑️ Clearing ${cacheNames.length} caches`);
-          return Promise.all(cacheNames.map(name => caches.delete(name)));
-        })
-        .catch(err => {
-          console.warn('Cache clear failed:', err);
-          return [];
-        })
-    ]);
-    
-    console.log('✅ Emergency cache clearing completed:', results);
-    
-    // Clear localStorage except for user data
-    const protectedKeys = ['auth_user', 'auth_token', 'user_data'];
-    const keysToRemove = [];
-    
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key && !protectedKeys.includes(key) && !key.startsWith('user_')) {
-        keysToRemove.push(key);
+      if (safeCacheNames.length > 0) {
+        await Promise.all(safeCacheNames.map(name => caches.delete(name)));
+        console.log(`🗑️ Safely cleared ${safeCacheNames.length} HTTP caches`);
       }
     }
-    
-    keysToRemove.forEach(key => {
-      try {
-        localStorage.removeItem(key);
-      } catch (e) {
-        console.warn('Failed to remove localStorage key:', key, e);
-      }
-    });
-    
-    console.log(`🗑️ Cleared ${keysToRemove.length} localStorage keys`);
-    
   } catch (error) {
-    console.error('Emergency cache clearing failed:', error);
+    console.warn('Safe cache clearing failed:', error);
   }
 }
 

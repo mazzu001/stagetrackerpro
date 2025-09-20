@@ -176,13 +176,12 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       return;
     }
 
-    sendMidiCommand(command).then(success => {
-      if (success) {
-        console.log(`✅ Sent test command: ${testCommand}`);
-      } else {
-        alert('Failed to send MIDI command');
-      }
-    });
+    const success = sendMidiCommand(command);
+    if (success) {
+      console.log(`✅ Sent test command: ${testCommand}`);
+    } else {
+      alert('Failed to send MIDI command');
+    }
   };
 
   const getDeviceIcon = (device: MidiDevice) => {

@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { LocalSongStorage } from "@/lib/local-song-storage";
 import { useLocalAuth } from "@/hooks/useLocalAuth";
-import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle, Minus, RotateCcw } from "lucide-react";
+import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
 import { TrackWaveformEditor } from "./track-waveform-editor";
@@ -25,7 +25,7 @@ interface TrackManagerProps {
   onTrackMuteToggle?: (trackId: string) => void;
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
-  onTempoChange?: (tempo: number) => void; // Master tempo control
+  // Pitch and speed control removed
   audioLevels?: Record<string, number>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
@@ -42,7 +42,7 @@ export default function TrackManager({
   onTrackMuteToggle, 
   onTrackSoloToggle, 
   onTrackBalanceChange,
-  onTempoChange,
+  // onSpeedChange removed
   audioLevels = {},
   isPlaying = false,
   isLoadingTracks = false,
@@ -57,11 +57,7 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
-  const [masterTempo, setMasterTempo] = useState(() => {
-    // Load tempo from localStorage
-    const savedTempo = localStorage.getItem('stagetracker_master_tempo');
-    return savedTempo ? parseFloat(savedTempo) : 1.0;
-  });
+  // Pitch and speed control removed
 
   // Recording state
   // Recording features removed for simplicity
@@ -608,31 +604,6 @@ export default function TrackManager({
     }
   }, [tracks, song?.id, user?.email, onTrackSoloToggle, refetchTracks]);
 
-  // Tempo control handlers
-  const handleTempoChange = useCallback((newTempo: number) => {
-    // Clamp tempo to safe range (0.5x to 2.0x speed)
-    const clampedTempo = Math.max(0.5, Math.min(2.0, newTempo));
-    setMasterTempo(clampedTempo);
-    
-    // Save to localStorage
-    localStorage.setItem('stagetracker_master_tempo', clampedTempo.toString());
-    
-    // Apply to audio engine
-    if (audioEngine) {
-      audioEngine.setMasterTempo(clampedTempo);
-    }
-    
-    // Notify parent component
-    onTempoChange?.(clampedTempo);
-    
-    console.log(`🎵 Master tempo changed: ${clampedTempo}x (${Math.round(clampedTempo * 100)}%)`);
-  }, [audioEngine, onTempoChange]);
-
-
-  const resetTempo = useCallback(() => {
-    handleTempoChange(1.0);
-  }, [handleTempoChange]);
-
   // Cleanup timeouts on unmount
   useEffect(() => {
     return () => {
@@ -654,63 +625,6 @@ export default function TrackManager({
             )}
           </div>
           
-          {/* Master Tempo and Pitch Controls */}
-          {tracks.length > 0 && (
-            <div className="flex items-center gap-4 p-2 dark:bg-gray-800 rounded-lg bg-[#0c75ca]">
-              {/* Tempo Control */}
-              <div className="flex items-center gap-2">
-                <Label className="text-xs font-medium text-gray-600 dark:text-gray-300">Tempo:</Label>
-                <div className="flex items-center gap-1">
-                  <Button
-                    onClick={() => handleTempoChange(masterTempo - 0.05)}
-                    disabled={masterTempo <= 0.5}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                    data-testid="button-tempo-decrease"
-                  >
-                    <Minus className="h-3 w-3" />
-                  </Button>
-                  <Input
-                    type="number"
-                    value={Math.round(masterTempo * 100)}
-                    onChange={(e) => {
-                      const bpm = parseInt(e.target.value) || 100;
-                      handleTempoChange(bpm / 100);
-                    }}
-                    className="h-6 w-16 text-xs text-center px-1"
-                    min="50"
-                    max="200"
-                    data-testid="input-tempo"
-                  />
-                  <span className="text-xs text-gray-500">%</span>
-                  <Button
-                    onClick={() => handleTempoChange(masterTempo + 0.05)}
-                    disabled={masterTempo >= 2.0}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                    data-testid="button-tempo-increase"
-                  >
-                    <Plus className="h-3 w-3" />
-                  </Button>
-                </div>
-              </div>
-
-
-              {/* Reset Button */}
-              <Button
-                onClick={resetTempo}
-                variant="ghost"
-                size="sm"
-                className="h-6 w-6 p-0"
-                title="Reset tempo"
-                data-testid="button-reset-tempo"
-              >
-                <RotateCcw className="h-3 w-3" />
-              </Button>
-            </div>
-          )}
         </div>
         
         
@@ -781,6 +695,7 @@ export default function TrackManager({
           )}
         </div>
       </div>
+
       {tracks.length === 0 ? (
         <Card>
           <CardContent className="p-6">
@@ -921,6 +836,8 @@ export default function TrackManager({
           })}
         </div>
       )}
+
+
     </div>
   );
 }

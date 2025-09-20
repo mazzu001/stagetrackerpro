@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { androidBleMidi, BleMidiDevice } from '@/lib/android-ble-midi';
 
 export interface MidiDevice {
@@ -140,7 +140,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       // Check MIDI permission state first
       if (navigator.permissions) {
         try {
-          const midiPermission = await navigator.permissions.query({ name: 'midi' as any, sysex: true });
+          const midiPermission = await navigator.permissions.query({ name: 'midi' as any });
           console.log('🔐 MIDI Permission State:', midiPermission.state);
           
           if (midiPermission.state === 'denied') {
@@ -238,7 +238,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     };
     
     // Process input devices
-    for (const input of access.inputs.values()) {
+    for (const input of Array.from(access.inputs.values())) {
       const { isUSB, isBluetooth } = detectDeviceType(input);
       currentDeviceIds.add(input.id);
       
@@ -260,7 +260,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     }
     
     // Process output devices
-    for (const output of access.outputs.values()) {
+    for (const output of Array.from(access.outputs.values())) {
       const { isUSB, isBluetooth } = detectDeviceType(output);
       currentDeviceIds.add(output.id);
       
@@ -345,7 +345,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       let device: MIDIInput | MIDIOutput | undefined;
       
       // Try to find device in inputs first, then outputs
-      device = access.inputs.get(deviceId) || access.outputs.get(deviceId);
+      device = access?.inputs.get(deviceId) || access?.outputs.get(deviceId);
       
       if (!device) {
         console.error(`❌ Device ${deviceId} not found`);
@@ -381,7 +381,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       let device: MIDIInput | MIDIOutput | undefined;
       
       // Try to find device in inputs first, then outputs
-      device = access.inputs.get(deviceId) || access.outputs.get(deviceId);
+      device = access?.inputs.get(deviceId) || access?.outputs.get(deviceId);
       
       if (!device) {
         console.error(`❌ Device ${deviceId} not found`);

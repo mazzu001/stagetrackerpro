@@ -628,25 +628,10 @@ export default function TrackManager({
     console.log(`🎵 Master tempo changed: ${clampedTempo}x (${Math.round(clampedTempo * 100)}%)`);
   }, [audioEngine, onTempoChange]);
 
-  const handlePitchChange = useCallback((newPitch: number) => {
-    // Clamp pitch to reasonable range (-12 to +12 semitones)
-    const clampedPitch = Math.max(-12, Math.min(12, newPitch));
-    setMasterPitch(clampedPitch);
-    
-    // Save to localStorage
-    localStorage.setItem('stagetracker_master_pitch', clampedPitch.toString());
-    
-    // Call the pitch change handler to apply RubberBand pitch shifting
-    if (onPitchChange) {
-      onPitchChange(clampedPitch);
-    }
-    console.log(`🎵 Master pitch changed: ${clampedPitch} semitones (RubberBand)`);
-  }, []);
 
-  const resetTempoAndPitch = useCallback(() => {
+  const resetTempo = useCallback(() => {
     handleTempoChange(1.0);
-    handlePitchChange(0);
-  }, [handleTempoChange, handlePitchChange]);
+  }, [handleTempoChange]);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
@@ -712,46 +697,15 @@ export default function TrackManager({
                 </div>
               </div>
 
-              {/* Pitch Control (Placeholder) */}
-              <div className="flex items-center gap-2">
-                <Label className="text-xs font-medium text-gray-600 dark:text-gray-300">Key:</Label>
-                <div className="flex items-center gap-1">
-                  <Button
-                    onClick={() => handlePitchChange(masterPitch - 1)}
-                    disabled={masterPitch <= -12}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                    title="Decrease pitch by 1 semitone"
-                    data-testid="button-pitch-decrease"
-                  >
-                    <Minus className="h-3 w-3" />
-                  </Button>
-                  <div className="h-6 w-12 text-xs text-center px-1 dark:bg-gray-700 rounded border flex items-center justify-center bg-[#000000]">
-                    {masterPitch > 0 ? `+${masterPitch}` : masterPitch}
-                  </div>
-                  <Button
-                    onClick={() => handlePitchChange(masterPitch + 1)}
-                    disabled={masterPitch >= 12}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                    title="Increase pitch by 1 semitone"
-                    data-testid="button-pitch-increase"
-                  >
-                    <Plus className="h-3 w-3" />
-                  </Button>
-                </div>
-              </div>
 
               {/* Reset Button */}
               <Button
-                onClick={resetTempoAndPitch}
+                onClick={resetTempo}
                 variant="ghost"
                 size="sm"
                 className="h-6 w-6 p-0"
-                title="Reset tempo and pitch"
-                data-testid="button-reset-tempo-pitch"
+                title="Reset tempo"
+                data-testid="button-reset-tempo"
               >
                 <RotateCcw className="h-3 w-3" />
               </Button>

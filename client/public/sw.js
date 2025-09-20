@@ -1,5 +1,5 @@
-// StageTracker Pro Service Worker - CACHE BUSTING VERSION
-const CACHE_NAME = 'stagetracker-pro-cache-bust-' + Date.now();
+// StageTracker Pro Service Worker
+const CACHE_NAME = 'stagetracker-pro-v1';
 const STATIC_CACHE = [
   '/',
   '/manifest.json',
@@ -9,40 +9,35 @@ const STATIC_CACHE = [
 
 // Install event - cache static resources
 self.addEventListener('install', (event) => {
-  console.log('Service Worker installing with cache bust...');
+  console.log('Service Worker installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Caching static resources with new cache name:', CACHE_NAME);
+        console.log('Caching static resources');
         return cache.addAll(STATIC_CACHE);
       })
       .then(() => self.skipWaiting())
   );
 });
 
-// Activate event - AGGRESSIVELY clean up ALL old caches
+// Activate event - clean up old caches
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker activating with AGGRESSIVE cache clearing...');
+  console.log('Service Worker activating...');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
-      console.log('Found caches to clear:', cacheNames);
       return Promise.all(
         cacheNames.map((cacheName) => {
-          // Delete ALL caches except the current one
           if (cacheName !== CACHE_NAME) {
-            console.log('FORCE DELETING cache:', cacheName);
+            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
-    }).then(() => {
-      console.log('All old caches cleared, claiming clients');
-      return self.clients.claim();
-    })
+    }).then(() => self.clients.claim())
   );
 });
 
-// Fetch event - BYPASS cache for JS assets to prevent secret key caching
+// Fetch event - serve from cache when offline
 self.addEventListener('fetch', (event) => {
   // Skip non-GET requests
   if (event.request.method !== 'GET') return;
@@ -50,17 +45,10 @@ self.addEventListener('fetch', (event) => {
   // Skip chrome-extension and other non-http(s) requests
   if (!event.request.url.startsWith('http')) return;
 
-  // CRITICAL: Never cache JavaScript files that might contain sensitive data
-  if (event.request.url.includes('.js') || event.request.url.includes('/assets/')) {
-    console.log('BYPASSING cache for JS/asset:', event.request.url);
-    event.respondWith(fetch(event.request));
-    return;
-  }
-
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        // For non-JS files, use cache-first strategy
+        // Return cached version or fetch from network
         return response || fetch(event.request);
       })
       .catch(() => {
@@ -75,11 +63,14 @@ self.addEventListener('fetch', (event) => {
 // Background sync for when app comes back online
 self.addEventListener('sync', (event) => {
   console.log('Background sync triggered:', event.tag);
+  // Your app already handles offline mode well with local storage
+  // so we don't need complex sync logic here
 });
 
 // Push notifications (for future features)
 self.addEventListener('push', (event) => {
   console.log('Push message received');
+  // Future feature: notifications for broadcast events
 });
 
-console.log('StageTracker Pro Service Worker loaded - CACHE BUSTING ACTIVE');
+console.log('StageTracker Pro Service Worker loaded');

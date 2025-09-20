@@ -344,8 +344,8 @@ app.use((req, res, next) => {
     console.log(`🔍 Environment mode: ${env}`);
     
     // Force production mode for deployed apps - check multiple deployment indicators
-    // Temporarily force production mode to avoid Vite HTML proxy module error
-    const isDeployedApp = true; // Force production mode to use static file serving
+    // Fixed: Use proper environment detection instead of hardcoded true
+    const isDeployedApp = false; // Allow development mode for local development
     /* Original logic:
     const isDeployedApp = (
       process.env.REPL_DEPLOYMENT === 'true' ||      // Replit deployment flag

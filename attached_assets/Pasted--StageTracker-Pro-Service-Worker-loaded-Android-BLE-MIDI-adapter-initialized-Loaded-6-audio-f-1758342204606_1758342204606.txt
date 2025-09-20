@@ -1,0 +1,180 @@
+ StageTracker Pro Service Worker loaded
+ 🔵 Android BLE-MIDI adapter initialized
+ Loaded 6 audio file path references from localStorage
+ 🔄 Auto-loading 6 stored audio files...
+ 🔍 BrowserFS.getAudioFile: Looking for track 10350186-7e41-4fa7-b503-79c56c972418
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 10350186-7e41-4fa7-b503-79c56c972418
+ ❌ Database not initialized for track 10350186-7e41-4fa7-b503-79c56c972418
+ Expected audio files for tracks:
+   - Footloose_(1984_film)_Hurts_So_Good(Backing_Vocals_Custom_Backing_Track-2).mp3 (browser://109584d7-e199-431a-982c-f9df5217becf/10350186-7e41-4fa7-b503-79c56c972418)
+   - Footloose_(1984_film)_Hurts_So_Good(Bass_Custom_Backing_Track-2) (1).mp3 (browser://109584d7-e199-431a-982c-f9df5217becf/7e47b9ef-3069-46a6-af17-3dc84e7e3dd2)
+   - Footloose_(1984_film)_Hurts_So_Good(Click_Custom_Backing_Track-2) (1).mp3 (browser://109584d7-e199-431a-982c-f9df5217becf/739119bc-4cc0-43db-9abc-9a48c9f84fbf)
+   - Footloose_(1984_film)_Hurts_So_Good(Drum_Kit_Custom_Backing_Track-2) (2).mp3 (browser://109584d7-e199-431a-982c-f9df5217becf/5c3b5ff2-ea67-478a-8843-37aad1785b08)
+   - Footloose_(1984_film)_Hurts_So_Good(Guitars Custom_Backing_Track-2) (1).mp3 (browser://109584d7-e199-431a-982c-f9df5217becf/7f0caa22-0d79-4524-bf02-d69396c64ecd)
+   - Footloose_(1984_film)_Hurts_So_Good(Organ_Custom_Backing_Track-2) (1).mp3 (browser://109584d7-e199-431a-982c-f9df5217becf/aec9f3e9-0dbf-4fcc-9823-2d17116e582a)
+ These files will be loaded when you select them through the file picker.
+ 🔍 BrowserFS.getAudioFile: Looking for track 7e47b9ef-3069-46a6-af17-3dc84e7e3dd2
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 7e47b9ef-3069-46a6-af17-3dc84e7e3dd2
+ ❌ Database not initialized for track 7e47b9ef-3069-46a6-af17-3dc84e7e3dd2
+ 🔍 BrowserFS.getAudioFile: Looking for track 739119bc-4cc0-43db-9abc-9a48c9f84fbf
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 739119bc-4cc0-43db-9abc-9a48c9f84fbf
+ ❌ Database not initialized for track 739119bc-4cc0-43db-9abc-9a48c9f84fbf
+ 🔍 BrowserFS.getAudioFile: Looking for track 5c3b5ff2-ea67-478a-8843-37aad1785b08
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 5c3b5ff2-ea67-478a-8843-37aad1785b08
+ ❌ Database not initialized for track 5c3b5ff2-ea67-478a-8843-37aad1785b08
+ 🔍 BrowserFS.getAudioFile: Looking for track 7f0caa22-0d79-4524-bf02-d69396c64ecd
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for 7f0caa22-0d79-4524-bf02-d69396c64ecd
+ ❌ Database not initialized for track 7f0caa22-0d79-4524-bf02-d69396c64ecd
+ 🔍 BrowserFS.getAudioFile: Looking for track aec9f3e9-0dbf-4fcc-9823-2d17116e582a
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ 💾 Not in memory cache, checking IndexedDB for aec9f3e9-0dbf-4fcc-9823-2d17116e582a
+ ❌ Database not initialized for track aec9f3e9-0dbf-4fcc-9823-2d17116e582a
+ ✅ Auto-loaded 0/6 audio files into cache
+ 🔍 Browser detection debug: Object
+ 🔍 Checking URL for payment success: https://stage-tracker-pro-devices.replit.app/
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 Initializing MIDI access...
+  Missing required Google Analytics key: VITE_GA_MEASUREMENT_ID
+(anonymous) @ index-DtMQ6cxa.js:421
+ Browser file system already initialized - auto-initializing
+ ✅ BrowserFileSystem database auto-initialized
+ 🔐 MIDI Permission State: granted
+ 🔍 Browser detection debug: Object
+ Browser file system initialized successfully
+ ✅ MIDI system initialized successfully
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found. This could be due to:
+ 1. No physical MIDI devices connected
+ 2. MIDI permissions denied or blocked
+ 3. Browser security restrictions
+ 💡 To reset MIDI permissions:
+    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Browser detection debug: Object
+index-DtMQ6cxa.js:420  Uncaught (in promise) 
+index-DtMQ6cxa.js:420  Uncaught (in promise) 
+ SW registered:  ServiceWorkerRegistration
+(index):1  <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes">
+ 📱 Edge browser detected - using compatibility mode
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 📱 Edge browser detected - using compatibility mode
+ 📋 Loaded 1 songs from local storage (alphabetically sorted)
+ 🔍 Debug values: Object
+ 📱 Edge browser: Forcing memory cleanup
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 📱 Edge browser detected - using compatibility mode
+ 📋 Loaded 1 songs from local storage (alphabetically sorted)
+ 🔍 Debug values: Object
+ 📱 Edge browser: Forcing memory cleanup
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+index-DtMQ6cxa.js:416 🔍 Debug values: Object
+index-DtMQ6cxa.js:416 🎭 Broadcast host effect: Object
+index-DtMQ6cxa.js:416 🎭 Not broadcasting - not host
+index-DtMQ6cxa.js:361 📱 Edge browser detected - using compatibility mode
+index-DtMQ6cxa.js:416 📋 Loaded 1 songs from local storage (alphabetically sorted)
+index-DtMQ6cxa.js:416 🔍 Debug values: Object
+index-DtMQ6cxa.js:361 📱 Edge browser: Forcing memory cleanup
+index-DtMQ6cxa.js:356 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+index-DtMQ6cxa.js:416 🔍 Initial service isHost check: Object
+index-DtMQ6cxa.js:361 🎵 Master output initialized
+index-DtMQ6cxa.js:416 🔍 Debug values: Object
+index-DtMQ6cxa.js:416 🎭 Broadcast host effect: Object
+index-DtMQ6cxa.js:416 🎭 Not broadcasting - not host
+index-DtMQ6cxa.js:361 📱 Edge browser detected - using compatibility mode
+index-DtMQ6cxa.js:416 📋 Loaded 1 songs from local storage (alphabetically sorted)
+index-DtMQ6cxa.js:416 🔍 Debug values: Object
+index-DtMQ6cxa.js:361 📱 Edge browser: Forcing memory cleanup
+index-DtMQ6cxa.js:356 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+index-DtMQ6cxa.js:416 🔍 Initial service isHost check: Object
+index-DtMQ6cxa.js:361 🎵 Master output initialized
+index-DtMQ6cxa.js:416 🔍 Debug values: Object
+index-DtMQ6cxa.js:416 🎭 Broadcast host effect: Object
+index-DtMQ6cxa.js:416 🎭 Not broadcasting - not host
+index-DtMQ6cxa.js:361 📱 Edge browser detected - using compatibility mode
+index-DtMQ6cxa.js:416 📋 Loaded 1 songs from local storage (alphabetically sorted)
+index-DtMQ6cxa.js:416 🔍 Debug values: Object
+index-DtMQ6cxa.js:361 📱 Edge browser: Forcing memory cleanup
+index-DtMQ6cxa.js:356 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+index-DtMQ6cxa.js:416 🔍 Initial service isHost check: Object
+index-DtMQ6cxa.js:361 🎵 Master output initialized
+index-DtMQ6cxa.js:416 🔍 Debug values: Object
+index-DtMQ6cxa.js:416 🎭 Broadcast host effect: Object
+index-DtMQ6cxa.js:416 🎭 Not broadcasting - not host
+index-DtMQ6cxa.js:361 📱 Edge browser detected - using compatibility mode
+index-DtMQ6cxa.js:416 📋 Loaded 1 songs from local storage (alphabetically sorted)
+index-DtMQ6cxa.js:416 🔍 Debug values: Object
+index-DtMQ6cxa.js:361 📱 Edge browser: Forcing memory cleanup
+index-DtMQ6cxa.js:356 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+index-DtMQ6cxa.js:416 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+index-DtMQ6cxa.js:361 🎵 Master output initialized
+index-DtMQ6cxa.js:416 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+index-DtMQ6cxa.js:416 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+index-DtMQ6cxa.js:416 🎭 Not broadcasting - not host
+Node cannot be found in the current page.
+index-DtMQ6cxa.js:361 📱 Edge browser detected - using compatibility mode
+index-DtMQ6cxa.js:416 📋 Loaded 1 songs from local storage (alphabetically sorted)
+index-DtMQ6cxa.js:416 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+index-DtMQ6cxa.js:361 📱 Edge browser: Forcing memory cleanup
+index-DtMQ6cxa.js:356 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+index-DtMQ6cxa.js:416 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+index-DtMQ6cxa.js:361 🎵 Master output initialized
+index-DtMQ6cxa.js:416 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+index-DtMQ6cxa.js:416 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+index-DtMQ6cxa.js:416 🎭 Not broadcasting - not host
+index-DtMQ6cxa.js:361 📱 Edge browser detected - using compatibility mode
+index-DtMQ6cxa.js:416 📋 Loaded 1 songs from local storage (alphabetically sorted)
+index-DtMQ6cxa.js:416 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+index-DtMQ6cxa.js:361 📱 Edge browser: Forcing memory cleanup
+index-DtMQ6cxa.js:356 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+index-DtMQ6cxa.js:416 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+index-DtMQ6cxa.js:361 🎵 Master output initialized
+index-DtMQ6cxa.js:416 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+index-DtMQ6cxa.js:416 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+index-DtMQ6cxa.js:416 🎭 Not broadcasting - not host
+index-DtMQ6cxa.js:361 📱 Edge browser detected - using compatibility mode
+index-DtMQ6cxa.js:416 📋 Loaded 1 songs from local storage (alphabetically sorted)
+index-DtMQ6cxa.js:416 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+index-DtMQ6cxa.js:361 📱 Edge browser: Forcing memory cleanup
+index-DtMQ6cxa.js:356 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+index-DtMQ6cxa.js:416 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+index-DtMQ6cxa.js:361 🎵 Master output initialized
+index-DtMQ6cxa.js:416 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+index-DtMQ6cxa.js:416 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+index-DtMQ6cxa.js:416 🎭 Not broadcasting - not host
+index-DtMQ6cxa.js:361 📱 Edge browser detected - using compatibility mode
+index-DtMQ6cxa.js:416 📋 Loaded 1 songs from local storage (alphabetically sorted)
+index-DtMQ6cxa.js:416 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+index-DtMQ6cxa.js:361 📱 Edge browser: Forcing memory cleanup
+index-DtMQ6cxa.js:356 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+index-DtMQ6cxa.js:416 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+index-DtMQ6cxa.js:361 🎵 Master output initialized
+index-DtMQ6cxa.js:416 🔍 Debug values: {selectedSongId: null, userEmail: undefined, isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+index-DtMQ6cxa.js:416 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+index-DtMQ6cxa.js:416 🎭 Not broadcasting - not host

@@ -430,6 +430,29 @@ export class StreamingAudioEngine {
     }
   }
 
+  setTrackTempo(trackId: string, tempo: number) {
+    const track = this.state.tracks.find(t => t.id === trackId);
+    if (track) {
+      this.ensureTrackAudioNodes(track);
+      if (track.audioElement) {
+        // HTMLAudioElement.playbackRate controls tempo with automatic pitch preservation
+        track.audioElement.playbackRate = tempo;
+        console.log(`🎵 Set tempo for track ${track.name}: ${tempo}x (${Math.round(tempo * 100)}%)`);
+      }
+    }
+  }
+
+  setMasterTempo(tempo: number) {
+    // Apply tempo to all tracks for synchronized playback
+    this.state.tracks.forEach(track => {
+      this.ensureTrackAudioNodes(track);
+      if (track.audioElement) {
+        track.audioElement.playbackRate = tempo;
+      }
+    });
+    console.log(`🎵 Set master tempo: ${tempo}x (${Math.round(tempo * 100)}%)`);
+  }
+
   private updateSoloStates() {
     const hasSoloTracks = this.state.tracks.some(t => t.isSolo);
     

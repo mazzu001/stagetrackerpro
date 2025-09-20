@@ -24,7 +24,6 @@ import { LocalFileSystemInit } from '@/components/local-file-system-init';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { MidiProvider } from '@/contexts/MidiProvider';
-import { UpdateNotification } from '@/components/update-notification';
 // Google Analytics integration - Added from blueprint:javascript_google_analytics
 import { initGA } from "./lib/analytics";
 import { useAnalytics } from "./hooks/use-analytics";

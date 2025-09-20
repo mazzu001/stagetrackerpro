@@ -312,11 +312,15 @@ app.use((req, res, next) => {
     console.log(`🔍 Environment mode: ${env}`);
     
     // Force production mode for deployed apps - check multiple deployment indicators
+    // Temporarily force production mode to avoid Vite HTML proxy module error
+    const isDeployedApp = true; // Force production mode to use static file serving
+    /* Original logic:
     const isDeployedApp = (
       process.env.REPL_DEPLOYMENT === 'true' ||      // Replit deployment flag
       process.env.NODE_ENV === 'production' ||       // Production environment
       process.env.REPL_SLUG && !process.env.REPL_ID  // Published deployment without editor
     );
+    */
     
     console.log(`🔍 Deployment detection:`, {
       REPL_DEPLOYMENT: process.env.REPL_DEPLOYMENT,
@@ -330,9 +334,22 @@ app.use((req, res, next) => {
     try {
       if (!isDeployedApp && env === "development") {
         console.log('🔧 Setting up Vite development server...');
-        await setupVite(app, server);
-        startupChecks.fileServing = true;
-        console.log('✅ Step 4/5: Vite development server configured');
+        
+        // Temporary workaround: Disable cartographer plugin to fix HTML proxy module error
+        const originalReplId = process.env.REPL_ID;
+        console.log('🔧 Temporarily disabling cartographer plugin to fix Vite HTML proxy error...');
+        delete process.env.REPL_ID;
+        
+        try {
+          await setupVite(app, server);
+          startupChecks.fileServing = true;
+          console.log('✅ Step 4/5: Vite development server configured');
+        } finally {
+          // Restore REPL_ID after Vite setup
+          if (originalReplId) {
+            process.env.REPL_ID = originalReplId;
+          }
+        }
       } else {
         console.log('📁 Setting up static file serving for production...');
         console.log(`🔍 Production mode forced: env=${env}, deployment=${isDeployedApp}`);

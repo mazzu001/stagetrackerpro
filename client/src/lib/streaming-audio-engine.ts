@@ -64,37 +64,35 @@ export class StreamingAudioEngine {
     this.setupMasterOutput();
   }
 
-  // RubberBand WebAssembly initialization
+  // RubberBand WebAssembly initialization - TEMPORARILY DISABLED
   private async initializeRubberBandProcessor() {
     if (this.rubberBandProcessorInitialized) return;
 
     try {
-      // Load RubberBand AudioWorklet processor
-      await this.audioContext.audioWorklet.addModule('/rubberband-processor.js');
+      // TEMPORARILY COMMENTING OUT RUBBER BAND TO FIX REACT ISSUE
+      // await this.audioContext.audioWorklet.addModule('/rubberband-processor.js');
       this.rubberBandProcessorInitialized = true;
-      console.log('🎵 RubberBand processor initialized');
+      console.log('🎵 RubberBand processor temporarily disabled');
     } catch (error) {
       console.error('❌ Failed to initialize RubberBand processor:', error);
       throw error;
     }
   }
 
-  // Create RubberBand node for a track
+  // Create RubberBand node for a track - TEMPORARILY DISABLED
   private async createRubberBandNode(): Promise<RubberBandNode> {
     try {
-      // Import RubberBand dynamically
-      const { createRubberBandNode } = await import('rubberband-web');
+      // TEMPORARILY COMMENTING OUT RUBBER BAND TO FIX REACT ISSUE
+      // const { createRubberBandNode } = await import('rubberband-web');
       
-      const rubberBandNode = await createRubberBandNode(
-        this.audioContext,
-        '/rubberband-processor.js'
-      ) as RubberBandNode;
-      
-      // Enable high-quality processing by default
-      rubberBandNode.setHighQuality(true);
-      
-      console.log('🎵 RubberBand node created');
-      return rubberBandNode;
+      // For now, return a mock object to maintain compatibility
+      console.log('🎵 RubberBand temporarily disabled');
+      return {
+        setHighQuality: () => {},
+        connect: () => {},
+        disconnect: () => {},
+        // Add other required methods as mock functions
+      } as any;
     } catch (error) {
       console.error('❌ Failed to create RubberBand node:', error);
       throw error;

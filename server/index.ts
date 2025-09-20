@@ -326,27 +326,6 @@ app.use((req, res, next) => {
       isDeployedApp
     });
     
-    // TARGETED REDIRECT: Only redirect browser HTML requests, not API endpoints for Windows app
-    app.get('*', (req, res, next) => {
-      // Skip redirect for API endpoints, WebSocket, health checks, and assets
-      if (req.path.startsWith('/api/') || 
-          req.path.startsWith('/ws/') || 
-          req.path.startsWith('/health') ||
-          req.path.startsWith('/uploads/') ||
-          req.path.startsWith('/public/') ||
-          req.path.includes('.') || // Files with extensions (JS, CSS, images)
-          req.headers.accept?.includes('application/json')) { // JSON API requests
-        return next();
-      }
-      
-      // Only redirect browser HTML requests
-      if (req.headers.accept?.includes('text/html')) {
-        console.log(`🔀 Redirecting browser request ${req.method} ${req.originalUrl} to working version`);
-        return res.redirect(302, 'https://stage-tracker-pro-Devices.replit.app');
-      }
-      
-      next();
-    });
     
     try {
       if (!isDeployedApp && env === "development") {

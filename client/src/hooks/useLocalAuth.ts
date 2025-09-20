@@ -16,7 +16,6 @@ const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 export function useLocalAuth() {
   const [user, setUser] = useState<LocalUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isVerifying, setIsVerifying] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -50,6 +49,7 @@ export function useLocalAuth() {
       }
     };
 
+    // Small delay to ensure DOM is ready
     setTimeout(checkExistingSession, 100);
 
     return () => {

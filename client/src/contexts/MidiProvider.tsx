@@ -10,7 +10,7 @@ interface MidiContextType {
   error: string | null;
   connectDevice: (deviceId: string) => Promise<boolean>;
   disconnectDevice: (deviceId: string) => Promise<boolean>;
-  sendMidiCommand: (command: any) => boolean;
+  sendMidiCommand: (command: any) => Promise<boolean>;
   parseMidiCommand: (commandString: string) => any;
   refreshDevices: () => Promise<void>;
   registerMessageListener: (id: string, callback: (message: any) => void) => void;

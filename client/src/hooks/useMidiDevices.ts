@@ -29,7 +29,7 @@ export interface UseMidiDevicesReturn {
   connectDevice: (deviceId: string) => Promise<boolean>;
   connectBleDevice: (deviceId: string) => Promise<boolean>; // Requires user gesture
   disconnectDevice: (deviceId: string) => Promise<boolean>;
-  sendMidiCommand: (command: MidiCommand, deviceIds?: string[]) => boolean;
+  sendMidiCommand: (command: MidiCommand, deviceIds?: string[]) => Promise<boolean>;
   parseMidiCommand: (commandString: string) => MidiCommand | null;
   refreshDevices: () => Promise<void>;
   shouldUseBleAdapter: (device: { name?: string | null }) => boolean; // Helper for UI
@@ -100,20 +100,36 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     isMobile: browserInfo.isMobile
   });
 
-  // Check if Web MIDI API is supported
-  useEffect(() => {
-    const checkSupport = () => {
-      if ('requestMIDIAccess' in navigator) {
-        setIsSupported(true);
-        initializeMidi();
-      } else {
-        setIsSupported(false);
-        setError('Web MIDI API not supported in this browser');
-      }
-    };
-
-    checkSupport();
+  // Check if Web MIDI API is supported (lazy - no automatic initialization)
+  const checkSupport = useCallback(() => {
+    if ('requestMIDIAccess' in navigator) {
+      setIsSupported(true);
+      return true;
+    } else {
+      setIsSupported(false);
+      setError('Web MIDI API not supported in this browser');
+      return false;
+    }
   }, []);
+
+  // Lazy initialization - only initialize MIDI when explicitly requested
+  const ensureMidiInitialized = useCallback(async () => {
+    if (isInitialized && midiAccessRef.current) {
+      return true; // Already initialized
+    }
+    
+    if (!checkSupport()) {
+      return false; // Not supported
+    }
+    
+    try {
+      await initializeMidi();
+      return true;
+    } catch (error) {
+      console.error('Failed to initialize MIDI:', error);
+      return false;
+    }
+  }, [isInitialized]);
 
   // Initialize MIDI access
   const initializeMidi = useCallback(async () => {
@@ -318,8 +334,9 @@ export function useMidiDevices(): UseMidiDevicesReturn {
 
   // Connect to a specific device via BLE (requires user gesture)
   const connectBleDevice = useCallback(async (deviceId: string): Promise<boolean> => {
-    if (!midiAccessRef.current) {
-      console.error('❌ MIDI not initialized');
+    const initialized = await ensureMidiInitialized();
+    if (!initialized) {
+      console.error('❌ MIDI initialization failed');
       return false;
     }
     
@@ -353,8 +370,9 @@ export function useMidiDevices(): UseMidiDevicesReturn {
 
   // Connect to a specific device (Web MIDI only, no auto-BLE)
   const connectDevice = useCallback(async (deviceId: string): Promise<boolean> => {
-    if (!midiAccessRef.current) {
-      console.error('❌ MIDI not initialized');
+    const initialized = await ensureMidiInitialized();
+    if (!initialized) {
+      console.error('❌ MIDI initialization failed');
       return false;
     }
     
@@ -631,10 +649,11 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     return { type: midiType, value, channel, velocity };
   }, []);
 
-  // Send MIDI command to connected devices
-  const sendMidiCommand = useCallback((command: MidiCommand, deviceIds?: string[]): boolean => {
-    if (!midiAccessRef.current) {
-      console.error('❌ MIDI not initialized');
+  // Send MIDI command to connected devices (with lazy initialization)
+  const sendMidiCommand = useCallback(async (command: MidiCommand, deviceIds?: string[]): Promise<boolean> => {
+    const initialized = await ensureMidiInitialized();
+    if (!initialized) {
+      console.error('❌ MIDI initialization failed');
       return false;
     }
     
@@ -806,10 +825,15 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     return success;
   }, []);
 
-  // Public refresh function
+  // Public refresh function (with lazy initialization)
   const refreshDevices = useCallback(async () => {
+    const initialized = await ensureMidiInitialized();
+    if (!initialized) {
+      console.log('⚠️ MIDI not available for device refresh');
+      return;
+    }
     await refreshDeviceList();
-  }, [refreshDeviceList]);
+  }, [refreshDeviceList, ensureMidiInitialized]);
 
   // Register a message listener
   const registerMessageListener = useCallback((id: string, callback: (message: MIDIMessageEvent) => void) => {

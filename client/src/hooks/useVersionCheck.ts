@@ -18,16 +18,17 @@ export function useVersionCheck() {
     return buildTime && buildTime !== 'BUILD_TIME_PLACEHOLDER' ? buildTime : Date.now().toString();
   }, []);
 
-  // Check for updates by fetching index.html and looking for version changes
+  // Check for updates using server version endpoint (more reliable)
   const checkForUpdates = useCallback(async () => {
     if (isChecking) return;
     
     setIsChecking(true);
     
     try {
-      // Fetch the index.html with cache-busting
-      const response = await fetch(`/index.html?v=${Date.now()}`, {
+      // Use server version endpoint with aggressive cache-busting
+      const response = await fetch(`/api/version?t=${Date.now()}`, {
         method: 'GET',
+        cache: 'no-store',
         headers: {
           'Cache-Control': 'no-cache, no-store, must-revalidate',
           'Pragma': 'no-cache',
@@ -40,35 +41,17 @@ export function useVersionCheck() {
         return;
       }
       
-      const html = await response.text();
+      const data = await response.json();
+      const latestVersion = data.version;
       
-      // Look for build time in meta tag or window global
-      const buildTimeMatch = html.match(/name="build-time"[^>]*content="([^"]*)"/) ||
-                           html.match(/window\.__BUILD_ID__\s*=\s*['"]([^'"]*)['"]/);
-      
-      if (buildTimeMatch) {
-        const latestVersion = buildTimeMatch[1];
-        
-        // Skip placeholder values
-        if (latestVersion && latestVersion !== 'BUILD_TIME_PLACEHOLDER') {
-          if (currentVersion && latestVersion !== currentVersion) {
-            console.log('🔄 New version detected:', latestVersion, 'Current:', currentVersion);
-            setHasUpdate(true);
-          } else if (!currentVersion) {
-            setCurrentVersion(latestVersion);
-          }
-        }
-      } else {
-        // Fallback: check if Vite assets have changed
-        const scriptMatch = html.match(/src="\/assets\/index-[\w]+\.js"/);
-        if (scriptMatch) {
-          const latestScript = scriptMatch[0];
-          const currentScript = document.querySelector('script[src*="/assets/index-"]')?.getAttribute('src');
-          
-          if (currentScript && !latestScript.includes(currentScript.split('?')[0])) {
-            console.log('🔄 New build detected via Vite assets changes');
-            setHasUpdate(true);
-          }
+      if (latestVersion) {
+        if (currentVersion && latestVersion !== currentVersion) {
+          console.log('🔄 New version detected:', latestVersion, 'Current:', currentVersion);
+          console.log('📍 Deployment ID:', data.deploymentId);
+          setHasUpdate(true);
+        } else if (!currentVersion) {
+          setCurrentVersion(latestVersion);
+          console.log('✅ Initial version set:', latestVersion);
         }
       }
     } catch (error) {
@@ -78,31 +61,39 @@ export function useVersionCheck() {
     }
   }, [currentVersion, isChecking]);
 
-  // Refresh the application with cache-busting
+  // Refresh the application with comprehensive cache-busting
   const refreshApp = useCallback(async () => {
-    console.log('🔄 Refreshing application...');
+    console.log('🔄 Starting comprehensive app refresh...');
     
     try {
-      // Clear all caches and unregister service workers
-      await Promise.all([
-        // Unregister all service workers
-        navigator.serviceWorker?.getRegistrations()
-          .then(registrations => registrations.forEach(registration => registration.unregister()))
-          .catch(err => console.warn('SW unregister failed:', err)),
-        
-        // Clear all caches
-        caches?.keys()
-          .then(cacheNames => Promise.all(cacheNames.map(name => caches.delete(name))))
-          .catch(err => console.warn('Cache clear failed:', err))
-      ]);
+      // Import and use cache-busting utilities
+      const { nukeCaches, forceReload } = await import('@/lib/cache-buster');
       
-      console.log('✅ Caches cleared and service workers unregistered');
+      // Clear all caches and service workers
+      await nukeCaches();
+      
+      // Force reload with cache-busting
+      forceReload();
     } catch (error) {
-      console.warn('Cache clearing failed:', error);
+      console.warn('Cache-busting utilities failed, using fallback:', error);
+      
+      // Fallback: basic cache clearing
+      try {
+        await Promise.all([
+          navigator.serviceWorker?.getRegistrations()
+            .then(registrations => registrations.forEach(registration => registration.unregister()))
+            .catch(() => {}),
+          caches?.keys()
+            .then(cacheNames => Promise.all(cacheNames.map(name => caches.delete(name))))
+            .catch(() => {})
+        ]);
+      } catch (e) {
+        console.warn('Fallback cache clearing failed:', e);
+      }
+      
+      // Force reload
+      location.replace(location.pathname + '?v=' + Date.now());
     }
-    
-    // Force reload with cache-busting parameter
-    location.replace(location.pathname + '?v=' + Date.now());
   }, []);
 
   // Check for updates when the app becomes visible again

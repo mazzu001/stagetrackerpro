@@ -2,16 +2,30 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-// Register Service Worker for PWA functionality
+// Emergency cache-busting on startup (disabled service worker to prevent caching issues)
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
-      .then((registration) => {
-        console.log('SW registered: ', registration);
-      })
-      .catch((registrationError) => {
-        console.log('SW registration failed: ', registrationError);
-      });
+  // Immediately unregister any existing service workers that might serve stale content
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    registrations.forEach(registration => {
+      console.log('🗑️ Unregistering stale service worker:', registration);
+      registration.unregister();
+    });
+  }).catch(err => {
+    console.warn('Failed to unregister service workers:', err);
+  });
+}
+
+// One-time startup cache clear if we detect cache-busting URL params
+if (location.search.includes('cache_bust=1')) {
+  console.log('🧹 Performing startup cache clear...');
+  
+  // Clear caches if available
+  caches?.keys().then(cacheNames => {
+    return Promise.all(cacheNames.map(name => caches.delete(name)));
+  }).then(() => {
+    console.log('✅ Startup cache clear completed');
+  }).catch(err => {
+    console.warn('Startup cache clear failed:', err);
   });
 }
 

@@ -289,7 +289,7 @@ export function useLocalAuth() {
 
   const upgrade = () => {
     if (user) {
-      const upgradedUser = { ...user, userType: 'paid' as const };
+      const upgradedUser = { ...user, userType: 'premium' as const };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(upgradedUser));
       setUser(upgradedUser);
     }
@@ -326,7 +326,7 @@ export function useLocalAuth() {
     user,
     isLoading,
     isAuthenticated: !!user,
-    isPaidUser: user?.userType === 'paid',
+    isPaidUser: user?.userType === 'premium',
     isFreeUser: user?.userType === 'free',
     login,
     logout,

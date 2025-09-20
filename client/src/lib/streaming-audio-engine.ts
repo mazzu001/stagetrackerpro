@@ -1,5 +1,5 @@
 // Streaming audio engine with lazy initialization to prevent UI blocking
-// Pitch shifting libraries removed - focusing on streaming audio only
+// RubberBand WebAssembly pitch shifting integration for professional quality
 
 import type { MuteRegion } from "@shared/schema";
 
@@ -12,7 +12,9 @@ export interface StreamingTrack {
   gainNode: GainNode | null;
   panNode: StereoPannerNode | null;
   analyzerNode: AnalyserNode | null;
-  // Pitch shifting removed
+  // RubberBand WebAssembly pitch shifting
+  rubberBandNode: AudioWorkletNode | null;
+  pitchValue: number; // In semitones (-12 to +12)
   volume: number;
   balance: number;
   isMuted: boolean;
@@ -100,7 +102,9 @@ export class StreamingAudioEngine {
       gainNode: null as GainNode | null,
       panNode: null as StereoPannerNode | null,
       analyzerNode: null as AnalyserNode | null,
-      // Pitch shifting node removed
+      // RubberBand WebAssembly pitch shifting
+      rubberBandNode: null as AudioWorkletNode | null,
+      pitchValue: 0, // Default to no pitch shift
       volume: 1,
       balance: 0,
       isMuted: false,

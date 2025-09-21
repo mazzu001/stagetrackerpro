@@ -55,84 +55,24 @@ export class BleMidiAdapter {
     }
 
     try {
-      console.log(`🔵 Requesting BLE MIDI device connection...${deviceName ? ` (looking for: ${deviceName})` : ''}`);
+      console.log('🔵 Requesting BLE MIDI device connection...');
       
-      let device: BluetoothDevice | undefined;
+      // Use a single broad request that shows ALL Bluetooth devices
+      // This ensures all devices appear regardless of their name format
+      console.log('🔵 Showing all Bluetooth devices - please select your MIDI device from the list...');
       
-      // If specific device name is provided, use it for precise matching
-      if (deviceName) {
-        try {
-          console.log(`🔵 Looking for specific device: ${deviceName}`);
-          device = await navigator.bluetooth.requestDevice({
-            filters: [
-              { name: deviceName },
-              { namePrefix: deviceName }
-            ],
-            optionalServices: [BLE_MIDI_SERVICE_UUID]
-          });
-          console.log(`✅ Found specific device: ${device.name}`);
-        } catch (specificError) {
-          console.log(`🔍 Specific device "${deviceName}" not found, falling back to general discovery`);
-          console.log('🔍 Specific device error:', {
-            name: (specificError as DOMException).name,
-            message: (specificError as DOMException).message
-          });
-          // Fall through to general discovery strategies below
-        }
-      }
+      const device = await navigator.bluetooth.requestDevice({
+        acceptAllDevices: true,  // Show ALL Bluetooth devices
+        optionalServices: [BLE_MIDI_SERVICE_UUID]  // We'll try to connect to MIDI service if available
+      });
       
-      // If no specific device name provided or specific device not found, try multiple discovery strategies
-      if (!device) {
-        try {
-          // Strategy 1: Look for devices by name (WIDI, MIDI, etc.)
-          console.log('🔵 Trying name-based device discovery...');
-          device = await navigator.bluetooth.requestDevice({
-            filters: [
-              { namePrefix: 'WIDI' },
-              { namePrefix: 'MIDI' },
-              { namePrefix: 'BLE' }
-            ],
-            optionalServices: [BLE_MIDI_SERVICE_UUID]
-          });
-          console.log('✅ Found device via name filter:', device.name);
-        } catch (nameError) {
-          console.log('🔵 Name-based discovery failed, trying service-based...');
-          console.log('🔍 Name discovery error:', {
-            name: (nameError as DOMException).name,
-            message: (nameError as DOMException).message
-          });
-          
-          try {
-            // Strategy 2: Look for devices advertising BLE-MIDI service
-            device = await navigator.bluetooth.requestDevice({
-              filters: [
-                { services: [BLE_MIDI_SERVICE_UUID] }
-              ],
-              optionalServices: [BLE_MIDI_SERVICE_UUID]
-            });
-            console.log('✅ Found device via service filter:', device.name);
-          } catch (serviceError) {
-            console.log('🔵 Service-based discovery failed, trying acceptAllDevices...');
-            console.log('🔍 Service discovery error:', {
-              name: (serviceError as DOMException).name,
-              message: (serviceError as DOMException).message
-            });
-            
-            // Strategy 3: Show all devices and let user choose
-            device = await navigator.bluetooth.requestDevice({
-              acceptAllDevices: true,
-              optionalServices: [BLE_MIDI_SERVICE_UUID]
-            });
-            console.log('✅ Found device via acceptAllDevices:', device.name);
-          }
-        }
-      }
+      console.log(`✅ User selected device: ${device.name || 'Unknown'}`);
 
       if (!device.gatt) {
         throw new Error('Device does not support GATT');
       }
 
-      console.log(`🔵 Connecting to BLE device: ${device.name}`);
+      console.log(`🔵 Connecting to BLE device: ${device.name || 'Unknown'}`);
       
       // Connect to GATT server
       const server = await device.gatt.connect();

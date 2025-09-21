@@ -35,9 +35,11 @@ function AnalyticsRouter({ children }: { children: React.ReactNode }) {
 }
 
 function AppContent() {
+  console.log("🔍 AppContent rendering...");
   const [isLocalFSReady, setIsLocalFSReady] = useState(true); // TEMP: Skip FS check
   const [isCheckingFS, setIsCheckingFS] = useState(false); // TEMP: Skip FS check
   const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
+  console.log("🔍 Auth state:", { isAuthenticated, isLoading, isPaidUser });
 
   useEffect(() => {
     // Check URL parameters for successful payment - handle both valid and invalid query formats

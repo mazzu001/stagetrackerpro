@@ -36,6 +36,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     connectedDevices,
     isSupported,
     isInitialized,
+    isInitializing,
     error,
     connectDevice,
     disconnectDevice,
@@ -326,12 +327,12 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
               variant="outline"
               size="sm"
               onClick={handleRefresh}
-              disabled={isRefreshing || !isInitialized}
+              disabled={isRefreshing || isInitializing}
               data-testid="button-refresh-devices"
               className="mr-[83px]"
             >
-              <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
-              Refresh
+              <RefreshCw className={`h-4 w-4 mr-2 ${(isRefreshing || isInitializing) ? 'animate-spin' : ''}`} />
+              {isInitializing ? 'Initializing...' : 'Refresh'}
             </Button>
           </DialogTitle>
         </DialogHeader>
@@ -357,7 +358,17 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                 <Badge variant="outline">{unifiedDevices.length}</Badge>
               </div>
               
-              {unifiedDevices.length === 0 ? (
+              {isInitializing ? (
+                <Card>
+                  <CardContent className="pt-6">
+                    <div className="text-center text-muted-foreground">
+                      <RefreshCw className="h-8 w-8 mx-auto mb-2 animate-spin" />
+                      <p className="text-sm">Initializing MIDI...</p>
+                      <p className="text-xs">Scanning for MIDI devices on your system</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ) : unifiedDevices.length === 0 ? (
                 <Card>
                   <CardContent className="pt-6">
                     <div className="text-center text-muted-foreground">

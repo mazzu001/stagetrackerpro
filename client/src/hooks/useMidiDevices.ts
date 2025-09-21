@@ -25,6 +25,7 @@ export interface UseMidiDevicesReturn {
   connectedDevices: MidiDevice[];
   isSupported: boolean;
   isInitialized: boolean;
+  isInitializing: boolean;
   error: string | null;
   connectDevice: (deviceId: string) => Promise<boolean>;
   connectBleDevice: (deviceId: string) => Promise<boolean>; // Requires user gesture
@@ -43,6 +44,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   const [connectedDevices, setConnectedDevices] = useState<MidiDevice[]>([]);
   const [isSupported, setIsSupported] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
   const midiAccessRef = useRef<MIDIAccess | null>(null);
@@ -119,7 +121,14 @@ export function useMidiDevices(): UseMidiDevicesReturn {
 
   // Initialize MIDI access
   const initializeMidi = useCallback(async () => {
+    // Prevent multiple simultaneous initialization attempts
+    if (isInitializing || isInitialized) {
+      console.log('🎹 MIDI already initializing or initialized');
+      return;
+    }
+    
     try {
+      setIsInitializing(true);
       setError(null);
       console.log('🎹 Initializing MIDI access...');
       
@@ -146,13 +155,13 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         console.log('📱 Android device detected - using mobile compatibility mode');
       }
       
-      // Add timeout to prevent hanging - increased to 30 seconds for Windows MIDI enumeration
+      // Add timeout to prevent hanging - 5 seconds with non-blocking pattern
       const midiPromise = navigator.requestMIDIAccess({ sysex: true });
       const timeoutPromise = new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error('MIDI initialization timeout')), 30000) // 30 seconds for slower systems
+        setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000) // 5 seconds - won't block UI
       );
       
-      console.log('🎹 Waiting for MIDI access (up to 30 seconds)...');
+      console.log('🎹 Requesting MIDI access (5s timeout)...');
       const access = await Promise.race([midiPromise, timeoutPromise]);
       midiAccessRef.current = access;
       
@@ -183,8 +192,10 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       
       setError(errorMessage);
       console.error('❌ MIDI initialization failed:', err);
+    } finally {
+      setIsInitializing(false);
     }
-  }, []);
+  }, [isInitializing, isInitialized]);
 
   // Refresh device list from MIDI access
   const refreshDeviceList = useCallback(async () => {
@@ -817,20 +828,27 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     return success;
   }, []);
 
-  // Initialize MIDI if not already initialized
-  const ensureMidiInitialized = useCallback(async () => {
-    if (!isInitialized && isSupported) {
-      console.log('🎹 Triggering MIDI initialization on demand');
-      await initializeMidi();
+  // Initialize MIDI if not already initialized - non-blocking version
+  const ensureMidiInitialized = useCallback(() => {
+    if (!isInitialized && !isInitializing && isSupported) {
+      console.log('🎹 Triggering MIDI initialization (non-blocking)');
+      // Don't await - let it run in background
+      initializeMidi().catch(err => {
+        console.error('MIDI init failed in background:', err);
+      });
     }
-  }, [isInitialized, isSupported, initializeMidi]);
+  }, [isInitialized, isInitializing, isSupported, initializeMidi]);
 
-  // Public refresh function
+  // Public refresh function - non-blocking
   const refreshDevices = useCallback(async () => {
-    // Ensure MIDI is initialized before refreshing
-    await ensureMidiInitialized();
-    await refreshDeviceList();
-  }, [refreshDeviceList, ensureMidiInitialized]);
+    // Start initialization if needed (non-blocking)
+    ensureMidiInitialized();
+    
+    // Only refresh if already initialized
+    if (isInitialized) {
+      await refreshDeviceList();
+    }
+  }, [refreshDeviceList, ensureMidiInitialized, isInitialized]);
 
   // Register a message listener
   const registerMessageListener = useCallback((id: string, callback: (message: MIDIMessageEvent) => void) => {
@@ -849,6 +867,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     connectedDevices,
     isSupported,
     isInitialized,
+    isInitializing,
     error,
     connectDevice,
     connectBleDevice,

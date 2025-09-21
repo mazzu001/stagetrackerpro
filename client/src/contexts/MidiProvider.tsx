@@ -7,6 +7,7 @@ interface MidiContextType {
   connectedDevices: any[];
   isSupported: boolean;
   isInitialized: boolean;
+  isInitializing: boolean;
   error: string | null;
   connectDevice: (deviceId: string) => Promise<boolean>;
   disconnectDevice: (deviceId: string) => Promise<boolean>;

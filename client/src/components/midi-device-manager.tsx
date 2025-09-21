@@ -50,10 +50,11 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
 
   // Refresh devices when dialog opens
   useEffect(() => {
-    if (isOpen && isInitialized) {
+    if (isOpen) {
+      // This will automatically initialize MIDI if needed
       handleRefresh();
     }
-  }, [isOpen, isInitialized]);
+  }, [isOpen]);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);

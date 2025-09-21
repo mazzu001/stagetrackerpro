@@ -9,14 +9,14 @@ import { Eye, EyeOff } from 'lucide-react';
 interface LoginPopupProps {
   isOpen: boolean;
   onClose: () => void;
-  onLogin: (userType: 'free' | 'paid', email: string) => void;
+  onLogin: (userType: 'free' | 'premium' | 'professional', email: string) => void;
   defaultTab?: 'signin' | 'signup';
 }
 
 // Beta testing account for demo access
 const DEMO_USERS = {
-  'paid@demo.com': { password: 'demo123', type: 'paid' as const },
-  'mazzu001@hotmail.com': { password: 'demo123', type: 'paid' as const },
+  'paid@demo.com': { password: 'demo123', type: 'premium' as const },
+  'mazzu001@hotmail.com': { password: 'demo123', type: 'premium' as const },
 };
 
 export function LoginPopup({ isOpen, onClose, onLogin, defaultTab = 'signin' }: LoginPopupProps) {
@@ -117,7 +117,7 @@ export function LoginPopup({ isOpen, onClose, onLogin, defaultTab = 'signin' }: 
     }
   };
 
-  const fillDemoCredentials = (type: 'paid') => {
+  const fillDemoCredentials = (type: 'premium') => {
     setEmail('paid@demo.com');
     setPassword('demo123');
     setError('');

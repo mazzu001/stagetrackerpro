@@ -41,7 +41,8 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     disconnectDevice,
     sendMidiCommand,
     parseMidiCommand,
-    refreshDevices
+    refreshDevices,
+    initializeMidi
   } = useMidi();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -60,6 +61,25 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     setIsRefreshing(true);
     try {
       await refreshDevices();
+    } catch (err) {
+      console.error('Failed to refresh devices:', err);
+      // If it failed due to timeout, allow manual retry
+      if (err instanceof Error && err.message.includes('timeout')) {
+        console.log('MIDI initialization timed out - you can retry');
+      }
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Manual retry for MIDI initialization after timeout
+  const handleRetryInit = async () => {
+    setIsRefreshing(true);
+    try {
+      await initializeMidi();
+      await refreshDevices();
+    } catch (err) {
+      console.error('Retry failed:', err);
     } finally {
       setIsRefreshing(false);
     }

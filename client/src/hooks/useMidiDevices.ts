@@ -146,12 +146,13 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         console.log('📱 Android device detected - using mobile compatibility mode');
       }
       
-      // Add timeout to prevent hanging
+      // Add timeout to prevent hanging - increased to 30 seconds for Windows MIDI enumeration
       const midiPromise = navigator.requestMIDIAccess({ sysex: true });
       const timeoutPromise = new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000)
+        setTimeout(() => reject(new Error('MIDI initialization timeout')), 30000) // 30 seconds for slower systems
       );
       
+      console.log('🎹 Waiting for MIDI access (up to 30 seconds)...');
       const access = await Promise.race([midiPromise, timeoutPromise]);
       midiAccessRef.current = access;
       

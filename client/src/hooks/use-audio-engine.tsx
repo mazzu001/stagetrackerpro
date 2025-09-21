@@ -46,10 +46,17 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, []);
 
-  // Initialize audio engine
+  // Initialize audio engine with error boundary
   useEffect(() => {
     const initAudioEngine = async () => {
       try {
+        // TEMPORARY FIX: Disable audio engine initialization to prevent crashes
+        // This was causing white screen after Rubber Band pitch shift implementation
+        console.warn('⚠️ AUDIO ENGINE TEMPORARILY DISABLED - Fix needed for pitch shift issues');
+        console.warn('⚠️ Audio playback features are currently unavailable');
+        setIsAudioEngineOnline(false);
+        
+        /* ORIGINAL CODE - RESTORE AFTER FIX:
         audioEngineRef.current = new StreamingAudioEngine();
         
         // Set up callback for automatic song end (same path as stop button)
@@ -79,9 +86,12 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         // Store unsubscribe function
         (audioEngineRef.current as any).unsubscribe = unsubscribe;
         setIsAudioEngineOnline(true);
+        */
       } catch (error) {
-        console.error('Failed to initialize audio engine:', error);
+        console.error('❌ Critical error in audio engine initialization:', error);
+        console.error('Stack trace:', (error as Error).stack);
         setIsAudioEngineOnline(false);
+        // Continue app execution despite audio engine failure
       }
     };
 

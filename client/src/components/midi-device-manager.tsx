@@ -189,6 +189,9 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     setIsScanning(true);
     try {
       await scanForBluetoothDevices();
+    } catch (error) {
+      // Show user-friendly error message
+      alert((error as Error).message || 'Failed to scan for Bluetooth devices');
     } finally {
       setIsScanning(false);
     }
@@ -485,6 +488,33 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
           <TabsContent value="bluetooth">
             <ScrollArea className="max-h-[50vh]">
               <div className="space-y-4">
+                {/* Check if we're in an iframe (Replit editor) */}
+                {window.self !== window.top && (
+                  <Card className="border-yellow-500">
+                    <CardContent className="pt-6">
+                      <div className="text-center">
+                        <AlertCircle className="h-8 w-8 mx-auto mb-2 text-yellow-500" />
+                        <p className="text-sm font-medium">Bluetooth Blocked in Preview</p>
+                        <p className="text-xs mt-1 text-muted-foreground">
+                          Bluetooth doesn't work in the Replit preview iframe.
+                        </p>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="mt-3"
+                          onClick={() => window.open(window.location.href, '_blank')}
+                          data-testid="button-open-new-tab"
+                        >
+                          Open in New Tab ↗
+                        </Button>
+                        <p className="text-xs mt-2 text-muted-foreground">
+                          Or click the ↗ button in the preview header
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+                
                 {!isWebBluetoothSupported ? (
                   <Card>
                     <CardContent className="pt-6">

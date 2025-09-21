@@ -182,7 +182,12 @@ export class BleMidiAdapter {
       } else if (bleError.name === 'NotFoundError') {
         throw new Error('No compatible BLE MIDI devices found. Make sure your device is powered on and in pairing mode.');
       } else if (bleError.name === 'SecurityError') {
-        throw new Error('BLE access requires a secure connection (HTTPS). Please use HTTPS.');
+        // Check if we're in an iframe (Replit editor)
+        if (window.self !== window.top) {
+          throw new Error('⚠️ Bluetooth is blocked in iframe. Click the "Open in new tab" button (↗) at the top-right of the preview to use Bluetooth.');
+        } else {
+          throw new Error('BLE access requires a secure connection (HTTPS). Please use HTTPS.');
+        }
       } else {
         throw new Error(`BLE connection failed: ${bleError.message || 'Unknown error'}`);
       }

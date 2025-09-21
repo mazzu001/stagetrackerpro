@@ -1,0 +1,148 @@
+
+> rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+🔧 Initializing database connection...
+✅ Database connection initialized successfully
+DatabaseStorage initialized - using hybrid database setup
+- User data: Cloud PostgreSQL database
+- Music data: Local SQLite database
+✅ Stripe initialized successfully for subscriptions
+🔑 Stripe API Mode: LIVE MODE ⚠️
+⚠️ WARNING: Using live Stripe keys - test cards will be declined!
+✅ Stripe initialized successfully for payments
+✅ Stripe initialized successfully for monitoring
+🚀 Starting application initialization...
+🔍 Deployment info: {
+  nodeVersion: 'v20.19.3',
+  platform: 'linux',
+  environment: 'development',
+  timestamp: '2025-09-21T20:08:43.551Z'
+}
+📁 Step 1/5: Creating required directories...
+✅ data directory verified and writable
+✅ public directory verified and writable
+✅ uploads directory verified and writable
+✅ attached_assets directory verified and writable
+✅ Directory structure fully verified
+✅ Step 1/5: Directory creation completed
+🔧 Step 2/5: Validating environment variables...
+✅ Environment variables validated successfully
+🔍 Environment variable status:
+  ✅ DATABASE_URL: postgres...
+  ✅ PORT: 5000
+  ✅ NODE_ENV: development
+  ⚠️ REQUIRE_SECRETS: not set
+  ⚠️ DEPLOYMENT_TEST: not set
+  ⚠️ GRACEFUL_DEGRADATION: not set
+✅ Step 2/5: Environment validation completed
+📋 Step 3/5: Setting up routes and server...
+🔧 Starting route registration...
+🔐 Setting up authentication middleware...
+✅ Auth strategy configured for domain: 8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev
+✅ Authentication setup completed with 1/1 domains
+✅ Authentication middleware configured successfully
+✅ Authentication routes registered
+📦 Registering sample file download routes...
+✅ Sample file download routes registered
+💳 Registering Stripe payment routes...
+💳 Registering active Stripe payment routes...
+💳 Registering Stripe payment routes...
+setAutoSaveCallback: Data auto-saves to local SQLite database
+🎵 Registering stem splitter routes...
+⚠️ MOISES_API_KEY not available - stem splitting disabled
+✅ Stem splitter routes registered successfully
+📡 Registering broadcast session routes...
+🗄️ Registering database storage routes...
+🎵 Registering song management routes...
+🎧 Registering track management routes...
+📊 Registering waveform caching routes...
+🔍 Registering lyrics search routes...
+📁 Registering file registry routes...
+🌐 Creating HTTP server...
+✅ HTTP server created successfully
+📡 Setting up broadcast server...
+📡 Broadcast WebSocket server initialized on /ws/broadcast/*
+✅ Broadcast server initialized
+🎯 Route registration completed successfully
+✅ Step 3/5: Routes registered successfully
+⚙️ Step 4/5: Setting up file serving...
+🔍 Environment mode: development
+🔍 Deployment detection: {
+  REPL_DEPLOYMENT: undefined,
+  NODE_ENV: 'development',
+  REPL_SLUG: true,
+  REPL_ID: true,
+  isDeployedApp: false
+}
+🔧 Setting up Vite development server...
+✅ Step 4/5: Vite development server configured
+🌐 Step 5/5: Starting server...
+🔍 Server configuration: {
+  port: 5000,
+  host: '0.0.0.0',
+  environment: 'development',
+  timestamp: '2025-09-21T20:08:43.839Z'
+}
+🎉 Step 5/5: Server started successfully!
+8:08:43 PM [express] serving on port 5000
+🔗 Application available at: http://0.0.0.0:5000
+🔍 Full startup summary: {
+  directories: true,
+  environment: true,
+  routes: true,
+  fileServing: true,
+  server: true
+}
+🔍 Starting subscription status check...
+🔍 Starting subscription status check...
+📅 Subscription monitor started - checking every 24 hours
+✅ Subscription monitoring started
+Browserslist: browsers data (caniuse-lite) is 11 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+✅ Updated subscription for user microsoft_tester_2025: status=1
+❌ Subscription not found for microsoft.tester@stagetrackerpro.com, set to free
+✅ Subscription check completed for 1 users
+8:10:46 PM [vite] page reload src/main.tsx
+8:10:51 PM [vite] hmr update /src/App.tsx?v=Ur8Q381c63Iv55no0NTKc, /src/index.css?v=Ur8Q381c63Iv55no0NTKc
+8:10:55 PM [vite] hmr update /src/App.tsx?v=Ur8Q381c63Iv55no0NTKc, /src/index.css?v=Ur8Q381c63Iv55no0NTKc, /src/pages/streaming-demo.tsx, /src/pages/performance.tsx, /src/pages/landing.tsx, /src/pages/plans.tsx, /src/pages/unsubscribe.tsx, /src/pages/dashboard.tsx, /src/hooks/use-audio-engine.tsx, /src/components/stem-splitter.tsx, /src/components/track-manager-clean.tsx
+8:11:02 PM [vite] hmr update /src/App.tsx?v=Ur8Q381c63Iv55no0NTKc, /src/index.css?v=Ur8Q381c63Iv55no0NTKc, /src/pages/streaming-demo.tsx, /src/pages/performance.tsx, /src/pages/landing.tsx, /src/pages/plans.tsx, /src/pages/unsubscribe.tsx, /src/pages/dashboard.tsx, /src/hooks/use-audio-engine.tsx, /src/components/stem-splitter.tsx, /src/components/track-manager-clean.tsx (x2)
+8:11:04 PM [vite] hmr update /src/App.tsx?v=Ur8Q381c63Iv55no0NTKc, /src/index.css?v=Ur8Q381c63Iv55no0NTKc, /src/pages/streaming-demo.tsx, /src/pages/performance.tsx, /src/pages/landing.tsx, /src/pages/plans.tsx, /src/pages/unsubscribe.tsx, /src/pages/dashboard.tsx, /src/hooks/use-audio-engine.tsx, /src/components/stem-splitter.tsx, /src/components/track-manager-clean.tsx (x3)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+^A^C
+📨 SIGINT received - shutting down gracefully...

@@ -1,8 +1,8 @@
 /**
- * Android BLE-MIDI Adapter
+ * BLE-MIDI Adapter
  * 
- * Provides Web Bluetooth-based MIDI transmission for Android devices
- * where Web MIDI API doesn't properly deliver to BLE MIDI devices.
+ * Provides Web Bluetooth-based MIDI transmission for all platforms
+ * to handle BLE MIDI devices that don't appear in Web MIDI API.
  * 
  * Implements BLE-MIDI specification for direct characteristic writes.
  */
@@ -22,7 +22,7 @@ export interface BleMidiDevice {
   id: string;
 }
 
-export class AndroidBleMidiAdapter {
+export class BleMidiAdapter {
   private connectedDevices = new Map<string, BleMidiDevice>();
   private isSupported = false;
 
@@ -33,7 +33,7 @@ export class AndroidBleMidiAdapter {
                       typeof navigator.bluetooth.requestDevice === 'function';
     
     if (this.isSupported) {
-      console.log('🔵 Android BLE-MIDI adapter initialized');
+      console.log('🔵 BLE-MIDI adapter initialized');
     } else {
       console.log('❌ Web Bluetooth not supported - BLE-MIDI fallback unavailable');
     }
@@ -315,4 +315,7 @@ export class AndroidBleMidiAdapter {
 }
 
 // Export singleton instance
-export const androidBleMidi = new AndroidBleMidiAdapter();
+export const bleMidiAdapter = new BleMidiAdapter();
+
+// Legacy export for compatibility  
+export const androidBleMidi = bleMidiAdapter;

@@ -1,8 +1,8 @@
 /**
- * BLE-MIDI Adapter
+ * Android BLE-MIDI Adapter
  * 
- * Provides Web Bluetooth-based MIDI transmission for all platforms
- * to handle BLE MIDI devices that don't appear in Web MIDI API.
+ * Provides Web Bluetooth-based MIDI transmission for Android devices
+ * where Web MIDI API doesn't properly deliver to BLE MIDI devices.
  * 
  * Implements BLE-MIDI specification for direct characteristic writes.
  */
@@ -22,7 +22,7 @@ export interface BleMidiDevice {
   id: string;
 }
 
-export class BleMidiAdapter {
+export class AndroidBleMidiAdapter {
   private connectedDevices = new Map<string, BleMidiDevice>();
   private isSupported = false;
 
@@ -33,7 +33,7 @@ export class BleMidiAdapter {
                       typeof navigator.bluetooth.requestDevice === 'function';
     
     if (this.isSupported) {
-      console.log('🔵 BLE-MIDI adapter initialized');
+      console.log('🔵 Android BLE-MIDI adapter initialized');
     } else {
       console.log('❌ Web Bluetooth not supported - BLE-MIDI fallback unavailable');
     }
@@ -55,24 +55,84 @@ export class BleMidiAdapter {
     }
 
     try {
-      console.log('🔵 Requesting BLE MIDI device connection...');
+      console.log(`🔵 Requesting BLE MIDI device connection...${deviceName ? ` (looking for: ${deviceName})` : ''}`);
       
-      // Use a single broad request that shows ALL Bluetooth devices
-      // This ensures all devices appear regardless of their name format
-      console.log('🔵 Showing all Bluetooth devices - please select your MIDI device from the list...');
+      let device: BluetoothDevice | undefined;
       
-      const device = await navigator.bluetooth.requestDevice({
-        acceptAllDevices: true,  // Show ALL Bluetooth devices
-        optionalServices: [BLE_MIDI_SERVICE_UUID]  // We'll try to connect to MIDI service if available
-      });
+      // If specific device name is provided, use it for precise matching
+      if (deviceName) {
+        try {
+          console.log(`🔵 Looking for specific device: ${deviceName}`);
+          device = await navigator.bluetooth.requestDevice({
+            filters: [
+              { name: deviceName },
+              { namePrefix: deviceName }
+            ],
+            optionalServices: [BLE_MIDI_SERVICE_UUID]
+          });
+          console.log(`✅ Found specific device: ${device.name}`);
+        } catch (specificError) {
+          console.log(`🔍 Specific device "${deviceName}" not found, falling back to general discovery`);
+          console.log('🔍 Specific device error:', {
+            name: (specificError as DOMException).name,
+            message: (specificError as DOMException).message
+          });
+          // Fall through to general discovery strategies below
+        }
+      }
       
-      console.log(`✅ User selected device: ${device.name || 'Unknown'}`);
+      // If no specific device name provided or specific device not found, try multiple discovery strategies
+      if (!device) {
+        try {
+          // Strategy 1: Look for devices by name (WIDI, MIDI, etc.)
+          console.log('🔵 Trying name-based device discovery...');
+          device = await navigator.bluetooth.requestDevice({
+            filters: [
+              { namePrefix: 'WIDI' },
+              { namePrefix: 'MIDI' },
+              { namePrefix: 'BLE' }
+            ],
+            optionalServices: [BLE_MIDI_SERVICE_UUID]
+          });
+          console.log('✅ Found device via name filter:', device.name);
+        } catch (nameError) {
+          console.log('🔵 Name-based discovery failed, trying service-based...');
+          console.log('🔍 Name discovery error:', {
+            name: (nameError as DOMException).name,
+            message: (nameError as DOMException).message
+          });
+          
+          try {
+            // Strategy 2: Look for devices advertising BLE-MIDI service
+            device = await navigator.bluetooth.requestDevice({
+              filters: [
+                { services: [BLE_MIDI_SERVICE_UUID] }
+              ],
+              optionalServices: [BLE_MIDI_SERVICE_UUID]
+            });
+            console.log('✅ Found device via service filter:', device.name);
+          } catch (serviceError) {
+            console.log('🔵 Service-based discovery failed, trying acceptAllDevices...');
+            console.log('🔍 Service discovery error:', {
+              name: (serviceError as DOMException).name,
+              message: (serviceError as DOMException).message
+            });
+            
+            // Strategy 3: Show all devices and let user choose
+            device = await navigator.bluetooth.requestDevice({
+              acceptAllDevices: true,
+              optionalServices: [BLE_MIDI_SERVICE_UUID]
+            });
+            console.log('✅ Found device via acceptAllDevices:', device.name);
+          }
+        }
+      }
 
       if (!device.gatt) {
         throw new Error('Device does not support GATT');
       }
 
-      console.log(`🔵 Connecting to BLE device: ${device.name || 'Unknown'}`);
+      console.log(`🔵 Connecting to BLE device: ${device.name}`);
       
       // Connect to GATT server
       const server = await device.gatt.connect();
@@ -122,12 +182,7 @@ export class BleMidiAdapter {
       } else if (bleError.name === 'NotFoundError') {
         throw new Error('No compatible BLE MIDI devices found. Make sure your device is powered on and in pairing mode.');
       } else if (bleError.name === 'SecurityError') {
-        // Check if we're in an iframe (Replit editor)
-        if (window.self !== window.top) {
-          throw new Error('⚠️ Bluetooth is blocked in iframe. Click the "Open in new tab" button (↗) at the top-right of the preview to use Bluetooth.');
-        } else {
-          throw new Error('BLE access requires a secure connection (HTTPS). Please use HTTPS.');
-        }
+        throw new Error('BLE access requires a secure connection (HTTPS). Please use HTTPS.');
       } else {
         throw new Error(`BLE connection failed: ${bleError.message || 'Unknown error'}`);
       }
@@ -260,7 +315,4 @@ export class BleMidiAdapter {
 }
 
 // Export singleton instance
-export const bleMidiAdapter = new BleMidiAdapter();
-
-// Legacy export for compatibility  
-export const androidBleMidi = bleMidiAdapter;
+export const androidBleMidi = new AndroidBleMidiAdapter();

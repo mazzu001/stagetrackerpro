@@ -33,8 +33,6 @@ export interface UseMidiDevicesReturn {
   parseMidiCommand: (commandString: string) => MidiCommand | null;
   refreshDevices: () => Promise<void>;
   shouldUseBleAdapter: (device: { name?: string | null }) => boolean; // Helper for UI
-  isWebBluetoothSupported: boolean; // Browser support check
-  scanForBluetoothDevices: () => Promise<MidiDevice[]>; // Scan for BLE MIDI devices
   registerMessageListener: (id: string, callback: (message: MIDIMessageEvent) => void) => void;
   unregisterMessageListener: (id: string) => void;
 }
@@ -67,26 +65,28 @@ export function useMidiDevices(): UseMidiDevicesReturn {
 
   const browserInfo = getBrowserInfo();
   
-  // Detect if a device should use BLE adapter
+  // Detect if a device should use BLE adapter on Android
   const shouldUseBleAdapter = useCallback((device: MIDIInput | MIDIOutput): boolean => {
-    // Check if browser supports Web Bluetooth
-    const hasWebBluetooth = androidBleMidi.isBluetoothSupported();
-    if (!hasWebBluetooth) return false;
+    // Only use BLE adapter on Android browsers
+    if (!browserInfo.isAndroidBrowser) return false;
     
-    // Check for Bluetooth devices (especially WIDI devices)
+    // Only use for Bluetooth devices (especially WIDI devices)
     const deviceName = device.name?.toLowerCase() || '';
     const isBluetoothDevice = deviceName.includes('widi') || 
                              deviceName.includes('bluetooth') || 
                              deviceName.includes('ble');
     
-    const shouldUse = isBluetoothDevice;
+    // Check if Web Bluetooth is supported
+    const hasWebBluetooth = androidBleMidi.isBluetoothSupported();
+    
+    const shouldUse = isBluetoothDevice && hasWebBluetooth;
     
     if (shouldUse) {
-      console.log(`🔵 Device "${device.name}" will use BLE adapter`);
+      console.log(`🔵 Device "${device.name}" will use BLE adapter on Android`);
     }
     
     return shouldUse;
-  }, []);
+  }, [browserInfo.isAndroidBrowser]);
   
   // Debug browser detection for Android MIDI troubleshooting
   console.log('🔍 Browser detection debug:', {
@@ -100,13 +100,12 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     isMobile: browserInfo.isMobile
   });
 
-  // Check if Web MIDI API is supported (but don't initialize yet - lazy loading)
+  // Check if Web MIDI API is supported
   useEffect(() => {
     const checkSupport = () => {
       if ('requestMIDIAccess' in navigator) {
         setIsSupported(true);
-        // Don't initialize MIDI here - wait until user actually needs it (lazy loading)
-        console.log('🎹 MIDI API supported - will initialize when needed');
+        initializeMidi();
       } else {
         setIsSupported(false);
         setError('Web MIDI API not supported in this browser');
@@ -319,12 +318,6 @@ export function useMidiDevices(): UseMidiDevicesReturn {
 
   // Connect to a specific device via BLE (requires user gesture)
   const connectBleDevice = useCallback(async (deviceId: string): Promise<boolean> => {
-    // Initialize MIDI if needed
-    if (!midiAccessRef.current && isSupported && !isInitialized) {
-      console.log('🎹 Initializing MIDI on-demand for BLE device connection...');
-      await initializeMidi();
-    }
-    
     if (!midiAccessRef.current) {
       console.error('❌ MIDI not initialized');
       return false;
@@ -360,12 +353,6 @@ export function useMidiDevices(): UseMidiDevicesReturn {
 
   // Connect to a specific device (Web MIDI only, no auto-BLE)
   const connectDevice = useCallback(async (deviceId: string): Promise<boolean> => {
-    // Initialize MIDI if needed
-    if (!midiAccessRef.current && isSupported && !isInitialized) {
-      console.log('🎹 Initializing MIDI on-demand for device connection...');
-      await initializeMidi();
-    }
-    
     if (!midiAccessRef.current) {
       console.error('❌ MIDI not initialized');
       return false;
@@ -821,13 +808,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
 
   // Public refresh function
   const refreshDevices = useCallback(async () => {
-    // Initialize MIDI if needed before refreshing
-    if (!midiAccessRef.current && isSupported && !isInitialized) {
-      console.log('🎹 Initializing MIDI on-demand for device refresh...');
-      await initializeMidi();
-    }
     await refreshDeviceList();
-  }, [refreshDeviceList, isSupported, isInitialized, initializeMidi]);
+  }, [refreshDeviceList]);
 
   // Register a message listener
   const registerMessageListener = useCallback((id: string, callback: (message: MIDIMessageEvent) => void) => {
@@ -839,63 +821,6 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   const unregisterMessageListener = useCallback((id: string) => {
     console.log(`🎹 Unregistering MIDI message listener: ${id}`);
     messageListenersRef.current.delete(id);
-  }, []);
-
-  // Function to scan for Bluetooth MIDI devices
-  const scanForBluetoothDevices = useCallback(async (): Promise<MidiDevice[]> => {
-    // Initialize MIDI if needed before scanning
-    if (!midiAccessRef.current && isSupported && !isInitialized) {
-      console.log('🎹 Initializing MIDI on-demand for Bluetooth scan...');
-      await initializeMidi();
-    }
-    
-    if (!androidBleMidi.isBluetoothSupported()) {
-      console.log('❌ Web Bluetooth not supported');
-      return [];
-    }
-
-    try {
-      // This will trigger the browser's Bluetooth device selector
-      const bleDevice = await androidBleMidi.connectDevice();
-      
-      // Create a MidiDevice representation with BLE: prefix
-      const midiDevice: MidiDevice = {
-        id: `BLE:${bleDevice.id}`,
-        name: `${bleDevice.name} BLE`,
-        manufacturer: 'Bluetooth',
-        type: 'output',
-        connection: 'open',
-        state: 'connected',
-        isUSB: false,
-        isBluetooth: true,
-        usesBleAdapter: true
-      };
-      
-      // Store the BLE device reference with the prefixed ID
-      bleDevicesRef.current.set(midiDevice.id, bleDevice);
-      
-      // Add the device to the devices list
-      setDevices(prevDevices => {
-        // Check if device already exists
-        if (prevDevices.some(d => d.id === midiDevice.id)) {
-          return prevDevices;
-        }
-        return [...prevDevices, midiDevice];
-      });
-      
-      // Mark it as connected
-      setConnectedDevices(prevConnected => {
-        if (prevConnected.some(d => d.id === midiDevice.id)) {
-          return prevConnected;
-        }
-        return [...prevConnected, midiDevice];
-      });
-      
-      return [midiDevice];
-    } catch (error) {
-      console.log('🔍 Bluetooth device scan cancelled or failed:', error);
-      return [];
-    }
   }, []);
 
   return {
@@ -911,20 +836,20 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     parseMidiCommand,
     refreshDevices,
     shouldUseBleAdapter: (device: { name?: string | null }) => {
-      // Check if Web Bluetooth is supported
-      const hasWebBluetooth = androidBleMidi.isBluetoothSupported();
-      if (!hasWebBluetooth) return false;
+      // Only use BLE adapter on Android browsers
+      if (!browserInfo.isAndroidBrowser) return false;
       
-      // Check for Bluetooth devices
+      // Only use for Bluetooth devices (especially WIDI devices)
       const deviceName = device.name?.toLowerCase() || '';
       const isBluetoothDevice = deviceName.includes('widi') || 
                                deviceName.includes('bluetooth') || 
                                deviceName.includes('ble');
       
-      return isBluetoothDevice;
+      // Check if Web Bluetooth is supported
+      const hasWebBluetooth = androidBleMidi.isBluetoothSupported();
+      
+      return isBluetoothDevice && hasWebBluetooth;
     },
-    isWebBluetoothSupported: androidBleMidi.isBluetoothSupported(),
-    scanForBluetoothDevices,
     registerMessageListener,
     unregisterMessageListener
   };

@@ -9,14 +9,10 @@ interface MidiContextType {
   isInitialized: boolean;
   error: string | null;
   connectDevice: (deviceId: string) => Promise<boolean>;
-  connectBleDevice: (deviceId: string) => Promise<boolean>;
   disconnectDevice: (deviceId: string) => Promise<boolean>;
   sendMidiCommand: (command: any) => boolean;
   parseMidiCommand: (commandString: string) => any;
   refreshDevices: () => Promise<void>;
-  shouldUseBleAdapter: (device: { name?: string | null }) => boolean;
-  isWebBluetoothSupported: boolean;
-  scanForBluetoothDevices: () => Promise<any[]>;
   registerMessageListener: (id: string, callback: (message: any) => void) => void;
   unregisterMessageListener: (id: string) => void;
 }

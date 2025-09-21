@@ -41,7 +41,6 @@ function AppContent() {
 
   useEffect(() => {
     // Check URL parameters for successful payment - handle both valid and invalid query formats
-    console.log('🔍 Checking URL for payment success:', window.location.href);
     
     let redirectStatus, email, tier;
     
@@ -198,6 +197,7 @@ function AppContent() {
         <Route path="/unsubscribe" component={Unsubscribe} />
         <Route path="/privacy-policy" component={PrivacyPolicy} />
       </AnalyticsRouter>
+      )}
       <Toaster />
       {/* UpdateNotification DISABLED - was causing constant false alerts and data loss */}
     </TooltipProvider>

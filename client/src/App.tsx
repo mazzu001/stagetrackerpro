@@ -171,37 +171,26 @@ function AppContent() {
     );
   }
 
-  // TEMPORARY: Skip authentication check for debugging
-  const forceAuthenticated = true; // TEMP: Force authenticated state
-  
+  // TEMPORARY: Force direct Performance page for debugging  
   return (
     <TooltipProvider>
-      {!forceAuthenticated ? (
-        <AnalyticsRouter>
-          <Route path="/" component={Landing} />
-          <Route path="/privacy-policy" component={PrivacyPolicy} />
-        </AnalyticsRouter>
-      ) : !isLocalFSReady ? (
-        <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
-      ) : (
-        <AnalyticsRouter>
-          <Route path="/" component={() => <Performance userType={'free'} />} />
-          <Route path="/dashboard" component={Dashboard} />
-          <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
-          <Route path="/broadcast-viewer-old" component={BroadcastViewer} />
-          <Route path="/streaming-demo" component={StreamingDemo} />
-          <Route path="/subscribe" component={SubscribeRedirect} />
-          <Route path="/subscribe-fixed" component={SubscribeFixed} />
-          <Route path="/subscribe-test-elements" component={SubscribeElementsTest} />
-          <Route path="/subscribe-debug" component={SubscribeDebug} />
-          <Route path="/subscribe-simple" component={SubscribeSimple} />
-          <Route path="/subscribe-old" component={Subscribe} />
-          <Route path="/subscribe-test" component={SubscribeTest} />
-          <Route path="/plans" component={Plans} />
-          <Route path="/unsubscribe" component={Unsubscribe} />
-          <Route path="/privacy-policy" component={PrivacyPolicy} />
-        </AnalyticsRouter>
-      )}
+      <AnalyticsRouter>
+        <Route path="/" component={() => <Performance userType={'free'} />} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
+        <Route path="/broadcast-viewer-old" component={BroadcastViewer} />
+        <Route path="/streaming-demo" component={StreamingDemo} />
+        <Route path="/subscribe" component={SubscribeRedirect} />
+        <Route path="/subscribe-fixed" component={SubscribeFixed} />
+        <Route path="/subscribe-test-elements" component={SubscribeElementsTest} />
+        <Route path="/subscribe-debug" component={SubscribeDebug} />
+        <Route path="/subscribe-simple" component={SubscribeSimple} />
+        <Route path="/subscribe-old" component={Subscribe} />
+        <Route path="/subscribe-test" component={SubscribeTest} />
+        <Route path="/plans" component={Plans} />
+        <Route path="/unsubscribe" component={Unsubscribe} />
+        <Route path="/privacy-policy" component={PrivacyPolicy} />
+      </AnalyticsRouter>
       <Toaster />
       {/* UpdateNotification DISABLED - was causing constant false alerts and data loss */}
     </TooltipProvider>

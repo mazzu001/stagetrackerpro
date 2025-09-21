@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Test</title>
+</head>
+<body>
+    <h1>JavaScript Test Page</h1>
+    <div id="status">JavaScript not loaded</div>
+    <script>
+        console.log("🎯 Test JavaScript is running!");
+        document.getElementById('status').innerHTML = '✅ JavaScript is working!';
+        
+        // Test if we can access Vite modules
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.textContent = `
+            console.log("🚀 Module script running");
+            import('/src/main.tsx').then(() => {
+                console.log("✅ Main.tsx loaded successfully");
+            }).catch(err => {
+                console.error("❌ Failed to load main.tsx:", err);
+            });
+        `;
+        document.head.appendChild(script);
+    </script>
+</body>
+</html>

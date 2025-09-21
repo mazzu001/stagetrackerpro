@@ -37,12 +37,14 @@ const isEdgeBrowser = () => {
 };
 
 export function useLocalAuth() {
+  console.log("[AUTH] useLocalAuth hook called");
   const [user, setUser] = useState<LocalUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
   const verifyingRef = useRef(false);
 
   useEffect(() => {
+    console.log("[AUTH] useEffect starting...");
     let mounted = true;
     
     // Browser compatibility check
@@ -68,17 +70,20 @@ export function useLocalAuth() {
     
     // Prevent multiple simultaneous verification requests using ref to avoid stale closures
     const checkExistingSession = async () => {
+      console.log("[AUTH] checkExistingSession called");
       if (verifyingRef.current) {
-        console.log('🔄 Authentication already in progress, skipping...');
+        console.log('[AUTH] Authentication already in progress, skipping...');
         return; // Prevent concurrent calls
       }
       
       // Check browser compatibility first
+      console.log("[AUTH] Checking browser compatibility...");
       if (!isBrowserCompatible()) {
-        console.error('❌ Browser not compatible with authentication system');
+        console.error('[AUTH] Browser not compatible with authentication system');
         setIsLoading(false);
         return;
       }
+      console.log("[AUTH] Browser is compatible");
       
       try {
         verifyingRef.current = true;
@@ -203,7 +208,9 @@ export function useLocalAuth() {
           }
         }
       } finally {
+        console.log("[AUTH] Finally block - mounted:", mounted);
         if (mounted) {
+          console.log("[AUTH] Setting isLoading to false");
           setIsLoading(false);
           setIsVerifying(false);
           verifyingRef.current = false;

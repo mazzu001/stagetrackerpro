@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Page</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: #1a1a1a;
+      color: white;
+    }
+    .status {
+      padding: 20px;
+      border: 2px solid #0079F2;
+      border-radius: 8px;
+      background: #0079F210;
+    }
+    h1 { color: #0079F2; }
+  </style>
+</head>
+<body>
+  <div class="status">
+    <h1>✅ Replit Development Server is Working!</h1>
+    <p>If you can see this page, the server is serving files correctly.</p>
+    <p>Time: <span id="time"></span></p>
+    <button onclick="testReact()">Test React App</button>
+  </div>
+
+  <script>
+    document.getElementById('time').textContent = new Date().toLocaleString();
+    
+    function testReact() {
+      window.location.href = '/';
+    }
+
+    // Check for service workers
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        if (registrations.length > 0) {
+          console.log('Service workers found:', registrations.length);
+          document.body.innerHTML += '<p style="color: orange;">⚠️ Service Workers detected! Clear them in DevTools.</p>';
+        } else {
+          console.log('No service workers registered');
+        }
+      });
+    }
+
+    // Check localStorage
+    const authData = localStorage.getItem('lpp_local_user');
+    if (authData) {
+      document.body.innerHTML += '<p>Auth data found in localStorage</p>';
+    }
+  </script>
+</body>
+</html>

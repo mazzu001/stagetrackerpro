@@ -12,7 +12,9 @@ if ('serviceWorker' in navigator) {
 }
 
 import { createRoot } from "react-dom/client";
-import App from "./App";
+// Temporarily using TestApp to debug
+import TestApp from "./TestApp";
+// import App from "./App";
 import "./index.css";
 
 console.log("[MAIN.TSX] About to render React app...");
@@ -21,7 +23,8 @@ console.log("[MAIN.TSX] Root element:", rootEl);
 
 if (rootEl) {
   try {
-    createRoot(rootEl).render(<App />);
+    // Temporarily render TestApp instead of main App to debug
+    createRoot(rootEl).render(<TestApp />);
     console.log("[MAIN.TSX] React app rendered successfully");
   } catch (error) {
     console.error("[MAIN.TSX] Error rendering app:", error);

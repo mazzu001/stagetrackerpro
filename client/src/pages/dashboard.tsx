@@ -926,7 +926,10 @@ export default function Dashboard() {
                         </Button>
                       )}
                       
-                      <Button variant="outline" onClick={logout}>
+                      <Button variant="outline" onClick={() => {
+                        logout();
+                        setLocation('/');
+                      }}>
                         <LogOut className="h-4 w-4 mr-2" />
                         Logout
                       </Button>

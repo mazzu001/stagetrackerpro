@@ -37,6 +37,7 @@ const isEdgeBrowser = () => {
 };
 
 export function useLocalAuth() {
+  console.log("🔐 useLocalAuth hook called");
   const [user, setUser] = useState<LocalUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);

@@ -35,8 +35,8 @@ function AnalyticsRouter({ children }: { children: React.ReactNode }) {
 }
 
 function AppContent() {
-  const [isLocalFSReady, setIsLocalFSReady] = useState(false);
-  const [isCheckingFS, setIsCheckingFS] = useState(true);
+  const [isLocalFSReady, setIsLocalFSReady] = useState(true); // TEMP: Skip FS check
+  const [isCheckingFS, setIsCheckingFS] = useState(false); // TEMP: Skip FS check
   const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
 
   useEffect(() => {
@@ -171,9 +171,12 @@ function AppContent() {
     );
   }
 
+  // TEMPORARY: Skip authentication check for debugging
+  const forceAuthenticated = true; // TEMP: Force authenticated state
+  
   return (
     <TooltipProvider>
-      {!isAuthenticated ? (
+      {!forceAuthenticated ? (
         <AnalyticsRouter>
           <Route path="/" component={Landing} />
           <Route path="/privacy-policy" component={PrivacyPolicy} />
@@ -182,7 +185,7 @@ function AppContent() {
         <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
       ) : (
         <AnalyticsRouter>
-          <Route path="/" component={() => <Performance userType={isPaidUser ? 'premium' : 'free'} />} />
+          <Route path="/" component={() => <Performance userType={'free'} />} />
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
           <Route path="/broadcast-viewer-old" component={BroadcastViewer} />

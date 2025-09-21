@@ -1,0 +1,40 @@
+index-BXK4yPSj.js:368 🔵 Android BLE-MIDI adapter initialized
+index-BXK4yPSj.js:376 No stored audio file references found
+index-BXK4yPSj.js:368 🔍 Browser detection debug: Object
+index-BXK4yPSj.js:441 🔍 Checking URL for payment success: https://band-maestro-rastaboogie.replit.app/test.html
+index-BXK4yPSj.js:441 🔍 Parsed values: Object
+index-BXK4yPSj.js:441 🔍 No payment success detected in URL
+index-BXK4yPSj.js:368 🎹 Initializing MIDI access...
+index-BXK4yPSj.js:441 Browser file system needs initialization
+index-BXK4yPSj.js:368 🔐 MIDI Permission State: granted
+index-BXK4yPSj.js:368 🔍 Browser detection debug: Object
+index-BXK4yPSj.js:368 ✅ MIDI system initialized successfully
+index-BXK4yPSj.js:368 🔍 Browser detection debug: Object
+index-BXK4yPSj.js:376 Browser file system initialized successfully
+index-BXK4yPSj.js:376 ✅ BrowserFileSystem fully initialized with config loaded
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+Zy @ stripe.js:1
+LR @ index-BXK4yPSj.js:435
+(anonymous) @ index-BXK4yPSj.js:435
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+Zy @ stripe.js:1
+LR @ index-BXK4yPSj.js:435
+(anonymous) @ index-BXK4yPSj.js:435
+index-BXK4yPSj.js:376 📱 Edge browser detected - using compatibility mode
+index-BXK4yPSj.js:368 🔍 Refreshing devices - access details: Object
+index-BXK4yPSj.js:368 ⚠️ No MIDI devices found. This could be due to:
+index-BXK4yPSj.js:368 1. No physical MIDI devices connected
+index-BXK4yPSj.js:368 2. MIDI permissions denied or blocked
+index-BXK4yPSj.js:368 3. Browser security restrictions
+index-BXK4yPSj.js:368 💡 To reset MIDI permissions:
+index-BXK4yPSj.js:368    - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions
+index-BXK4yPSj.js:368    - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site
+index-BXK4yPSj.js:368 🎹 Found 0 MIDI devices: Array(0)
+index-BXK4yPSj.js:368 🎹 Connected devices: 0/0 Array(0)
+index-BXK4yPSj.js:368 🔍 Browser detection debug: Object

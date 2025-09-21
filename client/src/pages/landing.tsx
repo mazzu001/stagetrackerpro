@@ -6,6 +6,7 @@ import { LoginPopup } from '@/components/login-popup';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 
 export default function Landing() {
+  console.log("🏠 LANDING COMPONENT LOADED! This should NOT appear!");
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [loginMode, setLoginMode] = useState<'signin' | 'signup'>('signin');
   const { login } = useLocalAuth();

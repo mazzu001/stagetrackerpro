@@ -35,6 +35,7 @@ export interface UseMidiDevicesReturn {
   shouldUseBleAdapter: (device: { name?: string | null }) => boolean; // Helper for UI
   registerMessageListener: (id: string, callback: (message: MIDIMessageEvent) => void) => void;
   unregisterMessageListener: (id: string) => void;
+  initializeMidi: () => Promise<void>;
 }
 
 export function useMidiDevices(): UseMidiDevicesReturn {
@@ -105,7 +106,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     const checkSupport = () => {
       if ('requestMIDIAccess' in navigator) {
         setIsSupported(true);
-        initializeMidi();
+        // Don't automatically initialize - wait for user interaction
+        console.log('🎹 MIDI API supported - waiting for user interaction to initialize');
       } else {
         setIsSupported(false);
         setError('Web MIDI API not supported in this browser');
@@ -124,7 +126,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       // Check MIDI permission state first
       if (navigator.permissions) {
         try {
-          const midiPermission = await navigator.permissions.query({ name: 'midi' as any, sysex: true });
+          const midiPermission = await navigator.permissions.query({ name: 'midi' as any });
           console.log('🔐 MIDI Permission State:', midiPermission.state);
           
           if (midiPermission.state === 'denied') {
@@ -144,7 +146,13 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         console.log('📱 Android device detected - using mobile compatibility mode');
       }
       
-      const access = await navigator.requestMIDIAccess({ sysex: true });
+      // Add timeout to prevent hanging
+      const midiPromise = navigator.requestMIDIAccess({ sysex: true });
+      const timeoutPromise = new Promise<never>((_, reject) => 
+        setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000)
+      );
+      
+      const access = await Promise.race([midiPromise, timeoutPromise]);
       midiAccessRef.current = access;
       
       // Listen for device state changes
@@ -222,7 +230,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     };
     
     // Process input devices
-    for (const input of access.inputs.values()) {
+    const inputsArray = Array.from(access.inputs.values());
+    for (const input of inputsArray) {
       const { isUSB, isBluetooth } = detectDeviceType(input);
       currentDeviceIds.add(input.id);
       
@@ -244,7 +253,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     }
     
     // Process output devices
-    for (const output of access.outputs.values()) {
+    const outputsArray = Array.from(access.outputs.values());
+    for (const output of outputsArray) {
       const { isUSB, isBluetooth } = detectDeviceType(output);
       currentDeviceIds.add(output.id);
       
@@ -806,10 +816,20 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     return success;
   }, []);
 
+  // Initialize MIDI if not already initialized
+  const ensureMidiInitialized = useCallback(async () => {
+    if (!isInitialized && isSupported) {
+      console.log('🎹 Triggering MIDI initialization on demand');
+      await initializeMidi();
+    }
+  }, [isInitialized, isSupported, initializeMidi]);
+
   // Public refresh function
   const refreshDevices = useCallback(async () => {
+    // Ensure MIDI is initialized before refreshing
+    await ensureMidiInitialized();
     await refreshDeviceList();
-  }, [refreshDeviceList]);
+  }, [refreshDeviceList, ensureMidiInitialized]);
 
   // Register a message listener
   const registerMessageListener = useCallback((id: string, callback: (message: MIDIMessageEvent) => void) => {
@@ -835,6 +855,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     sendMidiCommand,
     parseMidiCommand,
     refreshDevices,
+    initializeMidi,
     shouldUseBleAdapter: (device: { name?: string | null }) => {
       // Only use BLE adapter on Android browsers
       if (!browserInfo.isAndroidBrowser) return false;

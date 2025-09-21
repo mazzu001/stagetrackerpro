@@ -15,6 +15,7 @@ interface MidiContextType {
   refreshDevices: () => Promise<void>;
   registerMessageListener: (id: string, callback: (message: any) => void) => void;
   unregisterMessageListener: (id: string) => void;
+  initializeMidi: () => Promise<void>;
 }
 
 // Create the context

@@ -39,10 +39,8 @@ interface PerformanceProps {
 }
 
 export default function Performance({ userType: propUserType }: PerformanceProps) {
-  console.log("🎵 PERFORMANCE COMPONENT LOADED! PropUserType:", propUserType);
   const { user, logout } = useLocalAuth(); // Get real-time user data
   const userType = user?.userType || propUserType || 'free'; // Use fresh user type from auth
-  console.log("🎵 Final UserType:", userType, "User:", user);
   
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [, setLocation] = useLocation();

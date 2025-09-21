@@ -35,11 +35,9 @@ function AnalyticsRouter({ children }: { children: React.ReactNode }) {
 }
 
 function AppContent() {
-  console.log("🔍 AppContent rendering...");
-  const [isLocalFSReady, setIsLocalFSReady] = useState(true); // TEMP: Skip FS check
-  const [isCheckingFS, setIsCheckingFS] = useState(false); // TEMP: Skip FS check
+  const [isLocalFSReady, setIsLocalFSReady] = useState(false);
+  const [isCheckingFS, setIsCheckingFS] = useState(true);
   const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
-  console.log("🔍 Auth state:", { isAuthenticated, isLoading, isPaidUser });
 
   useEffect(() => {
     // Check URL parameters for successful payment - handle both valid and invalid query formats
@@ -157,28 +155,34 @@ function AppContent() {
     setIsLocalFSReady(true);
   };
 
-  // TEMPORARY: Skip all loading checks for debugging
-  // if (isCheckingFS || isLoading) {
-  //   return (
-  //     <TooltipProvider>
-  //       <div className="min-h-screen min-h-[100dvh] bg-background flex items-center justify-center mobile-vh-fix">
-  //         <div className="text-center">
-  //           <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-  //           <p className="text-gray-400">
-  //             {isLoading ? 'Checking authentication...' : 'Checking local storage...'}
-  //           </p>
-  //         </div>
-  //       </div>
-  //       <Toaster />
-  //     </TooltipProvider>
-  //   );
-  // }
+  if (isCheckingFS || isLoading) {
+    return (
+      <TooltipProvider>
+        <div className="min-h-screen min-h-[100dvh] bg-background flex items-center justify-center mobile-vh-fix">
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-400">
+              {isLoading ? 'Checking authentication...' : 'Checking local storage...'}
+            </p>
+          </div>
+        </div>
+        <Toaster />
+      </TooltipProvider>
+    );
+  }
 
-  // TEMPORARY: Force direct Performance page for debugging  
   return (
     <TooltipProvider>
-      <AnalyticsRouter>
-        <Route path="/" component={() => <Performance userType={'free'} />} />
+      {!isAuthenticated ? (
+        <AnalyticsRouter>
+          <Route path="/" component={Landing} />
+          <Route path="/privacy-policy" component={PrivacyPolicy} />
+        </AnalyticsRouter>
+      ) : !isLocalFSReady ? (
+        <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
+      ) : (
+        <AnalyticsRouter>
+          <Route path="/" component={() => <Performance userType={isPaidUser ? 'premium' : 'free'} />} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
         <Route path="/broadcast-viewer-old" component={BroadcastViewer} />

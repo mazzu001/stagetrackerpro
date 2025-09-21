@@ -101,8 +101,17 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   
   // Explicit MIDI initialization on user action
   const handleEnableMidi = async () => {
+    console.log('🎹 Enable MIDI button clicked');
     setIsRefreshing(true);
+    
+    // CRITICAL: Use requestAnimationFrame to ensure UI updates first
+    await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+    
+    // Additional defer to ensure loading state is visible
+    await new Promise(resolve => setTimeout(resolve, 10));
+    
     try {
+      console.log('🎹 Starting MIDI initialization...');
       await initializeMidi();
       // If initialization succeeds, auto-reconnect to last device if stored
       const lastDevice = localStorage.getItem('lastMidiDevice');

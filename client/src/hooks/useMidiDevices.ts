@@ -155,15 +155,57 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         console.log('📱 Android device detected - using mobile compatibility mode');
       }
       
-      // Request MIDI access without sysex for faster, non-blocking access
-      const midiPromise = navigator.requestMIDIAccess({ sysex: false });
-      const timeoutPromise = new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000)
-      );
+      // CRITICAL FIX: Multiple deferrals to ensure UI updates completely
+      // This prevents the UI from freezing when requestMIDIAccess blocks
+      await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
+      await new Promise(resolve => setTimeout(resolve, 10));
       
-      console.log('🎹 Requesting MIDI access (5s timeout)...');
-      const access = await Promise.race([midiPromise, timeoutPromise]);
-      midiAccessRef.current = access;
+      console.log('🎹 About to request MIDI access...');
+      
+      // Wrap the actual MIDI call in aggressive timeout handling
+      let midiAccess: MIDIAccess | null = null;
+      let timedOut = false;
+      
+      // Set a hard timeout that will fire regardless
+      const timeoutId = setTimeout(() => {
+        timedOut = true;
+        console.warn('⚠️ MIDI initialization taking too long, aborting...');
+      }, 3000); // Reduced to 3 seconds for faster failure
+      
+      try {
+        // Request MIDI access without sysex for faster, non-blocking access
+        const midiPromise = navigator.requestMIDIAccess({ sysex: false });
+        
+        // Race between MIDI promise and a timeout promise
+        const timeoutPromise = new Promise<never>((_, reject) => 
+          setTimeout(() => {
+            if (!timedOut) {
+              timedOut = true;
+              reject(new Error('MIDI initialization timeout - device scanning blocked'));
+            }
+          }, 3000)
+        );
+        
+        console.log('🎹 Requesting MIDI access (3s timeout)...');
+        midiAccess = await Promise.race([midiPromise, timeoutPromise]);
+        
+      } catch (midiError) {
+        clearTimeout(timeoutId);
+        
+        if (timedOut) {
+          throw new Error('MIDI initialization timeout - your system may have many MIDI devices causing delays. Try disconnecting some devices and refresh.');
+        }
+        throw midiError;
+      }
+      
+      clearTimeout(timeoutId);
+      
+      if (!midiAccess || timedOut) {
+        throw new Error('Failed to initialize MIDI access');
+      }
+      
+      midiAccessRef.current = midiAccess;
+      const access = midiAccess;
       
       // Listen for device state changes with debouncing
       let stateChangeTimer: NodeJS.Timeout | null = null;

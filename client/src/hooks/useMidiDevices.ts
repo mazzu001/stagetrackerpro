@@ -155,21 +155,27 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         console.log('📱 Android device detected - using mobile compatibility mode');
       }
       
-      // Add timeout to prevent hanging - 5 seconds with non-blocking pattern
-      const midiPromise = navigator.requestMIDIAccess({ sysex: true });
+      // Request MIDI access without sysex for faster, non-blocking access
+      const midiPromise = navigator.requestMIDIAccess({ sysex: false });
       const timeoutPromise = new Promise<never>((_, reject) => 
-        setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000) // 5 seconds - won't block UI
+        setTimeout(() => reject(new Error('MIDI initialization timeout')), 5000)
       );
       
       console.log('🎹 Requesting MIDI access (5s timeout)...');
       const access = await Promise.race([midiPromise, timeoutPromise]);
       midiAccessRef.current = access;
       
-      // Listen for device state changes
+      // Listen for device state changes with debouncing
+      let stateChangeTimer: NodeJS.Timeout | null = null;
       access.onstatechange = (event: Event) => {
         const midiEvent = event as MIDIConnectionEvent;
         console.log(`🎹 MIDI device state change:`, midiEvent.port?.name, midiEvent.port?.state, midiEvent.port?.connection);
-        refreshDeviceList();
+        
+        // Debounce rapid state changes (common with many MIDI devices)
+        if (stateChangeTimer) clearTimeout(stateChangeTimer);
+        stateChangeTimer = setTimeout(() => {
+          refreshDeviceList();
+        }, 300); // 300ms debounce delay
       };
       
       // Allow Web MIDI API time to populate device collections
@@ -839,16 +845,16 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     }
   }, [isInitialized, isInitializing, isSupported, initializeMidi]);
 
-  // Public refresh function - non-blocking
+  // Public refresh function - only works if MIDI is initialized
   const refreshDevices = useCallback(async () => {
-    // Start initialization if needed (non-blocking)
-    ensureMidiInitialized();
-    
-    // Only refresh if already initialized
-    if (isInitialized) {
-      await refreshDeviceList();
+    // DO NOT auto-initialize MIDI - wait for explicit user action
+    if (!isInitialized) {
+      console.log('🎹 MIDI not initialized - skipping refresh');
+      return;
     }
-  }, [refreshDeviceList, ensureMidiInitialized, isInitialized]);
+    
+    await refreshDeviceList();
+  }, [refreshDeviceList, isInitialized]);
 
   // Register a message listener
   const registerMessageListener = useCallback((id: string, callback: (message: MIDIMessageEvent) => void) => {

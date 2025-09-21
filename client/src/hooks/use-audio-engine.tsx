@@ -55,15 +55,15 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         audioEngineRef.current = new StreamingAudioEngine();
         console.log('✅ Step 1: Basic StreamingAudioEngine created successfully');
         
-        // Mark as online for now (basic initialization worked)
-        setIsAudioEngineOnline(true);
+        // STEP 2: Enable callbacks and subscriptions
+        console.log('🔧 Step 2: Setting up callbacks and subscriptions...');
         
-        /* STEP 2 (NOT YET): Callbacks and subscriptions
         // Set up callback for automatic song end (same path as stop button)
         audioEngineRef.current.setOnSongEndCallback(() => {
           console.log('🔄 Song ended automatically - using same path as stop button');
           stop();
         });
+        console.log('✅ Step 2a: Song end callback registered');
         
         // Set up state listener for duration updates
         const unsubscribe = audioEngineRef.current.subscribe(() => {
@@ -82,10 +82,14 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
             }
           }
         });
+        console.log('✅ Step 2b: Duration update subscription registered');
         
         // Store unsubscribe function
         (audioEngineRef.current as any).unsubscribe = unsubscribe;
-        */
+        
+        // Mark as online (full initialization worked)
+        setIsAudioEngineOnline(true);
+        console.log('✅ Step 2: All callbacks and subscriptions set up successfully');
       } catch (error) {
         console.error('❌ Critical error in audio engine initialization:', error);
         console.error('Stack trace:', (error as Error).stack);

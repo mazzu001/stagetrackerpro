@@ -35,11 +35,9 @@ function AnalyticsRouter({ children }: { children: React.ReactNode }) {
 }
 
 function AppContent() {
-  console.log("🎭 AppContent rendering...");
   const [isLocalFSReady, setIsLocalFSReady] = useState(false);
   const [isCheckingFS, setIsCheckingFS] = useState(true);
   const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
-  console.log("🔍 Auth state:", { isAuthenticated, isLoading, isPaidUser });
 
   useEffect(() => {
     // Check URL parameters for successful payment - handle both valid and invalid query formats
@@ -157,7 +155,6 @@ function AppContent() {
   };
 
   if (isCheckingFS || isLoading) {
-    console.log("⏳ Showing loading screen:", { isCheckingFS, isLoading });
     return (
       <TooltipProvider>
         <div className="min-h-screen min-h-[100dvh] bg-background flex items-center justify-center mobile-vh-fix">
@@ -172,8 +169,6 @@ function AppContent() {
       </TooltipProvider>
     );
   }
-  
-  console.log("✨ Past loading checks, rendering main content");
 
   return (
     <TooltipProvider>

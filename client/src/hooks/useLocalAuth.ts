@@ -37,14 +37,12 @@ const isEdgeBrowser = () => {
 };
 
 export function useLocalAuth() {
-  console.log("🔐 useLocalAuth hook called");
   const [user, setUser] = useState<LocalUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isVerifying, setIsVerifying] = useState(false);
   const verifyingRef = useRef(false);
 
   useEffect(() => {
-    console.log("🔐 Starting auth check...");
     let mounted = true;
     
     // Browser compatibility check
@@ -54,7 +52,6 @@ export function useLocalAuth() {
         const testKey = '_test_' + Date.now();
         localStorage.setItem(testKey, 'test');
         localStorage.removeItem(testKey);
-        console.log("✅ localStorage is accessible");
         
         // Test fetch API availability
         if (typeof fetch === 'undefined') {
@@ -207,7 +204,6 @@ export function useLocalAuth() {
         }
       } finally {
         if (mounted) {
-          console.log("🏁 Auth check complete, setting loading to false");
           setIsLoading(false);
           setIsVerifying(false);
           verifyingRef.current = false;

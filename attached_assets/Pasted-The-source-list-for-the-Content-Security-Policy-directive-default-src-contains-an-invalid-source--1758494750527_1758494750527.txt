@@ -1,0 +1,227 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-de65cc4c0ab6c8eb.js:28 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-de65cc4c0ab6c8eb.js:28 [LaunchDarkly] LaunchDarkly client initialized
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-c9b6b0087678c213.js:1
+  Unrecognized feature: 'battery'.
+_ @ framework-c9b6b0087678c213.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-c9b6b0087678c213.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-c9b6b0087678c213.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-c9b6b0087678c213.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-c9b6b0087678c213.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-c9b6b0087678c213.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-c9b6b0087678c213.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-c9b6b0087678c213.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-c9b6b0087678c213.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-c9b6b0087678c213.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-c9b6b0087678c213.js:1
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-c9b6b0087678c213.js:1
+ stallwart: failed ping 1
+ stallwart: failed ping 2
+ stallwart: failed ping 3
+ stallwart: failed ping 4
+ stallwart: failed ping 5
+ stallwart: session stalled
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-c9b6b0087678c213.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1is%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ 🔵 Android BLE-MIDI adapter initialized
+ Loaded 6 audio file path references from localStorage
+ 🔄 Auto-loading 6 stored audio files...
+ 🔍 BrowserFS.getAudioFile: Looking for track 3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: false
+ ⏳ Waiting for database initialization for track 3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1
+ Expected audio files for tracks:
+   - 3AM - Backups.mp3 (browser://56425e62-db1b-4ca7-8222-c50a88c2792a/3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1)
+   - 3AM - Bass.mp3 (browser://56425e62-db1b-4ca7-8222-c50a88c2792a/4d94d856-8833-4103-a10f-e0921c01f2c0)
+   - 3AM - Click.mp3 (browser://56425e62-db1b-4ca7-8222-c50a88c2792a/4d0287ac-5ee6-49bf-a829-c95f2deea125)
+   - 3AM - Drums.mp3 (browser://56425e62-db1b-4ca7-8222-c50a88c2792a/5f2442ec-6f60-4736-962b-3cf5b803fa3c)
+   - 3AM - Guitars.mp3 (browser://56425e62-db1b-4ca7-8222-c50a88c2792a/f1bd734b-eef5-48dd-9872-a0782cc7cb68)
+   - 3AM - Organ.mp3 (browser://56425e62-db1b-4ca7-8222-c50a88c2792a/dafb9737-513a-4bdc-9835-28e6b4c827b5)
+ These files will be loaded when you select them through the file picker.
+ [MAIN.TSX] Script starting...
+ [MAIN.TSX] Unregistering service workers...
+ [MAIN.TSX] About to render React app...
+ [MAIN.TSX] Root element: 
+ [MAIN.TSX] React app rendered successfully
+ 🔍 Browser detection debug: Object
+ [APP] AppContent component rendering...
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [APP] Auth state: Object
+ [AUTH] useEffect starting...
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 Initializing MIDI access...
+ Browser file system already initialized - auto-initializing
+ 🔐 MIDI Permission State: granted
+ 🔍 Browser detection debug: Object
+ Browser file system initialized successfully
+ ✅ BrowserFileSystem fully initialized with config loaded
+ ✅ Database initialization completed for track 3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1
+ 💾 Not in memory cache, checking IndexedDB for 3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1
+ Browser file system initialized successfully
+ [APP] AppContent component rendering...
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [APP] Auth state: Object
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 [AUTH] checkExistingSession called
+Console.js:61 [AUTH] Checking browser compatibility...
+Console.js:61 [AUTH] Browser is compatible
+Console.js:61 [AUTH] Finally block - mounted: true
+Console.js:61 [AUTH] Setting isLoading to false
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] About to call useLocalAuth hook...
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [APP] Auth state: Object
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+Console.js:61 [AUTH] useEffect starting...
+Console.js:61 🔍 Initial service isHost check: Object
+Console.js:61 [AUTH] useEffect starting...
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: Object
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 ✅ Found in IndexedDB: 3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1 (3AM - Backups.mp3)
+Console.js:61 ✅ Auto-loaded audio file for track: 3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 4d94d856-8833-4103-a10f-e0921c01f2c0
+Console.js:61 💾 Memory cache has: [3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1]
+Console.js:61 🗃️ Database initialized: true
+Console.js:61 ⏳ Waiting for database initialization for track 4d94d856-8833-4103-a10f-e0921c01f2c0
+Console.js:61 ✅ Database initialization completed for track 4d94d856-8833-4103-a10f-e0921c01f2c0
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 4d94d856-8833-4103-a10f-e0921c01f2c0
+(index):1  Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
+Console.js:61 ✅ Found in IndexedDB: 4d94d856-8833-4103-a10f-e0921c01f2c0 (3AM - Bass.mp3)
+Console.js:61 ✅ Auto-loaded audio file for track: 4d94d856-8833-4103-a10f-e0921c01f2c0
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 4d0287ac-5ee6-49bf-a829-c95f2deea125
+Console.js:61 💾 Memory cache has: [3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1, 4d94d856-8833-4103-a10f-e0921c01f2c0]
+Console.js:61 🗃️ Database initialized: true
+Console.js:61 ⏳ Waiting for database initialization for track 4d0287ac-5ee6-49bf-a829-c95f2deea125
+Console.js:61 ✅ Database initialization completed for track 4d0287ac-5ee6-49bf-a829-c95f2deea125
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 4d0287ac-5ee6-49bf-a829-c95f2deea125
+Console.js:61 ✅ Found in IndexedDB: 4d0287ac-5ee6-49bf-a829-c95f2deea125 (3AM - Click.mp3)
+Console.js:61 ✅ Auto-loaded audio file for track: 4d0287ac-5ee6-49bf-a829-c95f2deea125
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track 5f2442ec-6f60-4736-962b-3cf5b803fa3c
+Console.js:61 💾 Memory cache has: [3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1, 4d94d856-8833-4103-a10f-e0921c01f2c0, 4d0287ac-5ee6-49bf-a829-c95f2deea125]
+Console.js:61 🗃️ Database initialized: true
+Console.js:61 ⏳ Waiting for database initialization for track 5f2442ec-6f60-4736-962b-3cf5b803fa3c
+Console.js:61 ✅ Database initialization completed for track 5f2442ec-6f60-4736-962b-3cf5b803fa3c
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 5f2442ec-6f60-4736-962b-3cf5b803fa3c
+Console.js:61 ✅ Found in IndexedDB: 5f2442ec-6f60-4736-962b-3cf5b803fa3c (3AM - Drums.mp3)
+Console.js:61 ✅ Auto-loaded audio file for track: 5f2442ec-6f60-4736-962b-3cf5b803fa3c
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track f1bd734b-eef5-48dd-9872-a0782cc7cb68
+Console.js:61 💾 Memory cache has: [3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1, 4d94d856-8833-4103-a10f-e0921c01f2c0, 4d0287ac-5ee6-49bf-a829-c95f2deea125, 5f2442ec-6f60-4736-962b-3cf5b803fa3c]
+Console.js:61 🗃️ Database initialized: true
+Console.js:61 ⏳ Waiting for database initialization for track f1bd734b-eef5-48dd-9872-a0782cc7cb68
+Console.js:61 ✅ Database initialization completed for track f1bd734b-eef5-48dd-9872-a0782cc7cb68
+Console.js:61 💾 Not in memory cache, checking IndexedDB for f1bd734b-eef5-48dd-9872-a0782cc7cb68
+Console.js:61 ✅ Found in IndexedDB: f1bd734b-eef5-48dd-9872-a0782cc7cb68 (3AM - Guitars.mp3)
+Console.js:61 ✅ Auto-loaded audio file for track: f1bd734b-eef5-48dd-9872-a0782cc7cb68
+Console.js:61 🔍 BrowserFS.getAudioFile: Looking for track dafb9737-513a-4bdc-9835-28e6b4c827b5
+Console.js:61 💾 Memory cache has: [3ceeabe7-d7ca-4475-a22b-2de03b7a1cf1, 4d94d856-8833-4103-a10f-e0921c01f2c0, 4d0287ac-5ee6-49bf-a829-c95f2deea125, 5f2442ec-6f60-4736-962b-3cf5b803fa3c, f1bd734b-eef5-48dd-9872-a0782cc7cb68]
+Console.js:61 🗃️ Database initialized: true
+Console.js:61 ⏳ Waiting for database initialization for track dafb9737-513a-4bdc-9835-28e6b4c827b5
+Console.js:61 ✅ Database initialization completed for track dafb9737-513a-4bdc-9835-28e6b4c827b5
+Console.js:61 💾 Not in memory cache, checking IndexedDB for dafb9737-513a-4bdc-9835-28e6b4c827b5
+Console.js:61 ✅ Found in IndexedDB: dafb9737-513a-4bdc-9835-28e6b4c827b5 (3AM - Organ.mp3)
+Console.js:61 ✅ Auto-loaded audio file for track: dafb9737-513a-4bdc-9835-28e6b4c827b5
+Console.js:61 ✅ Auto-loaded 6/6 audio files into cache
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 [AUTH] checkExistingSession called
+Console.js:61 [AUTH] Checking browser compatibility...
+Console.js:61 [AUTH] Browser is compatible
+Console.js:61 [AUTH] Finally block - mounted: true
+Console.js:61 [AUTH] Setting isLoading to false
+Console.js:61 📱 Edge browser detected - using compatibility mode
+Console.js:61 [AUTH] checkExistingSession called
+Console.js:61 [AUTH] Checking browser compatibility...
+Console.js:61 [AUTH] Browser is compatible
+Console.js:61 [AUTH] Finally block - mounted: true
+Console.js:61 [AUTH] Setting isLoading to false
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 📋 Loaded 1 songs from local storage (alphabetically sorted)
+Console.js:61 🔍 Debug values: Object
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] useLocalAuth hook called

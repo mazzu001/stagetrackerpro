@@ -157,6 +157,7 @@ function AppContent() {
   };
 
   if (isCheckingFS || isLoading) {
+    console.log("⏳ Showing loading screen:", { isCheckingFS, isLoading });
     return (
       <TooltipProvider>
         <div className="min-h-screen min-h-[100dvh] bg-background flex items-center justify-center mobile-vh-fix">
@@ -171,6 +172,8 @@ function AppContent() {
       </TooltipProvider>
     );
   }
+  
+  console.log("✨ Past loading checks, rendering main content");
 
   return (
     <TooltipProvider>

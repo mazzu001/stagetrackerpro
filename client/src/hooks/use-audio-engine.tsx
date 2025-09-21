@@ -50,15 +50,15 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   useEffect(() => {
     const initAudioEngine = async () => {
       try {
-        // TEMPORARY FIX: Disable audio engine initialization to prevent crashes
-        // This was causing white screen after Rubber Band pitch shift implementation
-        console.warn('⚠️ AUDIO ENGINE TEMPORARILY DISABLED - Fix needed for pitch shift issues');
-        console.warn('⚠️ Audio playback features are currently unavailable');
-        setIsAudioEngineOnline(false);
-        
-        /* ORIGINAL CODE - RESTORE AFTER FIX:
+        // STEP 1: Enable basic StreamingAudioEngine instantiation only
+        console.log('🔧 Step 1: Initializing basic StreamingAudioEngine...');
         audioEngineRef.current = new StreamingAudioEngine();
+        console.log('✅ Step 1: Basic StreamingAudioEngine created successfully');
         
+        // Mark as online for now (basic initialization worked)
+        setIsAudioEngineOnline(true);
+        
+        /* STEP 2 (NOT YET): Callbacks and subscriptions
         // Set up callback for automatic song end (same path as stop button)
         audioEngineRef.current.setOnSongEndCallback(() => {
           console.log('🔄 Song ended automatically - using same path as stop button');
@@ -85,7 +85,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
         
         // Store unsubscribe function
         (audioEngineRef.current as any).unsubscribe = unsubscribe;
-        setIsAudioEngineOnline(true);
         */
       } catch (error) {
         console.error('❌ Critical error in audio engine initialization:', error);

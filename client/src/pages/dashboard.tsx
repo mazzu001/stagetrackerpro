@@ -928,7 +928,8 @@ export default function Dashboard() {
                       
                       <Button variant="outline" onClick={() => {
                         logout();
-                        setLocation('/');
+                        // Force page reload to ensure authentication state is cleared
+                        window.location.href = '/';
                       }}>
                         <LogOut className="h-4 w-4 mr-2" />
                         Logout

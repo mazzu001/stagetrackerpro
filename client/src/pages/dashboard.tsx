@@ -926,11 +926,7 @@ export default function Dashboard() {
                         </Button>
                       )}
                       
-                      <Button variant="outline" onClick={() => {
-                        logout();
-                        // Force page reload to ensure authentication state is cleared
-                        window.location.href = '/';
-                      }}>
+                      <Button variant="outline" onClick={logout}>
                         <LogOut className="h-4 w-4 mr-2" />
                         Logout
                       </Button>

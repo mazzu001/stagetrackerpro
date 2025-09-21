@@ -283,13 +283,14 @@ export function useLocalAuth() {
   };
 
   const logout = () => {
+    // Clear all authentication data
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem('lpp_local_user'); // Ensure key is removed
     setUser(null);
     
-    // Trigger auth change event to update other components without page reload
-    setTimeout(() => {
-      window.dispatchEvent(new Event('auth-change'));
-    }, 0);
+    // Force complete reload to landing page
+    // Using replace to prevent back button issues
+    window.location.replace('/');
   };
 
   const upgrade = () => {

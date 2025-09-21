@@ -1038,11 +1038,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                   )}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => { 
-                  logout(); 
-                  // Force page reload to ensure authentication state is cleared
-                  window.location.href = '/';
-                }} data-testid="menuitem-logout">
+                <DropdownMenuItem onClick={logout} data-testid="menuitem-logout">
                   <LogOut className="h-4 w-4 mr-2" />
                   Logout
                 </DropdownMenuItem>

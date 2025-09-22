@@ -69,6 +69,69 @@ export default function TrackManager({
   const { toast } = useToast();
   const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
   
+  // Reload tracks into the audio engine after adding new tracks
+  const reloadTracksIntoEngine = async () => {
+    if (!audioEngine || !song?.id || !userEmail) {
+      console.log('Cannot reload tracks - missing audio engine or song');
+      return;
+    }
+    
+    try {
+      console.log('🔄 Reloading all tracks into audio engine...');
+      
+      // Get fresh song data with all tracks
+      const currentSong = await LocalSongStorage.getSong(userEmail, song.id);
+      if (!currentSong) {
+        console.log('Song not found in database');
+        return;
+      }
+      
+      // Prepare track data for audio engine (similar to useStreamingAudio)
+      const audioStorage = AudioFileStorage.getInstance(userEmail);
+      const trackDataPromises = currentSong.tracks.map(async (track) => {
+        try {
+          const audioUrl = await audioStorage.getAudioUrl(track.id);
+          if (!audioUrl) return null;
+          
+          // Load mute regions
+          const muteRegions = await LocalSongStorage.getMuteRegions(
+            userEmail, 
+            song.id, 
+            track.id
+          );
+          
+          return {
+            id: track.id,
+            name: track.name,
+            url: audioUrl,
+            volume: track.volume || 50,
+            balance: track.balance || 0,
+            isMuted: track.isMuted === true,
+            isSolo: track.isSolo === true,
+            muteRegions: muteRegions || []
+          };
+        } catch (error) {
+          console.warn(`⚠️ Failed to prepare track ${track.name} for engine:`, error);
+          return null;
+        }
+      });
+      
+      const trackData = (await Promise.all(trackDataPromises)).filter(Boolean);
+      
+      if (trackData.length === 0) {
+        console.log('No valid audio URLs found for tracks');
+        return;
+      }
+      
+      // Load tracks into audio engine
+      await audioEngine.loadTracks(trackData as any);
+      console.log(`✅ Loaded ${trackData.length} tracks into audio engine`);
+      
+    } catch (error) {
+      console.error('Failed to reload tracks into audio engine:', error);
+    }
+  };
+  
   // Track component mount status
   useEffect(() => {
     isMountedRef.current = true;
@@ -408,6 +471,9 @@ export default function TrackManager({
               title: "Files imported successfully",
               description: `Successfully imported ${processedCount} out of ${files.length} files`
             });
+            
+            // Reload all tracks into the audio engine so they can be played
+            await reloadTracksIntoEngine();
           }
         } catch (changeError) {
           console.error('=== Web Track Manager: Error in file change handler ===');
@@ -512,6 +578,7 @@ export default function TrackManager({
           }
           
           console.log(`✅ Successfully processed: ${file.name}`);
+          return true; // Success indicator for batch processing
         }
       }
     } catch (error) {
@@ -521,6 +588,7 @@ export default function TrackManager({
         description: error instanceof Error ? error.message : "Failed to add track",
         variant: "destructive"
       });
+      return false; // Failure indicator
     }
   };
 

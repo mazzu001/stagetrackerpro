@@ -53,13 +53,16 @@ export function TrackWaveformEditor({
 
   // Load mute regions from storage and sync with audio engine
   useEffect(() => {
-    const savedRegions = LocalSongStorage.getMuteRegions(userEmail, songId, trackId);
-    setRegions(savedRegions);
-    // Sync regions with audio engine
-    if (audioEngine && savedRegions.length > 0) {
-      audioEngine.setTrackMuteRegions(trackId, savedRegions);
-      console.log(`🔇 Loaded ${savedRegions.length} mute regions for track ${trackId}`);
-    }
+    const loadRegions = async () => {
+      const savedRegions = await LocalSongStorage.getMuteRegions(userEmail, songId, trackId);
+      setRegions(savedRegions || []);
+      // Sync regions with audio engine
+      if (audioEngine && savedRegions && savedRegions.length > 0) {
+        audioEngine.setTrackMuteRegions(trackId, savedRegions);
+        console.log(`🔇 Loaded ${savedRegions.length} mute regions for track ${trackId}`);
+      }
+    };
+    loadRegions();
   }, [userEmail, songId, trackId, audioEngine]);
 
   // Cleanup document listeners on unmount

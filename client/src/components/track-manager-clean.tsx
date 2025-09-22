@@ -374,7 +374,7 @@ export default function TrackManager({
         
         if (newTrack) {
           // Store the audio file in browser storage with the track ID
-          const audioStorage = AudioFileStorage.getInstance();
+          const audioStorage = AudioFileStorage.getInstance(userEmail);
           await audioStorage.storeAudioFile(newTrack.id, file, newTrack, song.title);
           console.log('Audio file stored successfully for track:', newTrack.id);
           

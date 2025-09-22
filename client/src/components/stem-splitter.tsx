@@ -245,10 +245,11 @@ export default function StemSplitter({
           balance: 0,
           isMuted: false,
           isSolo: false,
+          muteRegions: null,
         };
         
         // Store audio file
-        await AudioFileStorage.getInstance().storeAudioFile(newTrack.id, file, newTrack);
+        await AudioFileStorage.getInstance(userIdentifier).storeAudioFile(newTrack.id, file, newTrack);
         
         // Add track to song
         const result = LocalSongStorage.addTrack(userIdentifier, song.id, newTrack);

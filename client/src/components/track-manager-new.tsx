@@ -236,7 +236,7 @@ export default function TrackManager({
       
       if (newTrack && typeof newTrack === 'object' && newTrack && 'id' in newTrack) {
         // Store the file in audio storage system
-        const audioStorage = AudioFileStorage.getInstance();
+        const audioStorage = AudioFileStorage.getInstance(user.email);
         await audioStorage.storeAudioFile((newTrack as any).id, file, newTrack as any, song.title);
         
         // Detect and update song duration from the audio file

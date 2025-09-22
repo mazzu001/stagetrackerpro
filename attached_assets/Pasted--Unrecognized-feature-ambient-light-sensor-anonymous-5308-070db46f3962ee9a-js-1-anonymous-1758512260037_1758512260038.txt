@@ -1,0 +1,1539 @@
+ Unrecognized feature: 'ambient-light-sensor'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'battery'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'execution-while-not-rendered'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'layout-animations'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'legacy-image-formats'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'navigation-override'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'oversized-images'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'publickey-credentials'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'speaker-selection'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'unoptimized-images'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'unsized-media'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'pointer-lock'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Allow attribute will take precedence over 'allowfullscreen'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ardq%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ ❌ Not found in IndexedDB: 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ ⚠️ Audio file not found for track: 760a5a48-844a-4c99-8c2a-80bd4fab317d
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ ❌ Not found in IndexedDB: e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ ⚠️ Audio file not found for track: e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ ❌ Not found in IndexedDB: 28146649-159b-4a2e-8ff9-184e69073bec
+ ⚠️ Audio file not found for track: 28146649-159b-4a2e-8ff9-184e69073bec
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ ❌ Not found in IndexedDB: d21f08ee-765e-4ac1-8c03-d40513e9808d
+ ⚠️ Audio file not found for track: d21f08ee-765e-4ac1-8c03-d40513e9808d
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "test" - instant playback available
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ 📊 Duration added: 205.9s (total: 823.5s)
+ 📁 Processing file 5/5: Against All Odds - Keys.mp3 (7.9MB)
+ ⏳ Starting processing of Against All Odds - Keys.mp3...
+ Processing file 0/0: Against All Odds - Keys.mp3
+ Adding track "Against All Odds - Keys" with file: Against All Odds - Keys.mp3
+ LocalSongStorage.addTrack: Track added successfully: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ Storing audio file in browser: Against All Odds - Keys.mp3, size: 8235072 bytes
+ 🔄 BrowserFS.addAudioFile: Storing Against All Odds - Keys.mp3 as track 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ ✅ Memory cache updated for 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ ✅ Audio file stored: Against All Odds - Keys.mp3 for track: Against All Odds - Keys
+ Saved 11 audio file path references to localStorage for user: default@user.com (3KB)
+ Successfully stored audio file for track: Against All Odds - Keys (8042KB)
+ Audio file stored successfully for track: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 🔍 Requesting audio URL for track: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 📂 Available audio files (11): Array(11)
+ 💾 Memory cache files (11): Array(11)
+ 🔍 BrowserFS.getAudioFile: Looking for track 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 💾 Memory cache has: [30900a31-0162-4531-ac67-5c159f23af34, 34fc9fcb-7e3d-46fe-b80c-39fbb66be670, 2f850e9c-248f-437f-a21f-b328a4cb46c7, 207140c6-24ad-4d74-a57a-b775e9ab7775, 993d7e11-0698-4b9d-a1c6-3d73db42db80, f6e8b220-05de-4a97-b90c-d68c33a8f25a, 760a5a48-844a-4c99-8c2a-80bd4fab317d, e6d63c15-fed5-48aa-a1b9-e9af28af7e19, 28146649-159b-4a2e-8ff9-184e69073bec, d21f08ee-765e-4ac1-8c03-d40513e9808d, 5334dc8a-f83b-468b-82bd-39ed1894cb12]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ ✅ Database initialization completed for track 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ ✅ Found in memory cache: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ ✅ Got audio URL from browser storage for track: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ Track updated with audio URL: blob:https://8003ebbc-7c24-44f5-a60e-826fca6862d2-...
+ Detected audio duration: 206s from file: Against All Odds - Keys.mp3
+ Track added successfully
+ Track data updated, refreshing song with 5 tracks
+ Performance: Received song update with 5 tracks
+ Cleared waveform cache for "test" - will regenerate on next view
+ Successfully processed: Against All Odds - Keys.mp3
+ ✅ File 5 completely processed and stored
+ Song selected: "test" with 5 tracks - loading for streaming
+ Setting up streaming for: "test" - UI stays responsive
+ 🔍 Requesting audio URL for track: 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ 🔍 Requesting audio URL for track: e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ 🔍 Requesting audio URL for track: 28146649-159b-4a2e-8ff9-184e69073bec
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 28146649-159b-4a2e-8ff9-184e69073bec
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 28146649-159b-4a2e-8ff9-184e69073bec
+ 🔍 Requesting audio URL for track: d21f08ee-765e-4ac1-8c03-d40513e9808d
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track d21f08ee-765e-4ac1-8c03-d40513e9808d
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track d21f08ee-765e-4ac1-8c03-d40513e9808d
+ 🔍 Requesting audio URL for track: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Database initialization completed for track 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ 💾 Not in memory cache, checking IndexedDB for 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ ✅ Database initialization completed for track e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ 💾 Not in memory cache, checking IndexedDB for e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ ✅ Database initialization completed for track 28146649-159b-4a2e-8ff9-184e69073bec
+ 💾 Not in memory cache, checking IndexedDB for 28146649-159b-4a2e-8ff9-184e69073bec
+ ✅ Database initialization completed for track d21f08ee-765e-4ac1-8c03-d40513e9808d
+ 💾 Not in memory cache, checking IndexedDB for d21f08ee-765e-4ac1-8c03-d40513e9808d
+ ✅ Database initialization completed for track 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 💾 Not in memory cache, checking IndexedDB for 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ ❌ Not found in IndexedDB: 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ ⚠️ Audio file not found for track: 760a5a48-844a-4c99-8c2a-80bd4fab317d
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ ❌ Not found in IndexedDB: e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ ⚠️ Audio file not found for track: e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ ❌ Not found in IndexedDB: 28146649-159b-4a2e-8ff9-184e69073bec
+ ⚠️ Audio file not found for track: 28146649-159b-4a2e-8ff9-184e69073bec
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ ❌ Not found in IndexedDB: d21f08ee-765e-4ac1-8c03-d40513e9808d
+ ⚠️ Audio file not found for track: d21f08ee-765e-4ac1-8c03-d40513e9808d
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ ❌ Not found in IndexedDB: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ ⚠️ Audio file not found for track: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "test" - instant playback available
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ 📊 Duration added: 205.9s (total: 1029.4s)
+ === Web Track Manager: Cleaning up file selection ===
+ ▶️ Starting playback with no audio tracks (transport controls only)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ⏸️ Streaming playback paused
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: cccc
+ 📡 Not uploading to database: Object
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ No tracks or cached waveform for "cccc"
+ Song selected: "cccc" with 0 tracks - loading for streaming
+ Setting up streaming for: "cccc" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 8.9s → 0.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "cccc" - instant playback available
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ 🎵 Loading song: test
+ 📡 Not uploading to database: Object
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ No cached waveform found for "test", generating...
+ Auto-generating waveform for "test" from 5 tracks...
+ 🔍 Requesting audio URL for track: 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ 📂 Available audio files (11): Array(11)
+ 💾 Memory cache files (11): Array(11)
+ 🔍 Requesting audio URL for track: e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ 📂 Available audio files (11): Array(11)
+ 💾 Memory cache files (11): Array(11)
+ 🔍 Requesting audio URL for track: 28146649-159b-4a2e-8ff9-184e69073bec
+ 📂 Available audio files (11): Array(11)
+ 💾 Memory cache files (11): Array(11)
+ 🔍 Requesting audio URL for track: d21f08ee-765e-4ac1-8c03-d40513e9808d
+ 📂 Available audio files (11): Array(11)
+ 💾 Memory cache files (11): Array(11)
+ 🔍 Requesting audio URL for track: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 📂 Available audio files (11): Array(11)
+ 💾 Memory cache files (11): Array(11)
+ Song selected: "test" with 5 tracks - loading for streaming
+ Setting up streaming for: "test" - UI stays responsive
+ 🔍 Requesting audio URL for track: 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ 🔍 Requesting audio URL for track: e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ 🔍 Requesting audio URL for track: 28146649-159b-4a2e-8ff9-184e69073bec
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 28146649-159b-4a2e-8ff9-184e69073bec
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 28146649-159b-4a2e-8ff9-184e69073bec
+ 🔍 Requesting audio URL for track: d21f08ee-765e-4ac1-8c03-d40513e9808d
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track d21f08ee-765e-4ac1-8c03-d40513e9808d
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track d21f08ee-765e-4ac1-8c03-d40513e9808d
+ 🔍 Requesting audio URL for track: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Got audio URL from browser storage for track: 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ ✅ Got audio URL from browser storage for track: e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ ✅ Got audio URL from browser storage for track: 28146649-159b-4a2e-8ff9-184e69073bec
+ ✅ Got audio URL from browser storage for track: d21f08ee-765e-4ac1-8c03-d40513e9808d
+ ✅ Got audio URL from browser storage for track: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ ✅ Database initialization completed for track 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ 💾 Not in memory cache, checking IndexedDB for 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ ✅ Database initialization completed for track e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ 💾 Not in memory cache, checking IndexedDB for e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ ✅ Database initialization completed for track 28146649-159b-4a2e-8ff9-184e69073bec
+ 💾 Not in memory cache, checking IndexedDB for 28146649-159b-4a2e-8ff9-184e69073bec
+ ✅ Database initialization completed for track d21f08ee-765e-4ac1-8c03-d40513e9808d
+ 💾 Not in memory cache, checking IndexedDB for d21f08ee-765e-4ac1-8c03-d40513e9808d
+ ✅ Database initialization completed for track 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ 💾 Not in memory cache, checking IndexedDB for 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ ❌ Not found in IndexedDB: 760a5a48-844a-4c99-8c2a-80bd4fab317d
+ ⚠️ Audio file not found for track: 760a5a48-844a-4c99-8c2a-80bd4fab317d
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ❌ Not found in IndexedDB: e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+ ⚠️ Audio file not found for track: e6d63c15-fed5-48aa-a1b9-e9af28af7e19
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ ❌ Not found in IndexedDB: 28146649-159b-4a2e-8ff9-184e69073bec
+ ⚠️ Audio file not found for track: 28146649-159b-4a2e-8ff9-184e69073bec
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ ❌ Not found in IndexedDB: d21f08ee-765e-4ac1-8c03-d40513e9808d
+ ⚠️ Audio file not found for track: d21f08ee-765e-4ac1-8c03-d40513e9808d
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ ❌ Not found in IndexedDB: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+ ⚠️ Audio file not found for track: 5334dc8a-f83b-468b-82bd-39ed1894cb12
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Checking if browser file system has any files...
+ 💡 Audio files are stored locally when you record or add tracks
+ 🎵 Record new audio or add existing audio files to enable playback
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "test" - instant playback available
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ Processed track: Against All Odds - Backups (206.1s)
+ Processed track: Against All Odds - Bass (206.1s)
+ Processed track: Against All Odds - Click (206.1s)
+ Processed track: Against All Odds - Drums (206.1s)
+ Processed track: Against All Odds - Keys (206.1s)
+ Generated comprehensive waveform from 5 tracks, duration: 206.1s
+ Waveform cached for song: e361bd9b-e90e-4d2d-9fcb-75fde21c5e2f
+ 🔇 Closed temporary AudioContext for waveform generation
+ ▶️ Starting playback with no audio tracks (transport controls only)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 ⏸️ Streaming playback paused
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host

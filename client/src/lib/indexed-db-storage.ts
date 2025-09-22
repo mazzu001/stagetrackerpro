@@ -56,6 +56,30 @@ export interface AudioFileMetadata {
   lastModified: number;
 }
 
+// Define schema for waveforms
+export interface StoredWaveform {
+  id: string; // trackId
+  songId: string;
+  waveformData: Float32Array | number[];
+  duration: number;
+  sampleRate: number;
+  timestamp: number;
+}
+
+// Define schema for user preferences
+export interface UserPreferences {
+  id: string; // 'global' for global preferences
+  scrollSpeed?: number;
+  fontSize?: number;
+  theme?: 'light' | 'dark';
+  audioQuality?: 'low' | 'medium' | 'high';
+  midiSettings?: {
+    autoConnect: boolean;
+    defaultDevice?: string;
+  };
+  lastUpdated: number;
+}
+
 export class IndexedDBStorage {
   private static instances: Map<string, IndexedDBStorage> = new Map();
   private db: IDBDatabase | null = null;
@@ -119,6 +143,19 @@ export class IndexedDBStorage {
           const audioFilesStore = db.createObjectStore('audioFiles', { keyPath: 'id' });
           audioFilesStore.createIndex('songId', 'songId', { unique: false });
           console.log('Created audioFiles store');
+        }
+        
+        // Create waveforms store if it doesn't exist
+        if (!db.objectStoreNames.contains('waveforms')) {
+          const waveformsStore = db.createObjectStore('waveforms', { keyPath: 'id' });
+          waveformsStore.createIndex('songId', 'songId', { unique: false });
+          console.log('Created waveforms store');
+        }
+        
+        // Create user preferences store if it doesn't exist
+        if (!db.objectStoreNames.contains('userPreferences')) {
+          db.createObjectStore('userPreferences', { keyPath: 'id' });
+          console.log('Created userPreferences store');
         }
       };
     });
@@ -542,6 +579,107 @@ export class IndexedDBStorage {
       
       request.onerror = () => {
         console.error('Failed to delete audio file metadata:', request.error);
+        reject(request.error);
+      };
+    });
+  }
+  
+  // Waveform operations
+  async storeWaveform(waveform: StoredWaveform): Promise<boolean> {
+    this.ensureDatabase();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['waveforms'], 'readwrite');
+      const store = transaction.objectStore('waveforms');
+      const request = store.put(waveform);
+      
+      request.onsuccess = () => {
+        console.log(`✅ Waveform stored for track: ${waveform.id}`);
+        resolve(true);
+      };
+      
+      request.onerror = () => {
+        console.error('Failed to store waveform:', request.error);
+        reject(request.error);
+      };
+    });
+  }
+  
+  async getWaveform(trackId: string): Promise<StoredWaveform | null> {
+    this.ensureDatabase();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['waveforms'], 'readonly');
+      const store = transaction.objectStore('waveforms');
+      const request = store.get(trackId);
+      
+      request.onsuccess = () => {
+        resolve(request.result || null);
+      };
+      
+      request.onerror = () => {
+        console.error('Failed to get waveform:', request.error);
+        reject(request.error);
+      };
+    });
+  }
+  
+  async deleteWaveform(trackId: string): Promise<boolean> {
+    this.ensureDatabase();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['waveforms'], 'readwrite');
+      const store = transaction.objectStore('waveforms');
+      const request = store.delete(trackId);
+      
+      request.onsuccess = () => {
+        console.log(`✅ Waveform deleted for track: ${trackId}`);
+        resolve(true);
+      };
+      
+      request.onerror = () => {
+        console.error('Failed to delete waveform:', request.error);
+        reject(request.error);
+      };
+    });
+  }
+  
+  // User preferences operations
+  async storeUserPreferences(preferences: UserPreferences): Promise<boolean> {
+    this.ensureDatabase();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['userPreferences'], 'readwrite');
+      const store = transaction.objectStore('userPreferences');
+      preferences.lastUpdated = Date.now();
+      const request = store.put(preferences);
+      
+      request.onsuccess = () => {
+        console.log(`✅ User preferences stored`);
+        resolve(true);
+      };
+      
+      request.onerror = () => {
+        console.error('Failed to store user preferences:', request.error);
+        reject(request.error);
+      };
+    });
+  }
+  
+  async getUserPreferences(id: string = 'global'): Promise<UserPreferences | null> {
+    this.ensureDatabase();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['userPreferences'], 'readonly');
+      const store = transaction.objectStore('userPreferences');
+      const request = store.get(id);
+      
+      request.onsuccess = () => {
+        resolve(request.result || null);
+      };
+      
+      request.onerror = () => {
+        console.error('Failed to get user preferences:', request.error);
         reject(request.error);
       };
     });

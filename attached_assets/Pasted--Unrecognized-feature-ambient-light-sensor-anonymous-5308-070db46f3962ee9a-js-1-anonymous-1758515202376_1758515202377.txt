@@ -1,0 +1,630 @@
+ Unrecognized feature: 'ambient-light-sensor'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'battery'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'execution-while-not-rendered'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'layout-animations'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+ Unrecognized feature: 'legacy-image-formats'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+5308-070db46f3962ee9a.js:1 Unrecognized feature: 'navigation-override'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+5308-070db46f3962ee9a.js:1 Unrecognized feature: 'oversized-images'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+5308-070db46f3962ee9a.js:1 Unrecognized feature: 'publickey-credentials'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+5308-070db46f3962ee9a.js:1 Unrecognized feature: 'speaker-selection'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+5308-070db46f3962ee9a.js:1 Unrecognized feature: 'unoptimized-images'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+5308-070db46f3962ee9a.js:1 Unrecognized feature: 'unsized-media'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+5308-070db46f3962ee9a.js:1 Unrecognized feature: 'pointer-lock'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+5308-070db46f3962ee9a.js:1 Allow attribute will take precedence over 'allowfullscreen'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+5308-070db46f3962ee9a.js:1 Allow attribute will take precedence over 'allowpaymentrequest'.
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+n @ main-e6ffd17671a7180b.js:1
+u @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ main-e6ffd17671a7180b.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+navigateTo @ 5308-070db46f3962ee9a.js:1
+refresh @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ 5308-070db46f3962ee9a.js:1
+(anonymous) @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+onClick @ _app-98c9f196aec0251e.js:4
+(anonymous) @ _app-98c9f196aec0251e.js:4
+eB @ framework-d4d32ef646907fb4.js:1
+eH @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+re @ framework-d4d32ef646907fb4.js:1
+rt @ framework-d4d32ef646907fb4.js:1
+(anonymous) @ framework-d4d32ef646907fb4.js:1
+uT @ framework-d4d32ef646907fb4.js:1
+eM @ framework-d4d32ef646907fb4.js:1
+ru @ framework-d4d32ef646907fb4.js:1
+tB @ framework-d4d32ef646907fb4.js:1
+tD @ framework-d4d32ef646907fb4.js:1
+n @ _app-98c9f196aec0251e.js:28
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-98c9f196aec0251e.js:28 Failed when connecting: Connection closed (code: 1006)
+(anonymous) @ _app-98c9f196aec0251e.js:28
+a.JZ.<computed> @ _app-98c9f196aec0251e.js:1
+value @ 5333.90f4c6f46e8df2d0.js:1
+value @ 5333.90f4c6f46e8df2d0.js:1
+_websocket.onclose @ 5333.90f4c6f46e8df2d0.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1b0%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+Console.js:61 🔵 Android BLE-MIDI adapter initialized
+Console.js:61 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+Console.js:61 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+Console.js:61 Loaded 11 audio file path references from localStorage for user: default@user.com
+Console.js:61 [MAIN.TSX] Script starting...
+Console.js:61 [MAIN.TSX] Unregistering service workers...
+Console.js:61 [MAIN.TSX] About to render React app...
+Console.js:61 [MAIN.TSX] Root element: <div id=​"root">​…​</div>​scroll
+Console.js:61 [MAIN.TSX] React app rendered successfully
+Console.js:61 [APP] About to call useLocalAuth hook...
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] Valid session found: mazzu001@hotmail.com
+Console.js:61 [APP] Auth state: Object
+Console.js:61 🔍 Browser detection debug: Object
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] Storage initialized: false
+Console.js:61 🔍 Parsed values: Object
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 🎹 MIDI API supported - waiting for user interaction to initialize
+Console.js:61 🔧 Initializing storage for user: mazzu001@hotmail.com
+Console.js:61 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+Console.js:61 [AUTH] useEffect - auth state initialized
+Console.js:61 📊 Database exists for mazzu001@hotmail.com: true
+Console.js:61 📂 Loading existing database for mazzu001@hotmail.com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+Console.js:61 🔍 Browser detection debug: Object
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] Storage initialized: false
+Console.js:61 Browser file system initialized successfully for user: default@user.com
+Console.js:61 ✅ BrowserFileSystem fully initialized with config loaded
+Console.js:61 Browser file system initialized successfully for user: mazzu001@hotmail.com
+Console.js:61 ✅ BrowserFileSystem fully initialized with config loaded
+Console.js:61 Browser file system initialized successfully for user: mazzu001@hotmail.com
+Console.js:61 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+Console.js:61 Loaded 11 audio file path references from localStorage for user: mazzu001@hotmail.com
+Console.js:61 ✅ Storage initialization complete for mazzu001@hotmail.com
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] Storage initialized: true
+Console.js:61 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+Console.js:61 🔍 Initial service isHost check: Object
+Console.js:61 🎵 Master output initialized
+Console.js:61 📋 Loaded 2 songs from local storage (alphabetically sorted)
+Console.js:61 🔍 Debug values: Object
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] Valid session found: mazzu001@hotmail.com
+Console.js:61 [AUTH] useEffect - auth state initialized
+Console.js:61 🔍 Initial service isHost check: Object
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 ✅ User profile data loaded successfully
+Console.js:61 [AUTH] useLocalAuth hook called

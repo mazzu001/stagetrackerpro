@@ -97,14 +97,17 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
             }
           }
           
+          // Debug: Log the track's mute state from storage
+          console.log(`🔍 Track "${track.name}" from storage: isMuted=${track.isMuted}, isSolo=${track.isSolo}`);
+          
           return {
             id: track.id,
             name: track.name,
             url: audioUrl,
             volume: track.volume || 50,
             balance: track.balance || 0,
-            isMuted: track.isMuted || false,
-            isSolo: track.isSolo || false,
+            isMuted: track.isMuted === true, // Ensure boolean, preserve true values
+            isSolo: track.isSolo === true, // Ensure boolean, preserve true values
             muteRegions: muteRegions || []
           };
         } catch (error) {

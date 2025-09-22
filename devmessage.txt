@@ -1,1 +1,2 @@
-This is a test message
+MUTE STATE PERSISTENCE FIX (Sep 22, 2025)
+Fixed mute button persistence when switching songs. Changed useStreamingAudio.ts from `isMuted: track.isMuted || false` to `isMuted: track.isMuted === true` to ensure true values persist correctly.

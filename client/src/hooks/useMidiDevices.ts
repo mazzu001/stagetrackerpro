@@ -127,6 +127,16 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       includeBluetoothDevices
     });
     
+    // Log ALL devices found before any filtering
+    console.log('📋 ALL INPUT DEVICES FOUND:');
+    access.inputs.forEach((input: MIDIInput) => {
+      console.log(`  - ${input.name} (${input.manufacturer}) ID: ${input.id} State: ${input.state}`);
+    });
+    console.log('📋 ALL OUTPUT DEVICES FOUND:');
+    access.outputs.forEach((output: MIDIOutput) => {
+      console.log(`  - ${output.name} (${output.manufacturer}) ID: ${output.id} State: ${output.state}`);
+    });
+    
     // Handle null case if inputs/outputs are empty
     const hasDevices = access.inputs.size > 0 || access.outputs.size > 0;
     
@@ -136,6 +146,9 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       const isBluetoothDevice = deviceName.includes('bluetooth') || 
                                deviceName.includes('ble') || 
                                deviceName.includes('widi');
+      
+      // Log device details before filtering
+      console.log(`🔍 Processing input: ${input.name}, isBluetooth: ${isBluetoothDevice}, includeBluetoothDevices: ${includeBluetoothDevices}`);
       
       // Skip Bluetooth devices unless explicitly requested
       if (isBluetoothDevice && !includeBluetoothDevices) {
@@ -266,6 +279,30 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     console.log('🎹 MIDI API supported - waiting for user interaction to initialize');
   }, []);
 
+  // Helper function to request MIDI with timeout
+  const requestMIDIAccessWithTimeout = async (options = {}, timeoutMs = 5000): Promise<MIDIAccess> => {
+    let timeoutId: NodeJS.Timeout | undefined;
+    
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error('MIDI_TIMEOUT')), timeoutMs);
+    });
+    
+    try {
+      const midiAccess = await Promise.race([
+        navigator.requestMIDIAccess(options),
+        timeoutPromise
+      ]);
+      
+      // Clear timeout on success
+      if (timeoutId) clearTimeout(timeoutId);
+      return midiAccess;
+    } catch (error) {
+      // Clear timeout on error too
+      if (timeoutId) clearTimeout(timeoutId);
+      throw error;
+    }
+  };
+
   // Stage 1: Initialize USB MIDI only (lightweight, fast)
   const initializeMidi = useCallback(async () => {
     if (isInitialized || hasInitializedRef.current) {
@@ -281,16 +318,16 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     
     if (!isSupported) {
       console.error('❌ MIDI not supported');
-      return;
+      throw new Error('MIDI_NOT_SUPPORTED');
     }
     
-    console.log('🎹 Initializing USB MIDI (lightweight)...');
+    console.log('🎹 Initializing USB MIDI (with timeout protection)...');
     setIsInitializing(true);
-    hasInitializedRef.current = true;
+    setError(null); // Clear any previous errors
     
     try {
-      // Request MIDI access - USB devices only, no sysex
-      const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+      // Request MIDI access with 5-second timeout - USB devices only, no sysex
+      const midiAccess = await requestMIDIAccessWithTimeout({ sysex: false }, 5000);
       
       console.log('✅ USB MIDI access granted');
       midiAccessRef.current = midiAccess;
@@ -319,8 +356,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       await refreshDeviceList(false);
       
       setIsInitialized(true);
-      setIsInitializing(false);
       setError(null);
+      hasInitializedRef.current = true; // Only set after successful initialization
       console.log('✅ USB MIDI initialized successfully');
       
       // Stage 2: Auto-reconnect to last USB device (deferred)
@@ -359,9 +396,12 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       let errorMessage = 'Failed to initialize USB MIDI';
       
       if (err instanceof Error) {
-        if (err.message.includes('SecurityError') || err.message.includes('NotAllowedError')) {
-          errorMessage = 'MIDI access denied. Please allow MIDI permissions and refresh.';
-        } else if (err.message.includes('NotSupportedError')) {
+        if (err.message === 'MIDI_TIMEOUT') {
+          errorMessage = 'MIDI_TIMEOUT';
+          console.error('⏱️ MIDI initialization timed out after 5 seconds');
+        } else if (err.message.includes('SecurityError') || err.message.includes('NotAllowedError')) {
+          errorMessage = 'MIDI_DENIED';
+        } else if (err.message.includes('NotSupportedError') || err.message === 'MIDI_NOT_SUPPORTED') {
           errorMessage = 'MIDI not supported on this device or browser.';
         } else {
           errorMessage = err.message;
@@ -369,9 +409,11 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       }
       
       setError(errorMessage);
-      setIsInitializing(false);
-      hasInitializedRef.current = false;
+      hasInitializedRef.current = false; // Reset on error to allow retry
       console.error('❌ USB MIDI initialization failed:', err);
+      throw err; // Re-throw so callers can handle
+    } finally {
+      setIsInitializing(false); // Always clear initializing state
     }
   }, [isInitialized, isInitializing, isSupported, refreshDeviceList]);
 

@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { MidiDevice, MidiCommand } from '@/hooks/useMidiDevices';
 import { useMidi } from '@/contexts/MidiProvider';
+import { MIDILoadingOverlay } from '@/components/MIDILoadingOverlay';
 
 interface MidiDeviceManagerProps {
   isOpen: boolean;
@@ -51,20 +52,28 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   const [testCommand, setTestCommand] = useState('[[PC:1:1]]');
   const [connectionStates, setConnectionStates] = useState<Record<string, 'connecting' | 'disconnecting' | 'idle'>>({});
   const [hasInitializedOnce, setHasInitializedOnce] = useState(false);
+  const [midiLoadingError, setMidiLoadingError] = useState<string | null>(null);
 
   // Initialize USB MIDI when dialog opens for the first time
   useEffect(() => {
-    if (isOpen && !hasInitializedOnce) {
+    if (isOpen && !hasInitializedOnce && !isInitialized) {
       // Initialize USB MIDI on first open (lightweight, fast)
+      setMidiLoadingError(null);
       initializeMidi().then(() => {
         console.log('🎹 USB MIDI initialized from device manager');
         setHasInitializedOnce(true);
+        setMidiLoadingError(null);
+      }).catch((err) => {
+        console.error('❌ MIDI initialization error:', err);
+        // Use the actual error message from the caught error
+        const errorMsg = err instanceof Error ? err.message : 'Failed to initialize MIDI';
+        setMidiLoadingError(errorMsg);
       });
     } else if (isOpen && isInitialized) {
       // Just refresh if already initialized
       refreshDevices();
     }
-  }, [isOpen, hasInitializedOnce, isInitialized, initializeMidi, refreshDevices]);
+  }, [isOpen, hasInitializedOnce, isInitialized, initializeMidi, refreshDevices]); // Removed error from deps
   
   // Auto-reconnect to last device after MIDI is initialized
   useEffect(() => {
@@ -224,6 +233,29 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     return 'idle';
   };
 
+  // Handle MIDI loading overlay retry
+  const handleMidiRetry = async () => {
+    console.log('🔄 Retrying MIDI initialization...');
+    setMidiLoadingError(null);
+    try {
+      await initializeMidi();
+      setHasInitializedOnce(true);
+      setMidiLoadingError(null);
+    } catch (err) {
+      console.error('❌ MIDI retry failed:', err);
+      // Use the actual error message from the caught error
+      const errorMsg = err instanceof Error ? err.message : 'Failed to initialize MIDI';
+      setMidiLoadingError(errorMsg);
+    }
+  };
+
+  // Handle MIDI loading overlay cancel
+  const handleMidiCancel = () => {
+    console.log('❌ MIDI initialization cancelled by user');
+    setMidiLoadingError(null);
+    // Don't close dialog, just hide the overlay
+  };
+
   const handleTestCommand = () => {
     const command = parseMidiCommand(testCommand);
     if (!command) {
@@ -349,7 +381,16 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <>
+      {/* MIDI Loading Overlay - shows when initializing */}
+      <MIDILoadingOverlay 
+        isLoading={isInitializing}
+        error={midiLoadingError}
+        onRetry={handleMidiRetry}
+        onCancel={handleMidiCancel}
+      />
+      
+      <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-4xl max-h-[90vh]" data-testid="dialog-midi-device-manager">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-between">
@@ -543,5 +584,6 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
         </ScrollArea>
       </DialogContent>
     </Dialog>
+    </>
   );
 }

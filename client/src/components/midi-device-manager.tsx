@@ -186,19 +186,12 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
         };
         localStorage.setItem('lastMidiDevice', JSON.stringify(deviceInfo));
         console.log('🎹 Saved last connected device:', deviceInfo.name);
-        
-        // Force a refresh to update the UI after successful connection
-        setTimeout(() => {
-          refreshDevices();
-        }, 100);
       }
     } finally {
-      // Reset states after a short delay to allow UI to update
-      setTimeout(() => {
-        const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-        deviceIds.forEach(id => resetStates[id] = 'idle');
-        setConnectionStates(prev => ({ ...prev, ...resetStates }));
-      }, 500);
+      // Reset states immediately to allow button to update
+      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+      deviceIds.forEach(id => resetStates[id] = 'idle');
+      setConnectionStates(prev => ({ ...prev, ...resetStates }));
     }
   };
 
@@ -218,19 +211,12 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       const anyFailed = results.some(success => !success);
       if (anyFailed) {
         console.error('Failed to disconnect from some devices:', deviceIds);
-      } else {
-        // Force a refresh to update the UI after successful disconnection
-        setTimeout(() => {
-          refreshDevices();
-        }, 100);
       }
     } finally {
-      // Reset states after a short delay to allow UI to update
-      setTimeout(() => {
-        const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-        deviceIds.forEach(id => resetStates[id] = 'idle');
-        setConnectionStates(prev => ({ ...prev, ...resetStates }));
-      }, 500);
+      // Reset states immediately to allow button to update
+      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+      deviceIds.forEach(id => resetStates[id] = 'idle');
+      setConnectionStates(prev => ({ ...prev, ...resetStates }));
     }
   };
 
@@ -531,9 +517,15 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                               data-testid={`button-${isConnected ? 'disconnect' : 'connect'}-unified-${index}`}
                               title={isGhost ? 'Device is unavailable - please turn on the device' : ''}
                             >
-                              {state === 'connecting' && 'Connecting...'}
-                              {state === 'disconnecting' && 'Disconnecting...'}
-                              {state === 'idle' && (isGhost ? 'Unavailable' : (isConnected ? 'Disconnect' : 'Connect'))}
+                              {(() => {
+                                // Always check actual connection state first
+                                if (state === 'connecting') return 'Connecting...';
+                                if (state === 'disconnecting') return 'Disconnecting...';
+                                if (isGhost) return 'Unavailable';
+                                // Check the real connection state from connectedDevices
+                                const actuallyConnected = isUnifiedDeviceConnected(unifiedDevice);
+                                return actuallyConnected ? 'Disconnect' : 'Connect';
+                              })()}
                             </Button>
                           </div>
                         </CardContent>

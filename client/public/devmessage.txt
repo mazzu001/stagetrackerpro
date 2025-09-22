@@ -1,14 +1,6 @@
-UI State Fix Applied (Sep 22, 5:19pm):
-✅ Fixed UI not updating when MIDI devices connect
-✅ Added delayed state reset to allow UI to properly refresh
-✅ Connection status should now properly show Connected/Disconnect button
-✅ Fixed TypeScript errors for better type safety
-
-Please test: Click Connect on MidiPortA - it should connect and button should change to "Disconnect"
-
-Previous fixes:
-✅ Fixed infinite auto-reconnect loop - now truly one-shot
-✅ Fixed ghost device detection - MidiPortA should appear as available
-✅ Fixed auto-reconnect now skips Bluetooth devices during USB-only init
+UI State Fix Applied (Sep 22, 5:31pm):
+✅ Fixed button stuck on "Connecting..." - now properly shows "Disconnect" when connected
+✅ Removed timeouts that were delaying UI updates
+✅ Button text now directly checks actual connection state from the hook
 
 Previous Note: We are aware of a small glitch when you create a new song and add backing tracks the waveform doesnt appear until you select a different song and go back.

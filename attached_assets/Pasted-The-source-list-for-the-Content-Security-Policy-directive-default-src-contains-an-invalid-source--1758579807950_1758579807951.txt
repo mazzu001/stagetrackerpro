@@ -1,0 +1,841 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-4a7cbb6b857d7f77.js:28 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-4a7cbb6b857d7f77.js:28 [LaunchDarkly] LaunchDarkly client initialized
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'battery'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-8390ee4c216a2f37.js:1
+t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://song.id&size=32:1   Failed to load resource: the server responded with a status of 404 ()
+t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://song.id/&size=32:1   Failed to load resource: the server responded with a status of 404 ()
+t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://song.id&size=32:1   Failed to load resource: the server responded with a status of 404 ()
+t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://song.id/&size=32:1   Failed to load resource: the server responded with a status of 404 ()
+workspace_iframe.html?initialPath=%2F&id=%3Aro6%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Aro6%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Aro6%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Aro6%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Aro6%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Aro6%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Aro6%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Aro6%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Aro6%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Aro6%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ 🔵 Android BLE-MIDI adapter initialized
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+ 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+ 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+ [MAIN.TSX] Script starting...
+ [MAIN.TSX] Unregistering service workers...
+ [MAIN.TSX] About to render React app...
+ [MAIN.TSX] Root element: 
+ [MAIN.TSX] React app rendered successfully
+  Failed to load audio file references from IndexedDB: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [AUTH] Valid session found: mazzu001@hotmail.com
+ [APP] Auth state: Object
+ 🔍 Browser detection debug: Object
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 MIDI API supported - waiting for user interaction to initialize
+ 🔧 Initializing storage for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [AUTH] useEffect - auth state initialized
+ 📊 Database exists for mazzu001@hotmail.com: true
+ 📂 Loading existing database for mazzu001@hotmail.com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ ✅ IndexedDB initialized: MusicAppDB_default_user_com
+ Browser file system initialized successfully for user: default@user.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+ ✅ Storage initialization complete for mazzu001@hotmail.com
+  Failed to load audio file references from IndexedDB: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: true
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+ ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+ 📭 No localStorage data found for key: lpp_songs_mazzu001@hotmail.com
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+ 🔍 Retrieved 0 mute regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Retrieved 0 mute regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Retrieved 0 mute regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Retrieved 0 mute regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Retrieved 0 mute regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Retrieved 0 mute regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔍 Retrieved 0 mute regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Retrieved 0 mute regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Retrieved 0 mute regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Retrieved 0 mute regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Retrieved 0 mute regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Retrieved 0 mute regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 🎵 Loading song: 3 AM
+ 📡 Not uploading to database: Object
+ No cached waveform found for "3 AM", generating...
+ Auto-generating waveform for "3 AM" from 6 tracks...
+ 🔍 Requesting audio URL for track: 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Requesting audio URL for track: 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Requesting audio URL for track: 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Requesting audio URL for track: 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Requesting audio URL for track: 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Requesting audio URL for track: ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ Song selected: "3 AM" with 6 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🔍 Requesting audio URL for track: 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Requesting audio URL for track: 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Requesting audio URL for track: 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Requesting audio URL for track: 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Requesting audio URL for track: 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Requesting audio URL for track: ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 📂 Available audio files (0): Array(0)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Database initialization completed for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 💾 Not in memory cache, checking IndexedDB for 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ ✅ Database initialization completed for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 💾 Not in memory cache, checking IndexedDB for 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ ✅ Database initialization completed for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 💾 Not in memory cache, checking IndexedDB for 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ ✅ Database initialization completed for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 💾 Not in memory cache, checking IndexedDB for 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ ✅ Database initialization completed for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 💾 Not in memory cache, checking IndexedDB for 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ ✅ Database initialization completed for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 💾 Not in memory cache, checking IndexedDB for ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ ✅ Database initialization completed for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 💾 Not in memory cache, checking IndexedDB for 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ ✅ Database initialization completed for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 💾 Not in memory cache, checking IndexedDB for 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ ✅ Database initialization completed for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 💾 Not in memory cache, checking IndexedDB for 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ ✅ Database initialization completed for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 💾 Not in memory cache, checking IndexedDB for 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ ✅ Database initialization completed for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 💾 Not in memory cache, checking IndexedDB for 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ ✅ Database initialization completed for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 💾 Not in memory cache, checking IndexedDB for ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Found in IndexedDB: ad11dfe8-2ecd-4247-82c1-91ca4baa156e (3AM - Click.mp3)
+ ✅ Got audio URL from browser storage for track: ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ ✅ Found in IndexedDB: 384148ab-3d18-4fa1-94ed-d08cd0bd5279 (3AM - Organ.mp3)
+ ✅ Got audio URL from browser storage for track: 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ ✅ Found in IndexedDB: 4abbcb75-02ee-4e62-ac46-596a10c0b295 (3AM - Backups.mp3)
+ ✅ Got audio URL from browser storage for track: 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ ✅ Found in IndexedDB: 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e (3AM - Bass.mp3)
+ ✅ Got audio URL from browser storage for track: 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ ✅ Found in IndexedDB: ad11dfe8-2ecd-4247-82c1-91ca4baa156e (3AM - Click.mp3)
+ ✅ Got audio URL from browser storage for track: ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ ✅ Found in IndexedDB: 384148ab-3d18-4fa1-94ed-d08cd0bd5279 (3AM - Organ.mp3)
+ ✅ Got audio URL from browser storage for track: 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ ✅ Found in IndexedDB: 4abbcb75-02ee-4e62-ac46-596a10c0b295 (3AM - Backups.mp3)
+ ✅ Got audio URL from browser storage for track: 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ ✅ Found in IndexedDB: 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e (3AM - Bass.mp3)
+ ✅ Got audio URL from browser storage for track: 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ ✅ Found in IndexedDB: 4c8eea44-6e40-44d3-9c9d-922ad6fd0580 (3AM - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ ✅ Found in IndexedDB: 78d707a9-b1f4-43d4-ab7e-fca507f7fb97 (3AM - Guitars.mp3)
+ ✅ Got audio URL from browser storage for track: 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ ✅ Found in IndexedDB: 4c8eea44-6e40-44d3-9c9d-922ad6fd0580 (3AM - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ ✅ Found in IndexedDB: 78d707a9-b1f4-43d4-ab7e-fca507f7fb97 (3AM - Guitars.mp3)
+ ✅ Got audio URL from browser storage for track: 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🚀 Streaming load: 6 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 6 tracks ready
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+  Failed to load mute regions for track 3AM - Organ: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+  Failed to load mute regions for track 3AM - Backups: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+  Failed to load mute regions for track 3AM - Drums: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+  Failed to load mute regions for track 3AM - Guitars: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+  Failed to load mute regions for track 3AM - Bass: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+  Failed to load mute regions for track 3AM - Click: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ ✅ Streaming ready for "3 AM" - instant playback available
+ ✅ Streaming ready: 6 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created for: 3AM - Organ
+ 🔧 Audio nodes created for: 3AM - Backups
+ 🔧 Audio nodes created for: 3AM - Drums
+ 🔧 Audio nodes created for: 3AM - Guitars
+ 🔧 Audio nodes created for: 3AM - Bass
+ 🔧 Audio nodes created for: 3AM - Click
+ 🔄 Loading started for 3AM - Organ
+ 🔄 Loading started for 3AM - Backups
+ 🔄 Loading started for 3AM - Drums
+ 🔄 Loading started for 3AM - Guitars
+ 🔄 Loading started for 3AM - Bass
+ 🔄 Loading started for 3AM - Click
+ Duration updated from streaming engine: 229s
+ 🔍 Retrieved 0 mute regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Retrieved 0 mute regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Retrieved 0 mute regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Retrieved 0 mute regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Retrieved 0 mute regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Retrieved 0 mute regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ 🔍 Retrieved 0 mute regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Retrieved 0 mute regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Retrieved 0 mute regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Retrieved 0 mute regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Retrieved 0 mute regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Retrieved 0 mute regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ 🔍 Retrieved 0 mute regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Retrieved 0 mute regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Retrieved 0 mute regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Retrieved 0 mute regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Retrieved 0 mute regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Retrieved 0 mute regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ 🔍 Retrieved 0 mute regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Retrieved 0 mute regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Retrieved 0 mute regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Retrieved 0 mute regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Retrieved 0 mute regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Retrieved 0 mute regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ 🔍 Retrieved 0 mute regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Retrieved 0 mute regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Retrieved 0 mute regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Retrieved 0 mute regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Retrieved 0 mute regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Retrieved 0 mute regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ 🔍 Retrieved 0 mute regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Retrieved 0 mute regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Retrieved 0 mute regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Retrieved 0 mute regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Retrieved 0 mute regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Retrieved 0 mute regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ Duration updated from streaming engine: 229s
+ Processed track: 3AM - Click (229.1s)
+ Processed track: 3AM - Organ (229.1s)
+ Processed track: 3AM - Backups (229.1s)
+ Processed track: 3AM - Bass (229.1s)
+ Processed track: 3AM - Drums (229.1s)
+ Processed track: 3AM - Guitars (229.1s)
+ Generated comprehensive waveform from 6 tracks, duration: 229.1s
+ Waveform cached for song: 3bec67de-534a-4487-b98f-5bc25de05c4d
+ 🔇 Closed temporary AudioContext for waveform generation
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Retrieved 0 mute regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ ✅ Deleted all mute regions for track 384148ab-3d18-4fa1-94ed-d08cd0bd5279
+ 🔍 Retrieved 0 mute regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ ✅ Deleted all mute regions for track 4abbcb75-02ee-4e62-ac46-596a10c0b295
+ 🔍 Retrieved 0 mute regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ ✅ Deleted all mute regions for track 4c8eea44-6e40-44d3-9c9d-922ad6fd0580
+ 🔍 Retrieved 0 mute regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ ✅ Deleted all mute regions for track 78d707a9-b1f4-43d4-ab7e-fca507f7fb97
+ 🔍 Retrieved 0 mute regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ ✅ Deleted all mute regions for track 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e
+ 🔍 Retrieved 0 mute regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ ✅ Deleted all mute regions for track ad11dfe8-2ecd-4247-82c1-91ca4baa156e
+ ✅ Deleted audio files for song 3bec67de-534a-4487-b98f-5bc25de05c4d
+ ✅ Song deleted: 3bec67de-534a-4487-b98f-5bc25de05c4d
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Song added: 3 AM
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: 3 AM
+ 📡 Not uploading to database: Object
+ No tracks or cached waveform for "3 AM"
+ Song selected: "3 AM" with 0 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "3 AM" - instant playback available
+ Duration updated from streaming engine: 229s
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ 🔄 Loading started for 3AM - Organ
+  ⚠️ Audio error for 3AM - Organ: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Backups
+  ⚠️ Audio error for 3AM - Backups: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Drums
+  ⚠️ Audio error for 3AM - Drums: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Guitars
+  ⚠️ Audio error for 3AM - Guitars: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Bass
+  ⚠️ Audio error for 3AM - Bass: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 229s
+ 🔄 Loading started for 3AM - Click
+  ⚠️ Audio error for 3AM - Click: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 229s
+ === Loading tracks for song: 3 AM (434be105-9cde-42a9-8d78-7d85bc42bf7a) ===
+  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+Mt.forEach.n.<computed> @ eruda.js:2
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ Found 0 tracks in database
+   No waveform data found (will regenerate on demand)
+ ✅ Loaded all 0 tracks
+ === Web Track Manager: Starting file selection ===
+ === Web Track Manager: File change event triggered ===
+ Files selected: 6
+ 📁 Processing file 1/6: 3AM - Backups.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Backups.mp3...
+ Processing file: 3AM - Backups.mp3
+ Step 1: Adding track "3AM - Backups" to database
+ ✅ Track added: 3AM - Backups
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ Step 2: Storing audio file for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ Storing audio file in browser: 3AM - Backups.mp3, size: 9154836 bytes
+ 🔄 BrowserFS.addAudioFile: Storing 3AM - Backups.mp3 as track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Memory cache updated for 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 📱 Edge on Windows: clearing memory cache for 352a93af-e9fb-4aaf-8449-e36889587d0b to save memory
+ ✅ Audio file stored: 3AM - Backups.mp3 for track: 3AM - Backups
+ ✅ Audio file metadata stored for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+ Saved 1 audio file references to IndexedDB for user: mazzu001@hotmail.com
+ Successfully stored audio file for track: 3AM - Backups (8940KB)
+ Audio file stored successfully
+ 🔍 Requesting audio URL for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 📂 Available audio files (1): Array(1)
+ 💾 Memory cache files (1): Array(1)
+ 🔍 BrowserFS.getAudioFile: Looking for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 💾 Memory cache has: [ad11dfe8-2ecd-4247-82c1-91ca4baa156e, 384148ab-3d18-4fa1-94ed-d08cd0bd5279, 4abbcb75-02ee-4e62-ac46-596a10c0b295, 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e, 4c8eea44-6e40-44d3-9c9d-922ad6fd0580, 78d707a9-b1f4-43d4-ab7e-fca507f7fb97]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Database initialization completed for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 💾 Not in memory cache, checking IndexedDB for 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Found in IndexedDB: 352a93af-e9fb-4aaf-8449-e36889587d0b (3AM - Backups.mp3)
+ ✅ Got audio URL from browser storage for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Track updated: 352a93af-e9fb-4aaf-8449-e36889587d0b, updates: Object
+ Track updated with audio URL
+ Step 3: Adding track to UI
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ Detected audio duration: 229s from file: 3AM - Backups.mp3
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Successfully processed: 3AM - Backups.mp3
+ ✅ File 1 completely processed and stored
+ 📊 Duration added: 228.9s (total: 228.9s)
+ 📁 Processing file 2/6: 3AM - Bass.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Bass.mp3...
+ Processing file: 3AM - Bass.mp3
+ Step 1: Adding track "3AM - Bass" to database
+ ✅ Track added: 3AM - Bass
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ Step 2: Storing audio file for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ Storing audio file in browser: 3AM - Bass.mp3, size: 9154836 bytes
+ 🔄 BrowserFS.addAudioFile: Storing 3AM - Bass.mp3 as track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ ✅ Memory cache updated for 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 📱 Edge on Windows: clearing memory cache for 33e6bb13-5b11-454e-af6e-6f8236aa2ec0 to save memory
+ ✅ Audio file stored: 3AM - Bass.mp3 for track: 3AM - Bass
+ ✅ Audio file metadata stored for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Audio file metadata stored for track: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ Saved 2 audio file references to IndexedDB for user: mazzu001@hotmail.com
+ Successfully stored audio file for track: 3AM - Bass (8940KB)
+ Audio file stored successfully
+ 🔍 Requesting audio URL for track: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 📂 Available audio files (2): Array(2)
+ 💾 Memory cache files (2): Array(2)
+ 🔍 BrowserFS.getAudioFile: Looking for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 💾 Memory cache has: [ad11dfe8-2ecd-4247-82c1-91ca4baa156e, 384148ab-3d18-4fa1-94ed-d08cd0bd5279, 4abbcb75-02ee-4e62-ac46-596a10c0b295, 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e, 4c8eea44-6e40-44d3-9c9d-922ad6fd0580, 78d707a9-b1f4-43d4-ab7e-fca507f7fb97, 352a93af-e9fb-4aaf-8449-e36889587d0b]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ ✅ Database initialization completed for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 💾 Not in memory cache, checking IndexedDB for 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ ✅ Found in IndexedDB: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0 (3AM - Bass.mp3)
+ ✅ Got audio URL from browser storage for track: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ ✅ Track updated: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0, updates: Object
+ Track updated with audio URL
+ Step 3: Adding track to UI
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ Detected audio duration: 229s from file: 3AM - Bass.mp3
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Successfully processed: 3AM - Bass.mp3
+ ✅ File 2 completely processed and stored
+ 📊 Duration added: 228.9s (total: 457.7s)
+ 📁 Processing file 3/6: 3AM - Click.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Click.mp3...
+ Processing file: 3AM - Click.mp3
+ Step 1: Adding track "3AM - Click" to database
+ ✅ Track added: 3AM - Click
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ Step 2: Storing audio file for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ Storing audio file in browser: 3AM - Click.mp3, size: 9154836 bytes
+ 🔄 BrowserFS.addAudioFile: Storing 3AM - Click.mp3 as track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ ✅ Memory cache updated for 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 📱 Edge on Windows: clearing memory cache for 91901a5a-dcd0-460d-8b73-7eae9668ed87 to save memory
+ ✅ Audio file stored: 3AM - Click.mp3 for track: 3AM - Click
+ ✅ Audio file metadata stored for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Audio file metadata stored for track: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ ✅ Audio file metadata stored for track: 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ Saved 3 audio file references to IndexedDB for user: mazzu001@hotmail.com
+ Successfully stored audio file for track: 3AM - Click (8940KB)
+ Audio file stored successfully
+ 🔍 Requesting audio URL for track: 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 📂 Available audio files (3): Array(3)
+ 💾 Memory cache files (3): Array(3)
+ 🔍 BrowserFS.getAudioFile: Looking for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 💾 Memory cache has: [ad11dfe8-2ecd-4247-82c1-91ca4baa156e, 384148ab-3d18-4fa1-94ed-d08cd0bd5279, 4abbcb75-02ee-4e62-ac46-596a10c0b295, 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e, 4c8eea44-6e40-44d3-9c9d-922ad6fd0580, 78d707a9-b1f4-43d4-ab7e-fca507f7fb97, 352a93af-e9fb-4aaf-8449-e36889587d0b, 33e6bb13-5b11-454e-af6e-6f8236aa2ec0]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ ✅ Database initialization completed for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 💾 Not in memory cache, checking IndexedDB for 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ ✅ Found in IndexedDB: 91901a5a-dcd0-460d-8b73-7eae9668ed87 (3AM - Click.mp3)
+ ✅ Got audio URL from browser storage for track: 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ ✅ Track updated: 91901a5a-dcd0-460d-8b73-7eae9668ed87, updates: Object
+ Track updated with audio URL
+ Step 3: Adding track to UI
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ Detected audio duration: 229s from file: 3AM - Click.mp3
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ ✅ Successfully processed: 3AM - Click.mp3
+ ✅ File 3 completely processed and stored
+ 📊 Duration added: 228.9s (total: 686.6s)
+ 📁 Processing file 4/6: 3AM - Drums.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Drums.mp3...
+ Processing file: 3AM - Drums.mp3
+ Step 1: Adding track "3AM - Drums" to database
+ ✅ Track added: 3AM - Drums
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ Step 2: Storing audio file for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ Storing audio file in browser: 3AM - Drums.mp3, size: 9154836 bytes
+ 🔄 BrowserFS.addAudioFile: Storing 3AM - Drums.mp3 as track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ ✅ Memory cache updated for f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ 📱 Edge on Windows: clearing memory cache for f8fb066c-da1d-49bb-b33e-e672a3a2bc7e to save memory
+ ✅ Audio file stored: 3AM - Drums.mp3 for track: 3AM - Drums
+ ✅ Audio file metadata stored for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Audio file metadata stored for track: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ ✅ Audio file metadata stored for track: 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ ✅ Audio file metadata stored for track: f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ Saved 4 audio file references to IndexedDB for user: mazzu001@hotmail.com
+ Successfully stored audio file for track: 3AM - Drums (8940KB)
+ Audio file stored successfully
+ 🔍 Requesting audio URL for track: f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ 📂 Available audio files (4): Array(4)
+ 💾 Memory cache files (4): Array(4)
+ 🔍 BrowserFS.getAudioFile: Looking for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ 💾 Memory cache has: [ad11dfe8-2ecd-4247-82c1-91ca4baa156e, 384148ab-3d18-4fa1-94ed-d08cd0bd5279, 4abbcb75-02ee-4e62-ac46-596a10c0b295, 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e, 4c8eea44-6e40-44d3-9c9d-922ad6fd0580, 78d707a9-b1f4-43d4-ab7e-fca507f7fb97, 352a93af-e9fb-4aaf-8449-e36889587d0b, 33e6bb13-5b11-454e-af6e-6f8236aa2ec0, 91901a5a-dcd0-460d-8b73-7eae9668ed87]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ ✅ Database initialization completed for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ 💾 Not in memory cache, checking IndexedDB for f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ ✅ Found in IndexedDB: f8fb066c-da1d-49bb-b33e-e672a3a2bc7e (3AM - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ ✅ Track updated: f8fb066c-da1d-49bb-b33e-e672a3a2bc7e, updates: Object
+ Track updated with audio URL
+ Step 3: Adding track to UI
+ 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ Detected audio duration: 229s from file: 3AM - Drums.mp3
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ ✅ Successfully processed: 3AM - Drums.mp3
+ ✅ File 4 completely processed and stored
+ 📊 Duration added: 228.9s (total: 915.5s)
+ 📁 Processing file 5/6: 3AM - Guitars.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Guitars.mp3...
+ Processing file: 3AM - Guitars.mp3
+ Step 1: Adding track "3AM - Guitars" to database
+ ✅ Track added: 3AM - Guitars
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 🔍 Retrieved 0 mute regions for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 🔍 Retrieved 0 mute regions for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ Step 2: Storing audio file for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ Storing audio file in browser: 3AM - Guitars.mp3, size: 9154836 bytes
+ 🔄 BrowserFS.addAudioFile: Storing 3AM - Guitars.mp3 as track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ ✅ Memory cache updated for a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ 📱 Edge on Windows: clearing memory cache for a79ee680-f0fc-42c1-878f-2b4642a3abe8 to save memory
+ ✅ Audio file stored: 3AM - Guitars.mp3 for track: 3AM - Guitars
+ ✅ Audio file metadata stored for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Audio file metadata stored for track: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ ✅ Audio file metadata stored for track: 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ ✅ Audio file metadata stored for track: f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ ✅ Audio file metadata stored for track: a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ Saved 5 audio file references to IndexedDB for user: mazzu001@hotmail.com
+ Successfully stored audio file for track: 3AM - Guitars (8940KB)
+ Audio file stored successfully
+ 🔍 Requesting audio URL for track: a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ 📂 Available audio files (5): Array(5)
+ 💾 Memory cache files (5): Array(5)
+ 🔍 BrowserFS.getAudioFile: Looking for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ 💾 Memory cache has: [ad11dfe8-2ecd-4247-82c1-91ca4baa156e, 384148ab-3d18-4fa1-94ed-d08cd0bd5279, 4abbcb75-02ee-4e62-ac46-596a10c0b295, 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e, 4c8eea44-6e40-44d3-9c9d-922ad6fd0580, 78d707a9-b1f4-43d4-ab7e-fca507f7fb97, 352a93af-e9fb-4aaf-8449-e36889587d0b, 33e6bb13-5b11-454e-af6e-6f8236aa2ec0, 91901a5a-dcd0-460d-8b73-7eae9668ed87, f8fb066c-da1d-49bb-b33e-e672a3a2bc7e]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ ✅ Database initialization completed for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ 💾 Not in memory cache, checking IndexedDB for a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ ✅ Found in IndexedDB: a79ee680-f0fc-42c1-878f-2b4642a3abe8 (3AM - Guitars.mp3)
+ ✅ Got audio URL from browser storage for track: a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ ✅ Track updated: a79ee680-f0fc-42c1-878f-2b4642a3abe8, updates: Object
+ Track updated with audio URL
+ Step 3: Adding track to UI
+ 🔍 Retrieved 0 mute regions for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ Detected audio duration: 229s from file: 3AM - Guitars.mp3
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 🔍 Retrieved 0 mute regions for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ ✅ Successfully processed: 3AM - Guitars.mp3
+ ✅ File 5 completely processed and stored
+ 📊 Duration added: 228.9s (total: 1144.4s)
+ 📁 Processing file 6/6: 3AM - Organ.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Organ.mp3...
+ Processing file: 3AM - Organ.mp3
+ Step 1: Adding track "3AM - Organ" to database
+ ✅ Track added: 3AM - Organ
+ 🔍 Retrieved 0 mute regions for track 04d84fc3-8075-4630-aa61-b135a62cfed9
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 🔍 Retrieved 0 mute regions for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ 🔍 Retrieved 0 mute regions for track 04d84fc3-8075-4630-aa61-b135a62cfed9
+ 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+ 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ 🔍 Retrieved 0 mute regions for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ Step 2: Storing audio file for track 04d84fc3-8075-4630-aa61-b135a62cfed9
+ Storing audio file in browser: 3AM - Organ.mp3, size: 9154836 bytes
+ 🔄 BrowserFS.addAudioFile: Storing 3AM - Organ.mp3 as track 04d84fc3-8075-4630-aa61-b135a62cfed9
+ 🗃️ Database initialized: true
+ ✅ IndexedDB storage successful for 04d84fc3-8075-4630-aa61-b135a62cfed9
+ ✅ Memory cache updated for 04d84fc3-8075-4630-aa61-b135a62cfed9
+ 📱 Edge on Windows: clearing memory cache for 04d84fc3-8075-4630-aa61-b135a62cfed9 to save memory
+ ✅ Audio file stored: 3AM - Organ.mp3 for track: 3AM - Organ
+ ✅ Audio file metadata stored for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+ ✅ Audio file metadata stored for track: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+ ✅ Audio file metadata stored for track: 91901a5a-dcd0-460d-8b73-7eae9668ed87
+ ✅ Audio file metadata stored for track: f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+ ✅ Audio file metadata stored for track: a79ee680-f0fc-42c1-878f-2b4642a3abe8
+ ✅ Audio file metadata stored for track: 04d84fc3-8075-4630-aa61-b135a62cfed9
+ Saved 6 audio file references to IndexedDB for user: mazzu001@hotmail.com
+ Successfully stored audio file for track: 3AM - Organ (8940KB)
+ Audio file stored successfully
+ 🔍 Requesting audio URL for track: 04d84fc3-8075-4630-aa61-b135a62cfed9
+ 📂 Available audio files (6): Array(6)
+ 💾 Memory cache files (6): Array(6)
+ 🔍 BrowserFS.getAudioFile: Looking for track 04d84fc3-8075-4630-aa61-b135a62cfed9
+ 💾 Memory cache has: [ad11dfe8-2ecd-4247-82c1-91ca4baa156e, 384148ab-3d18-4fa1-94ed-d08cd0bd5279, 4abbcb75-02ee-4e62-ac46-596a10c0b295, 7f864e2e-b8eb-4b17-8c71-6240c3c71e6e, 4c8eea44-6e40-44d3-9c9d-922ad6fd0580, 78d707a9-b1f4-43d4-ab7e-fca507f7fb97, 352a93af-e9fb-4aaf-8449-e36889587d0b, 33e6bb13-5b11-454e-af6e-6f8236aa2ec0, 91901a5a-dcd0-460d-8b73-7eae9668ed87, f8fb066c-da1d-49bb-b33e-e672a3a2bc7e, a79ee680-f0fc-42c1-878f-2b4642a3abe8]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 04d84fc3-8075-4630-aa61-b135a62cfed9
+Console.js:61 ✅ Database initialization completed for track 04d84fc3-8075-4630-aa61-b135a62cfed9
+Console.js:61 💾 Not in memory cache, checking IndexedDB for 04d84fc3-8075-4630-aa61-b135a62cfed9
+Console.js:61 ✅ Found in IndexedDB: 04d84fc3-8075-4630-aa61-b135a62cfed9 (3AM - Organ.mp3)
+Console.js:61 ✅ Got audio URL from browser storage for track: 04d84fc3-8075-4630-aa61-b135a62cfed9
+Console.js:61 ✅ Track updated: 04d84fc3-8075-4630-aa61-b135a62cfed9, updates: Object
+Console.js:61 Track updated with audio URL
+Console.js:61 Step 3: Adding track to UI
+Console.js:61 🔍 Retrieved 0 mute regions for track 04d84fc3-8075-4630-aa61-b135a62cfed9
+Console.js:61 Detected audio duration: 229s from file: 3AM - Organ.mp3
+Console.js:61 🔍 Retrieved 0 mute regions for track 04d84fc3-8075-4630-aa61-b135a62cfed9
+Console.js:61 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+Console.js:61 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+Console.js:61 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+Console.js:61 🔍 Retrieved 0 mute regions for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+Console.js:61 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+Console.js:61 ✅ Successfully processed: 3AM - Organ.mp3
+Console.js:61 ✅ File 6 completely processed and stored
+Console.js:61 📊 Duration added: 228.9s (total: 1373.2s)
+Console.js:61 🔄 Reloading all tracks into audio engine...
+Console.js:61 🔍 Retrieved 0 mute regions for track 04d84fc3-8075-4630-aa61-b135a62cfed9
+Console.js:61 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+Console.js:61 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+Console.js:61 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+Console.js:61 🔍 Retrieved 0 mute regions for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+Console.js:61 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+Console.js:61 🔍 Requesting audio URL for track: 04d84fc3-8075-4630-aa61-b135a62cfed9
+Console.js:61 📂 Available audio files (6): Array(6)
+Console.js:61 💾 Memory cache files (6): Array(6)
+Console.js:61 🔍 Requesting audio URL for track: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+Console.js:61 📂 Available audio files (6): Array(6)
+Console.js:61 💾 Memory cache files (6): Array(6)
+Console.js:61 🔍 Requesting audio URL for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+Console.js:61 📂 Available audio files (6): Array(6)
+Console.js:61 💾 Memory cache files (6): Array(6)
+Console.js:61 🔍 Requesting audio URL for track: 91901a5a-dcd0-460d-8b73-7eae9668ed87
+Console.js:61 📂 Available audio files (6): Array(6)
+Console.js:61 💾 Memory cache files (6): Array(6)
+Console.js:61 🔍 Requesting audio URL for track: a79ee680-f0fc-42c1-878f-2b4642a3abe8
+Console.js:61 📂 Available audio files (6): Array(6)
+Console.js:61 💾 Memory cache files (6): Array(6)
+Console.js:61 🔍 Requesting audio URL for track: f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+Console.js:61 📂 Available audio files (6): Array(6)
+Console.js:61 💾 Memory cache files (6): Array(6)
+Console.js:61 ✅ Got audio URL from browser storage for track: 04d84fc3-8075-4630-aa61-b135a62cfed9
+Console.js:61 ✅ Got audio URL from browser storage for track: 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+Console.js:61 ✅ Got audio URL from browser storage for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+Console.js:61 ✅ Got audio URL from browser storage for track: 91901a5a-dcd0-460d-8b73-7eae9668ed87
+Console.js:61 ✅ Got audio URL from browser storage for track: a79ee680-f0fc-42c1-878f-2b4642a3abe8
+Console.js:61 ✅ Got audio URL from browser storage for track: f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+Console.js:61 🔍 Retrieved 0 mute regions for track 04d84fc3-8075-4630-aa61-b135a62cfed9
+Console.js:61 🔍 Retrieved 0 mute regions for track 33e6bb13-5b11-454e-af6e-6f8236aa2ec0
+Console.js:61 🔍 Retrieved 0 mute regions for track 352a93af-e9fb-4aaf-8449-e36889587d0b
+Console.js:61 🔍 Retrieved 0 mute regions for track 91901a5a-dcd0-460d-8b73-7eae9668ed87
+Console.js:61 🔍 Retrieved 0 mute regions for track a79ee680-f0fc-42c1-878f-2b4642a3abe8
+Console.js:61 🔍 Retrieved 0 mute regions for track f8fb066c-da1d-49bb-b33e-e672a3a2bc7e
+Console.js:61 🚀 Streaming load: 6 tracks (deferred setup)
+Console.js:61 🎵 Loading original tracks...
+Console.js:61 🎵 Track loading complete: 6 tracks ready
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 ✅ Streaming ready: 6 tracks setup instantly (audio nodes created on demand)
+Console.js:61 ✅ Loaded 6 tracks into audio engine
+Console.js:61 === Web Track Manager: Cleaning up file selection ===
+Console.js:61 🔧 Audio nodes created for: 3AM - Organ
+Console.js:61 🔧 Audio nodes created for: 3AM - Bass
+Console.js:61 🔧 Audio nodes created for: 3AM - Backups
+Console.js:61 🔧 Audio nodes created for: 3AM - Click
+Console.js:61 🔧 Audio nodes created for: 3AM - Guitars
+Console.js:61 🔧 Audio nodes created for: 3AM - Drums
+Console.js:61 🔄 Loading started for 3AM - Organ
+Console.js:61 🔄 Loading started for 3AM - Bass
+Console.js:61 🔄 Loading started for 3AM - Backups
+Console.js:61 🔄 Loading started for 3AM - Click
+Console.js:61 🔄 Loading started for 3AM - Guitars
+Console.js:61 🔄 Loading started for 3AM - Drums
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 Track waveform cached for track: 352a93af-e9fb-4aaf-8449-e36889587d0b
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 ⏹️ Streaming playback stopped

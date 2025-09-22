@@ -687,7 +687,7 @@ export class StreamingAudioEngine {
     this.clearAllTimeouts();
   }
 
-  private clearTracks() {
+  clearTracks() {
     this.state.tracks.forEach(track => {
       if (track.audioElement) {
         track.audioElement.pause();

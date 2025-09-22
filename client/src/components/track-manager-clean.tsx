@@ -79,6 +79,10 @@ export default function TrackManager({
     try {
       console.log('🔄 Reloading all tracks into audio engine...');
       
+      // IMPORTANT: Clear existing tracks first to ensure clean state
+      audioEngine.clearTracks();
+      console.log('🧹 Cleared existing tracks from audio engine');
+      
       // Get fresh song data with all tracks
       const currentSong = await LocalSongStorage.getSong(userEmail, song.id);
       if (!currentSong) {
@@ -233,6 +237,11 @@ export default function TrackManager({
         }
 
         console.log(`✅ Loaded all ${loadedTracks.length} tracks`);
+        
+        // Load all tracks into the audio engine after they're loaded into UI
+        if (audioEngine && loadedTracks.length > 0) {
+          await reloadTracksIntoEngine();
+        }
       } catch (error) {
         console.error('Error loading tracks:', error);
         toast({
@@ -315,6 +324,8 @@ export default function TrackManager({
       input.onchange = async (e) => {
         console.log('=== Web Track Manager: File change event triggered ===');
         
+        let processedCount = 0; // Declare here for finally block access
+        
         try {
           const target = e.target as HTMLInputElement;
           if (!target || !target.files) {
@@ -363,7 +374,7 @@ export default function TrackManager({
           setIsImporting(true);
           
           let totalDuration = 0;
-          let processedCount = 0;
+          processedCount = 0; // Reset counter
           
           // Process files one at a time - wait for each to completely finish
           const isMobile = isMobileDevice;
@@ -471,9 +482,6 @@ export default function TrackManager({
               title: "Files imported successfully",
               description: `Successfully imported ${processedCount} out of ${files.length} files`
             });
-            
-            // Reload all tracks into the audio engine so they can be played
-            await reloadTracksIntoEngine();
           }
         } catch (changeError) {
           console.error('=== Web Track Manager: Error in file change handler ===');
@@ -488,6 +496,13 @@ export default function TrackManager({
           setIsImporting(false);
           setSelectedFiles([]);
           setEstimatedDuration(0);
+          
+          // Reload all tracks into the audio engine AFTER all processing is complete
+          // This ensures all UI state updates are finished before loading into engine
+          if (processedCount > 0 && audioEngine) {
+            console.log('🎵 Loading all tracks into audio engine after import complete...');
+            await reloadTracksIntoEngine();
+          }
         }
       };
       

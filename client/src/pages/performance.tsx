@@ -26,7 +26,7 @@ import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, F
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { type UserType } from "@/hooks/useLocalAuth";
-import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
+import { LocalSongStorageDB as LocalSongStorage, type LocalSong } from "@/lib/local-song-storage-db";
 import type { SongWithTracks } from "@shared/schema";
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
@@ -441,20 +441,20 @@ export default function Performance({ userType, userEmail, logout }: Performance
 
   // Load all songs on mount
   useEffect(() => {
-    const loadAllSongs = () => {
+    const loadAllSongs = async () => {
       if (!userEmail) return;
       
       try {
-        const songs = LocalSongStorage.getAllSongs(userEmail);
+        const songs = await LocalSongStorage.getAllSongs(userEmail);
         // Sort songs alphabetically by title
         const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
         setAllSongs(sortedSongs);
-        console.log(`📋 Loaded ${sortedSongs.length} songs from local storage (alphabetically sorted)`);
+        console.log(`📋 Loaded ${sortedSongs.length} songs from IndexedDB (alphabetically sorted)`);
       } catch (error) {
         console.error('❌ Failed to load songs:', error);
         toast({
           title: "Error Loading Songs",
-          description: "Failed to load songs from local storage",
+          description: "Failed to load songs from IndexedDB",
           variant: "destructive"
         });
       }
@@ -463,11 +463,11 @@ export default function Performance({ userType, userEmail, logout }: Performance
     loadAllSongs();
   }, [userEmail, toast]);
 
-  const refreshSongs = useCallback(() => {
+  const refreshSongs = useCallback(async () => {
     if (!userEmail) return;
     
     try {
-      const songs = LocalSongStorage.getAllSongs(userEmail);
+      const songs = await LocalSongStorage.getAllSongs(userEmail);
       // Sort songs alphabetically by title
       const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
       setAllSongs(sortedSongs);
@@ -481,24 +481,28 @@ export default function Performance({ userType, userEmail, logout }: Performance
 
   // Select song and load its tracks
   useEffect(() => {
-    if (!selectedSongId || !userEmail) return;
+    const loadSelectedSong = async () => {
+      if (!selectedSongId || !userEmail) return;
 
-    // Get fresh song data from storage to avoid circular dependencies
-    const allSongsFromStorage = LocalSongStorage.getAllSongs(userEmail);
-    const song = allSongsFromStorage.find(s => s.id === selectedSongId);
-    if (!song) return;
+      // Get fresh song data from storage to avoid circular dependencies
+      const allSongsFromStorage = await LocalSongStorage.getAllSongs(userEmail);
+      const song = allSongsFromStorage.find(s => s.id === selectedSongId);
+      if (!song) return;
 
-    console.log(`🎵 Loading song: ${song.title}`);
-    setSelectedSong(song);
+      console.log(`🎵 Loading song: ${song.title}`);
+      setSelectedSong(song);
 
-    // If we're hosting a broadcast, upload song to database immediately on selection
-    if (isHost && currentRoom?.id) {
-      console.log(`📡 Host selected song - uploading to database for broadcast: ${song.title}`);
-      console.log(`📡 Upload function will be called with roomId: ${currentRoom.id}`);
-      uploadSongToDatabase(song, currentRoom.id);
-    } else {
-      console.log('📡 Not uploading to database:', { isHost, hasCurrentRoom: !!currentRoom?.id, roomId: currentRoom?.id });
-    }
+      // If we're hosting a broadcast, upload song to database immediately on selection
+      if (isHost && currentRoom?.id) {
+        console.log(`📡 Host selected song - uploading to database for broadcast: ${song.title}`);
+        console.log(`📡 Upload function will be called with roomId: ${currentRoom.id}`);
+        uploadSongToDatabase(song, currentRoom.id);
+      } else {
+        console.log('📡 Not uploading to database:', { isHost, hasCurrentRoom: !!currentRoom?.id, roomId: currentRoom?.id });
+      }
+    };
+    
+    loadSelectedSong();
   }, [selectedSongId, userEmail, isHost, currentRoom?.id]);
 
   // Debug current values to see why upload isn't triggering

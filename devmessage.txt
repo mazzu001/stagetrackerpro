@@ -1,2 +1,2 @@
-MUTE STATE PERSISTENCE FIX (Sep 22, 2025)
-Fixed mute button persistence when switching songs. Changed useStreamingAudio.ts from `isMuted: track.isMuted || false` to `isMuted: track.isMuted === true` to ensure true values persist correctly.
+DATABASE MIGRATION TO INDEXEDDB (Sep 22, 2025)
+Migrated from localStorage to IndexedDB for all song data. Fixed mute state persistence by reading from DB before toggling. Songs/tracks/mute regions now in structured tables.

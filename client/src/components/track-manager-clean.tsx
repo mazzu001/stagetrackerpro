@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
-import { LocalSongStorage } from "@/lib/local-song-storage";
+import { LocalSongStorageDB as LocalSongStorage } from "@/lib/local-song-storage-db";
 // useLocalAuth removed - receive userEmail as prop instead
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
@@ -100,11 +100,11 @@ export default function TrackManager({
 
   // Recording features removed
 
-  const refetchTracks = useCallback(() => {
+  const refetchTracks = useCallback(async () => {
     if (!song?.id || !userEmail) return;
     
     try {
-      const updatedSong = LocalSongStorage.getSong(userEmail, song.id);
+      const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
       if (updatedSong && onSongUpdate) {
         console.log('Track Manager: Found', updatedSong.tracks.length, 'tracks for song', updatedSong.title, `(ID: ${updatedSong.id}):`, updatedSong.tracks.map(t => t.name));
         onSongUpdate(updatedSong as SongWithTracks);
@@ -576,34 +576,44 @@ export default function TrackManager({
   }, [tracks, song?.id, userEmail, onTrackBalanceChange]);
 
   // Mute toggle handler
-  const handleMuteToggle = useCallback((trackId: string) => {
+  const handleMuteToggle = useCallback(async (trackId: string) => {
     onTrackMuteToggle?.(trackId);
     
     // Update database
     if (song?.id && userEmail) {
-      const track = tracks.find(t => t.id === trackId);
-      if (track) {
-        LocalSongStorage.updateTrack(userEmail, song.id, trackId, { isMuted: !track.isMuted });
-        // Refresh the song to reflect changes
-        setTimeout(() => refetchTracks(), 50);
-      }
+      // Get the current state from IndexedDB, not from in-memory track
+      const storedSong = await LocalSongStorage.getSong(userEmail, song.id);
+      const storedTrack = storedSong?.tracks.find(t => t.id === trackId);
+      const currentMuteState = storedTrack?.isMuted === true;
+      
+      // Toggle the state properly
+      await LocalSongStorage.updateTrack(userEmail, song.id, trackId, { isMuted: !currentMuteState });
+      console.log(`🔊 Track ${trackId} mute toggled: ${currentMuteState} -> ${!currentMuteState}`);
+      
+      // Refresh the song to reflect changes
+      setTimeout(() => refetchTracks(), 50);
     }
-  }, [tracks, song?.id, userEmail, onTrackMuteToggle, refetchTracks]);
+  }, [song?.id, userEmail, onTrackMuteToggle, refetchTracks]);
 
   // Solo toggle handler
-  const handleSoloToggle = useCallback((trackId: string) => {
+  const handleSoloToggle = useCallback(async (trackId: string) => {
     onTrackSoloToggle?.(trackId);
     
     // Update database
     if (song?.id && userEmail) {
-      const track = tracks.find(t => t.id === trackId);
-      if (track) {
-        LocalSongStorage.updateTrack(userEmail, song.id, trackId, { isSolo: !track.isSolo });
-        // Refresh the song to reflect changes
-        setTimeout(() => refetchTracks(), 50);
-      }
+      // Get the current state from IndexedDB, not from in-memory track
+      const storedSong = await LocalSongStorage.getSong(userEmail, song.id);
+      const storedTrack = storedSong?.tracks.find(t => t.id === trackId);
+      const currentSoloState = storedTrack?.isSolo === true;
+      
+      // Toggle the state properly
+      await LocalSongStorage.updateTrack(userEmail, song.id, trackId, { isSolo: !currentSoloState });
+      console.log(`🎧 Track ${trackId} solo toggled: ${currentSoloState} -> ${!currentSoloState}`);
+      
+      // Refresh the song to reflect changes
+      setTimeout(() => refetchTracks(), 50);
     }
-  }, [tracks, song?.id, userEmail, onTrackSoloToggle, refetchTracks]);
+  }, [song?.id, userEmail, onTrackSoloToggle, refetchTracks]);
 
   // Cleanup timeouts on unmount
   useEffect(() => {

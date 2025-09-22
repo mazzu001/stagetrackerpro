@@ -91,8 +91,8 @@ export class AudioFileStorage {
 
       this.audioFiles.set(trackId, storedFile);
       
-      // CRITICAL: Save metadata to localStorage so it persists between sessions
-      this.saveToStorage();
+      // Save metadata to IndexedDB
+      await this.saveToStorage();
       
       console.log(`Successfully stored audio file for track: ${track.name} (${Math.round(file.size / 1024)}KB)`);
     } catch (error) {
@@ -293,7 +293,7 @@ export class AudioFileStorage {
   }
 
   // Store a track reference for file reconnection (without the actual file)
-  storeTrackReference(trackId: string, fileInfo: { name: string; filePath: string; mimeType: string; size: number; lastModified: number }): void {
+  async storeTrackReference(trackId: string, fileInfo: { name: string; filePath: string; mimeType: string; size: number; lastModified: number }): Promise<void> {
     const storedFile: StoredAudioFile = {
       id: trackId,
       name: fileInfo.name,
@@ -304,7 +304,7 @@ export class AudioFileStorage {
     };
 
     this.audioFiles.set(trackId, storedFile);
-    this.saveToStorage();
+    await this.saveToStorage();
     console.log(`Stored track reference: ${trackId} -> ${fileInfo.name}`);
   }
 
@@ -391,7 +391,7 @@ export class AudioFileStorage {
   }
 
   // Clear all audio files
-  clearAll(): void {
+  async clearAll(): Promise<void> {
     // Clean up all blob URLs
     const urls = Array.from(this.blobUrls.values());
     for (const blobUrl of urls) {
@@ -402,6 +402,18 @@ export class AudioFileStorage {
     this.fileObjects.clear();
     this.blobUrls.clear();
     this.fileCache.clear();
+    
+    // Clear from IndexedDB
+    if (!this.indexedDB) {
+      await this.initializeIndexedDB();
+    }
+    
+    // Clear all audio file metadata from IndexedDB
+    const allMetadata = await this.indexedDB!.getAllAudioFileMetadata();
+    for (const metadata of allMetadata) {
+      await this.indexedDB!.deleteAudioFileMetadata(metadata.id);
+    }
+    
     localStorage.removeItem(this.storageKey);
     console.log(`Cleared all audio file references and cache for user: ${this.userEmail}`);
   }

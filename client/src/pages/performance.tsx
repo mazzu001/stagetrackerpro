@@ -1231,7 +1231,9 @@ export default function Performance({ userType, userEmail, logout }: Performance
             {(() => {
               // Group songs by first letter
               const groupedSongs = allSongs.reduce((groups, song) => {
-                const firstLetter = song.title.charAt(0).toUpperCase();
+                // Handle songs with missing or empty titles
+                const title = song.title || 'Untitled';
+                const firstLetter = title.charAt(0).toUpperCase();
                 if (!groups[firstLetter]) {
                   groups[firstLetter] = [];
                 }

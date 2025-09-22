@@ -2,5 +2,3 @@ UI State Fix Applied (Sep 22, 5:31pm):
 ✅ Fixed button stuck on "Connecting..." - now properly shows "Disconnect" when connected
 ✅ Removed timeouts that were delaying UI updates
 ✅ Button text now directly checks actual connection state from the hook
-
-Previous Note: We are aware of a small glitch when you create a new song and add backing tracks the waveform doesnt appear until you select a different song and go back.

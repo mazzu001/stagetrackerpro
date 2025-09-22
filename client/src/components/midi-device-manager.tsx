@@ -518,12 +518,14 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                               title={isGhost ? 'Device is unavailable - please turn on the device' : ''}
                             >
                               {(() => {
+                                console.log(`🎹 Button state for ${unifiedDevice.name}: state='${state}', isConnected=${isConnected}, connectedDevices=${connectedDevices.length}`);
                                 // Always check actual connection state first
                                 if (state === 'connecting') return 'Connecting...';
                                 if (state === 'disconnecting') return 'Disconnecting...';
                                 if (isGhost) return 'Unavailable';
                                 // Check the real connection state from connectedDevices
                                 const actuallyConnected = isUnifiedDeviceConnected(unifiedDevice);
+                                console.log(`🎹 actuallyConnected for ${unifiedDevice.name}: ${actuallyConnected}`);
                                 return actuallyConnected ? 'Disconnect' : 'Connect';
                               })()}
                             </Button>

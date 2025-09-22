@@ -108,10 +108,7 @@ function AppContent() {
             console.log(`✅ Subscription updated to ${tierName} - updating UI state`);
             
             // Trigger auth change event to update components without page reload
-            setTimeout(() => {
-              window.dispatchEvent(new Event('auth-change'));
-              window.dispatchEvent(new Event('force-subscription-refresh'));
-            }, 100);
+            window.dispatchEvent(new Event('auth-change'));
           } else {
             console.error('❌ Failed to update subscription status:', result);
           }

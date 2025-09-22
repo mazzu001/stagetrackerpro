@@ -469,7 +469,10 @@ export default function Performance({ userType, userEmail, logout }: Performance
     try {
       const songs = await LocalSongStorage.getAllSongs(userEmail);
       // Sort songs alphabetically by title
-      const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
+      const sortedSongs = songs.sort((a, b) => {
+        if (!a.title || !b.title) return 0;
+        return a.title.localeCompare(b.title);
+      });
       setAllSongs(sortedSongs);
     } catch (error) {
       console.error('Failed to refresh songs:', error);

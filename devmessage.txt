@@ -1,2 +1,2 @@
 DATABASE MIGRATION TO INDEXEDDB (Sep 22, 2025)
-Migrated from localStorage to IndexedDB for all song data. Fixed mute state persistence by reading from DB before toggling. Songs/tracks/mute regions now in structured tables. Fixed song title error by adding safety check for undefined titles.
+Migrated from localStorage to IndexedDB for all song data. Fixed mute state persistence by reading from DB before toggling. Songs/tracks/mute regions now in structured tables. Fixed song title error by adding safety check for undefined titles in all sort operations (creation, refresh, deletion).

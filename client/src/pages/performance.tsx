@@ -10,6 +10,8 @@ import TrackManager from "@/components/track-manager-clean";
 import StemSplitter from "@/components/stem-splitter";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
+import { SimpleMidiDevices } from "@/components/simple-midi-devices";
+import { useSimpleMidi } from "@/hooks/useSimpleMidi";
 
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 
@@ -66,7 +68,10 @@ export default function Performance({ userType, userEmail, logout }: Performance
   const [isExportDialogOpen, setIsExportDialogOpen] = useState(false);
   const [exportFilename, setExportFilename] = useState("");
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isDeviceDialogOpen, setIsDeviceDialogOpen] = useState(false);
 
+  // MIDI integration - simple and non-blocking
+  const midi = useSimpleMidi();
 
   // Optional broadcast integration - completely isolated
   const { isHost, isViewer, broadcastState, sendPerformanceState, currentRoom } = useBroadcast();
@@ -862,6 +867,19 @@ export default function Performance({ userType, userEmail, logout }: Performance
           </div>
 
           <div className="flex items-center gap-1 md:gap-2">
+            {/* MIDI Devices Button - Professional Users Only */}
+            {userType === 'professional' && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsDeviceDialogOpen(true)}
+                data-testid="button-device-manager"
+                className="h-8 px-2 md:px-3"
+              >
+                <Activity className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+                <span className="hidden sm:inline text-xs md:text-sm">Devices</span>
+              </Button>
+            )}
 
             {/* Settings Menu */}
             <DropdownMenu>
@@ -1525,6 +1543,11 @@ export default function Performance({ userType, userEmail, logout }: Performance
         </DialogContent>
       </Dialog>
       
+      {/* MIDI Device Dialog */}
+      <SimpleMidiDevices 
+        isOpen={isDeviceDialogOpen}
+        onClose={() => setIsDeviceDialogOpen(false)}
+      />
       
       {/* Hidden file input for import */}
       <input

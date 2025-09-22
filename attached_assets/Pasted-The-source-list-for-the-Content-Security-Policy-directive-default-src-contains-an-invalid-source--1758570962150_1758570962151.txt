@@ -1,0 +1,808 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-6efb6cddeeb8d9a2.js:28 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-6efb6cddeeb8d9a2.js:28 [LaunchDarkly] LaunchDarkly client initialized
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'battery'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-9711960c3791d3e8.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-9711960c3791d3e8.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-9711960c3791d3e8.js:1
+_app-6efb6cddeeb8d9a2.js:28  task queue exceeded allotted deadline by 51ms
+(anonymous) @ _app-6efb6cddeeb8d9a2.js:28
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1gn%3A:1  Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
+ 🔵 Android BLE-MIDI adapter initialized
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+ 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+ 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+ No stored audio file references found
+ [MAIN.TSX] Script starting...
+ [MAIN.TSX] Unregistering service workers...
+ [MAIN.TSX] About to render React app...
+ [MAIN.TSX] Root element: 
+ [MAIN.TSX] React app rendered successfully
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [AUTH] Valid session found: mazzu001@hotmail.com
+ [APP] Auth state: Object
+ 🔍 Browser detection debug: Object
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 MIDI API supported - waiting for user interaction to initialize
+ 🔧 Initializing storage for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [AUTH] useEffect - auth state initialized
+ 📊 Database exists for mazzu001@hotmail.com: true
+ 📂 Loading existing database for mazzu001@hotmail.com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ Browser file system initialized successfully for user: default@user.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+ Loaded 23 audio file path references from localStorage for user: mazzu001@hotmail.com
+ ✅ Storage initialization complete for mazzu001@hotmail.com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: true
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+ 📭 No localStorage data found for key: lpp_songs_mazzu001@hotmail.com
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ 📱 Edge browser: Forcing memory cleanup
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ 📱 Edge browser: Forcing memory cleanup
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ ✅ Song added: 3 AM
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: Alreeady Gone
+ 📡 Not uploading to database: Object
+ No tracks or cached waveform for "Alreeady Gone"
+ Song selected: "Alreeady Gone" with 0 tracks - loading for streaming
+ Setting up streaming for: "Alreeady Gone" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "Alreeady Gone" - instant playback available
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: 3 AM
+ 📡 Not uploading to database: Object
+ No tracks or cached waveform for "3 AM"
+ Song selected: "3 AM" with 0 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "3 AM" - instant playback available
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: Alreeady Gone
+ 📡 Not uploading to database: Object
+ No tracks or cached waveform for "Alreeady Gone"
+ Song selected: "Alreeady Gone" with 0 tracks - loading for streaming
+ Setting up streaming for: "Alreeady Gone" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "Alreeady Gone" - instant playback available
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ ✅ Deleted audio files for song dc536af0-f8be-40d6-a6bc-ee4feddfe50d
+ ✅ Song deleted: dc536af0-f8be-40d6-a6bc-ee4feddfe50d
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: 3 AM
+ 📡 Not uploading to database: Object
+ No tracks or cached waveform for "3 AM"
+ Song selected: "3 AM" with 0 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🚀 Streaming load: 0 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 0 tracks ready
+ ✅ Streaming ready for "3 AM" - instant playback available
+ ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+Mt.forEach.n.<computed> @ eruda.js:2
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ === Web Track Manager: Starting file selection ===
+ === Web Track Manager: File change event triggered ===
+ Files selected: 6
+ 📁 Processing file 1/6: 3AM - Backups.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Backups.mp3...
+ Processing file 0/0: 3AM - Backups.mp3
+ Adding track "3AM - Backups" with file: 3AM - Backups.mp3
+  Error adding track: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ ✅ File 1 completely processed and stored
+ 📊 Duration added: 228.9s (total: 228.9s)
+ 📁 Processing file 2/6: 3AM - Bass.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Bass.mp3...
+ Processing file 0/0: 3AM - Bass.mp3
+ Adding track "3AM - Bass" with file: 3AM - Bass.mp3
+  Error adding track: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ ✅ File 2 completely processed and stored
+ 📊 Duration added: 228.9s (total: 457.7s)
+ 📁 Processing file 3/6: 3AM - Click.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Click.mp3...
+ Processing file 0/0: 3AM - Click.mp3
+ Adding track "3AM - Click" with file: 3AM - Click.mp3
+  Error adding track: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ ✅ File 3 completely processed and stored
+ 📊 Duration added: 228.9s (total: 686.6s)
+ 📁 Processing file 4/6: 3AM - Drums.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Drums.mp3...
+ Processing file 0/0: 3AM - Drums.mp3
+ Adding track "3AM - Drums" with file: 3AM - Drums.mp3
+  Error adding track: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ ✅ File 4 completely processed and stored
+ 📊 Duration added: 228.9s (total: 915.5s)
+ 📁 Processing file 5/6: 3AM - Guitars.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Guitars.mp3...
+ Processing file 0/0: 3AM - Guitars.mp3
+ Adding track "3AM - Guitars" with file: 3AM - Guitars.mp3
+  Error adding track: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ ✅ File 5 completely processed and stored
+ 📊 Duration added: 228.9s (total: 1144.4s)
+ 📁 Processing file 6/6: 3AM - Organ.mp3 (8.7MB)
+ ⏳ Starting processing of 3AM - Organ.mp3...
+ Processing file 0/0: 3AM - Organ.mp3
+ Adding track "3AM - Organ" with file: 3AM - Organ.mp3
+  Error adding track: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ ✅ File 6 completely processed and stored
+ 📊 Duration added: 228.9s (total: 1373.2s)
+ === Web Track Manager: Cleaning up file selection ===
+  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+Mt.forEach.n.<computed> @ eruda.js:2
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ ▶️ Starting playback with no audio tracks (transport controls only)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔄 Seek detected: 0.0s → 0.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🔄 Seek detected: 0.1s → 0.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🔄 Seek detected: 0.2s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🔄 Seek detected: 0.3s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🔄 Seek detected: 0.4s → 0.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🔄 Seek detected: 0.5s → 0.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🔄 Seek detected: 0.6s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🔄 Seek detected: 0.7s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🔄 Seek detected: 0.8s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🔄 Seek detected: 0.9s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🔄 Seek detected: 1.0s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🔄 Seek detected: 1.1s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🔄 Seek detected: 1.2s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🔄 Seek detected: 1.3s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🔄 Seek detected: 1.4s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.5s → 1.6s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.6s → 1.7s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.7s → 1.8s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.8s → 1.9s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+Console.js:61 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+Console.js:61 ⏸️ Streaming playback paused
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host

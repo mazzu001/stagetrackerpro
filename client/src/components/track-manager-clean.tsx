@@ -352,7 +352,7 @@ export default function TrackManager({
       
       console.log(`Adding track "${trackName}" with file: ${audioFileName}`);
       
-      const trackAdded = LocalSongStorage.addTrack(userEmail, song.id, {
+      const trackAdded = await LocalSongStorage.addTrack(userEmail, song.id, {
         name: trackName,
         songId: song.id,
         trackNumber: tracks.length + 1,
@@ -369,7 +369,7 @@ export default function TrackManager({
       
       if (trackAdded) {
         // Get the track ID that was just created
-        const updatedSong = LocalSongStorage.getSong(userEmail, song.id);
+        const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
         const newTrack = updatedSong?.tracks.find(t => t.name === trackName && t.localFileName === audioFileName);
         
         if (newTrack) {
@@ -381,7 +381,7 @@ export default function TrackManager({
           // Update the track with the audio URL
           const audioUrl = await audioStorage.getAudioUrl(newTrack.id);
           if (audioUrl) {
-            LocalSongStorage.updateTrack(userEmail, song.id, newTrack.id, { audioUrl });
+            await LocalSongStorage.updateTrack(userEmail, song.id, newTrack.id, { audioUrl });
             console.log('Track updated with audio URL:', audioUrl.substring(0, 50) + '...');
           }
         }
@@ -392,7 +392,7 @@ export default function TrackManager({
         console.log('Track added successfully');
         
         // Get updated song with new tracks and notify parent component
-        const finalUpdatedSong = LocalSongStorage.getSong(userEmail, song.id);
+        const finalUpdatedSong = await LocalSongStorage.getSong(userEmail, song.id);
         if (finalUpdatedSong && onSongUpdate) {
           console.log('Track data updated, refreshing song with', finalUpdatedSong.tracks.length, 'tracks');
           onSongUpdate(finalUpdatedSong as any);
@@ -426,10 +426,10 @@ export default function TrackManager({
     if (!song?.id || !userEmail) return;
     
     try {
-      const success = LocalSongStorage.deleteTrack(userEmail, song.id, trackId);
+      const success = await LocalSongStorage.deleteTrack(userEmail, song.id, trackId);
       if (success) {
         // Get updated song with removed track and notify parent component
-        const updatedSong = LocalSongStorage.getSong(userEmail, song.id);
+        const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
         if (updatedSong && onSongUpdate) {
           console.log('Track deleted, refreshing song with', updatedSong.tracks.length, 'tracks');
           onSongUpdate(updatedSong as any);
@@ -462,11 +462,11 @@ export default function TrackManager({
     try {
       // Delete all tracks
       for (const track of tracks) {
-        LocalSongStorage.deleteTrack(userEmail, song.id, track.id);
+        await LocalSongStorage.deleteTrack(userEmail, song.id, track.id);
       }
       
       // Get updated song and notify parent component
-      const updatedSong = LocalSongStorage.getSong(userEmail, song.id);
+      const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
       if (updatedSong && onSongUpdate) {
         console.log('All tracks cleared, refreshing song with', updatedSong.tracks.length, 'tracks');
         onSongUpdate(updatedSong as any);
@@ -506,7 +506,7 @@ export default function TrackManager({
     }
 
     // Set new timeout to update audio engine and database
-    debounceTimeouts.current[trackId] = setTimeout(() => {
+    debounceTimeouts.current[trackId] = setTimeout(async () => {
       onTrackVolumeChange?.(trackId, volume);
       
       // Update database AND Performance page's song state
@@ -514,16 +514,11 @@ export default function TrackManager({
         const track = tracks.find(t => t.id === trackId);
         if (track) {
           // Update storage
-          LocalSongStorage.updateTrack(userEmail, song.id, trackId, { volume });
+          await LocalSongStorage.updateTrack(userEmail, song.id, trackId, { volume });
           
           // Update Performance page's selectedSong state so next time Track Manager opens it has the right values
-          if (song && onSongUpdate) {
-            const updatedSong = {
-              ...song,
-              tracks: song.tracks.map(t => 
-                t.id === trackId ? { ...t, volume } : t
-              )
-            };
+          const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
+          if (updatedSong && onSongUpdate) {
             onSongUpdate(updatedSong as any);
           }
         }
@@ -548,7 +543,7 @@ export default function TrackManager({
     }
 
     // Set new timeout to update audio engine and database
-    debounceTimeouts.current[balanceTimeoutKey] = setTimeout(() => {
+    debounceTimeouts.current[balanceTimeoutKey] = setTimeout(async () => {
       onTrackBalanceChange?.(trackId, balance);
       
       // Update database AND Performance page's song state
@@ -556,16 +551,11 @@ export default function TrackManager({
         const track = tracks.find(t => t.id === trackId);
         if (track) {
           // Update storage
-          LocalSongStorage.updateTrack(userEmail, song.id, trackId, { balance });
+          await LocalSongStorage.updateTrack(userEmail, song.id, trackId, { balance });
           
           // Update Performance page's selectedSong state so next time Track Manager opens it has the right values
-          if (song && onSongUpdate) {
-            const updatedSong = {
-              ...song,
-              tracks: song.tracks.map(t => 
-                t.id === trackId ? { ...t, balance } : t
-              )
-            };
+          const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
+          if (updatedSong && onSongUpdate) {
             onSongUpdate(updatedSong as any);
           }
         }

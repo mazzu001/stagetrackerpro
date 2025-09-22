@@ -78,110 +78,80 @@ export class LocalSongStorage {
     }
   }
 
-  static addTrack(userEmail: string, songId: string, track: any): boolean {
+  static async addTrack(userEmail: string, songId: string, track: any): Promise<any> {
     try {
-      const songs = this.getAllSongs(userEmail);
-      const songIndex = songs.findIndex(song => song.id === songId);
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
+      const updatedSong = await LocalSongStorageDB.addTrackToSong(userEmail, songId, track);
       
-      if (songIndex === -1) {
-        console.error('LocalSongStorage.addTrack: Song not found:', songId);
-        return false;
+      if (updatedSong && updatedSong.tracks.length > 0) {
+        const newTrack = updatedSong.tracks[updatedSong.tracks.length - 1];
+        console.log('LocalSongStorage.addTrack: Track added successfully:', newTrack.id);
+        return newTrack;
       }
       
-      const newTrack = {
-        id: crypto.randomUUID(),
-        songId,
-        name: track.name || '',
-        trackNumber: track.trackNumber || 1,
-        audioUrl: track.audioUrl || '',
-        localFileName: track.localFileName || null,
-        audioData: track.audioData || null,
-        mimeType: track.mimeType || null,
-        fileSize: track.fileSize || null,
-        volume: track.volume || 1.0,
-        balance: track.balance || 0.0,
-        isMuted: track.isMuted || false,
-        isSolo: track.isSolo || false,
-        muteRegions: track.muteRegions || [],
-        filePath: track.filePath || null,
-        ...track,
-        createdAt: new Date().toISOString()
-      };
-      
-      songs[songIndex].tracks.push(newTrack);
-      this.saveSongs(userEmail, songs);
-      console.log('LocalSongStorage.addTrack: Track added successfully:', newTrack.id);
-      return newTrack; // Return the track with its generated ID
+      return false;
     } catch (error) {
       console.error('LocalSongStorage.addTrack: Error adding track:', error);
       return false;
     }
   }
 
-  static getTracks(userEmail: string, songId: string): any[] {
-    const song = this.getSong(userEmail, songId);
+  static async getTracks(userEmail: string, songId: string): Promise<any[]> {
+    const song = await this.getSong(userEmail, songId);
     return song?.tracks || [];
   }
 
-  static deleteTrack(userEmail: string, songId: string, trackId: string): boolean {
-    const songs = this.getAllSongs(userEmail);
-    const songIndex = songs.findIndex(song => song.id === songId);
-    
-    if (songIndex === -1) return false;
-    
-    const originalLength = songs[songIndex].tracks.length;
-    songs[songIndex].tracks = songs[songIndex].tracks.filter(track => track.id !== trackId);
-    
-    if (songs[songIndex].tracks.length === originalLength) {
-      return false; // Track not found
+  static async deleteTrack(userEmail: string, songId: string, trackId: string): Promise<boolean> {
+    try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
+      const success = await LocalSongStorageDB.deleteTrack(userEmail, songId, trackId);
+      if (success) {
+        console.log('LocalSongStorage.deleteTrack: Track deleted successfully:', trackId);
+      }
+      return success;
+    } catch (error) {
+      console.error('LocalSongStorage.deleteTrack: Error deleting track:', error);
+      return false;
     }
-    
-    this.saveSongs(userEmail, songs);
-    return true;
   }
 
-  static updateTrack(userEmail: string, songId: string, trackId: string, updates: Partial<any>): any | null {
-    const songs = this.getAllSongs(userEmail);
-    const songIndex = songs.findIndex(song => song.id === songId);
-    
-    if (songIndex === -1) return null;
-    
-    const trackIndex = songs[songIndex].tracks.findIndex(track => track.id === trackId);
-    if (trackIndex === -1) return null;
-    
-    songs[songIndex].tracks[trackIndex] = { ...songs[songIndex].tracks[trackIndex], ...updates };
-    this.saveSongs(userEmail, songs);
-    return songs[songIndex].tracks[trackIndex];
+  static async updateTrack(userEmail: string, songId: string, trackId: string, updates: Partial<any>): Promise<any | null> {
+    try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
+      return await LocalSongStorageDB.updateTrack(userEmail, songId, trackId, updates);
+    } catch (error) {
+      console.error('LocalSongStorage.updateTrack: Error updating track:', error);
+      return null;
+    }
   }
 
-  static addTrackToSong(userEmail: string, songId: string, track: any): LocalSong | null {
-    const song = this.getSong(userEmail, songId);
-    if (!song) return null;
-
-    const newTrack = {
-      id: crypto.randomUUID(),
-      songId,
-      ...track
-    };
-
-    const updatedSong = {
-      ...song,
-      tracks: [...song.tracks, newTrack]
-    };
-
-    return this.updateSong(userEmail, songId, updatedSong);
+  static async addTrackToSong(userEmail: string, songId: string, track: any): Promise<LocalSong | null> {
+    try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
+      return await LocalSongStorageDB.addTrackToSong(userEmail, songId, track);
+    } catch (error) {
+      console.error('Error adding track to song:', error);
+      return null;
+    }
   }
 
-  static removeTrackFromSong(userEmail: string, songId: string, trackId: string): LocalSong | null {
-    const song = this.getSong(userEmail, songId);
-    if (!song) return null;
-
-    const updatedSong = {
-      ...song,
-      tracks: song.tracks.filter(track => track.id !== trackId)
-    };
-
-    return this.updateSong(userEmail, songId, updatedSong);
+  static async removeTrackFromSong(userEmail: string, songId: string, trackId: string): Promise<LocalSong | null> {
+    try {
+      // Import dynamically to avoid circular dependency  
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
+      const success = await LocalSongStorageDB.deleteTrack(userEmail, songId, trackId);
+      if (success) {
+        return await LocalSongStorageDB.getSong(userEmail, songId);
+      }
+      return null;
+    } catch (error) {
+      console.error('Error removing track from song:', error);
+      return null;
+    }
   }
 
   // Mute Region Management

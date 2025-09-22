@@ -1,0 +1,343 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-6efb6cddeeb8d9a2.js:28 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-6efb6cddeeb8d9a2.js:28 [LaunchDarkly] LaunchDarkly client initialized
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'battery'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-9711960c3791d3e8.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-9711960c3791d3e8.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-9711960c3791d3e8.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-9711960c3791d3e8.js:1
+_app-6efb6cddeeb8d9a2.js:28  task queue exceeded allotted deadline by 51ms
+(anonymous) @ _app-6efb6cddeeb8d9a2.js:28
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1a1%3A:1  Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
+ 🔵 Android BLE-MIDI adapter initialized
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+ 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+ 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+ No stored audio file references found
+ [MAIN.TSX] Script starting...
+ [MAIN.TSX] Unregistering service workers...
+ [MAIN.TSX] About to render React app...
+ [MAIN.TSX] Root element: [object HTMLDivElement]
+ [MAIN.TSX] React app rendered successfully
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [AUTH] Valid session found: mazzu001@hotmail.com
+ [APP] Auth state: [object Object]
+ 🔍 Browser detection debug: [object Object]
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ 🔍 Parsed values: [object Object]
+ 🔍 No payment success detected in URL
+ 🎹 MIDI API supported - waiting for user interaction to initialize
+ 🔧 Initializing storage for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [AUTH] useEffect - auth state initialized
+ 📊 Database exists for mazzu001@hotmail.com: true
+ 📂 Loading existing database for mazzu001@hotmail.com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ Browser file system initialized successfully for user: default@user.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+ Loaded 23 audio file path references from localStorage for user: mazzu001@hotmail.com
+ ✅ Storage initialization complete for mazzu001@hotmail.com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: true
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: [object Object]
+ 🎵 Master output initialized
+ 🔍 Debug values: [object Object]
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+ 📭 No localStorage data found for key: lpp_songs_mazzu001@hotmail.com
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ 🔍 Debug values: [object Object]
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ 🎵 Loading song: 3 AM
+ 📡 Not uploading to database: [object Object]
+ No tracks or cached waveform for "3 AM"
+Console.js:61 Song selected: "3 AM" with 0 tracks - loading for streaming
+Console.js:61 Setting up streaming for: "3 AM" - UI stays responsive
+Console.js:61 🎭 Broadcast host effect: [object Object]
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🚀 Streaming load: 0 tracks (deferred setup)
+Console.js:61 🎵 Loading original tracks...
+Console.js:61 🎵 Track loading complete: 0 tracks ready
+Console.js:61 ✅ Streaming ready for "3 AM" - instant playback available
+Console.js:61 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+Console.js:61  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 🔍 Debug values: [object Object]
+Console.js:61 🎭 Broadcast host effect: [object Object]
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 ✅ Deleted audio files for song 5bc73424-c9dd-43c6-abd0-23bfda72233a
+Console.js:61 ✅ Song deleted: 5bc73424-c9dd-43c6-abd0-23bfda72233a
+Console.js:61 🔍 Debug values: [object Object]
+Console.js:61 🎭 Broadcast host effect: [object Object]
+Console.js:61 🎭 Not broadcasting - not host
+8003ebbc-7c24-44f5-a…performance.tsx:527  Uncaught TypeError: Cannot read properties of undefined (reading 'localeCompare')
+8003ebbc-7c24-44f5-a…performance.tsx:527  Uncaught TypeError: Cannot read properties of undefined (reading 'localeCompare')
+Console.js:61  The above error occurred in the <Performance> component:
+
+    at Performance (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/pages/performance.tsx:45:39)
+    at component
+    at Route (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=2c4155aa:323:16)
+    at Router (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=2c4155aa:291:17)
+    at AnalyticsRouter (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?v=-yybbnE8UGVvFUAyGDhY:46:28)
+    at Provider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-B64GZIWT.js?v=2c4155aa:38:15)
+    at TooltipProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=2c4155aa:66:5)
+    at AppContent (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?v=-yybbnE8UGVvFUAyGDhY:59:23)
+    at MidiProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/contexts/MidiProvider.tsx:21:32)
+    at StorageProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/contexts/StorageContext.tsx:37:35)
+    at QueryClientProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=2c4155aa:2805:3)
+    at App (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?v=-yybbnE8UGVvFUAyGDhY:261:68)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+Mt.forEach.n.<computed> @ Console.js:61
+react-dom.development.js:12056  Uncaught TypeError: Cannot read properties of undefined (reading 'localeCompare')
+Console.js:61 🧹 StorageProvider cleanup
+Console.js:61 📱 Edge browser: Forcing memory cleanup
+Console.js:61 ✅ Song added: Already Gone
+Console.js:61 🔵 Android BLE-MIDI adapter initialized
+Console.js:61 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+Console.js:61 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+Console.js:61 No stored audio file references found
+Console.js:61 [MAIN.TSX] Script starting...
+Console.js:61 [MAIN.TSX] Unregistering service workers...
+Console.js:61 [MAIN.TSX] About to render React app...
+Console.js:61 [MAIN.TSX] Root element: <div id=​"root">​</div>​
+Console.js:61 [MAIN.TSX] React app rendered successfully
+Console.js:61 [APP] About to call useLocalAuth hook...
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] Valid session found: mazzu001@hotmail.com
+Console.js:61 [APP] Auth state: Object
+Console.js:61 🔍 Browser detection debug: Object
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] Storage initialized: false
+Console.js:61 🔍 Parsed values: Object
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 🎹 MIDI API supported - waiting for user interaction to initialize
+Console.js:61 🔧 Initializing storage for user: mazzu001@hotmail.com
+Console.js:61 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+Console.js:61 [AUTH] useEffect - auth state initialized
+Console.js:61 📊 Database exists for mazzu001@hotmail.com: true
+Console.js:61 📂 Loading existing database for mazzu001@hotmail.com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] Storage initialized: false
+Console.js:61 Browser file system initialized successfully for user: default@user.com
+Console.js:61 ✅ BrowserFileSystem fully initialized with config loaded
+Console.js:61 Browser file system initialized successfully for user: mazzu001@hotmail.com
+Console.js:61 ✅ BrowserFileSystem fully initialized with config loaded
+Console.js:61 Browser file system initialized successfully for user: mazzu001@hotmail.com
+Console.js:61 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+Console.js:61 Loaded 23 audio file path references from localStorage for user: mazzu001@hotmail.com
+Console.js:61 ✅ Storage initialization complete for mazzu001@hotmail.com
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] Storage initialized: true
+Console.js:61 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+Console.js:61 🔍 Initial service isHost check: Object
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: Object
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+Console.js:61 📭 No localStorage data found for key: lpp_songs_mazzu001@hotmail.com
+Console.js:61 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+(index):1  Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
+performance.tsx:673  Uncaught TypeError: Cannot read properties of undefined (reading 'localeCompare')
+    at performance.tsx:673:69
+    at Array.sort (<anonymous>)
+    at performance.tsx:673:46
+    at basicStateReducer (react-dom.development.js:15721:41)
+    at updateReducer (react-dom.development.js:15845:22)
+    at updateState (react-dom.development.js:16185:10)
+    at Object.useState (react-dom.development.js:17096:16)
+    at useState (react.development.js:1622:21)
+    at Performance (performance.tsx:56:35)
+    at renderWithHooks (react-dom.development.js:15486:18)
+performance.tsx:673  Uncaught TypeError: Cannot read properties of undefined (reading 'localeCompare')
+    at performance.tsx:673:69
+    at Array.sort (<anonymous>)
+    at performance.tsx:673:46
+    at basicStateReducer (react-dom.development.js:15721:41)
+    at updateReducer (react-dom.development.js:15845:22)
+    at updateState (react-dom.development.js:16185:10)
+    at Object.useState (react-dom.development.js:17096:16)
+    at useState (react.development.js:1622:21)
+    at Performance (performance.tsx:56:35)
+    at renderWithHooks (react-dom.development.js:15486:18)
+Console.js:61  The above error occurred in the <Performance> component:
+
+    at Performance (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/pages/performance.tsx?t=1758570333682:45:39)
+    at component
+    at Route (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=2c4155aa:323:16)
+    at Router (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=2c4155aa:291:17)
+    at AnalyticsRouter (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?t=1758570333682&v=9e9JlQmKagj0znXN-PI-H:46:28)
+    at Provider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-B64GZIWT.js?v=2c4155aa:38:15)
+    at TooltipProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=2c4155aa:66:5)
+    at AppContent (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?t=1758570333682&v=9e9JlQmKagj0znXN-PI-H:59:23)
+    at MidiProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/contexts/MidiProvider.tsx:21:32)
+    at StorageProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/contexts/StorageContext.tsx:37:35)
+    at QueryClientProvider (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=2c4155aa:2805:3)
+    at App (https://8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/src/App.tsx?t=1758570333682&v=9e9JlQmKagj0znXN-PI-H:261:68)
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+Mt.forEach.n.<computed> @ Console.js:61
+react-dom.development.js:12056  Uncaught TypeError: Cannot read properties of undefined (reading 'localeCompare')
+    at performance.tsx:673:69
+    at Array.sort (<anonymous>)
+    at performance.tsx:673:46
+    at basicStateReducer (react-dom.development.js:15721:41)
+    at updateReducer (react-dom.development.js:15845:22)
+    at updateState (react-dom.development.js:16185:10)
+    at Object.useState (react-dom.development.js:17096:16)
+    at useState (react.development.js:1622:21)
+    at Performance (performance.tsx:56:35)
+    at renderWithHooks (react-dom.development.js:15486:18)
+Console.js:61 🧹 StorageProvider cleanup
+Console.js:61 📱 Edge browser: Forcing memory cleanup
+Console.js:61 ✅ Song added: 3 AM

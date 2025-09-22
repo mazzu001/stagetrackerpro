@@ -670,7 +670,10 @@ export default function Performance({ userType, userEmail, logout }: Performance
         lyrics: '',
         waveformData: null
       });
-      setAllSongs(prev => [...prev, newSong].sort((a, b) => a.title.localeCompare(b.title)));
+      setAllSongs(prev => [...prev, newSong].sort((a, b) => {
+        if (!a.title || !b.title) return 0;
+        return a.title.localeCompare(b.title);
+      }));
       setSongTitle("");
       setSongArtist("");
       setIsAddSongOpen(false);

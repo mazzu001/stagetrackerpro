@@ -188,10 +188,12 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
         console.log('🎹 Saved last connected device:', deviceInfo.name);
       }
     } finally {
-      // Reset states immediately to allow button to update
-      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-      deviceIds.forEach(id => resetStates[id] = 'idle');
-      setConnectionStates(prev => ({ ...prev, ...resetStates }));
+      // Reset states after a very short delay to ensure UI updates
+      setTimeout(() => {
+        const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+        deviceIds.forEach(id => resetStates[id] = 'idle');
+        setConnectionStates(prev => ({ ...prev, ...resetStates }));
+      }, 100);
     }
   };
 
@@ -213,10 +215,12 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
         console.error('Failed to disconnect from some devices:', deviceIds);
       }
     } finally {
-      // Reset states immediately to allow button to update
-      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-      deviceIds.forEach(id => resetStates[id] = 'idle');
-      setConnectionStates(prev => ({ ...prev, ...resetStates }));
+      // Reset states after a very short delay to ensure UI updates
+      setTimeout(() => {
+        const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+        deviceIds.forEach(id => resetStates[id] = 'idle');
+        setConnectionStates(prev => ({ ...prev, ...resetStates }));
+      }, 100);
     }
   };
 
@@ -518,14 +522,12 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                               title={isGhost ? 'Device is unavailable - please turn on the device' : ''}
                             >
                               {(() => {
-                                console.log(`🎹 Button state for ${unifiedDevice.name}: state='${state}', isConnected=${isConnected}, connectedDevices=${connectedDevices.length}`);
                                 // Always check actual connection state first
                                 if (state === 'connecting') return 'Connecting...';
                                 if (state === 'disconnecting') return 'Disconnecting...';
                                 if (isGhost) return 'Unavailable';
                                 // Check the real connection state from connectedDevices
                                 const actuallyConnected = isUnifiedDeviceConnected(unifiedDevice);
-                                console.log(`🎹 actuallyConnected for ${unifiedDevice.name}: ${actuallyConnected}`);
                                 return actuallyConnected ? 'Disconnect' : 'Connect';
                               })()}
                             </Button>

@@ -1,5 +1,6 @@
 import type { Track } from "@shared/schema";
 import { BrowserFileSystem } from "./browser-file-system";
+import { IndexedDBStorage, AudioFileMetadata } from "./indexed-db-storage";
 
 interface StoredAudioFile {
   id: string;
@@ -19,10 +20,11 @@ export class AudioFileStorage {
   private browserFS: BrowserFileSystem;
   private userEmail: string;
   private storageKey: string;
+  private indexedDB: IndexedDBStorage | null = null;
 
   /**
    * Get a per-user instance of AudioFileStorage
-   * Each user gets their own isolated localStorage keys
+   * Each user gets their own isolated storage
    */
   static getInstance(userEmail?: string): AudioFileStorage {
     // Use default email if none provided for backward compatibility
@@ -30,7 +32,10 @@ export class AudioFileStorage {
     
     if (!AudioFileStorage.instances.has(email)) {
       const instance = new AudioFileStorage(email);
-      instance.loadFromStorage();
+      // Start the async initialization but don't wait for it
+      instance.loadFromStorage().catch(error => {
+        console.error('Failed to load audio file storage:', error);
+      });
       AudioFileStorage.instances.set(email, instance);
     }
     return AudioFileStorage.instances.get(email)!;
@@ -45,6 +50,14 @@ export class AudioFileStorage {
     
     // Get per-user BrowserFileSystem instance
     this.browserFS = BrowserFileSystem.getInstance(userEmail);
+    
+    // Initialize IndexedDB for this user
+    this.initializeIndexedDB();
+  }
+  
+  private async initializeIndexedDB(): Promise<void> {
+    this.indexedDB = IndexedDBStorage.getInstance(this.userEmail);
+    await this.indexedDB.initialize();
   }
 
   // Store file using browser storage (IndexedDB + File API)
@@ -181,26 +194,66 @@ export class AudioFileStorage {
     }
   }
 
-  // Load audio file path references from localStorage for this user
-  private loadFromStorage(): void {
+  // Load audio file path references from IndexedDB for this user
+  private async loadFromStorage(): Promise<void> {
+    try {
+      // First, migrate any existing localStorage data
+      await this.migrateFromLocalStorage();
+      
+      // Then load from IndexedDB
+      if (!this.indexedDB) {
+        await this.initializeIndexedDB();
+      }
+      
+      const metadata = await this.indexedDB!.getAllAudioFileMetadata();
+      this.audioFiles = new Map(metadata.map(m => [m.id, {
+        id: m.id,
+        name: m.name,
+        filePath: m.filePath,
+        mimeType: m.mimeType,
+        size: m.size,
+        lastModified: m.lastModified
+      }]));
+      
+      console.log(`Loaded ${this.audioFiles.size} audio file references from IndexedDB for user: ${this.userEmail}`);
+    } catch (error) {
+      console.error('Failed to load audio file references from IndexedDB:', error);
+      this.audioFiles = new Map();
+    }
+  }
+  
+  // One-time migration from localStorage to IndexedDB
+  private async migrateFromLocalStorage(): Promise<void> {
     try {
       const stored = localStorage.getItem(this.storageKey);
       if (stored) {
+        console.log(`Migrating audio file metadata from localStorage to IndexedDB...`);
         const data = JSON.parse(stored);
-        this.audioFiles = new Map(data);
-        console.log(`Loaded ${this.audioFiles.size} audio file path references from localStorage for user: ${this.userEmail}`);
+        const entries = Array.from(data);
         
-        // DO NOT auto-load audio files at startup - only load when a song is selected
-        // this.autoLoadStoredFiles(); // REMOVED: Was causing app freeze with many files
+        if (!this.indexedDB) {
+          await this.initializeIndexedDB();
+        }
         
-        // Don't display verbose file list at startup
-        // this.displayExpectedFiles();
-      } else {
-        console.log('No stored audio file references found');
+        for (const [id, storedFile] of entries) {
+          const metadata: AudioFileMetadata = {
+            id: id,
+            songId: storedFile.songId || '',
+            name: storedFile.name,
+            filePath: storedFile.filePath,
+            mimeType: storedFile.mimeType || storedFile.type,
+            size: storedFile.size,
+            lastModified: storedFile.lastModified
+          };
+          await this.indexedDB!.storeAudioFileMetadata(metadata);
+        }
+        
+        // Remove from localStorage after successful migration
+        localStorage.removeItem(this.storageKey);
+        console.log(`✅ Migrated ${entries.length} audio file metadata entries to IndexedDB`);
       }
     } catch (error) {
-      console.error('Failed to load audio file references from storage:', error);
-      this.audioFiles = new Map();
+      console.error('Failed to migrate audio file metadata from localStorage:', error);
     }
   }
 
@@ -310,15 +363,30 @@ export class AudioFileStorage {
     return { registered, expectedCount: expectedFiles.length };
   }
 
-  // Save audio file path references to localStorage for this user
-  private saveToStorage(): void {
+  // Save audio file path references to IndexedDB for this user
+  private async saveToStorage(): Promise<void> {
     try {
-      const data = Array.from(this.audioFiles.entries());
-      const jsonData = JSON.stringify(data);
-      localStorage.setItem(this.storageKey, jsonData);
-      console.log(`Saved ${data.length} audio file path references to localStorage for user: ${this.userEmail} (${Math.round(jsonData.length / 1024)}KB)`);
+      if (!this.indexedDB) {
+        await this.initializeIndexedDB();
+      }
+      
+      // Save each audio file metadata to IndexedDB
+      for (const [id, storedFile] of this.audioFiles.entries()) {
+        const metadata: AudioFileMetadata = {
+          id: id,
+          songId: '', // Will be set when available
+          name: storedFile.name,
+          filePath: storedFile.filePath,
+          mimeType: storedFile.mimeType,
+          size: storedFile.size,
+          lastModified: storedFile.lastModified
+        };
+        await this.indexedDB!.storeAudioFileMetadata(metadata);
+      }
+      
+      console.log(`Saved ${this.audioFiles.size} audio file references to IndexedDB for user: ${this.userEmail}`);
     } catch (error) {
-      console.error('Failed to save audio file references:', error);
+      console.error('Failed to save audio file references to IndexedDB:', error);
     }
   }
 

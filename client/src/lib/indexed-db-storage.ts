@@ -46,6 +46,16 @@ export interface AudioFile {
   lastModified: number;
 }
 
+export interface AudioFileMetadata {
+  id: string; // trackId
+  songId: string;
+  name: string;
+  filePath: string;
+  mimeType: string;
+  size: number;
+  lastModified: number;
+}
+
 export class IndexedDBStorage {
   private static instances: Map<string, IndexedDBStorage> = new Map();
   private db: IDBDatabase | null = null;
@@ -449,7 +459,95 @@ export class IndexedDBStorage {
     }
   }
   
-  // Audio file operations
+  // Audio file metadata operations
+  async storeAudioFileMetadata(metadata: AudioFileMetadata): Promise<boolean> {
+    this.ensureDatabase();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['audioFiles'], 'readwrite');
+      const store = transaction.objectStore('audioFiles');
+      const request = store.put(metadata);
+      
+      request.onsuccess = () => {
+        console.log(`✅ Audio file metadata stored for track: ${metadata.id}`);
+        resolve(true);
+      };
+      
+      request.onerror = () => {
+        console.error('Failed to store audio file metadata:', request.error);
+        reject(request.error);
+      };
+    });
+  }
+  
+  async getAudioFileMetadata(trackId: string): Promise<AudioFileMetadata | null> {
+    this.ensureDatabase();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['audioFiles'], 'readonly');
+      const store = transaction.objectStore('audioFiles');
+      const request = store.get(trackId);
+      
+      request.onsuccess = () => {
+        const metadata = request.result;
+        if (metadata && !metadata.fileData) {
+          // It's metadata only, not a full audio file
+          resolve(metadata as AudioFileMetadata);
+        } else {
+          resolve(null);
+        }
+      };
+      
+      request.onerror = () => {
+        console.error('Failed to get audio file metadata:', request.error);
+        reject(request.error);
+      };
+    });
+  }
+  
+  async getAllAudioFileMetadata(): Promise<AudioFileMetadata[]> {
+    this.ensureDatabase();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['audioFiles'], 'readonly');
+      const store = transaction.objectStore('audioFiles');
+      const request = store.getAll();
+      
+      request.onsuccess = () => {
+        const allData = request.result || [];
+        // Filter to only metadata entries (no fileData)
+        const metadata = allData.filter(item => !item.fileData) as AudioFileMetadata[];
+        resolve(metadata);
+      };
+      
+      request.onerror = () => {
+        console.error('Failed to get all audio file metadata:', request.error);
+        reject(request.error);
+      };
+    });
+  }
+  
+  async deleteAudioFileMetadata(trackId: string): Promise<boolean> {
+    this.ensureDatabase();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = this.db!.transaction(['audioFiles'], 'readwrite');
+      const store = transaction.objectStore('audioFiles');
+      const request = store.delete(trackId);
+      
+      request.onsuccess = () => {
+        console.log(`✅ Audio file metadata deleted for track: ${trackId}`);
+        resolve(true);
+      };
+      
+      request.onerror = () => {
+        console.error('Failed to delete audio file metadata:', request.error);
+        reject(request.error);
+      };
+    });
+  }
+
+  // Audio file operations (full file storage)
   async storeAudioFile(trackId: string, songId: string, file: File, trackName: string): Promise<boolean> {
     this.ensureDatabase();
     

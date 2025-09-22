@@ -132,7 +132,10 @@ export class IndexedDBStorage {
       request.onsuccess = () => {
         const songs = request.result || [];
         // Sort alphabetically by title
-        songs.sort((a, b) => a.title.localeCompare(b.title));
+        songs.sort((a, b) => {
+          if (!a.title || !b.title) return 0;
+          return a.title.localeCompare(b.title);
+        });
         resolve(songs);
       };
       

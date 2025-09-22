@@ -68,8 +68,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
 
   const browserInfo = getBrowserInfo();
   
-  // Detect if a device should use BLE adapter on Android
-  const shouldUseBleAdapter = useCallback((device: MIDIInput | MIDIOutput): boolean => {
+  // Helper to check if a device should use BLE adapter on Android (for UI use)
+  const shouldUseBleAdapter = useCallback((device: { name?: string | null }): boolean => {
     // Only use BLE adapter on Android browsers
     if (!browserInfo.isAndroidBrowser) return false;
     
@@ -91,6 +91,11 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     return shouldUse;
   }, [browserInfo.isAndroidBrowser]);
   
+  // Internal version that accepts MIDIPort
+  const shouldUseBleAdapterInternal = useCallback((device: MIDIInput | MIDIOutput): boolean => {
+    return shouldUseBleAdapter(device);
+  }, [shouldUseBleAdapter]);
+  
   // Debug browser detection for Android MIDI troubleshooting
   console.log('🔍 Browser detection debug:', {
     userAgent: navigator.userAgent,
@@ -102,148 +107,6 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     isAndroidBrowser: browserInfo.isAndroidBrowser,
     isMobile: browserInfo.isMobile
   });
-
-  // Check if Web MIDI API is supported
-  useEffect(() => {
-    const checkSupport = () => {
-      if ('requestMIDIAccess' in navigator) {
-        setIsSupported(true);
-        // Don't automatically initialize - wait for user interaction
-        console.log('🎹 MIDI API supported - waiting for user interaction to initialize');
-      } else {
-        setIsSupported(false);
-        setError('Web MIDI API not supported in this browser');
-      }
-    };
-
-    checkSupport();
-  }, []);
-
-  // Initialize MIDI access
-  const initializeMidi = useCallback(async () => {
-    // Prevent multiple simultaneous initialization attempts
-    if (isInitializing || isInitialized) {
-      console.log('🎹 MIDI already initializing or initialized');
-      return;
-    }
-    
-    try {
-      setIsInitializing(true);
-      setError(null);
-      console.log('🎹 Initializing MIDI access...');
-      
-      // Check MIDI permission state first
-      if (navigator.permissions) {
-        try {
-          const midiPermission = await navigator.permissions.query({ name: 'midi' as any });
-          console.log('🔐 MIDI Permission State:', midiPermission.state);
-          
-          if (midiPermission.state === 'denied') {
-            setError('MIDI access denied. Please reset MIDI permissions in your browser settings and refresh the page.');
-            console.error('❌ MIDI permission denied by user');
-            return;
-          }
-        } catch (permErr) {
-          console.log('🔍 Permission API not available or failed:', permErr);
-        }
-      }
-      
-      // Android Chrome browser detection and compatibility logging
-      if (browserInfo.isAndroidChrome) {
-        console.log('📱 Android Chrome detected - using mobile MIDI compatibility mode');
-      } else if (browserInfo.isAndroid) {
-        console.log('📱 Android device detected - using mobile compatibility mode');
-      }
-      
-      // CRITICAL FIX: Multiple deferrals to ensure UI updates completely
-      // This prevents the UI from freezing when requestMIDIAccess blocks
-      await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
-      await new Promise(resolve => setTimeout(resolve, 10));
-      
-      console.log('🎹 About to request MIDI access...');
-      
-      // Wrap the actual MIDI call in aggressive timeout handling
-      let midiAccess: MIDIAccess | null = null;
-      let timedOut = false;
-      
-      // Set a hard timeout that will fire regardless
-      const timeoutId = setTimeout(() => {
-        timedOut = true;
-        console.warn('⚠️ MIDI initialization taking too long, aborting...');
-      }, 3000); // Reduced to 3 seconds for faster failure
-      
-      try {
-        // Request MIDI access without sysex for faster, non-blocking access
-        const midiPromise = navigator.requestMIDIAccess({ sysex: false });
-        
-        // Race between MIDI promise and a timeout promise
-        const timeoutPromise = new Promise<never>((_, reject) => 
-          setTimeout(() => {
-            if (!timedOut) {
-              timedOut = true;
-              reject(new Error('MIDI initialization timeout - device scanning blocked'));
-            }
-          }, 3000)
-        );
-        
-        console.log('🎹 Requesting MIDI access (3s timeout)...');
-        midiAccess = await Promise.race([midiPromise, timeoutPromise]);
-        
-      } catch (midiError) {
-        clearTimeout(timeoutId);
-        
-        if (timedOut) {
-          throw new Error('MIDI initialization timeout - your system may have many MIDI devices causing delays. Try disconnecting some devices and refresh.');
-        }
-        throw midiError;
-      }
-      
-      clearTimeout(timeoutId);
-      
-      if (!midiAccess || timedOut) {
-        throw new Error('Failed to initialize MIDI access');
-      }
-      
-      midiAccessRef.current = midiAccess;
-      const access = midiAccess;
-      
-      // Listen for device state changes with debouncing
-      let stateChangeTimer: NodeJS.Timeout | null = null;
-      access.onstatechange = (event: Event) => {
-        const midiEvent = event as MIDIConnectionEvent;
-        console.log(`🎹 MIDI device state change:`, midiEvent.port?.name, midiEvent.port?.state, midiEvent.port?.connection);
-        
-        // Debounce rapid state changes (common with many MIDI devices)
-        if (stateChangeTimer) clearTimeout(stateChangeTimer);
-        stateChangeTimer = setTimeout(() => {
-          refreshDeviceList();
-        }, 300); // 300ms debounce delay
-      };
-      
-      // Allow Web MIDI API time to populate device collections
-      setTimeout(() => refreshDeviceList(), 100);
-      setIsInitialized(true);
-      console.log('✅ MIDI system initialized successfully');
-      
-    } catch (err) {
-      let errorMessage = 'Failed to initialize MIDI';
-      
-      if (err instanceof Error) {
-        if (err.message.includes('SecurityError') || err.message.includes('NotAllowedError')) {
-          errorMessage = 'MIDI access denied. Please allow MIDI permissions and refresh the page.';
-        } else if (err.message.includes('NotSupportedError')) {
-          errorMessage = 'MIDI not supported on this device or browser.';
-        } else {
-          errorMessage = err.message;
-        }
-      }
-      
-      setError(errorMessage);
-      console.error('❌ MIDI initialization failed:', err);
-    } finally {
-      setIsInitializing(false);
-    }
-  }, [isInitializing, isInitialized]);
 
   // Refresh device list from MIDI access
   const refreshDeviceList = useCallback(async () => {
@@ -263,13 +126,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     
     // If no devices found, provide guidance for permission reset
     if (access.inputs.size === 0 && access.outputs.size === 0) {
-      console.log('⚠️ No MIDI devices found. This could be due to:');
-      console.log('1. No physical MIDI devices connected');
-      console.log('2. MIDI permissions denied or blocked');
-      console.log('3. Browser security restrictions');
-      console.log('💡 To reset MIDI permissions:');
-      console.log('   - Chrome/Edge: Click the MIDI icon in address bar → Reset permissions');
-      console.log('   - Or go to Settings → Privacy → Site Settings → MIDI → Reset this site');
+      console.log('⚠️ No MIDI devices found yet. Devices will appear when connected.');
     }
     
     // Helper function to detect device type
@@ -386,6 +243,124 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     setConnectedDevices(connected);
   }, []);
 
+  // Initialize MIDI as a background service on app start
+  useEffect(() => {
+    // Only run once on mount
+    if (!('requestMIDIAccess' in navigator)) {
+      setIsSupported(false);
+      setError('Web MIDI API not supported in this browser');
+      console.error('❌ Web MIDI API not supported');
+      return;
+    }
+
+    setIsSupported(true);
+    console.log('🎹 MIDI API supported - starting background service...');
+
+    // Start MIDI in background (fire and forget)
+    const startMidiService = async () => {
+      try {
+        // Check MIDI permission state if available
+        if (navigator.permissions) {
+          try {
+            const midiPermission = await navigator.permissions.query({ name: 'midi' as any });
+            console.log('🔐 MIDI Permission State:', midiPermission.state);
+            
+            if (midiPermission.state === 'denied') {
+              setError('MIDI access denied. Please reset MIDI permissions in your browser settings.');
+              console.error('❌ MIDI permission denied');
+              return;
+            }
+          } catch (permErr) {
+            // Permission API not available, continue anyway
+            console.log('🔍 Permission API not available, continuing...');
+          }
+        }
+
+        // Request MIDI access without any timeout - let it take as long as it needs
+        console.log('🎹 Requesting MIDI access (this may take a moment with many devices)...');
+        setIsInitializing(true);
+        
+        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+        
+        console.log('✅ MIDI access granted - background service active');
+        midiAccessRef.current = midiAccess;
+        
+        // Set up continuous device monitoring
+        midiAccess.onstatechange = (event: Event) => {
+          const midiEvent = event as MIDIConnectionEvent;
+          console.log(`🎹 Device change detected:`, midiEvent.port?.name, midiEvent.port?.state);
+          
+          // Update device list immediately when devices change
+          refreshDeviceList();
+        };
+        
+        // Initial device scan
+        await refreshDeviceList();
+        
+        setIsInitialized(true);
+        setIsInitializing(false);
+        setError(null);
+        console.log('✅ MIDI background service fully operational');
+        
+        // Auto-reconnect to last known device if stored
+        const lastDeviceStr = localStorage.getItem('lastMidiDevice');
+        if (lastDeviceStr) {
+          try {
+            const lastDevice = JSON.parse(lastDeviceStr);
+            console.log('🎹 Looking for last known device:', lastDevice.name);
+            
+            // Give devices a moment to appear in the list
+            setTimeout(() => {
+              const devices = midiAccessRef.current?.inputs;
+              if (devices) {
+                devices.forEach(device => {
+                  if (device.name === lastDevice.name && device.manufacturer === lastDevice.manufacturer) {
+                    console.log('🎹 Found last device, auto-connecting:', device.name);
+                    connectDevice(device.id);
+                  }
+                });
+              }
+            }, 500);
+          } catch (e) {
+            console.log('Could not auto-reconnect to last device');
+          }
+        }
+        
+      } catch (err) {
+        let errorMessage = 'Failed to start MIDI service';
+        
+        if (err instanceof Error) {
+          if (err.message.includes('SecurityError') || err.message.includes('NotAllowedError')) {
+            errorMessage = 'MIDI access denied. Please allow MIDI permissions and refresh.';
+          } else if (err.message.includes('NotSupportedError')) {
+            errorMessage = 'MIDI not supported on this device or browser.';
+          } else {
+            errorMessage = err.message;
+          }
+        }
+        
+        setError(errorMessage);
+        setIsInitializing(false);
+        console.error('❌ MIDI service failed to start:', err);
+      }
+    };
+
+    // Start the service without blocking the UI
+    startMidiService();
+    
+    // No cleanup needed - MIDI service runs for app lifetime
+  }, []); // Only run once on mount
+
+  // Manual initialization function (kept for compatibility but not needed anymore)
+  const initializeMidi = useCallback(async () => {
+    if (isInitialized) {
+      console.log('🎹 MIDI already initialized');
+      return;
+    }
+    // Since we auto-initialize now, this is a no-op
+    console.log('🎹 MIDI auto-initializes on app start');
+  }, [isInitialized]);
+
   // Connect to a specific device via BLE (requires user gesture)
   const connectBleDevice = useCallback(async (deviceId: string): Promise<boolean> => {
     if (!midiAccessRef.current) {
@@ -421,7 +396,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     }
   }, [refreshDeviceList]);
 
-  // Connect to a specific device (Web MIDI only, no auto-BLE)
+  // Connect to a specific device
   const connectDevice = useCallback(async (deviceId: string): Promise<boolean> => {
     if (!midiAccessRef.current) {
       console.error('❌ MIDI not initialized');
@@ -431,484 +406,267 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     try {
       const access = midiAccessRef.current;
       let device: MIDIInput | MIDIOutput | undefined;
+      let isInput = false;
       
-      // Try to find device in inputs first, then outputs
-      device = access.inputs.get(deviceId) || access.outputs.get(deviceId);
+      // Check if device exists in inputs
+      if (access.inputs.has(deviceId)) {
+        device = access.inputs.get(deviceId);
+        isInput = true;
+      } else if (access.outputs.has(deviceId)) {
+        device = access.outputs.get(deviceId);
+        isInput = false;
+      }
       
       if (!device) {
         console.error(`❌ Device ${deviceId} not found`);
         return false;
       }
       
-      // Check if already connected via Web MIDI
-      if (deviceConnectionsRef.current.has(deviceId) && device.connection === 'open') {
-        console.log(`⚠️ Device ${device.name} already connected`);
-        return true;
+      // Check if device needs BLE adapter on Android
+      if (browserInfo.isAndroidBrowser && shouldUseBleAdapterInternal(device)) {
+        console.log(`🔵 Device ${device.name} requires BLE adapter on Android - use connectBleDevice() with user gesture`);
+        throw new Error('BLE_ADAPTER_REQUIRED');
       }
       
-      // Open the device connection with timeout
-      if (device.connection !== 'open') {
-        console.log(`🔌 Opening MIDI device: ${device.name}`);
+      console.log(`🎹 Connecting to ${device.name} (${device.manufacturer})...`);
+      
+      // Open the device port
+      if (device.connection === 'closed') {
+        await device.open();
+      }
+      
+      // Set up message handler for input devices
+      if (isInput && device.type === 'input') {
+        const inputDevice = device as MIDIInput;
         
-        await new Promise<void>((resolve, reject) => {
-          let resolved = false;
-          
-          // Set up timeout with Android compatibility
-          const timeoutMs = browserInfo.isAndroidChrome ? 12000 : browserInfo.isMobile ? 8000 : 5000;
-          const timeout = setTimeout(() => {
-            if (!resolved) {
-              resolved = true;
-              device!.onstatechange = null;
-              reject(new Error(`Connection timeout after ${timeoutMs/1000} seconds`));
-            }
-          }, timeoutMs);
-          
-          // Set up state change handler
-          const originalHandler = device!.onstatechange;
-          device!.onstatechange = (event: MIDIConnectionEvent) => {
-            if (resolved) return;
-            
-            if (event.port?.connection === 'open') {
-              resolved = true;
-              clearTimeout(timeout);
-              device!.onstatechange = originalHandler;
-              resolve();
-            } else if (event.port?.connection === 'closed' && event.port?.state === 'disconnected') {
-              resolved = true;
-              clearTimeout(timeout);
-              device!.onstatechange = originalHandler;
-              reject(new Error('Device disconnected during connection'));
-            }
-          };
-          
-          // Actually open the device
-          try {
-            device!.open();
-          } catch (openErr) {
-            resolved = true;
-            clearTimeout(timeout);
-            device!.onstatechange = originalHandler;
-            reject(openErr);
-          }
-        });
-      }
-      
-      // Set up message handler for inputs
-      if (device.type === 'input') {
-        (device as MIDIInput).onmidimessage = (message: MIDIMessageEvent) => {
-          console.log(`🎹 MIDI message from ${device.name}:`, message.data ? Array.from(message.data) : []);
-          
-          // Call all registered message listeners
-          messageListenersRef.current.forEach((callback, id) => {
+        inputDevice.onmidimessage = (event: MIDIMessageEvent) => {
+          // Notify all registered listeners
+          messageListenersRef.current.forEach(listener => {
             try {
-              callback(message);
-            } catch (error) {
-              console.error(`❌ Error in MIDI message listener '${id}':`, error);
+              listener(event);
+            } catch (err) {
+              console.error('Error in MIDI message listener:', err);
             }
           });
         };
       }
       
+      // Store the device connection
       deviceConnectionsRef.current.set(deviceId, device);
+      
+      // Save as last connected device
+      const deviceInfo = {
+        name: device.name,
+        manufacturer: device.manufacturer,
+        id: deviceId
+      };
+      localStorage.setItem('lastMidiDevice', JSON.stringify(deviceInfo));
+      
+      console.log(`✅ Connected to ${device.name}`);
+      
+      // Refresh device list to update UI
       await refreshDeviceList();
-      
-      // Android Chrome fix: Add delay to ensure connection is fully established
-      if (browserInfo.isAndroidChrome) {
-        console.log(`📱 Android Chrome: Adding 2-second stabilization delay for ${device.name}`);
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        console.log(`📱 Android Chrome: Connection stabilization complete for ${device.name}`);
-      }
-      
-      console.log(`✅ Connected to MIDI device: ${device.name}`);
       return true;
       
-    } catch (err) {
-      console.error(`❌ Failed to connect to device ${deviceId}:`, err);
+    } catch (error) {
+      console.error(`❌ Failed to connect to device ${deviceId}:`, error);
+      if (error instanceof Error && error.message === 'BLE_ADAPTER_REQUIRED') {
+        throw error; // Re-throw BLE adapter requirement
+      }
       return false;
     }
-  }, [refreshDeviceList]);
+  }, [browserInfo.isAndroidBrowser, shouldUseBleAdapter, refreshDeviceList]);
 
   // Disconnect from a specific device
   const disconnectDevice = useCallback(async (deviceId: string): Promise<boolean> => {
     try {
-      // Check if this is a BLE device first
+      // Check if it's a BLE device
       const bleDevice = bleDevicesRef.current.get(deviceId);
       if (bleDevice) {
-        console.log(`🔵 Disconnecting BLE device: ${bleDevice.name}`);
-        const result = await androidBleMidi.disconnectDevice(bleDevice.id);
-        if (result) {
-          bleDevicesRef.current.delete(deviceId);
-          await refreshDeviceList();
-          console.log(`✅ Disconnected BLE device: ${bleDevice.name}`);
-        }
-        return result;
+        console.log(`🔵 Disconnecting BLE device: ${deviceId}`);
+        await androidBleMidi.disconnectDevice(bleDevice.id);
+        bleDevicesRef.current.delete(deviceId);
+        await refreshDeviceList();
+        return true;
       }
       
-      // Regular Web MIDI disconnection
       const device = deviceConnectionsRef.current.get(deviceId);
       if (!device) {
-        console.log(`⚠️ Device ${deviceId} not in connections map`);
+        console.warn(`⚠️ Device ${deviceId} not in connected devices`);
         return false;
       }
       
-      console.log(`🔌 Closing MIDI device: ${device.name}`);
+      console.log(`🎹 Disconnecting from ${device.name}...`);
       
-      // Clear message handlers for inputs before closing
+      // Clear message handler if it's an input device
       if (device.type === 'input') {
         (device as MIDIInput).onmidimessage = null;
       }
       
-      // Actually close the device with timeout handling
+      // Close the device port
       if (device.connection === 'open') {
-        await new Promise<void>((resolve, reject) => {
-          let resolved = false;
-          
-          // Set up timeout
-          const timeout = setTimeout(() => {
-            if (!resolved) {
-              resolved = true;
-              device.onstatechange = null;
-              console.warn(`⚠️ Close timeout for device: ${device.name}`);
-              resolve(); // Don't fail on timeout, just warn
-            }
-          }, 3000);
-          
-          // Set up state change handler
-          const originalHandler = device.onstatechange;
-          device.onstatechange = (event: MIDIConnectionEvent) => {
-            if (resolved) return;
-            
-            if (event.port?.connection === 'closed') {
-              resolved = true;
-              clearTimeout(timeout);
-              device.onstatechange = originalHandler;
-              resolve();
-            }
-          };
-          
-          // Actually close the device
-          try {
-            device.close();
-          } catch (closeErr) {
-            resolved = true;
-            clearTimeout(timeout);
-            device.onstatechange = originalHandler;
-            console.warn(`⚠️ Error closing device: ${closeErr}`);
-            resolve(); // Don't fail on close error, just warn
-          }
-        });
+        await device.close();
       }
       
-      // Remove from connections map
+      // Remove from connected devices
       deviceConnectionsRef.current.delete(deviceId);
-      await refreshDeviceList();
       
-      console.log(`✅ Disconnected from MIDI device: ${device.name}`);
+      console.log(`✅ Disconnected from ${device.name}`);
+      
+      // Refresh device list to update UI
+      await refreshDeviceList();
       return true;
       
-    } catch (err) {
-      console.error(`❌ Failed to disconnect from device ${deviceId}:`, err);
+    } catch (error) {
+      console.error(`❌ Failed to disconnect from device ${deviceId}:`, error);
       return false;
     }
   }, [refreshDeviceList]);
 
-  // Parse MIDI command string in format [[PC:2:1]], [[CC:7:127:1]], or [[NOTE:60:1]] (NOTE defaults to NOTE_ON with velocity 127)
+  // Parse MIDI command from string
   const parseMidiCommand = useCallback((commandString: string): MidiCommand | null => {
-    // Remove outer brackets and trim
-    const cleaned = commandString.replace(/^\[\[|\]\]$/g, '').trim();
-    const parts = cleaned.split(':');
-    
-    if (parts.length < 3) {
-      console.error('❌ Invalid MIDI command format. Expected: [[TYPE:VALUE:CHANNEL]] or [[TYPE:VALUE:VELOCITY:CHANNEL]]');
-      return null;
-    }
-    
-    // Handle NOTE alias for NOTE_ON with default velocity
-    let type = parts[0].toUpperCase();
-    if (type === 'NOTE') {
-      type = 'NOTE_ON';
-    }
-    
-    const midiType = type as 'PC' | 'CC' | 'NOTE_ON' | 'NOTE_OFF';
-    const value = parseInt(parts[1]);
-    
-    let channel: number;
-    let velocity: number | undefined;
-    
-    if (parts.length === 3) {
-      // Format: [[PC:2:1]], [[CC:7:1]], or [[NOTE:60:1]]
-      channel = parseInt(parts[2]);
-      
-      // For NOTE alias, default velocity to 127
-      if (parts[0].toUpperCase() === 'NOTE') {
-        velocity = 127;
+    try {
+      // Support new bracket format: [[PC:12:1]] or [[CC:7:64:1]] or [[NOTE:60:127:1]]
+      const bracketMatch = commandString.match(/\[\[(PC|CC|NOTE|NOTE_ON|NOTE_OFF):(\d+)(?::(\d+))?:(\d+)\]\]/);
+      if (bracketMatch) {
+        const [, type, value, velocityOrValue2, channel] = bracketMatch;
+        
+        if (type === 'PC') {
+          return {
+            type: 'PC',
+            value: parseInt(value),
+            channel: parseInt(channel)
+          };
+        } else if (type === 'CC') {
+          return {
+            type: 'CC',
+            value: parseInt(value),
+            velocity: parseInt(velocityOrValue2 || '0'),
+            channel: parseInt(channel)
+          };
+        } else if (type === 'NOTE' || type === 'NOTE_ON') {
+          return {
+            type: 'NOTE_ON',
+            value: parseInt(value),
+            velocity: parseInt(velocityOrValue2 || '127'),
+            channel: parseInt(channel)
+          };
+        } else if (type === 'NOTE_OFF') {
+          return {
+            type: 'NOTE_OFF',
+            value: parseInt(value),
+            velocity: 0,
+            channel: parseInt(channel)
+          };
+        }
       }
-    } else if (parts.length === 4) {
-      // Format: [[CC:7:127:1]] or [[NOTE_ON:60:127:1]]
-      velocity = parseInt(parts[2]);
-      channel = parseInt(parts[3]);
-    } else {
-      console.error('❌ Invalid MIDI command format');
-      return null;
-    }
-    
-    // Validate channel
-    if (isNaN(channel) || channel < 1 || channel > 16) {
-      console.error('❌ Invalid MIDI channel. Must be 1-16, got:', channel);
-      return null;
-    }
-    
-    // Validate main value range based on command type
-    if (isNaN(value)) {
-      console.error('❌ Invalid MIDI value - not a number:', parts[1]);
-      return null;
-    }
-    
-    switch (midiType) {
-      case 'PC': // Program Change: 0-127
-        if (value < 0 || value > 127) {
-          console.error('❌ Program Change value must be 0-127, got:', value);
-          return null;
-        }
-        break;
+      
+      // Support legacy hex format for backward compatibility
+      const hexMatch = commandString.match(/^([0-9A-Fa-f]{2})\s+([0-9A-Fa-f]{2})(?:\s+([0-9A-Fa-f]{2}))?$/);
+      if (hexMatch) {
+        const [, status, data1, data2] = hexMatch;
+        const statusByte = parseInt(status, 16);
+        const messageType = statusByte & 0xF0;
+        const channel = (statusByte & 0x0F) + 1;
         
-      case 'CC': // Control Change: controller 0-127
-        if (value < 0 || value > 127) {
-          console.error('❌ Control Change controller must be 0-127, got:', value);
-          return null;
+        if (messageType === 0xC0) { // Program Change
+          return {
+            type: 'PC',
+            value: parseInt(data1, 16),
+            channel
+          };
+        } else if (messageType === 0xB0) { // Control Change
+          return {
+            type: 'CC',
+            value: parseInt(data1, 16),
+            velocity: parseInt(data2 || '0', 16),
+            channel
+          };
+        } else if (messageType === 0x90) { // Note On
+          return {
+            type: 'NOTE_ON',
+            value: parseInt(data1, 16),
+            velocity: parseInt(data2 || '7F', 16),
+            channel
+          };
+        } else if (messageType === 0x80) { // Note Off
+          return {
+            type: 'NOTE_OFF',
+            value: parseInt(data1, 16),
+            velocity: 0,
+            channel
+          };
         }
-        break;
-        
-      case 'NOTE_ON':
-      case 'NOTE_OFF': // Note number: 0-127
-        if (value < 0 || value > 127) {
-          console.error('❌ Note number must be 0-127, got:', value);
-          return null;
-        }
-        break;
-        
-      default:
-        console.error('❌ Unsupported MIDI command type:', type);
-        return null;
-    }
-    
-    // Validate velocity if provided
-    if (velocity !== undefined && (isNaN(velocity) || velocity < 0 || velocity > 127)) {
-      console.error('❌ MIDI velocity must be 0-127, got:', velocity);
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Failed to parse MIDI command:', error);
       return null;
     }
-    
-    return { type: midiType, value, channel, velocity };
   }, []);
 
-  // Send MIDI command to connected devices
+  // Send MIDI command to specific devices or all connected outputs
   const sendMidiCommand = useCallback((command: MidiCommand, deviceIds?: string[]): boolean => {
-    if (!midiAccessRef.current) {
-      console.error('❌ MIDI not initialized');
+    try {
+      const targetDeviceIds = deviceIds || Array.from(deviceConnectionsRef.current.keys());
+      
+      if (targetDeviceIds.length === 0) {
+        console.warn('⚠️ No connected devices to send MIDI command to');
+        return false;
+      }
+      
+      let message: number[] = [];
+      
+      if (command.type === 'PC') {
+        // Program Change: 0xCn, program
+        message = [0xC0 | (command.channel - 1), command.value];
+      } else if (command.type === 'CC') {
+        // Control Change: 0xBn, controller, value
+        message = [0xB0 | (command.channel - 1), command.value, command.velocity || 0];
+      } else if (command.type === 'NOTE_ON') {
+        // Note On: 0x9n, note, velocity
+        message = [0x90 | (command.channel - 1), command.value, command.velocity || 127];
+      } else if (command.type === 'NOTE_OFF') {
+        // Note Off: 0x8n, note, velocity
+        message = [0x80 | (command.channel - 1), command.value, 0];
+      }
+      
+      console.log(`🎹 Sending MIDI ${command.type} to ${targetDeviceIds.length} device(s):`, message);
+      
+      let sentCount = 0;
+      targetDeviceIds.forEach(deviceId => {
+        const device = deviceConnectionsRef.current.get(deviceId);
+        if (device && device.type === 'output' && device.connection === 'open') {
+          (device as MIDIOutput).send(message);
+          sentCount++;
+          console.log(`✅ Sent to ${device.name}`);
+        }
+      });
+      
+      return sentCount > 0;
+    } catch (error) {
+      console.error('Failed to send MIDI command:', error);
       return false;
     }
-    
-    const targetDevices = deviceIds ?? Array.from(new Set([...Array.from(deviceConnectionsRef.current.keys()), ...Array.from(bleDevicesRef.current.keys())]));
-    let success = false;
-    
-    targetDevices.forEach(deviceId => {
-      // Check if this device is connected via BLE adapter
-      const bleDevice = bleDevicesRef.current.get(deviceId);
-      if (bleDevice) {
-        // Send via BLE adapter
-        console.log(`🔵 Sending MIDI command via BLE to ${bleDevice.name}:`, command);
-        
-        try {
-          const channel = command.channel - 1; // MIDI channels are 0-based internally
-          let midiData: number[];
-          
-          switch (command.type) {
-            case 'PC': // Program Change
-              midiData = [0xC0 + channel, command.value];
-              break;
-              
-            case 'CC': // Control Change
-              const ccValue = command.velocity !== undefined ? command.velocity : 127;
-              midiData = [0xB0 + channel, command.value, ccValue];
-              break;
-              
-            case 'NOTE_ON':
-              const noteOnVel = command.velocity || 127;
-              midiData = [0x90 + channel, command.value, noteOnVel];
-              break;
-              
-            case 'NOTE_OFF':
-              const noteOffVel = command.velocity || 0;
-              midiData = [0x80 + channel, command.value, noteOffVel];
-              break;
-              
-            default:
-              console.error('❌ Unsupported MIDI command type:', command.type);
-              return;
-          }
-          
-          // Send via BLE adapter
-          androidBleMidi.sendMidiCommand(bleDevice.id, midiData).then(result => {
-            if (result) {
-              console.log(`✅ BLE MIDI command sent to ${bleDevice.name}:`, midiData);
-            } else {
-              console.error(`❌ Failed to send BLE MIDI command to ${bleDevice.name}`);
-            }
-          });
-          
-          success = true;
-        } catch (error) {
-          console.error(`❌ BLE MIDI command error for ${bleDevice.name}:`, error);
-        }
-        
-        return; // Skip Web MIDI processing for BLE devices
-      }
-      
-      // Regular Web MIDI processing
-      const device = deviceConnectionsRef.current.get(deviceId);
-      if (!device || device.type !== 'output') return;
-      
-      const output = device as MIDIOutput;
-      const channel = command.channel - 1; // MIDI channels are 0-based internally
-      
-      try {
-        let midiData: number[];
-        
-        switch (command.type) {
-          case 'PC': // Program Change
-            midiData = [0xC0 + channel, command.value];
-            break;
-            
-          case 'CC': // Control Change
-            const ccValue = command.velocity !== undefined ? command.velocity : 127;
-            midiData = [0xB0 + channel, command.value, ccValue];
-            break;
-            
-          case 'NOTE_ON':
-            const noteOnVel = command.velocity || 127;
-            midiData = [0x90 + channel, command.value, noteOnVel];
-            break;
-            
-          case 'NOTE_OFF':
-            const noteOffVel = command.velocity || 0;
-            midiData = [0x80 + channel, command.value, noteOffVel];
-            break;
-            
-          default:
-            console.error('❌ Unsupported MIDI command type:', command.type);
-            return;
-        }
-        
-        // Android browser debugging - add extra logging and validation
-        if (browserInfo.isAndroidBrowser) {
-          console.log(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'} MIDI Debug:`, {
-            deviceName: device.name,
-            deviceId: device.id,
-            deviceConnection: device.connection,
-            deviceState: device.state,
-            commandType: command.type,
-            midiData: midiData,
-            timestamp: Date.now(),
-            outputType: typeof output,
-            hasOutputSend: typeof output.send === 'function',
-            deviceManufacturer: device.manufacturer,
-            browserType: browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'
-          });
-          
-          // Check if device is truly ready for transmission
-          if (device.connection !== 'open') {
-            console.error(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'} MIDI Error: Device ${device.name} connection is ${device.connection}, not open!`);
-            return;
-          }
-          
-          if (device.state !== 'connected') {
-            console.error(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'} MIDI Error: Device ${device.name} state is ${device.state}, not connected!`);
-            return;
-          }
-        }
-        
-        // Try to send with Android-specific error handling
-        try {
-          output.send(midiData);
-          console.log(`🎹 Sent ${command.type} command to ${device.name}:`, midiData);
-          
-          // Android browser - add detailed confirmation logging
-          if (browserInfo.isAndroidBrowser) {
-            setTimeout(() => {
-              console.log(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'}: MIDI transmission attempt completed for ${device.name}`);
-              console.log(`📱 Device status check:`, {
-                name: device.name,
-                connection: device.connection,
-                state: device.state,
-                timestamp: Date.now(),
-                browserType: browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'
-              });
-            }, 50);
-            
-            // Additional Android-specific validation
-            setTimeout(() => {
-              console.log(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'}: Post-transmission validation for ${device.name} - checking if command was queued/buffered`);
-            }, 200);
-          }
-          
-        } catch (sendError) {
-          console.error(`❌ MIDI send() failed for ${device.name}:`, sendError);
-          if (browserInfo.isAndroidBrowser) {
-            console.error(`📱 Android ${browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'}: MIDI send failure details:`, {
-              error: sendError instanceof Error ? sendError.message : String(sendError),
-              deviceName: device.name,
-              deviceConnection: device.connection,
-              deviceState: device.state,
-              commandData: midiData,
-              browserType: browserInfo.isAndroidEdge ? 'Edge' : 'Chrome'
-            });
-          }
-          return;
-        }
-        
-        success = true;
-        
-      } catch (err) {
-        console.error(`❌ Failed to send MIDI command to ${device.name}:`, err);
-      }
-    });
-    
-    return success;
   }, []);
-
-  // Initialize MIDI if not already initialized - non-blocking version
-  const ensureMidiInitialized = useCallback(() => {
-    if (!isInitialized && !isInitializing && isSupported) {
-      console.log('🎹 Triggering MIDI initialization (non-blocking)');
-      // Don't await - let it run in background
-      initializeMidi().catch(err => {
-        console.error('MIDI init failed in background:', err);
-      });
-    }
-  }, [isInitialized, isInitializing, isSupported, initializeMidi]);
-
-  // Public refresh function - only works if MIDI is initialized
-  const refreshDevices = useCallback(async () => {
-    // DO NOT auto-initialize MIDI - wait for explicit user action
-    if (!isInitialized) {
-      console.log('🎹 MIDI not initialized - skipping refresh');
-      return;
-    }
-    
-    await refreshDeviceList();
-  }, [refreshDeviceList, isInitialized]);
 
   // Register a message listener
   const registerMessageListener = useCallback((id: string, callback: (message: MIDIMessageEvent) => void) => {
-    console.log(`🎹 Registering MIDI message listener: ${id}`);
     messageListenersRef.current.set(id, callback);
+    console.log(`📝 Registered MIDI message listener: ${id}`);
   }, []);
 
   // Unregister a message listener
   const unregisterMessageListener = useCallback((id: string) => {
-    console.log(`🎹 Unregistering MIDI message listener: ${id}`);
     messageListenersRef.current.delete(id);
+    console.log(`🗑️ Unregistered MIDI message listener: ${id}`);
   }, []);
+
+  // Manual refresh (kept for UI refresh button)
+  const refreshDevices = useCallback(async () => {
+    await refreshDeviceList();
+  }, [refreshDeviceList]);
 
   return {
     devices,
@@ -923,23 +681,9 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     sendMidiCommand,
     parseMidiCommand,
     refreshDevices,
-    initializeMidi,
-    shouldUseBleAdapter: (device: { name?: string | null }) => {
-      // Only use BLE adapter on Android browsers
-      if (!browserInfo.isAndroidBrowser) return false;
-      
-      // Only use for Bluetooth devices (especially WIDI devices)
-      const deviceName = device.name?.toLowerCase() || '';
-      const isBluetoothDevice = deviceName.includes('widi') || 
-                               deviceName.includes('bluetooth') || 
-                               deviceName.includes('ble');
-      
-      // Check if Web Bluetooth is supported
-      const hasWebBluetooth = androidBleMidi.isBluetoothSupported();
-      
-      return isBluetoothDevice && hasWebBluetooth;
-    },
+    shouldUseBleAdapter,
     registerMessageListener,
-    unregisterMessageListener
+    unregisterMessageListener,
+    initializeMidi
   };
 }

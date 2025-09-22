@@ -42,21 +42,20 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     disconnectDevice,
     sendMidiCommand,
     parseMidiCommand,
-    refreshDevices,
-    initializeMidi
+    refreshDevices
   } = useMidi();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [testCommand, setTestCommand] = useState('[[PC:1:1]]');
   const [connectionStates, setConnectionStates] = useState<Record<string, 'connecting' | 'disconnecting' | 'idle'>>({});
 
-  // DO NOT auto-initialize MIDI - wait for user interaction
+  // Refresh devices when dialog opens (MIDI auto-initializes in background now)
   useEffect(() => {
-    if (isOpen && isInitialized) {
-      // Only refresh if MIDI is already initialized
+    if (isOpen) {
+      // Always refresh when opening dialog to get latest device list
       refreshDevices();
     }
-  }, [isOpen, isInitialized]);
+  }, [isOpen]);
   
   // Auto-reconnect to last device after MIDI is initialized
   useEffect(() => {
@@ -85,60 +84,11 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   }, [isInitialized, devices]); // Re-run when devices change
 
   const handleRefresh = async () => {
-    if (!isInitialized) {
-      // Don't try to refresh if MIDI isn't initialized
-      return;
-    }
     setIsRefreshing(true);
     try {
       await refreshDevices();
     } catch (err) {
       console.error('Failed to refresh devices:', err);
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
-  
-  // Explicit MIDI initialization on user action
-  const handleEnableMidi = async () => {
-    console.log('🎹 Enable MIDI button clicked');
-    setIsRefreshing(true);
-    
-    // CRITICAL: Use requestAnimationFrame to ensure UI updates first
-    await new Promise(resolve => requestAnimationFrame(() => resolve(undefined)));
-    
-    // Additional defer to ensure loading state is visible
-    await new Promise(resolve => setTimeout(resolve, 10));
-    
-    try {
-      console.log('🎹 Starting MIDI initialization...');
-      await initializeMidi();
-      // If initialization succeeds, auto-reconnect to last device if stored
-      const lastDevice = localStorage.getItem('lastMidiDevice');
-      if (lastDevice) {
-        try {
-          const deviceInfo = JSON.parse(lastDevice);
-          console.log('🎹 Auto-reconnecting to last device:', deviceInfo.name);
-          // We'll attempt reconnection after device list refreshes
-        } catch (e) {
-          console.log('Could not parse last device info');
-        }
-      }
-    } catch (err) {
-      console.error('Failed to enable MIDI:', err);
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
-
-  // Manual retry for MIDI initialization after timeout
-  const handleRetryInit = async () => {
-    setIsRefreshing(true);
-    try {
-      await initializeMidi();
-      await refreshDevices();
-    } catch (err) {
-      console.error('Retry failed:', err);
     } finally {
       setIsRefreshing(false);
     }
@@ -391,19 +341,17 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                 </Badge>
               )}
             </div>
-            {isInitialized && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRefresh}
-                disabled={isRefreshing || isInitializing}
-                data-testid="button-refresh-devices"
-                className="mr-[83px]"
-              >
-                <RefreshCw className={`h-4 w-4 mr-2 ${(isRefreshing || isInitializing) ? 'animate-spin' : ''}`} />
-                {isInitializing ? 'Initializing...' : 'Refresh'}
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleRefresh}
+              disabled={isRefreshing || isInitializing}
+              data-testid="button-refresh-devices"
+              className="mr-[83px]"
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${(isRefreshing || isInitializing) ? 'animate-spin' : ''}`} />
+              {isInitializing ? 'Scanning...' : 'Refresh'}
+            </Button>
           </DialogTitle>
         </DialogHeader>
 
@@ -428,48 +376,13 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                 <Badge variant="outline">{unifiedDevices.length}</Badge>
               </div>
               
-              {!isInitialized ? (
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <Activity className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                      <h3 className="font-semibold text-lg mb-2">Enable MIDI Access</h3>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Click the button below to enable MIDI device detection.
-                        This requires your permission to access MIDI devices.
-                      </p>
-                      <Button
-                        onClick={handleEnableMidi}
-                        disabled={isInitializing}
-                        size="lg"
-                        className="mx-auto"
-                        data-testid="button-enable-midi"
-                      >
-                        {isInitializing ? (
-                          <>
-                            <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                            Enabling MIDI...
-                          </>
-                        ) : (
-                          <>
-                            <Activity className="h-4 w-4 mr-2" />
-                            Enable MIDI
-                          </>
-                        )}
-                      </Button>
-                      <p className="text-xs text-muted-foreground mt-4">
-                        Note: MIDI access uses the Web MIDI API which may prompt for permissions.
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ) : isInitializing ? (
+              {isInitializing ? (
                 <Card>
                   <CardContent className="pt-6">
                     <div className="text-center text-muted-foreground">
                       <RefreshCw className="h-8 w-8 mx-auto mb-2 animate-spin" />
-                      <p className="text-sm">Initializing MIDI...</p>
-                      <p className="text-xs">Scanning for MIDI devices on your system</p>
+                      <p className="text-sm">Scanning for MIDI devices...</p>
+                      <p className="text-xs">This may take a moment with many devices</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -478,8 +391,8 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                   <CardContent className="pt-6">
                     <div className="text-center text-muted-foreground">
                       <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">No MIDI devices found</p>
-                      <p className="text-xs">Connect a MIDI device and click Refresh</p>
+                      <p className="text-sm">No MIDI devices detected</p>
+                      <p className="text-xs">Connect a MIDI device and it will appear automatically</p>
                     </div>
                   </CardContent>
                 </Card>

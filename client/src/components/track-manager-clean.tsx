@@ -59,6 +59,8 @@ export default function TrackManager({
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
   const [tracks, setTracks] = useState<Track[]>([]); // Local tracks state for incremental updates
   const [isLoadingLocalTracks, setIsLoadingLocalTracks] = useState(false);
+  const loadingIdRef = useRef<number>(0); // Cancellation token for concurrent loads
+  const isMountedRef = useRef<boolean>(true); // Track if component is mounted
   // Pitch and speed control removed
 
   // Recording state
@@ -66,9 +68,20 @@ export default function TrackManager({
 
   const { toast } = useToast();
   const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
+  
+  // Track component mount status
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   // Load tracks sequentially when song changes
   useEffect(() => {
+    // Increment load ID for this load operation
+    const currentLoadId = ++loadingIdRef.current;
+    
     const loadTracksSequentially = async () => {
       if (!song?.id || !userEmail) {
         setTracks([]);
@@ -84,6 +97,12 @@ export default function TrackManager({
       setLocalTrackValues({});
 
       try {
+        // Check if this load is still current
+        if (loadingIdRef.current !== currentLoadId || !isMountedRef.current) {
+          console.log('Load cancelled - song changed or component unmounted');
+          return;
+        }
+        
         // Get fresh song data from database
         const currentSong = await LocalSongStorage.getSong(userEmail, song.id);
         if (!currentSong) {
@@ -99,6 +118,12 @@ export default function TrackManager({
         const trackValues: Record<string, { volume: number; balance: number }> = {};
 
         for (let i = 0; i < songTracks.length; i++) {
+          // Check if this load is still current before each track
+          if (loadingIdRef.current !== currentLoadId || !isMountedRef.current) {
+            console.log('Load cancelled during track loading');
+            return;
+          }
+          
           const track = songTracks[i];
           console.log(`Loading track ${i + 1}/${songTracks.length}: ${track.name}`);
 
@@ -130,9 +155,11 @@ export default function TrackManager({
             balance: track.balance || 0
           };
 
-          // Update state incrementally so UI shows progress
-          setTracks([...loadedTracks]);
-          setLocalTrackValues({ ...trackValues });
+          // Update state incrementally only if still current and mounted
+          if (loadingIdRef.current === currentLoadId && isMountedRef.current) {
+            setTracks([...loadedTracks]);
+            setLocalTrackValues({ ...trackValues });
+          }
         }
 
         // Waveform data is already in the song object if it exists
@@ -207,6 +234,12 @@ export default function TrackManager({
   };
 
   const handleFileSelect = () => {
+    // Prevent multiple concurrent imports
+    if (isImporting) {
+      console.log('Import already in progress, ignoring click');
+      return;
+    }
+    
     console.log('=== Web Track Manager: Starting file selection ===');
     
     try {
@@ -406,6 +439,12 @@ export default function TrackManager({
 
   const processFile = async (file: File) => {
     if (!song?.id || !userEmail) return;
+    
+    // Double-check we're still on the same song and mounted
+    if (!isMountedRef.current) {
+      console.log('Component unmounted, aborting file processing');
+      return;
+    }
     
     try {
       console.log(`Processing file: ${file.name}`);

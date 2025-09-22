@@ -543,10 +543,10 @@ export default function Dashboard() {
             {/* Dev Message */}
             {devMessage && (
               <div className="flex-1 mx-8 max-w-2xl">
-                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md px-3 py-2">
+                <div className="dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md px-3 py-2 bg-[#0d1216] text-[#7a7878] mt-[-15px] mb-[-15px]">
                   <div className="flex items-start gap-2">
                     <Megaphone className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-blue-900 dark:text-blue-100">{devMessage}</p>
+                    <p className="text-sm dark:text-blue-100 text-[#9d9fa8]">{devMessage}</p>
                   </div>
                 </div>
               </div>

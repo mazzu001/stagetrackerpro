@@ -1,0 +1,1 @@
+Welcome to StageTracker Pro! We are aware of a small glitch when you create a new song and add backing tracks the waveform doesnt appear until you select a different song and go back.

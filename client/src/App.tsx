@@ -20,7 +20,7 @@ import Plans from "@/pages/plans";
 import Landing from "@/pages/landing";
 import Unsubscribe from "@/pages/unsubscribe";
 import PrivacyPolicy from "@/pages/privacy-policy";
-import { useLocalAuth } from '@/hooks/useLocalAuth';
+import { useLocalAuth, type UserType } from '@/hooks/useLocalAuth';
 import { useStorage } from '@/contexts/StorageContext';
 import { MidiProvider } from '@/contexts/MidiProvider';
 import { StorageProvider } from '@/contexts/StorageContext';
@@ -37,9 +37,10 @@ function AnalyticsRouter({ children }: { children: React.ReactNode }) {
 interface AppContentProps {
   isAuthenticated: boolean;
   isPaidUser: boolean;
+  user?: { email: string; userType: UserType; } | null;
 }
 
-function AppContent({ isAuthenticated, isPaidUser, userEmail, logout }: AppContentProps & { userEmail?: string; logout?: () => void }) {
+function AppContent({ isAuthenticated, isPaidUser, user, userEmail, logout }: AppContentProps & { userEmail?: string; logout?: () => void }) {
   console.log("[APP] AppContent component rendering...");
   const { isInitialized: storageInitialized } = useStorage();
   console.log("[APP] Storage initialized:", storageInitialized);
@@ -199,7 +200,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <StorageProvider userEmail={user?.email || null}>
         <MidiProvider>
-          <AppContent isAuthenticated={isAuthenticated} isPaidUser={isPaidUser} userEmail={user?.email} logout={logout} />
+          <AppContent isAuthenticated={isAuthenticated} isPaidUser={isPaidUser} user={user} userEmail={user?.email} logout={logout} />
         </MidiProvider>
       </StorageProvider>
     </QueryClientProvider>

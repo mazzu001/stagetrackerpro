@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { AlertTriangle, Folder, HardDrive } from "lucide-react";
-import { BrowserFileSystem } from "../lib/browser-file-system";
+import { useStorage } from "@/contexts/StorageContext";
 
 interface LocalFileSystemInitProps {
   onInitialized: () => void;
@@ -42,27 +42,10 @@ export function LocalFileSystemInit({ onInitialized }: LocalFileSystemInitProps)
     setError(null);
 
     try {
-      // Get user email from localStorage if logged in
-      let userEmail = 'default@user.com';
-      const storedUser = localStorage.getItem('lpp_local_user');
-      if (storedUser) {
-        try {
-          const userData = JSON.parse(storedUser);
-          userEmail = userData.email || 'default@user.com';
-        } catch (e) {
-          console.error('Failed to parse user data:', e);
-        }
-      }
-      
-      const browserFS = BrowserFileSystem.getInstance(userEmail);
-      const success = await browserFS.initialize();
-      
-      if (success) {
-        console.log('Browser file system initialized successfully');
-        onInitialized();
-      } else {
-        setError('Failed to initialize browser storage. Please try again.');
-      }
+      // Storage is already initialized by the StorageProvider
+      // This component now just needs to trigger the callback
+      console.log('Triggering onInitialized callback');
+      onInitialized();
     } catch (error: any) {
       console.error('Initialization error:', error);
       

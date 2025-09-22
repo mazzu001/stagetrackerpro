@@ -1,0 +1,69 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+android-ble-midi.ts:36 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:44 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+browser-file-system.ts:69 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+browser-file-system.ts:125 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+audio-file-storage.ts:199 No stored audio file references found
+main.tsx:1 [MAIN.TSX] Script starting...
+main.tsx:5 [MAIN.TSX] Unregistering service workers...
+main.tsx:18 [MAIN.TSX] About to render React app...
+main.tsx:20 [MAIN.TSX] Root element: <div id=​"root">​…​</div>​
+main.tsx:25 [MAIN.TSX] React app rendered successfully
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+useLocalAuth.ts:34 [AUTH] Valid session found: professional@demo.com
+useMidiDevices.ts:100 🔍 Browser detection debug: Object
+App.tsx:38 [APP] AppContent component rendering...
+App.tsx:39 [APP] About to call useLocalAuth hook...
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+useLocalAuth.ts:34 [AUTH] Valid session found: professional@demo.com
+App.tsx:42 [APP] Auth state: Object
+App.tsx:43 [APP] Storage initialized: false
+useLocalAuth.ts:54 [AUTH] useEffect - auth state initialized
+App.tsx:68 🔍 Parsed values: Object
+App.tsx:122 🔍 No payment success detected in URL
+useMidiDevices.ts:257 🎹 MIDI API supported - starting background service...
+useLocalAuth.ts:54 [AUTH] useEffect - auth state initialized
+StorageContext.tsx:51 🔧 Initializing storage for user: professional@demo.com
+browser-file-system.ts:69 🗄️ Initializing per-user database: MusicAppStorage::professional_demo_com
+browser-file-system.ts:125 🔧 Opening IndexedDB: MusicAppStorage::professional_demo_com
+StorageContext.tsx:60 📊 Database exists for professional@demo.com: false
+StorageContext.tsx:66 🆕 Creating new database for professional@demo.com
+browser-file-system.ts:125 🔧 Opening IndexedDB: MusicAppStorage::professional_demo_com
+useMidiDevices.ts:266 🔐 MIDI Permission State: granted
+useMidiDevices.ts:280 🎹 Requesting MIDI access (this may take a moment with many devices)...
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+useMidiDevices.ts:100 🔍 Browser detection debug: Object
+App.tsx:38 [APP] AppContent component rendering...
+App.tsx:39 [APP] About to call useLocalAuth hook...
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+App.tsx:42 [APP] Auth state: Object
+App.tsx:43 [APP] Storage initialized: false
+browser-file-system.ts:115 Browser file system initialized successfully for user: default@user.com
+browser-file-system.ts:80 ✅ BrowserFileSystem fully initialized with config loaded
+browser-file-system.ts:115 Browser file system initialized successfully for user: professional@demo.com
+browser-file-system.ts:80 ✅ BrowserFileSystem fully initialized with config loaded
+browser-file-system.ts:115 Browser file system initialized successfully for user: professional@demo.com
+audio-file-storage.ts:44 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::professional@demo.com
+audio-file-storage.ts:199 No stored audio file references found
+StorageContext.tsx:84 ✅ Storage initialization complete for professional@demo.com
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+App.tsx:38 [APP] AppContent component rendering...
+App.tsx:39 [APP] About to call useLocalAuth hook...
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+App.tsx:42 [APP] Auth state: Object
+App.tsx:43 [APP] Storage initialized: true
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+useLocalAuth.ts:34 [AUTH] Valid session found: professional@demo.com
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+useLocalAuth.ts:34 [AUTH] Valid session found: professional@demo.com
+lyrics-display.tsx:293 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useLocalAuth.ts:54 [AUTH] useEffect - auth state initialized
+useBroadcast.ts:31 🔍 Initial service isHost check: Object
+useLocalAuth.ts:54 [AUTH] useEffect - auth state initialized
+streaming-audio-engine.ts:71 🎵 Master output initialized
+performance.tsx:451 📋 Loaded 11 songs from local storage (alphabetically sorted)
+performance.tsx:505 🔍 Debug values: Object
+performance.tsx:579 🎭 Broadcast host effect: Object
+performance.tsx:589 🎭 Not broadcasting - not host
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called

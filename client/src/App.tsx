@@ -20,10 +20,10 @@ import Plans from "@/pages/plans";
 import Landing from "@/pages/landing";
 import Unsubscribe from "@/pages/unsubscribe";
 import PrivacyPolicy from "@/pages/privacy-policy";
-import { LocalFileSystemInit } from '@/components/local-file-system-init';
-import { BrowserFileSystem } from '@/lib/browser-file-system';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
+import { useStorage } from '@/contexts/StorageContext';
 import { MidiProvider } from '@/contexts/MidiProvider';
+import { StorageProvider } from '@/contexts/StorageContext';
 // Google Analytics integration - Added from blueprint:javascript_google_analytics
 import { initGA } from "./lib/analytics";
 import { useAnalytics } from "./hooks/use-analytics";
@@ -36,11 +36,11 @@ function AnalyticsRouter({ children }: { children: React.ReactNode }) {
 
 function AppContent() {
   console.log("[APP] AppContent component rendering...");
-  const [isLocalFSReady, setIsLocalFSReady] = useState(false);
-  const [isCheckingFS, setIsCheckingFS] = useState(true);
   console.log("[APP] About to call useLocalAuth hook...");
   const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
+  const { isInitialized: storageInitialized } = useStorage();
   console.log("[APP] Auth state:", { isAuthenticated, isLoading, isPaidUser });
+  console.log("[APP] Storage initialized:", storageInitialized);
 
   useEffect(() => {
     // Check URL parameters for successful payment - handle both valid and invalid query formats
@@ -121,60 +121,16 @@ function AppContent() {
     } else {
       console.log('🔍 No payment success detected in URL');
     }
-    
-    // Check if local file system is already initialized
-    const checkLocalFS = async () => {
-      try {
-        // Get user email from localStorage if logged in
-        let userEmail = 'default@user.com';
-        const storedUser = localStorage.getItem('lpp_local_user');
-        if (storedUser) {
-          try {
-            const userData = JSON.parse(storedUser);
-            userEmail = userData.email || 'default@user.com';
-          } catch (e) {
-            console.error('Failed to parse user data:', e);
-          }
-        }
-        
-        const browserFS = BrowserFileSystem.getInstance(userEmail);
-        const isAlreadyInitialized = await browserFS.isAlreadyInitialized();
-        
-        if (isAlreadyInitialized) {
-          console.log(`Browser file system already initialized for user ${userEmail} - auto-initializing`);
-          // Auto-initialize since it was already set up before
-          const success = await browserFS.initialize();
-          if (success) {
-            setIsLocalFSReady(true);
-          } else {
-            console.log('Auto-initialization failed - showing setup screen');
-          }
-        } else {
-          console.log('Browser file system needs initialization');
-        }
-      } catch (error) {
-        console.error('Error checking browser file system:', error);
-      } finally {
-        setIsCheckingFS(false);
-      }
-    };
-
-    checkLocalFS();
   }, []);
 
-  const handleLocalFSInitialized = () => {
-    setIsLocalFSReady(true);
-  };
 
-  if (isCheckingFS || isLoading) {
+  if (isLoading) {
     return (
       <TooltipProvider>
         <div className="min-h-screen min-h-[100dvh] bg-background flex items-center justify-center mobile-vh-fix">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-400">
-              {isLoading ? 'Checking authentication...' : 'Checking local storage...'}
-            </p>
+            <p className="text-gray-400">Checking authentication...</p>
           </div>
         </div>
         <Toaster />
@@ -189,8 +145,13 @@ function AppContent() {
           <Route path="/" component={Landing} />
           <Route path="/privacy-policy" component={PrivacyPolicy} />
         </AnalyticsRouter>
-      ) : !isLocalFSReady ? (
-        <LocalFileSystemInit onInitialized={handleLocalFSInitialized} />
+      ) : !storageInitialized ? (
+        <div className="min-h-screen bg-background flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-400">Initializing storage...</p>
+          </div>
+        </div>
       ) : (
         <AnalyticsRouter>
           <Route path="/" component={() => <Performance userType={isPaidUser ? 'premium' : 'free'} />} />
@@ -229,9 +190,11 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <MidiProvider>
-        <AppContent />
-      </MidiProvider>
+      <StorageProvider>
+        <MidiProvider>
+          <AppContent />
+        </MidiProvider>
+      </StorageProvider>
     </QueryClientProvider>
   );
 }

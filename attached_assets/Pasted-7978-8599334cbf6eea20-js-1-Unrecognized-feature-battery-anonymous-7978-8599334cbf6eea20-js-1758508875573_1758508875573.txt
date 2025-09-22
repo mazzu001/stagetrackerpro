@@ -1,0 +1,473 @@
+7978-8599334cbf6eea20.js:1  Unrecognized feature: 'battery'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+7978-8599334cbf6eea20.js:1  Unrecognized feature: 'layout-animations'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+7978-8599334cbf6eea20.js:1  Unrecognized feature: 'legacy-image-formats'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+7978-8599334cbf6eea20.js:1  Unrecognized feature: 'navigation-override'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+7978-8599334cbf6eea20.js:1  Unrecognized feature: 'oversized-images'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+7978-8599334cbf6eea20.js:1  Unrecognized feature: 'publickey-credentials'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+7978-8599334cbf6eea20.js:1  Unrecognized feature: 'unoptimized-images'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+7978-8599334cbf6eea20.js:1  Unrecognized feature: 'unsized-media'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+7978-8599334cbf6eea20.js:1  Unrecognized feature: 'pointer-lock'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+7978-8599334cbf6eea20.js:1  Allow attribute will take precedence over 'allowfullscreen'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+7978-8599334cbf6eea20.js:1  Allow attribute will take precedence over 'allowpaymentrequest'.
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+n @ main-5df64e424d5681c5.js:1
+u @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ main-5df64e424d5681c5.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+navigateTo @ 7978-8599334cbf6eea20.js:1
+refresh @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ 7978-8599334cbf6eea20.js:1
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+onClick @ _app-8f097e28ee43e01e.js:4
+(anonymous) @ _app-8f097e28ee43e01e.js:4
+eB @ framework-d57613d43901e4e4.js:1
+eH @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+re @ framework-d57613d43901e4e4.js:1
+rt @ framework-d57613d43901e4e4.js:1
+(anonymous) @ framework-d57613d43901e4e4.js:1
+uT @ framework-d57613d43901e4e4.js:1
+eM @ framework-d57613d43901e4e4.js:1
+ru @ framework-d57613d43901e4e4.js:1
+tB @ framework-d57613d43901e4e4.js:1
+tD @ framework-d57613d43901e4e4.js:1
+n @ _app-8f097e28ee43e01e.js:28
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Unrecognized feature: 'battery'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Unrecognized feature: 'layout-animations'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Unrecognized feature: 'legacy-image-formats'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Unrecognized feature: 'navigation-override'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Unrecognized feature: 'oversized-images'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Unrecognized feature: 'publickey-credentials'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Unrecognized feature: 'unoptimized-images'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Unrecognized feature: 'unsized-media'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+8003ebbc-7c24-44f5-a60e-826fca6862d2-00-2focubqywwqvm.kirk.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar38u%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+Console.js:61 🔵 Android BLE-MIDI adapter initialized
+Console.js:61 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+Console.js:61 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+Console.js:61 No stored audio file references found
+Console.js:61 [MAIN.TSX] Script starting...
+Console.js:61 [MAIN.TSX] Unregistering service workers...
+Console.js:61 [MAIN.TSX] About to render React app...
+Console.js:61 [MAIN.TSX] Root element: <div id=​"root">​…​</div>​
+Console.js:61 [MAIN.TSX] React app rendered successfully
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] Valid session found: professional@demo.com
+Console.js:61 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] About to call useLocalAuth hook...
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] Valid session found: professional@demo.com
+Console.js:61 [APP] Auth state: {isAuthenticated: true, isLoading: false, isPaidUser: true}
+Console.js:61 [APP] Storage initialized: false
+Console.js:61 [AUTH] useEffect - auth state initialized
+Console.js:61 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 🎹 MIDI API supported - starting background service...
+Console.js:61 [AUTH] useEffect - auth state initialized
+Console.js:61 🔧 Initializing storage for user: professional@demo.com
+Console.js:61 🗄️ Initializing per-user database: MusicAppStorage::professional_demo_com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::professional_demo_com
+Console.js:61 📊 Database exists for professional@demo.com: true
+Console.js:61 📂 Loading existing database for professional@demo.com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::professional_demo_com
+Console.js:61 🔐 MIDI Permission State: granted
+Console.js:61 🎹 Requesting MIDI access (this may take a moment with many devices)...
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] About to call useLocalAuth hook...
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [APP] Auth state: {isAuthenticated: true, isLoading: false, isPaidUser: true}
+Console.js:61 [APP] Storage initialized: false
+Console.js:61 Browser file system initialized successfully for user: default@user.com
+Console.js:61 ✅ BrowserFileSystem fully initialized with config loaded
+Console.js:61 Browser file system initialized successfully for user: professional@demo.com
+Console.js:61 ✅ BrowserFileSystem fully initialized with config loaded
+Console.js:61 Browser file system initialized successfully for user: professional@demo.com
+Console.js:61 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::professional@demo.com
+Console.js:61 No stored audio file references found
+Console.js:61 ✅ Storage initialization complete for professional@demo.com
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] About to call useLocalAuth hook...
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [APP] Auth state: {isAuthenticated: true, isLoading: false, isPaidUser: true}
+Console.js:61 [APP] Storage initialized: true
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] Valid session found: professional@demo.com
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] Valid session found: professional@demo.com
+Console.js:61 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+Console.js:61 [AUTH] useEffect - auth state initialized
+Console.js:61 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+Console.js:61 [AUTH] useEffect - auth state initialized
+Console.js:61 🎵 Master output initialized
+Console.js:61 📋 Loaded 2 songs from local storage (alphabetically sorted)
+Console.js:61 🔍 Debug values: {selectedSongId: null, userEmail: 'professional@demo.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+Console.js:61 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] useLocalAuth hook called
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+Zy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-simple.tsx:9
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+Zy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-elements-test.tsx:9

@@ -142,7 +142,7 @@ function AppContent({ isAuthenticated, isPaidUser, userEmail, logout }: AppConte
         </div>
       ) : (
         <AnalyticsRouter>
-          <Route path="/" component={() => <Performance userType={isPaidUser ? 'premium' : 'free'} userEmail={userEmail} logout={logout} />} />
+          <Route path="/" component={() => <Performance userType={user?.userType || 'free'} userEmail={userEmail} logout={logout} />} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
         <Route path="/broadcast-viewer-old" component={BroadcastViewer} />

@@ -1,13 +1,10 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Plus, Minus, Edit, ChevronUp, ChevronDown, Music } from "lucide-react";
-import { useMidi } from "@/contexts/MidiProvider";
+import { Plus, Minus, Edit, ChevronUp, ChevronDown } from "lucide-react";
 
 interface LyricsLine {
   timestamp: number; // in seconds
   text: string;
-  displayText: string; // Text without MIDI commands for display
-  midiCommands: string[]; // Extracted MIDI commands like [[PC:2:1]]
 }
 
 interface LyricsDisplayProps {
@@ -16,17 +13,11 @@ interface LyricsDisplayProps {
   duration: number;
   onEditLyrics?: () => void;
   isPlaying: boolean;
-  allowMidi?: boolean; // Optional prop to disable MIDI execution (for viewers)
 }
 
-export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPlaying, allowMidi = true }: LyricsDisplayProps) {
+export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPlaying }: LyricsDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  
-  // MIDI integration
-  const { sendMidiCommand, parseMidiCommand, connectedDevices } = useMidi();
-  const [executedCommands, setExecutedCommands] = useState<Set<string>>(new Set());
   const [previousTime, setPreviousTime] = useState<number>(0);
-  const [songSetupCommandsExecuted, setSongSetupCommandsExecuted] = useState<string | null>(null);
 
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');
@@ -74,23 +65,8 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
     };
   }, []);
 
-  // Extract MIDI commands from text
-  const extractMidiCommands = (text: string): { displayText: string; midiCommands: string[] } => {
-    const midiCommandRegex = /\[\[([A-Za-z_]+:[0-9]+(?::[0-9]+)?(?::[0-9]+)?)\]\]/g;
-    const midiCommands: string[] = [];
-    let displayText = text;
-    
-    // Find all MIDI commands
-    let match;
-    while ((match = midiCommandRegex.exec(text)) !== null) {
-      midiCommands.push(match[0]); // Include the full [[...]] format
-      displayText = displayText.replace(match[0], '').trim();
-    }
-    
-    return { displayText, midiCommands };
-  };
 
-  // Parse lyrics with timestamps and extract MIDI commands
+  // Parse lyrics with timestamps
   const parseLyrics = (lyricsText: string): LyricsLine[] => {
     if (!lyricsText) return [];
     
@@ -113,8 +89,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
         let text = trimmed.substring(timestampMatch[0].length).trim();
         
         if (text) {
-          const { displayText, midiCommands } = extractMidiCommands(text);
-          parsedLines.push({ timestamp, text, displayText, midiCommands });
+          parsedLines.push({ timestamp, text });
           estimatedTime = timestamp + 4; // Update estimated time for next non-timestamped line
         }
       } else {
@@ -122,8 +97,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
         let text = trimmed;
         
         if (text) {
-          const { displayText, midiCommands } = extractMidiCommands(text);
-          parsedLines.push({ timestamp: estimatedTime, text, displayText, midiCommands });
+          parsedLines.push({ timestamp: estimatedTime, text });
           estimatedTime += 4; // Increment by 4 seconds for next line
         }
       }
@@ -133,32 +107,6 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
   };
 
   const lyrics = song?.lyrics ? parseLyrics(song.lyrics) : [];
-  
-  // Extract MIDI commands from non-timestamped lines for song setup
-  const extractSetupMidiCommands = useCallback((lyricsText: string): string[] => {
-    if (!lyricsText) return [];
-    
-    const lines = lyricsText.split('\n');
-    const setupCommands: string[] = [];
-    
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed) continue;
-      
-      // Check if line has timestamp pattern at start
-      const hasTimestamp = /^\[\d{1,2}:\d{2}\]/.test(trimmed);
-      
-      // If no timestamp, extract MIDI commands for setup
-      if (!hasTimestamp) {
-        const { midiCommands } = extractMidiCommands(trimmed);
-        setupCommands.push(...midiCommands);
-      }
-    }
-    
-    return setupCommands;
-  }, []);
-  
-
   
   // Check if lyrics actually contain timestamp patterns at start of lines
   // Only matches [MM:SS] format at the very beginning of a line
@@ -206,96 +154,12 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
   const currentLines = getCurrentLines();
   const currentLineIndex = currentLines.length > 0 ? lyrics.findIndex(line => line === currentLines[0]) : -1;
 
-  // Execute MIDI commands from ALL current lines at current timestamp
-  useEffect(() => {
-    if (!allowMidi || !isPlaying || currentLines.length === 0 || lyrics.length === 0) return;
-    
-    // Process ALL lines at the current timestamp
-    currentLines.forEach((line, lineIndex) => {
-      if (line.midiCommands.length === 0) return;
-      
-      // Create unique key for this line's commands
-      const lineKey = `${line.timestamp}_${lyrics.indexOf(line)}`;
-      
-      // Check if we've already executed commands for this line
-      if (executedCommands.has(lineKey)) return;
-      
-      // Execute all MIDI commands for this line
-      line.midiCommands.forEach((commandString, commandIndex) => {
-        const command = parseMidiCommand(commandString);
-        if (command) {
-          const success = sendMidiCommand(command);
-          if (success) {
-            console.log(`🎹 Executed MIDI command from lyrics: ${commandString} at ${line.timestamp}s (line ${lineIndex + 1}/${currentLines.length})`);
-          } else {
-            console.warn(`❌ Failed to execute MIDI command: ${commandString}`);
-          }
-        } else {
-          console.warn(`❌ Invalid MIDI command format: ${commandString}`);
-        }
-      });
-      
-      // Mark this line's commands as executed
-      setExecutedCommands(prev => new Set(prev).add(lineKey));
-    });
-  }, [currentLines, isPlaying, hasTimestamps, lyrics, connectedDevices, sendMidiCommand, parseMidiCommand, executedCommands]);
 
-  // Execute non-timestamped MIDI commands when opening a song
-  useEffect(() => {
-    if (!allowMidi || !song?.id || !song?.lyrics) return;
-    
-    // Check if we've already executed setup commands for this song
-    if (songSetupCommandsExecuted === song.id) return;
-    
-    // Only execute if we have connected MIDI output devices
-    const outputDevices = connectedDevices.filter(d => d.type === 'output');
-    if (outputDevices.length === 0) return;
-    
-    // Extract and execute setup commands
-    const setupCommands = extractSetupMidiCommands(song.lyrics);
-    if (setupCommands.length === 0) return;
-    
-    console.log(`🎵 Executing ${setupCommands.length} setup MIDI commands for song: ${song.title || 'Untitled'}`);
-    
-    // Execute all setup MIDI commands
-    setupCommands.forEach((commandString, index) => {
-      const command = parseMidiCommand(commandString);
-      if (command) {
-        const success = sendMidiCommand(command);
-        if (success) {
-          console.log(`🎹 Executed setup MIDI command: ${commandString}`);
-        } else {
-          console.warn(`❌ Failed to execute setup MIDI command: ${commandString}`);
-        }
-      } else {
-        console.warn(`❌ Invalid setup MIDI command format: ${commandString}`);
-      }
-    });
-    
-    // Mark setup commands as executed for this song
-    setSongSetupCommandsExecuted(song.id);
-  }, [song?.id, song?.lyrics, connectedDevices, sendMidiCommand, parseMidiCommand, extractSetupMidiCommands, songSetupCommandsExecuted]);
 
-  // Reset executed commands when song changes or playback restarts
+  // Track previous time for seek detection  
   useEffect(() => {
-    setExecutedCommands(new Set());
-    setSongSetupCommandsExecuted(null); // Reset setup commands for new song
-  }, [song?.id]);
-
-  // Detect seeks and reset executed commands when seeking backward or jumping significantly
-  useEffect(() => {
-    const timeDifference = currentTime - previousTime;
-    const isBackwardSeek = timeDifference < -1; // More than 1 second backward
-    const isLargeJump = Math.abs(timeDifference) > 5 && previousTime > 0; // Jump more than 5 seconds
-    const isNearBeginning = currentTime < 2; // Near beginning
-    
-    if (isBackwardSeek || isLargeJump || isNearBeginning) {
-      console.log(`🔄 Seek detected: ${previousTime.toFixed(1)}s → ${currentTime.toFixed(1)}s, resetting MIDI commands`);
-      setExecutedCommands(new Set());
-    }
-    
     setPreviousTime(currentTime);
-  }, [currentTime, previousTime]);
+  }, [currentTime]);
 
   
   
@@ -435,8 +299,8 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
           // Unified rendering for both timestamped and non-timestamped lyrics
           <div className={hasTimestamps ? "space-y-6" : "space-y-4"} style={{ fontSize: `${fontSize}px` }}>
             {lyrics.map((line, index) => {
-              // Skip rendering lines with empty displayText (MIDI-only lines) to avoid blank lines
-              if (!line.displayText.trim()) {
+              // Skip empty lines
+              if (!line.text.trim()) {
                 return null;
               }
               
@@ -466,41 +330,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
                   data-testid={`lyrics-line-${index}`}
                   id={!hasTimestamps ? `auto-scroll-line-${index}` : undefined}
                 >
-                  <div className="flex items-start gap-2">
-                    <span className="flex-1">{line.displayText}</span>
-                    {line.midiCommands.length > 0 && (
-                      <div className="flex items-center gap-1 ml-2">
-                        <Music className={`h-3 w-3 ${
-                          hasTimestamps ? (
-                            isCurrent 
-                              ? 'text-blue-300' 
-                              : isPast 
-                              ? 'text-gray-600' 
-                              : 'text-gray-500'
-                          ) : (
-                            isCurrent
-                              ? 'text-blue-300'
-                              : 'text-gray-500'
-                          )
-                        }`} />
-                        <span className={`text-xs font-mono ${
-                          hasTimestamps ? (
-                            isCurrent 
-                              ? 'text-blue-300' 
-                              : isPast 
-                              ? 'text-gray-600' 
-                              : 'text-gray-500'
-                          ) : (
-                            isCurrent
-                              ? 'text-blue-300'
-                              : 'text-gray-500'
-                          )
-                        }`}>
-                          {line.midiCommands.length}
-                        </span>
-                      </div>
-                    )}
-                  </div>
+                  <span className="flex-1">{line.text}</span>
                 </div>
               );
             })}

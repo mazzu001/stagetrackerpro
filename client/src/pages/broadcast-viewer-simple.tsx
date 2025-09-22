@@ -189,7 +189,6 @@ export default function SimpleBroadcastViewer() {
                     currentTime={broadcastState?.position || 0}
                     duration={currentSong.duration || 0}
                     isPlaying={broadcastState?.isPlaying || false}
-                    allowMidi={false}
                   />
                 </div>
               </div>

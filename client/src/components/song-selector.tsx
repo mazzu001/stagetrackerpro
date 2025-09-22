@@ -10,6 +10,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useUpgradePrompt } from "@/hooks/useSubscription";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { ListMusic, Plus, FolderOpen, Search, ExternalLink, Loader2, Trash2 } from "lucide-react";
+import { SongDeletionManager } from "@/lib/song-deletion-manager";
+import StorageCleanup from "@/components/storage-cleanup";
 import type { Song, InsertSong } from "@shared/schema";
 
 interface SongSelectorProps {
@@ -222,15 +224,46 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
     const confirmMsg = `Delete ${selectedSongs.size} song(s)?: ${songTitles.join(', ')}\n\nThis action cannot be undone.`;
     
     if (window.confirm(confirmMsg)) {
-      // Delete all selected songs
-      for (const songId of Array.from(selectedSongs)) {
+      // Get user email from localStorage for deletion
+      const storedUser = localStorage.getItem('lpp_local_user');
+      let userEmail = 'default@user.com';
+      if (storedUser) {
         try {
-          await deleteSongMutation.mutateAsync(songId);
-        } catch (error) {
-          console.error('Failed to delete song:', songId, error);
+          const userData = JSON.parse(storedUser);
+          userEmail = userData.email || 'default@user.com';
+        } catch (e) {
+          console.error('Failed to parse user data:', e);
         }
       }
+      
+      // Delete all selected songs with complete cleanup
+      const songIds = Array.from(selectedSongs);
+      const result = await SongDeletionManager.deleteMultiple(userEmail, songIds);
+      
+      // Invalidate query cache to refresh the list
+      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
+      
+      // Clear selection
       setSelectedSongs(new Set());
+      
+      // Clear selected song if it was deleted
+      if (selectedSongId && selectedSongs.has(selectedSongId)) {
+        onSongSelect('');
+      }
+      
+      // Show result
+      if (result.failed > 0) {
+        toast({
+          title: "Partial deletion",
+          description: `${result.successful} songs deleted successfully, ${result.failed} failed.`,
+          variant: "destructive"
+        });
+      } else {
+        toast({
+          title: "Songs deleted",
+          description: `${result.successful} song(s) have been completely removed.`
+        });
+      }
     }
   };
 
@@ -415,6 +448,7 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
             <FolderOpen className="w-4 h-4 mr-1" />
             Import
           </Button>
+          <StorageCleanup />
           </div>
         
         {/* Delete selected songs button */}

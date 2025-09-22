@@ -161,7 +161,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
 
   // Handle unified device connections (both input and output)
   const handleUnifiedConnect = async (unifiedDevice: any) => {
-    const deviceIds = [];
+    const deviceIds: string[] = [];
     if (unifiedDevice.inputDevice) deviceIds.push(unifiedDevice.inputDevice.id);
     if (unifiedDevice.outputDevice) deviceIds.push(unifiedDevice.outputDevice.id);
     
@@ -186,17 +186,24 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
         };
         localStorage.setItem('lastMidiDevice', JSON.stringify(deviceInfo));
         console.log('🎹 Saved last connected device:', deviceInfo.name);
+        
+        // Force a refresh to update the UI after successful connection
+        setTimeout(() => {
+          refreshDevices();
+        }, 100);
       }
     } finally {
-      // Reset states
-      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-      deviceIds.forEach(id => resetStates[id] = 'idle');
-      setConnectionStates(prev => ({ ...prev, ...resetStates }));
+      // Reset states after a short delay to allow UI to update
+      setTimeout(() => {
+        const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+        deviceIds.forEach(id => resetStates[id] = 'idle');
+        setConnectionStates(prev => ({ ...prev, ...resetStates }));
+      }, 500);
     }
   };
 
   const handleUnifiedDisconnect = async (unifiedDevice: any) => {
-    const deviceIds = [];
+    const deviceIds: string[] = [];
     if (unifiedDevice.inputDevice) deviceIds.push(unifiedDevice.inputDevice.id);
     if (unifiedDevice.outputDevice) deviceIds.push(unifiedDevice.outputDevice.id);
     
@@ -211,12 +218,19 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       const anyFailed = results.some(success => !success);
       if (anyFailed) {
         console.error('Failed to disconnect from some devices:', deviceIds);
+      } else {
+        // Force a refresh to update the UI after successful disconnection
+        setTimeout(() => {
+          refreshDevices();
+        }, 100);
       }
     } finally {
-      // Reset states
-      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-      deviceIds.forEach(id => resetStates[id] = 'idle');
-      setConnectionStates(prev => ({ ...prev, ...resetStates }));
+      // Reset states after a short delay to allow UI to update
+      setTimeout(() => {
+        const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+        deviceIds.forEach(id => resetStates[id] = 'idle');
+        setConnectionStates(prev => ({ ...prev, ...resetStates }));
+      }, 500);
     }
   };
 

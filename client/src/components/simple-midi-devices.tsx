@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Activity, CheckCircle } from "lucide-react";
-import { useSimpleMidi } from "@/hooks/useSimpleMidi";
+import { useMidi } from "@/contexts/SimpleMidiContext";
 
 interface SimpleMidiDevicesProps {
   isOpen: boolean;
@@ -9,7 +9,7 @@ interface SimpleMidiDevicesProps {
 }
 
 export function SimpleMidiDevices({ isOpen, onClose }: SimpleMidiDevicesProps) {
-  const { devices, isInitialized, error, initMidi } = useSimpleMidi();
+  const { devices, isInitialized, error, initMidi } = useMidi();
   
   const inputs = devices.filter(d => d.type === 'input');
   const outputs = devices.filter(d => d.type === 'output');

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Edit, ChevronUp, ChevronDown, Music } from "lucide-react";
-import { useSimpleMidi } from "@/hooks/useSimpleMidi";
+import { useMidi } from "@/contexts/SimpleMidiContext";
 
 interface LyricsLine {
   timestamp: number; // in seconds
@@ -25,7 +25,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
   const [executedCommands, setExecutedCommands] = useState<Set<string>>(new Set());
   
   // MIDI integration - only if allowed and initialized
-  const midi = useSimpleMidi();
+  const midi = useMidi();
 
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');

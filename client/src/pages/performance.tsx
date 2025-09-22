@@ -11,7 +11,7 @@ import StemSplitter from "@/components/stem-splitter";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
 import { SimpleMidiDevices } from "@/components/simple-midi-devices";
-import { useSimpleMidi } from "@/hooks/useSimpleMidi";
+import { MidiProvider } from "@/contexts/SimpleMidiContext";
 
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 
@@ -69,9 +69,6 @@ export default function Performance({ userType, userEmail, logout }: Performance
   const [exportFilename, setExportFilename] = useState("");
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
   const [isDeviceDialogOpen, setIsDeviceDialogOpen] = useState(false);
-
-  // MIDI integration - simple and non-blocking
-  const midi = useSimpleMidi();
 
   // Optional broadcast integration - completely isolated
   const { isHost, isViewer, broadcastState, sendPerformanceState, currentRoom } = useBroadcast();
@@ -834,7 +831,8 @@ export default function Performance({ userType, userEmail, logout }: Performance
   }, [toast]);
 
   return (
-    <div className={`h-screen flex flex-col bg-background text-foreground overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
+    <MidiProvider>
+      <div className={`h-screen flex flex-col bg-background text-foreground overflow-hidden ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       
       
       {/* Header */}
@@ -1558,6 +1556,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
         onChange={handleFileSelected}
         data-testid="hidden-import-file-input"
       />
-    </div>
+      </div>
+    </MidiProvider>
   );
 }

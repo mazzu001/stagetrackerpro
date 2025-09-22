@@ -113,7 +113,7 @@ export function TrackWaveformEditor({
       const isValidUrl = await testLoad;
       
       if (!isValidUrl) {
-        const browserFS = BrowserFileSystem.getInstance();
+        const browserFS = BrowserFileSystem.getInstance(userEmail);
         const freshUrl = await browserFS.getAudioUrl(trackId);
         
         if (freshUrl) {
@@ -345,7 +345,7 @@ export function TrackWaveformEditor({
     
     try {
       // Always get a fresh audio URL to ensure it's valid
-      const browserFS = BrowserFileSystem.getInstance();
+      const browserFS = BrowserFileSystem.getInstance(userEmail);
       const freshUrl = await browserFS.getAudioUrl(trackId);
       
       if (!freshUrl) {

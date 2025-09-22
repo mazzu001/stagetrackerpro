@@ -1,5 +1,5 @@
 import type { SongWithTracks } from '@shared/schema';
-import { audioStorage } from '@/lib/audio-file-storage';
+import { AudioFileStorage } from '@/lib/audio-file-storage';
 
 /**
  * Standalone waveform generation utility
@@ -100,7 +100,7 @@ export class WaveformGenerator {
    * Generate comprehensive waveform from all tracks in a song
    * This runs automatically when tracks are loaded for the first time
    */
-  async generateWaveformFromSong(song: SongWithTracks): Promise<number[]> {
+  async generateWaveformFromSong(song: SongWithTracks, userEmail?: string): Promise<number[]> {
     if (!song || song.tracks.length === 0) {
       console.log(`No tracks available for waveform generation: ${song?.title || 'Unknown song'}`);
       return this.generateFallbackWaveform(400, song?.duration || 240);
@@ -114,6 +114,9 @@ export class WaveformGenerator {
     }
 
     console.log(`Auto-generating waveform for "${song.title}" from ${song.tracks.length} tracks...`);
+
+    // Get the correct AudioFileStorage instance for this user
+    const audioStorage = AudioFileStorage.getInstance(userEmail || song.userId || 'default@user.com');
 
     // Declare AudioContext outside try block for proper cleanup access
     let audioContext: AudioContext | null = null;

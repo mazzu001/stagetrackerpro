@@ -79,7 +79,7 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
       console.log(`🚀 Streaming load: "${song.title}" with ${song.tracks.length} tracks (instant setup)`);
       
       // Get actual audio URLs from AudioFileStorage
-      const audioStorage = new AudioFileStorage();
+      const audioStorage = AudioFileStorage.getInstance(song.userId || 'default@user.com');
       const trackDataPromises = song.tracks.map(async (track) => {
         try {
           const audioUrl = await audioStorage.getAudioUrl(track.id);
@@ -110,7 +110,7 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
         
         // Set up automatic waveform generation in background
         setTimeout(() => {
-          streamingEngine.autoGenerateWaveform(song).catch(error => {
+          streamingEngine.autoGenerateWaveform(song, song.userId || 'default@user.com').catch(error => {
             console.warn(`⚠️ Waveform generation failed (non-critical):`, error);
           });
         }, 100);

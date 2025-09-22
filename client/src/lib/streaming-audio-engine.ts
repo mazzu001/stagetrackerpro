@@ -119,14 +119,14 @@ export class StreamingAudioEngine {
   }
 
   // Auto-generate waveform in background for responsive UI
-  async autoGenerateWaveform(song: any) {
+  async autoGenerateWaveform(song: any, userEmail?: string) {
     if (this.state.tracks.length > 0 && song) {
       console.log(`Starting automatic waveform generation for "${song.title}"...`);
       try {
         // Add timeout for waveform generation
         const waveformPromise = (async () => {
           const { waveformGenerator } = await import('./waveform-generator');
-          return await waveformGenerator.generateWaveformFromSong(song);
+          return await waveformGenerator.generateWaveformFromSong(song, userEmail);
         })();
         
         const timeoutPromise = new Promise((_, reject) => {

@@ -151,7 +151,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
           
           // Auto-generate waveform in background (restored functionality from AudioEngine)
           if (audioEngineRef.current && typeof (audioEngineRef.current as any).autoGenerateWaveform === 'function') {
-            (audioEngineRef.current as any).autoGenerateWaveform(song);
+            (audioEngineRef.current as any).autoGenerateWaveform(song, userEmail);
           }
           
           console.log(`✅ Streaming ready for "${song.title}" - instant playback available`);

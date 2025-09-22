@@ -365,11 +365,22 @@ export class StreamingAudioEngine {
     this.startTimeTracking();
     
     // Schedule mute regions AFTER ensuring all audio nodes exist
-    // Add a small delay to ensure gain nodes are fully initialized
-    setTimeout(() => {
-      this.scheduleAllMuteRegions(this.state.currentTime);
-      console.log(`🔇 Scheduling mute regions for playback at ${this.state.currentTime.toFixed(1)}s`);
-    }, 10);
+    // Check if any tracks have mute regions before attempting to schedule
+    const tracksWithRegions = this.state.tracks.filter(t => t.muteRegions && t.muteRegions.length > 0);
+    if (tracksWithRegions.length > 0) {
+      // Ensure gain nodes are created for tracks with mute regions
+      tracksWithRegions.forEach(track => {
+        if (!track.gainNode) {
+          console.warn(`⚠️ Gain node not ready for track ${track.name}, deferring mute region scheduling`);
+        }
+      });
+      
+      // Schedule with a slightly longer delay to ensure gain nodes are ready
+      setTimeout(() => {
+        this.scheduleAllMuteRegions(this.state.currentTime);
+        console.log(`🔇 Scheduling mute regions for playback at ${this.state.currentTime.toFixed(1)}s`);
+      }, 50); // Increased delay to match the delay used in loadTracks
+    }
     
     this.notifyListeners();
     

@@ -1,25 +1,5 @@
 # Overview
-This project is a professional, offline-capable live music performance application designed for stage use. It features real-time audio mixing, advanced Web MIDI device management, and synchronized lyrics display. The application prioritizes offline functionality, utilizing local storage for all performance data and blob URLs for audio files. It is production-ready with robust MIDI integration, including persistent connections, and comprehensive device management.
-
-## Recent Changes
-- **Staged MIDI Initialization with Clean Handlers (Sep 22, 2025)**: Completely refactored MIDI system to prevent app freezing on startup. Implemented three-stage initialization: Stage 1 - USB MIDI only when user opens device manager (fast, lightweight); Stage 2 - Auto-reconnect to previously connected USB devices after page loads; Stage 3 - Bluetooth MIDI only when user explicitly clicks "BT Scan" button. All MIDI message handlers are now lightweight and dedicated to MIDI-only operations using requestAnimationFrame for async processing. No file loading or heavy operations in MIDI callbacks. Added separate USB and Bluetooth scan buttons in device manager. App now starts instantly with MIDI waiting for user interaction, following Web MIDI best practices.
-- **Sequential Storage Initialization Fix (Sep 22, 2025)**: Resolved app freezing issue caused by race conditions in storage initialization. Implemented centralized StorageContext that performs sequential database verification after authentication: checks if user database exists, then either loads existing or creates new. This eliminates simultaneous IndexedDB operations from multiple components that were causing browser lock-ups. All storage instances now initialize once through context, preventing duplicate connections and ensuring smooth app startup.
-- **Per-User Database Isolation (Sep 21, 2025)**: Implemented complete user data isolation to prevent data accumulation across multiple users on same device. Each user now has their own namespaced IndexedDB database (e.g., `MusicAppStorage::user_email`) and localStorage keys (e.g., `music-app-audio-files::user@email.com`). This critical architecture change ensures that each user's songs, audio files, and settings are completely isolated, solving the issue where 98 accumulated files from different sessions were freezing the app at startup.
-- **Comprehensive Song Deletion System (Sep 22, 2025)**: Created SongDeletionManager that removes ALL traces of deleted songs including audio files from IndexedDB, references from localStorage, waveform data, and blob URLs. Added Storage Cleanup tool in UI that shows storage statistics and allows users to clean up orphaned audio files not associated with any songs.
-- **MIDI Background Service Implementation (Sep 22, 2025)**: Complete redesign of MIDI system as a true background service that auto-starts on app load without blocking UI. Removed ALL timeout logic (3-second limits) that caused failures on systems with many devices. MIDI now initializes automatically in background, continuously monitors for device changes (hot-plug detection), and lets Web MIDI API take as long as needed for device scanning. No user action required - devices appear/disappear automatically like professional DAW software. App NEVER freezes regardless of number of MIDI devices or tracks loaded.
-- **Synchronous Authentication Fix (Sep 22, 2025)**: Eliminated all authentication flicker by implementing simple synchronous auth check as per user's plan. Removed ALL setTimeout calls, Edge browser special handling, and background verifications. Authentication now uses useState initializer to read localStorage synchronously on mount - if subscribed shows app immediately, else shows landing page. Single render with correct state, zero delays, no re-checks. This fixes the logout/login flicker issue permanently.
-- **Audio Engine Fixed After Pitch Shift Removal (Sep 21, 2025)**: Successfully resolved white screen issue that occurred after attempting Rubber Band pitch shifting implementation. The StreamingAudioEngine itself was functional, but partial commenting of initialization code caused failures. Fix: Restored full audio engine initialization with all callbacks and subscriptions. All audio features now working correctly including playback, mute/solo controls, mute regions, auto-stop at song end, and duration updates.
-- **Production Cache-Busting System (Sep 20, 2025)**: Implemented comprehensive cache-busting solution to eliminate blank white screen issues in production deployment that required hard refresh. Features multi-layered approach: HTML cache control meta tags, dynamic build ID detection using Vite environment variables, pre-runtime script/chunk load error handlers for automatic recovery, React-based version detection hook, user-friendly update notifications, and powerful refresh mechanism that clears all caches and unregisters service workers. System provides both automatic recovery (for white screen scenarios) and manual update prompts (when app is running). Critical for reliable production deployments without user intervention.
-- **Stem Splitting Feature Temporarily Disabled (Sep 19, 2025)**: Hidden the "Split Stems" button and functionality from the Track Manager interface. All stem splitting code remains intact for future activation when a suitable API solution is identified. The Moises API integration is complete but requires business-level access through Music.AI sales team, making it impractical for current use. Feature can be re-enabled by modifying one line in performance.tsx.
-- **Complete MIDI Lyrics Integration (Sep 11, 2025)**: Implemented comprehensive MIDI command execution synchronized with lyrics timeline for live performance use. MIDI commands embedded in lyrics (`[[PC:2:1]]`, `[[CC:7:127:1]]`, `[[NOTE:60:127:1]]`) automatically execute during playback. Features multi-device connection support, visual command indicators, duplicate prevention, and robust seek handling for rehearsals. Integrated with existing "Devices" button for professional users. Supports both timestamped and non-timestamped lyrics with consistent visual feedback.
-- **Lazy MIDI Initialization (Sep 10, 2025)**: Completely eliminated automatic MIDI initialization from app startup, achieving instant loading. Implemented lazy initialization pattern where MIDI only initializes when users actually need it (clicking MIDI device buttons). Removed all blocking Web MIDI API calls during startup while preserving full MIDI functionality. App now starts instantly without any MIDI-related freezing or delays.
-- **Edge Browser Compatibility Fix (Jan 29, 2025)**: Resolved authentication stuck issue specific to Microsoft Edge browser. Added browser detection, extended timeouts, fallback session handling, and background verification to prevent Edge users from getting stuck on authentication screen. Edge browser now uses cached authentication immediately while performing background verification after UI loads.
-- **Comprehensive Subscription Monitoring (Jan 29, 2025)**: Implemented real-time webhook processing for payment failures, cancellations, and subscription expiry. Enhanced daily monitor detects expired subscriptions and automatically downgrades users to free tier. Manual check endpoint added for troubleshooting subscription issues.
-- **Complete Unsubscribe Flow (Jan 29, 2025)**: Implemented comprehensive subscription cancellation system with retention strategies. Features multi-step flow with pause subscription, 50% discount offers, and downgrade options. Includes feedback collection and proper Stripe subscription cancellation. Only shows unsubscribe option to paid users (not free users).
-- **Subscription Testing System (Jan 29, 2025)**: Created test users for all subscription tiers with database entries. Optimized post-payment flow to eliminate flickering and excessive API calls. Added proper debouncing and verification caching to prevent authentication loops after successful Stripe payments.
-- **Schema Architecture Fixed (Jan 29, 2025)**: Resolved TypeScript schema conflicts by properly separating cloud vs local data operations. Server-side music operations now correctly return no-ops since all music data (songs, tracks, audio files, waveforms) stays local for offline capability. User authentication and subscriptions use cloud PostgreSQL, music data uses local storage.
-- **Auto-Reconnect MIDI Implementation (Jan 29, 2025)**: Added automatic reconnection to the last known USB MIDI device when the app launches. System stores device info in localStorage and attempts reconnection using device ID or name/manufacturer matching. Provides seamless experience for live performers who use the same MIDI devices consistently.
-- **Instant Playback Implementation (Jan 29, 2025)**: Successfully replaced slow `decodeAudioData` approach with instant HTMLAudioElement playback. Eliminated 8+ second audio decode delays by using MediaElementSource for immediate response while background decoding for advanced features. Audio now plays instantly when clicking play button.
+This project is a professional, offline-capable live music performance application designed for stage use. It features real-time audio mixing, advanced Web MIDI device management, and synchronized lyrics display. The application prioritizes offline functionality, utilizing local storage for all performance data and blob URLs for audio files, making it production-ready with robust MIDI integration. Its primary purpose is to provide a reliable, high-performance tool for musicians during live performances, ensuring zero internet dependency and seamless operation.
 
 # User Preferences
 - **Communication style**: Simple, everyday language
@@ -33,27 +13,29 @@ This project is a professional, offline-capable live music performance applicati
 ## Web Application Stack
 - **Frontend**: React 18 with TypeScript, Vite build system
 - **Backend**: Express.js with TypeScript (tsx runtime)
-- **Database**: Hybrid setup - PostgreSQL (user data) + SQLite (music data)
+- **Database**: Hybrid setup - PostgreSQL (user data) + SQLite (music data) for isolated user data, IndexedDB for comprehensive song storage.
 - **UI Framework**: Tailwind CSS + Radix UI (shadcn/ui components)
 - **State Management**: React Query + React hooks
 - **Routing**: Wouter for client-side routing
 
 ## MIDI System Architecture
-- **API**: Web MIDI API for system-level MIDI device integration with background service pattern.
-- **Background Service**: MIDI system auto-initializes on app startup as a true background service, allowing Web MIDI API to take as long as needed without blocking UI.
-- **Persistence**: Global Web MIDI service (`useGlobalWebMIDI.ts`) ensures persistent MIDI connections even when UI components close.
-- **Auto-Reconnect**: Automatically reconnects to the last known USB MIDI device when MIDI is initialized, using localStorage device persistence and intelligent device matching (ID or name/manufacturer).
+- **API**: Web MIDI API for system-level MIDI device integration with a background service pattern.
+- **Background Service**: MIDI system auto-initializes on app startup in the background, allowing the Web MIDI API to operate without blocking the UI. It continuously monitors for device changes (hot-plug detection).
+- **Initialization**: Features a staged initialization process (USB MIDI, auto-reconnect, Bluetooth MIDI on demand) to prevent app freezing.
+- **Persistence**: Global Web MIDI service (`useGlobalWebMIDI.ts`) ensures persistent MIDI connections.
+- **Auto-Reconnect**: Automatically reconnects to previously connected USB MIDI devices using localStorage for device persistence and intelligent matching.
 - **Server-side MIDI**: Node.js with `easymidi` library (mock mode in development) for server-side MIDI processing and `ws` for WebSocket communication.
-- **Device Management**: Supports USB MIDI, Bluetooth MIDI (for legacy devices), and general MIDI device types. Features automatic scanning, connection management, and signal monitoring.
-- **Command Parsing**: Multi-format parser supports new bracket format (`[[PC:12:1]]`, `[[CC:7:64:1]]`, `[[NOTE:60:127:1]]`), as well as legacy hex and text formats.
-- **Message Formatting**: Standardized `[[TYPE:VALUE:CHANNEL]]` output format for incoming and outgoing messages.
+- **Device Management**: Supports USB MIDI, Bluetooth MIDI, and general MIDI device types with automatic scanning and connection management.
+- **Command Parsing**: Multi-format parser supports `[[TYPE:VALUE:CHANNEL]]` bracket format, as well as legacy hex and text formats.
 - **Automated Lyrics MIDI**: MIDI commands embedded in timestamped lyrics automatically execute during playback.
 
 ## Core Features
-- **Instant-Response Audio Engine**: Uses HTMLAudioElement with MediaElementSource for zero-delay playback while background decoding AudioBuffers for advanced features. Supports up to 6 tracks per song with individual volume, mute, solo, and balance controls. Features real-time VU meters and automatic song duration detection.
-- **Advanced MIDI Integration**: Comprehensive device detection, universal command formatting, real-time message monitoring, and persistent connection management.
-- **Performance Interface**: Transport controls (play, pause, stop, seek) with keyboard shortcuts, synchronized lyrics with auto-scrolling and MIDI command highlighting, interactive position slider, and fullscreen mode. Optimized for mobile and touch controls.
-- **Data Management**: Uses local file system for audio (Blob URLs), localStorage for offline authentication, and a hybrid PostgreSQL/SQLite database for music and user data. Includes subscription tiers with Stripe integration.
+- **Instant-Response Audio Engine**: Uses HTMLAudioElement with MediaElementSource for zero-delay playback while background decoding AudioBuffers. Supports up to 6 tracks per song with individual controls, real-time VU meters, and automatic song duration detection.
+- **Advanced MIDI Integration**: Comprehensive device detection, universal command formatting, real-time message monitoring, and persistent connection management with staged, lazy initialization.
+- **Performance Interface**: Transport controls with keyboard shortcuts, synchronized lyrics with auto-scrolling and MIDI command highlighting, interactive position slider, and fullscreen mode. Optimized for mobile and touch controls.
+- **Data Management**: Uses local file system for audio (Blob URLs), IndexedDB for structured song and audio file storage, localStorage for offline authentication, and a hybrid PostgreSQL/SQLite database for user and subscription data. Includes subscription tiers with Stripe integration. Implements per-user database isolation.
+- **Cache-Busting System**: Comprehensive production-ready cache-busting solution with HTML cache control, dynamic build ID, pre-runtime error handlers, and user update notifications.
+- **Song Deletion**: Robust system to remove all traces of deleted songs, including audio files and references.
 
 ## UI/UX Design
 - Consistent theming with full dark/light mode support.
@@ -67,17 +49,3 @@ This project is a professional, offline-capable live music performance applicati
 - **MIDI/Audio**: `easymidi`, `ws` (WebSocket server)
 - **Authentication**: `express-session`, `connect-pg-simple`, `passport`, `openid-client`
 - **Payments**: `stripe`, `@stripe/stripe-js`, `@stripe/react-stripe-js`
-
-# Future Feature Ideas
-
-## Professional Backup System (Export/Import)
-**Feature**: Complete song library backup and restore functionality for professional users
-**Use Case**: Touring musicians need to backup entire setlists and transfer between devices
-**Technical Approach**:
-- Export songs, lyrics with timestamps, MIDI commands, and audio files into single zip file
-- Include manifest.json for metadata, audio/ folder for track files, settings.json for configurations
-- Use JSZip library for packaging, streaming approach for large backups
-- Import with conflict resolution (merge vs replace options, duplicate detection)
-- Selective export options (individual songs, date ranges, setlist-specific backups)
-**Benefits**: Seamless device migration while maintaining offline-first philosophy
-**Implementation Readiness**: High - current SQLite/IndexedDB architecture supports this well

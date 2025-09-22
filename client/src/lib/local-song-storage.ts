@@ -11,19 +11,28 @@ export class LocalSongStorage {
     return `${STORAGE_KEY}_${userEmail}`;
   }
 
-  static getAllSongs(userEmail: string): LocalSong[] {
+  static async getAllSongs(userEmail: string): Promise<LocalSong[]> {
     try {
-      const stored = localStorage.getItem(this.getSongKey(userEmail));
-      return stored ? JSON.parse(stored) : [];
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
+      const songs = await LocalSongStorageDB.getAllSongs(userEmail);
+      console.log(`📋 Loaded ${songs.length} songs from IndexedDB (alphabetically sorted)`);
+      return songs;
     } catch (error) {
-      console.error('Error loading songs from localStorage:', error);
+      console.error('Error loading songs from IndexedDB:', error);
       return [];
     }
   }
 
-  static getSong(userEmail: string, songId: string): LocalSong | undefined {
-    const songs = this.getAllSongs(userEmail);
-    return songs.find(song => song.id === songId);
+  static async getSong(userEmail: string, songId: string): Promise<LocalSong | undefined> {
+    try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
+      return await LocalSongStorageDB.getSong(userEmail, songId);
+    } catch (error) {
+      console.error('Error loading song from IndexedDB:', error);
+      return undefined;
+    }
   }
 
   static saveSongs(userEmail: string, songs: LocalSong[]): void {
@@ -35,18 +44,11 @@ export class LocalSongStorage {
     }
   }
 
-  static addSong(userEmail: string, song: Omit<LocalSong, 'id' | 'tracks' | 'waveformGenerated' | 'createdAt'>): LocalSong {
-    const songs = this.getAllSongs(userEmail);
-    const newSong: LocalSong = {
-      id: crypto.randomUUID(),
-      ...song,
-      tracks: [],
-      waveformGenerated: false,
-      createdAt: new Date().toISOString()
-    };
-    
-    songs.push(newSong);
-    this.saveSongs(userEmail, songs);
+  static async addSong(userEmail: string, song: Omit<LocalSong, 'id' | 'tracks' | 'waveformGenerated' | 'createdAt'>): Promise<LocalSong> {
+    // Import dynamically to avoid circular dependency
+    const { LocalSongStorageDB } = await import('./local-song-storage-db');
+    const newSong = await LocalSongStorageDB.addSong(userEmail, song);
+    console.log('✅ Song added:', song.title);
     return newSong;
   }
 
@@ -61,16 +63,19 @@ export class LocalSongStorage {
     return songs[songIndex];
   }
 
-  static deleteSong(userEmail: string, songId: string): boolean {
-    const songs = this.getAllSongs(userEmail);
-    const filteredSongs = songs.filter(song => song.id !== songId);
-    
-    if (filteredSongs.length === songs.length) {
-      return false; // Song not found
+  static async deleteSong(userEmail: string, songId: string): Promise<boolean> {
+    try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
+      const success = await LocalSongStorageDB.deleteSong(userEmail, songId);
+      if (success) {
+        console.log(`✅ Song deleted: ${songId}`);
+      }
+      return success;
+    } catch (error) {
+      console.error('Error deleting song from IndexedDB:', error);
+      return false;
     }
-    
-    this.saveSongs(userEmail, filteredSongs);
-    return true;
   }
 
   static addTrack(userEmail: string, songId: string, track: any): boolean {

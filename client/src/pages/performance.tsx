@@ -653,7 +653,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
     stop();
   }, [stop]);
 
-  const handleAddSongLocal = useCallback(() => {
+  const handleAddSongLocal = useCallback(async () => {
     if (!userEmail) {
       toast({
         title: "Authentication Required",
@@ -664,7 +664,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
     }
 
     try {
-      const newSong = LocalSongStorage.addSong(userEmail, {
+      const newSong = await LocalSongStorage.addSong(userEmail, {
         title: songTitle,
         artist: songArtist,
         duration: 0,
@@ -673,10 +673,10 @@ export default function Performance({ userType, userEmail, logout }: Performance
         lyrics: '',
         waveformData: null
       });
-      setAllSongs(prev => [...prev, newSong].sort((a, b) => {
-        if (!a.title || !b.title) return 0;
-        return a.title.localeCompare(b.title);
-      }));
+      
+      // Refresh the songs list from the database to ensure UI is in sync
+      await refreshSongs();
+      
       setSongTitle("");
       setSongArtist("");
       setIsAddSongOpen(false);
@@ -693,7 +693,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
         variant: "destructive"
       });
     }
-  }, [userEmail, songTitle, songArtist, toast]);
+  }, [userEmail, songTitle, songArtist, toast, refreshSongs]);
 
   const handleUpdateLyrics = useCallback(() => {
     if (!selectedSong || !userEmail) return;
@@ -807,7 +807,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
     if (!userEmail || !selectedSong) return;
     
     try {
-      const success = LocalSongStorage.deleteSong(userEmail, selectedSong.id);
+      const success = await LocalSongStorage.deleteSong(userEmail, selectedSong.id);
       
       if (success) {
         // Wait for the songs list to refresh

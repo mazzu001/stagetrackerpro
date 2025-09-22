@@ -158,153 +158,62 @@ export class LocalSongStorage {
     }
   }
 
-  // Mute Region Management
-  static addMuteRegion(userEmail: string, songId: string, trackId: string, region: Omit<MuteRegion, 'id'>): MuteRegion | null {
+  // Mute Region Management - Delegates to IndexedDB
+  static async addMuteRegion(userEmail: string, songId: string, trackId: string, region: Omit<MuteRegion, 'id'>): Promise<MuteRegion | null> {
     console.log(`➕ LocalSongStorage.addMuteRegion: Adding region to track ${trackId}`, region);
-    const songs = this.getAllSongs(userEmail);
-    const songIndex = songs.findIndex(song => song.id === songId);
-    
-    if (songIndex === -1) {
-      console.error(`LocalSongStorage.addMuteRegion: Song ${songId} not found`);
+    try {
+      const newRegion = await LocalSongStorageDB.addMuteRegion(userEmail, songId, trackId, region);
+      return newRegion;
+    } catch (error) {
+      console.error('Failed to add mute region:', error);
       return null;
     }
-    
-    const trackIndex = songs[songIndex].tracks.findIndex(track => track.id === trackId);
-    if (trackIndex === -1) {
-      console.error(`LocalSongStorage.addMuteRegion: Track ${trackId} not found`);
-      return null;
-    }
-
-    const newRegion: MuteRegion = {
-      id: crypto.randomUUID(),
-      ...region
-    };
-
-    const track = songs[songIndex].tracks[trackIndex];
-    // Ensure muteRegions is an array
-    if (!Array.isArray(track.muteRegions)) {
-      track.muteRegions = [];
-    }
-    
-    track.muteRegions.push(newRegion);
-    this.saveSongs(userEmail, songs);
-    console.log(`✅ LocalSongStorage.addMuteRegion: Region ${newRegion.id} added and saved to track ${trackId}`);
-    return newRegion;
   }
 
-  static updateMuteRegion(userEmail: string, songId: string, trackId: string, regionId: string, updates: Partial<MuteRegion>): MuteRegion | null {
+  static async updateMuteRegion(userEmail: string, songId: string, trackId: string, regionId: string, updates: Partial<MuteRegion>): Promise<MuteRegion | null> {
     console.log(`🔄 LocalSongStorage.updateMuteRegion: Updating region ${regionId} on track ${trackId}`);
-    const songs = this.getAllSongs(userEmail);
-    const songIndex = songs.findIndex(song => song.id === songId);
-    
-    if (songIndex === -1) {
-      console.error(`LocalSongStorage.updateMuteRegion: Song ${songId} not found`);
+    try {
+      const updatedRegion = await LocalSongStorageDB.updateMuteRegion(userEmail, songId, trackId, regionId, updates);
+      return updatedRegion;
+    } catch (error) {
+      console.error('Failed to update mute region:', error);
       return null;
     }
-    
-    const trackIndex = songs[songIndex].tracks.findIndex(track => track.id === trackId);
-    if (trackIndex === -1) {
-      console.error(`LocalSongStorage.updateMuteRegion: Track ${trackId} not found`);
-      return null;
-    }
-
-    const track = songs[songIndex].tracks[trackIndex];
-    if (!Array.isArray(track.muteRegions)) {
-      console.error(`LocalSongStorage.updateMuteRegion: Track has no mute regions`);
-      return null;
-    }
-
-    const regionIndex = track.muteRegions.findIndex(region => region.id === regionId);
-    if (regionIndex === -1) {
-      console.error(`LocalSongStorage.updateMuteRegion: Region ${regionId} not found`);
-      return null;
-    }
-
-    track.muteRegions[regionIndex] = { ...track.muteRegions[regionIndex], ...updates, id: regionId };
-    this.saveSongs(userEmail, songs);
-    console.log(`✅ LocalSongStorage.updateMuteRegion: Region ${regionId} updated and saved`);
-    return track.muteRegions[regionIndex];
   }
 
-  static deleteMuteRegion(userEmail: string, songId: string, trackId: string, regionId: string): boolean {
+  static async deleteMuteRegion(userEmail: string, songId: string, trackId: string, regionId: string): Promise<boolean> {
     console.log(`🗑️ LocalSongStorage.deleteMuteRegion: Deleting region ${regionId} from track ${trackId}`);
-    const songs = this.getAllSongs(userEmail);
-    const songIndex = songs.findIndex(song => song.id === songId);
-    
-    if (songIndex === -1) {
-      console.error(`LocalSongStorage.deleteMuteRegion: Song ${songId} not found`);
+    try {
+      const success = await LocalSongStorageDB.deleteMuteRegion(userEmail, songId, trackId, regionId);
+      return success;
+    } catch (error) {
+      console.error('Failed to delete mute region:', error);
       return false;
     }
-    
-    const trackIndex = songs[songIndex].tracks.findIndex(track => track.id === trackId);
-    if (trackIndex === -1) {
-      console.error(`LocalSongStorage.deleteMuteRegion: Track ${trackId} not found`);
-      return false;
-    }
-
-    const track = songs[songIndex].tracks[trackIndex];
-    if (!Array.isArray(track.muteRegions)) {
-      console.warn(`LocalSongStorage.deleteMuteRegion: Track has no mute regions`);
-      return false;
-    }
-
-    const originalLength = track.muteRegions.length;
-    track.muteRegions = track.muteRegions.filter(region => region.id !== regionId);
-    
-    if (track.muteRegions.length === originalLength) {
-      console.warn(`LocalSongStorage.deleteMuteRegion: Region ${regionId} not found`);
-      return false;
-    }
-
-    this.saveSongs(userEmail, songs);
-    console.log(`✅ LocalSongStorage.deleteMuteRegion: Region ${regionId} deleted and saved`);
-    return true;
   }
 
-  static getMuteRegions(userEmail: string, songId: string, trackId: string): MuteRegion[] {
+  static async getMuteRegions(userEmail: string, songId: string, trackId: string): Promise<MuteRegion[]> {
     console.log(`🔍 LocalSongStorage.getMuteRegions: Getting regions for track ${trackId}`);
-    const songs = this.getAllSongs(userEmail);
-    const song = songs.find(song => song.id === songId);
-    if (!song) {
-      console.warn(`LocalSongStorage.getMuteRegions: Song ${songId} not found`);
+    try {
+      const regions = await LocalSongStorageDB.getMuteRegions(userEmail, songId, trackId);
+      console.log(`✅ LocalSongStorage.getMuteRegions: Found ${regions.length} regions for track ${trackId}`);
+      return regions;
+    } catch (error) {
+      console.error('Failed to get mute regions:', error);
       return [];
     }
-
-    const track = song.tracks.find(track => track.id === trackId);
-    if (!track) {
-      console.warn(`LocalSongStorage.getMuteRegions: Track ${trackId} not found`);
-      return [];
-    }
-    
-    // Ensure muteRegions is always an array
-    const regions = Array.isArray(track.muteRegions) ? track.muteRegions : [];
-    console.log(`✅ LocalSongStorage.getMuteRegions: Found ${regions.length} regions for track ${trackId}`);
-    return regions;
   }
 
-  static clearAllMuteRegions(userEmail: string, songId: string, trackId: string): boolean {
+  static async clearAllMuteRegions(userEmail: string, songId: string, trackId: string): Promise<boolean> {
     console.log(`🧹 LocalSongStorage.clearAllMuteRegions: Clearing all regions for track ${trackId}`);
-    const songs = this.getAllSongs(userEmail);
-    const songIndex = songs.findIndex(s => s.id === songId);
-    
-    if (songIndex === -1) {
-      console.error(`LocalSongStorage.clearAllMuteRegions: Song ${songId} not found`);
+    try {
+      const db = await LocalSongStorageDB.getDB(userEmail);
+      const success = await db.deleteAllMuteRegions(trackId);
+      console.log(`✅ LocalSongStorage.clearAllMuteRegions: All regions cleared for track ${trackId}`);
+      return success;
+    } catch (error) {
+      console.error('Failed to clear all mute regions:', error);
       return false;
     }
-    
-    const trackIndex = songs[songIndex].tracks.findIndex(t => t.id === trackId);
-    if (trackIndex === -1) {
-      console.error(`LocalSongStorage.clearAllMuteRegions: Track ${trackId} not found`);
-      return false;
-    }
-    
-    // Clear all mute regions
-    songs[songIndex].tracks[trackIndex].muteRegions = [];
-    
-    // Save to localStorage
-    this.saveSongs(userEmail, songs);
-    console.log(`✅ LocalSongStorage.clearAllMuteRegions: All regions cleared and saved for track ${trackId}`);
-    
-    return true;
   }
 }

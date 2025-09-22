@@ -487,7 +487,7 @@ export function TrackWaveformEditor({
   };
 
   const createMuteRegion = async (start: number, end: number) => {
-    const newRegion = LocalSongStorage.addMuteRegion(userEmail, songId, trackId, {
+    const newRegion = await LocalSongStorage.addMuteRegion(userEmail, songId, trackId, {
       start,
       end
     });
@@ -505,8 +505,8 @@ export function TrackWaveformEditor({
     }
   };
 
-  const deleteRegion = (regionId: string) => {
-    const success = LocalSongStorage.deleteMuteRegion(userEmail, songId, trackId, regionId);
+  const deleteRegion = async (regionId: string) => {
+    const success = await LocalSongStorage.deleteMuteRegion(userEmail, songId, trackId, regionId);
     if (success) {
       const updatedRegions = regions.filter(r => r.id !== regionId);
       setRegions(updatedRegions);
@@ -521,18 +521,18 @@ export function TrackWaveformEditor({
     }
   };
 
-  const clearAllRegions = () => {
-    regions.forEach(region => {
-      LocalSongStorage.deleteMuteRegion(userEmail, songId, trackId, region.id);
-    });
-    setRegions([]);
-    setSelectedRegion(null);
-    onRegionsChange?.([]);
-    
-    // Clear from audio engine
-    if (audioEngine) {
-      audioEngine.setTrackMuteRegions(trackId, []);
-      console.log(`🔇 Cleared all mute regions from track ${trackId}`);
+  const clearAllRegions = async () => {
+    const success = await LocalSongStorage.clearAllMuteRegions(userEmail, songId, trackId);
+    if (success) {
+      setRegions([]);
+      setSelectedRegion(null);
+      onRegionsChange?.([]);
+      
+      // Clear from audio engine
+      if (audioEngine) {
+        audioEngine.setTrackMuteRegions(trackId, []);
+        console.log(`🔇 Cleared all mute regions from track ${trackId}`);
+      }
     }
   };
 

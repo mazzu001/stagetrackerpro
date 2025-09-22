@@ -466,6 +466,12 @@ export class IndexedDBStorage {
   async deleteMuteRegion(regionId: string): Promise<boolean> {
     this.ensureDatabase();
     
+    // Validate regionId before attempting deletion
+    if (!regionId) {
+      console.warn('⚠️ Cannot delete mute region: regionId is undefined or empty');
+      return Promise.resolve(false);
+    }
+    
     return new Promise((resolve, reject) => {
       const transaction = this.db!.transaction(['muteRegions'], 'readwrite');
       const store = transaction.objectStore('muteRegions');

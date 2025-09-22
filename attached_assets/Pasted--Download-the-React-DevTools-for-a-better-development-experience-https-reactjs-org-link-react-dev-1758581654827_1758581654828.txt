@@ -1,0 +1,320 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ 🔵 Android BLE-MIDI adapter initialized
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+ 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+ 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+ [MAIN.TSX] Script starting...
+ [MAIN.TSX] Unregistering service workers...
+ [MAIN.TSX] About to render React app...
+ [MAIN.TSX] Root element: 
+ [MAIN.TSX] React app rendered successfully
+  Failed to load audio file references from IndexedDB: 
+loadFromStorage @ audio-file-storage.ts:160
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [AUTH] Session expired, clearing
+ [APP] Auth state: Object
+ 🔍 Browser detection debug: Object
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ [AUTH] useLocalAuth hook called
+ [AUTH] useEffect - auth state initialized
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 MIDI API supported - waiting for user interaction to initialize
+ 🔧 Initializing storage for user: default@user.com
+ [AUTH] useEffect - auth state initialized
+ 📊 Database exists for default@user.com: true
+ 📂 Loading existing database for default@user.com
+ 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+ Created songs store
+ Created tracks store
+ Created muteRegions store
+ Created audioFiles store
+ Created waveforms store
+ Created userPreferences store
+ Browser file system initialized successfully for user: default@user.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: default@user.com
+ ✅ Storage initialization complete for default@user.com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: true
+ [AUTH] useLocalAuth hook called
+ ✅ IndexedDB initialized: MusicAppDB_default_user_com
+ [AUTH] useLocalAuth hook called
+ ✅ Cloud login successful: mazzu001@hotmail.com
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [APP] Auth state: Object
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: true
+ 🧹 StorageProvider cleanup
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔧 Initializing storage for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ 📊 Database exists for mazzu001@hotmail.com: false
+ 🆕 Creating new database for mazzu001@hotmail.com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ Created songs store
+ Created tracks store
+ Created muteRegions store
+ Created audioFiles store
+ Created waveforms store
+ Created userPreferences store
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ 📱 Edge browser: Forcing memory cleanup
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+ ✅ Storage initialization complete for mazzu001@hotmail.com
+  Failed to load audio file references from IndexedDB: 
+loadFromStorage @ audio-file-storage.ts:160
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: true
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+  Error loading songs from IndexedDB: 
+getAllSongs @ local-song-storage-db.ts:35
+ 📋 Loaded 0 songs from IndexedDB (alphabetically sorted)
+ ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+ 🔄 Migrating songs from localStorage key: lpp_songs_mazzu001@hotmail.com
+ Migrating 1 songs from localStorage to IndexedDB...
+ ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+ ✅ Song added: test
+ ✅ Track added: Comfortably Numb - Acoustic
+ ✅ Track added: Comfortably Numb - Backups
+ ✅ Track added: Comfortably Numb - Bass
+ ✅ Track added: Comfortably Numb - Click
+ ✅ Track added: Comfortably Numb - Drums
+ ✅ Track added: Comfortably Numb - Keys
+ ✅ Migration complete!
+ ✅ Migrated and cleared localStorage data
+ 🔍 Retrieved 0 mute regions for track 22899663-6744-47f8-bdbf-324723d39e36
+ 🔍 Retrieved 0 mute regions for track 31c6b69a-b861-49f8-bc86-3348e730530a
+ 🔍 Retrieved 0 mute regions for track 3b0f8acd-0ce6-4e5d-a3d1-5659abf07c26
+ 🔍 Retrieved 0 mute regions for track 60cde0ad-b552-4eb6-ade7-0d5a76142e46
+ 🔍 Retrieved 0 mute regions for track 63ef1b80-6fb6-41c4-bb43-67776ba9342c
+ 🔍 Retrieved 0 mute regions for track d6156532-1553-486b-b0c8-c6f389d393a9
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ 🎹 Initializing USB MIDI (lightweight)...
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=2c4155aa:344
+ 🎹 MIDI already initialized
+ ✅ USB MIDI access granted
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ ✅ USB MIDI initialized successfully
+ 🎹 USB MIDI initialized from device manager
+ 🎹 Skipping auto-reconnect for Bluetooth device: WIDI Jack OUT
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🔵 Scanning for Bluetooth MIDI devices (user-initiated)...
+ ✅ Bluetooth MIDI scan complete
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 0/4 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 0/4 Array(0)
+ 🎹 Connecting to WIDI Jack IN ()...
+ 🎹 Connecting to WIDI Jack OUT ()...
+ ✅ Connected to WIDI Jack IN
+ ✅ Connected to WIDI Jack OUT
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🎹 Sent MIDI command to WIDI Jack OUT: Object
+ ✅ Sent test command: [[PC:22:1]]
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ 🎹 Found 4 MIDI devices: Array(4)
+ 🎹 Connected devices: 2/4 Array(2)
+ 🎹 Connecting to MidiPortA IN ()...
+ 🎹 Connecting to MidiPortA OUT ()...
+ ✅ Connected to MidiPortA IN
+ ✅ Connected to MidiPortA OUT
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 2/2 Array(2)
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:283 🎹 Connected devices: 2/2 Array(2)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:283 🎹 Connected devices: 2/2 Array(2)
+useMidiDevices.ts:451 🔵 Scanning for Bluetooth MIDI devices (user-initiated)...
+useMidiDevices.ts:456 ✅ Bluetooth MIDI scan complete
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 2/4 Array(2)
+useMidiDevices.ts:536 🎹 Connecting to WIDI Jack IN ()...
+useMidiDevices.ts:574 ✅ Connected to WIDI Jack IN
+useMidiDevices.ts:536 🎹 Connecting to WIDI Jack OUT ()...
+useMidiDevices.ts:574 ✅ Connected to WIDI Jack OUT
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:611 🎹 Disconnecting from MidiPortA IN...
+useMidiDevices.ts:611 🎹 Disconnecting from MidiPortA OUT...
+useMidiDevices.ts:626 ✅ Disconnected from MidiPortA IN
+useMidiDevices.ts:626 ✅ Disconnected from MidiPortA OUT
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 Array(0)
+useMidiDevices.ts:451 🔵 Scanning for Bluetooth MIDI devices (user-initiated)...
+useMidiDevices.ts:456 ✅ Bluetooth MIDI scan complete
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 0/4 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 0/4 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 0/4 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 0/4 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 0/4 Array(0)
+useMidiDevices.ts:536 🎹 Connecting to WIDI Jack IN ()...
+useMidiDevices.ts:574 ✅ Connected to WIDI Jack IN
+useMidiDevices.ts:536 🎹 Connecting to WIDI Jack OUT ()...
+useMidiDevices.ts:574 ✅ Connected to WIDI Jack OUT
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 2/4 Array(2)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 2/4 Array(2)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 2/4 Array(2)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 2/4 Array(2)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 2/4 Array(2)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 2, outputs: 2, includeBluetoothDevices: true}
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: (4) ['MidiPortA IN (input, USB)', 'WIDI Jack IN (input, Bluetooth)', 'MidiPortA OUT (output, USB)', 'WIDI Jack OUT (output, Bluetooth)']
+useMidiDevices.ts:283 🎹 Connected devices: 2/4 (2) ['WIDI Jack IN (input)', 'WIDI Jack OUT (output)']
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 2, outputs: 2, includeBluetoothDevices: true}
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: (4) ['MidiPortA IN (input, USB)', 'WIDI Jack IN (input, Bluetooth)', 'MidiPortA OUT (output, USB)', 'WIDI Jack OUT (output, Bluetooth)']
+useMidiDevices.ts:283 🎹 Connected devices: 2/4 (2) ['WIDI Jack IN (input)', 'WIDI Jack OUT (output)']

@@ -1,0 +1,1146 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-4a7cbb6b857d7f77.js:28 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-4a7cbb6b857d7f77.js:28 [LaunchDarkly] LaunchDarkly client initialized
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'battery'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-8390ee4c216a2f37.js:1
+t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://song.id&size=32:1   Failed to load resource: the server responded with a status of 404 ()
+t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://song.id/&size=32:1   Failed to load resource: the server responded with a status of 404 ()
+t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://song.id&size=32:1   Failed to load resource: the server responded with a status of 404 ()
+t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://song.id/&size=32:1   Failed to load resource: the server responded with a status of 404 ()
+  Error: <svg> attribute viewBox: Expected number, "0 0 100% 4".
+y @ content.js:2
+workspace_iframe.html?initialPath=%2F&id=%3Ar14q%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar14q%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar14q%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar14q%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar14q%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar14q%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar14q%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar14q%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar14q%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar14q%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 0.7s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 0.8s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 0.9s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.0s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.1s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.2s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.3s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.4s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.5s → 1.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.6s → 1.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.7s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.8s → 1.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 1.9s → 2.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 2.0s → 2.0s, resetting MIDI commands
+ 🔄 Seek detected: 2.0s → 2.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 2.0s → 2.0s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 2.0s → 2.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 2.0s → 2.0s, resetting MIDI commands
+ 🔄 Seek detected: 2.0s → 2.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🔄 Seek detected: 2.0s → 2.0s, resetting MIDI commands
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 266s
+Console.js:61 ⏸️ Streaming playback paused
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Track Already Gone - Click: Updated mute regions: Array(2)
+Console.js:61 🔇 Set 2 mute regions for track: Already Gone - Click
+Console.js:61 🔇 Added mute region 0.0s-0.3s to track b132c134-4151-4820-8e99-149d20852d8e
+Console.js:61 ➕ Mute region added: 0s-0.3088044695991184s for track b132c134-4151-4820-8e99-149d20852d8e
+Console.js:61 ➕ Mute region added to IndexedDB: 0s-0.3088044695991184s for track b132c134-4151-4820-8e99-149d20852d8e
+Console.js:61 Track Already Gone - Click: Updated mute regions: Array(0)
+Console.js:61 🔇 Set 0 mute regions for track: Already Gone - Click
+Console.js:61 🔇 Removed mute region from track b132c134-4151-4820-8e99-149d20852d8e
+indexed-db-storage.ts:472  Uncaught (in promise) DataError: Failed to execute 'delete' on 'IDBObjectStore': No key or key range specified.
+    at indexed-db-storage.ts:472:29
+    at new Promise (<anonymous>)
+    at IndexedDBStorage.deleteMuteRegion (indexed-db-storage.ts:469:12)
+    at LocalSongStorageDB.deleteMuteRegion (local-song-storage-db.ts:203:30)
+Console.js:61 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+Console.js:61 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+Console.js:61 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+Console.js:61 🔍 Retrieved 2 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+Console.js:61 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+Console.js:61 📋 Refreshed track count for song: Already Gone (5 tracks)

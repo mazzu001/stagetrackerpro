@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Cast, Users, Radio, Link2, LogOut, Upload, User, Copy, Crown, X, HelpCircle } from 'lucide-react';
+import { Cast, Users, Radio, Link2, LogOut, Upload, User, Copy, Crown, X, HelpCircle, Megaphone } from 'lucide-react';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { useBroadcast } from '@/hooks/useBroadcast';
 import { useToast } from '@/hooks/use-toast';
@@ -32,6 +32,7 @@ export default function Dashboard() {
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [devMessage, setDevMessage] = useState<string>('');
   
   // Profile form state
   const [profileData, setProfileData] = useState({
@@ -70,6 +71,14 @@ export default function Dashboard() {
   // Determine broadcast permissions
   const canBroadcast = user?.userType === 'professional';
   const canJoin = user?.userType === 'premium' || user?.userType === 'professional';
+
+  // Load dev message
+  useEffect(() => {
+    fetch('/devmessage.txt')
+      .then(res => res.text())
+      .then(text => setDevMessage(text.trim()))
+      .catch(() => setDevMessage('')); // Silently fail if file doesn't exist
+  }, []);
 
   // Load profile photo and user data when component mounts
   useEffect(() => {
@@ -531,12 +540,23 @@ export default function Dashboard() {
                 Welcome, {user.email}
               </p>
             </div>
+            {/* Dev Message */}
+            {devMessage && (
+              <div className="flex-1 mx-8 max-w-2xl">
+                <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md px-3 py-2">
+                  <div className="flex items-start gap-2">
+                    <Megaphone className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-blue-900 dark:text-blue-100">{devMessage}</p>
+                  </div>
+                </div>
+              </div>
+            )}
             <div className="flex items-center gap-3">
               <Button 
                 variant="outline" 
                 onClick={() => window.location.href = '/'}
               >
-                ← Back to Performance
+                ← Back
               </Button>
             </div>
           </div>

@@ -163,99 +163,100 @@ export class StreamingAudioEngine {
 
   // Create audio nodes on demand to avoid blocking UI
   private ensureTrackAudioNodes(track: StreamingTrack) {
-    if (track.audioElement) return; // Already created
+    // Return early if both audio element and nodes exist
+    if (track.audioElement && track.gainNode) return;
     
-    try {
-      // Create audio element with comprehensive error handling
-      track.audioElement = new Audio();
-      
-      // Add comprehensive error handlers BEFORE setting src
-      const errorHandler = (e: Event) => {
-        console.warn(`⚠️ Audio error for ${track.name}:`, e.type, e);
-        // Don't crash - just mark track as failed and continue
-        track.audioElement = null;
-        this.notifyListeners();
-      };
-      
-      track.audioElement.addEventListener('error', errorHandler);
-      track.audioElement.addEventListener('abort', errorHandler);
-      track.audioElement.addEventListener('stalled', (e) => {
-        console.warn(`⚠️ Audio stalled for ${track.name}:`, e);
-        // Don't crash on stalled - just log it
-      });
-      
-      // Add load failure handler
-      track.audioElement.addEventListener('loadstart', () => {
-        console.log(`🔄 Loading started for ${track.name}`);
-      });
-      
-      // Set src with error handling
+    // Create audio element if it doesn't exist
+    if (!track.audioElement) {
       try {
-        track.audioElement.src = track.url;
-        track.audioElement.preload = 'none'; // CRITICAL: No preloading
-        track.audioElement.crossOrigin = 'anonymous';
+        // Create audio element with comprehensive error handling
+        track.audioElement = new Audio();
         
+        // Add comprehensive error handlers BEFORE setting src
+        const errorHandler = (e: Event) => {
+          console.warn(`⚠️ Audio error for ${track.name}:`, e.type, e);
+          // Don't crash - just mark track as failed and continue
+          track.audioElement = null;
+          this.notifyListeners();
+        };
         
-      } catch (srcError) {
-        console.error(`❌ Failed to set audio src for ${track.name}:`, srcError);
-        track.audioElement = null;
-        return; // Exit early if we can't set the source
-      }
-      
-      // Add ended event listener for backup end detection
-      const endedHandler = () => {
-        if (this.state.isPlaying) {
-          console.log(`🔄 Audio element ended event triggered for ${track.name}, triggering callback`);
-          // Use callback if available (same path as stop button), otherwise fall back to direct stop
-          if (this.onSongEndCallback) {
-            this.onSongEndCallback();
-          } else {
-            this.stop();
-          }
+        track.audioElement.addEventListener('error', errorHandler);
+        track.audioElement.addEventListener('abort', errorHandler);
+        track.audioElement.addEventListener('stalled', (e) => {
+          console.warn(`⚠️ Audio stalled for ${track.name}:`, e);
+          // Don't crash on stalled - just log it
+        });
+        
+        // Add load failure handler
+        track.audioElement.addEventListener('loadstart', () => {
+          console.log(`🔄 Loading started for ${track.name}`);
+        });
+        
+        // Set src with error handling
+        try {
+          track.audioElement.src = track.url;
+          track.audioElement.preload = 'none'; // CRITICAL: No preloading
+          track.audioElement.crossOrigin = 'anonymous';
+        } catch (srcError) {
+          console.error(`❌ Failed to set audio src for ${track.name}:`, srcError);
+          track.audioElement = null;
+          return; // Exit early if we can't set the source
         }
-      };
-      
-      track.audioElement.addEventListener('ended', endedHandler);
-      // Store reference for cleanup
-      (track.audioElement as any).onended = endedHandler;
-      
-      // Create audio nodes with error handling
+        
+        // Add ended event listener for backup end detection
+        const endedHandler = () => {
+          if (this.state.isPlaying) {
+            console.log(`🔄 Audio element ended event triggered for ${track.name}, triggering callback`);
+            // Use callback if available (same path as stop button), otherwise fall back to direct stop
+            if (this.onSongEndCallback) {
+              this.onSongEndCallback();
+            } else {
+              this.stop();
+            }
+          }
+        };
+        
+        track.audioElement.addEventListener('ended', endedHandler);
+        // Store reference for cleanup
+        (track.audioElement as any).onended = endedHandler;
+      } catch (error) {
+        console.error(`❌ Critical error creating audio element for ${track.name}:`, error);
+        track.audioElement = null;
+        return;
+      }
+    }
+    
+    // Create Web Audio nodes if they don't exist
+    if (track.audioElement && !track.gainNode) {
       try {
         track.source = this.audioContext.createMediaElementSource(track.audioElement);
         track.gainNode = this.audioContext.createGain();
         track.panNode = this.audioContext.createStereoPanner();
         track.analyzerNode = this.audioContext.createAnalyser();
         
-        // Connect audio graph with error handling
+        // Connect audio graph
         track.source.connect(track.gainNode);
         track.gainNode.connect(track.panNode);
         track.panNode.connect(track.analyzerNode);
         track.analyzerNode.connect(this.state.masterGainNode!);
         
-        // Setup analyzer with original working settings
-        track.analyzerNode.fftSize = 512; 
-        track.analyzerNode.smoothingTimeConstant = 0.6; // Back to original working smoothing
+        // Setup analyzer
+        track.analyzerNode.fftSize = 512;
+        track.analyzerNode.smoothingTimeConstant = 0.6;
         
-        console.log(`🔧 Audio nodes created on demand for: ${track.name}`);
+        // Apply initial volume/balance/mute settings
+        const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
+        track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
+        track.panNode.pan.value = track.balance / 50; // Convert -50..50 to -1..1
+        
+        console.log(`🔧 Audio nodes created for: ${track.name}`);
       } catch (nodeError) {
-        console.error(`❌ Failed to create/connect audio nodes for ${track.name}:`, nodeError);
-        // Clean up partial audio element
-        track.audioElement = null;
+        console.error(`❌ Failed to create audio nodes for ${track.name}:`, nodeError);
         track.source = null;
         track.gainNode = null;
         track.panNode = null;
         track.analyzerNode = null;
-        // Pitch shifting cleanup removed
       }
-      
-    } catch (error) {
-      console.error(`❌ Critical error creating audio nodes for ${track.name}:`, error);
-      // Ensure clean state on failure
-      track.audioElement = null;
-      track.source = null;
-      track.gainNode = null;
-      track.panNode = null;
-      track.analyzerNode = null;
     }
   }
 
@@ -355,8 +356,12 @@ export class StreamingAudioEngine {
     this.state.isPlaying = true;
     this.startTimeTracking();
     
-    // Schedule mute regions for all tracks based on current position
-    this.scheduleAllMuteRegions(this.state.currentTime);
+    // Schedule mute regions AFTER ensuring all audio nodes exist
+    // Add a small delay to ensure gain nodes are fully initialized
+    setTimeout(() => {
+      this.scheduleAllMuteRegions(this.state.currentTime);
+      console.log(`🔇 Scheduling mute regions for playback at ${this.state.currentTime.toFixed(1)}s`);
+    }, 10);
     
     this.notifyListeners();
     
@@ -498,10 +503,17 @@ export class StreamingAudioEngine {
   }
 
   private scheduleTrackMuteRegions(track: StreamingTrack, currentTime: number) {
-    if (!track.gainNode || !track.muteRegions || track.muteRegions.length === 0) {
+    if (!track.gainNode) {
+      console.log(`⚠️ No gain node for track ${track.name}, cannot schedule mute regions`);
+      return;
+    }
+    
+    if (!track.muteRegions || track.muteRegions.length === 0) {
       return;
     }
 
+    console.log(`🔇 Scheduling ${track.muteRegions.length} mute regions for track: ${track.name}`);
+    
     this.clearScheduledGainChanges(track.id);
     const timeoutIds: number[] = [];
 
@@ -514,6 +526,8 @@ export class StreamingAudioEngine {
     track.gainNode.gain.cancelScheduledValues(this.audioContext.currentTime);
     track.gainNode.gain.setValueAtTime(baseGain, this.audioContext.currentTime);
 
+    let scheduledCount = 0;
+    
     // Schedule mute regions that are relevant from current playback position
     track.muteRegions.forEach(region => {
       const regionStartTime = this.audioContext.currentTime + Math.max(0, region.start - currentTime);
@@ -524,22 +538,28 @@ export class StreamingAudioEngine {
         // If we're currently in a mute region, start muted
         if (region.start <= currentTime && region.end > currentTime) {
           track.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+          console.log(`  📍 Currently IN mute region (${region.start.toFixed(1)}s-${region.end.toFixed(1)}s), muting immediately`);
+          scheduledCount++;
         }
         
         // Schedule mute start (if in future)
         if (region.start > currentTime) {
           track.gainNode.gain.setValueAtTime(0, regionStartTime);
+          console.log(`  📍 Scheduled mute START at ${region.start.toFixed(1)}s`);
+          scheduledCount++;
         }
         
         // Schedule mute end (if in future) 
         if (region.end > currentTime) {
           track.gainNode.gain.setValueAtTime(baseGain, regionEndTime);
+          console.log(`  📍 Scheduled mute END at ${region.end.toFixed(1)}s`);
+          scheduledCount++;
         }
       }
     });
 
     this.scheduledGainChanges.set(track.id, timeoutIds);
-    console.log(`⏰ Scheduled mute automation for track: ${track.name} from position ${Math.round(currentTime)}s`);
+    console.log(`✅ Scheduled ${scheduledCount} mute automation events for track: ${track.name} from position ${currentTime.toFixed(1)}s`);
   }
 
   private scheduleAllMuteRegions(currentTime: number) {

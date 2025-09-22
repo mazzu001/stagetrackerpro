@@ -20,7 +20,6 @@ import type { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 interface TrackManagerProps {
   song?: SongWithTracks;
   audioEngine?: StreamingAudioEngine; // Audio engine for mute region sync
-  onSongUpdate?: (updatedSong: SongWithTracks) => void;
   userEmail?: string;
   onTrackVolumeChange?: (trackId: string, volume: number) => void;
   onTrackMuteToggle?: (trackId: string) => void;
@@ -38,7 +37,6 @@ interface TrackManagerProps {
 export default function TrackManager({ 
   song, 
   audioEngine,
-  onSongUpdate,
   userEmail,
   onTrackVolumeChange, 
   onTrackMuteToggle, 
@@ -59,6 +57,8 @@ export default function TrackManager({
   const [estimatedDuration, setEstimatedDuration] = useState(0);
   const [isImporting, setIsImporting] = useState(false);
   const [localTrackValues, setLocalTrackValues] = useState<Record<string, { volume: number; balance: number }>>({});
+  const [tracks, setTracks] = useState<Track[]>([]); // Local tracks state for incremental updates
+  const [isLoadingLocalTracks, setIsLoadingLocalTracks] = useState(false);
   // Pitch and speed control removed
 
   // Recording state
@@ -67,22 +67,96 @@ export default function TrackManager({
   const { toast } = useToast();
   const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
 
-  // Get tracks for the current song
-  const tracks = song?.tracks || [];
-
-  // Initialize local track values from tracks (once, immediately)
+  // Load tracks sequentially when song changes
   useEffect(() => {
-    if (tracks.length > 0) {
-      const initialValues: Record<string, { volume: number; balance: number }> = {};
-      tracks.forEach(track => {
-        initialValues[track.id] = {
-          volume: track.volume || 1.0,
-          balance: track.balance || 0.0
-        };
-      });
-      setLocalTrackValues(initialValues);
-    }
-  }, [tracks]);
+    const loadTracksSequentially = async () => {
+      if (!song?.id || !userEmail) {
+        setTracks([]);
+        setLocalTrackValues({});
+        return;
+      }
+
+      console.log(`=== Loading tracks for song: ${song.title} (${song.id}) ===`);
+      setIsLoadingLocalTracks(true);
+      
+      // Clear existing tracks when switching songs
+      setTracks([]);
+      setLocalTrackValues({});
+
+      try {
+        // Get fresh song data from database
+        const currentSong = await LocalSongStorage.getSong(userEmail, song.id);
+        if (!currentSong) {
+          console.log('Song not found in database');
+          return;
+        }
+
+        const songTracks = currentSong.tracks || [];
+        console.log(`Found ${songTracks.length} tracks in database`);
+
+        // Load tracks one by one sequentially
+        const loadedTracks: Track[] = [];
+        const trackValues: Record<string, { volume: number; balance: number }> = {};
+
+        for (let i = 0; i < songTracks.length; i++) {
+          const track = songTracks[i];
+          console.log(`Loading track ${i + 1}/${songTracks.length}: ${track.name}`);
+
+          // Get audio URL if needed
+          if (!track.audioUrl && track.id) {
+            const audioStorage = AudioFileStorage.getInstance(userEmail);
+            const audioUrl = await audioStorage.getAudioUrl(track.id);
+            if (audioUrl) {
+              track.audioUrl = audioUrl;
+            }
+          }
+
+          // Load mute regions for this track
+          if (track.id && song.id) {
+            try {
+              const muteRegions = await LocalSongStorage.getMuteRegions(userEmail, song.id, track.id);
+              if (muteRegions && muteRegions.length > 0) {
+                console.log(`  Loaded ${muteRegions.length} mute regions for track ${track.name}`);
+              }
+            } catch (error) {
+              console.warn(`  Could not load mute regions for track ${track.id}:`, error);
+            }
+          }
+
+          // Add track to local state (updates UI incrementally)
+          loadedTracks.push(track);
+          trackValues[track.id] = {
+            volume: track.volume || 50,  // Default to 50 as per track schema
+            balance: track.balance || 0
+          };
+
+          // Update state incrementally so UI shows progress
+          setTracks([...loadedTracks]);
+          setLocalTrackValues({ ...trackValues });
+        }
+
+        // Waveform data is already in the song object if it exists
+        if (currentSong.waveformData) {
+          console.log(`  Song has waveform data`);
+        } else {
+          console.log(`  No waveform data found (will regenerate on demand)`);
+        }
+
+        console.log(`✅ Loaded all ${loadedTracks.length} tracks`);
+      } catch (error) {
+        console.error('Error loading tracks:', error);
+        toast({
+          title: "Failed to load tracks",
+          description: "Could not load tracks from database",
+          variant: "destructive"
+        });
+      } finally {
+        setIsLoadingLocalTracks(false);
+      }
+    };
+
+    loadTracksSequentially();
+  }, [song?.id, userEmail]);
 
   // Initialize audio inputs on component mount
   // Recording features removed
@@ -100,19 +174,7 @@ export default function TrackManager({
 
   // Recording features removed
 
-  const refetchTracks = useCallback(async () => {
-    if (!song?.id || !userEmail) return;
-    
-    try {
-      const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
-      if (updatedSong && onSongUpdate) {
-        console.log('Track Manager: Found', updatedSong.tracks.length, 'tracks for song', updatedSong.title, `(ID: ${updatedSong.id}):`, updatedSong.tracks.map(t => t.name));
-        onSongUpdate(updatedSong as SongWithTracks);
-      }
-    } catch (error) {
-      console.error('Failed to refetch tracks:', error);
-    }
-  }, [song?.id, userEmail, onSongUpdate]);
+  // Removed refetchTracks - no longer needed with sequential approach
 
   const detectAndUpdateSongDuration = async (audioFile: File, songId: string) => {
     try {
@@ -346,20 +408,20 @@ export default function TrackManager({
     if (!song?.id || !userEmail) return;
     
     try {
-      console.log(`Processing file ${selectedFiles.indexOf(file) + 1}/${selectedFiles.length}: ${file.name}`);
+      console.log(`Processing file: ${file.name}`);
       
       const audioFileName = file.name;
       const trackName = audioFileName.replace(/\.[^/.]+$/, ""); // Remove extension
       
-      console.log(`Adding track "${trackName}" with file: ${audioFileName}`);
+      console.log(`Step 1: Adding track "${trackName}" to database`);
       
-      const trackAdded = await LocalSongStorage.addTrack(userEmail, song.id, {
+      // Step 1: Add track to database
+      const trackAdded = await LocalSongStorage.addTrackToSong(userEmail, song.id, {
         name: trackName,
         songId: song.id,
         trackNumber: tracks.length + 1,
         audioUrl: '', // Will be set when file is loaded
         localFileName: audioFileName,
-        // Don't set audioData - files are stored in browser storage
         mimeType: file.type,
         fileSize: file.size,
         volume: 50,
@@ -374,44 +436,44 @@ export default function TrackManager({
         const newTrack = updatedSong?.tracks.find(t => t.name === trackName && t.localFileName === audioFileName);
         
         if (newTrack) {
-          // Store the audio file in browser storage with the track ID
+          console.log(`Step 2: Storing audio file for track ${newTrack.id}`);
+          
+          // Step 2: Store the audio file
           const audioStorage = AudioFileStorage.getInstance(userEmail);
           await audioStorage.storeAudioFile(newTrack.id, file, newTrack, song.title);
-          console.log('Audio file stored successfully for track:', newTrack.id);
+          console.log('Audio file stored successfully');
           
-          // Update the track with the audio URL
+          // Get the audio URL
           const audioUrl = await audioStorage.getAudioUrl(newTrack.id);
           if (audioUrl) {
             await LocalSongStorage.updateTrack(userEmail, song.id, newTrack.id, { audioUrl });
-            console.log('Track updated with audio URL:', audioUrl.substring(0, 50) + '...');
+            newTrack.audioUrl = audioUrl; // Update local object
+            console.log('Track updated with audio URL');
           }
+          
+          console.log(`Step 3: Adding track to UI`);
+          
+          // Step 3: Add track to local state immediately (incremental UI update)
+          setTracks(prevTracks => [...prevTracks, newTrack]);
+          setLocalTrackValues(prev => ({
+            ...prev,
+            [newTrack.id]: {
+              volume: newTrack.volume || 1.0,
+              balance: newTrack.balance || 0.0
+            }
+          }));
+          
+          // Detect and update song duration
+          await detectAndUpdateSongDuration(file, song.id);
+          
+          // Clear cached waveform to force regeneration
+          if (song?.id) {
+            const waveformCacheKey = `waveform_${song.id}`;
+            localStorage.removeItem(waveformCacheKey);
+          }
+          
+          console.log(`✅ Successfully processed: ${file.name}`);
         }
-        
-        // Detect and update song duration from the audio file
-        await detectAndUpdateSongDuration(file, song.id);
-        
-        console.log('Track added successfully');
-        
-        // Get updated song with new tracks and notify parent component
-        const finalUpdatedSong = await LocalSongStorage.getSong(userEmail, song.id);
-        if (finalUpdatedSong && onSongUpdate) {
-          console.log('Track data updated, refreshing song with', finalUpdatedSong.tracks.length, 'tracks');
-          onSongUpdate(finalUpdatedSong as any);
-        }
-        
-        // Clear cached waveform to force regeneration with new tracks
-        if (song?.id) {
-          const waveformCacheKey = `waveform_${song.id}`;
-          localStorage.removeItem(waveformCacheKey);
-          console.log(`Cleared waveform cache for "${song.title}" - will regenerate on next view`);
-        }
-        
-        toast({
-          title: "Track added successfully",
-          description: "Audio track has been registered and is ready for use"
-        });
-        
-        console.log(`Successfully processed: ${file.name}`);
       }
     } catch (error) {
       console.error('Error adding track:', error);
@@ -429,24 +491,26 @@ export default function TrackManager({
     try {
       const success = await LocalSongStorage.deleteTrack(userEmail, song.id, trackId);
       if (success) {
-        // Get updated song with removed track and notify parent component
-        const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
-        if (updatedSong && onSongUpdate) {
-          console.log('Track deleted, refreshing song with', updatedSong.tracks.length, 'tracks');
-          onSongUpdate(updatedSong as any);
-        }
+        // Remove track from local state immediately (incremental UI update)
+        setTracks(prevTracks => prevTracks.filter(t => t.id !== trackId));
+        setLocalTrackValues(prev => {
+          const updated = { ...prev };
+          delete updated[trackId];
+          return updated;
+        });
         
         // Clear cached waveform to force regeneration with remaining tracks
         if (song?.id) {
           const waveformCacheKey = `waveform_${song.id}`;
           localStorage.removeItem(waveformCacheKey);
-          console.log(`Cleared waveform cache for "${song.title}" - will regenerate on next view`);
         }
         
         toast({
           title: "Track deleted",
-          description: "Audio track has been removed. Waveform will regenerate with remaining tracks."
+          description: "Audio track has been removed."
         });
+        
+        console.log(`✅ Track ${trackId} deleted successfully`);
       }
     } catch (error) {
       toast({
@@ -461,17 +525,14 @@ export default function TrackManager({
     if (tracks.length === 0 || !song?.id || !userEmail) return;
 
     try {
-      // Delete all tracks
+      // Delete all tracks sequentially
       for (const track of tracks) {
         await LocalSongStorage.deleteTrack(userEmail, song.id, track.id);
       }
       
-      // Get updated song and notify parent component
-      const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
-      if (updatedSong && onSongUpdate) {
-        console.log('All tracks cleared, refreshing song with', updatedSong.tracks.length, 'tracks');
-        onSongUpdate(updatedSong as any);
-      }
+      // Clear local state immediately
+      setTracks([]);
+      setLocalTrackValues({});
       
       // Clear cached waveform since all tracks are removed
       if (song?.id) {
@@ -517,11 +578,7 @@ export default function TrackManager({
           // Update storage
           await LocalSongStorage.updateTrack(userEmail, song.id, trackId, { volume });
           
-          // Update Performance page's selectedSong state so next time Track Manager opens it has the right values
-          const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
-          if (updatedSong && onSongUpdate) {
-            onSongUpdate(updatedSong as any);
-          }
+          // Track values are already updated in local state
         }
       }
       
@@ -554,11 +611,7 @@ export default function TrackManager({
           // Update storage
           await LocalSongStorage.updateTrack(userEmail, song.id, trackId, { balance });
           
-          // Update Performance page's selectedSong state so next time Track Manager opens it has the right values
-          const updatedSong = await LocalSongStorage.getSong(userEmail, song.id);
-          if (updatedSong && onSongUpdate) {
-            onSongUpdate(updatedSong as any);
-          }
+          // Track values are already updated in local state
         }
       }
       
@@ -581,10 +634,12 @@ export default function TrackManager({
       await LocalSongStorage.updateTrack(userEmail, song.id, trackId, { isMuted: !currentMuteState });
       console.log(`🔊 Track ${trackId} mute toggled: ${currentMuteState} -> ${!currentMuteState}`);
       
-      // Refresh the song to reflect changes
-      setTimeout(() => refetchTracks(), 50);
+      // Update local state immediately
+      setTracks(prevTracks => 
+        prevTracks.map(t => t.id === trackId ? { ...t, isMuted: !currentMuteState } : t)
+      );
     }
-  }, [song?.id, userEmail, onTrackMuteToggle, refetchTracks]);
+  }, [song?.id, userEmail, onTrackMuteToggle]);
 
   // Solo toggle handler
   const handleSoloToggle = useCallback(async (trackId: string) => {
@@ -601,10 +656,12 @@ export default function TrackManager({
       await LocalSongStorage.updateTrack(userEmail, song.id, trackId, { isSolo: !currentSoloState });
       console.log(`🎧 Track ${trackId} solo toggled: ${currentSoloState} -> ${!currentSoloState}`);
       
-      // Refresh the song to reflect changes
-      setTimeout(() => refetchTracks(), 50);
+      // Update local state immediately
+      setTracks(prevTracks => 
+        prevTracks.map(t => t.id === trackId ? { ...t, isSolo: !currentSoloState } : t)
+      );
     }
-  }, [song?.id, userEmail, onTrackSoloToggle, refetchTracks]);
+  }, [song?.id, userEmail, onTrackSoloToggle]);
 
   // Cleanup timeouts on unmount
   useEffect(() => {

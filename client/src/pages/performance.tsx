@@ -1538,13 +1538,6 @@ export default function Performance({ userType, userEmail, logout }: Performance
                 isOpen={isTrackManagerOpen}
                 userEmail={userEmail}
                 audioEngine={audioEngine.audioEngine} // Pass audio engine for mute region sync
-                onSongUpdate={(updatedSong: any) => {
-                  console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');
-                setSelectedSong(updatedSong);
-                setAllSongs(prev => prev.map(song => 
-                  song.id === updatedSong.id ? updatedSong : song
-                ));
-              }}
               onTrackVolumeChange={updateTrackVolume}
               onTrackMuteToggle={toggleTrackMute}
               onTrackSoloToggle={toggleTrackSolo}
@@ -1569,13 +1562,6 @@ export default function Performance({ userType, userEmail, logout }: Performance
                   userEmail={userEmail} // Pass userEmail to StemSplitter
                   onStemGenerated={(stems) => {
                     console.log('Performance: Generated stems:', stems);
-                  }}
-                  onSongUpdate={(updatedSong: any) => {
-                    console.log('Performance: Stem splitter updated song with', updatedSong.tracks?.length || 0, 'tracks');
-                    setSelectedSong(updatedSong);
-                    setAllSongs(prev => prev.map(song => 
-                      song.id === updatedSong.id ? updatedSong : song
-                    ));
                   }}
                 />
               </div>

@@ -1,0 +1,230 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-4a7cbb6b857d7f77.js:28 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-4a7cbb6b857d7f77.js:28 [LaunchDarkly] LaunchDarkly client initialized
+/~:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'battery'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-8390ee4c216a2f37.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-8390ee4c216a2f37.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar95%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ 🔵 Android BLE-MIDI adapter initialized
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+ 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+ 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+ [MAIN.TSX] Script starting...
+ [MAIN.TSX] Unregistering service workers...
+ [MAIN.TSX] About to render React app...
+ [MAIN.TSX] Root element: 
+ [MAIN.TSX] React app rendered successfully
+  Failed to load audio file references from IndexedDB: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [AUTH] Valid session found: mazzu001@hotmail.com
+ [APP] Auth state: Object
+ 🔍 Browser detection debug: Object
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 MIDI API supported - waiting for user interaction to initialize
+ 🔧 Initializing storage for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [AUTH] useEffect - auth state initialized
+ 📊 Database exists for mazzu001@hotmail.com: true
+ 📂 Loading existing database for mazzu001@hotmail.com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ ✅ IndexedDB initialized: MusicAppDB_default_user_com
+ Browser file system initialized successfully for user: default@user.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+Console.js:61 Browser file system initialized successfully for user: mazzu001@hotmail.com
+Console.js:61 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+Console.js:61 ✅ Storage initialization complete for mazzu001@hotmail.com
+Console.js:61  Failed to load audio file references from IndexedDB: Error: Database not initialized. Call initialize() first.
+    at IndexedDBStorage.ensureDatabase (indexed-db-storage.ts:166:13)
+    at IndexedDBStorage.getAllAudioFileMetadata (indexed-db-storage.ts:546:10)
+    at AudioFileStorage.loadFromStorage (audio-file-storage.ts:208:46)
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] Storage initialized: true
+Console.js:61 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+Console.js:61 🔍 Initial service isHost check: Object
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: Object
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+Console.js:61 ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+Console.js:61 📭 No localStorage data found for key: lpp_songs_mazzu001@hotmail.com
+Console.js:61 📋 Loaded 2 songs from IndexedDB (alphabetically sorted)
+Console.js:61 🔍 Debug values: Object
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 🎵 Loading song: 3 AM
+Console.js:61 📡 Not uploading to database: Object
+Console.js:61 No tracks or cached waveform for "3 AM"
+Console.js:61 Song selected: "3 AM" with 0 tracks - loading for streaming
+Console.js:61 Setting up streaming for: "3 AM" - UI stays responsive
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🚀 Streaming load: 0 tracks (deferred setup)
+Console.js:61 🎵 Loading original tracks...
+Console.js:61 🎵 Track loading complete: 0 tracks ready
+Console.js:61 ✅ Streaming ready for "3 AM" - instant playback available
+Console.js:61 ✅ Streaming ready: 0 tracks setup instantly (audio nodes created on demand)
+Console.js:61 === Web Track Manager: Starting file selection ===
+Console.js:61 === Web Track Manager: File change event triggered ===
+Console.js:61 Files selected: 6
+Console.js:61 📁 Processing file 1/6: 3AM - Backups.mp3 (8.7MB)
+Console.js:61 ⏳ Starting processing of 3AM - Backups.mp3...
+Console.js:61 Processing file 0/0: 3AM - Backups.mp3
+Console.js:61 Adding track "3AM - Backups" with file: 3AM - Backups.mp3
+Console.js:61  Error adding track: TypeError: LocalSongStorage.addTrack is not a function
+    at processFile (track-manager-clean.tsx:356:49)
+    at input.onchange (track-manager-clean.tsx:228:21)
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 ✅ File 1 completely processed and stored
+Console.js:61 📊 Duration added: 228.9s (total: 228.9s)
+Console.js:61 📁 Processing file 2/6: 3AM - Bass.mp3 (8.7MB)
+Console.js:61 ⏳ Starting processing of 3AM - Bass.mp3...
+Console.js:61 Processing file 0/0: 3AM - Bass.mp3
+Console.js:61 Adding track "3AM - Bass" with file: 3AM - Bass.mp3
+Console.js:61  Error adding track: TypeError: LocalSongStorage.addTrack is not a function
+    at processFile (track-manager-clean.tsx:356:49)
+    at input.onchange (track-manager-clean.tsx:228:21)
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 ✅ File 2 completely processed and stored
+Console.js:61 📊 Duration added: 228.9s (total: 457.7s)
+Console.js:61 📁 Processing file 3/6: 3AM - Click.mp3 (8.7MB)
+Console.js:61 ⏳ Starting processing of 3AM - Click.mp3...
+Console.js:61 Processing file 0/0: 3AM - Click.mp3
+Console.js:61 Adding track "3AM - Click" with file: 3AM - Click.mp3
+Console.js:61  Error adding track: TypeError: LocalSongStorage.addTrack is not a function
+    at processFile (track-manager-clean.tsx:356:49)
+    at input.onchange (track-manager-clean.tsx:228:21)
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 ✅ File 3 completely processed and stored
+Console.js:61 📊 Duration added: 228.9s (total: 686.6s)
+Console.js:61 📁 Processing file 4/6: 3AM - Drums.mp3 (8.7MB)
+Console.js:61 ⏳ Starting processing of 3AM - Drums.mp3...
+Console.js:61 Processing file 0/0: 3AM - Drums.mp3
+Console.js:61 Adding track "3AM - Drums" with file: 3AM - Drums.mp3
+Console.js:61  Error adding track: TypeError: LocalSongStorage.addTrack is not a function
+    at processFile (track-manager-clean.tsx:356:49)
+    at input.onchange (track-manager-clean.tsx:228:21)
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 ✅ File 4 completely processed and stored
+Console.js:61 📊 Duration added: 228.9s (total: 915.5s)
+Console.js:61 📁 Processing file 5/6: 3AM - Guitars.mp3 (8.7MB)
+Console.js:61 ⏳ Starting processing of 3AM - Guitars.mp3...
+Console.js:61 Processing file 0/0: 3AM - Guitars.mp3
+Console.js:61 Adding track "3AM - Guitars" with file: 3AM - Guitars.mp3
+Console.js:61  Error adding track: TypeError: LocalSongStorage.addTrack is not a function
+    at processFile (track-manager-clean.tsx:356:49)
+    at input.onchange (track-manager-clean.tsx:228:21)
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 ✅ File 5 completely processed and stored
+Console.js:61 📊 Duration added: 228.9s (total: 1144.4s)
+Console.js:61 📁 Processing file 6/6: 3AM - Organ.mp3 (8.7MB)
+Console.js:61 ⏳ Starting processing of 3AM - Organ.mp3...
+Console.js:61 Processing file 0/0: 3AM - Organ.mp3
+Console.js:61 Adding track "3AM - Organ" with file: 3AM - Organ.mp3
+Console.js:61  Error adding track: TypeError: LocalSongStorage.addTrack is not a function
+    at processFile (track-manager-clean.tsx:356:49)
+    at input.onchange (track-manager-clean.tsx:228:21)
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 ✅ File 6 completely processed and stored
+Console.js:61 📊 Duration added: 228.9s (total: 1373.2s)
+Console.js:61 === Web Track Manager: Cleaning up file selection ===

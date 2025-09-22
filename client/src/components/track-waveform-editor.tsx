@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Trash2, Activity, ChevronDown, ChevronRight, ZoomIn, ZoomOut, VolumeX, Focus, Play } from 'lucide-react';
 import type { MuteRegion } from '@shared/schema';
-import { LocalSongStorage } from '@/lib/local-song-storage';
+import { LocalSongStorageDB as LocalSongStorage } from '@/lib/local-song-storage-db';
 import { BrowserFileSystem } from '@/lib/browser-file-system';
 import { waveformGenerator } from '@/lib/waveform-generator';
 import type { StreamingAudioEngine } from '@/lib/streaming-audio-engine';

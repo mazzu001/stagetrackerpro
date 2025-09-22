@@ -251,12 +251,23 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     return <Keyboard className="h-4 w-4" />;
   };
 
+  // Detect if a device is a ghost (appears in list but not actually available)
+  const isGhostDevice = (device: MidiDevice) => {
+    // A ghost device has disconnected state or closed connection
+    return device.state === 'disconnected' || device.connection === 'closed';
+  };
+
   const getConnectionIcon = (device: MidiDevice) => {
     const isConnected = connectedDevices.some(d => d.id === device.id);
     const state = connectionStates[device.id];
+    const isGhost = isGhostDevice(device);
     
     if (state === 'connecting' || state === 'disconnecting') {
       return <RefreshCw className="h-4 w-4 animate-spin" />;
+    }
+    
+    if (isGhost) {
+      return <Circle className="h-4 w-4 text-gray-400" />;
     }
     
     if (device.state === 'disconnected') {
@@ -273,9 +284,11 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   const getConnectionStatus = (device: MidiDevice) => {
     const isConnected = connectedDevices.some(d => d.id === device.id);
     const state = connectionStates[device.id];
+    const isGhost = isGhostDevice(device);
     
     if (state === 'connecting') return 'Connecting...';
     if (state === 'disconnecting') return 'Disconnecting...';
+    if (isGhost) return 'Unavailable';
     if (device.state === 'disconnected') return 'Disconnected';
     if (isConnected && device.connection === 'open') return 'Connected';
     return 'Available';
@@ -436,16 +449,19 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                     const isConnected = isUnifiedDeviceConnected(unifiedDevice);
                     const state = getUnifiedDeviceState(unifiedDevice);
                     const deviceForIcon = unifiedDevice.outputDevice || unifiedDevice.inputDevice;
+                    const isGhost = deviceForIcon && isGhostDevice(deviceForIcon);
                     
                     return (
-                      <Card key={`${unifiedDevice.name}-${unifiedDevice.manufacturer}-${index}`}>
+                      <Card key={`${unifiedDevice.name}-${unifiedDevice.manufacturer}-${index}`}
+                            className={isGhost ? 'opacity-60' : ''}>
                         <CardContent className="pt-4">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
                               {deviceForIcon && getDeviceIcon(deviceForIcon)}
                               <div>
                                 <div className="flex items-center gap-2">
-                                  <span className="font-medium text-sm" data-testid={`device-name-unified-${index}`}>
+                                  <span className={`font-medium text-sm ${isGhost ? 'text-gray-500' : ''}`} 
+                                        data-testid={`device-name-unified-${index}`}>
                                     {unifiedDevice.name}
                                   </span>
                                   {unifiedDevice.manufacturer && (
@@ -457,7 +473,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                                 <div className="flex items-center gap-2 mt-1">
                                   {deviceForIcon && getConnectionIcon(deviceForIcon)}
                                   <span className="text-xs text-muted-foreground" data-testid={`device-status-unified-${index}`}>
-                                    {isConnected ? 'Connected' : 'Available'}
+                                    {isGhost ? 'Unavailable' : (isConnected ? 'Connected' : 'Available')}
                                   </span>
                                   <div className="flex gap-1">
                                     {unifiedDevice.capabilities.map((capability) => (
@@ -474,12 +490,13 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                               variant={isConnected ? "destructive" : "outline"}
                               size="sm"
                               onClick={() => isConnected ? handleUnifiedDisconnect(unifiedDevice) : handleUnifiedConnect(unifiedDevice)}
-                              disabled={state !== 'idle'}
+                              disabled={state !== 'idle' || isGhost}
                               data-testid={`button-${isConnected ? 'disconnect' : 'connect'}-unified-${index}`}
+                              title={isGhost ? 'Device is unavailable - please turn on the device' : ''}
                             >
                               {state === 'connecting' && 'Connecting...'}
                               {state === 'disconnecting' && 'Disconnecting...'}
-                              {state === 'idle' && (isConnected ? 'Disconnect' : 'Connect')}
+                              {state === 'idle' && (isGhost ? 'Unavailable' : (isConnected ? 'Disconnect' : 'Connect'))}
                             </Button>
                           </div>
                         </CardContent>

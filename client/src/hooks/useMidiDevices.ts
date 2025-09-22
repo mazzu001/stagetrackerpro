@@ -53,6 +53,12 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   const bleDevicesRef = useRef<Map<string, BleMidiDevice>>(new Map()); // Track BLE devices
   const messageListenersRef = useRef<Map<string, (message: MIDIMessageEvent) => void>>(new Map());
   const hasInitializedRef = useRef(false); // Track if we've initialized at all
+  const hasAttemptedAutoReconnectRef = useRef(false); // Track if we've attempted auto-reconnect (one-shot)
+  
+  // Add reentrancy lock and debounce timer for refreshDeviceList
+  const isRefreshingRef = useRef(false);
+  const refreshDebounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastConsoleLogTime = useRef(0);
 
   // Mobile browser detection for Android MIDI compatibility
   const getBrowserInfo = () => {
@@ -98,34 +104,49 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     return shouldUseBleAdapter(device);
   }, [shouldUseBleAdapter]);
   
-  // Debug browser detection for Android MIDI troubleshooting
-  console.log('🔍 Browser detection debug:', {
-    userAgent: navigator.userAgent,
-    isAndroid: browserInfo.isAndroid,
-    isChrome: browserInfo.isChrome,
-    isEdge: browserInfo.isEdge,
-    isAndroidChrome: browserInfo.isAndroidChrome,
-    isAndroidEdge: browserInfo.isAndroidEdge,
-    isAndroidBrowser: browserInfo.isAndroidBrowser,
-    isMobile: browserInfo.isMobile
-  });
+  // Debug browser detection for Android MIDI troubleshooting (only log once)
+  if (lastConsoleLogTime.current === 0) {
+    console.log('🔍 Browser detection debug:', {
+      userAgent: navigator.userAgent,
+      isAndroid: browserInfo.isAndroid,
+      isChrome: browserInfo.isChrome,
+      isEdge: browserInfo.isEdge,
+      isAndroidChrome: browserInfo.isAndroidChrome,
+      isAndroidEdge: browserInfo.isAndroidEdge,
+      isAndroidBrowser: browserInfo.isAndroidBrowser,
+      isMobile: browserInfo.isMobile
+    });
+    lastConsoleLogTime.current = Date.now();
+  }
 
-  // Refresh device list from MIDI access (USB devices only, no Bluetooth)
-  const refreshDeviceList = useCallback(async (includeBluetoothDevices: boolean = false) => {
+  // Internal refresh function with reentrancy lock
+  const refreshDeviceListInternal = async (includeBluetoothDevices: boolean = false) => {
     if (!midiAccessRef.current) return;
     
-    const access = midiAccessRef.current;
-    const deviceList: MidiDevice[] = [];
-    const currentDeviceIds = new Set<string>();
+    // Prevent re-entrant calls
+    if (isRefreshingRef.current) {
+      console.log('⏳ Device refresh already in progress, skipping...');
+      return;
+    }
     
-    // Debug: Log access details
-    console.log('🔍 Refreshing devices - access details:', {
-      inputs: access.inputs.size,
-      outputs: access.outputs.size,
-      inputsType: access.inputs.constructor.name,
-      outputsType: access.outputs.constructor.name,
-      includeBluetoothDevices
-    });
+    isRefreshingRef.current = true;
+    
+    try {
+      const access = midiAccessRef.current;
+      const deviceList: MidiDevice[] = [];
+      const currentDeviceIds = new Set<string>();
+      
+      // Rate-limit console logging (max once per second)
+      const now = Date.now();
+      const shouldLog = now - lastConsoleLogTime.current > 1000;
+      if (shouldLog) {
+        lastConsoleLogTime.current = now;
+        console.log('🔍 Refreshing devices - access details:', {
+          inputs: access.inputs.size,
+          outputs: access.outputs.size,
+          includeBluetoothDevices
+        });
+      }
     
     // Handle null case if inputs/outputs are empty
     const hasDevices = access.inputs.size > 0 || access.outputs.size > 0;
@@ -139,7 +160,9 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       
       // Skip Bluetooth devices unless explicitly requested
       if (isBluetoothDevice && !includeBluetoothDevices) {
-        console.log(`⏭️ Skipping Bluetooth device during USB-only scan: ${input.name}`);
+        if (shouldLog) {
+          console.log(`⏭️ Skipping Bluetooth device during USB-only scan: ${input.name}`);
+        }
         return;
       }
       
@@ -169,7 +192,9 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       
       // Skip Bluetooth devices unless explicitly requested
       if (isBluetoothDevice && !includeBluetoothDevices) {
-        console.log(`⏭️ Skipping Bluetooth device during USB-only scan: ${output.name}`);
+        if (shouldLog) {
+          console.log(`⏭️ Skipping Bluetooth device during USB-only scan: ${output.name}`);
+        }
         return;
       }
       
@@ -208,50 +233,77 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       }
     });
     
-    // Clean up disconnected devices
-    const previousDeviceIds = new Set(deviceConnectionsRef.current.keys());
-    previousDeviceIds.forEach(prevId => {
-      if (!currentDeviceIds.has(prevId) && !bleDevicesRef.current.has(prevId)) {
-        const device = deviceConnectionsRef.current.get(prevId);
-        if (device) {
-          console.log(`🔌 Device disconnected: ${device.name}`);
-          if (device.type === 'input') {
-            (device as MIDIInput).onmidimessage = null;
+      // Clean up disconnected devices
+      const previousDeviceIds = new Set(deviceConnectionsRef.current.keys());
+      previousDeviceIds.forEach(prevId => {
+        if (!currentDeviceIds.has(prevId) && !bleDevicesRef.current.has(prevId)) {
+          const device = deviceConnectionsRef.current.get(prevId);
+          if (device) {
+            if (shouldLog) {
+              console.log(`🔌 Device disconnected: ${device.name}`);
+            }
+            if (device.type === 'input') {
+              (device as MIDIInput).onmidimessage = null;
+            }
+            deviceConnectionsRef.current.delete(prevId);
           }
-          deviceConnectionsRef.current.delete(prevId);
         }
+      });
+      
+      if (!hasDevices && deviceList.length === 0 && shouldLog) {
+        console.log('⚠️ No MIDI devices found yet. Devices will appear when connected.');
       }
-    });
-    
-    if (!hasDevices && deviceList.length === 0) {
-      console.log('⚠️ No MIDI devices found yet. Devices will appear when connected.');
+      
+      if (shouldLog) {
+        console.log(`🎹 Found ${deviceList.length} MIDI devices:`, 
+          deviceList.map(d => `${d.name} (${d.type}, ${d.isUSB ? 'USB' : 'Bluetooth'})`));
+      }
+      setDevices(deviceList);
+      
+      // Update connected devices
+      const connected = deviceList.filter(device => {
+        // Device must be physically connected
+        if (device.state !== 'connected') return false;
+        
+        // Check if device is connected via BLE adapter
+        const bleDevice = bleDevicesRef.current.get(device.id);
+        if (bleDevice) {
+          if (shouldLog) {
+            console.log(`🔵 BLE device ${device.name} marked as connected via BLE adapter`);
+          }
+          return true; // BLE devices are connected if they exist in our BLE map
+        }
+        
+        // Check if we have this device in our Web MIDI connections and it's actually open
+        const managedDevice = deviceConnectionsRef.current.get(device.id);
+        return managedDevice && device.connection === 'open';
+      });
+      
+      if (shouldLog) {
+        console.log(`🎹 Connected devices: ${connected.length}/${deviceList.length}`, 
+          connected.map(d => `${d.name} (${d.type})`));
+      }
+      setConnectedDevices(connected);
+    } finally {
+      isRefreshingRef.current = false;
+    }
+  };
+
+  // Debounced refresh device list wrapper
+  const refreshDeviceList = useCallback(async (includeBluetoothDevices: boolean = false) => {
+    // Clear any pending refresh
+    if (refreshDebounceTimerRef.current) {
+      clearTimeout(refreshDebounceTimerRef.current);
     }
     
-    console.log(`🎹 Found ${deviceList.length} MIDI devices:`, 
-      deviceList.map(d => `${d.name} (${d.type}, ${d.isUSB ? 'USB' : 'Bluetooth'})`));
-    setDevices(deviceList);
-    
-    // Update connected devices
-    const connected = deviceList.filter(device => {
-      // Device must be physically connected
-      if (device.state !== 'connected') return false;
-      
-      // Check if device is connected via BLE adapter
-      const bleDevice = bleDevicesRef.current.get(device.id);
-      if (bleDevice) {
-        console.log(`🔵 BLE device ${device.name} marked as connected via BLE adapter`);
-        return true; // BLE devices are connected if they exist in our BLE map
-      }
-      
-      // Check if we have this device in our Web MIDI connections and it's actually open
-      const managedDevice = deviceConnectionsRef.current.get(device.id);
-      return managedDevice && device.connection === 'open';
+    // Schedule a debounced refresh (300ms delay)
+    return new Promise<void>((resolve) => {
+      refreshDebounceTimerRef.current = setTimeout(async () => {
+        await refreshDeviceListInternal(includeBluetoothDevices);
+        resolve();
+      }, 300);
     });
-    
-    console.log(`🎹 Connected devices: ${connected.length}/${deviceList.length}`, 
-      connected.map(d => `${d.name} (${d.type})`));
-    setConnectedDevices(connected);
-  }, [browserInfo.isAndroidBrowser]);
+  }, []); // refreshDeviceListInternal uses refs so doesn't need to be in deps
 
   // Check if MIDI is supported (but don't initialize)
   useEffect(() => {
@@ -295,7 +347,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       console.log('✅ USB MIDI access granted');
       midiAccessRef.current = midiAccess;
       
-      // Set up lightweight device monitoring (MIDI-only handler)
+      // Set up lightweight device monitoring (MIDI-only handler) with debouncing
       midiAccess.onstatechange = (event: Event) => {
         const midiEvent = event as MIDIConnectionEvent;
         const port = midiEvent.port;
@@ -308,8 +360,13 @@ export function useMidiDevices(): UseMidiDevicesReturn {
                                    deviceName.includes('widi');
           
           if (!isBluetoothDevice) {
-            console.log(`🎹 USB device change: ${port.name} - ${port.state}`);
-            // Lightweight refresh - USB only
+            // Rate-limit the console logs
+            const now = Date.now();
+            if (now - lastConsoleLogTime.current > 1000) {
+              console.log(`🎹 USB device change: ${port.name} - ${port.state}`);
+              lastConsoleLogTime.current = now;
+            }
+            // Use debounced refresh to prevent infinite loops
             refreshDeviceList(false);
           }
         }
@@ -323,8 +380,14 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       setError(null);
       console.log('✅ USB MIDI initialized successfully');
       
-      // Stage 2: Auto-reconnect to last USB device (deferred)
+      // Stage 2: Auto-reconnect to last USB device (deferred, one-shot)
       setTimeout(() => {
+        // Only attempt auto-reconnect once per session to prevent infinite loops
+        if (hasAttemptedAutoReconnectRef.current) {
+          console.log('🎹 Auto-reconnect already attempted, skipping');
+          return;
+        }
+        
         const lastDeviceStr = localStorage.getItem('lastMidiDevice');
         if (lastDeviceStr) {
           try {
@@ -337,7 +400,10 @@ export function useMidiDevices(): UseMidiDevicesReturn {
                                      deviceName.includes('widi');
             
             if (!isBluetoothDevice) {
-              console.log('🎹 Looking for last USB device:', lastDevice.name);
+              // Mark that we've attempted auto-reconnect
+              hasAttemptedAutoReconnectRef.current = true;
+              
+              console.log('🎹 Looking for last USB device (one-shot):', lastDevice.name);
               
               const devices = midiAccessRef.current?.inputs;
               if (devices) {

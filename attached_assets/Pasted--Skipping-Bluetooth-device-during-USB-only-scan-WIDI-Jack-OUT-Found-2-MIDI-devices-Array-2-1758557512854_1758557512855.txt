@@ -1,0 +1,1000 @@
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+ ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+ 🎹 Found 2 MIDI devices: Array(2)
+ 🎹 Connected devices: 0/2 Array(0)
+ 🎹 Checking for auto-reconnect to: WIDI Jack
+ 🔍 Browser detection debug: Object
+ 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:122 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:142 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:172 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:230 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:251 🎹 Connected devices: 0/2 Array(0)
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack

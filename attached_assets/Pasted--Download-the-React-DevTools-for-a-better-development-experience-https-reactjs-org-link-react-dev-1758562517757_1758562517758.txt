@@ -1,0 +1,133 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ 🔵 Android BLE-MIDI adapter initialized
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+ 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+ 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+ No stored audio file references found
+ [MAIN.TSX] Script starting...
+ [MAIN.TSX] Unregistering service workers...
+ [MAIN.TSX] About to render React app...
+ [MAIN.TSX] Root element: 
+ [MAIN.TSX] React app rendered successfully
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [AUTH] Valid session found: professional@demo.com
+ [APP] Auth state: Object
+ 🔍 Browser detection debug: Object
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 MIDI API supported - waiting for user interaction to initialize
+ 🔧 Initializing storage for user: professional@demo.com
+ 🗄️ Initializing per-user database: MusicAppStorage::professional_demo_com
+ 🔧 Opening IndexedDB: MusicAppStorage::professional_demo_com
+ [AUTH] useEffect - auth state initialized
+ 📊 Database exists for professional@demo.com: true
+ 📂 Loading existing database for professional@demo.com
+ 🔧 Opening IndexedDB: MusicAppStorage::professional_demo_com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ Browser file system initialized successfully for user: default@user.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: professional@demo.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: professional@demo.com
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::professional@demo.com
+ No stored audio file references found
+ ✅ Storage initialization complete for professional@demo.com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: true
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 📋 Loaded 11 songs from local storage (alphabetically sorted)
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎹 Initializing USB MIDI (lightweight)...
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+useMidiDevices.ts:324 🎹 MIDI already initialized
+useMidiDevices.ts:347 ✅ USB MIDI access granted
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 Array(0)
+useMidiDevices.ts:381 ✅ USB MIDI initialized successfully
+midi-device-manager.tsx:60 🎹 USB MIDI initialized from device manager
+midi-device-manager.tsx:94 🎹 Skipping auto-reconnect for Bluetooth device: WIDI Jack OUT
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 Array(0)
+useMidiDevices.ts:536 🎹 Connecting to MidiPortA IN ()...
+useMidiDevices.ts:536 🎹 Connecting to MidiPortA OUT ()...
+useMidiDevices.ts:574 ✅ Connected to MidiPortA IN
+useMidiDevices.ts:574 ✅ Connected to MidiPortA OUT
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:283 🎹 Connected devices: 2/2 Array(2)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: Array(2)
+useMidiDevices.ts:283 🎹 Connected devices: 2/2 Array(2)
+useMidiDevices.ts:451 🔵 Scanning for Bluetooth MIDI devices (user-initiated)...
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 2/4 Array(2)
+useMidiDevices.ts:456 ✅ Bluetooth MIDI scan complete
+useMidiDevices.ts:536 🎹 Connecting to WIDI Jack IN ()...
+useMidiDevices.ts:536 🎹 Connecting to WIDI Jack OUT ()...
+useMidiDevices.ts:574 ✅ Connected to WIDI Jack IN
+useMidiDevices.ts:574 ✅ Connected to WIDI Jack OUT
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: Array(4)
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 Array(4)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 2, outputs: 2, includeBluetoothDevices: true}
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: (4) ['MidiPortA IN (input, USB)', 'WIDI Jack IN (input, Bluetooth)', 'MidiPortA OUT (output, USB)', 'WIDI Jack OUT (output, Bluetooth)']
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 (4) ['MidiPortA IN (input)', 'WIDI Jack IN (input)', 'MidiPortA OUT (output)', 'WIDI Jack OUT (output)']
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 2, outputs: 2, includeBluetoothDevices: true}
+useMidiDevices.ts:258 🎹 Found 4 MIDI devices: (4) ['MidiPortA IN (input, USB)', 'WIDI Jack IN (input, Bluetooth)', 'MidiPortA OUT (output, USB)', 'WIDI Jack OUT (output, Bluetooth)']
+useMidiDevices.ts:283 🎹 Connected devices: 4/4 (4) ['MidiPortA IN (input)', 'WIDI Jack IN (input)', 'MidiPortA OUT (output)', 'WIDI Jack OUT (output)']

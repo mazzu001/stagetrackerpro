@@ -112,6 +112,27 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     }
   }, [isInitialized, devices]); // Re-run when devices change
 
+  // Reconcile connection states - clear stale 'connecting' flags for actually connected devices
+  useEffect(() => {
+    // Get all connected device IDs
+    const connectedIds = new Set(connectedDevices.map(d => d.id));
+    
+    // Clear 'connecting' state for any device that's actually connected
+    setConnectionStates(prev => {
+      const next = { ...prev };
+      let hasChanges = false;
+      
+      for (const id in next) {
+        if (next[id] === 'connecting' && connectedIds.has(id)) {
+          next[id] = 'idle';
+          hasChanges = true;
+        }
+      }
+      
+      return hasChanges ? next : prev;
+    });
+  }, [connectedDevices]);
+
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
@@ -176,6 +197,10 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       const anyFailed = results.some(success => !success);
       if (anyFailed) {
         console.error('Failed to connect to some devices:', deviceIds);
+        // Reset states on failure
+        const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+        deviceIds.forEach(id => resetStates[id] = 'idle');
+        setConnectionStates(prev => ({ ...prev, ...resetStates }));
       } else {
         // Save last connected device for auto-reconnect
         const deviceInfo = {
@@ -186,14 +211,13 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
         };
         localStorage.setItem('lastMidiDevice', JSON.stringify(deviceInfo));
         console.log('🎹 Saved last connected device:', deviceInfo.name);
+        // Don't reset here - let the reconciliation effect handle it
       }
-    } finally {
-      // Reset states after a very short delay to ensure UI updates
-      setTimeout(() => {
-        const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-        deviceIds.forEach(id => resetStates[id] = 'idle');
-        setConnectionStates(prev => ({ ...prev, ...resetStates }));
-      }, 100);
+    } catch (err) {
+      // Reset states on error
+      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+      deviceIds.forEach(id => resetStates[id] = 'idle');
+      setConnectionStates(prev => ({ ...prev, ...resetStates }));
     }
   };
 
@@ -214,13 +238,15 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       if (anyFailed) {
         console.error('Failed to disconnect from some devices:', deviceIds);
       }
-    } finally {
-      // Reset states after a very short delay to ensure UI updates
-      setTimeout(() => {
-        const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-        deviceIds.forEach(id => resetStates[id] = 'idle');
-        setConnectionStates(prev => ({ ...prev, ...resetStates }));
-      }, 100);
+      // Reset states immediately on success
+      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+      deviceIds.forEach(id => resetStates[id] = 'idle');
+      setConnectionStates(prev => ({ ...prev, ...resetStates }));
+    } catch (err) {
+      // Reset states on error
+      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+      deviceIds.forEach(id => resetStates[id] = 'idle');
+      setConnectionStates(prev => ({ ...prev, ...resetStates }));
     }
   };
 
@@ -522,13 +548,21 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                               title={isGhost ? 'Device is unavailable - please turn on the device' : ''}
                             >
                               {(() => {
-                                // Always check actual connection state first
+                                // Check ghost device first
+                                if (isGhost) return 'Unavailable';
+                                
+                                // PRIORITIZE actual connection state over transient flags
+                                const actuallyConnected = isUnifiedDeviceConnected(unifiedDevice);
+                                if (actuallyConnected && state !== 'disconnecting') {
+                                  return 'Disconnect';
+                                }
+                                
+                                // Show transient states only when not actually connected
                                 if (state === 'connecting') return 'Connecting...';
                                 if (state === 'disconnecting') return 'Disconnecting...';
-                                if (isGhost) return 'Unavailable';
-                                // Check the real connection state from connectedDevices
-                                const actuallyConnected = isUnifiedDeviceConnected(unifiedDevice);
-                                return actuallyConnected ? 'Disconnect' : 'Connect';
+                                
+                                // Default state
+                                return 'Connect';
                               })()}
                             </Button>
                           </div>

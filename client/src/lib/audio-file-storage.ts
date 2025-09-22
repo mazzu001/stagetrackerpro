@@ -175,11 +175,11 @@ export class AudioFileStorage {
         this.audioFiles = new Map(data);
         console.log(`Loaded ${this.audioFiles.size} audio file path references from localStorage`);
         
-        // Auto-load audio files from IndexedDB into memory cache
-        this.autoLoadStoredFiles();
+        // DO NOT auto-load audio files at startup - only load when a song is selected
+        // this.autoLoadStoredFiles(); // REMOVED: Was causing app freeze with many files
         
-        // Display which files we're looking for
-        this.displayExpectedFiles();
+        // Don't display verbose file list at startup
+        // this.displayExpectedFiles();
       } else {
         console.log('No stored audio file references found');
       }

@@ -39,7 +39,7 @@ interface AppContentProps {
   isPaidUser: boolean;
 }
 
-function AppContent({ isAuthenticated, isPaidUser }: AppContentProps) {
+function AppContent({ isAuthenticated, isPaidUser, userEmail, logout }: AppContentProps & { userEmail?: string; logout?: () => void }) {
   console.log("[APP] AppContent component rendering...");
   const { isInitialized: storageInitialized } = useStorage();
   console.log("[APP] Storage initialized:", storageInitialized);
@@ -142,7 +142,7 @@ function AppContent({ isAuthenticated, isPaidUser }: AppContentProps) {
         </div>
       ) : (
         <AnalyticsRouter>
-          <Route path="/" component={() => <Performance userType={isPaidUser ? 'premium' : 'free'} />} />
+          <Route path="/" component={() => <Performance userType={isPaidUser ? 'premium' : 'free'} userEmail={userEmail} logout={logout} />} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
         <Route path="/broadcast-viewer-old" component={BroadcastViewer} />
@@ -167,7 +167,7 @@ function AppContent({ isAuthenticated, isPaidUser }: AppContentProps) {
 
 function App() {
   console.log("[APP] About to call useLocalAuth hook...");
-  const { isAuthenticated, isLoading, isPaidUser, user } = useLocalAuth();
+  const { isAuthenticated, isLoading, isPaidUser, user, logout } = useLocalAuth();
   console.log("[APP] Auth state:", { isAuthenticated, isLoading, isPaidUser, userEmail: user?.email });
 
   // Initialize Google Analytics when app loads
@@ -199,7 +199,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <StorageProvider userEmail={user?.email || null}>
         <MidiProvider>
-          <AppContent isAuthenticated={isAuthenticated} isPaidUser={isPaidUser} />
+          <AppContent isAuthenticated={isAuthenticated} isPaidUser={isPaidUser} userEmail={user?.email} logout={logout} />
         </MidiProvider>
       </StorageProvider>
     </QueryClientProvider>

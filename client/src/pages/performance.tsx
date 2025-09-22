@@ -25,7 +25,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Activity, Zap, X, Target, Send, Search, ExternalLink, Loader2, Volume2, Download, Upload, FolderOpen, Cast, Headphones } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
-import { useLocalAuth, type UserType } from "@/hooks/useLocalAuth";
+import { type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorage, type LocalSong } from "@/lib/local-song-storage";
 import type { SongWithTracks } from "@shared/schema";
 import { useRef } from "react";
@@ -36,11 +36,11 @@ import { useMidi } from "@/contexts/MidiProvider";
 
 interface PerformanceProps {
   userType: UserType;
+  userEmail?: string;
+  logout?: () => void;
 }
 
-export default function Performance({ userType: propUserType }: PerformanceProps) {
-  const { user, logout } = useLocalAuth(); // Get real-time user data
-  const userType = user?.userType || propUserType || 'free'; // Use fresh user type from auth
+export default function Performance({ userType, userEmail, logout }: PerformanceProps) {
   
   const [selectedSongId, setSelectedSongId] = useState<string | null>(null);
   const [, setLocation] = useLocation();
@@ -117,7 +117,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Show export dialog with filename input
   const handleExportData = () => {
-    if (!user?.email) {
+    if (!userEmail) {
       toast({
         title: "Export Failed",
         description: "Please log in to export your data",
@@ -128,7 +128,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
     // Generate default filename suggestion
     const timestamp = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-    const userPrefix = user.email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '');
+    const userPrefix = userEmail.split('@')[0].replace(/[^a-zA-Z0-9]/g, '');
     const defaultName = `stagetracker-backup-${userPrefix}-${timestamp}`;
     setExportFilename(defaultName);
     setIsExportDialogOpen(true);
@@ -136,7 +136,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Actually perform the export with custom filename
   const performExport = async () => {
-    if (!user?.email || !exportFilename.trim()) return;
+    if (!userEmail || !exportFilename.trim()) return;
 
     try {
       setIsExporting(true);
@@ -156,7 +156,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         setExportStatus(status);
       };
       
-      const zipBlob = await backupManager.exportAllData(user.email, onProgress, { signal: controller.signal });
+      const zipBlob = await backupManager.exportAllData(userEmail, onProgress, { signal: controller.signal });
       
       // Create download with explicit MIME type for Android compatibility
       const zipBlobWithMime = new Blob([zipBlob], { type: 'application/zip' });
@@ -327,7 +327,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Import data from zip file
   const handleImportData = () => {
-    if (!user?.email) {
+    if (!userEmail) {
       toast({
         title: "Import Failed",
         description: "Please log in to import data",
@@ -343,7 +343,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   // Handle file selection for import
   const handleFileSelected = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file || !user?.email) return;
+    if (!file || !userEmail) return;
 
     try {
       setIsImporting(true);
@@ -358,10 +358,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         setImportStatus(status);
       };
       
-      await backupManager.importAllData(file, user.email, onProgress);
+      await backupManager.importAllData(file, userEmail, onProgress);
       
       // Refresh the song list
-      const updatedSongs = LocalSongStorage.getAllSongs(user.email);
+      const updatedSongs = LocalSongStorage.getAllSongs(userEmail);
       setAllSongs(updatedSongs.sort((a, b) => a.title.localeCompare(b.title)));
       
       toast({
@@ -389,10 +389,11 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Instant audio engine (now with zero decode delays)
   const audioEngine = useAudioEngine({ 
-    song: selectedSong ? { ...selectedSong, userId: user?.email || '' } as SongWithTracks : undefined,
+    song: selectedSong ? { ...selectedSong, userId: userEmail || '' } as SongWithTracks : undefined,
+    userEmail: userEmail,
     onDurationUpdated: (songId: string, newDuration: number) => {
-      if (selectedSong && selectedSong.id === songId && user?.email) {
-        LocalSongStorage.updateSong(user.email, songId, { duration: newDuration });
+      if (selectedSong && selectedSong.id === songId && userEmail) {
+        LocalSongStorage.updateSong(userEmail, songId, { duration: newDuration });
       }
     }
   });
@@ -441,10 +442,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   // Load all songs on mount
   useEffect(() => {
     const loadAllSongs = () => {
-      if (!user?.email) return;
+      if (!userEmail) return;
       
       try {
-        const songs = LocalSongStorage.getAllSongs(user.email);
+        const songs = LocalSongStorage.getAllSongs(userEmail);
         // Sort songs alphabetically by title
         const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
         setAllSongs(sortedSongs);
@@ -460,30 +461,30 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     };
 
     loadAllSongs();
-  }, [user?.email, toast]);
+  }, [userEmail, toast]);
 
   const refreshSongs = useCallback(() => {
-    if (!user?.email) return;
+    if (!userEmail) return;
     
     try {
-      const songs = LocalSongStorage.getAllSongs(user.email);
+      const songs = LocalSongStorage.getAllSongs(userEmail);
       // Sort songs alphabetically by title
       const sortedSongs = songs.sort((a, b) => a.title.localeCompare(b.title));
       setAllSongs(sortedSongs);
     } catch (error) {
       console.error('Failed to refresh songs:', error);
     }
-  }, [user?.email]);
+  }, [userEmail]);
 
   // Track database entry ID for broadcasting
   const [songEntryId, setSongEntryId] = useState<string | null>(null);
 
   // Select song and load its tracks
   useEffect(() => {
-    if (!selectedSongId || !user?.email) return;
+    if (!selectedSongId || !userEmail) return;
 
     // Get fresh song data from storage to avoid circular dependencies
-    const allSongsFromStorage = LocalSongStorage.getAllSongs(user.email);
+    const allSongsFromStorage = LocalSongStorage.getAllSongs(userEmail);
     const song = allSongsFromStorage.find(s => s.id === selectedSongId);
     if (!song) return;
 
@@ -498,20 +499,20 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     } else {
       console.log('📡 Not uploading to database:', { isHost, hasCurrentRoom: !!currentRoom?.id, roomId: currentRoom?.id });
     }
-  }, [selectedSongId, user?.email, isHost, currentRoom?.id]);
+  }, [selectedSongId, userEmail, isHost, currentRoom?.id]);
 
   // Debug current values to see why upload isn't triggering
   useEffect(() => {
     console.log('🔍 Debug values:', { 
       selectedSongId, 
-      userEmail: user?.email, 
+      userEmail: userEmail, 
       isHost, 
       currentRoomId: currentRoom?.id,
       hasSelectedSongId: !!selectedSongId,
-      hasUserEmail: !!user?.email,
+      hasUserEmail: !!userEmail,
       hasCurrentRoom: !!currentRoom?.id
     });
-  }, [selectedSongId, user?.email, isHost, currentRoom?.id]);
+  }, [selectedSongId, userEmail, isHost, currentRoom?.id]);
 
   // Upload song to database and get entry ID for broadcasting
   const uploadSongToDatabase = async (song: any, broadcastId: string) => {
@@ -551,7 +552,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     console.log('📺 Broadcast viewer mode: Syncing with broadcaster state', broadcastState);
     
     // Sync current song if broadcaster changed it (only if logged in)
-    if (broadcastState.currentSong && broadcastState.currentSong !== selectedSongId && user?.email) {
+    if (broadcastState.currentSong && broadcastState.currentSong !== selectedSongId && userEmail) {
       console.log(`📺 Broadcaster changed song to: ${broadcastState.songTitle || broadcastState.currentSong}`);
       setSelectedSongId(broadcastState.currentSong);
     }
@@ -572,7 +573,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
       }
     }
     
-  }, [isViewer, broadcastState, selectedSongId, selectedSong, currentTime, isPlaying, user?.email, seek, play, pause]);
+  }, [isViewer, broadcastState, selectedSongId, selectedSong, currentTime, isPlaying, userEmail, seek, play, pause]);
 
   // Broadcast host mode: Send performance state to viewers
   useEffect(() => {
@@ -646,7 +647,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
   }, [stop]);
 
   const handleAddSongLocal = useCallback(() => {
-    if (!user?.email) {
+    if (!userEmail) {
       toast({
         title: "Authentication Required",
         description: "Please log in to add songs",
@@ -656,7 +657,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
     }
 
     try {
-      const newSong = LocalSongStorage.addSong(user.email, {
+      const newSong = LocalSongStorage.addSong(userEmail, {
         title: songTitle,
         artist: songArtist,
         duration: 0,
@@ -682,13 +683,13 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         variant: "destructive"
       });
     }
-  }, [user?.email, songTitle, songArtist, toast]);
+  }, [userEmail, songTitle, songArtist, toast]);
 
   const handleUpdateLyrics = useCallback(() => {
-    if (!selectedSong || !user?.email) return;
+    if (!selectedSong || !userEmail) return;
 
     try {
-      const updatedSong = LocalSongStorage.updateSong(user.email, selectedSong.id, {
+      const updatedSong = LocalSongStorage.updateSong(userEmail, selectedSong.id, {
         lyrics: lyricsText
       });
       
@@ -711,7 +712,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
         variant: "destructive"
       });
     }
-  }, [selectedSong, lyricsText, user?.email, toast]);
+  }, [selectedSong, lyricsText, userEmail, toast]);
 
   const handleSearchLyrics = async () => {
     if (!selectedSong) {
@@ -793,10 +794,10 @@ export default function Performance({ userType: propUserType }: PerformanceProps
 
   // Delete song function
   const handleDeleteSongLocal = () => {
-    if (!user?.email || !selectedSong) return;
+    if (!userEmail || !selectedSong) return;
     
     try {
-      const success = LocalSongStorage.deleteSong(user.email, selectedSong.id);
+      const success = LocalSongStorage.deleteSong(userEmail, selectedSong.id);
       
       if (success) {
         refreshSongs();
@@ -944,9 +945,9 @@ export default function Performance({ userType: propUserType }: PerformanceProps
               <Music className="h-5 w-5 md:h-6 md:w-6 text-primary" />
               <div className="flex flex-col">
                 <span className="text-base md:text-lg font-semibold">StageTracker Pro</span>
-                {user?.email && (
+                {userEmail && (
                   <span className="text-xs text-gray-400" data-testid="text-username">
-                    {user.email}
+                    {userEmail}
                   </span>
                 )}
               </div>
@@ -956,7 +957,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
           {/* Waveform Visualizer - Stretch across available space */}
           <div className="flex-1 mx-4 max-h-12">
             <WaveformVisualizer
-              song={selectedSong ? { ...selectedSong, userId: user?.email || '' } as SongWithTracks : null}
+              song={selectedSong ? { ...selectedSong, userId: userEmail || '' } as SongWithTracks : null}
               currentTime={currentTime}
               isPlaying={isPlaying}
               audioLevels={audioLevels}
@@ -1051,7 +1052,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 variant="default"
                 size="sm"
                 onClick={() => {
-                  console.log('🔄 Current user type before upgrade:', userType, 'User:', user);
+                  console.log('🔄 Current user type before upgrade:', userType, 'User email:', userEmail);
                   setLocation('/subscribe');
                 }}
                 data-testid="button-upgrade-subscription"
@@ -1551,7 +1552,7 @@ export default function Performance({ userType: propUserType }: PerformanceProps
                 </div>
                 <StemSplitter
                   song={selectedSong as any}
-                  userEmail={user?.email} // Pass userEmail to StemSplitter
+                  userEmail={userEmail} // Pass userEmail to StemSplitter
                   onStemGenerated={(stems) => {
                     console.log('Performance: Generated stems:', stems);
                   }}

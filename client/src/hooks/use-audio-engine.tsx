@@ -3,28 +3,27 @@ import { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 import type { SongWithTracks } from "@shared/schema";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { LocalSongStorage } from "@/lib/local-song-storage";
-import { useLocalAuth } from "@/hooks/useLocalAuth";
-
 interface UseAudioEngineProps {
   song?: SongWithTracks;
   onDurationUpdated?: (songId: string, duration: number) => void;
+  userEmail?: string;
 }
 
 export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProps) {
   // Handle both old and new calling patterns for backwards compatibility
   let song: SongWithTracks | undefined;
   let onDurationUpdated: ((songId: string, duration: number) => void) | undefined;
+  let userEmail: string | undefined;
   
   if (songOrProps && 'song' in songOrProps) {
-    // New calling pattern: useAudioEngine({ song, onDurationUpdated })
+    // New calling pattern: useAudioEngine({ song, onDurationUpdated, userEmail })
     song = songOrProps.song;
     onDurationUpdated = songOrProps.onDurationUpdated;
+    userEmail = songOrProps.userEmail;
   } else {
     // Old calling pattern: useAudioEngine(song)
     song = songOrProps as SongWithTracks | undefined;
   }
-
-  const { user } = useLocalAuth();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -117,7 +116,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       // Convert song tracks to track data format and setup streaming
       const setupStreamingAsync = async () => {
         try {
-          const audioStorage = AudioFileStorage.getInstance(user?.email || 'default@user.com');
+          const audioStorage = AudioFileStorage.getInstance(userEmail || 'default@user.com');
           
           // Get all audio URLs in parallel 
           const audioUrlPromises = song.tracks.map(async (track) => {
@@ -136,10 +135,10 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
           audioEngineRef.current?.loadTracks(trackData);
           
           // Load and apply mute regions for each track
-          if (audioEngineRef.current && user?.email && song) {
+          if (audioEngineRef.current && userEmail && song) {
             song.tracks.forEach(track => {
               try {
-                const muteRegions = LocalSongStorage.getMuteRegions(user.email, song.id, track.id);
+                const muteRegions = LocalSongStorage.getMuteRegions(userEmail, song.id, track.id);
                 if (muteRegions && muteRegions.length > 0) {
                   audioEngineRef.current?.setTrackMuteRegions(track.id, muteRegions);
                   console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
@@ -164,7 +163,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       // Run setup in background without blocking UI
       setupStreamingAsync();
     }
-  }, [song?.id, song?.tracks?.length, user?.email]);
+  }, [song?.id, song?.tracks?.length, userEmail]);
 
   // Animation loop for real-time updates
 

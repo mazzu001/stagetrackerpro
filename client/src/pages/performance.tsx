@@ -1523,6 +1523,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
               <TrackManager
                 song={selectedSong as any}
                 isOpen={isTrackManagerOpen}
+                userEmail={userEmail}
                 audioEngine={audioEngine.audioEngine} // Pass audio engine for mute region sync
                 onSongUpdate={(updatedSong: any) => {
                   console.log('Performance: Received song update with', updatedSong.tracks.length, 'tracks');

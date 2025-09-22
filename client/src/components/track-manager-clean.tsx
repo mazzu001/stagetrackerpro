@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { LocalSongStorage } from "@/lib/local-song-storage";
-import { useLocalAuth } from "@/hooks/useLocalAuth";
+// useLocalAuth removed - receive userEmail as prop instead
 import { Plus, FolderOpen, Music, Trash2, Volume2, File, VolumeX, Headphones, Play, Pause, AlertTriangle } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
@@ -21,6 +21,7 @@ interface TrackManagerProps {
   song?: SongWithTracks;
   audioEngine?: StreamingAudioEngine; // Audio engine for mute region sync
   onSongUpdate?: (updatedSong: SongWithTracks) => void;
+  userEmail?: string;
   onTrackVolumeChange?: (trackId: string, volume: number) => void;
   onTrackMuteToggle?: (trackId: string) => void;
   onTrackSoloToggle?: (trackId: string) => void;
@@ -38,6 +39,7 @@ export default function TrackManager({
   song, 
   audioEngine,
   onSongUpdate,
+  userEmail,
   onTrackVolumeChange, 
   onTrackMuteToggle, 
   onTrackSoloToggle, 
@@ -63,7 +65,6 @@ export default function TrackManager({
   // Recording features removed for simplicity
 
   const { toast } = useToast();
-  const { user } = useLocalAuth();
   const debounceTimeouts = useRef<Record<string, NodeJS.Timeout>>({});
 
   // Get tracks for the current song
@@ -100,10 +101,10 @@ export default function TrackManager({
   // Recording features removed
 
   const refetchTracks = useCallback(() => {
-    if (!song?.id || !user?.email) return;
+    if (!song?.id || !userEmail) return;
     
     try {
-      const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+      const updatedSong = LocalSongStorage.getSong(userEmail, song.id);
       if (updatedSong && onSongUpdate) {
         console.log('Track Manager: Found', updatedSong.tracks.length, 'tracks for song', updatedSong.title, `(ID: ${updatedSong.id}):`, updatedSong.tracks.map(t => t.name));
         onSongUpdate(updatedSong as SongWithTracks);
@@ -111,7 +112,7 @@ export default function TrackManager({
     } catch (error) {
       console.error('Failed to refetch tracks:', error);
     }
-  }, [song?.id, user?.email, onSongUpdate]);
+  }, [song?.id, userEmail, onSongUpdate]);
 
   const detectAndUpdateSongDuration = async (audioFile: File, songId: string) => {
     try {
@@ -124,8 +125,8 @@ export default function TrackManager({
           console.log(`Detected audio duration: ${duration}s from file: ${audioFile.name}`);
           URL.revokeObjectURL(url);
           
-          if (user?.email && duration > 0) {
-            LocalSongStorage.updateSong(user.email, songId, { duration });
+          if (userEmail && duration > 0) {
+            LocalSongStorage.updateSong(userEmail, songId, { duration });
           }
           resolve();
         });
@@ -341,7 +342,7 @@ export default function TrackManager({
   };
 
   const processFile = async (file: File) => {
-    if (!song?.id || !user?.email) return;
+    if (!song?.id || !userEmail) return;
     
     try {
       console.log(`Processing file ${selectedFiles.indexOf(file) + 1}/${selectedFiles.length}: ${file.name}`);
@@ -351,7 +352,7 @@ export default function TrackManager({
       
       console.log(`Adding track "${trackName}" with file: ${audioFileName}`);
       
-      const trackAdded = LocalSongStorage.addTrack(user.email, song.id, {
+      const trackAdded = LocalSongStorage.addTrack(userEmail, song.id, {
         name: trackName,
         songId: song.id,
         trackNumber: tracks.length + 1,
@@ -368,7 +369,7 @@ export default function TrackManager({
       
       if (trackAdded) {
         // Get the track ID that was just created
-        const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+        const updatedSong = LocalSongStorage.getSong(userEmail, song.id);
         const newTrack = updatedSong?.tracks.find(t => t.name === trackName && t.localFileName === audioFileName);
         
         if (newTrack) {
@@ -380,7 +381,7 @@ export default function TrackManager({
           // Update the track with the audio URL
           const audioUrl = await audioStorage.getAudioUrl(newTrack.id);
           if (audioUrl) {
-            LocalSongStorage.updateTrack(user.email, song.id, newTrack.id, { audioUrl });
+            LocalSongStorage.updateTrack(userEmail, song.id, newTrack.id, { audioUrl });
             console.log('Track updated with audio URL:', audioUrl.substring(0, 50) + '...');
           }
         }
@@ -391,7 +392,7 @@ export default function TrackManager({
         console.log('Track added successfully');
         
         // Get updated song with new tracks and notify parent component
-        const finalUpdatedSong = LocalSongStorage.getSong(user.email, song.id);
+        const finalUpdatedSong = LocalSongStorage.getSong(userEmail, song.id);
         if (finalUpdatedSong && onSongUpdate) {
           console.log('Track data updated, refreshing song with', finalUpdatedSong.tracks.length, 'tracks');
           onSongUpdate(finalUpdatedSong as any);
@@ -422,13 +423,13 @@ export default function TrackManager({
   };
 
   const deleteTrack = async (trackId: string) => {
-    if (!song?.id || !user?.email) return;
+    if (!song?.id || !userEmail) return;
     
     try {
-      const success = LocalSongStorage.deleteTrack(user.email, song.id, trackId);
+      const success = LocalSongStorage.deleteTrack(userEmail, song.id, trackId);
       if (success) {
         // Get updated song with removed track and notify parent component
-        const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+        const updatedSong = LocalSongStorage.getSong(userEmail, song.id);
         if (updatedSong && onSongUpdate) {
           console.log('Track deleted, refreshing song with', updatedSong.tracks.length, 'tracks');
           onSongUpdate(updatedSong as any);
@@ -456,16 +457,16 @@ export default function TrackManager({
   };
 
   const handleClearBrokenTracks = async () => {
-    if (tracks.length === 0 || !song?.id || !user?.email) return;
+    if (tracks.length === 0 || !song?.id || !userEmail) return;
 
     try {
       // Delete all tracks
       for (const track of tracks) {
-        LocalSongStorage.deleteTrack(user.email, song.id, track.id);
+        LocalSongStorage.deleteTrack(userEmail, song.id, track.id);
       }
       
       // Get updated song and notify parent component
-      const updatedSong = LocalSongStorage.getSong(user.email, song.id);
+      const updatedSong = LocalSongStorage.getSong(userEmail, song.id);
       if (updatedSong && onSongUpdate) {
         console.log('All tracks cleared, refreshing song with', updatedSong.tracks.length, 'tracks');
         onSongUpdate(updatedSong as any);
@@ -509,11 +510,11 @@ export default function TrackManager({
       onTrackVolumeChange?.(trackId, volume);
       
       // Update database AND Performance page's song state
-      if (song?.id && user?.email) {
+      if (song?.id && userEmail) {
         const track = tracks.find(t => t.id === trackId);
         if (track) {
           // Update storage
-          LocalSongStorage.updateTrack(user.email, song.id, trackId, { volume });
+          LocalSongStorage.updateTrack(userEmail, song.id, trackId, { volume });
           
           // Update Performance page's selectedSong state so next time Track Manager opens it has the right values
           if (song && onSongUpdate) {
@@ -530,7 +531,7 @@ export default function TrackManager({
       
       delete debounceTimeouts.current[trackId];
     }, 150);
-  }, [tracks, song?.id, user?.email, onTrackVolumeChange]);
+  }, [tracks, song?.id, userEmail, onTrackVolumeChange]);
 
   // Debounced balance change handler
   const handleBalanceChange = useCallback((trackId: string, balance: number) => {
@@ -551,11 +552,11 @@ export default function TrackManager({
       onTrackBalanceChange?.(trackId, balance);
       
       // Update database AND Performance page's song state
-      if (song?.id && user?.email) {
+      if (song?.id && userEmail) {
         const track = tracks.find(t => t.id === trackId);
         if (track) {
           // Update storage
-          LocalSongStorage.updateTrack(user.email, song.id, trackId, { balance });
+          LocalSongStorage.updateTrack(userEmail, song.id, trackId, { balance });
           
           // Update Performance page's selectedSong state so next time Track Manager opens it has the right values
           if (song && onSongUpdate) {
@@ -572,37 +573,37 @@ export default function TrackManager({
       
       delete debounceTimeouts.current[balanceTimeoutKey];
     }, 150);
-  }, [tracks, song?.id, user?.email, onTrackBalanceChange]);
+  }, [tracks, song?.id, userEmail, onTrackBalanceChange]);
 
   // Mute toggle handler
   const handleMuteToggle = useCallback((trackId: string) => {
     onTrackMuteToggle?.(trackId);
     
     // Update database
-    if (song?.id && user?.email) {
+    if (song?.id && userEmail) {
       const track = tracks.find(t => t.id === trackId);
       if (track) {
-        LocalSongStorage.updateTrack(user.email, song.id, trackId, { isMuted: !track.isMuted });
+        LocalSongStorage.updateTrack(userEmail, song.id, trackId, { isMuted: !track.isMuted });
         // Refresh the song to reflect changes
         setTimeout(() => refetchTracks(), 50);
       }
     }
-  }, [tracks, song?.id, user?.email, onTrackMuteToggle, refetchTracks]);
+  }, [tracks, song?.id, userEmail, onTrackMuteToggle, refetchTracks]);
 
   // Solo toggle handler
   const handleSoloToggle = useCallback((trackId: string) => {
     onTrackSoloToggle?.(trackId);
     
     // Update database
-    if (song?.id && user?.email) {
+    if (song?.id && userEmail) {
       const track = tracks.find(t => t.id === trackId);
       if (track) {
-        LocalSongStorage.updateTrack(user.email, song.id, trackId, { isSolo: !track.isSolo });
+        LocalSongStorage.updateTrack(userEmail, song.id, trackId, { isSolo: !track.isSolo });
         // Refresh the song to reflect changes
         setTimeout(() => refetchTracks(), 50);
       }
     }
-  }, [tracks, song?.id, user?.email, onTrackSoloToggle, refetchTracks]);
+  }, [tracks, song?.id, userEmail, onTrackSoloToggle, refetchTracks]);
 
   // Cleanup timeouts on unmount
   useEffect(() => {
@@ -819,7 +820,7 @@ export default function TrackManager({
                     <TrackWaveformEditor
                       trackId={track.id}
                       songId={song?.id || ''}
-                      userEmail={user?.email || ''}
+                      userEmail={userEmail || ''}
                       audioUrl={track.audioUrl}
                       duration={song?.duration || 240}
                       isCollapsed={true}

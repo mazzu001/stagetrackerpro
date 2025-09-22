@@ -1,0 +1,199 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+android-ble-midi.ts:36 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:44 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+browser-file-system.ts:69 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+browser-file-system.ts:125 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+audio-file-storage.ts:199 No stored audio file references found
+main.tsx:1 [MAIN.TSX] Script starting...
+main.tsx:5 [MAIN.TSX] Unregistering service workers...
+main.tsx:18 [MAIN.TSX] About to render React app...
+main.tsx:20 [MAIN.TSX] Root element: <div id=​"root">​…​</div>​
+main.tsx:25 [MAIN.TSX] React app rendered successfully
+App.tsx:170 [APP] About to call useLocalAuth hook...
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+useLocalAuth.ts:34 [AUTH] Valid session found: professional@demo.com
+App.tsx:172 [APP] Auth state: Object
+useMidiDevices.ts:109 🔍 Browser detection debug: Object
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: false
+App.tsx:71 🔍 Parsed values: Object
+App.tsx:125 🔍 No payment success detected in URL
+useMidiDevices.ts:318 🎹 MIDI API supported - waiting for user interaction to initialize
+StorageContext.tsx:50 🔧 Initializing storage for user: professional@demo.com
+browser-file-system.ts:69 🗄️ Initializing per-user database: MusicAppStorage::professional_demo_com
+browser-file-system.ts:125 🔧 Opening IndexedDB: MusicAppStorage::professional_demo_com
+useLocalAuth.ts:54 [AUTH] useEffect - auth state initialized
+StorageContext.tsx:59 📊 Database exists for professional@demo.com: true
+StorageContext.tsx:63 📂 Loading existing database for professional@demo.com
+browser-file-system.ts:125 🔧 Opening IndexedDB: MusicAppStorage::professional_demo_com
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: false
+browser-file-system.ts:115 Browser file system initialized successfully for user: default@user.com
+browser-file-system.ts:80 ✅ BrowserFileSystem fully initialized with config loaded
+browser-file-system.ts:115 Browser file system initialized successfully for user: professional@demo.com
+browser-file-system.ts:80 ✅ BrowserFileSystem fully initialized with config loaded
+browser-file-system.ts:115 Browser file system initialized successfully for user: professional@demo.com
+audio-file-storage.ts:44 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::professional@demo.com
+audio-file-storage.ts:199 No stored audio file references found
+StorageContext.tsx:83 ✅ Storage initialization complete for professional@demo.com
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: true
+lyrics-display.tsx:293 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:31 🔍 Initial service isHost check: Object
+streaming-audio-engine.ts:71 🎵 Master output initialized
+performance.tsx:452 📋 Loaded 11 songs from local storage (alphabetically sorted)
+performance.tsx:506 🔍 Debug values: Object
+performance.tsx:580 🎭 Broadcast host effect: Object
+performance.tsx:590 🎭 Not broadcasting - not host
+useMidiDevices.ts:339 🎹 Initializing USB MIDI (lightweight)...
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+commitRootImpl @ react-dom.development.js:26974
+commitRoot @ react-dom.development.js:26721
+performSyncWorkOnRoot @ react-dom.development.js:26156
+flushSyncCallbacks @ react-dom.development.js:12042
+(anonymous) @ react-dom.development.js:25690
+useMidiDevices.ts:324 🎹 MIDI already initialized
+midi-device-manager.tsx:60 🎹 USB MIDI initialized from device manager
+useMidiDevices.ts:347 ✅ USB MIDI access granted
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+useMidiDevices.ts:381 ✅ USB MIDI initialized successfully
+midi-device-manager.tsx:60 🎹 USB MIDI initialized from device manager
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:258 🎹 Found 2 MIDI devices: (2) ['MidiPortA IN (input, USB)', 'MidiPortA OUT (output, USB)']
+useMidiDevices.ts:283 🎹 Connected devices: 0/2 []
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack
+midi-device-manager.tsx:78 🎹 Checking for auto-reconnect to: WIDI Jack

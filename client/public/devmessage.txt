@@ -1,1 +1,9 @@
-Welcome to StageTracker Pro! We are aware of a small glitch when you create a new song and add backing tracks the waveform doesnt appear until you select a different song and go back.
+MIDI System Fixes Applied (Sep 22, 5:08pm):
+✅ Fixed infinite auto-reconnect loop - now truly one-shot
+✅ Fixed ghost device detection - MidiPortA should appear as available
+✅ Fixed auto-reconnect now skips Bluetooth devices during USB-only init
+✅ Fixed the "Checking for auto-reconnect to WIDI Jack" spam
+
+Please test: Open new tab, click Devices button and check if MidiPortA shows as available (not greyed out).
+
+Previous Note: We are aware of a small glitch when you create a new song and add backing tracks the waveform doesnt appear until you select a different song and go back.

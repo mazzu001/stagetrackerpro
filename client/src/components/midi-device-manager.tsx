@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
@@ -66,16 +66,36 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     }
   }, [isOpen, hasInitializedOnce, isInitialized, initializeMidi, refreshDevices]);
   
-  // Auto-reconnect to last device after MIDI is initialized
+  // Track if we've attempted auto-reconnect (one-shot)
+  const hasAttemptedAutoReconnectRef = useRef(false);
+  
+  // Auto-reconnect to last device after MIDI is initialized (one-shot)
   useEffect(() => {
+    // Only attempt once per session to prevent infinite loops
+    if (hasAttemptedAutoReconnectRef.current) return;
     if (!isInitialized || devices.length === 0) return;
     
     const lastDeviceStr = localStorage.getItem('lastMidiDevice');
     if (!lastDeviceStr) return;
     
+    // Mark as attempted immediately to prevent multiple runs
+    hasAttemptedAutoReconnectRef.current = true;
+    
     try {
       const lastDevice = JSON.parse(lastDeviceStr);
-      console.log('🎹 Checking for auto-reconnect to:', lastDevice.name);
+      
+      // Skip Bluetooth devices during USB-only initialization
+      const deviceName = lastDevice.name?.toLowerCase() || '';
+      const isBluetoothDevice = deviceName.includes('bluetooth') || 
+                               deviceName.includes('ble') || 
+                               deviceName.includes('widi');
+      
+      if (isBluetoothDevice) {
+        console.log('🎹 Skipping auto-reconnect for Bluetooth device:', lastDevice.name);
+        return;
+      }
+      
+      console.log('🎹 Attempting auto-reconnect to:', lastDevice.name, '(one-shot)');
       
       // Find matching device in current device list
       const matchingDevice = unifiedDevices.find(d => 
@@ -253,8 +273,11 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
 
   // Detect if a device is a ghost (appears in list but not actually available)
   const isGhostDevice = (device: MidiDevice) => {
-    // A ghost device has disconnected state or closed connection
-    return device.state === 'disconnected' || device.connection === 'closed';
+    // A ghost device has BOTH disconnected state AND closed connection
+    // We need both conditions because some devices may have one or the other temporarily
+    // Real connected devices have state='connected' and connection='open'
+    // Real available devices have state='connected' and connection='closed' (not yet opened)
+    return device.state === 'disconnected' && device.connection === 'closed';
   };
 
   const getConnectionIcon = (device: MidiDevice) => {

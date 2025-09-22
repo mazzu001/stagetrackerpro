@@ -34,12 +34,14 @@ function AnalyticsRouter({ children }: { children: React.ReactNode }) {
   return <Router>{children}</Router>;
 }
 
-function AppContent() {
+interface AppContentProps {
+  isAuthenticated: boolean;
+  isPaidUser: boolean;
+}
+
+function AppContent({ isAuthenticated, isPaidUser }: AppContentProps) {
   console.log("[APP] AppContent component rendering...");
-  console.log("[APP] About to call useLocalAuth hook...");
-  const { isAuthenticated, isLoading, isPaidUser } = useLocalAuth();
   const { isInitialized: storageInitialized } = useStorage();
-  console.log("[APP] Auth state:", { isAuthenticated, isLoading, isPaidUser });
   console.log("[APP] Storage initialized:", storageInitialized);
 
   useEffect(() => {
@@ -123,21 +125,7 @@ function AppContent() {
     }
   }, []);
 
-
-  if (isLoading) {
-    return (
-      <TooltipProvider>
-        <div className="min-h-screen min-h-[100dvh] bg-background flex items-center justify-center mobile-vh-fix">
-          <div className="text-center">
-            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-400">Checking authentication...</p>
-          </div>
-        </div>
-        <Toaster />
-      </TooltipProvider>
-    );
-  }
-
+  // AppContent now handles the rendering based on props
   return (
     <TooltipProvider>
       {!isAuthenticated ? (
@@ -178,6 +166,10 @@ function AppContent() {
 }
 
 function App() {
+  console.log("[APP] About to call useLocalAuth hook...");
+  const { isAuthenticated, isLoading, isPaidUser, user } = useLocalAuth();
+  console.log("[APP] Auth state:", { isAuthenticated, isLoading, isPaidUser, userEmail: user?.email });
+
   // Initialize Google Analytics when app loads
   useEffect(() => {
     // Verify required environment variable is present
@@ -188,11 +180,26 @@ function App() {
     }
   }, []);
 
+  // Show loading state while checking auth
+  if (isLoading) {
+    return (
+      <TooltipProvider>
+        <div className="min-h-screen min-h-[100dvh] bg-background flex items-center justify-center mobile-vh-fix">
+          <div className="text-center">
+            <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-400">Checking authentication...</p>
+          </div>
+        </div>
+        <Toaster />
+      </TooltipProvider>
+    );
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
-      <StorageProvider>
+      <StorageProvider userEmail={user?.email || null}>
         <MidiProvider>
-          <AppContent />
+          <AppContent isAuthenticated={isAuthenticated} isPaidUser={isPaidUser} />
         </MidiProvider>
       </StorageProvider>
     </QueryClientProvider>

@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { BrowserFileSystem } from '@/lib/browser-file-system';
 import { AudioFileStorage } from '@/lib/audio-file-storage';
 import { LocalSongStorage } from '@/lib/local-song-storage';
-import { useLocalAuth } from '@/hooks/useLocalAuth';
 
 interface StorageContextType {
   browserFS: BrowserFileSystem | null;
@@ -30,13 +29,13 @@ export function useStorage() {
 
 interface StorageProviderProps {
   children: ReactNode;
+  userEmail: string | null;
 }
 
-export function StorageProvider({ children }: StorageProviderProps) {
-  const { user } = useLocalAuth();
+export function StorageProvider({ children, userEmail }: StorageProviderProps) {
   const [browserFS, setBrowserFS] = useState<BrowserFileSystem | null>(null);
   const [audioStorage, setAudioStorage] = useState<AudioFileStorage | null>(null);
-  const [userEmail, setUserEmail] = useState('default@user.com');
+  const [currentUserEmail, setCurrentUserEmail] = useState('default@user.com');
   const [isInitialized, setIsInitialized] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,9 +46,9 @@ export function StorageProvider({ children }: StorageProviderProps) {
       setError(null);
       
       // Determine user email (use default if not logged in)
-      const email = user?.email || 'default@user.com';
+      const email = userEmail || 'default@user.com';
       console.log(`🔧 Initializing storage for user: ${email}`);
-      setUserEmail(email);
+      setCurrentUserEmail(email);
       
       try {
         // Step 1: Get or create BrowserFileSystem instance
@@ -97,13 +96,13 @@ export function StorageProvider({ children }: StorageProviderProps) {
       // Don't clear instances on unmount, they're singletons
       console.log('🧹 StorageProvider cleanup');
     };
-  }, [user?.email]); // Re-initialize when user email changes
+  }, [userEmail]); // Re-initialize when user email changes
   
   return (
     <StorageContext.Provider value={{
       browserFS,
       audioStorage,
-      userEmail,
+      userEmail: currentUserEmail,
       isInitialized,
       error
     }}>

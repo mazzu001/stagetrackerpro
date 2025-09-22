@@ -10,13 +10,16 @@ interface MidiContextType {
   isInitializing: boolean;
   error: string | null;
   connectDevice: (deviceId: string) => Promise<boolean>;
+  connectBleDevice: (deviceId: string) => Promise<boolean>;
   disconnectDevice: (deviceId: string) => Promise<boolean>;
   sendMidiCommand: (command: any) => boolean;
   parseMidiCommand: (commandString: string) => any;
   refreshDevices: () => Promise<void>;
+  shouldUseBleAdapter: (device: { name?: string | null }) => boolean;
   registerMessageListener: (id: string, callback: (message: any) => void) => void;
   unregisterMessageListener: (id: string) => void;
   initializeMidi: () => Promise<void>;
+  initializeBluetoothMidi: () => Promise<void>;
 }
 
 // Create the context

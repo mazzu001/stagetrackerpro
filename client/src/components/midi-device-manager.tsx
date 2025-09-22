@@ -42,20 +42,29 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     disconnectDevice,
     sendMidiCommand,
     parseMidiCommand,
-    refreshDevices
+    refreshDevices,
+    initializeMidi,
+    initializeBluetoothMidi
   } = useMidi();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [testCommand, setTestCommand] = useState('[[PC:1:1]]');
   const [connectionStates, setConnectionStates] = useState<Record<string, 'connecting' | 'disconnecting' | 'idle'>>({});
+  const [hasInitializedOnce, setHasInitializedOnce] = useState(false);
 
-  // Refresh devices when dialog opens (MIDI auto-initializes in background now)
+  // Initialize USB MIDI when dialog opens for the first time
   useEffect(() => {
-    if (isOpen) {
-      // Always refresh when opening dialog to get latest device list
+    if (isOpen && !hasInitializedOnce) {
+      // Initialize USB MIDI on first open (lightweight, fast)
+      initializeMidi().then(() => {
+        console.log('🎹 USB MIDI initialized from device manager');
+        setHasInitializedOnce(true);
+      });
+    } else if (isOpen && isInitialized) {
+      // Just refresh if already initialized
       refreshDevices();
     }
-  }, [isOpen]);
+  }, [isOpen, hasInitializedOnce, isInitialized, initializeMidi, refreshDevices]);
   
   // Auto-reconnect to last device after MIDI is initialized
   useEffect(() => {
@@ -89,6 +98,18 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       await refreshDevices();
     } catch (err) {
       console.error('Failed to refresh devices:', err);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleBluetoothScan = async () => {
+    setIsRefreshing(true);
+    try {
+      // Initialize Bluetooth MIDI scanning (user-initiated)
+      await initializeBluetoothMidi();
+    } catch (err) {
+      console.error('Failed to scan for Bluetooth devices:', err);
     } finally {
       setIsRefreshing(false);
     }
@@ -341,17 +362,30 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                 </Badge>
               )}
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleRefresh}
-              disabled={isRefreshing || isInitializing}
-              data-testid="button-refresh-devices"
-              className="mr-[83px]"
-            >
-              <RefreshCw className={`h-4 w-4 mr-2 ${(isRefreshing || isInitializing) ? 'animate-spin' : ''}`} />
-              {isInitializing ? 'Scanning...' : 'Refresh'}
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleRefresh}
+                disabled={isRefreshing || isInitializing}
+                data-testid="button-refresh-devices"
+                title="Refresh USB MIDI devices"
+              >
+                <Usb className={`h-4 w-4 mr-2`} />
+                USB Scan
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleBluetoothScan}
+                disabled={isRefreshing || isInitializing}
+                data-testid="button-bluetooth-scan"
+                title="Scan for Bluetooth MIDI devices (may be slow)"
+              >
+                <Bluetooth className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-pulse' : ''}`} />
+                BT Scan
+              </Button>
+            </div>
           </DialogTitle>
         </DialogHeader>
 

@@ -479,6 +479,25 @@ export default function Performance({ userType, userEmail, logout }: Performance
     }
   }, [userEmail]);
 
+  // Refresh only the specific song that was edited in track manager
+  const refreshSongsForTrackedSong = useCallback(async (songId: string) => {
+    if (!userEmail) return;
+    
+    try {
+      // Get the updated song from storage
+      const updatedSong = await LocalSongStorage.getSong(userEmail, songId);
+      if (updatedSong) {
+        // Update just this song in the list
+        setAllSongs(prev => prev.map(song => 
+          song.id === songId ? updatedSong : song
+        ));
+        console.log(`📋 Refreshed track count for song: ${updatedSong.title} (${updatedSong.tracks?.length || 0} tracks)`);
+      }
+    } catch (error) {
+      console.error('Error refreshing song track count:', error);
+    }
+  }, [userEmail]);
+
   // Track database entry ID for broadcasting
   const [songEntryId, setSongEntryId] = useState<string | null>(null);
 
@@ -1526,7 +1545,13 @@ export default function Performance({ userType, userEmail, logout }: Performance
         </DialogContent>
       </Dialog>
       {/* Track Manager Dialog */}
-      <Dialog open={isTrackManagerOpen} onOpenChange={setIsTrackManagerOpen}>
+      <Dialog open={isTrackManagerOpen} onOpenChange={(open) => {
+        setIsTrackManagerOpen(open);
+        // Refresh songs list when closing the track manager
+        if (!open && selectedSongId) {
+          refreshSongsForTrackedSong(selectedSongId);
+        }
+      }}>
         <DialogContent className="max-w-6xl max-h-[90vh]" data-testid="dialog-track-manager">
           <DialogHeader>
           </DialogHeader>

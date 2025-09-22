@@ -803,14 +803,15 @@ export default function Performance({ userType, userEmail, logout }: Performance
   };
 
   // Delete song function
-  const handleDeleteSongLocal = () => {
+  const handleDeleteSongLocal = async () => {
     if (!userEmail || !selectedSong) return;
     
     try {
       const success = LocalSongStorage.deleteSong(userEmail, selectedSong.id);
       
       if (success) {
-        refreshSongs();
+        // Wait for the songs list to refresh
+        await refreshSongs();
         
         // If we're deleting the currently selected song, clear the selection
         if (selectedSongId === selectedSong.id) {

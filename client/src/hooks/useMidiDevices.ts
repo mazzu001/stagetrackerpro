@@ -276,11 +276,28 @@ export function useMidiDevices(): UseMidiDevicesReturn {
           }
         }
 
-        // Request MIDI access without any timeout - let it take as long as it needs
+        // Request MIDI access with a timeout fallback
         console.log('🎹 Requesting MIDI access (this may take a moment with many devices)...');
         setIsInitializing(true);
         
-        const midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+        // Create a timeout promise that rejects after 10 seconds
+        const timeoutPromise = new Promise<never>((_, reject) => {
+          setTimeout(() => reject(new Error('MIDI access request timed out after 10 seconds')), 10000);
+        });
+        
+        // Race between MIDI access and timeout
+        let midiAccess: MIDIAccess;
+        try {
+          midiAccess = await Promise.race([
+            navigator.requestMIDIAccess({ sysex: false }),
+            timeoutPromise
+          ]);
+        } catch (err) {
+          console.warn('⚠️ MIDI access timed out or failed - app continues without MIDI');
+          setIsInitializing(false);
+          setError('MIDI initialization timed out. MIDI features unavailable.');
+          return;
+        }
         
         console.log('✅ MIDI access granted - background service active');
         midiAccessRef.current = midiAccess;
@@ -345,8 +362,15 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       }
     };
 
-    // Start the service without blocking the UI
-    startMidiService();
+    // Start the service TRULY without blocking the UI
+    // Use setTimeout to defer execution to next tick
+    // This ensures the main app loads completely before MIDI initialization
+    setTimeout(() => {
+      startMidiService().catch(err => {
+        console.error('❌ MIDI service failed (non-blocking):', err);
+        // App continues working without MIDI - it's an optional feature
+      });
+    }, 100); // Small delay to ensure app is fully loaded
     
     // No cleanup needed - MIDI service runs for app lifetime
   }, []); // Only run once on mount

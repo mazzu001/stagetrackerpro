@@ -78,6 +78,9 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
     try {
       console.log(`🚀 Streaming load: "${song.title}" with ${song.tracks.length} tracks (instant setup)`);
       
+      // Import LocalSongStorage to load mute regions
+      const { LocalSongStorage } = await import('@/lib/local-song-storage');
+      
       // Get actual audio URLs from AudioFileStorage
       const audioStorage = AudioFileStorage.getInstance(song.userId || 'default@user.com');
       const trackDataPromises = song.tracks.map(async (track) => {
@@ -86,15 +89,16 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
           if (!audioUrl) return null;
           console.log(`🎵 Streaming track: ${track.name} -> ${audioUrl.substring(0, 50)}...`);
           
-          // Parse muteRegions if they're stored as a JSON string
-          let muteRegions = track.muteRegions;
-          if (typeof muteRegions === 'string') {
-            try {
-              muteRegions = JSON.parse(muteRegions);
-            } catch (e) {
-              console.warn(`Failed to parse mute regions for track ${track.name}:`, e);
-              muteRegions = [];
-            }
+          // Load mute regions from LocalSongStorage for persistence
+          const muteRegions = LocalSongStorage.getMuteRegions(
+            song.userId || 'default@user.com', 
+            song.id, 
+            track.id
+          );
+          
+          // Debug: Log the loaded mute regions
+          if (muteRegions && muteRegions.length > 0) {
+            console.log(`🔇 Loaded ${muteRegions.length} persisted mute regions for track "${track.name}"`);
           }
           
           // Debug: Log the track's mute state from storage
@@ -108,7 +112,7 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
             balance: track.balance || 0,
             isMuted: track.isMuted === true, // Ensure boolean, preserve true values
             isSolo: track.isSolo === true, // Ensure boolean, preserve true values
-            muteRegions: muteRegions || []
+            muteRegions: muteRegions || [] // Use the persisted regions from LocalSongStorage
           };
         } catch (error) {
           console.warn(`⚠️ Failed to get URL for track ${track.name}:`, error);

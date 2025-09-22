@@ -292,15 +292,24 @@ export class StreamingAudioEngine {
 
   // Instant play - no loading delays
   async play() {
-    if (this.state.tracks.length === 0) return;
-    
-    // Ensure all tracks have audio nodes
-    this.state.tracks.forEach(track => this.ensureTrackAudioNodes(track));
+    // Allow playback even with no tracks loaded (for UI functionality)
+    // This allows transport controls to work even when audio files are missing
     
     // Resume audio context if suspended
     if (this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
+    
+    if (this.state.tracks.length === 0) {
+      console.log(`▶️ Starting playback with no audio tracks (transport controls only)`);
+      this.state.isPlaying = true;
+      this.startTimeTracking();
+      this.notifyListeners();
+      return;
+    }
+    
+    // Ensure all tracks have audio nodes
+    this.state.tracks.forEach(track => this.ensureTrackAudioNodes(track));
     
     console.log(`▶️ Starting streaming playback: ${this.state.tracks.length} tracks`);
     
@@ -586,28 +595,44 @@ export class StreamingAudioEngine {
     this.stopTimeTracking(); // Clear any existing interval
     
     this.updateInterval = window.setInterval(() => {
-      if (this.state.isPlaying && this.state.tracks.length > 0) {
-        // Use the first track as time reference
-        const firstTrack = this.state.tracks[0];
-        if (firstTrack.audioElement) {
-          const currentTime = firstTrack.audioElement.currentTime;
-          this.state.currentTime = currentTime;
+      if (this.state.isPlaying) {
+        if (this.state.tracks.length > 0) {
+          // Use the first track as time reference
+          const firstTrack = this.state.tracks[0];
+          if (firstTrack.audioElement) {
+            const currentTime = firstTrack.audioElement.currentTime;
+            this.state.currentTime = currentTime;
+            
+            // Check if song has reached its end (with tolerance for timing precision)
+            const tolerance = 0.1; // 100ms tolerance to catch songs that end slightly early
+            if (this.state.duration > 0 && currentTime >= (this.state.duration - tolerance)) {
+              console.log(`🔄 Song ended automatically at ${currentTime.toFixed(2)}s (duration: ${this.state.duration.toFixed(2)}s), triggering callback`);
+              // Use callback if available (same path as stop button), otherwise fall back to direct stop
+              if (this.onSongEndCallback) {
+                this.onSongEndCallback();
+              } else {
+                this.stop();
+              }
+              return; // Exit early
+            }
+          }
+        } else {
+          // No tracks - manually increment time for transport controls
+          this.state.currentTime += 0.016; // 16ms increment
           
-          // Check if song has reached its end (with tolerance for timing precision)
-          const tolerance = 0.1; // 100ms tolerance to catch songs that end slightly early
-          if (this.state.duration > 0 && currentTime >= (this.state.duration - tolerance)) {
-            console.log(`🔄 Song ended automatically at ${currentTime.toFixed(2)}s (duration: ${this.state.duration.toFixed(2)}s), triggering callback`);
-            // Use callback if available (same path as stop button), otherwise fall back to direct stop
+          // Check duration limit
+          if (this.state.duration > 0 && this.state.currentTime >= this.state.duration) {
+            this.state.currentTime = this.state.duration;
             if (this.onSongEndCallback) {
               this.onSongEndCallback();
             } else {
               this.stop();
             }
-            return; // Exit early
+            return;
           }
-          
-          this.notifyListeners();
         }
+        
+        this.notifyListeners();
       }
     }, 16); // ~60fps updates
   }
@@ -694,7 +719,9 @@ export class StreamingAudioEngine {
   }
 
   get isReady(): boolean {
-    return this.state.tracks.length > 0;
+    // Allow playback even with no audio files loaded
+    // This enables the UI to work even when audio files are missing
+    return true;
   }
 
   subscribe(listener: () => void) {

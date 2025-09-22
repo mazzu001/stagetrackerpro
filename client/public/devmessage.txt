@@ -1,5 +1,5 @@
-UI State Fix Applied (Sep 22, 5:41pm):
-✅ Fixed button stuck on "Connecting..." - now prioritizes actual connection state over transient flags
-✅ Added automatic reconciliation to clear stale connection states
+Mute Regions Fix Applied (Sep 22, 6:18pm):
+✅ Fixed mute regions not persisting when switching songs - now properly saved and reloaded
+✅ Tracks now retain volume, balance, mute, solo, and mute regions when switching songs
 
 Previous Note: We are aware of a small glitch when you create a new song and add backing tracks the waveform doesnt appear until you select a different song and go back.

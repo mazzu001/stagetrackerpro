@@ -81,33 +81,52 @@ export class StreamingAudioEngine {
   }
 
   // Instant track loading with deferred audio node creation
-  async loadTracks(trackData: Array<{ id: string; name: string; url: string }>) {
+  async loadTracks(trackData: Array<{ 
+    id: string; 
+    name: string; 
+    url: string;
+    volume?: number;
+    balance?: number;
+    isMuted?: boolean;
+    isSolo?: boolean;
+    muteRegions?: MuteRegion[];
+  }>) {
     console.log(`🚀 Streaming load: ${trackData.length} tracks (deferred setup)`);
     
     // Clear existing tracks first
     this.clearTracks();
     
     // Load original tracks without pitch processing
-    const tracksToLoad = await this.checkForProcessedVersions(trackData);
+    const tracksToLoad = await this.checkForProcessedVersions(trackData as any);
     
     // Create lightweight track references without audio nodes yet
-    const tracks = tracksToLoad.map(track => ({
-      id: track.id,
-      name: track.name,
-      url: track.url,
-      audioElement: null as HTMLAudioElement | null,
-      source: null as MediaElementAudioSourceNode | null,
-      gainNode: null as GainNode | null,
-      panNode: null as StereoPannerNode | null,
-      analyzerNode: null as AnalyserNode | null,
-      // Pitch shifting node removed
-      volume: 1,
-      balance: 0,
-      isMuted: false,
-      isSolo: false,
-    }));
+    const tracks = tracksToLoad.map(track => {
+      const extTrack = track as any;
+      return {
+        id: extTrack.id,
+        name: extTrack.name,
+        url: extTrack.url,
+        audioElement: null as HTMLAudioElement | null,
+        source: null as MediaElementAudioSourceNode | null,
+        gainNode: null as GainNode | null,
+        panNode: null as StereoPannerNode | null,
+        analyzerNode: null as AnalyserNode | null,
+        // Use incoming track properties or defaults
+        volume: extTrack.volume !== undefined ? extTrack.volume / 100 : 1,  // Convert from 0-100 to 0-1
+        balance: extTrack.balance || 0,
+        isMuted: extTrack.isMuted || false,
+        isSolo: extTrack.isSolo || false,
+        muteRegions: extTrack.muteRegions || [],
+      };
+    });
     
     this.state.tracks = tracks;
+    
+    // Log if any tracks have mute regions
+    const tracksWithRegions = tracks.filter(t => t.muteRegions && t.muteRegions.length > 0);
+    if (tracksWithRegions.length > 0) {
+      console.log(`🔇 Loaded tracks with mute regions: ${tracksWithRegions.map(t => `${t.name} (${t.muteRegions?.length} regions)`).join(', ')}`);
+    }
     
     // Set up duration detection in background
     if (tracks.length > 0) {

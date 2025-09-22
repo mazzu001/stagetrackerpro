@@ -85,10 +85,27 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
           const audioUrl = await audioStorage.getAudioUrl(track.id);
           if (!audioUrl) return null;
           console.log(`🎵 Streaming track: ${track.name} -> ${audioUrl.substring(0, 50)}...`);
+          
+          // Parse muteRegions if they're stored as a JSON string
+          let muteRegions = track.muteRegions;
+          if (typeof muteRegions === 'string') {
+            try {
+              muteRegions = JSON.parse(muteRegions);
+            } catch (e) {
+              console.warn(`Failed to parse mute regions for track ${track.name}:`, e);
+              muteRegions = [];
+            }
+          }
+          
           return {
             id: track.id,
             name: track.name,
             url: audioUrl,
+            volume: track.volume || 50,
+            balance: track.balance || 0,
+            isMuted: track.isMuted || false,
+            isSolo: track.isSolo || false,
+            muteRegions: muteRegions || []
           };
         } catch (error) {
           console.warn(`⚠️ Failed to get URL for track ${track.name}:`, error);
@@ -96,7 +113,7 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
         }
       });
       
-      const trackData = (await Promise.all(trackDataPromises)).filter(Boolean) as { id: string; name: string; url: string; }[];
+      const trackData = (await Promise.all(trackDataPromises)).filter(Boolean) as any[];
       
       if (trackData.length === 0) {
         throw new Error('No valid audio URLs found for streaming');

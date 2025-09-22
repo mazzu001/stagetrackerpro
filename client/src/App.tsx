@@ -125,11 +125,23 @@ function AppContent() {
     // Check if local file system is already initialized
     const checkLocalFS = async () => {
       try {
-        const browserFS = BrowserFileSystem.getInstance();
+        // Get user email from localStorage if logged in
+        let userEmail = 'default@user.com';
+        const storedUser = localStorage.getItem('lpp_local_user');
+        if (storedUser) {
+          try {
+            const userData = JSON.parse(storedUser);
+            userEmail = userData.email || 'default@user.com';
+          } catch (e) {
+            console.error('Failed to parse user data:', e);
+          }
+        }
+        
+        const browserFS = BrowserFileSystem.getInstance(userEmail);
         const isAlreadyInitialized = await browserFS.isAlreadyInitialized();
         
         if (isAlreadyInitialized) {
-          console.log('Browser file system already initialized - auto-initializing');
+          console.log(`Browser file system already initialized for user ${userEmail} - auto-initializing`);
           // Auto-initialize since it was already set up before
           const success = await browserFS.initialize();
           if (success) {

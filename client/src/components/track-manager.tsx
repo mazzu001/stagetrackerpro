@@ -428,7 +428,7 @@ export default function TrackManager({
 
           // Store audio file in local file storage for fast access
           console.log(`Storing audio file locally for track: ${createdTrack.id}`);
-          const audioStorage = AudioFileStorage.getInstance();
+          const audioStorage = AudioFileStorage.getInstance(user?.email || 'default@user.com');
           await audioStorage.storeAudioFile(createdTrack.id, file, createdTrack, song?.title || "Unknown Song");
           
           console.log(`Successfully stored audio locally for track: ${name}`);

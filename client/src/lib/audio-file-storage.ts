@@ -10,26 +10,41 @@ interface StoredAudioFile {
   lastModified: number;
 }
 
-const AUDIO_STORAGE_KEY = "music-app-audio-files";
-
 export class AudioFileStorage {
-  private static instance: AudioFileStorage;
+  private static instances: Map<string, AudioFileStorage> = new Map();
   private audioFiles: Map<string, StoredAudioFile> = new Map();
   private fileObjects: Map<string, File> = new Map(); // Keep original File objects in memory
   private blobUrls: Map<string, string> = new Map(); // Cache blob URLs to avoid recreating
   private fileCache: Map<string, File> = new Map(); // Cache files by path for faster access
   private browserFS: BrowserFileSystem;
+  private userEmail: string;
+  private storageKey: string;
 
-  static getInstance(): AudioFileStorage {
-    if (!AudioFileStorage.instance) {
-      AudioFileStorage.instance = new AudioFileStorage();
-      AudioFileStorage.instance.loadFromStorage();
+  /**
+   * Get a per-user instance of AudioFileStorage
+   * Each user gets their own isolated localStorage keys
+   */
+  static getInstance(userEmail?: string): AudioFileStorage {
+    // Use default email if none provided for backward compatibility
+    const email = userEmail || 'default@user.com';
+    
+    if (!AudioFileStorage.instances.has(email)) {
+      const instance = new AudioFileStorage(email);
+      instance.loadFromStorage();
+      AudioFileStorage.instances.set(email, instance);
     }
-    return AudioFileStorage.instance;
+    return AudioFileStorage.instances.get(email)!;
   }
 
-  constructor() {
-    this.browserFS = BrowserFileSystem.getInstance();
+  constructor(userEmail: string) {
+    this.userEmail = userEmail;
+    // Create a namespaced storage key for this user
+    this.storageKey = `music-app-audio-files::${userEmail}`;
+    
+    console.log(`🗄️ Initializing per-user AudioFileStorage with key: ${this.storageKey}`);
+    
+    // Get per-user BrowserFileSystem instance
+    this.browserFS = BrowserFileSystem.getInstance(userEmail);
   }
 
   // Store file using browser storage (IndexedDB + File API)
@@ -166,14 +181,14 @@ export class AudioFileStorage {
     }
   }
 
-  // Load audio file path references from localStorage
+  // Load audio file path references from localStorage for this user
   private loadFromStorage(): void {
     try {
-      const stored = localStorage.getItem(AUDIO_STORAGE_KEY);
+      const stored = localStorage.getItem(this.storageKey);
       if (stored) {
         const data = JSON.parse(stored);
         this.audioFiles = new Map(data);
-        console.log(`Loaded ${this.audioFiles.size} audio file path references from localStorage`);
+        console.log(`Loaded ${this.audioFiles.size} audio file path references from localStorage for user: ${this.userEmail}`);
         
         // DO NOT auto-load audio files at startup - only load when a song is selected
         // this.autoLoadStoredFiles(); // REMOVED: Was causing app freeze with many files
@@ -295,13 +310,13 @@ export class AudioFileStorage {
     return { registered, expectedCount: expectedFiles.length };
   }
 
-  // Save audio file path references to localStorage
+  // Save audio file path references to localStorage for this user
   private saveToStorage(): void {
     try {
       const data = Array.from(this.audioFiles.entries());
       const jsonData = JSON.stringify(data);
-      localStorage.setItem(AUDIO_STORAGE_KEY, jsonData);
-      console.log(`Saved ${data.length} audio file path references to localStorage (${Math.round(jsonData.length / 1024)}KB)`);
+      localStorage.setItem(this.storageKey, jsonData);
+      console.log(`Saved ${data.length} audio file path references to localStorage for user: ${this.userEmail} (${Math.round(jsonData.length / 1024)}KB)`);
     } catch (error) {
       console.error('Failed to save audio file references:', error);
     }
@@ -319,9 +334,15 @@ export class AudioFileStorage {
     this.fileObjects.clear();
     this.blobUrls.clear();
     this.fileCache.clear();
-    localStorage.removeItem(AUDIO_STORAGE_KEY);
-    console.log('Cleared all audio file references and cache');
+    localStorage.removeItem(this.storageKey);
+    console.log(`Cleared all audio file references and cache for user: ${this.userEmail}`);
   }
 }
 
+// Export a function to get the audio storage for the current user
+export function getAudioStorage(userEmail?: string): AudioFileStorage {
+  return AudioFileStorage.getInstance(userEmail);
+}
+
+// For backward compatibility, export the default instance
 export const audioStorage = AudioFileStorage.getInstance();

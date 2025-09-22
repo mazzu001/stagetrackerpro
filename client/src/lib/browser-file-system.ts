@@ -35,23 +35,39 @@ interface LocalTrack {
 }
 
 export class BrowserFileSystem {
-  private static instance: BrowserFileSystem;
+  private static instances: Map<string, BrowserFileSystem> = new Map();
   private config: LocalConfig;
-  private dbName = 'MusicAppStorage';
+  private dbName: string;
   private dbVersion = 1;
   private db: IDBDatabase | null = null;
   private audioFiles: Map<string, File> = new Map();
   private blobUrls: Map<string, string> = new Map();
   private initializationPromise: Promise<boolean> | null = null;
+  private userEmail: string;
 
-  static getInstance(): BrowserFileSystem {
-    if (!BrowserFileSystem.instance) {
-      BrowserFileSystem.instance = new BrowserFileSystem();
+  /**
+   * Get a per-user instance of BrowserFileSystem
+   * Each user gets their own isolated IndexedDB database
+   */
+  static getInstance(userEmail?: string): BrowserFileSystem {
+    // Use default email if none provided for backward compatibility
+    const email = userEmail || 'default@user.com';
+    
+    if (!BrowserFileSystem.instances.has(email)) {
+      BrowserFileSystem.instances.set(email, new BrowserFileSystem(email));
     }
-    return BrowserFileSystem.instance;
+    return BrowserFileSystem.instances.get(email)!;
   }
 
-  constructor() {
+  constructor(userEmail: string) {
+    this.userEmail = userEmail;
+    // Create a namespaced database name for this user
+    // Replace special characters to ensure valid database name
+    const safeEmail = userEmail.replace(/[@.]/g, '_');
+    this.dbName = `MusicAppStorage::${safeEmail}`;
+    
+    console.log(`🗄️ Initializing per-user database: ${this.dbName}`);
+    
     this.config = {
       version: '1.0.0',
       lastUpdated: Date.now(),
@@ -76,10 +92,11 @@ export class BrowserFileSystem {
     });
   }
 
-  // Check if already initialized
+  // Check if already initialized for this user
   async isAlreadyInitialized(): Promise<boolean> {
     try {
-      const initialized = localStorage.getItem('browserfs-initialized');
+      const key = `browserfs-initialized::${this.userEmail}`;
+      const initialized = localStorage.getItem(key);
       return initialized === 'true';
     } catch (error) {
       return false;
@@ -92,9 +109,10 @@ export class BrowserFileSystem {
       await this.initializeDB();
       await this.loadConfig();
       
-      // Mark as initialized in localStorage
-      localStorage.setItem('browserfs-initialized', 'true');
-      console.log('Browser file system initialized successfully');
+      // Mark as initialized in localStorage for this user
+      const key = `browserfs-initialized::${this.userEmail}`;
+      localStorage.setItem(key, 'true');
+      console.log(`Browser file system initialized successfully for user: ${this.userEmail}`);
       return true;
     } catch (error) {
       console.error('Failed to initialize browser file system:', error);
@@ -104,6 +122,7 @@ export class BrowserFileSystem {
 
   private async initializeDB(): Promise<void> {
     return new Promise((resolve, reject) => {
+      console.log(`🔧 Opening IndexedDB: ${this.dbName}`);
       const request = indexedDB.open(this.dbName, this.dbVersion);
 
       request.onerror = () => reject(request.error);

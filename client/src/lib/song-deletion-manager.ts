@@ -7,8 +7,7 @@ import { AudioFileStorage } from "./audio-file-storage";
  * including audio files, waveforms, and references from all storage systems
  */
 export class SongDeletionManager {
-  private static browserFS = BrowserFileSystem.getInstance();
-  private static audioStorage = AudioFileStorage.getInstance();
+  // Instances will be created per-user dynamically
 
   /**
    * Completely delete a song and all its associated data
@@ -19,6 +18,10 @@ export class SongDeletionManager {
   static async deleteCompletely(userEmail: string, songId: string): Promise<boolean> {
     try {
       console.log(`🗑️ Starting complete deletion of song: ${songId}`);
+      
+      // Get per-user storage instances
+      const browserFS = BrowserFileSystem.getInstance(userEmail);
+      const audioStorage = AudioFileStorage.getInstance(userEmail);
       
       // Step 1: Get the song data to find all track IDs
       const songs = LocalSongStorage.getAllSongs(userEmail);
@@ -37,7 +40,7 @@ export class SongDeletionManager {
       
       for (const trackId of trackIds) {
         try {
-          this.audioStorage.removeAudioFile(trackId);
+          audioStorage.removeAudioFile(trackId);
           console.log(`✅ Removed track from AudioFileStorage: ${trackId}`);
         } catch (error) {
           console.error(`Failed to remove track ${trackId} from AudioFileStorage:`, error);
@@ -46,7 +49,7 @@ export class SongDeletionManager {
       
       // Step 3: Delete from BrowserFileSystem (IndexedDB)
       console.log(`Deleting song from BrowserFileSystem (IndexedDB)...`);
-      const fsDeleted = await this.browserFS.deleteSong(songId);
+      const fsDeleted = await browserFS.deleteSong(songId);
       if (fsDeleted) {
         console.log(`✅ Removed song from BrowserFileSystem`);
       } else {
@@ -108,6 +111,9 @@ export class SongDeletionManager {
   static async cleanupOrphanedFiles(userEmail: string): Promise<number> {
     console.log(`🧹 Starting cleanup of orphaned audio files...`);
     
+    // Get per-user audio storage instance
+    const audioStorage = AudioFileStorage.getInstance(userEmail);
+    
     // Get all existing songs and their track IDs
     const songs = LocalSongStorage.getAllSongs(userEmail);
     const validTrackIds = new Set<string>();
@@ -121,7 +127,7 @@ export class SongDeletionManager {
     console.log(`Found ${validTrackIds.size} valid track IDs from ${songs.length} songs`);
     
     // Get all stored audio files
-    const allStoredFiles = this.audioStorage.getAllStoredFiles();
+    const allStoredFiles = audioStorage.getAllStoredFiles();
     console.log(`Found ${allStoredFiles.length} stored audio file references`);
     
     // Find and remove orphaned files
@@ -129,7 +135,7 @@ export class SongDeletionManager {
     for (const storedFile of allStoredFiles) {
       if (!validTrackIds.has(storedFile.id)) {
         console.log(`🗑️ Removing orphaned file: ${storedFile.name} (${storedFile.id})`);
-        this.audioStorage.removeAudioFile(storedFile.id);
+        audioStorage.removeAudioFile(storedFile.id);
         cleanedCount++;
       }
     }
@@ -148,6 +154,9 @@ export class SongDeletionManager {
     storedFileCount: number;
     orphanedFileCount: number;
   }> {
+    // Get per-user audio storage instance
+    const audioStorage = AudioFileStorage.getInstance(userEmail);
+    
     const songs = LocalSongStorage.getAllSongs(userEmail);
     let trackCount = 0;
     const validTrackIds = new Set<string>();
@@ -159,7 +168,7 @@ export class SongDeletionManager {
       }
     }
     
-    const allStoredFiles = this.audioStorage.getAllStoredFiles();
+    const allStoredFiles = audioStorage.getAllStoredFiles();
     const orphanedFileCount = allStoredFiles.filter(f => !validTrackIds.has(f.id)).length;
     
     return {

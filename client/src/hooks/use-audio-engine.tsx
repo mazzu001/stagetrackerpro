@@ -117,7 +117,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       // Convert song tracks to track data format and setup streaming
       const setupStreamingAsync = async () => {
         try {
-          const audioStorage = AudioFileStorage.getInstance();
+          const audioStorage = AudioFileStorage.getInstance(user?.email || 'default@user.com');
           
           // Get all audio URLs in parallel 
           const audioUrlPromises = song.tracks.map(async (track) => {

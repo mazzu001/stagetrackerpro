@@ -42,7 +42,19 @@ export function LocalFileSystemInit({ onInitialized }: LocalFileSystemInitProps)
     setError(null);
 
     try {
-      const browserFS = BrowserFileSystem.getInstance();
+      // Get user email from localStorage if logged in
+      let userEmail = 'default@user.com';
+      const storedUser = localStorage.getItem('lpp_local_user');
+      if (storedUser) {
+        try {
+          const userData = JSON.parse(storedUser);
+          userEmail = userData.email || 'default@user.com';
+        } catch (e) {
+          console.error('Failed to parse user data:', e);
+        }
+      }
+      
+      const browserFS = BrowserFileSystem.getInstance(userEmail);
       const success = await browserFS.initialize();
       
       if (success) {

@@ -99,12 +99,12 @@ export default function TrackManager({
       console.log(`Detected audio duration: ${detectedDuration}s from file: ${audioFile.name}`);
       
       // Get current song to check if we need to update duration
-      const currentSong = LocalSongStorage.getSong(user.email, songId);
+      const currentSong = await LocalSongStorage.getSong(user.email, songId);
       if (currentSong) {
         // Update song duration if this track is longer than current duration
         if (detectedDuration > (currentSong.duration || 0)) {
           console.log(`Updating song duration from ${currentSong.duration}s to ${detectedDuration}s`);
-          LocalSongStorage.updateSong(user.email, songId, { duration: detectedDuration });
+          await LocalSongStorage.updateSong(user.email, songId, { duration: detectedDuration });
           
           // Trigger UI refresh
           onTrackUpdate?.();

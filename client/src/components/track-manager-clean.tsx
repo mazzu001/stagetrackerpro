@@ -120,13 +120,13 @@ export default function TrackManager({
       const url = URL.createObjectURL(audioFile);
       
       return new Promise<void>((resolve) => {
-        audio.addEventListener('loadedmetadata', () => {
+        audio.addEventListener('loadedmetadata', async () => {
           const duration = Math.round(audio.duration);
           console.log(`Detected audio duration: ${duration}s from file: ${audioFile.name}`);
           URL.revokeObjectURL(url);
           
           if (userEmail && duration > 0) {
-            LocalSongStorage.updateSong(userEmail, songId, { duration });
+            await LocalSongStorage.updateSong(userEmail, songId, { duration });
           }
           resolve();
         });

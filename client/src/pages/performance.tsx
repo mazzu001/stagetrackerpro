@@ -391,9 +391,9 @@ export default function Performance({ userType, userEmail, logout }: Performance
   const audioEngine = useAudioEngine({ 
     song: selectedSong ? { ...selectedSong, userId: userEmail || '' } as SongWithTracks : undefined,
     userEmail: userEmail,
-    onDurationUpdated: (songId: string, newDuration: number) => {
+    onDurationUpdated: async (songId: string, newDuration: number) => {
       if (selectedSong && selectedSong.id === songId && userEmail) {
-        LocalSongStorage.updateSong(userEmail, songId, { duration: newDuration });
+        await LocalSongStorage.updateSong(userEmail, songId, { duration: newDuration });
       }
     }
   });
@@ -695,11 +695,11 @@ export default function Performance({ userType, userEmail, logout }: Performance
     }
   }, [userEmail, songTitle, songArtist, toast, refreshSongs]);
 
-  const handleUpdateLyrics = useCallback(() => {
+  const handleUpdateLyrics = useCallback(async () => {
     if (!selectedSong || !userEmail) return;
 
     try {
-      const updatedSong = LocalSongStorage.updateSong(userEmail, selectedSong.id, {
+      const updatedSong = await LocalSongStorage.updateSong(userEmail, selectedSong.id, {
         lyrics: lyricsText
       });
       

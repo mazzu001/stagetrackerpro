@@ -52,15 +52,19 @@ export class LocalSongStorage {
     return newSong;
   }
 
-  static updateSong(userEmail: string, songId: string, updates: Partial<LocalSong>): LocalSong | null {
-    const songs = this.getAllSongs(userEmail);
-    const songIndex = songs.findIndex(song => song.id === songId);
-    
-    if (songIndex === -1) return null;
-    
-    songs[songIndex] = { ...songs[songIndex], ...updates };
-    this.saveSongs(userEmail, songs);
-    return songs[songIndex];
+  static async updateSong(userEmail: string, songId: string, updates: Partial<LocalSong>): Promise<LocalSong | null> {
+    try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
+      const updatedSong = await LocalSongStorageDB.updateSong(userEmail, songId, updates);
+      if (updatedSong) {
+        console.log('LocalSongStorage.updateSong: Song updated successfully:', songId);
+      }
+      return updatedSong;
+    } catch (error) {
+      console.error('LocalSongStorage.updateSong: Error updating song:', error);
+      return null;
+    }
   }
 
   static async deleteSong(userEmail: string, songId: string): Promise<boolean> {

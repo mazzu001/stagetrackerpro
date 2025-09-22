@@ -90,7 +90,7 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
           console.log(`🎵 Streaming track: ${track.name} -> ${audioUrl.substring(0, 50)}...`);
           
           // Load mute regions from LocalSongStorage for persistence
-          const muteRegions = LocalSongStorage.getMuteRegions(
+          const muteRegions = await LocalSongStorage.getMuteRegions(
             song.userId || 'default@user.com', 
             song.id, 
             track.id

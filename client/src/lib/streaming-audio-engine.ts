@@ -126,6 +126,14 @@ export class StreamingAudioEngine {
     const tracksWithRegions = tracks.filter(t => t.muteRegions && t.muteRegions.length > 0);
     if (tracksWithRegions.length > 0) {
       console.log(`🔇 Loaded tracks with mute regions: ${tracksWithRegions.map(t => `${t.name} (${t.muteRegions?.length} regions)`).join(', ')}`);
+      
+      // If we're already playing, schedule mute regions immediately for the new tracks
+      if (this.state.isPlaying) {
+        setTimeout(() => {
+          this.scheduleAllMuteRegions(this.state.currentTime);
+          console.log(`🔇 Re-scheduled mute regions for newly loaded tracks at ${this.state.currentTime.toFixed(1)}s`);
+        }, 50); // Small delay to ensure audio nodes are created
+      }
     }
     
     // Set up duration detection in background

@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Edit, ChevronUp, ChevronDown, Music } from "lucide-react";
-import { useSimpleMidi } from "@/hooks/useSimpleMidi";
+import { useMidi } from "@/contexts/MidiProvider";
 
 interface LyricsLine {
   timestamp: number; // in seconds
   text: string;
-  displayText: string; // Text without MIDI commands
+  displayText: string; // Text without MIDI commands for display
   midiCommands: string[]; // Extracted MIDI commands like [[PC:2:1]]
 }
 
@@ -16,16 +16,17 @@ interface LyricsDisplayProps {
   duration: number;
   onEditLyrics?: () => void;
   isPlaying: boolean;
-  allowMidi?: boolean; // Optional prop to disable MIDI (e.g. for viewers)
+  allowMidi?: boolean; // Optional prop to disable MIDI execution (for viewers)
 }
 
 export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPlaying, allowMidi = true }: LyricsDisplayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [previousTime, setPreviousTime] = useState<number>(0);
-  const [executedCommands, setExecutedCommands] = useState<Set<string>>(new Set());
   
-  // MIDI integration - only if allowed and initialized
-  const midi = useSimpleMidi();
+  // MIDI integration
+  const { sendMidiCommand, parseMidiCommand, connectedDevices } = useMidi();
+  const [executedCommands, setExecutedCommands] = useState<Set<string>>(new Set());
+  const [previousTime, setPreviousTime] = useState<number>(0);
+  const [songSetupCommandsExecuted, setSongSetupCommandsExecuted] = useState<string | null>(null);
 
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('lyrics-font-size');
@@ -43,7 +44,6 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
   useEffect(() => {
     if (containerRef.current && song) {
       containerRef.current.scrollTop = 0;
-      setExecutedCommands(new Set()); // Reset executed commands for new song
     }
   }, [song?.id]); // Trigger when song ID changes
 
@@ -134,12 +134,44 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
 
   const lyrics = song?.lyrics ? parseLyrics(song.lyrics) : [];
   
+  // Extract MIDI commands from non-timestamped lines for song setup
+  const extractSetupMidiCommands = useCallback((lyricsText: string): string[] => {
+    if (!lyricsText) return [];
+    
+    const lines = lyricsText.split('\n');
+    const setupCommands: string[] = [];
+    
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed) continue;
+      
+      // Check if line has timestamp pattern at start
+      const hasTimestamp = /^\[\d{1,2}:\d{2}\]/.test(trimmed);
+      
+      // If no timestamp, extract MIDI commands for setup
+      if (!hasTimestamp) {
+        const { midiCommands } = extractMidiCommands(trimmed);
+        setupCommands.push(...midiCommands);
+      }
+    }
+    
+    return setupCommands;
+  }, []);
+  
+
+  
   // Check if lyrics actually contain timestamp patterns at start of lines
+  // Only matches [MM:SS] format at the very beginning of a line
   const hasTimestamps = song?.lyrics ? 
     song.lyrics.split('\n').some((line: string) => {
       const trimmed = line.trim();
+      // Must start with [MM:SS] pattern (may or may not have content after)
       return /^\[\d{1,2}:\d{2}\]/.test(trimmed);
     }) : false;
+  
+  // Note: plainLines no longer needed - using unified lyrics array for both modes
+  
+
   
   // Find all current lines at the current timestamp (handle multiple lines with same timestamp)
   const getCurrentLines = () => {
@@ -174,10 +206,11 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
   const currentLines = getCurrentLines();
   const currentLineIndex = currentLines.length > 0 ? lyrics.findIndex(line => line === currentLines[0]) : -1;
 
-  // Execute MIDI commands from current lines
+  // Execute MIDI commands from ALL current lines at current timestamp
   useEffect(() => {
-    if (!allowMidi || !isPlaying || !midi.isInitialized || currentLines.length === 0) return;
+    if (!allowMidi || !isPlaying || currentLines.length === 0 || lyrics.length === 0) return;
     
+    // Process ALL lines at the current timestamp
     currentLines.forEach((line, lineIndex) => {
       if (line.midiCommands.length === 0) return;
       
@@ -188,33 +221,86 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
       if (executedCommands.has(lineKey)) return;
       
       // Execute all MIDI commands for this line
-      line.midiCommands.forEach((commandString) => {
-        const command = midi.parseCommand(commandString);
+      line.midiCommands.forEach((commandString, commandIndex) => {
+        const command = parseMidiCommand(commandString);
         if (command) {
-          const success = midi.sendCommand(command);
+          const success = sendMidiCommand(command);
           if (success) {
-            console.log(`🎹 Executed MIDI command from lyrics: ${commandString} at ${line.timestamp}s`);
+            console.log(`🎹 Executed MIDI command from lyrics: ${commandString} at ${line.timestamp}s (line ${lineIndex + 1}/${currentLines.length})`);
+          } else {
+            console.warn(`❌ Failed to execute MIDI command: ${commandString}`);
           }
+        } else {
+          console.warn(`❌ Invalid MIDI command format: ${commandString}`);
         }
       });
       
       // Mark this line's commands as executed
       setExecutedCommands(prev => new Set(prev).add(lineKey));
     });
-  }, [currentLines, isPlaying, allowMidi, midi, lyrics, executedCommands]);
+  }, [currentLines, isPlaying, hasTimestamps, lyrics, connectedDevices, sendMidiCommand, parseMidiCommand, executedCommands]);
 
-  // Reset executed commands on seek
+  // Execute non-timestamped MIDI commands when opening a song
+  useEffect(() => {
+    if (!allowMidi || !song?.id || !song?.lyrics) return;
+    
+    // Check if we've already executed setup commands for this song
+    if (songSetupCommandsExecuted === song.id) return;
+    
+    // Only execute if we have connected MIDI output devices
+    const outputDevices = connectedDevices.filter(d => d.type === 'output');
+    if (outputDevices.length === 0) return;
+    
+    // Extract and execute setup commands
+    const setupCommands = extractSetupMidiCommands(song.lyrics);
+    if (setupCommands.length === 0) return;
+    
+    console.log(`🎵 Executing ${setupCommands.length} setup MIDI commands for song: ${song.title || 'Untitled'}`);
+    
+    // Execute all setup MIDI commands
+    setupCommands.forEach((commandString, index) => {
+      const command = parseMidiCommand(commandString);
+      if (command) {
+        const success = sendMidiCommand(command);
+        if (success) {
+          console.log(`🎹 Executed setup MIDI command: ${commandString}`);
+        } else {
+          console.warn(`❌ Failed to execute setup MIDI command: ${commandString}`);
+        }
+      } else {
+        console.warn(`❌ Invalid setup MIDI command format: ${commandString}`);
+      }
+    });
+    
+    // Mark setup commands as executed for this song
+    setSongSetupCommandsExecuted(song.id);
+  }, [song?.id, song?.lyrics, connectedDevices, sendMidiCommand, parseMidiCommand, extractSetupMidiCommands, songSetupCommandsExecuted]);
+
+  // Reset executed commands when song changes or playback restarts
+  useEffect(() => {
+    setExecutedCommands(new Set());
+    setSongSetupCommandsExecuted(null); // Reset setup commands for new song
+  }, [song?.id]);
+
+  // Detect seeks and reset executed commands when seeking backward or jumping significantly
   useEffect(() => {
     const timeDifference = currentTime - previousTime;
     const isBackwardSeek = timeDifference < -1; // More than 1 second backward
     const isLargeJump = Math.abs(timeDifference) > 5 && previousTime > 0; // Jump more than 5 seconds
+    const isNearBeginning = currentTime < 2; // Near beginning
     
-    if (isBackwardSeek || isLargeJump) {
+    if (isBackwardSeek || isLargeJump || isNearBeginning) {
+      console.log(`🔄 Seek detected: ${previousTime.toFixed(1)}s → ${currentTime.toFixed(1)}s, resetting MIDI commands`);
       setExecutedCommands(new Set());
     }
     
     setPreviousTime(currentTime);
   }, [currentTime, previousTime]);
+
+  
+  
+  
+
 
   // Scroll lyrics back to top when playback stops
   useEffect(() => {
@@ -222,6 +308,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
       containerRef.current.scrollTop = 0;
     }
   }, [isPlaying]);
+
 
   // Auto-scroll for timestamped lyrics
   useEffect(() => {
@@ -245,101 +332,87 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
     }
   }, [currentLineIndex, hasTimestamps]);
 
-  // Auto-scroll for non-timestamped lyrics (continuous scrolling)
+  // Timer-based auto-scroll for non-timestamped lyrics
   useEffect(() => {
-    if (!hasTimestamps && autoScrollEnabled && isPlaying && lyrics.length > 0 && containerRef.current) {
-      const scrollInterval = setInterval(() => {
-        if (containerRef.current) {
-          containerRef.current.scrollTop += scrollSpeed * 2;
+    let scrollTimer: NodeJS.Timeout | null = null;
+    
+    if (!hasTimestamps && lyrics.length > 0 && containerRef.current && autoScrollEnabled && currentTime > 0) {
+      const container = containerRef.current;
+      
+      // Calculate scroll increment based on speed setting for ultra-smooth scrolling
+      // scrollSpeed ranges from 0.1 to 2.0, use very short intervals for smoothness
+      const baseInterval = 50; // 50ms for ultra-smooth animation
+      const intervalMs = Math.max(20, baseInterval / scrollSpeed); // Min 20ms, faster speed = shorter interval
+      const scrollIncrement = 0.5; // very small increments for ultra-smoothness
+      
+      scrollTimer = setInterval(() => {
+        if (container && currentTime > 0) {
+          const contentHeight = container.scrollHeight;
+          const containerHeight = container.clientHeight;
+          const maxScrollDistance = Math.max(0, contentHeight - containerHeight);
+          
+          if (container.scrollTop < maxScrollDistance) {
+            container.scrollTop += scrollIncrement;
+          }
         }
-      }, 100);
-
-      return () => clearInterval(scrollInterval);
+      }, intervalMs);
     }
-  }, [hasTimestamps, autoScrollEnabled, isPlaying, lyrics.length, scrollSpeed]);
+    
+    return () => {
+      if (scrollTimer) {
+        clearInterval(scrollTimer);
+      }
+    };
+  }, [currentTime > 0, hasTimestamps, lyrics.length, scrollSpeed, autoScrollEnabled]);
 
-  const handleIncreaseFontSize = () => {
-    const newSize = Math.min(fontSize + 2, 36);
+  const adjustFontSize = (delta: number) => {
+    const newSize = Math.max(12, Math.min(32, fontSize + delta));
     setFontSize(newSize);
-    localStorage.setItem('lyrics-font-size', String(newSize));
+    localStorage.setItem('lyrics-font-size', newSize.toString());
   };
 
-  const handleDecreaseFontSize = () => {
-    const newSize = Math.max(fontSize - 2, 12);
-    setFontSize(newSize);
-    localStorage.setItem('lyrics-font-size', String(newSize));
-  };
-
-  const handleIncreaseScrollSpeed = () => {
-    const newSpeed = Math.min(scrollSpeed + 0.2, 3.0);
+  const adjustScrollSpeed = (delta: number) => {
+    const newSpeed = Math.max(0.1, Math.min(2.0, scrollSpeed + delta));
     setScrollSpeed(newSpeed);
-    localStorage.setItem('lyrics-scroll-speed', String(newSpeed));
+    localStorage.setItem('lyrics-scroll-speed', newSpeed.toString());
   };
 
-  const handleDecreaseScrollSpeed = () => {
-    const newSpeed = Math.max(scrollSpeed - 0.2, 0.2);
-    setScrollSpeed(newSpeed);
-    localStorage.setItem('lyrics-scroll-speed', String(newSpeed));
-  };
-
-  const toggleAutoScroll = () => {
-    const newState = !autoScrollEnabled;
-    setAutoScrollEnabled(newState);
-    localStorage.setItem('lyrics-auto-scroll', String(newState));
-  };
+  if (!song) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-gray-800 rounded-lg">
+        <p className="text-gray-400">No song selected</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="h-full flex flex-col bg-gray-900 rounded-lg overflow-hidden">
-      {/* Controls */}
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Lyrics</span>
-          {onEditLyrics && (
-            <Button size="sm" variant="ghost" onClick={onEditLyrics} data-testid="button-edit-lyrics">
-              <Edit className="h-3 w-3" />
-            </Button>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          {/* Font size controls */}
-          <Button size="sm" variant="ghost" onClick={handleDecreaseFontSize} data-testid="button-decrease-font">
-            <Minus className="h-3 w-3" />
-          </Button>
-          <span className="text-xs min-w-[40px] text-center">{fontSize}px</span>
-          <Button size="sm" variant="ghost" onClick={handleIncreaseFontSize} data-testid="button-increase-font">
-            <Plus className="h-3 w-3" />
-          </Button>
-          
-          {/* Scroll speed controls for non-timestamped lyrics */}
-          {!hasTimestamps && (
-            <>
-              <div className="w-px h-4 bg-gray-600 mx-1" />
-              <Button size="sm" variant="ghost" onClick={handleDecreaseScrollSpeed} data-testid="button-decrease-scroll">
-                <ChevronDown className="h-3 w-3" />
-              </Button>
-              <span className="text-xs min-w-[40px] text-center">{scrollSpeed.toFixed(1)}x</span>
-              <Button size="sm" variant="ghost" onClick={handleIncreaseScrollSpeed} data-testid="button-increase-scroll">
-                <ChevronUp className="h-3 w-3" />
-              </Button>
-              <Button
-                size="sm"
-                variant={autoScrollEnabled ? "default" : "ghost"}
-                onClick={toggleAutoScroll}
-                className="ml-2"
-                data-testid="button-toggle-autoscroll"
-              >
-                Auto
-              </Button>
-            </>
-          )}
-        </div>
-      </div>
+    <div style={{ 
+      width: '100%', 
+      height: '100%',
+      backgroundColor: '#111827',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      display: 'flex',
+      flexDirection: 'column',
+      position: 'relative',
+      contain: 'layout style paint'
+    }}>
       
-      {/* Lyrics content */}
+
+      
+
+      {/* Lyrics Container */}
       <div 
         ref={containerRef}
-        className="flex-1 overflow-y-auto overflow-x-hidden p-6"
-        style={{
+        className="mobile-lyrics-spacing"
+        style={{ 
+          flex: 1,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          padding: '24px',
+          backgroundColor: '#1f2937',
+          position: 'relative',
+          contain: 'layout style paint',
           scrollBehavior: 'smooth'
         }}
         data-testid="lyrics-container"
@@ -362,7 +435,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
           // Unified rendering for both timestamped and non-timestamped lyrics
           <div className={hasTimestamps ? "space-y-6" : "space-y-4"} style={{ fontSize: `${fontSize}px` }}>
             {lyrics.map((line, index) => {
-              // Skip empty display text lines
+              // Skip rendering lines with empty displayText (MIDI-only lines) to avoid blank lines
               if (!line.displayText.trim()) {
                 return null;
               }
@@ -391,6 +464,7 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
                     )
                   }`}
                   data-testid={`lyrics-line-${index}`}
+                  id={!hasTimestamps ? `auto-scroll-line-${index}` : undefined}
                 >
                   <div className="flex items-start gap-2">
                     <span className="flex-1">{line.displayText}</span>

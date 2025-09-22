@@ -10,8 +10,6 @@ import TrackManager from "@/components/track-manager-clean";
 import StemSplitter from "@/components/stem-splitter";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
-import { SimpleMidiDevices } from "@/components/simple-midi-devices";
-import { useSimpleMidi } from "@/hooks/useSimpleMidi";
 
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 
@@ -33,6 +31,8 @@ import type { SongWithTracks } from "@shared/schema";
 import { useRef } from "react";
 import { BackupManager } from "@/lib/backup-manager";
 import { useBroadcast } from "@/hooks/useBroadcast";
+import { MidiDeviceManager } from "@/components/midi-device-manager";
+import { useMidi } from "@/contexts/MidiProvider";
 
 interface PerformanceProps {
   userType: UserType;
@@ -56,6 +56,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
   const [allSongs, setAllSongs] = useState<LocalSong[]>([]);
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isDeviceManagerOpen, setIsDeviceManagerOpen] = useState(false);
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -66,12 +67,12 @@ export default function Performance({ userType, userEmail, logout }: Performance
   const [importProgress, setImportProgress] = useState(0);
   const [importStatus, setImportStatus] = useState("");
   const [isExportDialogOpen, setIsExportDialogOpen] = useState(false);
+  const [isMidiListening, setIsMidiListening] = useState(false);
   const [exportFilename, setExportFilename] = useState("");
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
-  const [isDeviceDialogOpen, setIsDeviceDialogOpen] = useState(false);
 
-  // MIDI integration - simple and non-blocking
-  const midi = useSimpleMidi();
+  // MIDI integration
+  const { sendMidiCommand, parseMidiCommand, connectedDevices, registerMessageListener, unregisterMessageListener } = useMidi();
 
   // Optional broadcast integration - completely isolated
   const { isHost, isViewer, broadcastState, sendPerformanceState, currentRoom } = useBroadcast();
@@ -214,9 +215,108 @@ export default function Performance({ userType, userEmail, logout }: Performance
     }
   };
 
+  // Handle MIDI listen toggle
+  const handleMidiListen = () => {
+    if (isMidiListening) {
+      // Stop listening
+      setIsMidiListening(false);
+      if (unregisterMessageListener) {
+        unregisterMessageListener('lyrics-editor');
+      }
+      toast({
+        title: "MIDI Listen Off",
+        description: "Stopped listening for MIDI messages",
+      });
+    } else {
+      // Start listening
+      if (connectedDevices.filter(d => d.type === 'input').length === 0) {
+        toast({
+          title: "No MIDI Input Devices",
+          description: "Connect a MIDI input device first",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      setIsMidiListening(true);
+      
+      // Register message listener for incoming MIDI
+      if (registerMessageListener) {
+        registerMessageListener('lyrics-editor', (message: any) => {
+          // Format the MIDI message into our bracket notation
+          const formattedCommand = formatMidiMessage(message);
+          if (formattedCommand) {
+            insertMidiCommandAtCursor(formattedCommand);
+          }
+        });
+      }
+      
+      toast({
+        title: "MIDI Listen On",
+        description: "Listening for MIDI messages. Play something on your controller!",
+      });
+    }
+  };
 
+  // Format incoming MIDI message to bracket notation
+  const formatMidiMessage = (message: any): string | null => {
+    if (!message.data || message.data.length < 2) return null;
+    
+    const [status, data1, data2] = message.data;
+    const channel = (status & 0x0F) + 1; // MIDI channels are 1-16
+    const command = status & 0xF0;
+    
+    switch (command) {
+      case 0xC0: // Program Change
+        return `[[PC:${data1}:${channel}]]`;
+      case 0xB0: // Control Change
+        return `[[CC:${data1}:${data2 || 0}:${channel}]]`;
+      case 0x90: // Note On
+        if (data2 > 0) { // Velocity > 0 means note on
+          return `[[NOTE:${data1}:${data2}:${channel}]]`;
+        }
+        break;
+      case 0x80: // Note Off - we'll ignore these for lyrics
+        break;
+    }
+    
+    return null;
+  };
 
+  // Insert MIDI command at cursor position in lyrics textarea
+  const insertMidiCommandAtCursor = (command: string) => {
+    const textarea = document.getElementById('lyrics') as HTMLTextAreaElement;
+    if (textarea) {
+      // Get current cursor position
+      const startPos = textarea.selectionStart;
+      const endPos = textarea.selectionEnd;
+      
+      // Get current textarea value
+      const currentValue = textarea.value;
+      
+      // Insert command, replacing any selected text
+      const newValue = currentValue.substring(0, startPos) + command + currentValue.substring(endPos);
+      
+      // Update both DOM and React state
+      textarea.value = newValue;
+      setLyricsText(newValue);
+      
+      // Position cursor after the inserted command
+      const newCursorPos = startPos + command.length;
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+      textarea.focus();
+    }
+  };
 
+  // Cleanup MIDI listener when lyrics dialog closes
+  useEffect(() => {
+    if (!isEditLyricsOpen && isMidiListening) {
+      setIsMidiListening(false);
+      if (unregisterMessageListener) {
+        unregisterMessageListener('lyrics-editor');
+      }
+    }
+  }, [isEditLyricsOpen, isMidiListening, unregisterMessageListener]);
 
   // Cancel export operation
   const handleCancelExport = () => {
@@ -867,12 +967,12 @@ export default function Performance({ userType, userEmail, logout }: Performance
           </div>
 
           <div className="flex items-center gap-1 md:gap-2">
-            {/* MIDI Devices Button - Professional Users Only */}
+            {/* Bluetooth Manager Button - Professional Users Only */}
             {userType === 'professional' && (
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setIsDeviceDialogOpen(true)}
+                onClick={() => setIsDeviceManagerOpen(true)}
                 data-testid="button-device-manager"
                 className="h-8 px-2 md:px-3"
               >
@@ -1358,6 +1458,20 @@ export default function Performance({ userType, userEmail, logout }: Performance
                 )}
                 {isSearchingLyrics ? 'Searching...' : 'Search Online'}
               </Button>
+              <Button
+                variant={isMidiListening ? "default" : "outline"}
+                size="sm"
+                onClick={handleMidiListen}
+                data-testid="button-midi-listen"
+                className="h-8 px-3"
+              >
+                {isMidiListening ? (
+                  <Activity className="w-3 h-3 mr-1 animate-pulse" />
+                ) : (
+                  <Headphones className="w-3 h-3 mr-1" />
+                )}
+                {isMidiListening ? 'Listening...' : 'MIDI Listen'}
+              </Button>
             </div>
           </div>
 
@@ -1543,10 +1657,10 @@ export default function Performance({ userType, userEmail, logout }: Performance
         </DialogContent>
       </Dialog>
       
-      {/* MIDI Device Dialog */}
-      <SimpleMidiDevices 
-        isOpen={isDeviceDialogOpen}
-        onClose={() => setIsDeviceDialogOpen(false)}
+      {/* MIDI Device Manager */}
+      <MidiDeviceManager
+        isOpen={isDeviceManagerOpen}
+        onClose={() => setIsDeviceManagerOpen(false)}
       />
       
       {/* Hidden file input for import */}

@@ -22,6 +22,7 @@ import Unsubscribe from "@/pages/unsubscribe";
 import PrivacyPolicy from "@/pages/privacy-policy";
 import { useLocalAuth, type UserType } from '@/hooks/useLocalAuth';
 import { useStorage } from '@/contexts/StorageContext';
+import { MidiProvider } from '@/contexts/MidiProvider';
 import { StorageProvider } from '@/contexts/StorageContext';
 // Google Analytics integration - Added from blueprint:javascript_google_analytics
 import { initGA } from "./lib/analytics";
@@ -198,7 +199,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <StorageProvider userEmail={user?.email || null}>
-        <AppContent isAuthenticated={isAuthenticated} isPaidUser={isPaidUser} user={user} userEmail={user?.email} logout={logout} />
+        <MidiProvider>
+          <AppContent isAuthenticated={isAuthenticated} isPaidUser={isPaidUser} user={user} userEmail={user?.email} logout={logout} />
+        </MidiProvider>
       </StorageProvider>
     </QueryClientProvider>
   );

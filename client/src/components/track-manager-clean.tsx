@@ -152,6 +152,7 @@ export default function TrackManager({
       input.type = 'file';
       input.multiple = true;
       input.accept = 'audio/*';
+      input.setAttribute('data-testid', 'track-audio-file-input');
       
       input.onchange = async (e) => {
         console.log('=== Web Track Manager: File change event triggered ===');

@@ -1,0 +1,63 @@
+react-dom.development.js:29895 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+android-ble-midi.ts:36 🔵 Android BLE-MIDI adapter initialized
+audio-file-storage.ts:44 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+browser-file-system.ts:69 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+browser-file-system.ts:125 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+audio-file-storage.ts:199 No stored audio file references found
+main.tsx:1 [MAIN.TSX] Script starting...
+main.tsx:5 [MAIN.TSX] Unregistering service workers...
+main.tsx:18 [MAIN.TSX] About to render React app...
+main.tsx:20 [MAIN.TSX] Root element: <div id=​"root">​…​</div>​
+main.tsx:25 [MAIN.TSX] React app rendered successfully
+App.tsx:170 [APP] About to call useLocalAuth hook...
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+useLocalAuth.ts:34 [AUTH] Valid session found: professional@demo.com
+App.tsx:172 [APP] Auth state: Object
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: false
+App.tsx:71 🔍 Parsed values: Object
+App.tsx:125 🔍 No payment success detected in URL
+useMidiDevices.ts:279 🎹 MIDI API supported - waiting for user interaction to initialize
+StorageContext.tsx:50 🔧 Initializing storage for user: professional@demo.com
+browser-file-system.ts:69 🗄️ Initializing per-user database: MusicAppStorage::professional_demo_com
+browser-file-system.ts:125 🔧 Opening IndexedDB: MusicAppStorage::professional_demo_com
+useLocalAuth.ts:54 [AUTH] useEffect - auth state initialized
+StorageContext.tsx:59 📊 Database exists for professional@demo.com: true
+StorageContext.tsx:63 📂 Loading existing database for professional@demo.com
+browser-file-system.ts:125 🔧 Opening IndexedDB: MusicAppStorage::professional_demo_com
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: false
+browser-file-system.ts:115 Browser file system initialized successfully for user: default@user.com
+browser-file-system.ts:80 ✅ BrowserFileSystem fully initialized with config loaded
+browser-file-system.ts:115 Browser file system initialized successfully for user: professional@demo.com
+browser-file-system.ts:80 ✅ BrowserFileSystem fully initialized with config loaded
+browser-file-system.ts:115 Browser file system initialized successfully for user: professional@demo.com
+audio-file-storage.ts:44 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::professional@demo.com
+audio-file-storage.ts:199 No stored audio file references found
+StorageContext.tsx:83 ✅ Storage initialization complete for professional@demo.com
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: true
+lyrics-display.tsx:293 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:31 🔍 Initial service isHost check: Object
+streaming-audio-engine.ts:71 🎵 Master output initialized
+performance.tsx:452 📋 Loaded 11 songs from local storage (alphabetically sorted)
+performance.tsx:506 🔍 Debug values: Object
+performance.tsx:580 🎭 Broadcast host effect: Object
+performance.tsx:590 🎭 Not broadcasting - not host
+useMidiDevices.ts:324 🎹 Initializing USB MIDI (with timeout protection)...
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+useMidiDevices.ts:102 🔍 Browser detection debug: Object
+useMidiDevices.ts:315 🎹 MIDI initialization already in progress
+midi-device-manager.tsx:63 🎹 USB MIDI initialized from device manager
+useMidiDevices.ts:401  ⏱️ MIDI initialization timed out after 5 seconds
+(anonymous) @ useMidiDevices.ts:401
+useMidiDevices.ts:413  ❌ USB MIDI initialization failed: Error: MIDI_TIMEOUT
+    at useMidiDevices.ts:287:43
+(anonymous) @ useMidiDevices.ts:413
+midi-device-manager.tsx:67  ❌ MIDI initialization error: Error: MIDI_TIMEOUT
+    at useMidiDevices.ts:287:43
+(anonymous) @ midi-device-manager.tsx:67
+useMidiDevices.ts:102 🔍 Browser detection debug: Object

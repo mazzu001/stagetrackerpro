@@ -27,6 +27,7 @@ export interface UseMidiDevicesReturn {
   isInitialized: boolean;
   isInitializing: boolean;
   error: string | null;
+  clearError: () => void;
   connectDevice: (deviceId: string) => Promise<boolean>;
   connectBleDevice: (deviceId: string) => Promise<boolean>; // Requires user gesture
   disconnectDevice: (deviceId: string) => Promise<boolean>;
@@ -305,7 +306,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
 
   // Stage 1: Initialize USB MIDI only (lightweight, fast)
   const initializeMidi = useCallback(async () => {
-    if (isInitialized || hasInitializedRef.current) {
+    if (isInitialized) {
       console.log('🎹 MIDI already initialized');
       await refreshDeviceList(false); // Refresh USB devices only
       return;
@@ -314,6 +315,17 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     if (isInitializing) {
       console.log('🎹 MIDI initialization already in progress');
       return;
+    }
+    
+    if (hasInitializedRef.current) {
+      console.log('🎹 MIDI initialization was attempted before, checking if retry needed');
+      // Allow retry if there was an error
+      if (!error) {
+        await refreshDeviceList(false); // Refresh USB devices only
+        return;
+      }
+      // Clear the flag to allow retry on error
+      hasInitializedRef.current = false;
     }
     
     if (!isSupported) {
@@ -738,6 +750,11 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     messageListenersRef.current.delete(id);
     console.log(`🗑️ Unregistered MIDI message listener: ${id}`);
   }, []);
+  
+  // Clear error function for user cancellation
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
 
   return {
     devices,
@@ -746,6 +763,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     isInitialized,
     isInitializing,
     error,
+    clearError,
     connectDevice,
     connectBleDevice,
     disconnectDevice,

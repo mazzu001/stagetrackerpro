@@ -9,6 +9,7 @@ interface MidiContextType {
   isInitialized: boolean;
   isInitializing: boolean;
   error: string | null;
+  clearError: () => void;
   connectDevice: (deviceId: string) => Promise<boolean>;
   connectBleDevice: (deviceId: string) => Promise<boolean>;
   disconnectDevice: (deviceId: string) => Promise<boolean>;

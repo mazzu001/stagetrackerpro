@@ -39,6 +39,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     isInitialized,
     isInitializing,
     error,
+    clearError,
     connectDevice,
     disconnectDevice,
     sendMidiCommand,
@@ -237,6 +238,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   const handleMidiRetry = async () => {
     console.log('🔄 Retrying MIDI initialization...');
     setMidiLoadingError(null);
+    setHasInitializedOnce(false); // Reset to allow re-initialization
     try {
       await initializeMidi();
       setHasInitializedOnce(true);
@@ -253,7 +255,9 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   const handleMidiCancel = () => {
     console.log('❌ MIDI initialization cancelled by user');
     setMidiLoadingError(null);
-    // Don't close dialog, just hide the overlay
+    clearError(); // Clear the error from the hook
+    setHasInitializedOnce(true); // Mark as initialized to prevent re-init
+    // Don't close dialog, just hide the overlay and allow user to proceed
   };
 
   const handleTestCommand = () => {

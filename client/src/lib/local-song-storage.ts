@@ -162,6 +162,8 @@ export class LocalSongStorage {
   static async addMuteRegion(userEmail: string, songId: string, trackId: string, region: Omit<MuteRegion, 'id'>): Promise<MuteRegion | null> {
     console.log(`➕ LocalSongStorage.addMuteRegion: Adding region to track ${trackId}`, region);
     try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
       const newRegion = await LocalSongStorageDB.addMuteRegion(userEmail, songId, trackId, region);
       return newRegion;
     } catch (error) {
@@ -173,6 +175,8 @@ export class LocalSongStorage {
   static async updateMuteRegion(userEmail: string, songId: string, trackId: string, regionId: string, updates: Partial<MuteRegion>): Promise<MuteRegion | null> {
     console.log(`🔄 LocalSongStorage.updateMuteRegion: Updating region ${regionId} on track ${trackId}`);
     try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
       const updatedRegion = await LocalSongStorageDB.updateMuteRegion(userEmail, songId, trackId, regionId, updates);
       return updatedRegion;
     } catch (error) {
@@ -184,6 +188,8 @@ export class LocalSongStorage {
   static async deleteMuteRegion(userEmail: string, songId: string, trackId: string, regionId: string): Promise<boolean> {
     console.log(`🗑️ LocalSongStorage.deleteMuteRegion: Deleting region ${regionId} from track ${trackId}`);
     try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
       const success = await LocalSongStorageDB.deleteMuteRegion(userEmail, songId, trackId, regionId);
       return success;
     } catch (error) {
@@ -195,6 +201,8 @@ export class LocalSongStorage {
   static async getMuteRegions(userEmail: string, songId: string, trackId: string): Promise<MuteRegion[]> {
     console.log(`🔍 LocalSongStorage.getMuteRegions: Getting regions for track ${trackId}`);
     try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
       const regions = await LocalSongStorageDB.getMuteRegions(userEmail, songId, trackId);
       console.log(`✅ LocalSongStorage.getMuteRegions: Found ${regions.length} regions for track ${trackId}`);
       return regions;
@@ -207,6 +215,8 @@ export class LocalSongStorage {
   static async clearAllMuteRegions(userEmail: string, songId: string, trackId: string): Promise<boolean> {
     console.log(`🧹 LocalSongStorage.clearAllMuteRegions: Clearing all regions for track ${trackId}`);
     try {
+      // Import dynamically to avoid circular dependency
+      const { LocalSongStorageDB } = await import('./local-song-storage-db');
       const db = await LocalSongStorageDB.getDB(userEmail);
       const success = await db.deleteAllMuteRegions(trackId);
       console.log(`✅ LocalSongStorage.clearAllMuteRegions: All regions cleared for track ${trackId}`);

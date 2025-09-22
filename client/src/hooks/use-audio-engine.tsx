@@ -134,19 +134,26 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
           // Load tracks without blocking the UI
           audioEngineRef.current?.loadTracks(trackData);
           
-          // Load and apply mute regions for each track
-          if (audioEngineRef.current && userEmail && song) {
-            song.tracks.forEach(track => {
-              try {
-                const muteRegions = LocalSongStorage.getMuteRegions(userEmail, song.id, track.id);
-                if (muteRegions && muteRegions.length > 0) {
-                  audioEngineRef.current?.setTrackMuteRegions(track.id, muteRegions);
-                  console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
+          // Warm up tracks and apply mute regions immediately after loading
+          if (audioEngineRef.current && typeof (audioEngineRef.current as any).warmTracksAndApplyMuteRegions === 'function') {
+            console.log(`🔥 Warming up tracks and applying mute regions for "${song.title}"`);
+            await (audioEngineRef.current as any).warmTracksAndApplyMuteRegions();
+            console.log(`✅ Tracks warmed up and mute regions applied for "${song.title}"`);
+          } else {
+            // Fallback to old method if warm method doesn't exist
+            if (audioEngineRef.current && userEmail && song) {
+              await Promise.all(song.tracks.map(async track => {
+                try {
+                  const muteRegions = await LocalSongStorage.getMuteRegions(userEmail, song.id, track.id);
+                  if (muteRegions && muteRegions.length > 0) {
+                    audioEngineRef.current?.setTrackMuteRegions(track.id, muteRegions);
+                    console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
+                  }
+                } catch (error) {
+                  console.warn(`Failed to load mute regions for track ${track.name}:`, error);
                 }
-              } catch (error) {
-                console.warn(`Failed to load mute regions for track ${track.name}:`, error);
-              }
-            });
+              }));
+            }
           }
           
           // Auto-generate waveform in background (restored functionality from AudioEngine)

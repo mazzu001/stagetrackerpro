@@ -132,6 +132,10 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
       try {
         await streamingEngine.loadTracks(trackData as any);
         
+        // Warm up tracks and apply mute regions immediately (like Track Manager does)
+        await streamingEngine.warmTracksAndApplyMuteRegions();
+        console.log(`🔥 Tracks warmed up and mute regions applied for "${song.title}"`);
+        
         // Set up automatic waveform generation in background
         setTimeout(() => {
           streamingEngine.autoGenerateWaveform(song, song.userId || 'default@user.com').catch(error => {

@@ -336,7 +336,7 @@ export class StreamingAudioEngine {
       return;
     }
     
-    // Ensure all tracks have audio nodes
+    // Ensure all tracks have audio nodes FIRST
     this.state.tracks.forEach(track => this.ensureTrackAudioNodes(track));
     
     console.log(`▶️ Starting streaming playback: ${this.state.tracks.length} tracks`);
@@ -364,22 +364,13 @@ export class StreamingAudioEngine {
     this.state.isPlaying = true;
     this.startTimeTracking();
     
-    // Schedule mute regions AFTER ensuring all audio nodes exist
-    // Check if any tracks have mute regions before attempting to schedule
+    // Always reschedule mute regions when playing to ensure they're applied
+    // This handles cases where audio nodes were just created or playback position changed
     const tracksWithRegions = this.state.tracks.filter(t => t.muteRegions && t.muteRegions.length > 0);
     if (tracksWithRegions.length > 0) {
-      // Ensure gain nodes are created for tracks with mute regions
-      tracksWithRegions.forEach(track => {
-        if (!track.gainNode) {
-          console.warn(`⚠️ Gain node not ready for track ${track.name}, deferring mute region scheduling`);
-        }
-      });
-      
-      // Schedule with a slightly longer delay to ensure gain nodes are ready
-      setTimeout(() => {
-        this.scheduleAllMuteRegions(this.state.currentTime);
-        console.log(`🔇 Scheduling mute regions for playback at ${this.state.currentTime.toFixed(1)}s`);
-      }, 50); // Increased delay to match the delay used in loadTracks
+      console.log(`🔇 Re-scheduling mute regions for ${tracksWithRegions.length} tracks at playback time ${this.state.currentTime.toFixed(1)}s`);
+      // Immediately schedule since nodes are guaranteed to exist now
+      this.scheduleAllMuteRegions(this.state.currentTime);
     }
     
     this.notifyListeners();
@@ -585,6 +576,50 @@ export class StreamingAudioEngine {
     this.state.tracks.forEach(track => {
       this.scheduleTrackMuteRegions(track, currentTime);
     });
+  }
+
+  // Warm up tracks and apply mute regions immediately when song is loaded
+  async warmTracksAndApplyMuteRegions() {
+    console.log(`🔥 Warming up tracks and applying mute regions...`);
+    
+    // Ensure all tracks have audio nodes created
+    this.state.tracks.forEach(track => {
+      this.ensureTrackAudioNodes(track);
+    });
+    
+    // Load mute regions from storage for each track
+    if (this.userEmail && this.songId) {
+      for (const track of this.state.tracks) {
+        try {
+          // Import LocalSongStorage at runtime to avoid circular deps
+          const { LocalSongStorageDB } = await import('./local-song-storage-db');
+          const muteRegions = await LocalSongStorageDB.getMuteRegions(this.userEmail, this.songId, track.id);
+          
+          if (muteRegions && muteRegions.length > 0) {
+            // Attach mute regions to the track object
+            track.muteRegions = muteRegions;
+            console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
+          }
+        } catch (error) {
+          console.warn(`Failed to load mute regions for track ${track.name}:`, error);
+        }
+      }
+    }
+    
+    // Check if any tracks have mute regions to schedule
+    const tracksWithRegions = this.state.tracks.filter(t => t.muteRegions && t.muteRegions.length > 0);
+    if (tracksWithRegions.length > 0) {
+      console.log(`🔇 Found ${tracksWithRegions.length} tracks with mute regions to schedule`);
+      
+      // Give audio nodes time to fully initialize, then schedule mute regions
+      setTimeout(() => {
+        // Schedule mute regions from the beginning (time 0)
+        this.scheduleAllMuteRegions(0);
+        console.log(`✅ Mute regions scheduled for ${tracksWithRegions.length} tracks`);
+      }, 50);
+    } else {
+      console.log(`📌 No mute regions to schedule`);
+    }
   }
 
 

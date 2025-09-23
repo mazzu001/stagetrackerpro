@@ -1,6 +1,1 @@
-Mute Regions Fix In Progress (Sep 22, 6:15pm):
-✅ Fixed missing Web Audio nodes - gain nodes now properly created when tracks load
-✅ Added delayed scheduling after play() to ensure nodes exist before applying regions
-🔄 Testing improved logging to debug mute region application
-
-Previous Note: We are aware of a small glitch when you create a new song and add backing tracks the waveform doesnt appear until you select a different song and go back.
+Mute region bug fixed - mute regions now persist

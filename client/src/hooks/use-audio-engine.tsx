@@ -152,15 +152,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
           const trackDataResults = await Promise.all(trackDataPromises);
           const trackData = trackDataResults.filter(track => track !== null);
           
-          // Step 5: Send everything to the audio engine
+          // Step 5: Send everything to the audio engine (mute regions will be scheduled automatically)
           audioEngineRef.current?.loadTracks(trackData);
-          
-          // Warm up tracks and schedule mute regions
-          if (audioEngineRef.current && typeof (audioEngineRef.current as any).warmTracksAndApplyMuteRegions === 'function') {
-            console.log(`🔥 Warming up tracks and applying mute regions for "${song.title}"`);
-            await (audioEngineRef.current as any).warmTracksAndApplyMuteRegions();
-            console.log(`✅ Tracks warmed up and mute regions applied for "${song.title}"`);
-          }
           
           // Auto-generate waveform in background (restored functionality from AudioEngine)
           if (audioEngineRef.current && typeof (audioEngineRef.current as any).autoGenerateWaveform === 'function') {

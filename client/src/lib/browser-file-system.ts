@@ -102,6 +102,14 @@ export class BrowserFileSystem {
       return false;
     }
   }
+  
+  // Wait for initialization to complete
+  async waitForInitialization(): Promise<boolean> {
+    if (this.initializationPromise) {
+      return await this.initializationPromise;
+    }
+    return !!this.db;
+  }
 
   // Initialize IndexedDB for file storage
   async initialize(): Promise<boolean> {

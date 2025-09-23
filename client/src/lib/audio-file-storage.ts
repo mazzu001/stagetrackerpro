@@ -32,13 +32,34 @@ export class AudioFileStorage {
     
     if (!AudioFileStorage.instances.has(email)) {
       const instance = new AudioFileStorage(email);
-      // Start the async initialization but don't wait for it
-      instance.loadFromStorage().catch(error => {
-        console.error('Failed to load audio file storage:', error);
-      });
       AudioFileStorage.instances.set(email, instance);
+      // Don't auto-load here - let it be triggered explicitly when needed
     }
     return AudioFileStorage.instances.get(email)!;
+  }
+  
+  // Initialize the storage in proper sequence
+  async initializeSequential(): Promise<void> {
+    console.log('📦 Starting sequential AudioFileStorage initialization...');
+    
+    // Step 1: Ensure IndexedDB is initialized
+    if (!this.indexedDB) {
+      console.log('📦 Step 1: Initializing IndexedDB...');
+      await this.initializeIndexedDB();
+      console.log('✅ IndexedDB initialized');
+    }
+    
+    // Step 2: Load metadata from storage
+    console.log('📦 Step 2: Loading audio file metadata...');
+    await this.loadFromStorage();
+    console.log('✅ Audio file metadata loaded');
+    
+    // Step 3: Verify BrowserFS is ready
+    console.log('📦 Step 3: Verifying BrowserFS...');
+    await this.browserFS.waitForInitialization();
+    console.log('✅ BrowserFS ready');
+    
+    console.log('✅ AudioFileStorage fully initialized');
   }
 
   constructor(userEmail: string) {
@@ -51,10 +72,7 @@ export class AudioFileStorage {
     // Get per-user BrowserFileSystem instance
     this.browserFS = BrowserFileSystem.getInstance(userEmail);
     
-    // Initialize IndexedDB for this user (don't await here to avoid constructor blocking)
-    this.initializeIndexedDB().catch(error => {
-      console.error('Failed to initialize IndexedDB for AudioFileStorage:', error);
-    });
+    // Don't auto-initialize IndexedDB - let it be done sequentially
   }
   
   private async initializeIndexedDB(): Promise<void> {

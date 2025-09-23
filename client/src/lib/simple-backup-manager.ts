@@ -1,4 +1,6 @@
 import JSZip from 'jszip';
+import { BrowserFileSystem } from './browser-file-system';
+import { AudioFileStorage } from './audio-file-storage';
 
 export interface DatabaseBackup {
   version: string;
@@ -202,6 +204,25 @@ To restore: Use the Import feature in StageTracker Pro
           localStorage.setItem(key, value);
         }
         console.log(`📦 Restored ${Object.keys(backup.localStorage).length} localStorage items`);
+      }
+      
+      // Step: Initialize all storage systems sequentially
+      onProgress?.(90, "Initializing storage systems...");
+      console.log('🔄 Starting sequential storage initialization after import...');
+      
+      try {
+        // Initialize BrowserFileSystem
+        const browserFS = BrowserFileSystem.getInstance(userEmail);
+        await browserFS.waitForInitialization();
+        console.log('✅ BrowserFileSystem initialized after import');
+        
+        // Initialize AudioFileStorage sequentially
+        const audioStorage = AudioFileStorage.getInstance(userEmail);
+        await audioStorage.initializeSequential();
+        console.log('✅ AudioFileStorage initialized after import');
+      } catch (initError) {
+        console.error('Warning: Storage initialization error after import:', initError);
+        // Continue anyway - the page refresh should fix it
       }
       
       onProgress?.(95, "Finalizing import...");

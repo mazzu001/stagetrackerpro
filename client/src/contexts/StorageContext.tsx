@@ -58,7 +58,7 @@ export function StorageProvider({ children, userEmail }: StorageProviderProps) {
         const dbExists = await fs.isAlreadyInitialized();
         console.log(`📊 Database exists for ${email}: ${dbExists}`);
         
-        // Step 3: Initialize (load existing or create new)
+        // Step 3: Initialize (load existing or create new) - SEQUENTIAL
         if (dbExists) {
           console.log(`📂 Loading existing database for ${email}`);
         } else {
@@ -73,9 +73,14 @@ export function StorageProvider({ children, userEmail }: StorageProviderProps) {
         // Step 4: Get storage instances (they share the same user context)
         const audio = AudioFileStorage.getInstance(email);
         
-        // Step 5: LocalSongStorage is a static class that uses userEmail directly
+        // Step 5: Initialize AudioFileStorage sequentially
+        console.log('📦 Initializing AudioFileStorage sequentially...');
+        await audio.initializeSequential();
+        console.log('✅ AudioFileStorage initialized');
         
-        // Step 6: Update state
+        // Step 6: LocalSongStorage is a static class that uses userEmail directly
+        
+        // Step 7: Update state
         setBrowserFS(fs);
         setAudioStorage(audio);
         setIsInitialized(true);

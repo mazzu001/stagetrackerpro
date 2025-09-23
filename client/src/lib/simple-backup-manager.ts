@@ -274,10 +274,19 @@ To restore: Use the Import feature in StageTracker Pro
         if (storeName === 'audioFiles') {
           const processedData = await Promise.all(data.map(async (item) => {
             if (item.fileData instanceof ArrayBuffer) {
-              // Convert ArrayBuffer to base64 string for JSON serialization
-              const uint8Array = new Uint8Array(item.fileData);
-              const binary = String.fromCharCode.apply(null, Array.from(uint8Array));
-              const base64 = btoa(binary);
+              // Convert ArrayBuffer to base64 using Blob and FileReader
+              // This avoids stack overflow issues with large files
+              const blob = new Blob([item.fileData]);
+              const base64 = await new Promise<string>((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  // Extract just the base64 part (remove data:application/octet-stream;base64, prefix)
+                  const result = reader.result as string;
+                  const base64Data = result.split(',')[1];
+                  resolve(base64Data);
+                };
+                reader.readAsDataURL(blob);
+              });
               
               return {
                 ...item,

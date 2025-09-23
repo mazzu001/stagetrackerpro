@@ -39,6 +39,7 @@ export class StreamingAudioEngine {
   private durationTimeouts: number[] = [];
   private onSongEndCallback: (() => void) | null = null;
   private scheduledGainChanges: Map<string, number[]> = new Map(); // Track scheduled gain automation IDs
+  private songContext: { userEmail: string; songId: string } | null = null;
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -52,6 +53,12 @@ export class StreamingAudioEngine {
       masterOutputNode: null,
     };
     this.setupMasterOutput();
+  }
+
+  // Set the song context for the audio engine
+  setSongContext(userEmail: string, songId: string) {
+    this.songContext = { userEmail, songId };
+    console.log(`🎵 Song context set - User: ${userEmail}, Song: ${songId}`);
   }
 
   // Tone.js initialization removed

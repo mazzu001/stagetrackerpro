@@ -3,6 +3,7 @@ import { StreamingAudioEngine } from "@/lib/streaming-audio-engine";
 import type { SongWithTracks } from "@shared/schema";
 import { AudioFileStorage } from "@/lib/audio-file-storage";
 import { LocalSongStorage } from "@/lib/local-song-storage";
+import { useStorage } from "@/contexts/StorageContext";
 interface UseAudioEngineProps {
   song?: SongWithTracks;
   onDurationUpdated?: (songId: string, duration: number) => void;
@@ -100,10 +101,19 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     };
   }, [stop]);
 
-  // Set up song and load tracks for streaming playback
+  // Get storage context to know when it's initialized
+  const { isInitialized: storageInitialized, audioStorage: storageAudioStorage, userEmail: storageUserEmail } = useStorage();
+
+  // Set up song and load tracks for streaming playback - EVENT DRIVEN
   useEffect(() => {
+    // Wait for storage to be fully initialized before loading tracks
+    if (!storageInitialized) {
+      console.log('⏳ Waiting for storage system to initialize before loading tracks...');
+      return;
+    }
+
     if (song && audioEngineRef.current) {
-      console.log(`Song selected: "${song.title}" with ${song.tracks.length} tracks - loading for streaming`);
+      console.log(`✅ Storage initialized! Loading song: "${song.title}" with ${song.tracks.length} tracks`);
       
       // Use existing duration from database
       setDuration(song.duration);
@@ -116,22 +126,28 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       // Convert song tracks to track data format and setup streaming
       const setupStreamingAsync = async () => {
         try {
-          if (!userEmail) {
+          // Use userEmail from storage context or props
+          const finalUserEmail = userEmail || storageUserEmail || 'default@user.com';
+          
+          if (!finalUserEmail || finalUserEmail === 'default@user.com') {
             console.warn('No userEmail available - mute regions will not be loaded');
           }
           
-          const audioStorage = AudioFileStorage.getInstance(userEmail || 'default@user.com');
+          // Step 1: Set song context in the audio engine
+          audioEngineRef.current?.setSongContext(finalUserEmail, song.id);
           
-          // Step 1 & 2: Load all tracks with their audio URLs
-          // Step 3: Load mute regions for each track
+          // Use the storage from context which is guaranteed to be initialized
+          const audioStorage = storageAudioStorage || AudioFileStorage.getInstance(finalUserEmail);
+          
+          // Step 2 & 3: Load all tracks with their audio URLs and mute regions
           const trackDataPromises = song.tracks.map(async (track) => {
             const audioUrl = await audioStorage.getAudioUrl(track.id);
             
             // Get mute regions for this track
             let muteRegions: any[] = [];
-            if (userEmail) {
+            if (finalUserEmail && finalUserEmail !== 'default@user.com') {
               try {
-                const regions = await LocalSongStorage.getMuteRegions(userEmail, song.id, track.id);
+                const regions = await LocalSongStorage.getMuteRegions(finalUserEmail, song.id, track.id);
                 if (regions && regions.length > 0) {
                   muteRegions = regions;
                   console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
@@ -152,12 +168,17 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
           const trackDataResults = await Promise.all(trackDataPromises);
           const trackData = trackDataResults.filter(track => track !== null);
           
-          // Step 5: Send everything to the audio engine (mute regions will be scheduled automatically)
+          if (trackData.length === 0) {
+            console.error(`❌ No audio URLs found for "${song.title}" - check if audio files exist in IndexedDB`);
+            return;
+          }
+          
+          // Step 4: Send everything to the audio engine (mute regions will be scheduled automatically)
           audioEngineRef.current?.loadTracks(trackData);
           
           // Auto-generate waveform in background (restored functionality from AudioEngine)
           if (audioEngineRef.current && typeof (audioEngineRef.current as any).autoGenerateWaveform === 'function') {
-            (audioEngineRef.current as any).autoGenerateWaveform(song, userEmail);
+            (audioEngineRef.current as any).autoGenerateWaveform(song, finalUserEmail);
           }
           
           console.log(`✅ Streaming ready for "${song.title}" - instant playback available`);
@@ -169,7 +190,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       // Run setup in background without blocking UI
       setupStreamingAsync();
     }
-  }, [song?.id, song?.tracks?.length, userEmail]);
+  }, [storageInitialized, song?.id, song?.tracks?.length, userEmail, storageUserEmail, storageAudioStorage]);
 
   // Animation loop for real-time updates
 

@@ -1,0 +1,1235 @@
+/_next/data/eSo0_QjG8kMA8X6AXyHhg/index.json:1   Failed to load resource: the server responded with a status of 404 ()
+/_next/data/eSo0_QjG8kMA8X6AXyHhg/index.json:1   Failed to load resource: the server responded with a status of 404 ()
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'battery'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ framework-8390ee4c216a2f37.js:1
+uD @ framework-8390ee4c216a2f37.js:1
+uI @ framework-8390ee4c216a2f37.js:1
+uM @ framework-8390ee4c216a2f37.js:1
+uS @ framework-8390ee4c216a2f37.js:1
+C @ framework-8390ee4c216a2f37.js:1
+z @ framework-8390ee4c216a2f37.js:1
+(anonymous) @ commons.59560ac….js.gz:1
+y @ commons.59560ac….js.gz:1
+c @ commons.59560ac….js.gz:1
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-8390ee4c216a2f37.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:1  Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2au%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ 🔍 Retrieved 0 mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 Retrieved 0 mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 Retrieved 0 mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 Retrieved 0 mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 Retrieved 0 mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 Retrieved 0 mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 📋 Loaded 4 songs from IndexedDB (alphabetically sorted)
+ 🔍 Debug values: [object Object]
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ 🔍 Retrieved 0 mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 Retrieved 0 mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 Retrieved 0 mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 Retrieved 0 mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 Retrieved 0 mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 Retrieved 0 mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🎵 Loading song: 3 AM
+ 📡 Not uploading to database: [object Object]
+ Loading cached waveform for "3 AM" (400 data points)
+ Song selected: "3 AM" with 6 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🔍 Requesting audio URL for track: 388c0685-a74b-4ce8-affb-2ad348471e24
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 Requesting audio URL for track: 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 Requesting audio URL for track: ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 Requesting audio URL for track: be729184-0d3e-4e4c-8196-829ddd1782bf
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 Requesting audio URL for track: deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 Requesting audio URL for track: ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ ✅ Database initialization completed for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 💾 Not in memory cache, checking IndexedDB for 388c0685-a74b-4ce8-affb-2ad348471e24
+ ✅ Database initialization completed for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 💾 Not in memory cache, checking IndexedDB for 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ ✅ Database initialization completed for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 💾 Not in memory cache, checking IndexedDB for ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ ✅ Database initialization completed for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 💾 Not in memory cache, checking IndexedDB for be729184-0d3e-4e4c-8196-829ddd1782bf
+ ✅ Database initialization completed for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 💾 Not in memory cache, checking IndexedDB for deb15d6d-d6de-44be-95e3-0451c7d488c2
+ ✅ Database initialization completed for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 💾 Not in memory cache, checking IndexedDB for ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ ✅ Found in IndexedDB: 388c0685-a74b-4ce8-affb-2ad348471e24 (3AM - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ ✅ Found in IndexedDB: 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7 (3AM - Organ.mp3)
+ ✅ Got audio URL from browser storage for track: 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ ✅ Found in IndexedDB: ad10030e-a4d9-4ff3-a2a7-7322077fd5ee (3AM - Bass.mp3)
+ ✅ Got audio URL from browser storage for track: ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ ✅ Found in IndexedDB: be729184-0d3e-4e4c-8196-829ddd1782bf (3AM - Click.mp3)
+ ✅ Got audio URL from browser storage for track: be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ ✅ Found in IndexedDB: deb15d6d-d6de-44be-95e3-0451c7d488c2 (3AM - Guitars.mp3)
+ ✅ Got audio URL from browser storage for track: deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ ✅ Found in IndexedDB: ee8ac1c2-b6aa-4c86-884b-8a104fa25884 (3AM - Backups.mp3)
+ ✅ Got audio URL from browser storage for track: ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🔍 Retrieved 0 mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 Retrieved 0 mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 Retrieved 0 mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 Retrieved 0 mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 Retrieved 0 mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 Retrieved 0 mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🚀 Streaming load: 6 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 6 tracks ready
+ ✅ Streaming ready for "3 AM" - instant playback available
+ ✅ Streaming ready: 6 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created for: 3AM - Drums
+ 🔧 Audio nodes created for: 3AM - Organ
+ 🔧 Audio nodes created for: 3AM - Bass
+ 🔧 Audio nodes created for: 3AM - Click
+ 🔧 Audio nodes created for: 3AM - Guitars
+ 🔧 Audio nodes created for: 3AM - Backups
+ 🔄 Loading started for 3AM - Drums
+ 🔄 Loading started for 3AM - Organ
+ 🔄 Loading started for 3AM - Bass
+ 🔄 Loading started for 3AM - Click
+ 🔄 Loading started for 3AM - Guitars
+ 🔄 Loading started for 3AM - Backups
+  ⚠️ Audio error for 3AM - Drums: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Bass: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Organ: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Guitars: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Click: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Backups: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Retrieved 0 mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ ✅ Deleted all mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 Retrieved 0 mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ ✅ Deleted all mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 Retrieved 0 mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ ✅ Deleted all mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 Retrieved 0 mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ ✅ Deleted all mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 Retrieved 0 mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ ✅ Deleted all mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 Retrieved 0 mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ ✅ Deleted all mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ ✅ Deleted audio files for song 434be105-9cde-42a9-8d78-7d85bc42bf7a
+ ✅ Song deleted: 434be105-9cde-42a9-8d78-7d85bc42bf7a
+ 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🔍 Debug values: [object Object]
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ 🔍 Debug values: [object Object]
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🎵 Loading song: Already Gone
+ 📡 Not uploading to database: [object Object]
+ Loading cached waveform for "Already Gone" (400 data points)
+ Song selected: "Already Gone" with 5 tracks - loading for streaming
+ Setting up streaming for: "Already Gone" - UI stays responsive
+ 🔍 Requesting audio URL for track: 412f43bc-7d41-4308-aa9d-37edc3402937
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Requesting audio URL for track: 5ad990b4-9446-4ee5-b432-add104c21af8
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Requesting audio URL for track: 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Requesting audio URL for track: b132c134-4151-4820-8e99-149d20852d8e
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track b132c134-4151-4820-8e99-149d20852d8e
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 Requesting audio URL for track: b405c299-5aea-4a03-93e4-d8121b041df7
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ ✅ Database initialization completed for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 💾 Not in memory cache, checking IndexedDB for 412f43bc-7d41-4308-aa9d-37edc3402937
+ ✅ Database initialization completed for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 💾 Not in memory cache, checking IndexedDB for 5ad990b4-9446-4ee5-b432-add104c21af8
+ ✅ Database initialization completed for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 💾 Not in memory cache, checking IndexedDB for 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ ✅ Database initialization completed for track b132c134-4151-4820-8e99-149d20852d8e
+ 💾 Not in memory cache, checking IndexedDB for b132c134-4151-4820-8e99-149d20852d8e
+ ✅ Database initialization completed for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 💾 Not in memory cache, checking IndexedDB for b405c299-5aea-4a03-93e4-d8121b041df7
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ ✅ Found in IndexedDB: 412f43bc-7d41-4308-aa9d-37edc3402937 (Already Gone - Guitars.mp3)
+ ✅ Got audio URL from browser storage for track: 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ ✅ Found in IndexedDB: 5ad990b4-9446-4ee5-b432-add104c21af8 (Already Gone - Backups.mp3)
+ ✅ Got audio URL from browser storage for track: 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ ✅ Found in IndexedDB: 89021307-e59e-4fc0-b1a6-0d91cede6eb9 (Already Gone - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ ✅ Found in IndexedDB: b132c134-4151-4820-8e99-149d20852d8e (Already Gone - Click.mp3)
+ ✅ Got audio URL from browser storage for track: b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track b132c134-4151-4820-8e99-149d20852d8e
+ ✅ Found in IndexedDB: b405c299-5aea-4a03-93e4-d8121b041df7 (Already Gone - Bass.mp3)
+ ✅ Got audio URL from browser storage for track: b405c299-5aea-4a03-93e4-d8121b041df7
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+ ✅ LocalSongStorage.getMuteRegions: Found 1 regions for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔇 Loaded 1 mute regions for track: Already Gone - Click
+ 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🚀 Streaming load: 5 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 5 tracks ready
+ ✅ Streaming ready for "Already Gone" - instant playback available
+ 🔇 Loaded tracks with mute regions: Already Gone - Click (1 regions)
+ 🔧 Audio nodes created for: Already Gone - Click
+ ✅ Streaming ready: 5 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created for: Already Gone - Guitars
+ 🔧 Audio nodes created for: Already Gone - Backups
+ 🔧 Audio nodes created for: Already Gone - Drums
+ 🔧 Audio nodes created for: Already Gone - Bass
+ 🔄 Loading started for Already Gone - Click
+ 🔄 Loading started for Already Gone - Guitars
+ 🔄 Loading started for Already Gone - Backups
+ 🔄 Loading started for Already Gone - Drums
+ 🔄 Loading started for Already Gone - Bass
+  ⚠️ Audio error for Already Gone - Click: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Already Gone - Guitars: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Already Gone - Backups: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Already Gone - Drums: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Already Gone - Bass: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔇 Scheduling 1 mute regions for track: Already Gone - Click
+   📍 Currently IN mute region (0.0s-3.6s), muting immediately
+   📍 Scheduled mute END at 3.6s
+ ✅ Scheduled 2 mute automation events for track: Already Gone - Click from position 0.0s
+ ✅ Mute regions scheduled for 1 tracks from start
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ ✅ Deleted all mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ ✅ Deleted all mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ ✅ Deleted all mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+ 🗑️ Mute region deleted: 27876e56-6667-4a56-9ad5-a2b135c60c2f
+ ✅ Deleted all mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ ✅ Deleted all mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ ✅ Deleted audio files for song 37247577-628a-48d8-9570-1584989f89de
+ ✅ Song deleted: 37247577-628a-48d8-9570-1584989f89de
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🔍 Debug values: [object Object]
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ 🔍 Debug values: [object Object]
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🎵 Loading song: ddd
+ 📡 Not uploading to database: [object Object]
+ Loading cached waveform for "ddd" (400 data points)
+ Song selected: "ddd" with 4 tracks - loading for streaming
+ Setting up streaming for: "ddd" - UI stays responsive
+ 🔍 Requesting audio URL for track: 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884, 412f43bc-7d41-4308-aa9d-37edc3402937, 5ad990b4-9446-4ee5-b432-add104c21af8, 89021307-e59e-4fc0-b1a6-0d91cede6eb9, b132c134-4151-4820-8e99-149d20852d8e, b405c299-5aea-4a03-93e4-d8121b041df7]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Requesting audio URL for track: 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884, 412f43bc-7d41-4308-aa9d-37edc3402937, 5ad990b4-9446-4ee5-b432-add104c21af8, 89021307-e59e-4fc0-b1a6-0d91cede6eb9, b132c134-4151-4820-8e99-149d20852d8e, b405c299-5aea-4a03-93e4-d8121b041df7]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Requesting audio URL for track: 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884, 412f43bc-7d41-4308-aa9d-37edc3402937, 5ad990b4-9446-4ee5-b432-add104c21af8, 89021307-e59e-4fc0-b1a6-0d91cede6eb9, b132c134-4151-4820-8e99-149d20852d8e, b405c299-5aea-4a03-93e4-d8121b041df7]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Requesting audio URL for track: 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884, 412f43bc-7d41-4308-aa9d-37edc3402937, 5ad990b4-9446-4ee5-b432-add104c21af8, 89021307-e59e-4fc0-b1a6-0d91cede6eb9, b132c134-4151-4820-8e99-149d20852d8e, b405c299-5aea-4a03-93e4-d8121b041df7]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ ✅ Database initialization completed for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 💾 Not in memory cache, checking IndexedDB for 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ ✅ Database initialization completed for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 💾 Not in memory cache, checking IndexedDB for 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ ✅ Database initialization completed for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 💾 Not in memory cache, checking IndexedDB for 88062b58-1af6-46d3-bb44-0a2c114d408a
+ ✅ Database initialization completed for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 💾 Not in memory cache, checking IndexedDB for 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ ✅ Found in IndexedDB: 36d4d647-e4db-4ca6-bbe9-28053a9bceb8 (Cherry Bomb - 0004 - Audio - Keys.mp3)
+ ✅ Got audio URL from browser storage for track: 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ ✅ Found in IndexedDB: 42e542a5-3f3e-47dc-9922-ab0d1e713bcd (Cherry Bomb - 0003 - Audio - Bass.mp3)
+ ✅ Got audio URL from browser storage for track: 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ ✅ Found in IndexedDB: 88062b58-1af6-46d3-bb44-0a2c114d408a (Cherry Bomb - 0005 - Audio - Backups.mp3)
+ ✅ Got audio URL from browser storage for track: 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ ✅ Found in IndexedDB: 9a5c9277-f42a-4c11-8f57-d7451de13ae0 (Cherry Bomb - 0002 - Audio - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🚀 Streaming load: 4 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 4 tracks ready
+ ✅ Streaming ready for "ddd" - instant playback available
+ ✅ Streaming ready: 4 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created for: Cherry Bomb - 0004 - Audio - Keys
+ 🔧 Audio nodes created for: Cherry Bomb - 0003 - Audio - Bass
+ 🔧 Audio nodes created for: Cherry Bomb - 0005 - Audio - Backups
+ 🔧 Audio nodes created for: Cherry Bomb - 0002 - Audio - Drums
+ 🔄 Loading started for Cherry Bomb - 0004 - Audio - Keys
+ 🔄 Loading started for Cherry Bomb - 0003 - Audio - Bass
+ 🔄 Loading started for Cherry Bomb - 0005 - Audio - Backups
+ 🔄 Loading started for Cherry Bomb - 0002 - Audio - Drums
+  ⚠️ Audio error for Cherry Bomb - 0004 - Audio - Keys: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Cherry Bomb - 0003 - Audio - Bass: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Cherry Bomb - 0005 - Audio - Backups: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Cherry Bomb - 0002 - Audio - Drums: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ ✅ Deleted all mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ ✅ Deleted all mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ ✅ Deleted all mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ ✅ Deleted all mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ ✅ Deleted audio files for song 9e562861-ffed-4c43-821a-cf11d9260bc6
+ ✅ Song deleted: 9e562861-ffed-4c43-821a-cf11d9260bc6
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🔍 Debug values: [object Object]
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ 🔍 Debug values: [object Object]
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🎵 Loading song: test
+ 📡 Not uploading to database: [object Object]
+ Loading cached waveform for "test" (400 data points)
+ Song selected: "test" with 5 tracks - loading for streaming
+ Setting up streaming for: "test" - UI stays responsive
+ 🔍 Requesting audio URL for track: 02917286-014c-42c9-9cc9-b513f7b8d651
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884, 412f43bc-7d41-4308-aa9d-37edc3402937, 5ad990b4-9446-4ee5-b432-add104c21af8, 89021307-e59e-4fc0-b1a6-0d91cede6eb9, b132c134-4151-4820-8e99-149d20852d8e, b405c299-5aea-4a03-93e4-d8121b041df7, 36d4d647-e4db-4ca6-bbe9-28053a9bceb8, 42e542a5-3f3e-47dc-9922-ab0d1e713bcd, 88062b58-1af6-46d3-bb44-0a2c114d408a, 9a5c9277-f42a-4c11-8f57-d7451de13ae0]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Requesting audio URL for track: 1e824ed8-76f2-4cda-abec-6cead5814821
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884, 412f43bc-7d41-4308-aa9d-37edc3402937, 5ad990b4-9446-4ee5-b432-add104c21af8, 89021307-e59e-4fc0-b1a6-0d91cede6eb9, b132c134-4151-4820-8e99-149d20852d8e, b405c299-5aea-4a03-93e4-d8121b041df7, 36d4d647-e4db-4ca6-bbe9-28053a9bceb8, 42e542a5-3f3e-47dc-9922-ab0d1e713bcd, 88062b58-1af6-46d3-bb44-0a2c114d408a, 9a5c9277-f42a-4c11-8f57-d7451de13ae0]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Requesting audio URL for track: 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884, 412f43bc-7d41-4308-aa9d-37edc3402937, 5ad990b4-9446-4ee5-b432-add104c21af8, 89021307-e59e-4fc0-b1a6-0d91cede6eb9, b132c134-4151-4820-8e99-149d20852d8e, b405c299-5aea-4a03-93e4-d8121b041df7, 36d4d647-e4db-4ca6-bbe9-28053a9bceb8, 42e542a5-3f3e-47dc-9922-ab0d1e713bcd, 88062b58-1af6-46d3-bb44-0a2c114d408a, 9a5c9277-f42a-4c11-8f57-d7451de13ae0]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Requesting audio URL for track: 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884, 412f43bc-7d41-4308-aa9d-37edc3402937, 5ad990b4-9446-4ee5-b432-add104c21af8, 89021307-e59e-4fc0-b1a6-0d91cede6eb9, b132c134-4151-4820-8e99-149d20852d8e, b405c299-5aea-4a03-93e4-d8121b041df7, 36d4d647-e4db-4ca6-bbe9-28053a9bceb8, 42e542a5-3f3e-47dc-9922-ab0d1e713bcd, 88062b58-1af6-46d3-bb44-0a2c114d408a, 9a5c9277-f42a-4c11-8f57-d7451de13ae0]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Requesting audio URL for track: f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 📂 Available audio files (78): 02917286-014c-42c9-9cc9-b513f7b8d651,0362ae03-ce0e-4d8c-a184-d5fc7486f064,0369d37e-e5d8-4d6f-a445-d82f11a8c800,0464ac76-0ee0-4cae-be1d-570cb89fc371,04d84fc3-8075-4630-aa61-b135a62cfed9,0cd4c371-86c0-41b2-876e-8620dc851ef4,0fcf55e0-4697-4506-87ce-86d38197d483,11e17d07-f353-4bb6-8b3c-21c0b07f8d37,1313b1b9-f3ac-486f-b32f-313796d97adf,13625c6e-e70a-4f5a-8fd9-2f366de9a6c6,137d39b4-0160-473a-85b8-bf57f5323ad7,1926f683-2033-4d1e-8893-f73cd26f1e85,19fd44af-4d48-4196-843a-8c8800b5074b,1e824ed8-76f2-4cda-abec-6cead5814821,1eb6bf2e-40c0-4741-b22c-b9f4a6926074,1fe00948-8aa7-4902-9f85-ec9f01bc86f8,26985721-cfb6-4a0e-ae1d-96c4ec6741de,2c7b6e5b-facf-4ddb-af00-39b26b81deb0,2e013b9e-c650-472b-8a06-738758f04514,2ef63a14-8e6b-450e-95cd-d2521e9bab50,33e6bb13-5b11-454e-af6e-6f8236aa2ec0,352a93af-e9fb-4aaf-8449-e36889587d0b,36d4d647-e4db-4ca6-bbe9-28053a9bceb8,384148ab-3d18-4fa1-94ed-d08cd0bd5279,388c0685-a74b-4ce8-affb-2ad348471e24,3bab190a-9cd3-4d73-9f92-b5364147cf96,412f43bc-7d41-4308-aa9d-37edc3402937,4295a8cf-7b46-44fa-9d9d-03146560edc3,42e542a5-3f3e-47dc-9922-ab0d1e713bcd,4abbcb75-02ee-4e62-ac46-596a10c0b295,4c8eea44-6e40-44d3-9c9d-922ad6fd0580,4d26ea9e-a768-47c9-8c66-78b3600f3b28,4ea11c27-0a51-4f0c-b0a1-b0370dd664e0,558a287e-38b3-481c-a410-a468dd3b0560,5ad990b4-9446-4ee5-b432-add104c21af8,5d99af43-82e3-451a-b469-85786ecd6237,698bb279-f884-47af-bc6c-3f6ab8fe3a9b,6d257a6f-100f-46c9-94c7-28777d856781,6ebf7c23-6432-48d4-87fc-17017c807038,77cdf041-de0c-413a-a5d0-79bb5981e462,78cafa1f-673b-4cd1-902a-535ce0d05581,78d707a9-b1f4-43d4-ab7e-fca507f7fb97,7a7ae566-e98a-4478-b89f-0ab9a2f3b5df,7d49722b-e505-4290-94d4-55301d34d36b,7f864e2e-b8eb-4b17-8c71-6240c3c71e6e,88062b58-1af6-46d3-bb44-0a2c114d408a,89021307-e59e-4fc0-b1a6-0d91cede6eb9,9031ee8d-3c0d-48a6-a124-3a5f0c7506c7,91901a5a-dcd0-460d-8b73-7eae9668ed87,91ab69af-6423-4ca7-8eec-e83e521e38d9,9a5c9277-f42a-4c11-8f57-d7451de13ae0,a2fe726f-8722-429f-ae25-970d0416f90e,a3aa992b-815f-45fe-ae3c-00cf77a20333,a79ee680-f0fc-42c1-878f-2b4642a3abe8,ab1b80c5-34aa-4d40-a8c8-6606813b187e,abef6844-90d7-49b3-8a77-001d1c62a58c,ac44de2d-ad42-4ba5-98e2-467e1b24309f,ad10030e-a4d9-4ff3-a2a7-7322077fd5ee,ad11dfe8-2ecd-4247-82c1-91ca4baa156e,b132c134-4151-4820-8e99-149d20852d8e,b2520a16-25ce-48a0-8794-94ab11195d9f,b405c299-5aea-4a03-93e4-d8121b041df7,b8a1eeea-60c4-42f0-9133-57c0e9b5df3b,be729184-0d3e-4e4c-8196-829ddd1782bf,c29a94ea-5d4c-42de-83af-76ff1b1ef5a8,c642dad7-a21c-4cd9-b017-39983ba6a481,d6180dba-78be-44eb-8d0f-80772930df77,deb15d6d-d6de-44be-95e3-0451c7d488c2,e4739a9d-8fdc-402e-bc9b-8dabd0324b46,e4fb9ccf-225b-4ae6-a1d2-9b3ecdb60ce9,e5467881-db82-47ca-9a4d-2eebb2c8d92d,e5ea76e6-2a8c-45f9-bca5-09d483b96425,ee8ac1c2-b6aa-4c86-884b-8a104fa25884,f0356a01-c431-4ca7-803f-22a5b537619d,f68727cc-cb9a-4852-a7f8-18c7786f455d,f8fb066c-da1d-49bb-b33e-e672a3a2bc7e,fe61285e-6810-4fd5-875c-39c3e9d35ec5,ff8de720-d42e-4b59-8095-9c14b143b986
+ 💾 Memory cache files (0): 
+ 🔍 BrowserFS.getAudioFile: Looking for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884, 412f43bc-7d41-4308-aa9d-37edc3402937, 5ad990b4-9446-4ee5-b432-add104c21af8, 89021307-e59e-4fc0-b1a6-0d91cede6eb9, b132c134-4151-4820-8e99-149d20852d8e, b405c299-5aea-4a03-93e4-d8121b041df7, 36d4d647-e4db-4ca6-bbe9-28053a9bceb8, 42e542a5-3f3e-47dc-9922-ab0d1e713bcd, 88062b58-1af6-46d3-bb44-0a2c114d408a, 9a5c9277-f42a-4c11-8f57-d7451de13ae0]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ ✅ Database initialization completed for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 💾 Not in memory cache, checking IndexedDB for 02917286-014c-42c9-9cc9-b513f7b8d651
+ ✅ Database initialization completed for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 💾 Not in memory cache, checking IndexedDB for 1e824ed8-76f2-4cda-abec-6cead5814821
+ ✅ Database initialization completed for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 💾 Not in memory cache, checking IndexedDB for 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ ✅ Database initialization completed for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 💾 Not in memory cache, checking IndexedDB for 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ ✅ Database initialization completed for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 💾 Not in memory cache, checking IndexedDB for f68727cc-cb9a-4852-a7f8-18c7786f455d
+ ✅ Found in IndexedDB: 02917286-014c-42c9-9cc9-b513f7b8d651 (Cherry Bomb - 0004 - Audio - Keys.mp3)
+ ✅ Got audio URL from browser storage for track: 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ ✅ Found in IndexedDB: 1e824ed8-76f2-4cda-abec-6cead5814821 (Cherry Bomb - 0001 - Audio - Click.mp3)
+ ✅ Got audio URL from browser storage for track: 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ ✅ Found in IndexedDB: 2c7b6e5b-facf-4ddb-af00-39b26b81deb0 (Cherry Bomb - 0003 - Audio - Bass.mp3)
+ ✅ Got audio URL from browser storage for track: 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ ✅ Found in IndexedDB: 4d26ea9e-a768-47c9-8c66-78b3600f3b28 (Cherry Bomb - 0005 - Audio - Backups.mp3)
+ ✅ Got audio URL from browser storage for track: 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ ✅ Found in IndexedDB: f68727cc-cb9a-4852-a7f8-18c7786f455d (Cherry Bomb - 0002 - Audio - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🚀 Streaming load: 5 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 5 tracks ready
+ ✅ Streaming ready for "test" - instant playback available
+ ✅ Streaming ready: 5 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created for: Cherry Bomb - 0004 - Audio - Keys
+ 🔧 Audio nodes created for: Cherry Bomb - 0001 - Audio - Click
+ 🔧 Audio nodes created for: Cherry Bomb - 0003 - Audio - Bass
+ 🔧 Audio nodes created for: Cherry Bomb - 0005 - Audio - Backups
+ 🔧 Audio nodes created for: Cherry Bomb - 0002 - Audio - Drums
+ 🔄 Loading started for Cherry Bomb - 0004 - Audio - Keys
+ 🔄 Loading started for Cherry Bomb - 0001 - Audio - Click
+ 🔄 Loading started for Cherry Bomb - 0003 - Audio - Bass
+ 🔄 Loading started for Cherry Bomb - 0005 - Audio - Backups
+ 🔄 Loading started for Cherry Bomb - 0002 - Audio - Drums
+  ⚠️ Audio error for Cherry Bomb - 0004 - Audio - Keys: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Cherry Bomb - 0001 - Audio - Click: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Cherry Bomb - 0003 - Audio - Bass: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Cherry Bomb - 0005 - Audio - Backups: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for Cherry Bomb - 0002 - Audio - Drums: error [object Event]
+Mt.forEach.n.<computed> @ eruda.js:2
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ ✅ Deleted all mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ ✅ Deleted all mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ ✅ Deleted all mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ ✅ Deleted all mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ ✅ Deleted all mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ ✅ Deleted audio files for song 11467a2f-4b8b-4931-9574-c09500d6982e
+ ✅ Song deleted: 11467a2f-4b8b-4931-9574-c09500d6982e
+ 🔍 Debug values: [object Object]
+ 🎭 Broadcast host effect: [object Object]
+ 🎭 Not broadcasting - not host
+ 📥 Starting database import for user: mazzu001@hotmail.com
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ 📋 Importing backup from 2025-09-23T00:24:56.029Z
+ ✅ Restored 78 items to audioFiles
+ ✅ Restored 1 items to muteRegions
+ ✅ Restored 4 items to songs
+ ✅ Restored 20 items to tracks
+ ✅ Restored 78 items to audioFiles
+ ✅ Restored 0 items to config
+ 📦 Restored 1 localStorage items
+ 🔄 Starting sequential storage initialization after import...
+ ✅ BrowserFileSystem initialized after import
+ 📦 Starting sequential AudioFileStorage initialization...
+ 📦 Step 2: Loading audio file metadata...
+ Loaded 78 audio file references from IndexedDB for user: mazzu001@hotmail.com
+ ✅ Audio file metadata loaded
+ 📦 Step 3: Verifying BrowserFS...
+ ✅ BrowserFS ready
+ ✅ AudioFileStorage fully initialized
+ ✅ AudioFileStorage initialized after import
+ ✅ Database import complete
+ 🔵 Android BLE-MIDI adapter initialized
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+ 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+ 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+ [MAIN.TSX] Script starting...
+ [MAIN.TSX] Unregistering service workers...
+ [MAIN.TSX] About to render React app...
+ [MAIN.TSX] Root element: 
+ [MAIN.TSX] React app rendered successfully
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [AUTH] Valid session found: mazzu001@hotmail.com
+ [APP] Auth state: Object
+ 🔍 Browser detection debug: Object
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 MIDI API supported - waiting for user interaction to initialize
+ 🔧 Initializing storage for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [AUTH] useEffect - auth state initialized
+ 📊 Database exists for mazzu001@hotmail.com: true
+ 📂 Loading existing database for mazzu001@hotmail.com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ Browser file system initialized successfully for user: default@user.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+ 📦 Initializing AudioFileStorage sequentially...
+ 📦 Starting sequential AudioFileStorage initialization...
+ 📦 Step 1: Initializing IndexedDB...
+ ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+ ✅ IndexedDB initialized for AudioFileStorage
+ ✅ IndexedDB initialized
+ 📦 Step 2: Loading audio file metadata...
+ Loaded 78 audio file references from IndexedDB for user: mazzu001@hotmail.com
+ ✅ Audio file metadata loaded
+ 📦 Step 3: Verifying BrowserFS...
+ ✅ BrowserFS ready
+ ✅ AudioFileStorage fully initialized
+ ✅ AudioFileStorage initialized
+ ✅ Storage initialization complete for mazzu001@hotmail.com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: true
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 📭 No localStorage data found for key: lpp_songs_mazzu001@hotmail.com
+(index):1  Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
+ 🔍 Retrieved 0 mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 Retrieved 0 mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 Retrieved 0 mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 Retrieved 0 mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 Retrieved 0 mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 Retrieved 0 mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 📋 Loaded 4 songs from IndexedDB (alphabetically sorted)
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔍 Retrieved 0 mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 Retrieved 0 mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 Retrieved 0 mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 Retrieved 0 mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 Retrieved 0 mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 Retrieved 0 mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🎵 Loading song: 3 AM
+ 📡 Not uploading to database: Object
+ Loading cached waveform for "3 AM" (400 data points)
+ Song selected: "3 AM" with 6 tracks - loading for streaming
+ Setting up streaming for: "3 AM" - UI stays responsive
+ 🔍 Requesting audio URL for track: 388c0685-a74b-4ce8-affb-2ad348471e24
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 Requesting audio URL for track: 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 Requesting audio URL for track: ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 Requesting audio URL for track: be729184-0d3e-4e4c-8196-829ddd1782bf
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 Requesting audio URL for track: deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 Requesting audio URL for track: ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 💾 Memory cache has: []
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Database initialization completed for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 💾 Not in memory cache, checking IndexedDB for 388c0685-a74b-4ce8-affb-2ad348471e24
+ ✅ Database initialization completed for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 💾 Not in memory cache, checking IndexedDB for 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ ✅ Database initialization completed for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 💾 Not in memory cache, checking IndexedDB for ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ ✅ Database initialization completed for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 💾 Not in memory cache, checking IndexedDB for be729184-0d3e-4e4c-8196-829ddd1782bf
+ ✅ Database initialization completed for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 💾 Not in memory cache, checking IndexedDB for deb15d6d-d6de-44be-95e3-0451c7d488c2
+ ✅ Database initialization completed for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 💾 Not in memory cache, checking IndexedDB for ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Found in IndexedDB: 388c0685-a74b-4ce8-affb-2ad348471e24 (3AM - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ ✅ Found in IndexedDB: 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7 (3AM - Organ.mp3)
+ ✅ Got audio URL from browser storage for track: 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ ✅ Found in IndexedDB: ad10030e-a4d9-4ff3-a2a7-7322077fd5ee (3AM - Bass.mp3)
+ ✅ Got audio URL from browser storage for track: ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ ✅ Found in IndexedDB: be729184-0d3e-4e4c-8196-829ddd1782bf (3AM - Click.mp3)
+ ✅ Got audio URL from browser storage for track: be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ ✅ Found in IndexedDB: deb15d6d-d6de-44be-95e3-0451c7d488c2 (3AM - Guitars.mp3)
+ ✅ Got audio URL from browser storage for track: deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ ✅ Found in IndexedDB: ee8ac1c2-b6aa-4c86-884b-8a104fa25884 (3AM - Backups.mp3)
+ ✅ Got audio URL from browser storage for track: ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🔍 Retrieved 0 mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 Retrieved 0 mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 Retrieved 0 mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 Retrieved 0 mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 Retrieved 0 mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 Retrieved 0 mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🚀 Streaming load: 6 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 6 tracks ready
+ ✅ Streaming ready for "3 AM" - instant playback available
+ ✅ Streaming ready: 6 tracks setup instantly (audio nodes created on demand)
+ 🔧 Audio nodes created for: 3AM - Drums
+ 🔧 Audio nodes created for: 3AM - Organ
+ 🔧 Audio nodes created for: 3AM - Bass
+ 🔧 Audio nodes created for: 3AM - Click
+ 🔧 Audio nodes created for: 3AM - Guitars
+ 🔧 Audio nodes created for: 3AM - Backups
+ 🔄 Loading started for 3AM - Drums
+ 🔄 Loading started for 3AM - Organ
+ 🔄 Loading started for 3AM - Bass
+ 🔄 Loading started for 3AM - Click
+ 🔄 Loading started for 3AM - Guitars
+ 🔄 Loading started for 3AM - Backups
+  ⚠️ Audio error for 3AM - Drums: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Bass: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Organ: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Click: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Guitars: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Backups: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ ▶️ Starting streaming playback: 6 tracks
+ 🔄 Loading started for 3AM - Drums
+ 🔄 Loading started for 3AM - Organ
+ 🔄 Loading started for 3AM - Bass
+ 🔄 Loading started for 3AM - Click
+ 🔄 Loading started for 3AM - Guitars
+ 🔄 Loading started for 3AM - Backups
+  ⚠️ Audio error for 3AM - Drums: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Failed to start streaming track 3AM - Drums: 
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Organ: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Failed to start streaming track 3AM - Organ: 
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Click: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Failed to start streaming track 3AM - Click: 
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Bass: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Failed to start streaming track 3AM - Bass: 
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Guitars: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Failed to start streaming track 3AM - Guitars: 
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Audio error for 3AM - Backups: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+  ⚠️ Failed to start streaming track 3AM - Backups: 
+Mt.forEach.n.<computed> @ eruda.js:2
+ ✅ Streaming playback started instantly
+  ❌ MIDI not initialized
+Mt.forEach.n.<computed> @ eruda.js:2
+  ❌ Failed to execute MIDI command: [[PC:5:1]]
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ⏹️ Streaming playback stopped
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔍 Retrieved 0 mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+ 🔍 Retrieved 0 mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+ 🔍 Retrieved 0 mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+ 🔍 Retrieved 0 mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+ 🔍 Retrieved 0 mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+ 🔍 Retrieved 0 mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+ 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+ 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+ 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+ 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+ 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+ 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+ 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+ 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+ 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+ 🎵 Loading song: Already Gone
+ 📡 Not uploading to database: Object
+ Loading cached waveform for "Already Gone" (400 data points)
+ Song selected: "Already Gone" with 5 tracks - loading for streaming
+ Setting up streaming for: "Already Gone" - UI stays responsive
+ 🔍 Requesting audio URL for track: 412f43bc-7d41-4308-aa9d-37edc3402937
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 🔍 Requesting audio URL for track: 5ad990b4-9446-4ee5-b432-add104c21af8
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 🔍 Requesting audio URL for track: 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 🔍 Requesting audio URL for track: b132c134-4151-4820-8e99-149d20852d8e
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track b132c134-4151-4820-8e99-149d20852d8e
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track b132c134-4151-4820-8e99-149d20852d8e
+ 🔍 Requesting audio URL for track: b405c299-5aea-4a03-93e4-d8121b041df7
+ 📂 Available audio files (78): Array(78)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 💾 Memory cache has: [388c0685-a74b-4ce8-affb-2ad348471e24, 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7, ad10030e-a4d9-4ff3-a2a7-7322077fd5ee, be729184-0d3e-4e4c-8196-829ddd1782bf, deb15d6d-d6de-44be-95e3-0451c7d488c2, ee8ac1c2-b6aa-4c86-884b-8a104fa25884]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Database initialization completed for track 412f43bc-7d41-4308-aa9d-37edc3402937
+ 💾 Not in memory cache, checking IndexedDB for 412f43bc-7d41-4308-aa9d-37edc3402937
+ ✅ Database initialization completed for track 5ad990b4-9446-4ee5-b432-add104c21af8
+ 💾 Not in memory cache, checking IndexedDB for 5ad990b4-9446-4ee5-b432-add104c21af8
+ ✅ Database initialization completed for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ 💾 Not in memory cache, checking IndexedDB for 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+ ✅ Database initialization completed for track b132c134-4151-4820-8e99-149d20852d8e
+ 💾 Not in memory cache, checking IndexedDB for b132c134-4151-4820-8e99-149d20852d8e
+ ✅ Database initialization completed for track b405c299-5aea-4a03-93e4-d8121b041df7
+ 💾 Not in memory cache, checking IndexedDB for b405c299-5aea-4a03-93e4-d8121b041df7
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Found in IndexedDB: 412f43bc-7d41-4308-aa9d-37edc3402937 (Already Gone - Guitars.mp3)
+Console.js:61 ✅ Got audio URL from browser storage for track: 412f43bc-7d41-4308-aa9d-37edc3402937
+Console.js:61 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+Console.js:61 ✅ Found in IndexedDB: 5ad990b4-9446-4ee5-b432-add104c21af8 (Already Gone - Backups.mp3)
+Console.js:61 ✅ Got audio URL from browser storage for track: 5ad990b4-9446-4ee5-b432-add104c21af8
+Console.js:61 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+Console.js:61 ✅ Found in IndexedDB: 89021307-e59e-4fc0-b1a6-0d91cede6eb9 (Already Gone - Drums.mp3)
+Console.js:61 ✅ Got audio URL from browser storage for track: 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+Console.js:61 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+Console.js:61 ✅ Found in IndexedDB: b132c134-4151-4820-8e99-149d20852d8e (Already Gone - Click.mp3)
+Console.js:61 ✅ Got audio URL from browser storage for track: b132c134-4151-4820-8e99-149d20852d8e
+Console.js:61 🔍 LocalSongStorage.getMuteRegions: Getting regions for track b132c134-4151-4820-8e99-149d20852d8e
+Console.js:61 ✅ Found in IndexedDB: b405c299-5aea-4a03-93e4-d8121b041df7 (Already Gone - Bass.mp3)
+Console.js:61 ✅ Got audio URL from browser storage for track: b405c299-5aea-4a03-93e4-d8121b041df7
+Console.js:61 🔍 LocalSongStorage.getMuteRegions: Getting regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+Console.js:61 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+Console.js:61 ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+Console.js:61 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+Console.js:61 ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+Console.js:61 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+Console.js:61 ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+Console.js:61 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+Console.js:61 ✅ LocalSongStorage.getMuteRegions: Found 1 regions for track b132c134-4151-4820-8e99-149d20852d8e
+Console.js:61 🔇 Loaded 1 mute regions for track: Already Gone - Click
+Console.js:61 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+Console.js:61 ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+Console.js:61 🚀 Streaming load: 5 tracks (deferred setup)
+Console.js:61 🎵 Loading original tracks...
+Console.js:61 🎵 Track loading complete: 5 tracks ready
+Console.js:61 ✅ Streaming ready for "Already Gone" - instant playback available
+Console.js:61 🔇 Loaded tracks with mute regions: Already Gone - Click (1 regions)
+Console.js:61 🔧 Audio nodes created for: Already Gone - Click
+Console.js:61 ✅ Streaming ready: 5 tracks setup instantly (audio nodes created on demand)
+Console.js:61 🔧 Audio nodes created for: Already Gone - Guitars
+Console.js:61 🔧 Audio nodes created for: Already Gone - Backups
+Console.js:61 🔧 Audio nodes created for: Already Gone - Drums
+Console.js:61 🔧 Audio nodes created for: Already Gone - Bass
+Console.js:61 🔄 Loading started for Already Gone - Click
+Console.js:61 🔄 Loading started for Already Gone - Guitars
+Console.js:61 🔄 Loading started for Already Gone - Backups
+Console.js:61 🔄 Loading started for Already Gone - Drums
+Console.js:61 🔄 Loading started for Already Gone - Bass
+Console.js:61  ⚠️ Audio error for Already Gone - Click: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Audio error for Already Gone - Guitars: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Audio error for Already Gone - Backups: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Audio error for Already Gone - Drums: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Audio error for Already Gone - Bass: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 🔇 Scheduling 1 mute regions for track: Already Gone - Click
+Console.js:61   📍 Currently IN mute region (0.0s-3.6s), muting immediately
+Console.js:61   📍 Scheduled mute END at 3.6s
+Console.js:61 ✅ Scheduled 2 mute automation events for track: Already Gone - Click from position 0.0s
+Console.js:61 ✅ Mute regions scheduled for 1 tracks from start
+Console.js:61 ▶️ Starting streaming playback: 5 tracks
+Console.js:61 🔄 Loading started for Already Gone - Guitars
+Console.js:61 🔄 Loading started for Already Gone - Backups
+Console.js:61 🔄 Loading started for Already Gone - Drums
+Console.js:61 🔄 Loading started for Already Gone - Click
+Console.js:61 🔄 Loading started for Already Gone - Bass
+Console.js:61  ⚠️ Audio error for Already Gone - Guitars: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Failed to start streaming track Already Gone - Guitars: NotSupportedError: Failed to load because no supported source was found.
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Audio error for Already Gone - Backups: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Failed to start streaming track Already Gone - Backups: NotSupportedError: Failed to load because no supported source was found.
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Audio error for Already Gone - Click: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Failed to start streaming track Already Gone - Click: NotSupportedError: Failed to load because no supported source was found.
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Audio error for Already Gone - Bass: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Failed to start streaming track Already Gone - Bass: NotSupportedError: Failed to load because no supported source was found.
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Audio error for Already Gone - Drums: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61  ⚠️ Failed to start streaming track Already Gone - Drums: NotSupportedError: Failed to load because no supported source was found.
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 🔇 Re-scheduling mute regions for 1 tracks at playback time 0.0s
+Console.js:61 🔇 Scheduling 1 mute regions for track: Already Gone - Click
+Console.js:61   📍 Currently IN mute region (0.0s-3.6s), muting immediately
+Console.js:61   📍 Scheduled mute END at 3.6s
+Console.js:61 ✅ Scheduled 2 mute automation events for track: Already Gone - Click from position 0.0s
+Console.js:61 ✅ Streaming playback started instantly
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 ⏹️ Streaming playback stopped
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host

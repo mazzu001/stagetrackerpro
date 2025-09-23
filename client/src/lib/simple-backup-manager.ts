@@ -285,7 +285,16 @@ To restore: Use the Import feature in StageTracker Pro
       
       // Convert base64 back to Blobs
       for (const item of data) {
-        const processedItem = await this.convertBase64ToBlobs(item);
+        let processedItem = await this.convertBase64ToBlobs(item);
+        
+        // Special handling for tracks - reset audioUrl to force regeneration
+        if (storeName === 'tracks' && processedItem.audioUrl) {
+          // Replace any blob URL with a placeholder that indicates audio is in database
+          if (processedItem.audioUrl.startsWith('blob:')) {
+            processedItem.audioUrl = 'blob:stored';
+          }
+        }
+        
         store.add(processedItem);
       }
       

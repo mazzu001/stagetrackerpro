@@ -360,13 +360,12 @@ export default function Performance({ userType, userEmail, logout }: Performance
       
       await backupManager.importDatabase(file, userEmail, onProgress);
       
-      // Refresh the song list
-      const updatedSongs = LocalSongStorage.getAllSongs(userEmail);
-      setAllSongs(updatedSongs.sort((a, b) => a.title.localeCompare(b.title)));
+      // Don't try to refresh songs - the page will reload automatically
+      // The SimpleBackupManager will reload the page after successful import
       
       toast({
         title: "Import Complete",
-        description: "Your music library has been imported successfully",
+        description: "Your music library has been imported successfully. Page will refresh...",
       });
     } catch (error) {
       console.error('Import failed:', error);

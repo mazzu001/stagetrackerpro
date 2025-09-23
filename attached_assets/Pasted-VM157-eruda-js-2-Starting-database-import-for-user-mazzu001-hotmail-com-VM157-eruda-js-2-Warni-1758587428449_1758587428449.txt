@@ -1,0 +1,205 @@
+VM157 eruda.js:2 📥 Starting database import for user: mazzu001@hotmail.com
+VM157 eruda.js:2  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ VM157 eruda.js:2
+(anonymous) @ VM238 @radix-ui_react-dialog.js:344
+commitHookEffectListMount @ VM175 chunk-UZOKQUDP.js:16915
+commitPassiveMountOnFiber @ VM175 chunk-UZOKQUDP.js:18156
+commitPassiveMountEffects_complete @ VM175 chunk-UZOKQUDP.js:18129
+commitPassiveMountEffects_begin @ VM175 chunk-UZOKQUDP.js:18119
+commitPassiveMountEffects @ VM175 chunk-UZOKQUDP.js:18109
+flushPassiveEffectsImpl @ VM175 chunk-UZOKQUDP.js:19490
+flushPassiveEffects @ VM175 chunk-UZOKQUDP.js:19447
+commitRootImpl @ VM175 chunk-UZOKQUDP.js:19416
+commitRoot @ VM175 chunk-UZOKQUDP.js:19277
+performSyncWorkOnRoot @ VM175 chunk-UZOKQUDP.js:18895
+flushSyncCallbacks @ VM175 chunk-UZOKQUDP.js:9119
+flushSync @ VM175 chunk-UZOKQUDP.js:18959
+finishEventHandler @ VM175 chunk-UZOKQUDP.js:3569
+batchedUpdates @ VM175 chunk-UZOKQUDP.js:3582
+dispatchEventForPluginEventSystem @ VM175 chunk-UZOKQUDP.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM175 chunk-UZOKQUDP.js:5478
+dispatchEvent @ VM175 chunk-UZOKQUDP.js:5472
+dispatchDiscreteEvent @ VM175 chunk-UZOKQUDP.js:5449
+VM157 eruda.js:2 📋 Importing backup from 2025-09-23T00:24:56.029Z
+VM157 eruda.js:2 ✅ Restored 78 items to audioFiles
+VM157 eruda.js:2 ✅ Restored 1 items to muteRegions
+VM157 eruda.js:2 ✅ Restored 4 items to songs
+VM157 eruda.js:2 ✅ Restored 20 items to tracks
+VM157 eruda.js:2 ✅ Restored 78 items to audioFiles
+VM157 eruda.js:2 ✅ Restored 0 items to config
+VM157 eruda.js:2 📦 Restored 1 localStorage items
+VM157 eruda.js:2 ✅ Database import complete
+VM157 eruda.js:2  Import failed: TypeError: updatedSongs.sort is not a function
+    at handleFileSelected (VM184 performance.tsx:278:32)
+Mt.forEach.n.<computed> @ VM157 eruda.js:2
+handleFileSelected @ VM184 performance.tsx:284
+await in handleFileSelected
+callCallback2 @ VM175 chunk-UZOKQUDP.js:3674
+invokeGuardedCallbackDev @ VM175 chunk-UZOKQUDP.js:3699
+invokeGuardedCallback @ VM175 chunk-UZOKQUDP.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM175 chunk-UZOKQUDP.js:3736
+executeDispatch @ VM175 chunk-UZOKQUDP.js:7014
+processDispatchQueueItemsInOrder @ VM175 chunk-UZOKQUDP.js:7034
+processDispatchQueue @ VM175 chunk-UZOKQUDP.js:7043
+dispatchEventsForPlugins @ VM175 chunk-UZOKQUDP.js:7051
+(anonymous) @ VM175 chunk-UZOKQUDP.js:7174
+batchedUpdates$1 @ VM175 chunk-UZOKQUDP.js:18913
+batchedUpdates @ VM175 chunk-UZOKQUDP.js:3579
+dispatchEventForPluginEventSystem @ VM175 chunk-UZOKQUDP.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM175 chunk-UZOKQUDP.js:5478
+dispatchEvent @ VM175 chunk-UZOKQUDP.js:5472
+dispatchDiscreteEvent @ VM175 chunk-UZOKQUDP.js:5449
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+VM157 eruda.js:2 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+VM157 eruda.js:2 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+Console.js:61 🔵 Android BLE-MIDI adapter initialized
+Console.js:61 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+Console.js:61 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+Console.js:61 [MAIN.TSX] Script starting...
+Console.js:61 [MAIN.TSX] Unregistering service workers...
+Console.js:61 [MAIN.TSX] About to render React app...
+Console.js:61 [MAIN.TSX] Root element: <div id=​"root">​…​</div>​
+Console.js:61 [MAIN.TSX] React app rendered successfully
+Console.js:61  Failed to load audio file references from IndexedDB: Error: Database not initialized. Call initialize() first.
+    at IndexedDBStorage.ensureDatabase (indexed-db-storage.ts:166:13)
+    at IndexedDBStorage.getAllAudioFileMetadata (indexed-db-storage.ts:552:10)
+    at AudioFileStorage.loadFromStorage (audio-file-storage.ts:208:46)
+Mt.forEach.n.<computed> @ Console.js:61
+loadFromStorage @ audio-file-storage.ts:220
+await in loadFromStorage
+getInstance @ audio-file-storage.ts:36
+(anonymous) @ audio-file-storage.ts:428
+Console.js:61 [APP] About to call useLocalAuth hook...
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] Valid session found: mazzu001@hotmail.com
+Console.js:61 [APP] Auth state: {isAuthenticated: true, isLoading: false, isPaidUser: true, userEmail: 'mazzu001@hotmail.com'}
+Console.js:61 🔍 Browser detection debug: {userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWeb…cko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', isAndroid: false, isChrome: false, isEdge: true, isAndroidChrome: false, …}
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] Storage initialized: false
+Console.js:61 🔍 Parsed values: {redirectStatus: null, email: null, tier: null}
+Console.js:61 🔍 No payment success detected in URL
+Console.js:61 🎹 MIDI API supported - waiting for user interaction to initialize
+Console.js:61 🔧 Initializing storage for user: mazzu001@hotmail.com
+Console.js:61 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+Console.js:61 [AUTH] useEffect - auth state initialized
+Console.js:61 📊 Database exists for mazzu001@hotmail.com: true
+Console.js:61 📂 Loading existing database for mazzu001@hotmail.com
+Console.js:61 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] Storage initialized: false
+Console.js:61 ✅ IndexedDB initialized: MusicAppDB_default_user_com
+Console.js:61 Browser file system initialized successfully for user: default@user.com
+Console.js:61 ✅ BrowserFileSystem fully initialized with config loaded
+Console.js:61 Browser file system initialized successfully for user: mazzu001@hotmail.com
+Console.js:61 ✅ BrowserFileSystem fully initialized with config loaded
+Console.js:61 Browser file system initialized successfully for user: mazzu001@hotmail.com
+Console.js:61 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+Console.js:61 ✅ Storage initialization complete for mazzu001@hotmail.com
+Console.js:61  Failed to load audio file references from IndexedDB: Error: Database not initialized. Call initialize() first.
+    at IndexedDBStorage.ensureDatabase (indexed-db-storage.ts:166:13)
+    at IndexedDBStorage.getAllAudioFileMetadata (indexed-db-storage.ts:552:10)
+    at AudioFileStorage.loadFromStorage (audio-file-storage.ts:208:46)
+Mt.forEach.n.<computed> @ Console.js:61
+loadFromStorage @ audio-file-storage.ts:220
+await in loadFromStorage
+getInstance @ audio-file-storage.ts:36
+initializeStorage @ StorageContext.tsx:74
+await in initializeStorage
+(anonymous) @ StorageContext.tsx:92
+commitHookEffectListMount @ react-dom.development.js:23189
+commitPassiveMountOnFiber @ react-dom.development.js:24965
+commitPassiveMountEffects_complete @ react-dom.development.js:24930
+commitPassiveMountEffects_begin @ react-dom.development.js:24917
+commitPassiveMountEffects @ react-dom.development.js:24905
+flushPassiveEffectsImpl @ react-dom.development.js:27078
+flushPassiveEffects @ react-dom.development.js:27023
+performSyncWorkOnRoot @ react-dom.development.js:26115
+flushSyncCallbacks @ react-dom.development.js:12042
+commitRootImpl @ react-dom.development.js:26998
+commitRoot @ react-dom.development.js:26721
+finishConcurrentRender @ react-dom.development.js:26020
+performConcurrentWorkOnRoot @ react-dom.development.js:25848
+workLoop @ scheduler.development.js:266
+flushWork @ scheduler.development.js:239
+performWorkUntilDeadline @ scheduler.development.js:533
+Console.js:61 [APP] AppContent component rendering...
+Console.js:61 [APP] Storage initialized: true
+Console.js:61 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+Console.js:61 🔍 Initial service isHost check: {serviceIsHost: false, serviceConnected: false, serviceRoomId: null}
+Console.js:61 🎵 Master output initialized
+Console.js:61 🔍 Debug values: {selectedSongId: null, userEmail: 'mazzu001@hotmail.com', isHost: false, currentRoomId: undefined, hasSelectedSongId: false, …}
+Console.js:61 🎭 Broadcast host effect: {isHost: false, selectedSong: false, selectedSongId: null, songTitle: undefined, songEntryId: null, …}
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+Console.js:61 ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+Console.js:61 📭 No localStorage data found for key: lpp_songs_mazzu001@hotmail.com
+Console.js:61 🔍 Retrieved 0 mute regions for track 388c0685-a74b-4ce8-affb-2ad348471e24
+Console.js:61 🔍 Retrieved 0 mute regions for track 9031ee8d-3c0d-48a6-a124-3a5f0c7506c7
+Console.js:61 🔍 Retrieved 0 mute regions for track ad10030e-a4d9-4ff3-a2a7-7322077fd5ee
+Console.js:61 🔍 Retrieved 0 mute regions for track be729184-0d3e-4e4c-8196-829ddd1782bf
+Console.js:61 🔍 Retrieved 0 mute regions for track deb15d6d-d6de-44be-95e3-0451c7d488c2
+Console.js:61 🔍 Retrieved 0 mute regions for track ee8ac1c2-b6aa-4c86-884b-8a104fa25884
+Console.js:61 🔍 Retrieved 0 mute regions for track 412f43bc-7d41-4308-aa9d-37edc3402937
+Console.js:61 🔍 Retrieved 0 mute regions for track 5ad990b4-9446-4ee5-b432-add104c21af8
+Console.js:61 🔍 Retrieved 0 mute regions for track 89021307-e59e-4fc0-b1a6-0d91cede6eb9
+Console.js:61 🔍 Retrieved 1 mute regions for track b132c134-4151-4820-8e99-149d20852d8e
+Console.js:61 🔍 Retrieved 0 mute regions for track b405c299-5aea-4a03-93e4-d8121b041df7
+Console.js:61 🔍 Retrieved 0 mute regions for track 36d4d647-e4db-4ca6-bbe9-28053a9bceb8
+Console.js:61 🔍 Retrieved 0 mute regions for track 42e542a5-3f3e-47dc-9922-ab0d1e713bcd
+Console.js:61 🔍 Retrieved 0 mute regions for track 88062b58-1af6-46d3-bb44-0a2c114d408a
+Console.js:61 🔍 Retrieved 0 mute regions for track 9a5c9277-f42a-4c11-8f57-d7451de13ae0
+Console.js:61 🔍 Retrieved 0 mute regions for track 02917286-014c-42c9-9cc9-b513f7b8d651
+Console.js:61 🔍 Retrieved 0 mute regions for track 1e824ed8-76f2-4cda-abec-6cead5814821
+Console.js:61 🔍 Retrieved 0 mute regions for track 2c7b6e5b-facf-4ddb-af00-39b26b81deb0
+Console.js:61 🔍 Retrieved 0 mute regions for track 4d26ea9e-a768-47c9-8c66-78b3600f3b28
+Console.js:61 🔍 Retrieved 0 mute regions for track f68727cc-cb9a-4852-a7f8-18c7786f455d
+Console.js:61 📋 Loaded 4 songs from IndexedDB (alphabetically sorted)
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+Zy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-simple.tsx:9
+stripe.js:1  Uncaught (in promise) IntegrationError: You should not use your secret key with Stripe.js.
+          Please pass a publishable key instead.
+l @ stripe.js:1
+e @ stripe.js:1
+Zy @ stripe.js:1
+initStripe2 @ index.mjs:153
+(anonymous) @ index.mjs:192
+Promise.then
+loadStripe2 @ index.mjs:191
+(anonymous) @ subscribe-elements-test.tsx:9
+workspace_iframe.html?initialPath=%2F&id=%3Ar271%3A:1  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar271%3A:1  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar271%3A:1  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar271%3A:1  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar271%3A:1  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar271%3A:1  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar271%3A:1  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar271%3A:1  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar271%3A:1  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar271%3A:1  Allow attribute will take precedence over 'allowpaymentrequest'.

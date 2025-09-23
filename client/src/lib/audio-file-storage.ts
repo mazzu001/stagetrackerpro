@@ -51,13 +51,21 @@ export class AudioFileStorage {
     // Get per-user BrowserFileSystem instance
     this.browserFS = BrowserFileSystem.getInstance(userEmail);
     
-    // Initialize IndexedDB for this user
-    this.initializeIndexedDB();
+    // Initialize IndexedDB for this user (don't await here to avoid constructor blocking)
+    this.initializeIndexedDB().catch(error => {
+      console.error('Failed to initialize IndexedDB for AudioFileStorage:', error);
+    });
   }
   
   private async initializeIndexedDB(): Promise<void> {
-    this.indexedDB = IndexedDBStorage.getInstance(this.userEmail);
-    await this.indexedDB.initialize();
+    try {
+      this.indexedDB = IndexedDBStorage.getInstance(this.userEmail);
+      await this.indexedDB.initialize();
+      console.log('✅ IndexedDB initialized for AudioFileStorage');
+    } catch (error) {
+      console.error('Failed to initialize IndexedDB:', error);
+      // Don't throw - allow the class to work with browserFS only
+    }
   }
 
   // Store file using browser storage (IndexedDB + File API)
@@ -205,17 +213,23 @@ export class AudioFileStorage {
         await this.initializeIndexedDB();
       }
       
-      const metadata = await this.indexedDB!.getAllAudioFileMetadata();
-      this.audioFiles = new Map(metadata.map(m => [m.id, {
-        id: m.id,
-        name: m.name,
-        filePath: m.filePath,
-        mimeType: m.mimeType,
-        size: m.size,
-        lastModified: m.lastModified
-      }]));
-      
-      console.log(`Loaded ${this.audioFiles.size} audio file references from IndexedDB for user: ${this.userEmail}`);
+      // Only try to load if indexedDB is available
+      if (this.indexedDB) {
+        const metadata = await this.indexedDB.getAllAudioFileMetadata();
+        this.audioFiles = new Map(metadata.map(m => [m.id, {
+          id: m.id,
+          name: m.name,
+          filePath: m.filePath,
+          mimeType: m.mimeType,
+          size: m.size,
+          lastModified: m.lastModified
+        }]));
+        
+        console.log(`Loaded ${this.audioFiles.size} audio file references from IndexedDB for user: ${this.userEmail}`);
+      } else {
+        console.warn('IndexedDB not available, using empty audio files map');
+        this.audioFiles = new Map();
+      }
     } catch (error) {
       console.error('Failed to load audio file references from IndexedDB:', error);
       this.audioFiles = new Map();

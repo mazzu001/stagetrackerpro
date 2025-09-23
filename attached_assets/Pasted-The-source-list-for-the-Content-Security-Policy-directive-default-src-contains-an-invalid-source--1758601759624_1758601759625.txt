@@ -1,0 +1,1091 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-ce60b9f6db049693.js:34 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+BandMaestro:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+BandMaestro:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+BandMaestro:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-ce60b9f6db049693.js:34 [LaunchDarkly] LaunchDarkly client initialized
+BandMaestro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-8df097bc887abe5e.js:1
+  Unrecognized feature: 'battery'.
+_ @ framework-8df097bc887abe5e.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-8df097bc887abe5e.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-8df097bc887abe5e.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-8df097bc887abe5e.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-8df097bc887abe5e.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-8df097bc887abe5e.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-8df097bc887abe5e.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-8df097bc887abe5e.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-8df097bc887abe5e.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-8df097bc887abe5e.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-8df097bc887abe5e.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar9b%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+ 🎭 Broadcast host effect: Object
+ 🎭 Broadcasting performance state: Object
+ 🎭 sendPerformanceState called: Object
+ 🎭 About to call broadcastService.sendState with: Object
+ 📡 Broadcasting state to viewers: Object
+ 🎭 Finished calling broadcastService.sendState
+ Duration updated from streaming engine: 229s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 🎭 About to call broadcastService.sendState with: Object
+Console.js:61 📡 Broadcasting state to viewers: Object
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 🎭 About to call broadcastService.sendState with: Object
+Console.js:61 📡 Broadcasting state to viewers: Object
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 🎭 About to call broadcastService.sendState with: Object
+Console.js:61 📡 Broadcasting state to viewers: Object
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 🎭 About to call broadcastService.sendState with: Object
+Console.js:61 📡 Broadcasting state to viewers: Object
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 🎭 About to call broadcastService.sendState with: Object
+Console.js:61 📡 Broadcasting state to viewers: Object
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 🎭 About to call broadcastService.sendState with: Object
+Console.js:61 📡 Broadcasting state to viewers: Object
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 Duration updated from streaming engine: 229s
+Console.js:61 ⏹️ Streaming playback stopped
+Console.js:61 🔄 Seek detected: 4.8s → 0.0s, resetting MIDI commands
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Broadcasting performance state: Object
+Console.js:61 🎭 sendPerformanceState called: Object
+Console.js:61 🎭 About to call broadcastService.sendState with: Object
+Console.js:61 📡 Broadcasting state to viewers: Object
+Console.js:61 🎭 Finished calling broadcastService.sendState
+Console.js:61 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+Console.js:61 📡 Received server message: Object
+Console.js:61 📺 Room changed, setting viewer state: Object
+Console.js:61 📺 Current state - isHost: true roomId: Matt
+Console.js:61 📡 Received server message: Object
+Console.js:61 📺 Room changed, setting viewer state: Object
+Console.js:61 📺 Current state - isHost: true roomId: Matt
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 [AUTH] Valid session found: mazzu001@hotmail.com
+Console.js:61 📱 Edge browser: Forcing memory cleanup
+Console.js:61 [AUTH] useEffect - auth state initialized
+Console.js:61 🔍 Initial service isHost check: Object
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 🔄 Loading started for 3AM - Backups
+Console.js:61  ⚠️ Audio error for 3AM - Backups: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 🔄 Loading started for 3AM - Organ
+Console.js:61  ⚠️ Audio error for 3AM - Organ: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 🔄 Loading started for 3AM - Guitars
+Console.js:61  ⚠️ Audio error for 3AM - Guitars: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 🔄 Loading started for 3AM - Click
+Console.js:61  ⚠️ Audio error for 3AM - Click: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 🔄 Loading started for 3AM - Drums
+Console.js:61  ⚠️ Audio error for 3AM - Drums: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 🔄 Loading started for 3AM - Bass
+Console.js:61  ⚠️ Audio error for 3AM - Bass: error Event
+Mt.forEach.n.<computed> @ Console.js:61
+Console.js:61 [AUTH] useLocalAuth hook called
+Console.js:61 ✅ User profile data loaded successfully
+Console.js:61 [AUTH] useLocalAuth hook called

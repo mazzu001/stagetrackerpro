@@ -8,6 +8,7 @@ interface LocalUser {
   userType: UserType;
   loginTime: number;
   lastVerified?: number;
+  profilePhoto?: string | null;
 }
 
 const STORAGE_KEY = 'lpp_local_user';

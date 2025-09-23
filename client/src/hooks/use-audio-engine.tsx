@@ -116,44 +116,50 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
       // Convert song tracks to track data format and setup streaming
       const setupStreamingAsync = async () => {
         try {
+          if (!userEmail) {
+            console.warn('No userEmail available - mute regions will not be loaded');
+          }
+          
           const audioStorage = AudioFileStorage.getInstance(userEmail || 'default@user.com');
           
-          // Get all audio URLs in parallel 
-          const audioUrlPromises = song.tracks.map(async (track) => {
+          // Step 1 & 2: Load all tracks with their audio URLs
+          // Step 3: Load mute regions for each track
+          const trackDataPromises = song.tracks.map(async (track) => {
             const audioUrl = await audioStorage.getAudioUrl(track.id);
+            
+            // Get mute regions for this track
+            let muteRegions: any[] = [];
+            if (userEmail) {
+              try {
+                const regions = await LocalSongStorage.getMuteRegions(userEmail, song.id, track.id);
+                if (regions && regions.length > 0) {
+                  muteRegions = regions;
+                  console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
+                }
+              } catch (error) {
+                console.warn(`Failed to load mute regions for track ${track.name}:`, error);
+              }
+            }
+            
             return audioUrl ? {
               id: track.id,
               name: track.name,
-              url: audioUrl
+              url: audioUrl,
+              muteRegions: muteRegions // Attach mute regions directly to track data
             } : null;
           });
           
-          const trackDataResults = await Promise.all(audioUrlPromises);
+          const trackDataResults = await Promise.all(trackDataPromises);
           const trackData = trackDataResults.filter(track => track !== null);
           
-          // Load tracks without blocking the UI
+          // Step 5: Send everything to the audio engine
           audioEngineRef.current?.loadTracks(trackData);
           
-          // Warm up tracks and apply mute regions immediately after loading
+          // Warm up tracks and schedule mute regions
           if (audioEngineRef.current && typeof (audioEngineRef.current as any).warmTracksAndApplyMuteRegions === 'function') {
             console.log(`🔥 Warming up tracks and applying mute regions for "${song.title}"`);
             await (audioEngineRef.current as any).warmTracksAndApplyMuteRegions();
             console.log(`✅ Tracks warmed up and mute regions applied for "${song.title}"`);
-          } else {
-            // Fallback to old method if warm method doesn't exist
-            if (audioEngineRef.current && userEmail && song) {
-              await Promise.all(song.tracks.map(async track => {
-                try {
-                  const muteRegions = await LocalSongStorage.getMuteRegions(userEmail, song.id, track.id);
-                  if (muteRegions && muteRegions.length > 0) {
-                    audioEngineRef.current?.setTrackMuteRegions(track.id, muteRegions);
-                    console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
-                  }
-                } catch (error) {
-                  console.warn(`Failed to load mute regions for track ${track.name}:`, error);
-                }
-              }));
-            }
           }
           
           // Auto-generate waveform in background (restored functionality from AudioEngine)

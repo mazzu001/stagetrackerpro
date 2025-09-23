@@ -87,9 +87,9 @@ export class StreamingAudioEngine {
     url: string;
     volume?: number;
     balance?: number;
+    muteRegions?: MuteRegion[];
     isMuted?: boolean;
     isSolo?: boolean;
-    muteRegions?: MuteRegion[];
   }>) {
     console.log(`🚀 Streaming load: ${trackData.length} tracks (deferred setup)`);
     
@@ -587,26 +587,11 @@ export class StreamingAudioEngine {
       this.ensureTrackAudioNodes(track);
     });
     
-    // Load mute regions from storage for each track
-    if (this.userEmail && this.songId) {
-      for (const track of this.state.tracks) {
-        try {
-          // Import LocalSongStorage at runtime to avoid circular deps
-          const { LocalSongStorageDB } = await import('./local-song-storage-db');
-          const muteRegions = await LocalSongStorageDB.getMuteRegions(this.userEmail, this.songId, track.id);
-          
-          if (muteRegions && muteRegions.length > 0) {
-            // Attach mute regions to the track object
-            track.muteRegions = muteRegions;
-            console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
-          }
-        } catch (error) {
-          console.warn(`Failed to load mute regions for track ${track.name}:`, error);
-        }
-      }
-    }
+    // Debug: Log what tracks we have
+    console.log(`🔍 Checking ${this.state.tracks.length} tracks for mute regions:`, 
+      this.state.tracks.map(t => ({ name: t.name, muteRegions: t.muteRegions?.length || 0 })));
     
-    // Check if any tracks have mute regions to schedule
+    // Check if any tracks have mute regions to schedule (they should already be attached from loading)
     const tracksWithRegions = this.state.tracks.filter(t => t.muteRegions && t.muteRegions.length > 0);
     if (tracksWithRegions.length > 0) {
       console.log(`🔇 Found ${tracksWithRegions.length} tracks with mute regions to schedule`);

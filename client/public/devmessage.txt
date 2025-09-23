@@ -1,1 +1,3 @@
 Mute region bug fixed - mute regions now persist
+Import / Export bug fixed. Now supports up to 35 songs
+We sincerely hope you enjoy StageTracker Pro

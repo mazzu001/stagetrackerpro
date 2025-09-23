@@ -267,14 +267,36 @@ To restore: Use the Import feature in StageTracker Pro
       const store = transaction.objectStore(storeName);
       const request = store.getAll();
       
-      request.onsuccess = () => {
+      request.onsuccess = async () => {
         const data = request.result;
-        // Convert any Blob objects to base64 for storage
-        const processedData = data.map(item => {
-          return this.convertBlobsToBase64(item);
-        });
         
-        Promise.all(processedData).then(resolve);
+        // Special handling for audioFiles store - convert ArrayBuffer to base64
+        if (storeName === 'audioFiles') {
+          const processedData = await Promise.all(data.map(async (item) => {
+            if (item.fileData instanceof ArrayBuffer) {
+              // Convert ArrayBuffer to base64 string for JSON serialization
+              const uint8Array = new Uint8Array(item.fileData);
+              const binary = String.fromCharCode.apply(null, Array.from(uint8Array));
+              const base64 = btoa(binary);
+              
+              return {
+                ...item,
+                fileData: base64,
+                __isArrayBuffer: true, // Mark for restoration
+                __originalByteLength: item.fileData.byteLength
+              };
+            }
+            return item;
+          }));
+          resolve(processedData);
+        } else {
+          // Convert any Blob objects to base64 for storage
+          const processedData = data.map(item => {
+            return this.convertBlobsToBase64(item);
+          });
+          
+          Promise.all(processedData).then(resolve);
+        }
       };
       
       request.onerror = () => {
@@ -304,9 +326,40 @@ To restore: Use the Import feature in StageTracker Pro
       const transaction = db.transaction([storeName], 'readwrite');
       const store = transaction.objectStore(storeName);
       
-      // Convert base64 back to Blobs
+      // Process each item before adding to store
       for (const item of data) {
-        let processedItem = await this.convertBase64ToBlobs(item);
+        let processedItem = item;
+        
+        // Special handling for audioFiles store - convert base64 back to ArrayBuffer
+        if (storeName === 'audioFiles' && item.__isArrayBuffer && item.fileData) {
+          try {
+            // Convert base64 string back to ArrayBuffer
+            const binaryString = atob(item.fileData);
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+              bytes[i] = binaryString.charCodeAt(i);
+            }
+            
+            processedItem = {
+              ...item,
+              fileData: bytes.buffer, // Restore as ArrayBuffer
+              __isArrayBuffer: undefined, // Remove marker
+              __originalByteLength: undefined // Remove marker
+            };
+            
+            // Clean up undefined properties
+            delete processedItem.__isArrayBuffer;
+            delete processedItem.__originalByteLength;
+            
+            console.log(`✅ Restored audio file ${item.id}: ${bytes.buffer.byteLength} bytes`);
+          } catch (error) {
+            console.error(`Failed to restore audio file ${item.id}:`, error);
+            continue; // Skip this item
+          }
+        } else {
+          // Convert base64 back to Blobs for other stores
+          processedItem = await this.convertBase64ToBlobs(item);
+        }
         
         // Special handling for tracks - reset audioUrl to force regeneration
         if (storeName === 'tracks' && processedItem.audioUrl) {

@@ -29,7 +29,7 @@ import { type UserType } from "@/hooks/useLocalAuth";
 import { LocalSongStorageDB as LocalSongStorage, type LocalSong } from "@/lib/local-song-storage-db";
 import type { SongWithTracks } from "@shared/schema";
 import { useRef } from "react";
-import { BackupManager } from "@/lib/backup-manager";
+import { SimpleBackupManager } from "@/lib/simple-backup-manager";
 import { useBroadcast } from "@/hooks/useBroadcast";
 import { MidiDeviceManager } from "@/components/midi-device-manager";
 import { useMidi } from "@/contexts/MidiProvider";
@@ -148,7 +148,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
       const controller = new AbortController();
       setExportController(controller);
       
-      const backupManager = BackupManager.getInstance();
+      const backupManager = SimpleBackupManager.getInstance();
       
       // Create progress callback
       const onProgress = (progress: number, status: string) => {
@@ -156,7 +156,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
         setExportStatus(status);
       };
       
-      const zipBlob = await backupManager.exportAllData(userEmail, onProgress, { signal: controller.signal });
+      const zipBlob = await backupManager.exportDatabase(userEmail, onProgress);
       
       // Create download with explicit MIME type for Android compatibility
       const zipBlobWithMime = new Blob([zipBlob], { type: 'application/zip' });
@@ -350,7 +350,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
       setImportProgress(0);
       setImportStatus("Reading backup file...");
       
-      const backupManager = BackupManager.getInstance();
+      const backupManager = SimpleBackupManager.getInstance();
       
       // Create progress callback
       const onProgress = (progress: number, status: string) => {
@@ -358,7 +358,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
         setImportStatus(status);
       };
       
-      await backupManager.importAllData(file, userEmail, onProgress);
+      await backupManager.importDatabase(file, userEmail, onProgress);
       
       // Refresh the song list
       const updatedSongs = LocalSongStorage.getAllSongs(userEmail);

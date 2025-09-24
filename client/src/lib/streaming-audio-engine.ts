@@ -264,20 +264,11 @@ export class StreamingAudioEngine {
         track.source = this.audioContext.createMediaElementSource(track.audioElement);
         track.gainNode = this.audioContext.createGain();
         
-        // Force stereo output from gain node (critical for mono sources)
-        track.gainNode.channelCount = 2;
-        track.gainNode.channelCountMode = "explicit";
-        track.gainNode.channelInterpretation = "discrete";
-        
         // Create custom balance nodes for true stereo balance control
         track.channelSplitter = this.audioContext.createChannelSplitter(2);
         track.leftGainNode = this.audioContext.createGain();
         track.rightGainNode = this.audioContext.createGain();
         track.channelMerger = this.audioContext.createChannelMerger(2);
-        
-        // Configure merger for discrete channels (no bleed between L/R)
-        track.channelMerger.channelCountMode = "explicit";
-        track.channelMerger.channelInterpretation = "discrete";
         
         track.analyzerNode = this.audioContext.createAnalyser();
         

@@ -1,1 +1,1 @@
-Fixed a bug that was causing mute, balance and volume settings 
+Fixed a bug that was causing mute, balance and volume settings persistance to fail after selecting a defferent song shell in songs list.

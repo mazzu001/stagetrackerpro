@@ -10,7 +10,11 @@ export interface StreamingTrack {
   audioElement: HTMLAudioElement | null;
   source: MediaElementAudioSourceNode | null;
   gainNode: GainNode | null;
-  panNode: StereoPannerNode | null;
+  // Custom balance nodes instead of panNode for true stereo balance
+  channelSplitter: ChannelSplitterNode | null;
+  leftGainNode: GainNode | null;
+  rightGainNode: GainNode | null;
+  channelMerger: ChannelMergerNode | null;
   analyzerNode: AnalyserNode | null;
   // Pitch shifting removed
   volume: number;
@@ -116,7 +120,11 @@ export class StreamingAudioEngine {
         audioElement: null as HTMLAudioElement | null,
         source: null as MediaElementAudioSourceNode | null,
         gainNode: null as GainNode | null,
-        panNode: null as StereoPannerNode | null,
+        // Custom balance nodes instead of panNode
+        channelSplitter: null as ChannelSplitterNode | null,
+        leftGainNode: null as GainNode | null,
+        rightGainNode: null as GainNode | null,
+        channelMerger: null as ChannelMergerNode | null,
         analyzerNode: null as AnalyserNode | null,
         // Use incoming track properties or defaults
         volume: extTrack.volume !== undefined ? extTrack.volume / 100 : 1,  // Convert from 0-100 to 0-1
@@ -255,13 +263,30 @@ export class StreamingAudioEngine {
       try {
         track.source = this.audioContext.createMediaElementSource(track.audioElement);
         track.gainNode = this.audioContext.createGain();
-        track.panNode = this.audioContext.createStereoPanner();
+        
+        // Create custom balance nodes for true stereo balance control
+        track.channelSplitter = this.audioContext.createChannelSplitter(2);
+        track.leftGainNode = this.audioContext.createGain();
+        track.rightGainNode = this.audioContext.createGain();
+        track.channelMerger = this.audioContext.createChannelMerger(2);
+        
         track.analyzerNode = this.audioContext.createAnalyser();
         
-        // Connect audio graph
+        // Connect audio graph with custom balance routing
+        // source -> gain (volume) -> splitter -> [left/right gains] -> merger -> analyzer -> master
         track.source.connect(track.gainNode);
-        track.gainNode.connect(track.panNode);
-        track.panNode.connect(track.analyzerNode);
+        track.gainNode.connect(track.channelSplitter);
+        
+        // Connect splitter outputs to individual channel gains
+        track.channelSplitter.connect(track.leftGainNode, 0);  // Left channel
+        track.channelSplitter.connect(track.rightGainNode, 1); // Right channel
+        
+        // Connect gains to merger inputs
+        track.leftGainNode.connect(track.channelMerger, 0, 0);  // Left to left
+        track.rightGainNode.connect(track.channelMerger, 0, 1); // Right to right
+        
+        // Connect merger to analyzer and then to master
+        track.channelMerger.connect(track.analyzerNode);
         track.analyzerNode.connect(this.state.masterGainNode!);
         
         // Setup analyzer
@@ -271,14 +296,20 @@ export class StreamingAudioEngine {
         // Apply initial volume/balance/mute settings
         const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
         track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
-        track.panNode.pan.value = track.balance / 100; // Convert -100..100 to -1..1
         
-        console.log(`🔧 Audio nodes created for: ${track.name}`);
+        // Apply custom balance using true stereo balance formula
+        // Balance: -100 = full left (L=100%, R=0%), 0 = center (L=100%, R=100%), 100 = full right (L=0%, R=100%)
+        this.applyBalance(track);
+        
+        console.log(`🔧 Custom balance audio nodes created for: ${track.name} (balance: ${track.balance})`);
       } catch (nodeError) {
         console.error(`❌ Failed to create audio nodes for ${track.name}:`, nodeError);
         track.source = null;
         track.gainNode = null;
-        track.panNode = null;
+        track.channelSplitter = null;
+        track.leftGainNode = null;
+        track.rightGainNode = null;
+        track.channelMerger = null;
         track.analyzerNode = null;
       }
     }
@@ -483,9 +514,30 @@ export class StreamingAudioEngine {
     if (track) {
       track.balance = balance;
       this.ensureTrackAudioNodes(track);
-      if (track.panNode) {
-        track.panNode.pan.value = balance / 100; // Convert -100..100 to -1..1
-      }
+      this.applyBalance(track);
+      console.log(`🎚️ Balance updated for ${track.name}: ${balance} (L:${track.leftGainNode?.gain.value.toFixed(2)}, R:${track.rightGainNode?.gain.value.toFixed(2)})`);
+    }
+  }
+  
+  // Apply true stereo balance to a track
+  private applyBalance(track: StreamingTrack) {
+    if (!track.leftGainNode || !track.rightGainNode) return;
+    
+    // Balance range: -100 to 100
+    // -100 = full left (L=1, R=0)
+    // 0 = center (L=1, R=1)
+    // 100 = full right (L=0, R=1)
+    
+    const normalizedBalance = track.balance / 100; // Convert to -1 to 1
+    
+    if (normalizedBalance <= 0) {
+      // Left or center: reduce right channel
+      track.leftGainNode.gain.value = 1.0;
+      track.rightGainNode.gain.value = 1.0 + normalizedBalance; // 1 at center, 0 at full left
+    } else {
+      // Right: reduce left channel
+      track.leftGainNode.gain.value = 1.0 - normalizedBalance; // 1 at center, 0 at full right
+      track.rightGainNode.gain.value = 1.0;
     }
   }
 
@@ -766,9 +818,31 @@ export class StreamingAudioEngine {
             // Node might already be disconnected
           }
         }
-        if (track.panNode) {
+        // Disconnect custom balance nodes
+        if (track.channelSplitter) {
           try {
-            track.panNode.disconnect();
+            track.channelSplitter.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        if (track.leftGainNode) {
+          try {
+            track.leftGainNode.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        if (track.rightGainNode) {
+          try {
+            track.rightGainNode.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        if (track.channelMerger) {
+          try {
+            track.channelMerger.disconnect();
           } catch (e) {
             // Node might already be disconnected
           }
@@ -790,7 +864,10 @@ export class StreamingAudioEngine {
       track.audioElement = null;
       track.source = null;
       track.gainNode = null;
-      track.panNode = null;
+      track.channelSplitter = null;
+      track.leftGainNode = null;
+      track.rightGainNode = null;
+      track.channelMerger = null;
       track.analyzerNode = null;
     });
     this.state.tracks = [];

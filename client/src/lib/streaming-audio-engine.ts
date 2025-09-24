@@ -275,6 +275,10 @@ export class StreamingAudioEngine {
         track.rightGainNode = this.audioContext.createGain();
         track.channelMerger = this.audioContext.createChannelMerger(2);
         
+        // Configure merger for discrete channels (no bleed between L/R)
+        track.channelMerger.channelCountMode = "explicit";
+        track.channelMerger.channelInterpretation = "discrete";
+        
         track.analyzerNode = this.audioContext.createAnalyser();
         
         // Connect audio graph with custom balance routing

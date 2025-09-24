@@ -15,8 +15,7 @@ export interface StreamingTrack {
   leftGainNode: GainNode | null;
   rightGainNode: GainNode | null;
   channelMerger: ChannelMergerNode | null;
-  leftAnalyzerNode: AnalyserNode | null;
-  rightAnalyzerNode: AnalyserNode | null;
+  analyzerNode: AnalyserNode | null;
   // Pitch shifting removed
   volume: number;
   balance: number;
@@ -126,8 +125,7 @@ export class StreamingAudioEngine {
         leftGainNode: null as GainNode | null,
         rightGainNode: null as GainNode | null,
         channelMerger: null as ChannelMergerNode | null,
-        leftAnalyzerNode: null as AnalyserNode | null,
-        rightAnalyzerNode: null as AnalyserNode | null,
+        analyzerNode: null as AnalyserNode | null,
         // Use incoming track properties or defaults
         volume: extTrack.volume !== undefined ? extTrack.volume / 100 : 1,  // Convert from 0-100 to 0-1
         balance: extTrack.balance || 0,
@@ -281,9 +279,7 @@ export class StreamingAudioEngine {
         track.channelMerger.channelCountMode = "explicit";
         track.channelMerger.channelInterpretation = "discrete";
         
-        // Create separate analyzers for left and right channels
-        track.leftAnalyzerNode = this.audioContext.createAnalyser();
-        track.rightAnalyzerNode = this.audioContext.createAnalyser();
+        track.analyzerNode = this.audioContext.createAnalyser();
         
         // Connect audio graph with custom balance routing
         // source -> gain (volume) -> splitter -> [left/right gains] -> merger -> analyzer -> master
@@ -294,22 +290,17 @@ export class StreamingAudioEngine {
         track.channelSplitter.connect(track.leftGainNode, 0);  // Left channel
         track.channelSplitter.connect(track.rightGainNode, 1); // Right channel
         
-        // Connect gains directly to merger for audio path
+        // Connect gains to merger inputs
         track.leftGainNode.connect(track.channelMerger, 0, 0);  // Left to left
         track.rightGainNode.connect(track.channelMerger, 0, 1); // Right to right
         
-        // Also connect gains to analyzers as parallel taps (measurement only, dead ends)
-        track.leftGainNode.connect(track.leftAnalyzerNode);
-        track.rightGainNode.connect(track.rightAnalyzerNode)
+        // Connect merger to analyzer and then to master
+        track.channelMerger.connect(track.analyzerNode);
+        track.analyzerNode.connect(this.state.masterGainNode!);
         
-        // Connect merger directly to master
-        track.channelMerger.connect(this.state.masterGainNode!);
-        
-        // Setup analyzers
-        track.leftAnalyzerNode.fftSize = 512;
-        track.leftAnalyzerNode.smoothingTimeConstant = 0.6;
-        track.rightAnalyzerNode.fftSize = 512;
-        track.rightAnalyzerNode.smoothingTimeConstant = 0.6;
+        // Setup analyzer
+        track.analyzerNode.fftSize = 512;
+        track.analyzerNode.smoothingTimeConstant = 0.6;
         
         // Apply initial volume/balance/mute settings
         const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
@@ -328,8 +319,7 @@ export class StreamingAudioEngine {
         track.leftGainNode = null;
         track.rightGainNode = null;
         track.channelMerger = null;
-        track.leftAnalyzerNode = null;
-        track.rightAnalyzerNode = null;
+        track.analyzerNode = null;
       }
     }
   }
@@ -698,46 +688,39 @@ export class StreamingAudioEngine {
 
   getTrackLevels(trackId: string): { left: number; right: number } {
     const track = this.state.tracks.find(t => t.id === trackId);
-    if (!track || !track.leftAnalyzerNode || !track.rightAnalyzerNode || !this.state.isPlaying) {
+    if (!track || !track.analyzerNode || !this.state.isPlaying) {
       return { left: 0, right: 0 };
     }
 
-    // Helper function to calculate level from analyzer
-    const calculateLevel = (analyzer: AnalyserNode): number => {
-      const bufferLength = analyzer.frequencyBinCount;
-      const dataArray = new Uint8Array(bufferLength);
-      analyzer.getByteFrequencyData(dataArray);
-      
-      // Include full frequency spectrum for bass-heavy tracks
-      const startBin = Math.floor(bufferLength * 0.02); // Skip only sub-bass (below ~20Hz)
-      const endBin = Math.floor(bufferLength * 0.95);   // Use almost full frequency range
-      
-      // Calculate weighted average with enhanced bass boost and reduced mid/high frequencies
-      let sum = 0;
-      let weightedCount = 0;
-      for (let i = startBin; i < endBin; i++) {
-        // Enhanced bass frequency weighting for VU meters
-        let weight = 1.0;
-        if (i < bufferLength * 0.08) weight = 20.0; // Maximum boost for kick/sub-bass (20-80 Hz)
-        else if (i < bufferLength * 0.2) weight = 20.0; // Maximum boost for bass (80-400 Hz)
-        else if (i < bufferLength * 0.4) weight = 1.26; // Reduced mids by 10% (was 1.4)
-        else weight = 0.99; // Reduced highs by 10% (was 1.1)
-        
-        sum += dataArray[i] * weight;
-        weightedCount += weight;
-      }
-      
-      const rawAverage = sum / weightedCount / 255; // Normalize to 0-1
-      
-      // Return normalized level in 0-100 range for consistent VU meter usage
-      return rawAverage * 100; // Convert to 0-100 range directly
-    };
+    const bufferLength = track.analyzerNode.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    track.analyzerNode.getByteFrequencyData(dataArray);
     
-    // Calculate separate levels for left and right channels
-    return { 
-      left: calculateLevel(track.leftAnalyzerNode),
-      right: calculateLevel(track.rightAnalyzerNode)
-    };
+    // Include full frequency spectrum for bass-heavy tracks
+    const startBin = Math.floor(bufferLength * 0.02); // Skip only sub-bass (below ~20Hz)
+    const endBin = Math.floor(bufferLength * 0.95);   // Use almost full frequency range
+    
+    // Calculate weighted average with enhanced bass boost and reduced mid/high frequencies
+    let sum = 0;
+    let weightedCount = 0;
+    for (let i = startBin; i < endBin; i++) {
+      // Enhanced bass frequency weighting for VU meters
+      let weight = 1.0;
+      if (i < bufferLength * 0.08) weight = 20.0; // Maximum boost for kick/sub-bass (20-80 Hz)
+      else if (i < bufferLength * 0.2) weight = 20.0; // Maximum boost for bass (80-400 Hz)
+      else if (i < bufferLength * 0.4) weight = 1.26; // Reduced mids by 10% (was 1.4)
+      else weight = 0.99; // Reduced highs by 10% (was 1.1)
+      
+      sum += dataArray[i] * weight;
+      weightedCount += weight;
+    }
+    
+    const rawAverage = sum / weightedCount / 255; // Normalize to 0-1
+    
+    // Return normalized levels in 0-100 range for consistent VU meter usage
+    const average = rawAverage * 100; // Convert to 0-100 range directly
+    
+    return { left: average, right: average };
   }
 
   getMasterLevels(): { left: number; right: number } {
@@ -873,16 +856,9 @@ export class StreamingAudioEngine {
             // Node might already be disconnected
           }
         }
-        if (track.leftAnalyzerNode) {
+        if (track.analyzerNode) {
           try {
-            track.leftAnalyzerNode.disconnect();
-          } catch (e) {
-            // Node might already be disconnected
-          }
-        }
-        if (track.rightAnalyzerNode) {
-          try {
-            track.rightAnalyzerNode.disconnect();
+            track.analyzerNode.disconnect();
           } catch (e) {
             // Node might already be disconnected
           }
@@ -901,8 +877,7 @@ export class StreamingAudioEngine {
       track.leftGainNode = null;
       track.rightGainNode = null;
       track.channelMerger = null;
-      track.leftAnalyzerNode = null;
-      track.rightAnalyzerNode = null;
+      track.analyzerNode = null;
     });
     this.state.tracks = [];
     

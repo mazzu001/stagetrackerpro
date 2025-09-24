@@ -294,13 +294,13 @@ export class StreamingAudioEngine {
         track.channelSplitter.connect(track.leftGainNode, 0);  // Left channel
         track.channelSplitter.connect(track.rightGainNode, 1); // Right channel
         
-        // Connect gains to analyzers first
-        track.leftGainNode.connect(track.leftAnalyzerNode);
-        track.rightGainNode.connect(track.rightAnalyzerNode);
+        // Connect gains directly to merger for audio path
+        track.leftGainNode.connect(track.channelMerger, 0, 0);  // Left to left
+        track.rightGainNode.connect(track.channelMerger, 0, 1); // Right to right
         
-        // Connect analyzers to merger inputs
-        track.leftAnalyzerNode.connect(track.channelMerger, 0, 0);  // Left to left
-        track.rightAnalyzerNode.connect(track.channelMerger, 0, 1); // Right to right
+        // Also connect gains to analyzers as parallel taps (measurement only, dead ends)
+        track.leftGainNode.connect(track.leftAnalyzerNode);
+        track.rightGainNode.connect(track.rightAnalyzerNode)
         
         // Connect merger directly to master
         track.channelMerger.connect(this.state.masterGainNode!);

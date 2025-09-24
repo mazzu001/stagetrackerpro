@@ -26,7 +26,7 @@ interface TrackManagerProps {
   onTrackSoloToggle?: (trackId: string) => void;
   onTrackBalanceChange?: (trackId: string, balance: number) => void;
   // Pitch and speed control removed
-  audioLevels?: Record<string, number>;
+  audioLevels?: Record<string, { left: number; right: number }>;
   isPlaying?: boolean;
   isLoadingTracks?: boolean;
   onPlay?: () => void;
@@ -891,7 +891,7 @@ export default function TrackManager({
         <div className="space-y-3">
           {tracks.map((track, index) => {
             const localValues = localTrackValues[track.id] || { volume: track.volume, balance: track.balance };
-            const level = audioLevels[track.id] || 0;
+            const levels = audioLevels[track.id] || { left: 0, right: 0 };
             
             return (
               <Card key={track.id} className="transition-all hover:shadow-md">
@@ -911,8 +911,8 @@ export default function TrackManager({
                     
                     <div className="flex items-center gap-2">
                       <ProfessionalStereoVUMeter 
-                        leftLevel={level} 
-                        rightLevel={level}
+                        leftLevel={levels.left} 
+                        rightLevel={levels.right}
                         isPlaying={isPlaying}
                         size="sm"
                         horizontal={true}

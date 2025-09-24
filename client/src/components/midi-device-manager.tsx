@@ -36,7 +36,6 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     connectedDevices,
     isSupported,
     isInitialized,
-    isInitializing,
     error,
     connectDevice,
     disconnectDevice,
@@ -47,106 +46,28 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     initializeBluetoothMidi
   } = useMidi();
 
-  const [isScanning, setIsScanning] = useState(false);
   const [testCommand, setTestCommand] = useState('[[PC:1:1]]');
   const [connectionStates, setConnectionStates] = useState<Record<string, 'connecting' | 'idle'>>({});
 
-  // Just refresh devices when dialog opens (MIDI already initialized at app launch)
+  // Refresh devices when dialog opens
   useEffect(() => {
     if (isOpen && isInitialized) {
-      // Simply refresh the device list when opening dialog
       refreshDevices();
     }
   }, [isOpen, isInitialized, refreshDevices]);
   
-  // Track if we've attempted auto-reconnect (one-shot)
-  const hasAttemptedAutoReconnectRef = useRef(false);
-  
-  // Auto-reconnect to last device after MIDI is initialized
-  useEffect(() => {
-    // Only attempt once per session to prevent infinite loops
-    if (hasAttemptedAutoReconnectRef.current) return;
-    if (!isInitialized || devices.length === 0) return;
-    
-    const lastDeviceStr = localStorage.getItem('lastMidiDevice');
-    if (!lastDeviceStr) return;
-    
-    // Mark as attempted immediately to prevent multiple runs
-    hasAttemptedAutoReconnectRef.current = true;
-    
-    try {
-      const lastDevice = JSON.parse(lastDeviceStr);
-      
-      // Skip Bluetooth devices during USB-only initialization
-      const deviceName = lastDevice.name?.toLowerCase() || '';
-      const isBluetoothDevice = deviceName.includes('bluetooth') || 
-                               deviceName.includes('ble') || 
-                               deviceName.includes('widi');
-      
-      if (isBluetoothDevice) {
-        console.log('🎹 Skipping auto-reconnect for Bluetooth device:', lastDevice.name);
-        return;
-      }
-      
-      console.log('🎹 Attempting quick auto-reconnect to:', lastDevice.name);
-      
-      // Find matching device in current device list
-      const matchingDevice = unifiedDevices.find(d => 
-        d.name === lastDevice.name && 
-        d.manufacturer === lastDevice.manufacturer
-      );
-      
-      if (matchingDevice && !isUnifiedDeviceConnected(matchingDevice)) {
-        console.log('🎹 Auto-reconnecting to last device:', matchingDevice.name);
-        handleUnifiedConnect(matchingDevice);
-      }
-    } catch (e) {
-      console.error('Failed to auto-reconnect:', e);
-    }
-  }, [isInitialized, devices]); // Re-run when devices change
 
-  // Reconcile connection states - clear stale 'connecting' flags for actually connected devices
-  useEffect(() => {
-    // Get all connected device IDs
-    const connectedIds = new Set(connectedDevices.map(d => d.id));
-    
-    // Clear 'connecting' state for any device that's actually connected
-    setConnectionStates(prev => {
-      const next = { ...prev };
-      let hasChanges = false;
-      
-      for (const id in next) {
-        if (next[id] === 'connecting' && connectedIds.has(id)) {
-          next[id] = 'idle';
-          hasChanges = true;
-        }
-      }
-      
-      return hasChanges ? next : prev;
-    });
-  }, [connectedDevices]);
 
   const handleScan = async () => {
-    // If already scanning, ignore
-    if (isScanning) return;
-    
-    setIsScanning(true);
-    
-    // Guaranteed re-enable after 3 seconds
-    const timeout = setTimeout(() => {
-      setIsScanning(false);
-      console.log('🎹 MIDI scan timeout reached');
-    }, 3000);
-    
     try {
-      // Initialize Bluetooth MIDI since USB is already initialized at startup
+      // First ensure USB MIDI is initialized
+      if (!isInitialized) {
+        await initializeMidi();
+      }
+      // Then scan for Bluetooth devices
       await initializeBluetoothMidi(); 
-      clearTimeout(timeout);
-      setIsScanning(false);
     } catch (err) {
       console.error('Failed to scan for MIDI devices:', err);
-      clearTimeout(timeout);
-      setIsScanning(false);
     }
   };
 
@@ -175,91 +96,6 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     }
   };
 
-  // Handle unified device connections (both input and output)
-  const handleUnifiedConnect = async (unifiedDevice: any) => {
-    const deviceIds: string[] = [];
-    if (unifiedDevice.inputDevice) deviceIds.push(unifiedDevice.inputDevice.id);
-    if (unifiedDevice.outputDevice) deviceIds.push(unifiedDevice.outputDevice.id);
-    
-    // Set connecting state for all device IDs
-    const newStates: Record<string, 'connecting' | 'idle'> = {};
-    deviceIds.forEach(id => newStates[id] = 'connecting');
-    setConnectionStates(prev => ({ ...prev, ...newStates }));
-    
-    try {
-      // Connect both input and output devices
-      const results = await Promise.all(deviceIds.map(id => connectDevice(id)));
-      const anyFailed = results.some(success => !success);
-      if (anyFailed) {
-        console.error('Failed to connect to some devices:', deviceIds);
-        // Reset states on failure
-        const resetStates: Record<string, 'connecting' | 'idle'> = {};
-        deviceIds.forEach(id => resetStates[id] = 'idle');
-        setConnectionStates(prev => ({ ...prev, ...resetStates }));
-      } else {
-        // Save last connected device for auto-reconnect
-        const deviceInfo = {
-          name: unifiedDevice.name,
-          manufacturer: unifiedDevice.manufacturer,
-          inputId: unifiedDevice.inputDevice?.id,
-          outputId: unifiedDevice.outputDevice?.id
-        };
-        localStorage.setItem('lastMidiDevice', JSON.stringify(deviceInfo));
-        console.log('🎹 Saved last connected device:', deviceInfo.name);
-        // Don't reset here - let the reconciliation effect handle it
-      }
-    } catch (err) {
-      // Reset states on error
-      const resetStates: Record<string, 'connecting' | 'idle'> = {};
-      deviceIds.forEach(id => resetStates[id] = 'idle');
-      setConnectionStates(prev => ({ ...prev, ...resetStates }));
-    }
-  };
-
-  const handleUnifiedDisconnect = async (unifiedDevice: any) => {
-    const deviceIds: string[] = [];
-    if (unifiedDevice.inputDevice) deviceIds.push(unifiedDevice.inputDevice.id);
-    if (unifiedDevice.outputDevice) deviceIds.push(unifiedDevice.outputDevice.id);
-    
-    // Immediately set to idle (no "disconnecting" state)
-    const resetStates: Record<string, 'connecting' | 'idle'> = {};
-    deviceIds.forEach(id => resetStates[id] = 'idle');
-    setConnectionStates(prev => ({ ...prev, ...resetStates }));
-    
-    try {
-      // Disconnect both input and output devices
-      const results = await Promise.all(deviceIds.map(id => disconnectDevice(id)));
-      const anyFailed = results.some(success => !success);
-      if (anyFailed) {
-        console.error('Failed to disconnect from some devices:', deviceIds);
-      }
-    } catch (err) {
-      console.error('Error disconnecting devices:', err);
-    }
-  };
-
-  // Check if unified device is connected
-  const isUnifiedDeviceConnected = (unifiedDevice: any) => {
-    const inputConnected = unifiedDevice.inputDevice ? 
-      connectedDevices.some(d => d.id === unifiedDevice.inputDevice.id) : true;
-    const outputConnected = unifiedDevice.outputDevice ? 
-      connectedDevices.some(d => d.id === unifiedDevice.outputDevice.id) : true;
-    return inputConnected && outputConnected;
-  };
-
-  // Get unified device connection state
-  const getUnifiedDeviceState = (unifiedDevice: any) => {
-    const states = [];
-    if (unifiedDevice.inputDevice) {
-      states.push(connectionStates[unifiedDevice.inputDevice.id] || 'idle');
-    }
-    if (unifiedDevice.outputDevice) {
-      states.push(connectionStates[unifiedDevice.outputDevice.id] || 'idle');
-    }
-    
-    if (states.some(s => s === 'connecting')) return 'connecting';
-    return 'idle';
-  };
 
   const handleTestCommand = () => {
     const command = parseMidiCommand(testCommand);
@@ -288,97 +124,6 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     return <Keyboard className="h-4 w-4" />;
   };
 
-  // Detect if a device is a ghost (appears in list but not actually available)
-  const isGhostDevice = (device: MidiDevice) => {
-    // A ghost device has BOTH disconnected state AND closed connection
-    // We need both conditions because some devices may have one or the other temporarily
-    // Real connected devices have state='connected' and connection='open'
-    // Real available devices have state='connected' and connection='closed' (not yet opened)
-    return device.state === 'disconnected' && device.connection === 'closed';
-  };
-
-  const getConnectionIcon = (device: MidiDevice) => {
-    const isConnected = connectedDevices.some(d => d.id === device.id);
-    const state = connectionStates[device.id];
-    const isGhost = isGhostDevice(device);
-    
-    if (state === 'connecting') {
-      return <RefreshCw className="h-4 w-4 animate-spin" />;
-    }
-    
-    if (isGhost) {
-      return <Circle className="h-4 w-4 text-gray-400" />;
-    }
-    
-    if (device.state === 'disconnected') {
-      return <Circle className="h-4 w-4 text-muted-foreground" />;
-    }
-    
-    if (isConnected && device.connection === 'open') {
-      return <CheckCircle className="h-4 w-4 text-green-500" />;
-    }
-    
-    return <AlertCircle className="h-4 w-4 text-yellow-500" />;
-  };
-
-  const getConnectionStatus = (device: MidiDevice) => {
-    const isConnected = connectedDevices.some(d => d.id === device.id);
-    const state = connectionStates[device.id];
-    const isGhost = isGhostDevice(device);
-    
-    if (state === 'connecting') return 'Connecting...';
-    if (isGhost) return 'Unavailable';
-    if (device.state === 'disconnected') return 'Disconnected';
-    if (isConnected && device.connection === 'open') return 'Connected';
-    return 'Available';
-  };
-
-  // Group devices by physical device (name + manufacturer) for unified list
-  const unifiedDevices = React.useMemo(() => {
-    const deviceMap = new Map<string, {
-      name: string;
-      manufacturer: string;
-      isUSB: boolean;
-      isBluetooth: boolean;
-      inputDevice?: MidiDevice;
-      outputDevice?: MidiDevice;
-      capabilities: string[];
-    }>();
-
-    // Function to normalize device name by removing common input/output suffixes
-    const normalizeDeviceName = (name: string): string => {
-      return name
-        .replace(/\s+(IN|OUT|Input|Output)$/i, '')  // Remove trailing IN/OUT/Input/Output
-        .replace(/A\s+(IN|OUT)$/i, '')  // Handle "MidiPortA IN" -> "MidiPort"
-        .trim();
-    };
-
-    devices.forEach(device => {
-      const normalizedName = normalizeDeviceName(device.name);
-      const key = `${normalizedName}-${device.manufacturer}`;
-      
-      if (!deviceMap.has(key)) {
-        deviceMap.set(key, {
-          name: normalizedName,
-          manufacturer: device.manufacturer,
-          isUSB: device.isUSB,
-          isBluetooth: device.isBluetooth,
-          capabilities: []
-        });
-      }
-      
-      const unified = deviceMap.get(key)!;
-      if (device.type === 'input') {
-        unified.inputDevice = device;
-        unified.capabilities.push('Input');
-      } else {
-        unified.outputDevice = device;
-        unified.capabilities.push('Output');
-      }
-    });
-
-    return Array.from(deviceMap.values());
-  }, [devices]);
 
   if (!isSupported) {
     return (
@@ -418,12 +163,11 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
               variant="outline"
               size="sm"
               onClick={handleScan}
-              disabled={isScanning}
               data-testid="button-scan-devices"
-              title="Scan for all MIDI devices"
+              title="Scan for Bluetooth MIDI devices"
             >
-              <RefreshCw className={`h-4 w-4 mr-2 ${isScanning ? 'animate-spin' : ''}`} />
-              {isScanning ? 'Scanning...' : 'MIDI Scan'}
+              <Bluetooth className="h-4 w-4 mr-2" />
+              Scan Bluetooth
             </Button>
           </DialogTitle>
         </DialogHeader>
@@ -441,91 +185,81 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
         <ScrollArea className="max-h-[60vh]">
           <div className="space-y-6">
             
-            {/* Unified MIDI Devices */}
+            {/* All MIDI Devices */}
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <Activity className="h-4 w-4" />
-                <h3 className="font-semibold">MIDI Devices</h3>
-                <Badge variant="outline">{unifiedDevices.length}</Badge>
+                <h3 className="font-semibold">All MIDI Devices</h3>
+                <Badge variant="outline">{devices.length}</Badge>
               </div>
               
-              {unifiedDevices.length === 0 ? (
+              {devices.length === 0 ? (
                 <Card>
                   <CardContent className="pt-6">
                     <div className="text-center text-muted-foreground">
                       <Activity className="h-8 w-8 mx-auto mb-2 opacity-50" />
                       <p className="text-sm">No MIDI devices detected</p>
-                      <p className="text-xs">Connect a MIDI device and it will appear automatically</p>
+                      <p className="text-xs">Connect a MIDI device or click "Scan Bluetooth" to find devices</p>
                     </div>
                   </CardContent>
                 </Card>
               ) : (
-                <div className="grid gap-3">
-                  {unifiedDevices.map((unifiedDevice, index) => {
-                    const isConnected = isUnifiedDeviceConnected(unifiedDevice);
-                    const state = getUnifiedDeviceState(unifiedDevice);
-                    const deviceForIcon = unifiedDevice.outputDevice || unifiedDevice.inputDevice;
-                    const isGhost = deviceForIcon && isGhostDevice(deviceForIcon);
+                <div className="grid gap-2">
+                  {devices.map((device, index) => {
+                    const isConnected = connectedDevices.some(d => d.id === device.id);
+                    const state = connectionStates[device.id] || 'idle';
                     
                     return (
-                      <Card key={`${unifiedDevice.name}-${unifiedDevice.manufacturer}-${index}`}
-                            className={isGhost ? 'opacity-60' : ''}>
-                        <CardContent className="pt-4">
+                      <Card key={device.id} className="py-2">
+                        <CardContent className="py-2">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                              {deviceForIcon && getDeviceIcon(deviceForIcon)}
-                              <div>
+                              {getDeviceIcon(device)}
+                              <div className="flex-1">
                                 <div className="flex items-center gap-2">
-                                  <span className={`font-medium text-sm ${isGhost ? 'text-gray-500' : ''}`} 
-                                        data-testid={`device-name-unified-${index}`}>
-                                    {unifiedDevice.name}
+                                  <span className="font-medium text-sm" data-testid={`device-name-${index}`}>
+                                    {device.name}
                                   </span>
-                                  {unifiedDevice.manufacturer && (
+                                  {device.manufacturer !== 'Unknown' && (
                                     <span className="text-xs text-muted-foreground">
-                                      by {unifiedDevice.manufacturer}
+                                      ({device.manufacturer})
                                     </span>
                                   )}
                                 </div>
                                 <div className="flex items-center gap-2 mt-1">
-                                  {deviceForIcon && getConnectionIcon(deviceForIcon)}
-                                  <span className="text-xs text-muted-foreground" data-testid={`device-status-unified-${index}`}>
-                                    {isGhost ? 'Unavailable' : (isConnected ? 'Connected' : 'Available')}
+                                  <Badge variant="secondary" className="text-xs">
+                                    {device.type === 'input' ? 'IN' : 'OUT'}
+                                  </Badge>
+                                  <span className="text-xs text-muted-foreground">
+                                    {isConnected ? 'Connected' : 'Available'}
                                   </span>
-                                  <div className="flex gap-1">
-                                    {unifiedDevice.capabilities.map((capability) => (
-                                      <span key={capability} className="text-xs bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded">
-                                        {capability}
-                                      </span>
-                                    ))}
-                                  </div>
                                 </div>
                               </div>
                             </div>
                             
                             <Button
-                              variant={isConnected ? "destructive" : "outline"}
+                              variant={isConnected ? "destructive" : "default"}
                               size="sm"
-                              onClick={() => isConnected ? handleUnifiedDisconnect(unifiedDevice) : handleUnifiedConnect(unifiedDevice)}
-                              disabled={state !== 'idle' || isGhost}
-                              data-testid={`button-${isConnected ? 'disconnect' : 'connect'}-unified-${index}`}
-                              title={isGhost ? 'Device is unavailable - please turn on the device' : ''}
+                              onClick={() => isConnected ? handleDisconnect(device.id) : handleConnect(device.id)}
+                              disabled={state === 'connecting'}
+                              data-testid={`button-toggle-${index}`}
                             >
-                              {(() => {
-                                // Check ghost device first
-                                if (isGhost) return 'Unavailable';
-                                
-                                // PRIORITIZE actual connection state over transient flags
-                                const actuallyConnected = isUnifiedDeviceConnected(unifiedDevice);
-                                if (actuallyConnected) {
-                                  return 'Disconnect';
-                                }
-                                
-                                // Show transient states only when not actually connected
-                                if (state === 'connecting') return 'Connecting...';
-                                
-                                // Default state
-                                return 'Connect';
-                              })()}
+                              {state === 'connecting' ? (
+                                <>
+                                  <RefreshCw className="h-4 w-4 mr-1 animate-spin" />
+                                  Connecting...
+                                </>
+                              ) : isConnected ? (
+                                <>
+                                  <WifiOff className="h-4 w-4 mr-1" />
+                                  Disconnect
+                                </>
+                              ) : (
+                                <>
+                                  <Wifi className="h-4 w-4 mr-1" />
+                                  Connect
+                                </>
+                              )}
                             </Button>
                           </div>
                         </CardContent>

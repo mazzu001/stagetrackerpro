@@ -155,6 +155,16 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       const deviceId = input.id;
       currentDeviceIds.add(deviceId);
       
+      // Detect if this is a Bluetooth device based on name/manufacturer
+      const deviceName = (input.name || '').toLowerCase();
+      const manufacturer = (input.manufacturer || '').toLowerCase();
+      const isBluetoothDevice = deviceName.includes('bluetooth') || 
+                               deviceName.includes('ble') || 
+                               deviceName.includes('widi') ||
+                               manufacturer.includes('bluetooth') ||
+                               manufacturer.includes('ble') ||
+                               manufacturer.includes('widi');
+      
       const device: MidiDevice = {
         id: deviceId,
         name: input.name || 'Unnamed Input',
@@ -162,8 +172,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         type: 'input',
         connection: input.connection,
         state: input.state,
-        isUSB: true,
-        isBluetooth: false,
+        isUSB: !isBluetoothDevice,
+        isBluetooth: isBluetoothDevice,
         usesBleAdapter: false
       };
       deviceList.push(device);
@@ -174,6 +184,16 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       const deviceId = output.id;
       currentDeviceIds.add(deviceId);
       
+      // Detect if this is a Bluetooth device based on name/manufacturer
+      const deviceName = (output.name || '').toLowerCase();
+      const manufacturer = (output.manufacturer || '').toLowerCase();
+      const isBluetoothDevice = deviceName.includes('bluetooth') || 
+                               deviceName.includes('ble') || 
+                               deviceName.includes('widi') ||
+                               manufacturer.includes('bluetooth') ||
+                               manufacturer.includes('ble') ||
+                               manufacturer.includes('widi');
+      
       const device: MidiDevice = {
         id: deviceId,
         name: output.name || 'Unnamed Output',
@@ -181,8 +201,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         type: 'output',
         connection: output.connection,
         state: output.state,
-        isUSB: true,
-        isBluetooth: false,
+        isUSB: !isBluetoothDevice,
+        isBluetooth: isBluetoothDevice,
         usesBleAdapter: false
       };
       deviceList.push(device);

@@ -52,46 +52,23 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   const [isUSBScanning, setIsUSBScanning] = useState(false);
   const [testCommand, setTestCommand] = useState('[[PC:1:1]]');
   const [connectionStates, setConnectionStates] = useState<Record<string, 'connecting' | 'idle'>>({});
-  const [hasInitializedOnce, setHasInitializedOnce] = useState(false);
-  const [autoScanTimeout, setAutoScanTimeout] = useState<NodeJS.Timeout | null>(null);
 
-  // Initialize USB MIDI when dialog opens for the first time
+  // Just refresh devices when dialog opens (MIDI already initialized at app launch)
   useEffect(() => {
-    if (isOpen && !hasInitializedOnce) {
-      // Initialize USB MIDI on first open (lightweight, fast)
-      initializeMidi().then(() => {
-        console.log('🎹 USB MIDI initialized from device manager');
-        setHasInitializedOnce(true);
-        
-        // Set a 3-second timeout for auto-scan
-        const timeout = setTimeout(() => {
-          console.log('🎹 Auto-scan timeout reached, enabling manual controls');
-          setIsRefreshing(false);
-          setIsUSBScanning(false);
-          setIsBTScanning(false);
-        }, 3000);
-        setAutoScanTimeout(timeout);
-      });
-    } else if (isOpen && isInitialized) {
-      // Just refresh if already initialized
+    if (isOpen && isInitialized) {
+      // Simply refresh the device list when opening dialog
       refreshDevices();
     }
-  }, [isOpen, hasInitializedOnce, isInitialized, initializeMidi, refreshDevices]);
+  }, [isOpen, isInitialized, refreshDevices]);
   
   // Track if we've attempted auto-reconnect (one-shot)
   const hasAttemptedAutoReconnectRef = useRef(false);
   
-  // Auto-reconnect to last device after MIDI is initialized (with timeout)
+  // Auto-reconnect to last device after MIDI is initialized
   useEffect(() => {
     // Only attempt once per session to prevent infinite loops
     if (hasAttemptedAutoReconnectRef.current) return;
     if (!isInitialized || devices.length === 0) return;
-    
-    // Clear any existing auto-scan timeout when attempting reconnect
-    if (autoScanTimeout) {
-      clearTimeout(autoScanTimeout);
-      setAutoScanTimeout(null);
-    }
     
     const lastDeviceStr = localStorage.getItem('lastMidiDevice');
     if (!lastDeviceStr) return;
@@ -128,7 +105,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     } catch (e) {
       console.error('Failed to auto-reconnect:', e);
     }
-  }, [isInitialized, devices, autoScanTimeout]); // Re-run when devices change
+  }, [isInitialized, devices]); // Re-run when devices change
 
   // Reconcile connection states - clear stale 'connecting' flags for actually connected devices
   useEffect(() => {

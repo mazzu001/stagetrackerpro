@@ -48,9 +48,12 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   } = useMidi();
 
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [isBTScanning, setIsBTScanning] = useState(false);
+  const [isUSBScanning, setIsUSBScanning] = useState(false);
   const [testCommand, setTestCommand] = useState('[[PC:1:1]]');
-  const [connectionStates, setConnectionStates] = useState<Record<string, 'connecting' | 'disconnecting' | 'idle'>>({});
+  const [connectionStates, setConnectionStates] = useState<Record<string, 'connecting' | 'idle'>>({});
   const [hasInitializedOnce, setHasInitializedOnce] = useState(false);
+  const [autoScanTimeout, setAutoScanTimeout] = useState<NodeJS.Timeout | null>(null);
 
   // Initialize USB MIDI when dialog opens for the first time
   useEffect(() => {
@@ -59,6 +62,15 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       initializeMidi().then(() => {
         console.log('🎹 USB MIDI initialized from device manager');
         setHasInitializedOnce(true);
+        
+        // Set a 3-second timeout for auto-scan
+        const timeout = setTimeout(() => {
+          console.log('🎹 Auto-scan timeout reached, enabling manual controls');
+          setIsRefreshing(false);
+          setIsUSBScanning(false);
+          setIsBTScanning(false);
+        }, 3000);
+        setAutoScanTimeout(timeout);
       });
     } else if (isOpen && isInitialized) {
       // Just refresh if already initialized
@@ -69,11 +81,17 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   // Track if we've attempted auto-reconnect (one-shot)
   const hasAttemptedAutoReconnectRef = useRef(false);
   
-  // Auto-reconnect to last device after MIDI is initialized (one-shot)
+  // Auto-reconnect to last device after MIDI is initialized (with timeout)
   useEffect(() => {
     // Only attempt once per session to prevent infinite loops
     if (hasAttemptedAutoReconnectRef.current) return;
     if (!isInitialized || devices.length === 0) return;
+    
+    // Clear any existing auto-scan timeout when attempting reconnect
+    if (autoScanTimeout) {
+      clearTimeout(autoScanTimeout);
+      setAutoScanTimeout(null);
+    }
     
     const lastDeviceStr = localStorage.getItem('lastMidiDevice');
     if (!lastDeviceStr) return;
@@ -95,7 +113,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
         return;
       }
       
-      console.log('🎹 Attempting auto-reconnect to:', lastDevice.name, '(one-shot)');
+      console.log('🎹 Attempting quick auto-reconnect to:', lastDevice.name);
       
       // Find matching device in current device list
       const matchingDevice = unifiedDevices.find(d => 
@@ -110,7 +128,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     } catch (e) {
       console.error('Failed to auto-reconnect:', e);
     }
-  }, [isInitialized, devices]); // Re-run when devices change
+  }, [isInitialized, devices, autoScanTimeout]); // Re-run when devices change
 
   // Reconcile connection states - clear stale 'connecting' flags for actually connected devices
   useEffect(() => {
@@ -134,25 +152,49 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   }, [connectedDevices]);
 
   const handleRefresh = async () => {
-    setIsRefreshing(true);
+    // If already scanning, ignore
+    if (isUSBScanning) return;
+    
+    setIsUSBScanning(true);
+    
+    // Guaranteed re-enable after 2 seconds
+    const timeout = setTimeout(() => {
+      setIsUSBScanning(false);
+      console.log('🎹 USB scan timeout reached');
+    }, 2000);
+    
     try {
       await refreshDevices();
+      clearTimeout(timeout);
+      setIsUSBScanning(false);
     } catch (err) {
       console.error('Failed to refresh devices:', err);
-    } finally {
-      setIsRefreshing(false);
+      clearTimeout(timeout);
+      setIsUSBScanning(false);
     }
   };
 
   const handleBluetoothScan = async () => {
-    setIsRefreshing(true);
+    // If already scanning, ignore
+    if (isBTScanning) return;
+    
+    setIsBTScanning(true);
+    
+    // Guaranteed re-enable after 5 seconds
+    const timeout = setTimeout(() => {
+      setIsBTScanning(false);
+      console.log('🎹 BT scan timeout reached');
+    }, 5000);
+    
     try {
       // Initialize Bluetooth MIDI scanning (user-initiated)
       await initializeBluetoothMidi();
+      clearTimeout(timeout);
+      setIsBTScanning(false);
     } catch (err) {
       console.error('Failed to scan for Bluetooth devices:', err);
-    } finally {
-      setIsRefreshing(false);
+      clearTimeout(timeout);
+      setIsBTScanning(false);
     }
   };
 
@@ -169,14 +211,15 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   };
 
   const handleDisconnect = async (deviceId: string) => {
-    setConnectionStates(prev => ({ ...prev, [deviceId]: 'disconnecting' }));
+    // Immediately set to idle (no "disconnecting" state)
+    setConnectionStates(prev => ({ ...prev, [deviceId]: 'idle' }));
     try {
       const success = await disconnectDevice(deviceId);
       if (!success) {
         console.error('Failed to disconnect from device:', deviceId);
       }
-    } finally {
-      setConnectionStates(prev => ({ ...prev, [deviceId]: 'idle' }));
+    } catch (err) {
+      console.error('Error disconnecting device:', err);
     }
   };
 
@@ -187,7 +230,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     if (unifiedDevice.outputDevice) deviceIds.push(unifiedDevice.outputDevice.id);
     
     // Set connecting state for all device IDs
-    const newStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+    const newStates: Record<string, 'connecting' | 'idle'> = {};
     deviceIds.forEach(id => newStates[id] = 'connecting');
     setConnectionStates(prev => ({ ...prev, ...newStates }));
     
@@ -198,7 +241,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       if (anyFailed) {
         console.error('Failed to connect to some devices:', deviceIds);
         // Reset states on failure
-        const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+        const resetStates: Record<string, 'connecting' | 'idle'> = {};
         deviceIds.forEach(id => resetStates[id] = 'idle');
         setConnectionStates(prev => ({ ...prev, ...resetStates }));
       } else {
@@ -215,7 +258,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       }
     } catch (err) {
       // Reset states on error
-      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
+      const resetStates: Record<string, 'connecting' | 'idle'> = {};
       deviceIds.forEach(id => resetStates[id] = 'idle');
       setConnectionStates(prev => ({ ...prev, ...resetStates }));
     }
@@ -226,10 +269,10 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     if (unifiedDevice.inputDevice) deviceIds.push(unifiedDevice.inputDevice.id);
     if (unifiedDevice.outputDevice) deviceIds.push(unifiedDevice.outputDevice.id);
     
-    // Set disconnecting state for all device IDs
-    const newStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-    deviceIds.forEach(id => newStates[id] = 'disconnecting');
-    setConnectionStates(prev => ({ ...prev, ...newStates }));
+    // Immediately set to idle (no "disconnecting" state)
+    const resetStates: Record<string, 'connecting' | 'idle'> = {};
+    deviceIds.forEach(id => resetStates[id] = 'idle');
+    setConnectionStates(prev => ({ ...prev, ...resetStates }));
     
     try {
       // Disconnect both input and output devices
@@ -238,15 +281,8 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       if (anyFailed) {
         console.error('Failed to disconnect from some devices:', deviceIds);
       }
-      // Reset states immediately on success
-      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-      deviceIds.forEach(id => resetStates[id] = 'idle');
-      setConnectionStates(prev => ({ ...prev, ...resetStates }));
     } catch (err) {
-      // Reset states on error
-      const resetStates: Record<string, 'connecting' | 'disconnecting' | 'idle'> = {};
-      deviceIds.forEach(id => resetStates[id] = 'idle');
-      setConnectionStates(prev => ({ ...prev, ...resetStates }));
+      console.error('Error disconnecting devices:', err);
     }
   };
 
@@ -270,7 +306,6 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     }
     
     if (states.some(s => s === 'connecting')) return 'connecting';
-    if (states.some(s => s === 'disconnecting')) return 'disconnecting';
     return 'idle';
   };
 
@@ -315,7 +350,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     const state = connectionStates[device.id];
     const isGhost = isGhostDevice(device);
     
-    if (state === 'connecting' || state === 'disconnecting') {
+    if (state === 'connecting') {
       return <RefreshCw className="h-4 w-4 animate-spin" />;
     }
     
@@ -340,7 +375,6 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     const isGhost = isGhostDevice(device);
     
     if (state === 'connecting') return 'Connecting...';
-    if (state === 'disconnecting') return 'Disconnecting...';
     if (isGhost) return 'Unavailable';
     if (device.state === 'disconnected') return 'Disconnected';
     if (isConnected && device.connection === 'open') return 'Connected';
@@ -433,23 +467,23 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                 variant="outline"
                 size="sm"
                 onClick={handleRefresh}
-                disabled={isRefreshing || isInitializing}
+                disabled={isUSBScanning || isInitializing}
                 data-testid="button-refresh-devices"
                 title="Refresh USB MIDI devices"
               >
-                <Usb className={`h-4 w-4 mr-2`} />
-                USB Scan
+                <Usb className={`h-4 w-4 mr-2 ${isUSBScanning ? 'animate-spin' : ''}`} />
+                {isUSBScanning ? 'Scanning...' : 'USB Scan'}
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={handleBluetoothScan}
-                disabled={isRefreshing || isInitializing}
+                disabled={isBTScanning || isInitializing}
                 data-testid="button-bluetooth-scan"
                 title="Scan for Bluetooth MIDI devices (may be slow)"
               >
-                <Bluetooth className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-pulse' : ''}`} />
-                BT Scan
+                <Bluetooth className={`h-4 w-4 mr-2 ${isBTScanning ? 'animate-pulse' : ''}`} />
+                {isBTScanning ? 'Scanning...' : 'BT Scan'}
               </Button>
             </div>
           </DialogTitle>
@@ -553,13 +587,12 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                                 
                                 // PRIORITIZE actual connection state over transient flags
                                 const actuallyConnected = isUnifiedDeviceConnected(unifiedDevice);
-                                if (actuallyConnected && state !== 'disconnecting') {
+                                if (actuallyConnected) {
                                   return 'Disconnect';
                                 }
                                 
                                 // Show transient states only when not actually connected
                                 if (state === 'connecting') return 'Connecting...';
-                                if (state === 'disconnecting') return 'Disconnecting...';
                                 
                                 // Default state
                                 return 'Connect';

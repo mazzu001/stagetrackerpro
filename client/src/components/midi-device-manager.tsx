@@ -416,7 +416,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
               variant="outline"
               size="sm"
               onClick={handleScan}
-              disabled={isScanning || isInitializing}
+              disabled={isScanning}
               data-testid="button-scan-devices"
               title="Scan for all MIDI devices"
             >
@@ -447,17 +447,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                 <Badge variant="outline">{unifiedDevices.length}</Badge>
               </div>
               
-              {isInitializing ? (
-                <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center text-muted-foreground">
-                      <RefreshCw className="h-8 w-8 mx-auto mb-2 animate-spin" />
-                      <p className="text-sm">Scanning for MIDI devices...</p>
-                      <p className="text-xs">This may take a moment with many devices</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ) : unifiedDevices.length === 0 ? (
+              {unifiedDevices.length === 0 ? (
                 <Card>
                   <CardContent className="pt-6">
                     <div className="text-center text-muted-foreground">

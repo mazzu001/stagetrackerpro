@@ -267,7 +267,7 @@ export class StreamingAudioEngine {
         // Force stereo output from gain node (critical for mono sources)
         track.gainNode.channelCount = 2;
         track.gainNode.channelCountMode = "explicit";
-        track.gainNode.channelInterpretation = "speakers";
+        track.gainNode.channelInterpretation = "discrete";
         
         // Create custom balance nodes for true stereo balance control
         track.channelSplitter = this.audioContext.createChannelSplitter(2);

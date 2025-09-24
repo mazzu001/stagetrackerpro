@@ -417,11 +417,20 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     console.log('🔵 Scanning for Bluetooth MIDI devices (user-initiated)...');
     
     try {
-      // Refresh device list including Bluetooth devices
+      // Request Bluetooth device access - this shows the device picker
+      const bleDevice = await androidBleMidi.connectDevice();
+      console.log('✅ Bluetooth MIDI device connected:', bleDevice.name);
+      
+      // Now refresh device list to show the new Bluetooth device
       await refreshDeviceList();
       console.log('✅ Bluetooth MIDI scan complete');
     } catch (err) {
-      console.error('❌ Bluetooth MIDI scan failed:', err);
+      // User cancelled selection or Bluetooth not supported
+      if (err instanceof Error && err.message.includes('User cancelled')) {
+        console.log('🔵 Bluetooth device selection cancelled by user');
+      } else {
+        console.error('❌ Bluetooth MIDI scan failed:', err);
+      }
     }
   }, [isInitialized, initializeMidi, refreshDeviceList]);
 

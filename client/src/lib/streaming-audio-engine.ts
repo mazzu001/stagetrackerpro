@@ -271,7 +271,7 @@ export class StreamingAudioEngine {
         // Apply initial volume/balance/mute settings
         const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
         track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
-        track.panNode.pan.value = track.balance / 50; // Convert -50..50 to -1..1
+        track.panNode.pan.value = track.balance / 100; // Convert -100..100 to -1..1
         
         console.log(`🔧 Audio nodes created for: ${track.name}`);
       } catch (nodeError) {
@@ -484,7 +484,7 @@ export class StreamingAudioEngine {
       track.balance = balance;
       this.ensureTrackAudioNodes(track);
       if (track.panNode) {
-        track.panNode.pan.value = balance;
+        track.panNode.pan.value = balance / 100; // Convert -100..100 to -1..1
       }
     }
   }

@@ -43,7 +43,8 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     sendMidiCommand,
     parseMidiCommand,
     refreshDevices,
-    initializeMidi
+    initializeMidi,
+    initializeBluetoothMidi
   } = useMidi();
 
   const [isScanning, setIsScanning] = useState(false);
@@ -138,7 +139,8 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     }, 3000);
     
     try {
-      await refreshDevices(); // This now includes ALL devices by default
+      // Initialize Bluetooth MIDI since USB is already initialized at startup
+      await initializeBluetoothMidi(); 
       clearTimeout(timeout);
       setIsScanning(false);
     } catch (err) {

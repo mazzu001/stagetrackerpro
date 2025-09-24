@@ -272,8 +272,23 @@ export class StreamingAudioEngine {
         
         track.analyzerNode = this.audioContext.createAnalyser();
         
+        // Set explicit channel counts to preserve stereo
+        track.gainNode.channelCount = 2;
+        track.gainNode.channelCountMode = 'explicit';
+        track.channelSplitter.channelCount = 2;
+        track.channelSplitter.channelCountMode = 'explicit';
+        track.channelMerger.channelCount = 2;
+        track.channelMerger.channelCountMode = 'explicit';
+        this.state.masterGainNode!.channelCount = 2;
+        this.state.masterGainNode!.channelCountMode = 'explicit';
+        
+        // Initialize L/R gains to 1 (full volume) before any balance is applied
+        track.leftGainNode.gain.value = 1;
+        track.rightGainNode.gain.value = 1;
+        
         // Connect audio graph with custom balance routing
-        // source -> gain (volume) -> splitter -> [left/right gains] -> merger -> analyzer -> master
+        // CRITICAL: Analyzer is connected in PARALLEL, not in series!
+        // Main path: source -> gain (volume) -> splitter -> [left/right gains] -> merger -> master
         track.source.connect(track.gainNode);
         track.gainNode.connect(track.channelSplitter);
         
@@ -285,9 +300,11 @@ export class StreamingAudioEngine {
         track.leftGainNode.connect(track.channelMerger, 0, 0);  // Left to left
         track.rightGainNode.connect(track.channelMerger, 0, 1); // Right to right
         
-        // Connect merger to analyzer and then to master
+        // CRITICAL FIX: Connect merger directly to master (preserve stereo)
+        track.channelMerger.connect(this.state.masterGainNode!);
+        
+        // Connect analyzer in PARALLEL (tap signal without affecting main path)
         track.channelMerger.connect(track.analyzerNode);
-        track.analyzerNode.connect(this.state.masterGainNode!);
         
         // Setup analyzer
         track.analyzerNode.fftSize = 512;
@@ -301,7 +318,7 @@ export class StreamingAudioEngine {
         // Balance: -100 = full left (L=100%, R=0%), 0 = center (L=100%, R=100%), 100 = full right (L=0%, R=100%)
         this.applyBalance(track);
         
-        console.log(`🔧 Custom balance audio nodes created for: ${track.name} (balance: ${track.balance})`);
+        console.log(`🔧 Custom balance audio nodes created for: ${track.name} (balance: ${track.balance ?? 0}) L:${track.leftGainNode.gain.value.toFixed(2)}, R:${track.rightGainNode.gain.value.toFixed(2)}`);
       } catch (nodeError) {
         console.error(`❌ Failed to create audio nodes for ${track.name}:`, nodeError);
         track.source = null;
@@ -528,7 +545,8 @@ export class StreamingAudioEngine {
     // 0 = center (L=1, R=1)
     // 100 = full right (L=0, R=1)
     
-    const normalizedBalance = track.balance / 100; // Convert to -1 to 1
+    const balance = track.balance ?? 0; // Use nullish coalescing to handle undefined/null
+    const normalizedBalance = balance / 100; // Convert to -1 to 1
     
     if (normalizedBalance <= 0) {
       // Left or center: reduce right channel

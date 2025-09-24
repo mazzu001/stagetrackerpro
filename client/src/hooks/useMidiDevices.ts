@@ -120,7 +120,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   }
 
   // Internal refresh function with reentrancy lock
-  const refreshDeviceListInternal = async (includeBluetoothDevices: boolean = false) => {
+  const refreshDeviceListInternal = async (includeBluetoothDevices: boolean = true) => {
     if (!midiAccessRef.current) return;
     
     // Prevent re-entrant calls
@@ -290,7 +290,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   };
 
   // Debounced refresh device list wrapper
-  const refreshDeviceList = useCallback(async (includeBluetoothDevices: boolean = false) => {
+  const refreshDeviceList = useCallback(async (includeBluetoothDevices: boolean = true) => {
     // Clear any pending refresh
     if (refreshDebounceTimerRef.current) {
       clearTimeout(refreshDebounceTimerRef.current);

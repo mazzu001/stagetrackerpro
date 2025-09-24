@@ -43,13 +43,10 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     sendMidiCommand,
     parseMidiCommand,
     refreshDevices,
-    initializeMidi,
-    initializeBluetoothMidi
+    initializeMidi
   } = useMidi();
 
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [isBTScanning, setIsBTScanning] = useState(false);
-  const [isUSBScanning, setIsUSBScanning] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
   const [testCommand, setTestCommand] = useState('[[PC:1:1]]');
   const [connectionStates, setConnectionStates] = useState<Record<string, 'connecting' | 'idle'>>({});
 
@@ -128,50 +125,26 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
     });
   }, [connectedDevices]);
 
-  const handleRefresh = async () => {
+  const handleScan = async () => {
     // If already scanning, ignore
-    if (isUSBScanning) return;
+    if (isScanning) return;
     
-    setIsUSBScanning(true);
+    setIsScanning(true);
     
-    // Guaranteed re-enable after 2 seconds
+    // Guaranteed re-enable after 3 seconds
     const timeout = setTimeout(() => {
-      setIsUSBScanning(false);
-      console.log('🎹 USB scan timeout reached');
-    }, 2000);
+      setIsScanning(false);
+      console.log('🎹 MIDI scan timeout reached');
+    }, 3000);
     
     try {
-      await refreshDevices();
+      await refreshDevices(); // This now includes ALL devices by default
       clearTimeout(timeout);
-      setIsUSBScanning(false);
+      setIsScanning(false);
     } catch (err) {
-      console.error('Failed to refresh devices:', err);
+      console.error('Failed to scan for MIDI devices:', err);
       clearTimeout(timeout);
-      setIsUSBScanning(false);
-    }
-  };
-
-  const handleBluetoothScan = async () => {
-    // If already scanning, ignore
-    if (isBTScanning) return;
-    
-    setIsBTScanning(true);
-    
-    // Guaranteed re-enable after 5 seconds
-    const timeout = setTimeout(() => {
-      setIsBTScanning(false);
-      console.log('🎹 BT scan timeout reached');
-    }, 5000);
-    
-    try {
-      // Initialize Bluetooth MIDI scanning (user-initiated)
-      await initializeBluetoothMidi();
-      clearTimeout(timeout);
-      setIsBTScanning(false);
-    } catch (err) {
-      console.error('Failed to scan for Bluetooth devices:', err);
-      clearTimeout(timeout);
-      setIsBTScanning(false);
+      setIsScanning(false);
     }
   };
 
@@ -439,30 +412,17 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
                 </Badge>
               )}
             </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleRefresh}
-                disabled={isUSBScanning || isInitializing}
-                data-testid="button-refresh-devices"
-                title="Refresh USB MIDI devices"
-              >
-                <Usb className={`h-4 w-4 mr-2 ${isUSBScanning ? 'animate-spin' : ''}`} />
-                {isUSBScanning ? 'Scanning...' : 'USB Scan'}
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleBluetoothScan}
-                disabled={isBTScanning || isInitializing}
-                data-testid="button-bluetooth-scan"
-                title="Scan for Bluetooth MIDI devices (may be slow)"
-              >
-                <Bluetooth className={`h-4 w-4 mr-2 ${isBTScanning ? 'animate-pulse' : ''}`} />
-                {isBTScanning ? 'Scanning...' : 'BT Scan'}
-              </Button>
-            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleScan}
+              disabled={isScanning || isInitializing}
+              data-testid="button-scan-devices"
+              title="Scan for all MIDI devices"
+            >
+              <RefreshCw className={`h-4 w-4 mr-2 ${isScanning ? 'animate-spin' : ''}`} />
+              {isScanning ? 'Scanning...' : 'MIDI Scan'}
+            </Button>
           </DialogTitle>
         </DialogHeader>
 

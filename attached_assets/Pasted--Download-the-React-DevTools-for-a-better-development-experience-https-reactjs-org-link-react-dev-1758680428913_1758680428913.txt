@@ -1,0 +1,99 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ 🔵 Android BLE-MIDI adapter initialized
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+browser-file-system.ts:69 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+browser-file-system.ts:133 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+main.tsx:1 [MAIN.TSX] Script starting...
+main.tsx:5 [MAIN.TSX] Unregistering service workers...
+main.tsx:18 [MAIN.TSX] About to render React app...
+main.tsx:20 [MAIN.TSX] Root element: <div id=​"root" data-aria-hidden=​"true" aria-hidden=​"true">​…​</div>​
+main.tsx:25 [MAIN.TSX] React app rendered successfully
+App.tsx:170 [APP] About to call useLocalAuth hook...
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+useLocalAuth.ts:34 [AUTH] Valid session found: mazzu001@hotmail.com
+App.tsx:172 [APP] Auth state: Object
+useMidiDevices.ts:109 🔍 Browser detection debug: Object
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: false
+App.tsx:71 🔍 Parsed values: Object
+App.tsx:125 🔍 No payment success detected in URL
+useMidiDevices.ts:318 🎹 MIDI API supported - waiting for user interaction to initialize
+StorageContext.tsx:50 🔧 Initializing storage for user: mazzu001@hotmail.com
+browser-file-system.ts:69 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+browser-file-system.ts:133 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+useLocalAuth.ts:54 [AUTH] useEffect - auth state initialized
+StorageContext.tsx:59 📊 Database exists for mazzu001@hotmail.com: true
+StorageContext.tsx:63 📂 Loading existing database for mazzu001@hotmail.com
+browser-file-system.ts:133 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+browser-file-system.ts:123 Browser file system initialized successfully for user: default@user.com
+browser-file-system.ts:80 ✅ BrowserFileSystem fully initialized with config loaded
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: false
+browser-file-system.ts:123 Browser file system initialized successfully for user: mazzu001@hotmail.com
+browser-file-system.ts:80 ✅ BrowserFileSystem fully initialized with config loaded
+browser-file-system.ts:123 Browser file system initialized successfully for user: mazzu001@hotmail.com
+audio-file-storage.ts:70 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+StorageContext.tsx:77 📦 Initializing AudioFileStorage sequentially...
+audio-file-storage.ts:43 📦 Starting sequential AudioFileStorage initialization...
+audio-file-storage.ts:47 📦 Step 1: Initializing IndexedDB...
+indexed-db-storage.ts:113 ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+audio-file-storage.ts:82 ✅ IndexedDB initialized for AudioFileStorage
+audio-file-storage.ts:49 ✅ IndexedDB initialized
+audio-file-storage.ts:53 📦 Step 2: Loading audio file metadata...
+audio-file-storage.ts:246 Loaded 95 audio file references from IndexedDB for user: mazzu001@hotmail.com
+audio-file-storage.ts:55 ✅ Audio file metadata loaded
+audio-file-storage.ts:58 📦 Step 3: Verifying BrowserFS...
+audio-file-storage.ts:60 ✅ BrowserFS ready
+audio-file-storage.ts:62 ✅ AudioFileStorage fully initialized
+StorageContext.tsx:79 ✅ AudioFileStorage initialized
+StorageContext.tsx:88 ✅ Storage initialization complete for mazzu001@hotmail.com
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: true
+lyrics-display.tsx:293 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:31 🔍 Initial service isHost check: Object
+streaming-audio-engine.ts:78 🎵 Master output initialized
+performance.tsx:531 🔍 Debug values: Object
+performance.tsx:605 🎭 Broadcast host effect: Object
+performance.tsx:615 🎭 Not broadcasting - not host
+local-song-storage-db.ts:44 📭 No localStorage data found for key: lpp_songs_mazzu001@hotmail.com
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 210fecfc-e141-4475-80ae-5e71a8157670
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 6bcd6e50-6651-4428-803e-d9064b64a2b9
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 82fbb548-f33e-42b4-b4c9-9aa2e9e191de
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track a95cdae0-fc75-4fe4-969d-09a1fd016b66
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track d296c1de-d95f-4777-a2e7-a59bd7b23343
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track fbf3551f-a8a0-4dbc-b9b9-0bd39d48e2fa
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 40553031-7831-4d51-9daf-adc5b873bfa8
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 4b09914e-267d-4808-9493-7b2d7562d5cf
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 6af30322-f25b-4eac-9bee-382e78351eb9
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 7634c119-68ed-431b-85bb-2f1f5d413872
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track be3b8c86-172f-495e-9461-80a4f8a72694
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 0a0a13af-8211-41ad-9daf-51704fbb8056
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 30274069-56a7-4178-9e2f-dee1aab13104
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 31b4b57b-b112-4c5e-8627-00a0d1424913
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 49435252-08de-4bd3-81d9-5b80a3071c95
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 5299cf3c-efc0-424f-a984-fe18ec32cc00
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 97be6a8c-e646-4723-b5b4-f5389915fd22
+performance.tsx:451 📋 Loaded 3 songs from IndexedDB (alphabetically sorted)
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+useMidiDevices.ts:447 🔵 Initializing MIDI first before Bluetooth scan
+useMidiDevices.ts:339 🎹 Initializing USB MIDI (lightweight)...
+midi-device-manager.tsx:163 🎹 BT scan timeout reached
+useMidiDevices.ts:347 ✅ USB MIDI access granted
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:283 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:381 ✅ USB MIDI initialized successfully
+useMidiDevices.ts:451 🔵 Scanning for Bluetooth MIDI devices (user-initiated)...
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:283 🎹 Connected devices: 0/0 []
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: {inputs: 1, outputs: 1, includeBluetoothDevices: false}
+useMidiDevices.ts:164 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack IN
+useMidiDevices.ts:196 ⏭️ Skipping Bluetooth device during USB-only scan: WIDI Jack OUT
+useMidiDevices.ts:258 🎹 Found 0 MIDI devices: []
+useMidiDevices.ts:283 🎹 Connected devices: 0/0 []

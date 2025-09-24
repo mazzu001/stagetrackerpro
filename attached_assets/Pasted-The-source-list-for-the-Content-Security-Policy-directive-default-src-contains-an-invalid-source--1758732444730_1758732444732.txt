@@ -1,0 +1,1151 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+/~:1  The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+/~:1  The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+/~:1  The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+  Deprecated API for given entry type.
+(anonymous) @ main.MWI4MDAwODU3MQ.js:1
+BandMaestro:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+  Unrecognized feature: 'battery'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+  Unrecognized feature: 'layout-animations'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+  Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+  Unrecognized feature: 'navigation-override'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+  Unrecognized feature: 'oversized-images'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+  Unrecognized feature: 'publickey-credentials'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+  Unrecognized feature: 'unoptimized-images'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+  Unrecognized feature: 'unsized-media'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+  Unrecognized feature: 'pointer-lock'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+  Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+  Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-c5b67e5ca5b8c0ec.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:32  Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:32  Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:32  Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:32  Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:32  Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:32  Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:32  Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:32  Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:32  Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:32  Allow attribute will take precedence over 'allowpaymentrequest'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar1be%3A:1  Unchecked runtime.lastError: Could not establish connection. Receiving end does not exist.
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 266s
+ Duration updated from streaming engine: 266s
+ ⏹️ Streaming playback stopped
+ 🔄 Seek detected: 7.4s → 0.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔍 Retrieved 0 mute regions for track 210fecfc-e141-4475-80ae-5e71a8157670
+ 🔍 Retrieved 0 mute regions for track 6bcd6e50-6651-4428-803e-d9064b64a2b9
+ 🔍 Retrieved 0 mute regions for track 82fbb548-f33e-42b4-b4c9-9aa2e9e191de
+ 🔍 Retrieved 0 mute regions for track a95cdae0-fc75-4fe4-969d-09a1fd016b66
+ 🔍 Retrieved 0 mute regions for track d296c1de-d95f-4777-a2e7-a59bd7b23343
+ 🔍 Retrieved 0 mute regions for track fbf3551f-a8a0-4dbc-b9b9-0bd39d48e2fa
+ 🔍 Retrieved 0 mute regions for track 43a7c43f-3aac-4767-9a49-5f672ea9550d
+ 🔍 Retrieved 0 mute regions for track 59755f24-786b-41fc-80e5-dbe5cfac85cb
+ 🔍 Retrieved 0 mute regions for track 73dae3f7-d8c6-4c2a-9002-09176d77f1be
+ 🔍 Retrieved 0 mute regions for track 8a6f932c-b037-4edf-9db8-6f99798d0989
+ 🔍 Retrieved 0 mute regions for track ae8c9920-4e8f-4de9-ab16-f00a7a2ecbce
+ 🔍 Retrieved 0 mute regions for track fd5480c4-2bc4-4bcd-805f-fd7c6209a881
+ 🔍 Retrieved 0 mute regions for track 40553031-7831-4d51-9daf-adc5b873bfa8
+ 🔍 Retrieved 0 mute regions for track 4b09914e-267d-4808-9493-7b2d7562d5cf
+ 🔍 Retrieved 0 mute regions for track 6af30322-f25b-4eac-9bee-382e78351eb9
+ 🔍 Retrieved 0 mute regions for track 7634c119-68ed-431b-85bb-2f1f5d413872
+ 🔍 Retrieved 0 mute regions for track be3b8c86-172f-495e-9461-80a4f8a72694
+ 🔍 Retrieved 0 mute regions for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ 🔍 Retrieved 0 mute regions for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 🔍 Retrieved 0 mute regions for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 🔍 Retrieved 0 mute regions for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 🔍 Retrieved 0 mute regions for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 🎵 Loading song: Cherry Bomb
+ 📡 Not uploading to database: Object
+ Loading cached waveform for "Cherry Bomb" (400 data points)
+ ✅ Storage initialized! Loading song: "Cherry Bomb" with 5 tracks
+ Setting up streaming for: "Cherry Bomb" - UI stays responsive
+ 🎵 Song context set - User: mazzu001@hotmail.com, Song: c751b41b-3cf2-4480-aeb6-66f600ce599a
+ 🔍 Requesting audio URL for track: 20a77574-a3b4-47bf-a750-01658b9800f9
+ 📂 Available audio files (100): Array(100)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ 💾 Memory cache has: [6af30322-f25b-4eac-9bee-382e78351eb9, 40553031-7831-4d51-9daf-adc5b873bfa8, be3b8c86-172f-495e-9461-80a4f8a72694, 4b09914e-267d-4808-9493-7b2d7562d5cf, 7634c119-68ed-431b-85bb-2f1f5d413872, ae8c9920-4e8f-4de9-ab16-f00a7a2ecbce, 43a7c43f-3aac-4767-9a49-5f672ea9550d, 59755f24-786b-41fc-80e5-dbe5cfac85cb, fd5480c4-2bc4-4bcd-805f-fd7c6209a881, 73dae3f7-d8c6-4c2a-9002-09176d77f1be, 8a6f932c-b037-4edf-9db8-6f99798d0989, a95cdae0-fc75-4fe4-969d-09a1fd016b66, 210fecfc-e141-4475-80ae-5e71a8157670, 6bcd6e50-6651-4428-803e-d9064b64a2b9, fbf3551f-a8a0-4dbc-b9b9-0bd39d48e2fa, 82fbb548-f33e-42b4-b4c9-9aa2e9e191de, d296c1de-d95f-4777-a2e7-a59bd7b23343]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ 🔍 Requesting audio URL for track: 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 📂 Available audio files (100): Array(100)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 💾 Memory cache has: [6af30322-f25b-4eac-9bee-382e78351eb9, 40553031-7831-4d51-9daf-adc5b873bfa8, be3b8c86-172f-495e-9461-80a4f8a72694, 4b09914e-267d-4808-9493-7b2d7562d5cf, 7634c119-68ed-431b-85bb-2f1f5d413872, ae8c9920-4e8f-4de9-ab16-f00a7a2ecbce, 43a7c43f-3aac-4767-9a49-5f672ea9550d, 59755f24-786b-41fc-80e5-dbe5cfac85cb, fd5480c4-2bc4-4bcd-805f-fd7c6209a881, 73dae3f7-d8c6-4c2a-9002-09176d77f1be, 8a6f932c-b037-4edf-9db8-6f99798d0989, a95cdae0-fc75-4fe4-969d-09a1fd016b66, 210fecfc-e141-4475-80ae-5e71a8157670, 6bcd6e50-6651-4428-803e-d9064b64a2b9, fbf3551f-a8a0-4dbc-b9b9-0bd39d48e2fa, 82fbb548-f33e-42b4-b4c9-9aa2e9e191de, d296c1de-d95f-4777-a2e7-a59bd7b23343]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 🔍 Requesting audio URL for track: 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 📂 Available audio files (100): Array(100)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 💾 Memory cache has: [6af30322-f25b-4eac-9bee-382e78351eb9, 40553031-7831-4d51-9daf-adc5b873bfa8, be3b8c86-172f-495e-9461-80a4f8a72694, 4b09914e-267d-4808-9493-7b2d7562d5cf, 7634c119-68ed-431b-85bb-2f1f5d413872, ae8c9920-4e8f-4de9-ab16-f00a7a2ecbce, 43a7c43f-3aac-4767-9a49-5f672ea9550d, 59755f24-786b-41fc-80e5-dbe5cfac85cb, fd5480c4-2bc4-4bcd-805f-fd7c6209a881, 73dae3f7-d8c6-4c2a-9002-09176d77f1be, 8a6f932c-b037-4edf-9db8-6f99798d0989, a95cdae0-fc75-4fe4-969d-09a1fd016b66, 210fecfc-e141-4475-80ae-5e71a8157670, 6bcd6e50-6651-4428-803e-d9064b64a2b9, fbf3551f-a8a0-4dbc-b9b9-0bd39d48e2fa, 82fbb548-f33e-42b4-b4c9-9aa2e9e191de, d296c1de-d95f-4777-a2e7-a59bd7b23343]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 🔍 Requesting audio URL for track: 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 📂 Available audio files (100): Array(100)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 💾 Memory cache has: [6af30322-f25b-4eac-9bee-382e78351eb9, 40553031-7831-4d51-9daf-adc5b873bfa8, be3b8c86-172f-495e-9461-80a4f8a72694, 4b09914e-267d-4808-9493-7b2d7562d5cf, 7634c119-68ed-431b-85bb-2f1f5d413872, ae8c9920-4e8f-4de9-ab16-f00a7a2ecbce, 43a7c43f-3aac-4767-9a49-5f672ea9550d, 59755f24-786b-41fc-80e5-dbe5cfac85cb, fd5480c4-2bc4-4bcd-805f-fd7c6209a881, 73dae3f7-d8c6-4c2a-9002-09176d77f1be, 8a6f932c-b037-4edf-9db8-6f99798d0989, a95cdae0-fc75-4fe4-969d-09a1fd016b66, 210fecfc-e141-4475-80ae-5e71a8157670, 6bcd6e50-6651-4428-803e-d9064b64a2b9, fbf3551f-a8a0-4dbc-b9b9-0bd39d48e2fa, 82fbb548-f33e-42b4-b4c9-9aa2e9e191de, d296c1de-d95f-4777-a2e7-a59bd7b23343]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 🔍 Requesting audio URL for track: 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 📂 Available audio files (100): Array(100)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 BrowserFS.getAudioFile: Looking for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 💾 Memory cache has: [6af30322-f25b-4eac-9bee-382e78351eb9, 40553031-7831-4d51-9daf-adc5b873bfa8, be3b8c86-172f-495e-9461-80a4f8a72694, 4b09914e-267d-4808-9493-7b2d7562d5cf, 7634c119-68ed-431b-85bb-2f1f5d413872, ae8c9920-4e8f-4de9-ab16-f00a7a2ecbce, 43a7c43f-3aac-4767-9a49-5f672ea9550d, 59755f24-786b-41fc-80e5-dbe5cfac85cb, fd5480c4-2bc4-4bcd-805f-fd7c6209a881, 73dae3f7-d8c6-4c2a-9002-09176d77f1be, 8a6f932c-b037-4edf-9db8-6f99798d0989, a95cdae0-fc75-4fe4-969d-09a1fd016b66, 210fecfc-e141-4475-80ae-5e71a8157670, 6bcd6e50-6651-4428-803e-d9064b64a2b9, fbf3551f-a8a0-4dbc-b9b9-0bd39d48e2fa, 82fbb548-f33e-42b4-b4c9-9aa2e9e191de, d296c1de-d95f-4777-a2e7-a59bd7b23343]
+ 🗃️ Database initialized: true
+ ⏳ Waiting for database initialization for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Database initialization completed for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ 💾 Not in memory cache, checking IndexedDB for 20a77574-a3b4-47bf-a750-01658b9800f9
+ ✅ Database initialization completed for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 💾 Not in memory cache, checking IndexedDB for 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ ✅ Database initialization completed for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 💾 Not in memory cache, checking IndexedDB for 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ ✅ Database initialization completed for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 💾 Not in memory cache, checking IndexedDB for 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ ✅ Database initialization completed for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 💾 Not in memory cache, checking IndexedDB for 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ ✅ Found in IndexedDB: 5e7202d9-5aaa-4970-8d93-6d3ab26f2708 (Cherry Bomb - 0001 - Audio - Click.mp3)
+ ✅ Got audio URL from browser storage for track: 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ ✅ Found in IndexedDB: 5803fb3e-cf27-46d1-a1b3-4861d43dea6b (Cherry Bomb - 0003 - Audio - Bass.mp3)
+ ✅ Got audio URL from browser storage for track: 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ ✅ Found in IndexedDB: 81f3a52b-4bf4-4d71-903f-1a205a7f3843 (Cherry Bomb - 0005 - Audio - Backups.mp3)
+ ✅ Got audio URL from browser storage for track: 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ ✅ Found in IndexedDB: 20a77574-a3b4-47bf-a750-01658b9800f9 (Cherry Bomb - 0004 - Audio - Keys.mp3)
+ ✅ Got audio URL from browser storage for track: 20a77574-a3b4-47bf-a750-01658b9800f9
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ 🔍 Retrieved 0 mute regions for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 🔍 Retrieved 0 mute regions for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ ✅ Found in IndexedDB: 9a6499d3-82cb-406d-b408-2b64e092dfce (Cherry Bomb - 0002 - Audio - Drums.mp3)
+ ✅ Got audio URL from browser storage for track: 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 🔍 LocalSongStorage.getMuteRegions: Getting regions for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 🔍 Retrieved 0 mute regions for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 🔍 Retrieved 0 mute regions for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ 🔍 Retrieved 0 mute regions for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ ✅ LocalSongStorage.getMuteRegions: Found 0 regions for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 🚀 Streaming load: 5 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 5 tracks ready
+ ✅ Streaming ready for "Cherry Bomb" - instant playback available
+ Duration updated from streaming engine: 266s
+ ✅ Streaming ready: 5 tracks setup instantly (audio nodes created on demand)
+ 🔧 Custom balance audio nodes created for: Cherry Bomb - 0004 - Audio - Keys (balance: 0)
+ 🔧 Custom balance audio nodes created for: Cherry Bomb - 0003 - Audio - Bass (balance: 0)
+ 🔧 Custom balance audio nodes created for: Cherry Bomb - 0001 - Audio - Click (balance: -100)
+ 🔧 Custom balance audio nodes created for: Cherry Bomb - 0005 - Audio - Backups (balance: 0)
+ 🔧 Custom balance audio nodes created for: Cherry Bomb - 0002 - Audio - Drums (balance: 0)
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Loading started for Already Gone - Guitars
+  ⚠️ Audio error for Already Gone - Guitars: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 266s
+ 🔄 Loading started for Already Gone - Backups
+  ⚠️ Audio error for Already Gone - Backups: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 266s
+ 🔄 Loading started for Already Gone - Bass
+  ⚠️ Audio error for Already Gone - Bass: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 266s
+ 🔄 Loading started for Already Gone - Drums
+  ⚠️ Audio error for Already Gone - Drums: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 266s
+ 🔄 Loading started for Already Gone - Click
+  ⚠️ Audio error for Already Gone - Click: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 266s
+ 🔄 Loading started for Cherry Bomb - 0004 - Audio - Keys
+ 🔄 Loading started for Cherry Bomb - 0003 - Audio - Bass
+ 🔄 Loading started for Cherry Bomb - 0001 - Audio - Click
+ 🔄 Loading started for Cherry Bomb - 0005 - Audio - Backups
+ 🔄 Loading started for Cherry Bomb - 0002 - Audio - Drums
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ === Loading tracks for song: Cherry Bomb (c751b41b-3cf2-4480-aeb6-66f600ce599a) ===
+  `DialogContent` requires a `DialogTitle` for the component to be accessible for screen reader users.
+
+If you want to hide the `DialogTitle`, you can wrap it with our VisuallyHidden component.
+
+For more information, see https://radix-ui.com/primitives/docs/components/dialog
+Mt.forEach.n.<computed> @ eruda.js:2
+  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+Mt.forEach.n.<computed> @ eruda.js:2
+ 🔍 Retrieved 0 mute regions for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ 🔍 Retrieved 0 mute regions for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 🔍 Retrieved 0 mute regions for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 🔍 Retrieved 0 mute regions for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 🔍 Retrieved 0 mute regions for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ Found 5 tracks in database
+ Loading track 1/5: Cherry Bomb - 0004 - Audio - Keys
+ 🔍 Retrieved 0 mute regions for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ Loading track 2/5: Cherry Bomb - 0003 - Audio - Bass
+ 🔍 Retrieved 0 mute regions for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ Loading track 3/5: Cherry Bomb - 0001 - Audio - Click
+ 🔍 Retrieved 0 mute regions for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ 🔍 Retrieved 0 mute regions for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ Loading track 4/5: Cherry Bomb - 0005 - Audio - Backups
+ 🔍 Retrieved 0 mute regions for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 🔍 Retrieved 0 mute regions for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ Loading track 5/5: Cherry Bomb - 0002 - Audio - Drums
+ 🔍 Retrieved 0 mute regions for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 🔍 Retrieved 0 mute regions for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+   No waveform data found (will regenerate on demand)
+ ✅ Loaded all 5 tracks
+ 🔄 Reloading all tracks into audio engine...
+ 🧹 Cleared existing tracks from audio engine
+ 🔄 Loading started for Cherry Bomb - 0004 - Audio - Keys
+  ⚠️ Audio error for Cherry Bomb - 0004 - Audio - Keys: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 297s
+ 🔄 Loading started for Cherry Bomb - 0003 - Audio - Bass
+  ⚠️ Audio error for Cherry Bomb - 0003 - Audio - Bass: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 297s
+ 🔄 Loading started for Cherry Bomb - 0001 - Audio - Click
+  ⚠️ Audio error for Cherry Bomb - 0001 - Audio - Click: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 297s
+ 🔄 Loading started for Cherry Bomb - 0005 - Audio - Backups
+  ⚠️ Audio error for Cherry Bomb - 0005 - Audio - Backups: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 297s
+ 🔄 Loading started for Cherry Bomb - 0002 - Audio - Drums
+  ⚠️ Audio error for Cherry Bomb - 0002 - Audio - Drums: error Event
+Mt.forEach.n.<computed> @ eruda.js:2
+ Duration updated from streaming engine: 297s
+ 🔍 Retrieved 0 mute regions for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 🔍 Retrieved 0 mute regions for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 🔍 Retrieved 0 mute regions for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ 🔍 Retrieved 0 mute regions for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 🔍 Retrieved 0 mute regions for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 🔍 Retrieved 0 mute regions for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 🔍 Retrieved 0 mute regions for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 🔍 Requesting audio URL for track: 20a77574-a3b4-47bf-a750-01658b9800f9
+ 📂 Available audio files (100): Array(100)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 📂 Available audio files (100): Array(100)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 📂 Available audio files (100): Array(100)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 📂 Available audio files (100): Array(100)
+ 💾 Memory cache files (0): Array(0)
+ 🔍 Requesting audio URL for track: 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 📂 Available audio files (100): Array(100)
+ 💾 Memory cache files (0): Array(0)
+ ✅ Got audio URL from browser storage for track: 20a77574-a3b4-47bf-a750-01658b9800f9
+ ✅ Got audio URL from browser storage for track: 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ ✅ Got audio URL from browser storage for track: 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ ✅ Got audio URL from browser storage for track: 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ ✅ Got audio URL from browser storage for track: 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 🔍 Retrieved 0 mute regions for track 20a77574-a3b4-47bf-a750-01658b9800f9
+ 🔍 Retrieved 0 mute regions for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+ 🔍 Retrieved 0 mute regions for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+ 🔍 Retrieved 0 mute regions for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+ 🔍 Retrieved 0 mute regions for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+ 🚀 Streaming load: 5 tracks (deferred setup)
+ 🎵 Loading original tracks...
+ 🎵 Track loading complete: 5 tracks ready
+ Duration updated from streaming engine: 297s
+ ✅ Streaming ready: 5 tracks setup instantly (audio nodes created on demand)
+ ✅ Loaded 5 tracks into audio engine
+ 🔧 Custom balance audio nodes created for: Cherry Bomb - 0004 - Audio - Keys (balance: 0)
+ 🔧 Custom balance audio nodes created for: Cherry Bomb - 0003 - Audio - Bass (balance: 0)
+ 🔧 Custom balance audio nodes created for: Cherry Bomb - 0001 - Audio - Click (balance: -100)
+ 🔧 Custom balance audio nodes created for: Cherry Bomb - 0005 - Audio - Backups (balance: 0)
+ 🔧 Custom balance audio nodes created for: Cherry Bomb - 0002 - Audio - Drums (balance: 0)
+ 🔄 Loading started for Cherry Bomb - 0004 - Audio - Keys
+ 🔄 Loading started for Cherry Bomb - 0003 - Audio - Bass
+ 🔄 Loading started for Cherry Bomb - 0001 - Audio - Click
+ 🔄 Loading started for Cherry Bomb - 0005 - Audio - Backups
+ 🔄 Loading started for Cherry Bomb - 0002 - Audio - Drums
+ Duration updated from streaming engine: 297s
+ ▶️ Starting streaming playback: 5 tracks
+ Duration updated from streaming engine: 297s
+ ✅ Streaming playback started instantly
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.0s → 0.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.1s → 0.1s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.1s → 0.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.2s → 0.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.2s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.3s → 0.3s, resetting MIDI commands
+ 🔄 Seek detected: 0.3s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.4s → 0.4s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.4s → 0.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.5s → 0.5s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.5s → 0.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.6s → 0.6s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.6s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.7s → 0.7s, resetting MIDI commands
+ 🔄 Seek detected: 0.7s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.8s → 0.8s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.8s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 0.9s → 0.9s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 0.9s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.0s → 1.0s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.0s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🔄 Seek detected: 1.1s → 1.1s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.1s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.2s → 1.2s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.2s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.3s → 1.3s, resetting MIDI commands
+ 🔄 Seek detected: 1.3s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.4s → 1.4s, resetting MIDI commands
+ 🔄 Seek detected: 1.4s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.5s → 1.5s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.5s → 1.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.6s → 1.6s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.6s → 1.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.7s → 1.7s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.7s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.8s → 1.8s, resetting MIDI commands
+ 🔄 Seek detected: 1.8s → 1.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 1.9s → 1.9s, resetting MIDI commands
+ 🔄 Seek detected: 1.9s → 2.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 2.0s → 2.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🔄 Seek detected: 2.0s → 2.0s, resetting MIDI commands
+ 🔄 Seek detected: 2.0s → 2.0s, resetting MIDI commands
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 Duration updated from streaming engine: 297s
+Console.js:61 ⏸️ Streaming playback paused
+Console.js:61 🎭 Broadcast host effect: Object
+Console.js:61 🎭 Not broadcasting - not host
+Console.js:61 🔍 Retrieved 0 mute regions for track 20a77574-a3b4-47bf-a750-01658b9800f9
+Console.js:61 🔍 Retrieved 0 mute regions for track 5803fb3e-cf27-46d1-a1b3-4861d43dea6b
+Console.js:61 🔍 Retrieved 0 mute regions for track 5e7202d9-5aaa-4970-8d93-6d3ab26f2708
+Console.js:61 🔍 Retrieved 0 mute regions for track 81f3a52b-4bf4-4d71-903f-1a205a7f3843
+Console.js:61 🔍 Retrieved 0 mute regions for track 9a6499d3-82cb-406d-b408-2b64e092dfce
+Console.js:61 📋 Refreshed track count for song: Cherry Bomb (5 tracks)

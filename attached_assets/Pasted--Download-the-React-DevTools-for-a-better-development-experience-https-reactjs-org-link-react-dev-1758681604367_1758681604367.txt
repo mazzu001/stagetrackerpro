@@ -1,0 +1,144 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ 🔵 Android BLE-MIDI adapter initialized
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+ 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+ 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+ [MAIN.TSX] Script starting...
+ [MAIN.TSX] Unregistering service workers...
+ [MAIN.TSX] About to render React app...
+ [MAIN.TSX] Root element: 
+ [MAIN.TSX] React app rendered successfully
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [AUTH] Valid session found: mazzu001@hotmail.com
+ [APP] Auth state: Object
+ 🔍 Browser detection debug: Object
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 MIDI API supported - waiting for user interaction to initialize
+ 🔧 Initializing storage for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [AUTH] useEffect - auth state initialized
+ 📊 Database exists for mazzu001@hotmail.com: true
+ 📂 Loading existing database for mazzu001@hotmail.com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ Browser file system initialized successfully for user: default@user.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+ 📦 Initializing AudioFileStorage sequentially...
+ 📦 Starting sequential AudioFileStorage initialization...
+ 📦 Step 1: Initializing IndexedDB...
+ ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+ ✅ IndexedDB initialized for AudioFileStorage
+ ✅ IndexedDB initialized
+ 📦 Step 2: Loading audio file metadata...
+ Loaded 95 audio file references from IndexedDB for user: mazzu001@hotmail.com
+ ✅ Audio file metadata loaded
+ 📦 Step 3: Verifying BrowserFS...
+ ✅ BrowserFS ready
+ ✅ AudioFileStorage fully initialized
+ ✅ AudioFileStorage initialized
+ ✅ Storage initialization complete for mazzu001@hotmail.com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: true
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 📭 No localStorage data found for key: lpp_songs_mazzu001@hotmail.com
+ 🔍 Retrieved 0 mute regions for track 210fecfc-e141-4475-80ae-5e71a8157670
+ 🔍 Retrieved 0 mute regions for track 6bcd6e50-6651-4428-803e-d9064b64a2b9
+ 🔍 Retrieved 0 mute regions for track 82fbb548-f33e-42b4-b4c9-9aa2e9e191de
+ 🔍 Retrieved 0 mute regions for track a95cdae0-fc75-4fe4-969d-09a1fd016b66
+ 🔍 Retrieved 0 mute regions for track d296c1de-d95f-4777-a2e7-a59bd7b23343
+ 🔍 Retrieved 0 mute regions for track fbf3551f-a8a0-4dbc-b9b9-0bd39d48e2fa
+ 🔍 Retrieved 0 mute regions for track 40553031-7831-4d51-9daf-adc5b873bfa8
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 4b09914e-267d-4808-9493-7b2d7562d5cf
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 6af30322-f25b-4eac-9bee-382e78351eb9
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 7634c119-68ed-431b-85bb-2f1f5d413872
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track be3b8c86-172f-495e-9461-80a4f8a72694
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 0a0a13af-8211-41ad-9daf-51704fbb8056
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 30274069-56a7-4178-9e2f-dee1aab13104
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 31b4b57b-b112-4c5e-8627-00a0d1424913
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 49435252-08de-4bd3-81d9-5b80a3071c95
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 5299cf3c-efc0-424f-a984-fe18ec32cc00
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 97be6a8c-e646-4723-b5b4-f5389915fd22
+performance.tsx:451 📋 Loaded 3 songs from IndexedDB (alphabetically sorted)
+App.tsx:170 [APP] About to call useLocalAuth hook...
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+App.tsx:172 [APP] Auth state: Object
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: true
+streaming-audio-engine.ts:846 📱 Edge browser: Forcing memory cleanup
+lyrics-display.tsx:293 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:31 🔍 Initial service isHost check: Object
+streaming-audio-engine.ts:78 🎵 Master output initialized
+performance.tsx:531 🔍 Debug values: Object
+performance.tsx:605 🎭 Broadcast host effect: Object
+performance.tsx:615 🎭 Not broadcasting - not host
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 210fecfc-e141-4475-80ae-5e71a8157670
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 6bcd6e50-6651-4428-803e-d9064b64a2b9
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 82fbb548-f33e-42b4-b4c9-9aa2e9e191de
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track a95cdae0-fc75-4fe4-969d-09a1fd016b66
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track d296c1de-d95f-4777-a2e7-a59bd7b23343
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track fbf3551f-a8a0-4dbc-b9b9-0bd39d48e2fa
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 40553031-7831-4d51-9daf-adc5b873bfa8
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 4b09914e-267d-4808-9493-7b2d7562d5cf
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 6af30322-f25b-4eac-9bee-382e78351eb9
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 7634c119-68ed-431b-85bb-2f1f5d413872
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track be3b8c86-172f-495e-9461-80a4f8a72694
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 0a0a13af-8211-41ad-9daf-51704fbb8056
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 30274069-56a7-4178-9e2f-dee1aab13104
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 31b4b57b-b112-4c5e-8627-00a0d1424913
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 49435252-08de-4bd3-81d9-5b80a3071c95
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 5299cf3c-efc0-424f-a984-fe18ec32cc00
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 97be6a8c-e646-4723-b5b4-f5389915fd22
+performance.tsx:451 📋 Loaded 3 songs from IndexedDB (alphabetically sorted)
+App.tsx:170 [APP] About to call useLocalAuth hook...
+useLocalAuth.ts:17 [AUTH] useLocalAuth hook called
+App.tsx:172 [APP] Auth state: Object
+App.tsx:44 [APP] AppContent component rendering...
+App.tsx:46 [APP] Storage initialized: true
+streaming-audio-engine.ts:846 📱 Edge browser: Forcing memory cleanup
+lyrics-display.tsx:293 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+useBroadcast.ts:31 🔍 Initial service isHost check: Object
+streaming-audio-engine.ts:78 🎵 Master output initialized
+performance.tsx:531 🔍 Debug values: Object
+performance.tsx:605 🎭 Broadcast host effect: Object
+performance.tsx:615 🎭 Not broadcasting - not host
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 210fecfc-e141-4475-80ae-5e71a8157670
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 6bcd6e50-6651-4428-803e-d9064b64a2b9
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 82fbb548-f33e-42b4-b4c9-9aa2e9e191de
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track a95cdae0-fc75-4fe4-969d-09a1fd016b66
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track d296c1de-d95f-4777-a2e7-a59bd7b23343
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track fbf3551f-a8a0-4dbc-b9b9-0bd39d48e2fa
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 40553031-7831-4d51-9daf-adc5b873bfa8
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 4b09914e-267d-4808-9493-7b2d7562d5cf
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 6af30322-f25b-4eac-9bee-382e78351eb9
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 7634c119-68ed-431b-85bb-2f1f5d413872
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track be3b8c86-172f-495e-9461-80a4f8a72694
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 0a0a13af-8211-41ad-9daf-51704fbb8056
+indexed-db-storage.ts:404 🔍 Retrieved 0 mute regions for track 30274069-56a7-4178-9e2f-dee1aab13104
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 31b4b57b-b112-4c5e-8627-00a0d1424913
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 49435252-08de-4bd3-81d9-5b80a3071c95
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 5299cf3c-efc0-424f-a984-fe18ec32cc00
+indexed-db-storage.ts:404 🔍 Retrieved 1 mute regions for track 97be6a8c-e646-4723-b5b4-f5389915fd22
+performance.tsx:451 📋 Loaded 3 songs from IndexedDB (alphabetically sorted)
+dialog.tsx:542  Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ dialog.tsx:542
+useMidiDevices.ts:712 🎹 Initializing MIDI before refresh...
+useMidiDevices.ts:312 🎹 Initializing USB MIDI (lightweight)...
+midi-device-manager.tsx:137 🎹 MIDI scan timeout reached
+useMidiDevices.ts:320 ✅ USB MIDI access granted
+useMidiDevices.ts:333 🎹 USB device change: MidiPort - connected
+useMidiDevices.ts:333 🎹 USB device change: MidiPort - disconnected

@@ -164,10 +164,10 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
               size="sm"
               onClick={handleScan}
               data-testid="button-scan-devices"
-              title="Scan for Bluetooth MIDI devices"
+              title="Scan for MIDI devices"
             >
-              <Bluetooth className="h-4 w-4 mr-2" />
-              Scan Bluetooth
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Scan MIDI
             </Button>
           </DialogTitle>
         </DialogHeader>

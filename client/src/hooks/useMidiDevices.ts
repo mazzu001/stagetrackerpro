@@ -522,11 +522,7 @@ export function useMidiDevices(): UseMidiDevicesReturn {
         return false;
       }
       
-      // Check if device needs BLE adapter on Android
-      if (browserInfo.isAndroidBrowser && shouldUseBleAdapterInternal(device)) {
-        console.log(`🔵 Device ${device.name} requires BLE adapter on Android - use connectBleDevice() with user gesture`);
-        throw new Error('BLE_ADAPTER_REQUIRED');
-      }
+      // No special handling needed - Web MIDI API works the same on all platforms
       
       console.log(`🎹 Connecting to ${device.name} (${device.manufacturer})...`);
       
@@ -577,9 +573,6 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       
     } catch (error) {
       console.error(`❌ Failed to connect to device ${deviceId}:`, error);
-      if (error instanceof Error && error.message === 'BLE_ADAPTER_REQUIRED') {
-        throw error; // Re-throw BLE adapter requirement
-      }
       return false;
     }
   }, [browserInfo.isAndroidBrowser, shouldUseBleAdapterInternal, initializeMidi, refreshDeviceList]);

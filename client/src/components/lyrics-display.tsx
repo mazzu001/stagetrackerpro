@@ -221,10 +221,10 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
       if (executedCommands.has(lineKey)) return;
       
       // Execute all MIDI commands for this line
-      line.midiCommands.forEach((commandString, commandIndex) => {
+      line.midiCommands.forEach(async (commandString, commandIndex) => {
         const command = parseMidiCommand(commandString);
         if (command) {
-          const success = sendMidiCommand(command);
+          const success = await sendMidiCommand(command);
           if (success) {
             console.log(`🎹 Executed MIDI command from lyrics: ${commandString} at ${line.timestamp}s (line ${lineIndex + 1}/${currentLines.length})`);
           } else {
@@ -258,10 +258,10 @@ export function LyricsDisplay({ song, currentTime, duration, onEditLyrics, isPla
     console.log(`🎵 Executing ${setupCommands.length} setup MIDI commands for song: ${song.title || 'Untitled'}`);
     
     // Execute all setup MIDI commands
-    setupCommands.forEach((commandString, index) => {
+    setupCommands.forEach(async (commandString, index) => {
       const command = parseMidiCommand(commandString);
       if (command) {
-        const success = sendMidiCommand(command);
+        const success = await sendMidiCommand(command);
         if (success) {
           console.log(`🎹 Executed setup MIDI command: ${commandString}`);
         } else {

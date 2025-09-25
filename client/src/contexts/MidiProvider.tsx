@@ -12,7 +12,7 @@ interface MidiContextType {
   connectDevice: (deviceId: string) => Promise<boolean>;
   connectBleDevice: (deviceId: string) => Promise<boolean>;
   disconnectDevice: (deviceId: string) => Promise<boolean>;
-  sendMidiCommand: (command: any) => boolean;
+  sendMidiCommand: (command: any, deviceIds?: string[]) => Promise<boolean>;
   parseMidiCommand: (commandString: string) => any;
   refreshDevices: () => Promise<void>;
   shouldUseBleAdapter: (device: { name?: string | null }) => boolean;

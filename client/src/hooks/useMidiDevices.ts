@@ -30,7 +30,7 @@ export interface UseMidiDevicesReturn {
   connectDevice: (deviceId: string) => Promise<boolean>;
   connectBleDevice: (deviceId: string) => Promise<boolean>; // Requires user gesture
   disconnectDevice: (deviceId: string) => Promise<boolean>;
-  sendMidiCommand: (command: MidiCommand, deviceIds?: string[]) => boolean;
+  sendMidiCommand: (command: MidiCommand, deviceIds?: string[]) => Promise<boolean>;
   parseMidiCommand: (commandString: string) => MidiCommand | null;
   refreshDevices: () => Promise<void>;
   shouldUseBleAdapter: (device: { name?: string | null }) => boolean; // Helper for UI
@@ -676,8 +676,8 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     }
   }, []);
 
-  // Send MIDI command to devices (existing function, unchanged)
-  const sendMidiCommand = useCallback((command: MidiCommand, deviceIds?: string[]): boolean => {
+  // Send MIDI command to devices (with proper device opening for Android)
+  const sendMidiCommand = useCallback(async (command: MidiCommand, deviceIds?: string[]): Promise<boolean> => {
     if (!midiAccessRef.current) {
       console.error('❌ MIDI not initialized');
       return false;
@@ -712,21 +712,33 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     }
     
     let sent = false;
-    targetDevices.forEach(deviceId => {
+    for (const deviceId of targetDevices) {
       const device = deviceConnectionsRef.current.get(deviceId);
       if (device && device.type === 'output') {
         try {
+          // OPTION 1 FIX: Ensure device is open before sending (especially for Android)
+          if (device.connection !== 'open') {
+            console.log(`📱 Opening output device ${device.name} before sending (was: ${device.connection})`);
+            await device.open();
+            
+            // Add small delay for Android devices to ensure connection is ready
+            if (browserInfo.isAndroidBrowser) {
+              console.log(`📱 Android detected - adding 100ms delay after opening device`);
+              await new Promise(resolve => setTimeout(resolve, 100));
+            }
+          }
+          
           (device as MIDIOutput).send(data);
-          console.log(`🎹 Sent MIDI command to ${device.name}:`, command);
+          console.log(`🎹 Sent MIDI command to ${device.name}:`, command, `connection state: ${device.connection}`);
           sent = true;
         } catch (error) {
           console.error(`❌ Failed to send MIDI to ${device.name}:`, error);
         }
       }
-    });
+    }
     
     return sent;
-  }, [connectedDevices]);
+  }, [connectedDevices, browserInfo.isAndroidBrowser]);
 
   // Refresh devices (manual trigger)
   const refreshDevices = useCallback(async () => {

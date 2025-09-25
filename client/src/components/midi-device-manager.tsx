@@ -97,7 +97,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
   };
 
 
-  const handleTestCommand = () => {
+  const handleTestCommand = async () => {
     const command = parseMidiCommand(testCommand);
     if (!command) {
       alert('Invalid MIDI command format. Use: [[PC:value:channel]] or [[CC:controller:value:channel]]');
@@ -110,7 +110,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
       return;
     }
 
-    const success = sendMidiCommand(command);
+    const success = await sendMidiCommand(command);
     if (success) {
       console.log(`✅ Sent test command: ${testCommand}`);
     } else {

@@ -12,6 +12,12 @@ export interface StreamingTrack {
   gainNode: GainNode | null;
   panNode: StereoPannerNode | null;
   analyzerNode: AnalyserNode | null;
+  // Enhanced panning nodes for 100% isolation
+  channelSplitter?: ChannelSplitterNode | null;
+  leftGainNode?: GainNode | null;
+  rightGainNode?: GainNode | null;
+  channelMerger?: ChannelMergerNode | null;
+  useEnhancedPanning?: boolean;
   // Pitch shifting removed
   volume: number;
   balance: number;
@@ -40,6 +46,7 @@ export class StreamingAudioEngine {
   private onSongEndCallback: (() => void) | null = null;
   private scheduledGainChanges: Map<string, number[]> = new Map(); // Track scheduled gain automation IDs
   private songContext: { userEmail: string; songId: string } | null = null;
+  private useEnhancedPanning: boolean = true; // Enable 100% isolation panning
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -255,14 +262,53 @@ export class StreamingAudioEngine {
       try {
         track.source = this.audioContext.createMediaElementSource(track.audioElement);
         track.gainNode = this.audioContext.createGain();
-        track.panNode = this.audioContext.createStereoPanner();
         track.analyzerNode = this.audioContext.createAnalyser();
         
-        // Connect audio graph
-        track.source.connect(track.gainNode);
-        track.gainNode.connect(track.panNode);
-        track.panNode.connect(track.analyzerNode);
-        track.analyzerNode.connect(this.state.masterGainNode!);
+        if (this.useEnhancedPanning) {
+          // Enhanced panning for 100% isolation
+          track.channelSplitter = this.audioContext.createChannelSplitter(2);
+          track.leftGainNode = this.audioContext.createGain();
+          track.rightGainNode = this.audioContext.createGain();
+          track.channelMerger = this.audioContext.createChannelMerger(2);
+          track.useEnhancedPanning = true;
+          
+          // Connect enhanced audio graph
+          track.source.connect(track.gainNode);
+          track.gainNode.connect(track.channelSplitter);
+          
+          // Connect channels through individual gain nodes
+          track.channelSplitter.connect(track.leftGainNode, 0); // Left channel
+          track.channelSplitter.connect(track.rightGainNode, 1); // Right channel
+          
+          // Merge back to stereo
+          track.leftGainNode.connect(track.channelMerger, 0, 0); // Left to left
+          track.rightGainNode.connect(track.channelMerger, 0, 1); // Right to right
+          
+          // Connect to analyzer and master
+          track.channelMerger.connect(track.analyzerNode);
+          track.analyzerNode.connect(this.state.masterGainNode!);
+          
+          console.log(`🎯 Enhanced audio nodes created for: ${track.name} (100% isolation panning)`);
+        } else {
+          // Fallback to standard StereoPanner
+          track.panNode = this.audioContext.createStereoPanner();
+          track.useEnhancedPanning = false;
+          
+          // Connect standard audio graph
+          track.source.connect(track.gainNode);
+          track.gainNode.connect(track.panNode);
+          track.panNode.connect(track.analyzerNode);
+          track.analyzerNode.connect(this.state.masterGainNode!);
+          
+          // Apply standard panning
+          track.panNode.pan.value = track.balance / 100;
+          
+          console.log(`🔧 Standard audio nodes created for: ${track.name}`, {
+            nodeType: 'StereoPannerNode',
+            initialBalance: track.balance,
+            initialPanValue: track.balance / 100
+          });
+        }
         
         // Setup analyzer
         track.analyzerNode.fftSize = 512;
@@ -271,12 +317,13 @@ export class StreamingAudioEngine {
         // Apply initial volume/balance/mute settings
         const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
         track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
-        track.panNode.pan.value = track.balance / 100; // Convert -100..100 to -1..1
         
-        console.log(`🔧 Audio nodes created for: ${track.name}`, {
-          nodeType: 'StereoPannerNode',
-          initialBalance: track.balance,
-          initialPanValue: track.balance / 100
+        // Apply initial balance
+        this.applyBalance(track, track.balance);
+        
+        console.log(`✅ Audio setup complete for: ${track.name}`, {
+          enhancedPanning: track.useEnhancedPanning,
+          initialBalance: track.balance
         });
       } catch (nodeError) {
         console.error(`❌ Failed to create audio nodes for ${track.name}:`, nodeError);
@@ -482,23 +529,60 @@ export class StreamingAudioEngine {
     }
   }
 
+  // Helper method to apply balance using appropriate panning method
+  private applyBalance(track: StreamingTrack, balance: number) {
+    if (track.useEnhancedPanning && track.leftGainNode && track.rightGainNode) {
+      // Enhanced panning with 100% isolation
+      // Balance range: -100 (full left) to +100 (full right)
+      const normalizedBalance = balance / 100; // Convert to -1 to +1
+      
+      // Calculate left and right gains for true isolation
+      // At -100: left = 1, right = 0
+      // At 0: left = 1, right = 1  
+      // At +100: left = 0, right = 1
+      let leftGain = 1;
+      let rightGain = 1;
+      
+      if (normalizedBalance < 0) {
+        // Panning left: reduce right channel
+        rightGain = 1 + normalizedBalance; // normalizedBalance is negative, so this reduces gain
+      } else if (normalizedBalance > 0) {
+        // Panning right: reduce left channel
+        leftGain = 1 - normalizedBalance; // normalizedBalance is positive, so this reduces gain
+      }
+      
+      track.leftGainNode.gain.value = leftGain;
+      track.rightGainNode.gain.value = rightGain;
+      
+      console.log(`🎯 Enhanced balance applied to "${track.name}":`, {
+        uiBalance: balance,
+        normalizedBalance,
+        leftGain: leftGain.toFixed(2),
+        rightGain: rightGain.toFixed(2),
+        isolation: balance === -100 ? 'Full Left (100%)' : 
+                   balance === 100 ? 'Full Right (100%)' : 
+                   `Center (L:${(leftGain * 100).toFixed(0)}% R:${(rightGain * 100).toFixed(0)}%)`
+      });
+    } else if (track.panNode) {
+      // Standard StereoPanner (limited isolation)
+      const panValue = balance / 100;
+      track.panNode.pan.value = panValue;
+      
+      console.log(`🎚️ Standard balance applied to "${track.name}":`, {
+        uiBalance: balance,
+        panValue,
+        limitation: 'StereoPanner (~70% max isolation)'
+      });
+    }
+  }
+
   setTrackBalance(trackId: string, balance: number) {
     const track = this.state.tracks.find(t => t.id === trackId);
     if (track) {
       track.balance = balance;
       this.ensureTrackAudioNodes(track);
-      if (track.panNode) {
-        // Convert -100..100 range to -1..1 for Web Audio API
-        const panValue = balance / 100;
-        track.panNode.pan.value = panValue;
-        
-        // Debug logging for panning
-        console.log(`🎚️ Track "${track.name}" balance set:`, {
-          uiBalance: balance,
-          panValue: panValue,
-          expectedIsolation: Math.abs(panValue) === 1 ? '100% (but limited by StereoPannerNode)' : `${Math.abs(panValue * 100).toFixed(0)}%`
-        });
-      }
+      // Use the new applyBalance method for both panning types
+      this.applyBalance(track, balance);
     }
   }
 
@@ -816,6 +900,36 @@ export class StreamingAudioEngine {
             // Node might already be disconnected
           }
         }
+        // Disconnect enhanced panning nodes if they exist
+        if (track.channelSplitter) {
+          try {
+            track.channelSplitter.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        if (track.leftGainNode) {
+          try {
+            track.leftGainNode.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        if (track.rightGainNode) {
+          try {
+            track.rightGainNode.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        if (track.channelMerger) {
+          try {
+            track.channelMerger.disconnect();
+          } catch (e) {
+            // Node might already be disconnected
+          }
+        }
+        // Disconnect standard panning node if it exists
         if (track.panNode) {
           try {
             track.panNode.disconnect();
@@ -842,6 +956,10 @@ export class StreamingAudioEngine {
       track.gainNode = null;
       track.panNode = null;
       track.analyzerNode = null;
+      track.channelSplitter = null;
+      track.leftGainNode = null;
+      track.rightGainNode = null;
+      track.channelMerger = null;
     });
     this.state.tracks = [];
     

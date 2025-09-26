@@ -10,7 +10,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useUpgradePrompt } from "@/hooks/useSubscription";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { ListMusic, Plus, FolderOpen, Search, ExternalLink, Loader2, Trash2 } from "lucide-react";
-import { SongDeletionManager } from "@/lib/song-deletion-manager";
 import StorageCleanup from "@/components/storage-cleanup";
 import type { Song, InsertSong } from "@shared/schema";
 
@@ -236,32 +235,142 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
         }
       }
       
-      // Delete all selected songs with complete cleanup
+      const userKey = userEmail.replace(/[@.]/g, '_');
       const songIds = Array.from(selectedSongs);
-      const result = await SongDeletionManager.deleteMultiple(userEmail, songIds);
       
-      // Invalidate query cache to refresh the list
-      queryClient.invalidateQueries({ queryKey: ['/api/songs'] });
-      
-      // Clear selection
-      setSelectedSongs(new Set());
-      
-      // Clear selected song if it was deleted
-      if (selectedSongId && selectedSongs.has(selectedSongId)) {
-        onSongSelect('');
-      }
-      
-      // Show result
-      if (result.failed > 0) {
-        toast({
-          title: "Partial deletion",
-          description: `${result.successful} songs deleted successfully, ${result.failed} failed.`,
-          variant: "destructive"
+      try {
+        // Open MusicAppStorage database
+        const dbName = `MusicAppStorage::${userKey}`;
+        const db = await new Promise<IDBDatabase>((resolve, reject) => {
+          const request = indexedDB.open(dbName);
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error);
         });
-      } else {
+        
+        // Delete each song
+        for (const songId of songIds) {
+          // DELETE FROM songs WHERE id = songId
+          const songTx = db.transaction('songs', 'readwrite');
+          const deleteRequest = songTx.objectStore('songs').delete(songId);
+          await new Promise<void>((resolve, reject) => {
+            deleteRequest.onsuccess = () => {
+              console.log(`Deleted song ${songId} from songs table`);
+              resolve();
+            };
+            deleteRequest.onerror = () => reject(deleteRequest.error);
+          });
+          
+          // DELETE FROM tracks WHERE songId = songId
+          const trackTx = db.transaction('tracks', 'readwrite');
+          const tracks = trackTx.objectStore('tracks');
+          const trackIds: string[] = [];
+          
+          // Find and delete all tracks for this song
+          await new Promise<void>((resolve) => {
+            const index = tracks.index('songId');
+            const range = IDBKeyRange.only(songId);
+            const cursor = index.openCursor(range);
+            cursor.onsuccess = (event: any) => {
+              const cursor = event.target.result;
+              if (cursor) {
+                trackIds.push(cursor.value.id);
+                cursor.delete();
+                cursor.continue();
+              } else {
+                resolve();
+              }
+            };
+          });
+          console.log(`Deleted ${trackIds.length} tracks for song ${songId}`);
+          
+          // DELETE FROM muteRegions WHERE trackId IN (deleted track ids)
+          if (trackIds.length > 0) {
+            const muteTx = db.transaction('muteRegions', 'readwrite');
+            const muteRegions = muteTx.objectStore('muteRegions');
+            let muteCount = 0;
+            for (const trackId of trackIds) {
+              await new Promise<void>((resolve) => {
+                const index = muteRegions.index('trackId');
+                const range = IDBKeyRange.only(trackId);
+                const cursor = index.openCursor(range);
+                cursor.onsuccess = (event: any) => {
+                  const cursor = event.target.result;
+                  if (cursor) {
+                    cursor.delete();
+                    muteCount++;
+                    cursor.continue();
+                  } else {
+                    resolve();
+                  }
+                };
+              });
+            }
+            console.log(`Deleted ${muteCount} mute regions for song ${songId}`);
+          }
+        }
+        
+        // Clear audio files from MusicAppDB database
+        const dbName2 = `MusicAppDB_${userKey}`;
+        try {
+          const db2 = await new Promise<IDBDatabase>((resolve, reject) => {
+            const request = indexedDB.open(dbName2);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+          });
+          
+          // DELETE FROM audioFiles WHERE key starts with songId
+          const audioTx = db2.transaction('audioFiles', 'readwrite');
+          const audioFiles = audioTx.objectStore('audioFiles');
+          let audioCount = 0;
+          
+          for (const songId of songIds) {
+            await new Promise<void>((resolve) => {
+              const cursor = audioFiles.openCursor();
+              cursor.onsuccess = (event: any) => {
+                const cursor = event.target.result;
+                if (cursor) {
+                  const key = cursor.key.toString();
+                  if (key.startsWith(songId)) {
+                    cursor.delete();
+                    audioCount++;
+                  }
+                  cursor.continue();
+                } else {
+                  resolve();
+                }
+              };
+            });
+          }
+          console.log(`Deleted ${audioCount} audio files`);
+          db2.close();
+        } catch (e) {
+          console.log('MusicAppDB not found or empty, skipping audio file cleanup');
+        }
+        
+        db.close();
+        
+        // Clear selection
+        setSelectedSongs(new Set());
+        
+        // Clear selected song if it was deleted
+        if (selectedSongId && selectedSongs.has(selectedSongId)) {
+          onSongSelect('');
+        }
+        
         toast({
-          title: "Songs deleted",
-          description: `${result.successful} song(s) have been completely removed.`
+          title: `${songIds.length} song(s) deleted`,
+          description: "Songs and all associated data removed."
+        });
+        
+        // Refresh the page to update the song list
+        setTimeout(() => window.location.reload(), 500);
+        
+      } catch (error) {
+        console.error('Failed to delete songs:', error);
+        toast({
+          title: "Failed to delete songs",
+          description: "Error accessing database",
+          variant: "destructive"
         });
       }
     }

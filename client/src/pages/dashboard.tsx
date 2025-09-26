@@ -1045,12 +1045,127 @@ export default function Dashboard() {
                     </p>
                     <Button 
                       variant="destructive"
-                      onClick={() => setShowDeleteAllDialog(true)}
+                      onClick={async () => {
+                        if (!user?.email) return;
+                        
+                        // Simple confirmation
+                        if (!confirm("This will empty all databases. Are you sure?")) return;
+                        
+                        setIsDeletingAll(true);
+                        
+                        try {
+                          // Open and clear each IndexedDB store
+                          const userKey = user.email.replace(/[@.]/g, '_');
+                          
+                          // Clear MusicAppStorage database
+                          const dbName1 = `MusicAppStorage::${userKey}`;
+                          try {
+                            const db1 = await new Promise<IDBDatabase>((resolve, reject) => {
+                              const request = indexedDB.open(dbName1);
+                              request.onsuccess = () => resolve(request.result);
+                              request.onerror = () => reject(request.error);
+                            });
+                            
+                            // Clear each object store
+                            const stores1 = ['songs', 'tracks', 'muteRegions', 'audioFiles'];
+                            for (const storeName of stores1) {
+                              try {
+                                const tx = db1.transaction(storeName, 'readwrite');
+                                const store = tx.objectStore(storeName);
+                                const clearRequest = store.clear();
+                                
+                                // Wait for the clear to complete
+                                await new Promise<void>((resolve, reject) => {
+                                  clearRequest.onsuccess = () => {
+                                    console.log(`Cleared ${storeName} in ${dbName1}`);
+                                    resolve();
+                                  };
+                                  clearRequest.onerror = () => reject(clearRequest.error);
+                                });
+                              } catch (e) {
+                                console.log(`Store ${storeName} may not exist, skipping`);
+                              }
+                            }
+                            db1.close();
+                          } catch (e) {
+                            console.log(`Database ${dbName1} may not exist, skipping`);
+                          }
+                          
+                          // Clear MusicAppDB database (audio files)
+                          const dbName2 = `MusicAppDB_${userKey}`;
+                          try {
+                            const db2 = await new Promise<IDBDatabase>((resolve, reject) => {
+                              const request = indexedDB.open(dbName2);
+                              request.onsuccess = () => resolve(request.result);
+                              request.onerror = () => reject(request.error);
+                            });
+                            
+                            const stores2 = ['audioFiles'];
+                            for (const storeName of stores2) {
+                              try {
+                                const tx = db2.transaction(storeName, 'readwrite');
+                                const store = tx.objectStore(storeName);
+                                const clearRequest = store.clear();
+                                
+                                // Wait for the clear to complete
+                                await new Promise<void>((resolve, reject) => {
+                                  clearRequest.onsuccess = () => {
+                                    console.log(`Cleared ${storeName} in ${dbName2}`);
+                                    resolve();
+                                  };
+                                  clearRequest.onerror = () => reject(clearRequest.error);
+                                });
+                              } catch (e) {
+                                console.log(`Store ${storeName} may not exist, skipping`);
+                              }
+                            }
+                            db2.close();
+                          } catch (e) {
+                            console.log(`Database ${dbName2} may not exist, skipping`);
+                          }
+                          
+                          // Clear localStorage items for this user
+                          const keysToDelete: string[] = [];
+                          for (let i = 0; i < localStorage.length; i++) {
+                            const key = localStorage.key(i);
+                            if (key && (
+                              key.includes(user.email) || 
+                              key.includes('songs') || 
+                              key.includes('waveform') ||
+                              key.includes('mute_regions') ||
+                              key.includes('audio_levels')
+                            )) {
+                              keysToDelete.push(key);
+                            }
+                          }
+                          keysToDelete.forEach(key => {
+                            localStorage.removeItem(key);
+                            console.log(`Removed localStorage: ${key}`);
+                          });
+                          
+                          toast({
+                            title: "Databases Emptied",
+                            description: "All data has been cleared. Database structure intact."
+                          });
+                          
+                          // Reload page
+                          setTimeout(() => window.location.reload(), 1000);
+                          
+                        } catch (error) {
+                          console.error("Failed to empty databases:", error);
+                          toast({
+                            title: "Failed to empty databases",
+                            variant: "destructive"
+                          });
+                        } finally {
+                          setIsDeletingAll(false);
+                        }
+                      }}
                       disabled={isDeletingAll}
                       data-testid="button-delete-all"
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
-                      Delete All Data
+                      {isDeletingAll ? "Emptying..." : "Empty All Databases"}
                     </Button>
                   </div>
                 </CardContent>

@@ -112,7 +112,7 @@ export class LocalSongStorageDB {
     
     const newTrack = await db.addTrack(songId, {
       name: track.name,
-      volume: track.volume ?? 50,
+      volume: track.volume ?? 100,
       balance: track.balance ?? 0,
       isMuted: track.isMuted ?? false,
       isSolo: track.isSolo ?? false,

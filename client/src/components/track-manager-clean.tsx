@@ -108,7 +108,7 @@ export default function TrackManager({
             id: track.id,
             name: track.name,
             url: audioUrl,
-            volume: track.volume || 50,
+            volume: track.volume || 100,
             balance: track.balance || 0,
             isMuted: track.isMuted === true,
             isSolo: track.isSolo === true,
@@ -218,7 +218,7 @@ export default function TrackManager({
           // Add track to local state (updates UI incrementally)
           loadedTracks.push(track);
           trackValues[track.id] = {
-            volume: track.volume || 50,  // Default to 50 as per track schema
+            volume: track.volume || 100,  // Default to 100 for full volume
             balance: track.balance || 0
           };
 
@@ -544,7 +544,7 @@ export default function TrackManager({
         localFileName: audioFileName,
         mimeType: file.type,
         fileSize: file.size,
-        volume: 50,
+        volume: 100,
         balance: 0,
         isMuted: false,
         isSolo: false

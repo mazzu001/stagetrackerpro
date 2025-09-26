@@ -321,7 +321,7 @@ export class IndexedDBStorage {
       ...track,
       id: crypto.randomUUID(),
       songId,
-      volume: track.volume ?? 50,
+      volume: track.volume ?? 100,
       balance: track.balance ?? 0,
       isMuted: track.isMuted ?? false,
       isSolo: track.isSolo ?? false,

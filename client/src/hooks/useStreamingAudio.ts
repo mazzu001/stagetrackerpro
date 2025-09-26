@@ -108,7 +108,7 @@ export function useStreamingAudio(): UseStreamingAudioReturn {
             id: track.id,
             name: track.name,
             url: audioUrl,
-            volume: track.volume || 50,
+            volume: track.volume || 100,
             balance: track.balance || 0,
             isMuted: track.isMuted === true, // Ensure boolean, preserve true values
             isSolo: track.isSolo === true, // Ensure boolean, preserve true values

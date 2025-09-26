@@ -1,3 +1,2 @@
-Mute region bug fixed - mute regions now persist
-Import / Export bug fixed. Now supports up to 35 songs
-We sincerely hope you enjoy StageTracker Pro
+Panning now 100 percent hard balance. VU Meters set to unity. Other small fixes. 
+(V.1.1.6.8)

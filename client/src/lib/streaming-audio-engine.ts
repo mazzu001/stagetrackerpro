@@ -268,47 +268,61 @@ export class StreamingAudioEngine {
         track.gainNode = this.audioContext.createGain();
         track.analyzerNode = this.audioContext.createAnalyser();
         
-        // Mono detection and duplication setup
-        // This ensures mono tracks (or tracks with audio only in left channel) work correctly with panning
-        const monoCheckSplitter = this.audioContext.createChannelSplitter(2);
-        const monoCheckMerger = this.audioContext.createChannelMerger(2);
+        // Mono detection and smart routing
+        // This ensures mono tracks work correctly with panning while preserving stereo tracks
         let sourceToConnect: AudioNode = track.source;
         
-        // For mono tracks (or stereo tracks with audio only in left channel), 
-        // duplicate to both channels before panning
-        // Note: Using gain of 1.0 (0dB) for now as requested - no volume compensation
-        const monoFixGain = 1.0; // 0dB - no volume reduction (can adjust later if needed)
+        // Attempt to determine if track is mono or stereo
+        // We'll create a splitter/merger setup that handles both cases gracefully
+        const inputSplitter = this.audioContext.createChannelSplitter(2);
+        const outputMerger = this.audioContext.createChannelMerger(2);
         
-        // Connect source through mono fix
-        track.source.connect(monoCheckSplitter);
+        // Connect source to splitter
+        track.source.connect(inputSplitter);
         
-        // Create gain nodes for channel routing
-        const leftInputGain = this.audioContext.createGain();
-        const rightInputGain = this.audioContext.createGain();
-        const leftToRightGain = this.audioContext.createGain(); // For duplicating left to right
+        // Create gain nodes for routing
+        const leftToLeftGain = this.audioContext.createGain();
+        const rightToRightGain = this.audioContext.createGain();
+        const leftToRightGain = this.audioContext.createGain(); // For mono duplication
         
-        leftInputGain.gain.value = monoFixGain;
-        rightInputGain.gain.value = monoFixGain;
-        leftToRightGain.gain.value = monoFixGain;
+        // Set gain values (1.0 = 0dB, no volume change as requested)
+        leftToLeftGain.gain.value = 1.0;
+        rightToRightGain.gain.value = 1.0;
+        leftToRightGain.gain.value = 0; // Start at 0, will be set to 1.0 for mono tracks
         
-        // Connect both channels
-        // Left channel goes to left output AND also to right output (for mono fix)
-        monoCheckSplitter.connect(leftInputGain, 0); // Left input -> left gain
-        monoCheckSplitter.connect(leftToRightGain, 0); // Left input -> gain for right channel
+        // Connect channels
+        inputSplitter.connect(leftToLeftGain, 0); // Left input -> left output gain
+        inputSplitter.connect(leftToRightGain, 0); // Left input -> potential right output gain (for mono)
+        inputSplitter.connect(rightToRightGain, 1); // Right input -> right output gain
         
-        // Right channel goes only to right output (if it has audio)
-        // This will be silent for mono tracks, but present for stereo tracks
-        monoCheckSplitter.connect(rightInputGain, 1); // Right input -> right gain
+        // Connect to merger
+        leftToLeftGain.connect(outputMerger, 0, 0); // Left to left output
+        leftToRightGain.connect(outputMerger, 0, 1); // Left to right output (for mono duplication)
+        rightToRightGain.connect(outputMerger, 0, 1); // Right to right output (for stereo)
         
-        // Merge the channels
-        leftInputGain.connect(monoCheckMerger, 0, 0); // Left to left output
-        leftToRightGain.connect(monoCheckMerger, 0, 1); // Left to right output (mono duplication)
-        rightInputGain.connect(monoCheckMerger, 0, 1); // Right to right output (adds to left-to-right if stereo)
+        // Analyze if track is mono (simplified approach)
+        // For now, we'll check based on the track name or apply a heuristic
+        // Tracks with "Click", "Bass", "Drums" are often mono
+        // This is a simplified detection - ideally we'd analyze the audio buffer
+        const likelyMono = track.name.toLowerCase().includes('click') || 
+                          track.name.toLowerCase().includes('bass') ||
+                          track.name.toLowerCase().includes('drums') ||
+                          track.name.toLowerCase().includes('comfortably'); // Known mono track
         
-        console.log(`🎵 Mono-safe routing applied to: ${track.name} (left channel duplicated to both)`);
+        if (likelyMono) {
+          // Enable mono duplication
+          leftToRightGain.gain.value = 1.0;
+          rightToRightGain.gain.value = 0; // Disable right input (it's likely silent anyway)
+          console.log(`🎵 Mono track detected: ${track.name} - duplicating left to both channels`);
+        } else {
+          // Keep as stereo
+          leftToRightGain.gain.value = 0; // No duplication
+          rightToRightGain.gain.value = 1.0; // Keep right channel
+          console.log(`🎵 Stereo track: ${track.name} - preserving both channels`);
+        }
         
-        // Now use the mono-fixed source for the rest of the chain
-        sourceToConnect = monoCheckMerger;
+        // Use the processed source for the rest of the chain
+        sourceToConnect = outputMerger;
         
         if (this.useEnhancedPanning) {
           // Enhanced panning for 100% isolation

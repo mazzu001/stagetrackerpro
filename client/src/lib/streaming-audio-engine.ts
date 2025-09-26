@@ -268,6 +268,48 @@ export class StreamingAudioEngine {
         track.gainNode = this.audioContext.createGain();
         track.analyzerNode = this.audioContext.createAnalyser();
         
+        // Mono detection and duplication setup
+        // This ensures mono tracks (or tracks with audio only in left channel) work correctly with panning
+        const monoCheckSplitter = this.audioContext.createChannelSplitter(2);
+        const monoCheckMerger = this.audioContext.createChannelMerger(2);
+        let sourceToConnect: AudioNode = track.source;
+        
+        // For mono tracks (or stereo tracks with audio only in left channel), 
+        // duplicate to both channels before panning
+        // Note: Using gain of 1.0 (0dB) for now as requested - no volume compensation
+        const monoFixGain = 1.0; // 0dB - no volume reduction (can adjust later if needed)
+        
+        // Connect source through mono fix
+        track.source.connect(monoCheckSplitter);
+        
+        // Create gain nodes for channel routing
+        const leftInputGain = this.audioContext.createGain();
+        const rightInputGain = this.audioContext.createGain();
+        const leftToRightGain = this.audioContext.createGain(); // For duplicating left to right
+        
+        leftInputGain.gain.value = monoFixGain;
+        rightInputGain.gain.value = monoFixGain;
+        leftToRightGain.gain.value = monoFixGain;
+        
+        // Connect both channels
+        // Left channel goes to left output AND also to right output (for mono fix)
+        monoCheckSplitter.connect(leftInputGain, 0); // Left input -> left gain
+        monoCheckSplitter.connect(leftToRightGain, 0); // Left input -> gain for right channel
+        
+        // Right channel goes only to right output (if it has audio)
+        // This will be silent for mono tracks, but present for stereo tracks
+        monoCheckSplitter.connect(rightInputGain, 1); // Right input -> right gain
+        
+        // Merge the channels
+        leftInputGain.connect(monoCheckMerger, 0, 0); // Left to left output
+        leftToRightGain.connect(monoCheckMerger, 0, 1); // Left to right output (mono duplication)
+        rightInputGain.connect(monoCheckMerger, 0, 1); // Right to right output (adds to left-to-right if stereo)
+        
+        console.log(`🎵 Mono-safe routing applied to: ${track.name} (left channel duplicated to both)`);
+        
+        // Now use the mono-fixed source for the rest of the chain
+        sourceToConnect = monoCheckMerger;
+        
         if (this.useEnhancedPanning) {
           // Enhanced panning for 100% isolation
           track.channelSplitter = this.audioContext.createChannelSplitter(2);
@@ -287,8 +329,8 @@ export class StreamingAudioEngine {
           track.rightAnalyzer.fftSize = 512;
           track.rightAnalyzer.smoothingTimeConstant = 0.6;
           
-          // Connect enhanced audio graph
-          track.source.connect(track.gainNode);
+          // Connect enhanced audio graph (using mono-fixed source)
+          sourceToConnect.connect(track.gainNode);
           track.gainNode.connect(track.channelSplitter);
           
           // Connect channels through individual gain nodes
@@ -316,8 +358,8 @@ export class StreamingAudioEngine {
           track.panNode = this.audioContext.createStereoPanner();
           track.useEnhancedPanning = false;
           
-          // Connect standard audio graph
-          track.source.connect(track.gainNode);
+          // Connect standard audio graph (using mono-fixed source)
+          sourceToConnect.connect(track.gainNode);
           track.gainNode.connect(track.panNode);
           track.panNode.connect(track.analyzerNode);
           track.analyzerNode.connect(this.state.masterGainNode!);

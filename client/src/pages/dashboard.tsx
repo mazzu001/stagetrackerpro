@@ -1046,115 +1046,99 @@ export default function Dashboard() {
                     <Button 
                       variant="destructive"
                       onClick={async () => {
-                        if (!user?.email) return;
+                        console.log("Empty All Databases clicked");
+                        if (!user?.email) {
+                          console.log("No user email");
+                          return;
+                        }
                         
                         // Simple confirmation
-                        if (!confirm("This will empty all databases. Are you sure?")) return;
+                        if (!confirm("This will empty all databases. Are you sure?")) {
+                          console.log("User cancelled");
+                          return;
+                        }
                         
+                        console.log("Starting database deletion for:", user.email);
                         setIsDeletingAll(true);
                         
                         try {
-                          // Open and clear each IndexedDB store
                           const userKey = user.email.replace(/[@.]/g, '_');
                           
-                          // Clear MusicAppStorage database
-                          const dbName1 = `MusicAppStorage::${userKey}`;
-                          try {
-                            const db1 = await new Promise<IDBDatabase>((resolve, reject) => {
-                              const request = indexedDB.open(dbName1);
-                              request.onsuccess = () => resolve(request.result);
-                              request.onerror = () => reject(request.error);
-                            });
+                          // List all IndexedDB databases
+                          const allDatabases = await indexedDB.databases();
+                          console.log("All databases:", allDatabases);
+                          
+                          // Clear each database that matches the user
+                          for (const dbInfo of allDatabases) {
+                            if (!dbInfo.name) continue;
                             
-                            // Clear each object store
-                            const stores1 = ['songs', 'tracks', 'muteRegions', 'audioFiles'];
-                            for (const storeName of stores1) {
+                            // Check if this database belongs to the user
+                            if (dbInfo.name.includes(userKey) || 
+                                dbInfo.name === `MusicAppStorage::${userKey}` ||
+                                dbInfo.name === `MusicAppDB_${userKey}`) {
+                              
+                              console.log(`Opening database: ${dbInfo.name}`);
+                              
                               try {
-                                const tx = db1.transaction(storeName, 'readwrite');
-                                const store = tx.objectStore(storeName);
-                                const clearRequest = store.clear();
-                                
-                                // Wait for the clear to complete
-                                await new Promise<void>((resolve, reject) => {
-                                  clearRequest.onsuccess = () => {
-                                    console.log(`Cleared ${storeName} in ${dbName1}`);
-                                    resolve();
-                                  };
-                                  clearRequest.onerror = () => reject(clearRequest.error);
+                                const db = await new Promise<IDBDatabase>((resolve, reject) => {
+                                  const request = indexedDB.open(dbInfo.name!);
+                                  request.onsuccess = () => resolve(request.result);
+                                  request.onerror = () => reject(request.error);
                                 });
+                                
+                                // Get all object stores
+                                const storeNames = Array.from(db.objectStoreNames);
+                                console.log(`Stores in ${dbInfo.name}:`, storeNames);
+                                
+                                // Clear each store
+                                for (const storeName of storeNames) {
+                                  try {
+                                    const tx = db.transaction(storeName, 'readwrite');
+                                    const store = tx.objectStore(storeName);
+                                    const clearRequest = store.clear();
+                                    
+                                    await new Promise<void>((resolve, reject) => {
+                                      clearRequest.onsuccess = () => {
+                                        console.log(`✅ Cleared ${storeName} in ${dbInfo.name}`);
+                                        resolve();
+                                      };
+                                      clearRequest.onerror = () => {
+                                        console.error(`❌ Failed to clear ${storeName}:`, clearRequest.error);
+                                        reject(clearRequest.error);
+                                      };
+                                    });
+                                  } catch (e) {
+                                    console.error(`Error clearing ${storeName}:`, e);
+                                  }
+                                }
+                                
+                                db.close();
+                                console.log(`✅ Closed database: ${dbInfo.name}`);
                               } catch (e) {
-                                console.log(`Store ${storeName} may not exist, skipping`);
+                                console.error(`Failed to open/clear database ${dbInfo.name}:`, e);
                               }
                             }
-                            db1.close();
-                          } catch (e) {
-                            console.log(`Database ${dbName1} may not exist, skipping`);
                           }
                           
-                          // Clear MusicAppDB database (audio files)
-                          const dbName2 = `MusicAppDB_${userKey}`;
-                          try {
-                            const db2 = await new Promise<IDBDatabase>((resolve, reject) => {
-                              const request = indexedDB.open(dbName2);
-                              request.onsuccess = () => resolve(request.result);
-                              request.onerror = () => reject(request.error);
-                            });
-                            
-                            const stores2 = ['audioFiles'];
-                            for (const storeName of stores2) {
-                              try {
-                                const tx = db2.transaction(storeName, 'readwrite');
-                                const store = tx.objectStore(storeName);
-                                const clearRequest = store.clear();
-                                
-                                // Wait for the clear to complete
-                                await new Promise<void>((resolve, reject) => {
-                                  clearRequest.onsuccess = () => {
-                                    console.log(`Cleared ${storeName} in ${dbName2}`);
-                                    resolve();
-                                  };
-                                  clearRequest.onerror = () => reject(clearRequest.error);
-                                });
-                              } catch (e) {
-                                console.log(`Store ${storeName} may not exist, skipping`);
-                              }
-                            }
-                            db2.close();
-                          } catch (e) {
-                            console.log(`Database ${dbName2} may not exist, skipping`);
-                          }
-                          
-                          // Clear localStorage items for this user
-                          const keysToDelete: string[] = [];
-                          for (let i = 0; i < localStorage.length; i++) {
-                            const key = localStorage.key(i);
-                            if (key && (
-                              key.includes(user.email) || 
-                              key.includes('songs') || 
-                              key.includes('waveform') ||
-                              key.includes('mute_regions') ||
-                              key.includes('audio_levels')
-                            )) {
-                              keysToDelete.push(key);
-                            }
-                          }
-                          keysToDelete.forEach(key => {
-                            localStorage.removeItem(key);
-                            console.log(`Removed localStorage: ${key}`);
-                          });
+                          // Clear ALL localStorage (simpler approach)
+                          console.log("Clearing localStorage...");
+                          localStorage.clear();
+                          console.log("✅ LocalStorage cleared");
                           
                           toast({
-                            title: "Databases Emptied",
-                            description: "All data has been cleared. Database structure intact."
+                            title: "All Data Cleared",
+                            description: "All databases have been emptied successfully."
                           });
                           
                           // Reload page
+                          console.log("Reloading page in 1 second...");
                           setTimeout(() => window.location.reload(), 1000);
                           
                         } catch (error) {
-                          console.error("Failed to empty databases:", error);
+                          console.error("❌ Failed to empty databases:", error);
                           toast({
                             title: "Failed to empty databases",
+                            description: "Check console for details",
                             variant: "destructive"
                           });
                         } finally {

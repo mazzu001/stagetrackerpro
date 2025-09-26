@@ -3,10 +3,6 @@
 
 import type { MuteRegion } from "@shared/schema";
 
-// Apply -3dB gain reduction to prevent clipping when multiple tracks play
-// -3dB = 10^(-3/20) ≈ 0.708
-const MASTER_GAIN_REDUCTION = 0.708;
-
 export interface StreamingTrack {
   id: string;
   name: string;
@@ -69,7 +65,7 @@ export class StreamingAudioEngine {
       currentTime: 0,
       duration: 0,
       tracks: [],
-      masterVolume: 1.0,
+      masterVolume: 0.708, // -3dB to prevent clipping
       masterGainNode: null,
       masterOutputNode: null,
     };
@@ -402,9 +398,9 @@ export class StreamingAudioEngine {
         track.analyzerNode.fftSize = 512;
         track.analyzerNode.smoothingTimeConstant = 0.6;
         
-        // Apply initial volume/balance/mute settings with -3dB reduction
+        // Apply initial volume/balance/mute settings
         const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
-        track.gainNode.gain.value = track.isMuted ? 0 : gainValue * MASTER_GAIN_REDUCTION;
+        track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
         
         // Apply initial balance
         this.applyBalance(track, track.balance);
@@ -589,9 +585,9 @@ export class StreamingAudioEngine {
       track.volume = volume;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        // Convert percentage (0-100) to gain value (0-1) for Web Audio API with -3dB reduction
+        // Convert percentage (0-100) to gain value (0-1) for Web Audio API
         const gainValue = volume > 1 ? volume / 100 : volume;
-        track.gainNode.gain.value = track.isMuted ? 0 : gainValue * MASTER_GAIN_REDUCTION;
+        track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
       }
     }
   }
@@ -602,9 +598,9 @@ export class StreamingAudioEngine {
       track.isMuted = !track.isMuted;
       this.ensureTrackAudioNodes(track);
       if (track.gainNode) {
-        // Convert percentage (0-100) to gain value (0-1) for Web Audio API with -3dB reduction
+        // Convert percentage (0-100) to gain value (0-1) for Web Audio API
         const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
-        track.gainNode.gain.value = track.isMuted ? 0 : gainValue * MASTER_GAIN_REDUCTION;
+        track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
       }
     }
   }

@@ -1062,6 +1062,22 @@ export default function Dashboard() {
                         setIsDeletingAll(true);
                         
                         try {
+                          // First, delete all songs from PostgreSQL
+                          console.log("Deleting songs from server database...");
+                          const deleteResponse = await fetch('/api/songs/delete-all', {
+                            method: 'DELETE',
+                            credentials: 'include',
+                            headers: {
+                              'Content-Type': 'application/json'
+                            }
+                          });
+                          
+                          if (!deleteResponse.ok) {
+                            console.error("Failed to delete songs from server");
+                            throw new Error("Failed to delete songs from server database");
+                          }
+                          console.log("Successfully deleted songs from server database");
+                          
                           const userKey = user.email.replace(/[@.]/g, '_');
                           
                           // List all IndexedDB databases

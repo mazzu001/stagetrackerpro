@@ -18,6 +18,7 @@ export interface IStorage {
   createSong(song: InsertSong): Promise<Song>;
   updateSong(id: string, song: Partial<InsertSong>, userId?: string): Promise<Song | undefined>;
   deleteSong(id: string, userId?: string): Promise<boolean>;
+  deleteAllSongs(userId: string): Promise<boolean>;
   getSongWithTracks(id: string, userId?: string): Promise<SongWithTracks | undefined>;
 
   // Tracks
@@ -264,6 +265,19 @@ export class DatabaseStorage implements IStorage {
   async deleteSong(id: string, userId?: string): Promise<boolean> {
     console.log('deleteSong: Music data handled locally in browser, not on server');
     return false;
+  }
+
+  async deleteAllSongs(userId: string): Promise<boolean> {
+    try {
+      console.log('deleteAllSongs: Deleting all songs for user:', userId);
+      // Delete all songs for the user from PostgreSQL
+      const result = await db.delete(songs).where(eq(songs.userId, userId));
+      console.log('deleteAllSongs: Successfully deleted all songs from PostgreSQL');
+      return true;
+    } catch (error) {
+      console.error('deleteAllSongs: Error deleting songs from PostgreSQL:', error);
+      return false;
+    }
   }
 
   async getSongWithTracks(id: string, userId?: string): Promise<SongWithTracks | undefined> {

@@ -1459,6 +1459,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete all songs for current user (require authentication)
+  app.delete("/api/songs/delete-all", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      console.log('Deleting all songs for user:', userId);
+      
+      const success = await storage.deleteAllSongs(userId);
+      if (success) {
+        console.log('All songs deleted successfully for user:', userId);
+        res.status(200).json({ message: "All songs deleted successfully" });
+      } else {
+        console.log('Failed to delete all songs for user:', userId);
+        res.status(500).json({ message: "Failed to delete all songs" });
+      }
+    } catch (error) {
+      console.error('Error in DELETE /api/songs/delete-all:', error);
+      res.status(500).json({ message: "Failed to delete all songs" });
+    }
+  });
+
   // Tracks routes (require authentication)
   app.get("/api/songs/:songId/tracks", isAuthenticated, async (req: any, res) => {
     try {

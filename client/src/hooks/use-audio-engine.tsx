@@ -228,8 +228,8 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
 
     // Slower update for VU meters (20fps) to improve performance
     const updateVUMeters = () => {
-      if (audioEngineRef.current && song && isPlaying) {
-        // Update track levels
+      if (audioEngineRef.current && song) {
+        // Update track levels even when paused to show loaded audio levels
         const levels: Record<string, number> = {};
         song.tracks.forEach(track => {
           const trackLevels = audioEngineRef.current!.getTrackLevels(track.id);

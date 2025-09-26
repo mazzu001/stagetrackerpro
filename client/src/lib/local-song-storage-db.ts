@@ -22,7 +22,7 @@ export class LocalSongStorageDB {
   private static dbInstances: Map<string, IndexedDBStorage> = new Map();
   private static initialized: Map<string, boolean> = new Map();
   
-  private static async getDB(userEmail: string): Promise<IndexedDBStorage> {
+  static async getDB(userEmail: string): Promise<IndexedDBStorage> {
     if (!this.dbInstances.has(userEmail)) {
       const db = IndexedDBStorage.getInstance(userEmail);
       this.dbInstances.set(userEmail, db);
@@ -236,5 +236,12 @@ export class LocalSongStorageDB {
     }
     
     console.log(`✅ Cleared all songs for ${userEmail}`);
+  }
+
+  // Clear all data from database (used by deleteAllData)
+  static async clearAllData(userEmail: string): Promise<void> {
+    const db = await this.getDB(userEmail);
+    await db.clearAllData();
+    console.log(`✅ Cleared all data in LocalSongStorageDB for ${userEmail}`);
   }
 }

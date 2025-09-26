@@ -449,6 +449,11 @@ export class AudioFileStorage {
     localStorage.removeItem(this.storageKey);
     console.log(`Cleared all audio file references and cache for user: ${this.userEmail}`);
   }
+
+  // Alias for clearAll() used by deleteAllData
+  async clearAllAudioFiles(): Promise<void> {
+    return this.clearAll();
+  }
 }
 
 // Export a function to get the audio storage for the current user

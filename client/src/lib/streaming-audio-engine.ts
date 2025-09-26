@@ -657,7 +657,8 @@ export class StreamingAudioEngine {
     const rawAverage = sum / weightedCount / 255; // Normalize to 0-1
     
     // Return normalized levels in 0-100 range for consistent VU meter usage
-    const average = rawAverage * 100; // Convert to 0-100 range directly
+    // Apply 20% boost for better visual feedback while capping at 100
+    const average = Math.min(100, rawAverage * 100 * 1.2); // Convert to 0-100 range with 20% boost
     
     return { left: average, right: average };
   }

@@ -28,7 +28,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [audioLevels, setAudioLevels] = useState<Record<string, number>>({});
+  const [audioLevels, setAudioLevels] = useState<Record<string, { left: number; right: number }>>({});
   const [masterStereoLevels, setMasterStereoLevels] = useState<{ left: number; right: number }>({ left: 0, right: 0 });
   const [cpuUsage, setCpuUsage] = useState(23);
   const [isAudioEngineOnline, setIsAudioEngineOnline] = useState(true);
@@ -230,13 +230,13 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     const updateVUMeters = () => {
       if (audioEngineRef.current && song) {
         // Update track levels even when paused to show loaded audio levels
-        const levels: Record<string, number> = {};
+        const levels: Record<string, { left: number; right: number }> = {};
         song.tracks.forEach(track => {
           const trackLevels = audioEngineRef.current!.getTrackLevels(track.id);
-          // Engine now returns 0-100 range directly, use as-is
-          levels[track.id] = Math.max(trackLevels.left, trackLevels.right);
+          // Engine now returns 0-100 range directly, pass both channels
+          levels[track.id] = trackLevels;
         });
-        setAudioLevels(levels);
+        setAudioLevels(levels as any); // Type assertion needed for now
         
         const masterLevels = audioEngineRef.current.getMasterLevels();
         // Engine now returns 0-100 range directly, use as-is

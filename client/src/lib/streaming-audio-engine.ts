@@ -273,7 +273,11 @@ export class StreamingAudioEngine {
         track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
         track.panNode.pan.value = track.balance / 50; // Convert -50..50 to -1..1
         
-        console.log(`🔧 Audio nodes created for: ${track.name}`);
+        console.log(`🔧 Audio nodes created for: ${track.name}`, {
+          nodeType: 'StereoPannerNode',
+          initialBalance: track.balance,
+          initialPanValue: track.balance / 50
+        });
       } catch (nodeError) {
         console.error(`❌ Failed to create audio nodes for ${track.name}:`, nodeError);
         track.source = null;
@@ -485,7 +489,15 @@ export class StreamingAudioEngine {
       this.ensureTrackAudioNodes(track);
       if (track.panNode) {
         // Convert -50..50 range to -1..1 for Web Audio API
-        track.panNode.pan.value = balance / 50;
+        const panValue = balance / 50;
+        track.panNode.pan.value = panValue;
+        
+        // Debug logging for panning
+        console.log(`🎚️ Track "${track.name}" balance set:`, {
+          uiBalance: balance,
+          panValue: panValue,
+          expectedIsolation: Math.abs(panValue) === 1 ? '100% (but limited by StereoPannerNode)' : `${Math.abs(panValue * 100).toFixed(0)}%`
+        });
       }
     }
   }
@@ -508,6 +520,42 @@ export class StreamingAudioEngine {
     this.state.masterVolume = volume;
     if (this.state.masterGainNode) {
       this.state.masterGainNode.gain.value = volume;
+    }
+  }
+
+  // Debug method to verify audio graph connections
+  private validateAudioGraph(trackId?: string): boolean {
+    try {
+      if (trackId) {
+        // Validate specific track
+        const track = this.state.tracks.find(t => t.id === trackId);
+        if (!track) return false;
+        
+        const isValid = !!(
+          track.audioElement && 
+          track.source && 
+          track.gainNode && 
+          track.panNode && 
+          track.analyzerNode
+        );
+        
+        if (!isValid) {
+          console.warn(`⚠️ Track "${track.name}" audio graph incomplete:`, {
+            hasAudioElement: !!track.audioElement,
+            hasSource: !!track.source,
+            hasGainNode: !!track.gainNode,
+            hasPanNode: !!track.panNode,
+            hasAnalyzerNode: !!track.analyzerNode
+          });
+        }
+        return isValid;
+      } else {
+        // Validate all tracks
+        return this.state.tracks.every(t => this.validateAudioGraph(t.id));
+      }
+    } catch (error) {
+      console.error('❌ Audio graph validation error:', error);
+      return false;
     }
   }
 

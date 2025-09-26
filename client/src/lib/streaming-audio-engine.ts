@@ -484,7 +484,8 @@ export class StreamingAudioEngine {
       track.balance = balance;
       this.ensureTrackAudioNodes(track);
       if (track.panNode) {
-        track.panNode.pan.value = balance;
+        // Convert -50..50 range to -1..1 for Web Audio API
+        track.panNode.pan.value = balance / 50;
       }
     }
   }

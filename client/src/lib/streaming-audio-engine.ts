@@ -271,12 +271,12 @@ export class StreamingAudioEngine {
         // Apply initial volume/balance/mute settings
         const gainValue = track.volume > 1 ? track.volume / 100 : track.volume;
         track.gainNode.gain.value = track.isMuted ? 0 : gainValue;
-        track.panNode.pan.value = track.balance / 50; // Convert -50..50 to -1..1
+        track.panNode.pan.value = track.balance / 100; // Convert -100..100 to -1..1
         
         console.log(`🔧 Audio nodes created for: ${track.name}`, {
           nodeType: 'StereoPannerNode',
           initialBalance: track.balance,
-          initialPanValue: track.balance / 50
+          initialPanValue: track.balance / 100
         });
       } catch (nodeError) {
         console.error(`❌ Failed to create audio nodes for ${track.name}:`, nodeError);
@@ -488,8 +488,8 @@ export class StreamingAudioEngine {
       track.balance = balance;
       this.ensureTrackAudioNodes(track);
       if (track.panNode) {
-        // Convert -50..50 range to -1..1 for Web Audio API
-        const panValue = balance / 50;
+        // Convert -100..100 range to -1..1 for Web Audio API
+        const panValue = balance / 100;
         track.panNode.pan.value = panValue;
         
         // Debug logging for panning

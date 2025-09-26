@@ -22,12 +22,6 @@ export interface StreamingTrack {
   leftAnalyzer?: AnalyserNode | null;
   rightAnalyzer?: AnalyserNode | null;
   postPanSplitter?: ChannelSplitterNode | null;
-  // Mono routing nodes (for mono/stereo detection fix)
-  inputSplitter?: ChannelSplitterNode | null;
-  outputMerger?: ChannelMergerNode | null;
-  leftToLeftGain?: GainNode | null;
-  rightToRightGain?: GainNode | null;
-  leftToRightGain?: GainNode | null;
   // Pitch shifting removed
   volume: number;
   balance: number;
@@ -274,62 +268,6 @@ export class StreamingAudioEngine {
         track.gainNode = this.audioContext.createGain();
         track.analyzerNode = this.audioContext.createAnalyser();
         
-        // Mono detection and smart routing
-        // This ensures mono tracks work correctly with panning while preserving stereo tracks
-        let sourceToConnect: AudioNode = track.source;
-        
-        // Attempt to determine if track is mono or stereo
-        // We'll create a splitter/merger setup that handles both cases gracefully
-        track.inputSplitter = this.audioContext.createChannelSplitter(2);
-        track.outputMerger = this.audioContext.createChannelMerger(2);
-        
-        // Connect source to splitter
-        track.source.connect(track.inputSplitter);
-        
-        // Create gain nodes for routing
-        track.leftToLeftGain = this.audioContext.createGain();
-        track.rightToRightGain = this.audioContext.createGain();
-        track.leftToRightGain = this.audioContext.createGain(); // For mono duplication
-        
-        // Set gain values (1.0 = 0dB, no volume change as requested)
-        track.leftToLeftGain.gain.value = 1.0;
-        track.rightToRightGain.gain.value = 1.0;
-        track.leftToRightGain.gain.value = 0; // Start at 0, will be set to 1.0 for mono tracks
-        
-        // Connect channels
-        track.inputSplitter.connect(track.leftToLeftGain, 0); // Left input -> left output gain
-        track.inputSplitter.connect(track.leftToRightGain, 0); // Left input -> potential right output gain (for mono)
-        track.inputSplitter.connect(track.rightToRightGain, 1); // Right input -> right output gain
-        
-        // Connect to merger
-        track.leftToLeftGain.connect(track.outputMerger, 0, 0); // Left to left output
-        track.leftToRightGain.connect(track.outputMerger, 0, 1); // Left to right output (for mono duplication)
-        track.rightToRightGain.connect(track.outputMerger, 0, 1); // Right to right output (for stereo)
-        
-        // Analyze if track is mono (simplified approach)
-        // For now, we'll check based on the track name or apply a heuristic
-        // Tracks with "Click", "Bass", "Drums" are often mono
-        // This is a simplified detection - ideally we'd analyze the audio buffer
-        const likelyMono = track.name.toLowerCase().includes('click') || 
-                          track.name.toLowerCase().includes('bass') ||
-                          track.name.toLowerCase().includes('drums') ||
-                          track.name.toLowerCase().includes('comfortably'); // Known mono track
-        
-        if (likelyMono) {
-          // Enable mono duplication
-          track.leftToRightGain.gain.value = 1.0;
-          track.rightToRightGain.gain.value = 0; // Disable right input (it's likely silent anyway)
-          console.log(`🎵 Mono track detected: ${track.name} - duplicating left to both channels`);
-        } else {
-          // Keep as stereo
-          track.leftToRightGain.gain.value = 0; // No duplication
-          track.rightToRightGain.gain.value = 1.0; // Keep right channel
-          console.log(`🎵 Stereo track: ${track.name} - preserving both channels`);
-        }
-        
-        // Use the processed source for the rest of the chain
-        sourceToConnect = track.outputMerger;
-        
         if (this.useEnhancedPanning) {
           // Enhanced panning for 100% isolation
           track.channelSplitter = this.audioContext.createChannelSplitter(2);
@@ -349,8 +287,8 @@ export class StreamingAudioEngine {
           track.rightAnalyzer.fftSize = 512;
           track.rightAnalyzer.smoothingTimeConstant = 0.6;
           
-          // Connect enhanced audio graph (using mono-fixed source)
-          sourceToConnect.connect(track.gainNode);
+          // Connect enhanced audio graph
+          track.source.connect(track.gainNode);
           track.gainNode.connect(track.channelSplitter);
           
           // Connect channels through individual gain nodes
@@ -378,8 +316,8 @@ export class StreamingAudioEngine {
           track.panNode = this.audioContext.createStereoPanner();
           track.useEnhancedPanning = false;
           
-          // Connect standard audio graph (using mono-fixed source)
-          sourceToConnect.connect(track.gainNode);
+          // Connect standard audio graph
+          track.source.connect(track.gainNode);
           track.gainNode.connect(track.panNode);
           track.panNode.connect(track.analyzerNode);
           track.analyzerNode.connect(this.state.masterGainNode!);
@@ -1010,42 +948,6 @@ export class StreamingAudioEngine {
             // Node might already be disconnected
           }
         }
-        // Disconnect mono routing nodes if they exist
-        if (track.inputSplitter) {
-          try {
-            track.inputSplitter.disconnect();
-          } catch (e) {
-            // Node might already be disconnected
-          }
-        }
-        if (track.leftToLeftGain) {
-          try {
-            track.leftToLeftGain.disconnect();
-          } catch (e) {
-            // Node might already be disconnected
-          }
-        }
-        if (track.rightToRightGain) {
-          try {
-            track.rightToRightGain.disconnect();
-          } catch (e) {
-            // Node might already be disconnected
-          }
-        }
-        if (track.leftToRightGain) {
-          try {
-            track.leftToRightGain.disconnect();
-          } catch (e) {
-            // Node might already be disconnected
-          }
-        }
-        if (track.outputMerger) {
-          try {
-            track.outputMerger.disconnect();
-          } catch (e) {
-            // Node might already be disconnected
-          }
-        }
         // Disconnect enhanced panning nodes if they exist
         if (track.channelSplitter) {
           try {
@@ -1124,13 +1026,6 @@ export class StreamingAudioEngine {
       track.gainNode = null;
       track.panNode = null;
       track.analyzerNode = null;
-      // Clear mono routing node references
-      track.inputSplitter = null;
-      track.outputMerger = null;
-      track.leftToLeftGain = null;
-      track.rightToRightGain = null;
-      track.leftToRightGain = null;
-      // Clear enhanced panning node references
       track.channelSplitter = null;
       track.leftGainNode = null;
       track.rightGainNode = null;

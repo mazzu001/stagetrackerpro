@@ -161,10 +161,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
               id: track.id,
               name: track.name,
               url: audioUrl,
-              volume: track.volume || 100,
-              balance: track.balance || 0,
-              isMuted: track.isMuted === true,
-              isSolo: track.isSolo === true,
               muteRegions: muteRegions // Attach mute regions directly to track data
             } : null;
           });

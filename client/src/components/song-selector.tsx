@@ -241,7 +241,10 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       // Delete from server database first
       for (const songId of songIds) {
         try {
-          await fetch(`/api/songs/${songId}`, { method: 'DELETE' });
+          await fetch(`/api/songs/${songId}`, { 
+            method: 'DELETE',
+            credentials: 'include'
+          });
         } catch (error) {
           console.error(`Failed to delete song ${songId} from server:`, error);
         }

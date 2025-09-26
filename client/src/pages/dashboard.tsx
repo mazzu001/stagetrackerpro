@@ -5,25 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { 
-  Cast, Users, Radio, Link2, LogOut, Upload, User, Copy, Crown, X, HelpCircle, Megaphone,
-  Trash2, AlertTriangle 
-} from 'lucide-react';
+import { Cast, Users, Radio, Link2, LogOut, Upload, User, Copy, Crown, X, HelpCircle, Megaphone } from 'lucide-react';
 import { useLocalAuth } from '@/hooks/useLocalAuth';
 import { useBroadcast } from '@/hooks/useBroadcast';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation } from 'wouter';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { LocalSongStorage } from '@/lib/local-song-storage';
 
 export default function Dashboard() {
   const { user, logout } = useLocalAuth();
@@ -47,8 +33,6 @@ export default function Dashboard() {
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [devMessage, setDevMessage] = useState<string>('');
-  const [showDeleteAllDialog, setShowDeleteAllDialog] = useState(false);
-  const [isDeletingAll, setIsDeletingAll] = useState(false);
   
   // Profile form state
   const [profileData, setProfileData] = useState({
@@ -526,43 +510,6 @@ export default function Dashboard() {
     }
   };
 
-  const handleDeleteAll = async () => {
-    if (!user?.email) return;
-    
-    setIsDeletingAll(true);
-    try {
-      const success = await LocalSongStorage.deleteAllData(user.email);
-      
-      if (success) {
-        toast({
-          title: "All Data Deleted",
-          description: "Successfully deleted all songs, audio files, and associated data. The database structure remains intact.",
-        });
-        
-        // Reload the page to refresh everything
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      } else {
-        toast({
-          title: "Deletion Failed",
-          description: "Failed to delete all data. Please try again.",
-          variant: "destructive"
-        });
-      }
-    } catch (error) {
-      console.error('Error deleting all data:', error);
-      toast({
-        title: "Deletion Failed", 
-        description: "An error occurred while deleting data. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsDeletingAll(false);
-      setShowDeleteAllDialog(false);
-    }
-  };
-
   if (!user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -1026,190 +973,10 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
             </div>
-            
-            {/* Danger Zone */}
-            <div className="lg:col-span-2 mt-8">
-              <Card className="border-red-200 dark:border-red-800">
-                <CardHeader>
-                  <CardTitle className="text-red-600 dark:text-red-400 flex items-center gap-2">
-                    <AlertTriangle className="h-5 w-5" />
-                    Danger Zone
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <h3 className="font-medium mb-2">Delete All Data</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      This will permanently delete all your songs, audio files, tracks, and associated data. 
-                      The database structure will remain intact for future use. This action cannot be undone.
-                    </p>
-                    <Button 
-                      variant="destructive"
-                      onClick={async () => {
-                        console.log("Empty All Databases clicked");
-                        if (!user?.email) {
-                          console.log("No user email");
-                          return;
-                        }
-                        
-                        // Simple confirmation
-                        if (!confirm("This will empty all databases. Are you sure?")) {
-                          console.log("User cancelled");
-                          return;
-                        }
-                        
-                        console.log("Starting database deletion for:", user.email);
-                        setIsDeletingAll(true);
-                        
-                        try {
-                          // First, delete all songs from PostgreSQL
-                          console.log("Deleting songs from server database...");
-                          const deleteResponse = await fetch('/api/songs/delete-all', {
-                            method: 'DELETE',
-                            credentials: 'include',
-                            headers: {
-                              'Content-Type': 'application/json'
-                            }
-                          });
-                          
-                          if (!deleteResponse.ok) {
-                            console.error("Failed to delete songs from server");
-                            throw new Error("Failed to delete songs from server database");
-                          }
-                          console.log("Successfully deleted songs from server database");
-                          
-                          const userKey = user.email.replace(/[@.]/g, '_');
-                          
-                          // List all IndexedDB databases
-                          const allDatabases = await indexedDB.databases();
-                          console.log("All databases:", allDatabases);
-                          
-                          // Clear each database that matches the user
-                          for (const dbInfo of allDatabases) {
-                            if (!dbInfo.name) continue;
-                            
-                            // Check if this database belongs to the user
-                            if (dbInfo.name.includes(userKey) || 
-                                dbInfo.name === `MusicAppStorage::${userKey}` ||
-                                dbInfo.name === `MusicAppDB_${userKey}`) {
-                              
-                              console.log(`Opening database: ${dbInfo.name}`);
-                              
-                              try {
-                                const db = await new Promise<IDBDatabase>((resolve, reject) => {
-                                  const request = indexedDB.open(dbInfo.name!);
-                                  request.onsuccess = () => resolve(request.result);
-                                  request.onerror = () => reject(request.error);
-                                });
-                                
-                                // Get all object stores
-                                const storeNames = Array.from(db.objectStoreNames);
-                                console.log(`Stores in ${dbInfo.name}:`, storeNames);
-                                
-                                // Clear each store
-                                for (const storeName of storeNames) {
-                                  try {
-                                    const tx = db.transaction(storeName, 'readwrite');
-                                    const store = tx.objectStore(storeName);
-                                    const clearRequest = store.clear();
-                                    
-                                    await new Promise<void>((resolve, reject) => {
-                                      clearRequest.onsuccess = () => {
-                                        console.log(`✅ Cleared ${storeName} in ${dbInfo.name}`);
-                                        resolve();
-                                      };
-                                      clearRequest.onerror = () => {
-                                        console.error(`❌ Failed to clear ${storeName}:`, clearRequest.error);
-                                        reject(clearRequest.error);
-                                      };
-                                    });
-                                  } catch (e) {
-                                    console.error(`Error clearing ${storeName}:`, e);
-                                  }
-                                }
-                                
-                                db.close();
-                                console.log(`✅ Closed database: ${dbInfo.name}`);
-                              } catch (e) {
-                                console.error(`Failed to open/clear database ${dbInfo.name}:`, e);
-                              }
-                            }
-                          }
-                          
-                          // Clear ALL localStorage (simpler approach)
-                          console.log("Clearing localStorage...");
-                          localStorage.clear();
-                          console.log("✅ LocalStorage cleared");
-                          
-                          toast({
-                            title: "All Data Cleared",
-                            description: "All databases have been emptied successfully."
-                          });
-                          
-                          // Reload page
-                          console.log("Reloading page in 1 second...");
-                          setTimeout(() => window.location.reload(), 1000);
-                          
-                        } catch (error) {
-                          console.error("❌ Failed to empty databases:", error);
-                          toast({
-                            title: "Failed to empty databases",
-                            description: "Check console for details",
-                            variant: "destructive"
-                          });
-                        } finally {
-                          setIsDeletingAll(false);
-                        }
-                      }}
-                      disabled={isDeletingAll}
-                      data-testid="button-delete-all"
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      {isDeletingAll ? "Emptying..." : "Empty All Databases"}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         )}
 
       </div>
-
-      {/* Delete All Confirmation Dialog */}
-      <AlertDialog open={showDeleteAllDialog} onOpenChange={setShowDeleteAllDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-red-600">
-              <AlertTriangle className="h-5 w-5 inline mr-2" />
-              Delete All Data?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              This action will permanently delete:
-              <ul className="list-disc list-inside mt-2 mb-2">
-                <li>All your songs and their metadata</li>
-                <li>All audio files and tracks</li>
-                <li>All waveforms and cached data</li>
-                <li>All mute regions and settings</li>
-                <li>All performance data</li>
-              </ul>
-              The database structure will remain intact, allowing you to start fresh.
-              <br /><br />
-              <strong className="text-red-600">This action cannot be undone!</strong>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeletingAll}>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleDeleteAll}
-              disabled={isDeletingAll}
-              className="bg-red-600 hover:bg-red-700"
-            >
-              {isDeletingAll ? "Deleting..." : "Delete Everything"}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }

@@ -106,18 +106,6 @@ export default function TrackManager({
           console.log(`Updating song duration from ${currentSong.duration}s to ${detectedDuration}s`);
           await LocalSongStorage.updateSong(user.email, songId, { duration: detectedDuration });
           
-          // Also update duration on server
-          try {
-            await fetch(`/api/songs/${songId}`, {
-              method: 'PATCH',
-              headers: { 'Content-Type': 'application/json' },
-              credentials: 'include',
-              body: JSON.stringify({ duration: detectedDuration })
-            });
-          } catch (error) {
-            console.error('Failed to update duration on server:', error);
-          }
-          
           // Trigger UI refresh
           onTrackUpdate?.();
         }
@@ -231,31 +219,6 @@ export default function TrackManager({
     console.log(`Adding track "${trackName}" with file: ${audioFileName}`);
     
     try {
-      // If this is the first track, save song to server database
-      if (tracks.length === 0) {
-        try {
-          const response = await fetch('/api/songs', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify({
-              userId: user.email,
-              title: song.title,
-              artist: song.artist || '',
-              duration: 0,
-              bpm: song.bpm,
-              key: song.key,
-              lyrics: song.lyrics
-            })
-          });
-          if (response.ok) {
-            console.log('Song saved to server database');
-          }
-        } catch (error) {
-          console.error('Failed to save song to server:', error);
-        }
-      }
-      
       const newTrack = LocalSongStorage.addTrack(user.email, song.id, {
         name: trackName,
         songId: song.id,

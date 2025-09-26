@@ -18,7 +18,6 @@ export interface IStorage {
   createSong(song: InsertSong): Promise<Song>;
   updateSong(id: string, song: Partial<InsertSong>, userId?: string): Promise<Song | undefined>;
   deleteSong(id: string, userId?: string): Promise<boolean>;
-  deleteAllSongs(userId: string): Promise<boolean>;
   getSongWithTracks(id: string, userId?: string): Promise<SongWithTracks | undefined>;
 
   // Tracks
@@ -240,45 +239,21 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createSong(song: InsertSong): Promise<Song> {
-    console.log('createSong: Saving song to PostgreSQL:', song.title);
-    try {
-      // Generate a unique ID for the song
-      const songId = crypto.randomUUID();
-      const newSong = {
-        id: songId,
-        userId: song.userId,
-        title: song.title,
-        artist: song.artist,
-        duration: song.duration || 180,
-        bpm: song.bpm || null,
-        key: song.key || null,
-        lyrics: song.lyrics || null,
-        waveformData: song.waveformData || null,
-        waveformGenerated: false,
-        createdAt: new Date().toISOString(),
-      };
-      
-      // Save to PostgreSQL
-      const [createdSong] = await db.insert(songs).values(newSong).returning();
-      console.log('Song saved to PostgreSQL successfully:', createdSong.id);
-      return createdSong;
-    } catch (error) {
-      console.error('Failed to create song in PostgreSQL:', error);
-      // Return mock data for compatibility if save fails
-      return {
-        id: 'local-song',
-        userId: song.userId,
-        title: song.title,
-        artist: song.artist,
-        duration: song.duration || 180,
-        bpm: song.bpm || null,
-        key: song.key || null,
-        lyrics: song.lyrics || null,
-        waveformData: song.waveformData || null,
-        waveformGenerated: false,
-        createdAt: new Date().toISOString(),
-      };
-    }
+    console.log('createSong: Music data handled locally in browser, not on server');
+    // Return a mock song structure for type compatibility
+    return {
+      id: 'local-song',
+      userId: song.userId,
+      title: song.title,
+      artist: song.artist,
+      duration: song.duration,
+      bpm: song.bpm || null,
+      key: song.key || null,
+      lyrics: song.lyrics || null,
+      waveformData: song.waveformData || null,
+      waveformGenerated: false,
+      createdAt: new Date().toISOString(),
+    };
   }
 
   async updateSong(id: string, song: Partial<InsertSong>, userId?: string): Promise<Song | undefined> {
@@ -289,19 +264,6 @@ export class DatabaseStorage implements IStorage {
   async deleteSong(id: string, userId?: string): Promise<boolean> {
     console.log('deleteSong: Music data handled locally in browser, not on server');
     return false;
-  }
-
-  async deleteAllSongs(userId: string): Promise<boolean> {
-    try {
-      console.log('deleteAllSongs: Deleting all songs for user:', userId);
-      // Delete all songs for the user from PostgreSQL
-      const result = await db.delete(songs).where(eq(songs.userId, userId));
-      console.log('deleteAllSongs: Successfully deleted all songs from PostgreSQL');
-      return true;
-    } catch (error) {
-      console.error('deleteAllSongs: Error deleting songs from PostgreSQL:', error);
-      return false;
-    }
   }
 
   async getSongWithTracks(id: string, userId?: string): Promise<SongWithTracks | undefined> {

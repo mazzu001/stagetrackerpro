@@ -1,5 +1,5 @@
 # Overview
-This project is a professional, offline-capable live music performance application designed for stage use. It features real-time audio mixing, advanced Web MIDI device management, and synchronized lyrics display. The application prioritizes offline functionality, utilizing local storage for all performance data and blob URLs for audio files, making it production-ready with robust MIDI integration. Its primary purpose is to provide a reliable, high-performance tool for musicians during live performances, ensuring zero internet dependency and seamless operation. Recent updates include simplified database management with direct IndexedDB operations in UI event handlers for immediate, transparent data manipulation.
+This project is a professional, offline-capable live music performance application designed for stage use. It features real-time audio mixing, advanced Web MIDI device management, and synchronized lyrics display. The application prioritizes offline functionality, utilizing local storage for all performance data and blob URLs for audio files, making it production-ready with robust MIDI integration. Its primary purpose is to provide a reliable, high-performance tool for musicians during live performances, ensuring zero internet dependency and seamless operation.
 
 # User Preferences
 - **Communication style**: Simple, everyday language

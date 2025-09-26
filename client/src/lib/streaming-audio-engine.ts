@@ -65,7 +65,7 @@ export class StreamingAudioEngine {
       currentTime: 0,
       duration: 0,
       tracks: [],
-      masterVolume: 0.708, // -3dB to prevent clipping
+      masterVolume: 1.0,
       masterGainNode: null,
       masterOutputNode: null,
     };

@@ -1,0 +1,601 @@
+ Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+ 🔵 Android BLE-MIDI adapter initialized
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::default@user.com
+ 🗄️ Initializing per-user database: MusicAppStorage::default_user_com
+ 🔧 Opening IndexedDB: MusicAppStorage::default_user_com
+ [MAIN.TSX] Script starting...
+ [MAIN.TSX] Unregistering service workers...
+ [MAIN.TSX] About to render React app...
+ [MAIN.TSX] Root element: 
+ [MAIN.TSX] React app rendered successfully
+ [APP] About to call useLocalAuth hook...
+ [AUTH] useLocalAuth hook called
+ [AUTH] Valid session found: mazzu001@hotmail.com
+ [APP] Auth state: Object
+ 🔍 Browser detection debug: Object
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ 🔍 Parsed values: Object
+ 🔍 No payment success detected in URL
+ 🎹 MIDI API supported - waiting for user interaction to initialize
+ 🔧 Initializing storage for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user database: MusicAppStorage::mazzu001_hotmail_com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [AUTH] useEffect - auth state initialized
+ 📊 Database exists for mazzu001@hotmail.com: true
+ 📂 Loading existing database for mazzu001@hotmail.com
+ 🔧 Opening IndexedDB: MusicAppStorage::mazzu001_hotmail_com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: false
+ Browser file system initialized successfully for user: default@user.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ ✅ BrowserFileSystem fully initialized with config loaded
+ Browser file system initialized successfully for user: mazzu001@hotmail.com
+ 🗄️ Initializing per-user AudioFileStorage with key: music-app-audio-files::mazzu001@hotmail.com
+ 📦 Initializing AudioFileStorage sequentially...
+ 📦 Starting sequential AudioFileStorage initialization...
+ 📦 Step 1: Initializing IndexedDB...
+ ✅ IndexedDB initialized: MusicAppDB_mazzu001_hotmail_com
+ ✅ IndexedDB initialized for AudioFileStorage
+ ✅ IndexedDB initialized
+ 📦 Step 2: Loading audio file metadata...
+ Loaded 6 audio file references from IndexedDB for user: mazzu001@hotmail.com
+ ✅ Audio file metadata loaded
+ 📦 Step 3: Verifying BrowserFS...
+ ✅ BrowserFS ready
+ ✅ AudioFileStorage fully initialized
+ ✅ AudioFileStorage initialized
+ ✅ Storage initialization complete for mazzu001@hotmail.com
+ [APP] AppContent component rendering...
+ [APP] Storage initialized: true
+ 🔄 Seek detected: 0.0s → 0.0s, resetting MIDI commands
+ 🔍 Initial service isHost check: Object
+ 🎵 Master output initialized
+ 🔍 Debug values: Object
+ 🎭 Broadcast host effect: Object
+ 🎭 Not broadcasting - not host
+ 📭 No localStorage data found for key: lpp_songs_mazzu001@hotmail.com
+ 🔍 Retrieved 0 mute regions for track 4c7b7260-bc3c-4085-b0f8-e04796402d15
+ 🔍 Retrieved 0 mute regions for track 5f1f5c4f-412e-4da8-99b6-3d6516b8e09c
+ 🔍 Retrieved 0 mute regions for track 60a6e90a-3574-434b-9774-b2309450fb44
+ 🔍 Retrieved 0 mute regions for track 6988001e-a443-43f1-9433-236130fe0929
+ 🔍 Retrieved 0 mute regions for track 6d7dae10-47ab-47e5-90f6-eef0d4ad2a0d
+ 🔍 Retrieved 0 mute regions for track bb1218eb-375b-44f6-89d2-68cd44c33e62
+ 📋 Loaded 1 songs from IndexedDB (alphabetically sorted)
+ Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=2c4155aa:344
+ 🎹 Initializing USB MIDI (lightweight)...
+ ✅ USB MIDI access granted
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ ✅ USB MIDI initialized successfully
+ 🔵 Initializing MIDI first before Bluetooth scan
+ 🎹 MIDI already initialized
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=2c4155aa:344
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔵 Scanning for Bluetooth MIDI devices (user-initiated)...
+ 🔵 Requesting BLE MIDI device connection...
+ 🔵 Trying name-based device discovery...
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔵 Name-based discovery failed, trying service-based...
+ 🔍 Name discovery error: Object
+ 🔵 Service-based discovery failed, trying acceptAllDevices...
+ 🔍 Service discovery error: Object
+ ❌ BLE-MIDI connection failed: Object
+connectDevice @ android-ble-midi.ts:116
+ ❌ Bluetooth MIDI scan failed: 
+(anonymous) @ useMidiDevices.ts:303
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+ ⚠️ No MIDI devices found yet. Devices will appear when connected.
+ 🎹 Found 0 MIDI devices: Array(0)
+ 🎹 Connected devices: 0/0 Array(0)
+ 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+@radix-ui_react-dialog.js?v=2c4155aa:344 Warning: Missing `Description` or `aria-describedby={undefined}` for {DialogContent}.
+(anonymous) @ @radix-ui_react-dialog.js?v=2c4155aa:344
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:437 🔵 Scanning for Bluetooth MIDI devices (user-initiated)...
+android-ble-midi.ts:58 🔵 Requesting BLE MIDI device connection...
+android-ble-midi.ts:88 🔵 Trying name-based device discovery...
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+android-ble-midi.ts:99 🔵 Name-based discovery failed, trying service-based...
+android-ble-midi.ts:100 🔍 Name discovery error: Object
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+android-ble-midi.ts:115 🔵 Service-based discovery failed, trying acceptAllDevices...
+android-ble-midi.ts:116 🔍 Service discovery error: Object
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)
+android-ble-midi.ts:172 ❌ BLE-MIDI connection failed: Object
+connectDevice @ android-ble-midi.ts:172
+useMidiDevices.ts:452 ❌ Bluetooth MIDI scan failed: Error: No compatible BLE MIDI devices found. Make sure your device is powered on and in pairing mode.
+    at AndroidBleMidiAdapter.connectDevice (android-ble-midi.ts:183:15)
+    at async useMidiDevices.ts:441:25
+    at async handleScan (midi-device-manager.tsx:68:7)
+(anonymous) @ useMidiDevices.ts:452
+useMidiDevices.ts:144 🔍 Refreshing devices - access details: Object
+useMidiDevices.ts:247 ⚠️ No MIDI devices found yet. Devices will appear when connected.
+useMidiDevices.ts:251 🎹 Found 0 MIDI devices: Array(0)
+useMidiDevices.ts:276 🎹 Connected devices: 0/0 Array(0)

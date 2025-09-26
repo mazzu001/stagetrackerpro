@@ -48,7 +48,7 @@ export class StreamingAudioEngine {
       currentTime: 0,
       duration: 0,
       tracks: [],
-      masterVolume: 0.8,
+      masterVolume: 1.0,
       masterGainNode: null,
       masterOutputNode: null,
     };

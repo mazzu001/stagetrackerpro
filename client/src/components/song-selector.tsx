@@ -238,6 +238,15 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       const userKey = userEmail.replace(/[@.]/g, '_');
       const songIds = Array.from(selectedSongs);
       
+      // Delete from server database first
+      for (const songId of songIds) {
+        try {
+          await fetch(`/api/songs/${songId}`, { method: 'DELETE' });
+        } catch (error) {
+          console.error(`Failed to delete song ${songId} from server:`, error);
+        }
+      }
+      
       try {
         // Open MusicAppStorage database
         const dbName = `MusicAppStorage::${userKey}`;

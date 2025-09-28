@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StageTracker Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#1e1e1e">
+  <link rel="icon" href="assets/images/favicon.ico">
+</head>
+<body class="landing-body">
+  <header class="landing-header">
+    <div class="app-branding" style="display:flex;align-items:center;gap:14px;">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;width:54px;height:54px;">
+        <div class="logo-glow-bg"></div>
+        <img src="assets/images/TiR_Logo.png" alt="TIR Logo" class="app-logo" style="height:48px;position:absolute;top:3px;left:3px;">
+      </div>
+      <span class="app-name">StageTracker&nbsp;Pro</span>
+    </div>
+    <nav class="landing-nav">
+      <a href="#features" class="lnk">Features</a>
+      <a href="#pricing" class="lnk">Pricing</a>
+      <a href="#video" class="lnk">Demo</a>
+      <span class="spacer"></span>
+      <span id="navUserEmail" class="nav-email" hidden>—</span>
+      <button id="navDashboard" class="nav-pill" hidden>Dashboard</button>
+      <button id="navPerformance" class="nav-pill devices-btn" hidden>Open Performance</button>
+      <button id="navSignIn" class="nav-pill primary">Sign In</button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-icon">🎵</div>
+      <h1>StageTracker Pro</h1>
+      <p class="subtitle">Professional live music performance application with multi-track audio for pre‑recorded backing tracks and synchronized lyrics display.</p>
+      <div class="hero-ctas">
+        <a href="#pricing" class="btn hero-btn">Start FREE Trial</a>
+        <a href="#video" class="btn alt">Watch Demo</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="video" class="demo">
+    <h2>See StageTracker Pro in Action</h2>
+    <p class="demo-sub">Watch how professional musicians use StageTracker Pro for live performances with multi‑track backing tracks.</p>
+    <div class="video-frame">
+      <!-- Replace the src with your YouTube video ID -->
+      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="StageTracker Pro Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <section id="features" class="features">
+    <div class="feature-card">
+      <div class="feat-icon">🎵</div>
+      <h3>Multi‑Track Audio</h3>
+      <p>Mix up to 6 audio tracks with individual volume, mute, and solo controls for each song. Enjoy sample‑accurate playback and fast seek.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">⚡</div>
+      <h3>Timestamped Lyrics</h3>
+      <p>Precise timing for synchronized lyrics display so your on‑stage cues are always in perfect time with the music.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feat-icon">🛡️</div>
+      <h3>Offline First</h3>
+      <p>Local, durable storage for reliable live performance—no Internet required. Instant load times powered by IndexedDB.</p>
+    </div>
+  </section>
+
+  <section id="pricing" class="pricing">
+    <div class="pricing-card">
+      <h2>Start Your FREE Trial</h2>
+      <ul class="checklist">
+        <li>✔ No Credit Card Required</li>
+        <li>✔ Up to 3 Songs Included</li>
+        <li>✔ Instant Access</li>
+      </ul>
+      <button id="startTrialBtn" class="btn primary big">🚀 Start FREE Trial</button>
+      <div class="or">— or —</div>
+      <div class="price-line"><span>$4.99</span> / month</div>
+      <button id="subscribeBtn" class="btn alt">Subscribe</button>
+      <div class="signin-line">Already have an account? <a href="#" id="linkSignIn">Sign In</a></div>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <div>© <span id="year"></span> StageTracker Pro</div>
+    <div><a class="lnk" href="#features">Features</a> · <a class="lnk" href="#pricing">Pricing</a> · <a class="lnk" href="#video">Demo</a></div>
+  </footer>
+
+  <!-- Auth overlay -->
+  <div id="authOverlay" class="dash-auth" style="display:none;">
+    <div class="dash-auth-card">
+      <h2 id="authTitle">Sign in</h2>
+      <form id="authForm">
+        <label>Email</label>
+        <input id="authEmail" type="email" placeholder="you@example.com" required />
+        <label>Password</label>
+        <input id="authPassword" type="password" placeholder="••••••" required />
+        <button type="submit" class="btn">Continue</button>
+        <div class="signin-line" style="margin-top:6px;">
+          <a href="#" id="authToggle">Need an account? Create one</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { getSession, signIn, signOut } from './auth.js';
+
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+    const navEmail = document.getElementById('navUserEmail');
+    const navDash = document.getElementById('navDashboard');
+    const navPerf = document.getElementById('navPerformance');
+    const navSignIn = document.getElementById('navSignIn');
+
+    const overlay = document.getElementById('authOverlay');
+    const authTitle = document.getElementById('authTitle');
+    const authForm = document.getElementById('authForm');
+    const authEmail = document.getElementById('authEmail');
+    const authPassword = document.getElementById('authPassword');
+    const authToggle = document.getElementById('authToggle');
+    let creating = false;
+
+    function renderFromSession() {
+      const s = getSession();
+      const loggedIn = !!s;
+      if (loggedIn) {
+        navEmail.hidden = false; navEmail.textContent = s.email;
+        navDash.hidden = false; navPerf.hidden = false;
+        navSignIn.hidden = true;
+      } else {
+        navEmail.hidden = true; navDash.hidden = true; navPerf.hidden = true;
+        navSignIn.hidden = false;
+      }
+    }
+
+    function openAuth(mode = 'signin') {
+      creating = mode === 'signup';
+      authTitle.textContent = creating ? 'Create your account' : 'Sign in';
+      authToggle.textContent = creating ? 'Already have an account? Sign in' : 'Need an account? Create one';
+      overlay.style.display = 'flex';
+      authEmail.focus();
+    }
+    function closeAuth(){ overlay.style.display = 'none'; }
+
+    renderFromSession();
+
+    navSignIn.addEventListener('click', () => openAuth('signin'));
+    document.getElementById('startTrialBtn').addEventListener('click', () => openAuth('signup'));
+    document.getElementById('subscribeBtn').addEventListener('click', () => openAuth('signup'));
+    document.getElementById('linkSignIn').addEventListener('click', (e) => { e.preventDefault(); openAuth('signin'); });
+
+    navDash.addEventListener('click', () => { location.href = 'dashboard.html'; });
+    navPerf.addEventListener('click', () => { location.href = 'performance.html'; });
+
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeAuth(); });
+    authToggle.addEventListener('click', (e) => { e.preventDefault(); openAuth(creating ? 'signin' : 'signup'); });
+
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = authEmail.value.trim();
+      const pwd = authPassword.value;
+      try {
+        signIn(email, pwd);
+        renderFromSession();
+        closeAuth();
+        const params = new URLSearchParams(location.search);
+        const next = params.get('next');
+        if (next) location.replace(next);
+      } catch (err) {
+        alert(err?.message || 'Failed');
+      }
+    });
+  </script>
+</body>
+</html>

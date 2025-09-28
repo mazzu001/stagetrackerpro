@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>StageTracker Pro - Performance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=3">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- theme color for mobile browsers -->
+  <meta name="theme-color" content="#1e1e1e">
+  <link rel="icon" href="assets/images/favicon.ico">
+</head>
+<body>
+  <header>
+    <div class="app-branding" style="display:flex;align-items:center;gap:18px;">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;width:70px;height:70px;">
+        <div class="logo-glow-bg"></div>
+  <img src="assets/images/TiR_Logo.png" alt="TIR Logo" class="app-logo" style="height:62px;position:absolute;top:4px;left:4px;">
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;">
+        <span class="app-name">StageTracker<br>Pro</span>
+      </div>
+    </div>
+  <div class="waveform"><canvas id="masterWaveCanvas" width="1200" height="90"></canvas></div>
+    <nav>
+      <button id="devicesBtn" class="nav-pill devices-btn" title="Audio Devices">Devices</button>
+      <div class="settings" id="settingsRoot">
+        <button id="settingsBtn" class="settings-btn" aria-haspopup="true" aria-expanded="false">Settings ▾</button>
+        <div class="settings-menu" id="settingsMenu" role="menu" aria-hidden="true">
+          <button id="dashboardBtn" class="menu-item" role="menuitem" tabindex="-1">Dashboard</button>
+          <button id="importFilesBtn" class="menu-item" role="menuitem" tabindex="-1">Import Files</button>
+          <button id="importArchiveBtn" class="menu-item" role="menuitem" tabindex="-1">Import Archive</button>
+          <button id="exportArchiveBtn" class="menu-item" role="menuitem" tabindex="-1">Export Archive</button>
+          <button id="resetStorageBtn" class="menu-item" role="menuitem" tabindex="-1">Reset Storage</button>
+          <!-- more settings will go here -->
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <aside class="song-list">
+      <div class="song-list-section">
+        <div class="song-list-header">
+          <h2>Songs <span id="songCount">(0)</span></h2>
+          <div class="song-list-actions">
+            <button id="addSongBtn" class="btn">+ Add</button>
+            <button id="deleteSongBtn" class="btn danger">Delete</button>
+          </div>
+        </div>
+        <div class="song-list-divider"></div>
+        <div id="songsContainer">
+          <!-- Song cards will be rendered by JS -->
+        </div>
+      </div>
+      <input id="audioFileInput" type="file" accept="audio/*" multiple class="hidden" aria-label="Import audio files">
+      <input id="archiveFileInput" type="file" accept=".stageproj,application/json" class="hidden" aria-label="Import archive file">
+      <!-- Add Song Modal -->
+      <div id="addSongModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="addSongTitle">
+        <div class="modal-content" style="max-width:340px;padding:28px 24px;">
+          <div class="modal-header" style="margin-bottom:10px;">
+            <h2 id="addSongTitle" style="font-size:1.3rem;">Add Song</h2>
+            <button id="closeAddSong" class="btn danger" aria-label="Close Add Song">×</button>
+          </div>
+          <form id="addSongForm" autocomplete="off">
+            <label for="newSongTitle" style="color:#b0b8c0;font-size:1rem;margin-bottom:4px;display:block;">Song Title</label>
+            <input id="newSongTitle" type="text" required style="width:100%;margin-bottom:14px;padding:8px 12px;border-radius:6px;border:1px solid #444;background:#23262b;color:#fff;font-size:1rem;">
+            <label for="newSongArtist" style="color:#b0b8c0;font-size:1rem;margin-bottom:4px;display:block;">Artist Name</label>
+            <input id="newSongArtist" type="text" style="width:100%;margin-bottom:18px;padding:8px 12px;border-radius:6px;border:1px solid #444;background:#23262b;color:#fff;font-size:1rem;">
+            <button type="submit" class="btn" style="width:100%;font-size:1.1rem;">Add Song</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Delete Song Modal -->
+      <div id="deleteSongModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="deleteSongTitle">
+        <div class="modal-content" style="max-width:340px;padding:28px 24px;">
+          <div class="modal-header" style="margin-bottom:10px;">
+            <h2 id="deleteSongTitle" style="font-size:1.3rem;">Delete Song</h2>
+            <button id="closeDeleteSong" class="btn danger" aria-label="Close Delete Song">×</button>
+          </div>
+          <div id="deleteSongInfo" style="margin-bottom:18px;color:#b0b8c0;font-size:1.05rem;"></div>
+          <div style="display:flex;gap:10px;">
+            <button id="confirmDeleteSong" class="btn danger" style="flex:1;font-size:1.1rem;">Delete</button>
+            <button id="cancelDeleteSong" class="btn" style="flex:1;font-size:1.1rem;">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <section class="song-details">
+      <!-- Lyrics display area on performance page (title + lyrics view) -->
+      <div class="lyrics-display-box" id="lyricsDisplayBox">
+        <div class="lyrics-display-header">
+          <h2 id="displaySongTitle" class="lyrics-title"></h2>
+          <div class="lyrics-top-controls" id="pageLyricsControls" aria-hidden="false">
+            <button id="lyricsScrollDownBtn" class="lyrics-top-btn small" title="Scroll speed down">🔽</button>
+            <button id="lyricsScrollUpBtn" class="lyrics-top-btn small" title="Scroll speed up">🔼</button>
+            <button id="lyricsFontDownBtn" class="lyrics-top-btn small" title="Font size down">A-</button>
+            <span id="lyricsFontSizeLabel" class="lyrics-top-badge" aria-live="polite">18</span>
+            <button id="lyricsFontUpBtn" class="lyrics-top-btn small" title="Font size up">A+</button>
+            <button id="lyricsEditPageBtn" class="lyrics-top-btn small" title="Edit lyrics">✏️</button>
+          </div>
+        </div>
+        <div class="lyrics-display-body">
+          <div id="lyricsDisplay" class="lyrics-display-content"></div>
+          <div id="lyricsEmptyState" class="lyrics-empty hidden">
+            <div class="lyrics-empty-text">No lyrics available</div>
+            <button id="addLyricsBtn" class="btn small">Add Lyrics</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Track Manager Modal -->
+    <div id="trackManagerModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="trackManagerTitle">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="trackManagerTitle">Track Manager</h2>
+          <!-- Header controls will be injected here (Play / Add Tracks / Clear All) -->
+          <div id="trackManagerHeaderControls" class="track-manager-header"></div>
+          <button id="closeTrackManager" class="btn danger" aria-label="Close Track Manager">×</button>
+        </div>
+        <div id="trackManagerBody">
+          <!-- Track controls will be rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- MIDI Device Manager Modal -->
+    <div id="midiManagerModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="midiManagerTitle">
+      <div class="modal-content midi-manager-content">
+        <div class="modal-header">
+          <h2 id="midiManagerTitle">MIDI Device Manager</h2>
+          <div id="midiManagerHeader" class="track-manager-header"></div>
+          <button id="closeMidiManager" class="btn danger" aria-label="Close MIDI Manager">×</button>
+        </div>
+        <div id="midiManagerBody" class="midi-body">
+          <!-- Filled by JS: inputs, outputs, commands, and log -->
+        </div>
+      </div>
+    </div>
+      <!-- Lyrics Manager Modal -->
+      <div id="lyricsManagerModal" class="modal hidden" tabindex="-1" aria-modal="true" role="dialog" style="display:none;">
+        <div class="modal-content lyrics-manager-content">
+          <div class="lyrics-header">
+            <h2 id="lyricsSongTitle">3 AM - Matchbox 20</h2>
+            <div class="lyrics-time" id="lyricsTimeDisplay">0:00 / 3:39</div>
+          </div>
+          <div class="lyrics-toolbar">
+            <button id="lyricsPlayBtn" class="lyrics-btn">▶ Play</button>
+            <button id="lyricsTimestampBtn" class="lyrics-btn">⏱ Timestamp</button>
+            <button id="lyricsSearchBtn" class="lyrics-btn">🔍 Search Online</button>
+            <button id="lyricsMidiBtn" class="lyrics-btn">🎧 MIDI Listen</button>
+          </div>
+          <div class="lyrics-body">
+            <div class="lyrics-editor-box">
+              <textarea id="lyricsTextarea" placeholder="Enter song lyrics here..."></textarea>
+              <div class="lyrics-tip">Tip: Use timestamps like [01:30] for synchronized playback</div>
+            </div>
+          </div>
+          <div class="lyrics-footer">
+            <button id="lyricsCancelBtn" class="lyrics-btn">Cancel</button>
+            <button id="lyricsSaveBtn" class="lyrics-btn primary">Save Lyrics</button>
+          </div>
+        </div>
+      </div>
+  </main>
+
+  <footer>
+    <div class="shuttle">
+      <div class="shuttle-top">
+        <div class="shuttle-buttons">
+          <button id="footerPlayBtn" class="shuttle-btn play">▶️ Play</button>
+          <button id="footerStopBtn" class="shuttle-btn stop" title="Stop">⏹️ Stop</button>
+        </div>
+        <div class="shuttle-volume">
+          <label for="masterVolume" class="master-label">Master</label>
+          <input id="masterVolume" type="range" min="0" max="1" step="0.01" value="1" aria-label="Master volume">
+          <span id="masterVolPct">100%</span>
+        </div>
+      </div>
+    </div>
+    <div class="audio-info">
+      <span>Latency: 12 ms</span>
+      <span>Buffer: 256 samples</span>
+      <span>Sample Rate: 48kHz</span>
+      <span>Bit Depth: 24-bit</span>
+    </div>
+  </footer>
+  <script type="module" src="app.js?v=2"></script>
+  <script type="module" src="lyrics.js?v=2"></script>
+  <script type="module">
+    import { getSession } from './auth.js';
+    const sess = getSession();
+    if (!sess) {
+      const next = new URLSearchParams({ next: 'performance.html' }).toString();
+      location.replace(`index.html?${next}`);
+    }
+    // Wire Dashboard menu item
+    const dashBtn = document.getElementById('dashboardBtn');
+    if (dashBtn) dashBtn.addEventListener('click', () => { location.href = 'dashboard.html'; });
+    // Devices button opens MIDI Manager
+    const devBtn = document.getElementById('devicesBtn');
+    if (devBtn) devBtn.addEventListener('click', () => { if (window.openMidiManager) window.openMidiManager(); });
+
+  </script>
+</body>
+</html>

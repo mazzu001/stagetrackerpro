@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StageTracker Pro - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="dashboard-body">
+  <header class="dash-header dash-header-compact">
+    <div class="dash-title">
+      <div class="dash-h1">Dashboard</div>
+      <div class="dash-welcome">Welcome, <span id="dashUserEmail">—</span></div>
+    </div>
+    <div class="dash-top-actions">
+      <div class="dash-notice" id="dashNotice">Panning now 100 percent hard balance. VU Meters set to unity. Other small fixes. (v1.1.6.8)</div>
+      <button id="dashBack" class="btn alt small">← Back</button>
+    </div>
+  </header>
+
+  <main class="dash-grid">
+    <!-- Left column: Broadcast cards -->
+    <div class="dash-col">
+      <section class="dash-card dash-panel">
+        <h2 class="panel-title">Start Broadcasting</h2>
+        <p class="panel-sub">Share your performance screen with band members in real‑time</p>
+        <label class="panel-label">Broadcast Name</label>
+        <input id="broadcastName" class="panel-input" type="text" value="PRO-MAZZU0-20825 Show" />
+        <button class="btn primary block" id="startBroadcastBtn">Start Broadcasting</button>
+      </section>
+
+      <section class="dash-card dash-panel">
+        <h2 class="panel-title">Join Broadcast</h2>
+        <p class="panel-sub">Enter the broadcast name to join someone’s live performance</p>
+        <label class="panel-label">Broadcast Name</label>
+        <input id="joinBroadcastName" class="panel-input" type="text" placeholder="Tonight's Show" />
+        <button class="btn primary block" id="joinBroadcastBtn">Join Broadcast</button>
+      </section>
+    </div>
+
+    <!-- Right column: User Profile card -->
+    <section class="dash-card dash-profile">
+      <div class="profile-header">
+        <h2>User Profile</h2>
+        <span class="badge badge-pro">Professional</span>
+      </div>
+      <div class="profile-body">
+        <div class="avatar">
+          <div class="avatar-circle">👤</div>
+          <div class="email-line"><span id="profileEmail">—</span></div>
+          <button class="btn alt small" id="changePhotoBtn">⬆ Change Photo</button>
+        </div>
+        <div class="profile-fields">
+          <div class="field-pair">
+            <div class="field">
+              <label>First Name</label>
+              <div class="field-edit" data-key="firstName">Click to add first name ✎</div>
+            </div>
+            <div class="field">
+              <label>Last Name</label>
+              <div class="field-edit" data-key="lastName">Click to add last name ✎</div>
+            </div>
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <div class="field-edit" data-key="phone">Click to add phone number ✎</div>
+          </div>
+          <hr class="profile-divider" />
+          <div class="acct-row">
+            <div class="acct-title">Account Management</div>
+            <div class="acct-actions">
+              <button class="chip">×</button>
+              <button class="btn alt" id="manageSubBtn">Manage Subscription</button>
+              <button class="btn alt" id="logoutBtn">Logout</button>
+            </div>
+          </div>
+          <div class="help-row">
+            <div class="help-icon">❓</div>
+            <div class="help-text">Need Help?<br/>Send help requests to <a id="helpEmail" href="#">support@example.com</a></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="dash-auth" id="dashAuth">
+    <div class="dash-auth-card">
+      <h2>Sign in</h2>
+      <form id="dashSignInForm">
+        <label>Email</label>
+        <input id="dashEmail" type="email" placeholder="you@example.com" required />
+        <label>Password</label>
+        <input id="dashPassword" type="password" placeholder="••••••" required />
+        <button type="submit" class="btn">Sign in</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { getSession, signIn, signOut } from './auth.js';
+
+    const authOverlay = document.getElementById('dashAuth');
+    const emailTop = document.getElementById('dashUserEmail');
+    const profileEmail = document.getElementById('profileEmail');
+    const helpEmail = document.getElementById('helpEmail');
+    const backBtn = document.getElementById('dashBack');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const manageSubBtn = document.getElementById('manageSubBtn');
+
+    function renderFromSession() {
+      const sess = getSession();
+      if (!sess) {
+        authOverlay.style.display = 'flex';
+        emailTop.textContent = '—';
+        profileEmail.textContent = '—';
+        helpEmail.textContent = 'support@example.com';
+        helpEmail.href = 'mailto:support@example.com';
+      } else {
+        authOverlay.style.display = 'none';
+        emailTop.textContent = sess.email;
+        profileEmail.textContent = sess.email;
+        helpEmail.textContent = sess.email;
+        helpEmail.href = `mailto:${sess.email}`;
+      }
+    }
+
+    renderFromSession();
+
+    document.getElementById('dashSignInForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = /** @type {HTMLInputElement} */(document.getElementById('dashEmail')).value.trim();
+      const password = /** @type {HTMLInputElement} */(document.getElementById('dashPassword')).value;
+      try {
+        signIn(email, password);
+        renderFromSession();
+        const params = new URLSearchParams(location.search);
+        const next = params.get('next');
+        if (next) location.replace(next);
+      } catch (err) {
+        alert(err?.message || 'Sign-in failed');
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => { signOut(); renderFromSession(); });
+    backBtn.addEventListener('click', () => { history.back(); });
+    manageSubBtn.addEventListener('click', () => { alert('Subscription portal coming soon'); });
+
+    // Inline edit fields (simple prompt for demo)
+    document.querySelectorAll('.field-edit').forEach(el => {
+      el.addEventListener('click', () => {
+        const key = el.getAttribute('data-key');
+        const val = prompt('Enter ' + key + ':', el.textContent.replace(/✎/g,'').trim());
+        if (val != null && val.trim()) { el.textContent = val.trim() + ' ✎'; }
+      });
+    });
+
+    // --- Broadcast Controls (dashboard is the source of truth) ---
+    const startBtn = document.getElementById('startBroadcastBtn');
+    const startName = document.getElementById('broadcastName');
+    const joinBtn = document.getElementById('joinBroadcastBtn');
+    const joinName = document.getElementById('joinBroadcastName');
+
+    // Helper to open performance with a query flag so host auto-starts broadcast
+    function openPerformanceWithBroadcast(room){
+      const url = new URL(location.origin + '/performance.html');
+      url.searchParams.set('broadcast', room);
+      location.href = url.toString();
+    }
+
+    // Start broadcasting: navigate to performance.html and let app.js auto-start
+    if (startBtn) startBtn.addEventListener('click', () => {
+      const room = startName.value.trim();
+      if (!room) { alert('Enter a broadcast name'); return; }
+      openPerformanceWithBroadcast(room);
+    });
+
+    // Join as viewer: open viewer page with room prefilled and auto-join
+    if (joinBtn) joinBtn.addEventListener('click', () => {
+      const room = joinName.value.trim();
+      if (!room) { alert('Enter a broadcast name'); return; }
+      const v = new URL(location.origin + '/broadcast-viewer.html');
+      v.searchParams.set('room', room);
+      window.open(v.toString(), '_blank');
+    });
+  </script>
+</body>
+</html>

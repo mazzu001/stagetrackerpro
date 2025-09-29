@@ -222,6 +222,27 @@
       errorDiv.className = 'error-message';
       errorDiv.textContent = message;
       
+      // Add help instructions for broadcast not found errors
+      if (message.includes('Broadcast not found') || message.includes('broadcast name may be incorrect')) {
+        const helpDiv = document.createElement('div');
+        helpDiv.style.marginTop = '20px';
+        helpDiv.style.fontSize = '0.9rem';
+        helpDiv.style.color = '#bbb';
+        helpDiv.style.textAlign = 'left';
+        helpDiv.innerHTML = `
+          <p><strong>How to fix this:</strong></p>
+          <ol>
+            <li>Make sure a broadcast has been started with this exact name</li>
+            <li>To start a broadcast, <a href="/dashboard" style="color:#6fb0ff;text-decoration:underline;">go to the Dashboard</a></li>
+            <li>In the Dashboard, find the "Start Broadcasting" panel</li>
+            <li>Enter the same broadcast name you used here ("${room || ''}")</li>
+            <li>Click "Start Broadcasting"</li>
+            <li>Once the broadcast is active, come back to this page and try connecting again</li>
+          </ol>
+        `;
+        errorDiv.appendChild(helpDiv);
+      }
+      
       // Add error message to lyrics container
       document.getElementById('lyrics').appendChild(errorDiv);
     }
@@ -618,9 +639,18 @@
       manualConnectDiv.style.marginTop = '20px';
       manualConnectDiv.style.textAlign = 'center';
       manualConnectDiv.innerHTML = `
-        <p>If automatic connection fails, enter the broadcast name manually:</p>
+        <div style="background: rgba(40, 44, 52, 0.7); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+          <h3 style="margin-top: 0; margin-bottom: 10px; color: #6fb0ff;">How Broadcasting Works:</h3>
+          <p style="margin-bottom: 10px; text-align: left;">1. A performer <strong>starts a broadcast</strong> from the Dashboard</p>
+          <p style="margin-bottom: 10px; text-align: left;">2. Viewers <strong>join the broadcast</strong> using the same name</p>
+          <div style="margin: 15px 0;">
+            <a href="/dashboard" class="btn" style="background:#0a66c2;margin-right:10px;">Go to Dashboard</a>
+            <a href="/performance" class="btn" style="background:#28a745;margin-left:10px;">Go to Performance Page</a>
+          </div>
+        </div>
+        <p>Enter a broadcast name to join:</p>
         <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
-          <input id="manualRoomInput" type="text" placeholder="Broadcast Name" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #151b22; color: #fff;">
+          <input id="manualRoomInput" type="text" placeholder="Broadcast Name" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #151b22; color: #fff; flex: 1; max-width: 250px;">
           <button id="manualConnectBtn" class="btn">Connect</button>
         </div>
       `;
@@ -681,6 +711,7 @@
   <div class="viewer-wrap">
     <div class="join">
       <button id="leaveBtn" class="btn leave-btn">Leave Broadcast</button>
+      <a href="/performance" class="btn" style="background:#28a745;margin-left:10px;">Go to Performance Page</a>
     </div>
     <div class="viewer-card">
       <div class="title" id="songTitle"></div>

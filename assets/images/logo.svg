@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+  <title>StageTracker Pro Logo</title>
+  
+  <!-- Dark circle background -->
+  <circle cx="64" cy="64" r="54" fill="#343A40" />
+  
+  <!-- Audio waveform -->
+  <path d="M24,64 L32,52 L40,72 L48,40 L64,88 L76,56 L88,64 L96,48 L104,64" 
+        stroke="#007BFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  
+  <!-- Play button circle -->
+  <circle cx="64" cy="64" r="22" fill="rgba(255,255,255,0.12)" />
+  
+  <!-- Play triangle -->
+  <path d="M56,52 L80,64 L56,76 Z" fill="#FFFFFF" />
+  
+  <!-- Progress bar background -->
+  <rect x="30" y="88" width="68" height="4" rx="2" fill="#6C849C" opacity="0.7" />
+  
+  <!-- Progress bar fill -->
+  <rect x="30" y="88" width="28" height="4" rx="2" fill="#F8F9FA" />
+</svg>

@@ -11,29 +11,31 @@
   <!-- theme color for mobile browsers -->
   <meta name="theme-color" content="#1e1e1e">
   <link rel="icon" href="assets/images/favicon.ico">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
 </head>
 <body>
   <header>
     <div class="app-branding" style="display:flex;align-items:center;gap:18px;">
       <div style="position:relative;display:flex;align-items:center;justify-content:center;width:70px;height:70px;">
         <div class="logo-glow-bg"></div>
-  <img src="assets/images/TiR_Logo.png" alt="TIR Logo" class="app-logo" style="height:62px;position:absolute;top:4px;left:4px;">
+  <img src="assets/images/logo.svg" alt="StageTracker Logo" class="app-logo" style="height:62px;position:absolute;top:4px;left:4px;">
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;">
         <span class="app-name">StageTracker<br>Pro</span>
       </div>
     </div>
-  <div class="waveform"><canvas id="masterWaveCanvas" width="1200" height="90"></canvas></div>
+  <div class="waveform">
+    <canvas id="masterWaveCanvas" width="1200" height="90"></canvas>
+  </div>
     <nav>
       <button id="devicesBtn" class="nav-pill devices-btn" title="Audio Devices">Devices</button>
       <div class="settings" id="settingsRoot">
         <button id="settingsBtn" class="settings-btn" aria-haspopup="true" aria-expanded="false">Settings ▾</button>
         <div class="settings-menu" id="settingsMenu" role="menu" aria-hidden="true">
           <button id="dashboardBtn" class="menu-item" role="menuitem" tabindex="-1">Dashboard</button>
-          <button id="importFilesBtn" class="menu-item" role="menuitem" tabindex="-1">Import Files</button>
           <button id="importArchiveBtn" class="menu-item" role="menuitem" tabindex="-1">Import Archive</button>
           <button id="exportArchiveBtn" class="menu-item" role="menuitem" tabindex="-1">Export Archive</button>
-          <button id="resetStorageBtn" class="menu-item" role="menuitem" tabindex="-1">Reset Storage</button>
           <!-- more settings will go here -->
         </div>
       </div>
@@ -166,6 +168,79 @@
           </div>
         </div>
       </div>
+    
+    <!-- Dashboard Modal (new) -->
+    <div id="dashboardModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="dashboardTitle">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="dashboardTitle">Dashboard</h2>
+          <button id="closeDashboard" class="btn danger" aria-label="Close Dashboard">×</button>
+        </div>
+        <div class="dashboard-container">
+          <div id="dashboardBody" class="dash-grid">
+          <div class="dash-broadcast-col">
+            <section class="dash-card dash-panel">
+              <h2 class="panel-title">Start Broadcasting</h2>
+              <p class="panel-sub">Share your performance screen with band members in real‑time</p>
+              <label class="panel-label">Broadcast Name</label>
+              <input id="dashBroadcastName" class="panel-input" type="text" placeholder="Tonight's Show" />
+              <button class="btn primary block" id="dashStartBroadcastBtn">Start Broadcasting</button>
+            </section>
+
+            <section class="dash-card dash-panel">
+              <h2 class="panel-title">Join Broadcast</h2>
+              <p class="panel-sub">Enter the broadcast name to join someone’s live performance</p>
+              <label class="panel-label">Broadcast Name</label>
+              <input id="dashJoinBroadcastName" class="panel-input" type="text" placeholder="Tonight's Show" />
+              <button class="btn primary block" id="dashJoinBroadcastBtn">Join Broadcast</button>
+            </section>
+          </div>
+
+          <section class="dash-card dash-profile">
+            <div class="profile-header">
+              <h2>User Profile</h2>
+              <span class="badge badge-pro">Professional</span>
+            </div>
+            <div class="profile-body">
+              <div class="avatar-section">
+                <div class="avatar">
+                  <div class="avatar-circle">👤</div>
+                  <button class="btn alt small" id="dashChangePhotoBtn">⬆ Change Photo</button>
+                </div>
+                <div class="avatar-actions">
+                  <div class="acct-title">Account Management</div>
+                  <button class="btn alt small" id="dashManageSubBtn">Manage Subscription</button>
+                  <button class="btn alt small" id="dashLogoutBtn">Logout</button>
+                  <div class="help-section">
+                    <div class="help-icon">❓</div>
+                    <div class="help-text">Need Help?<br/>Send help requests to <a id="dashHelpEmail" href="#">support@example.com</a></div>
+                  </div>
+                </div>
+              </div>
+              <div class="profile-fields">
+                <div class="profile-email-section">
+                  <label>Email Address</label>
+                  <div class="email-line"><span id="dashProfileEmail">—</span></div>
+                </div>
+                <div class="field">
+                  <label>First Name</label>
+                  <div class="field-edit" data-key="firstName">Click to add first name ✎</div>
+                </div>
+                <div class="field">
+                  <label>Last Name</label>
+                  <div class="field-edit" data-key="lastName">Click to add last name ✎</div>
+                </div>
+                <div class="field">
+                  <label>Phone</label>
+                  <div class="field-edit" data-key="phone">Click to add phone number ✎</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer>
@@ -187,10 +262,22 @@
       <span>Buffer: 256 samples</span>
       <span>Sample Rate: 48kHz</span>
       <span>Bit Depth: 24-bit</span>
+      <span class="status-chip" id="midiStatus">
+        <span class="dot"></span>
+        MIDI
+      </span>
+      <span class="status-chip" id="broadcastStatus">
+        <span class="dot"></span>
+        Broadcast
+      </span>
     </div>
   </footer>
   <script type="module" src="app.js?v=2"></script>
+  <script type="module" src="dashboard.js?v=1"></script>
   <script type="module" src="lyrics.js?v=2"></script>
+  <script type="module" src="midi-processor.js"></script>
+  <script type="module" src="midi-hooks.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script type="module">
     import { getSession } from './auth.js';
     const sess = getSession();
@@ -200,7 +287,150 @@
     }
     // Wire Dashboard menu item
     const dashBtn = document.getElementById('dashboardBtn');
-    if (dashBtn) dashBtn.addEventListener('click', () => { location.href = 'dashboard.html'; });
+    // Dashboard opens Dashboard modal (not Device Manager)
+    if (dashBtn) dashBtn.addEventListener('click', () => { if (window.openDashboard) window.openDashboard(); });
+
+
+
+    // Dashboard modal wiring (auth + broadcast + profile inline logic)
+    (function setupDashboardModal(){
+      const modal = document.getElementById('dashboardModal');
+      const closeBtn = document.getElementById('closeDashboard');
+      const profileEmail = document.getElementById('dashProfileEmail');
+      const helpEmail = document.getElementById('dashHelpEmail');
+      const logoutBtn = document.getElementById('dashLogoutBtn');
+      const manageSubBtn = document.getElementById('dashManageSubBtn');
+      const startBtn = document.getElementById('dashStartBroadcastBtn');
+      const startName = document.getElementById('dashBroadcastName');
+      const joinBtn = document.getElementById('dashJoinBroadcastBtn');
+      const joinName = document.getElementById('dashJoinBroadcastName');
+
+      function renderFromSession(){
+        const sess = getSession();
+        profileEmail.textContent = sess ? sess.email : '—';
+        helpEmail.textContent = sess ? sess.email : 'support@example.com';
+        helpEmail.href = sess ? `mailto:${sess.email}` : 'mailto:support@example.com';
+      }
+
+      function openDashboard(){
+        renderFromSession();
+        modal.classList.remove('hidden');
+        modal.style.display = 'flex';
+      }
+      function closeDashboard(){
+        modal.classList.add('hidden');
+        modal.style.display = 'none';
+      }
+      window.openDashboard = openDashboard;
+      if (closeBtn) closeBtn.addEventListener('click', closeDashboard);
+
+      // Inline edits
+      document.querySelectorAll('#dashboardBody .field-edit').forEach(el => {
+        el.addEventListener('click', () => {
+          const key = el.getAttribute('data-key');
+          const val = prompt('Enter ' + key + ':', el.textContent.replace(/✎/g,'').trim());
+          if (val != null && val.trim()) { el.textContent = val.trim() + ' ✎'; }
+        });
+      });
+
+      // Broadcast: start as Host (reuses startBroadcast function for consistent behavior)
+      if (startBtn) startBtn.addEventListener('click', () => {
+        const room = startName.value.trim(); 
+        if (!room) { 
+          alert('Enter a broadcast name'); 
+          return; 
+        }
+        
+        // Hard-coded safety check to prevent duplicate start attempts
+        if (window._dashboardBroadcastStartInProgress) {
+          console.log('[DASH] Ignoring duplicate broadcast start attempt');
+          return;
+        }
+        window._dashboardBroadcastStartInProgress = true;
+        setTimeout(() => { window._dashboardBroadcastStartInProgress = false; }, 1000);
+        
+        // Close dashboard first to prevent potential UI blocking
+        closeDashboard();
+        
+        // Add small delay for UI to update first
+        setTimeout(() => {
+          // Use our safer startBroadcast function that avoids modals
+          if (window.startBroadcast) {
+            try {
+              window.startBroadcast(room);
+            } catch (e) {
+              console.error('[DASH] Error starting broadcast:', e);
+              alert('Error starting broadcast. Please try again.');
+            }
+          } else if (window.STP_Broadcast) {
+            try {
+              window.STP_Broadcast.start(room);
+              try { window.updateBroadcastStatusChip?.(); } catch(_) {}
+              
+              // Alert the user about the broadcast starting
+              setTimeout(() => {
+                alert(`Broadcasting started: ${room}\n\nViewers can join by opening the URL below:\n${window.location.origin}/viewer?room=${encodeURIComponent(room)}`);
+              }, 100);
+            } catch (e) {
+              console.error('[DASH] Error starting broadcast via STP_Broadcast:', e);
+              alert('Error starting broadcast. Please try again.');
+            }
+          }
+        }, 200); // Slightly longer delay for better UI responsiveness
+      });
+
+      // Join as viewer by opening the dedicated viewer page
+      if (joinBtn) joinBtn.addEventListener('click', () => {
+        const room = joinName.value.trim(); 
+        if (!room) { 
+          alert('Enter a broadcast name'); 
+          return; 
+        }
+        
+        // Hard-coded safety check to prevent duplicate join attempts
+        if (window._dashboardBroadcastJoinInProgress) {
+          console.log('[DASH] Ignoring duplicate broadcast join attempt');
+          return;
+        }
+        window._dashboardBroadcastJoinInProgress = true;
+        setTimeout(() => { window._dashboardBroadcastJoinInProgress = false; }, 1000);
+        
+        // Close dashboard first
+        closeDashboard();
+        
+        // Add small delay for UI to update first
+        setTimeout(() => {
+          try {
+            // Use our safer joinBroadcast function that opens in a new tab
+            if (window.joinBroadcast) {
+              window.joinBroadcast(room);
+            } else {
+              // Direct fallback if function not available
+              try { 
+                const url = `/viewer?room=${encodeURIComponent(room)}`;
+                const viewerWindow = window.open(url, '_blank');
+                
+                // Alert if popup was blocked
+                if (!viewerWindow || viewerWindow.closed || typeof viewerWindow.closed === 'undefined') {
+                  alert(`Popup blocked! Please allow popups for this site and try again.\n\nAlternatively, you can manually navigate to:\n${window.location.origin}${url}`);
+                }
+              } catch(e) { 
+                console.error('[DASH] Error opening viewer window:', e);
+                // Fallback - navigate current page if window.open fails
+                location.href = `/viewer?room=${encodeURIComponent(room)}`; 
+              }
+            }
+          } catch (e) {
+            console.error('[DASH] Error joining broadcast:', e);
+            alert('Error joining broadcast. Please try again.');
+          }
+        }, 200); // Slightly longer delay for better UI responsiveness
+      });
+
+      // Account controls
+      if (logoutBtn) logoutBtn.addEventListener('click', () => { try { import('./auth.js').then(m=>m.signOut()); } catch(_) {}; renderFromSession(); });
+      if (manageSubBtn) manageSubBtn.addEventListener('click', () => { alert('Subscription portal coming soon'); });
+    })();
     // Devices button opens MIDI Manager
     const devBtn = document.getElementById('devicesBtn');
     if (devBtn) devBtn.addEventListener('click', () => { if (window.openMidiManager) window.openMidiManager(); });

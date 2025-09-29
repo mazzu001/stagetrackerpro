@@ -192,8 +192,42 @@
     }
     
     function connectViewer(room){
-      if (!room) return;
-      if (!socket) socket = io();
+      if (!room) {
+        console.error('[Viewer] Cannot connect: No room name provided');
+        return;
+      }
+      
+      console.log('[Viewer] Initializing socket connection');
+      try {
+        // Make sure we have a valid Socket.IO instance
+        if (!socket) {
+          console.log('[Viewer] Creating new Socket.IO connection');
+          socket = io({
+            reconnectionAttempts: 5,
+            timeout: 10000
+          });
+        }
+        
+        // Debug Socket.IO connection status
+        socket.on('connect', () => {
+          console.log('[Viewer] Socket.IO connected successfully with ID:', socket.id);
+        });
+        
+        socket.on('connect_error', (error) => {
+          console.error('[Viewer] Socket.IO connection error:', error);
+          showErrorMessage('Connection error: Could not connect to the server. Please check your network connection and try again.');
+        });
+        
+        socket.on('disconnect', (reason) => {
+          console.warn('[Viewer] Socket.IO disconnected. Reason:', reason);
+          showErrorMessage('Disconnected from server. Attempting to reconnect...');
+        });
+      } catch (error) {
+        console.error('[Viewer] Failed to initialize Socket.IO:', error);
+        showErrorMessage('Failed to connect to broadcast server. Please try again later.');
+        return;
+      }
+      
       state.room = room;
       
       // Set a timeout to detect if no response is received
@@ -500,16 +534,21 @@
       });
       // Auto-join from ?room= param
       try {
+        console.log('[Viewer] Checking for room parameter in URL:', location.search);
         const qp = new URLSearchParams(location.search);
         const room = qp.get('room');
+        console.log('[Viewer] Room parameter value:', room);
+        
         if (room) { 
+          console.log('[Viewer] Attempting to connect to room:', room);
           connectViewer(room); 
         } else {
           // Show error if no room parameter was provided
+          console.error('[Viewer] No room parameter found in URL');
           showErrorMessage('No broadcast name specified. Please provide a valid broadcast name.');
         }
       } catch(e) {
-        console.error('Error parsing room parameter:', e);
+        console.error('[Viewer] Error parsing room parameter:', e);
         showErrorMessage('Failed to connect to broadcast. Please try again.');
       }
       document.getElementById('leaveBtn').addEventListener('click', () => { leaveViewer(); });

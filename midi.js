@@ -18,7 +18,10 @@ function ensureModalEls() {
 async function getMIDIAccess() {
   if (midiAccess) return midiAccess;
   if (!('requestMIDIAccess' in navigator)) throw new Error('Web MIDI is not supported in this browser.');
-  midiAccess = await navigator.requestMIDIAccess({ sysex: false });
+  // Race a timeout so the UI never freezes indefinitely
+  const req = navigator.requestMIDIAccess({ sysex: false });
+  const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('MIDI access timed out')), 3000));
+  midiAccess = await Promise.race([req, timeout]);
   return midiAccess;
 }
 
@@ -119,6 +122,7 @@ function stopScan() {
 
 async function startQuickScan() {
   try {
+    // Attempt access but do not let it hang scan
     await getMIDIAccess();
   } catch (e) {
     showError(e && e.message ? e.message : String(e));

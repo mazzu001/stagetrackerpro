@@ -1,0 +1,232 @@
+Attached HTML and CSS Context
+
+<section class="song-details">
+      <!-- Lyrics display area on performance page (title + lyrics view) -->
+      <div class="lyrics-display-box" id="lyricsDisplayBox">
+        <div class="lyrics-display-header">
+          <h2 id="displaySongTitle" class="lyrics-title">3 AM – Matchbox 20</h2>
+          <div class="lyrics-top-controls" id="pageLyricsControls" aria-hidden="false">
+            <button id="lyricsScrollDownBtn" class="lyrics-top-btn small" title="Scroll speed down">🔽</button>
+            <button id="lyricsScrollUpBtn" class="lyrics-top-btn small" title="Scroll speed up">🔼</button>
+            <button id="lyricsFontDownBtn" class="lyrics-top-btn small" title="Font size down">A-</button>
+            <span id="lyricsFontSizeLabel" class="lyrics-top-badge" aria-live="polite">18</span>
+            <button id="lyricsFontUpBtn" class="lyrics-top-btn small" title="Font size up">A+</button>
+            <button id="lyricsEditPageBtn" class="lyrics-top-btn small" title="Edit lyrics">✏️</button>
+          </div>
+        </div>
+        <div class="lyrics-display-body">
+          <div id="lyricsDisplay" class="lyrics-display-content hidden" style="font-size: 18px;"></div>
+          <div id="lyricsEmptyState" class="lyrics-empty">
+            <div class="lyrics-empty-text">No lyrics available</div>
+            <button id="addLyricsBtn" class="btn small">Add Lyrics</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+/* Matched Rule from user-agent */
+article, aside, footer, header, hgroup, main, nav, search, section {
+  display: block;
+}
+
+/* Matched Rule from user-agent */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Matched Rule from regular */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Matched Rule from regular */
+.song-details {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  min-height: 0;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+  padding-right: 24px;
+  padding-bottom: 24px;
+  padding-left: 24px;
+  min-height: 0px;
+  height: 100%;
+}
+
+/* Matched Rule from regular */
+main, .song-details, .lyrics-display-box {
+  flex-basis: auto;
+  flex-basis: auto;
+}
+
+/* Matched Rule from regular */
+.song-details {
+  flex: 1;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
+  padding-top: 30px;
+  padding-right: 30px;
+  padding-bottom: 30px;
+  padding-left: 30px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0px;
+}
+
+/* Inherited from ancestor level 1 (user-agent) */
+article, aside, footer, header, hgroup, main, nav, search, section {
+  display: block;
+}
+
+/* Inherited from ancestor level 1 (user-agent) */
+address, blockquote, center, div, figure, figcaption, footer, form, header, hr, legend, listing, main, p, plaintext, pre, summary, xmp, article, aside, h1, h2, h3, h4, h5, h6, hgroup, nav, section, search, table, caption, colgroup, col, thead, tbody, tfoot, tr, td, th, dir, dd, dl, dt, menu, ol, ul, li, bdi, output, [dir="ltr" i], [dir="rtl" i], [dir="auto" i] {
+  unicode-bidi: isolate;
+}
+
+/* Inherited from ancestor level 1 (regular) */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 1 (regular) */
+main, .song-details, .lyrics-display-box {
+  flex-basis: auto;
+  flex-basis: auto;
+}
+
+/* Inherited from ancestor level 1 (regular) */
+main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+  display: flex;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  min-height: 0px;
+}
+
+/* Inherited from ancestor level 2 (user-agent) */
+body {
+  display: block;
+  margin-top: 8px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  margin-left: 8px;
+}
+
+/* Inherited from ancestor level 2 (regular) */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 2 (regular) */
+html, body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Inherited from ancestor level 2 (regular) */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #1e1e1e;
+  color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+  background-image: initial;
+  background-position-x: initial;
+  background-position-y: initial;
+  background-size: initial;
+  background-repeat: initial;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  background-color: rgb(30, 30, 30);
+  color: rgb(240, 240, 240);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Inherited from ancestor level 3 (user-agent) */
+html {
+  display: block;
+}
+
+/* Inherited from ancestor level 3 (user-agent) */
+:root {
+  view-transition-name: root;
+}
+
+/* Inherited from ancestor level 3 (regular) */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
+}
+
+/* Inherited from ancestor level 3 (regular) */
+html, body {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}

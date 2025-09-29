@@ -1,5 +1,6 @@
 // lyrics.js
 import { updateSong, getSongs } from './db.js?v=2';
+import { processMidiFromLyrics, processNonTimedMidiCommands } from './midi-processor.js';
 // Handles the Lyrics Editor modal and toolbar interactions.
 
 let _lyricsInitialized = false;
@@ -66,18 +67,129 @@ function initLyrics() {
   }
 
   function timestampAtPlayhead() {
-    // Insert current playhead time as timestamp at cursor position
+    // Insert current playhead timestamp at the start of the current line,
+    // then move the caret to the beginning of the next line (creating it if needed).
     try {
       if (!lyricsTextarea) return;
       const audioEngine = window.audioEngine;
-      const dur = audioEngine ? (audioEngine.duration || 0) : 0;
-      const pos = audioEngine ? (audioEngine.playing ? Math.max(0, (audioEngine.ctx ? audioEngine.ctx.currentTime : 0) - audioEngine.startTime) + audioEngine.offset : audioEngine.offset) : 0;
+      const pos = audioEngine ? (audioEngine.playing ? Math.max(0, (audioEngine.ctx ? audioEngine.ctx.currentTime : 0) - audioEngine.startTime) + audioEngine.offset : (audioEngine.offset || 0)) : 0;
       const mm = Math.floor(pos/60).toString().padStart(2,'0');
       const ss = Math.floor(pos%60).toString().padStart(2,'0');
       const token = `[${mm}:${ss}]`;
-      const selStart = lyricsTextarea.selectionStart || 0;
-      const v = lyricsTextarea.value || '';
-      lyricsTextarea.value = v.slice(0, selStart) + token + v.slice(selStart);
+
+      const ta = lyricsTextarea;
+      const v = String(ta.value || '');
+      const sel = Math.max(0, ta.selectionStart || 0);
+      const lineStart = (function(){ const i = v.lastIndexOf('\n', Math.max(0, sel - 1)); return i === -1 ? 0 : i + 1; })();
+      const lineEnd = (function(){ const i = v.indexOf('\n', sel); return i === -1 ? v.length : i; })();
+      const line = v.slice(lineStart, lineEnd);
+
+      // If line already starts with a timestamp, replace it; otherwise insert new one
+      const tsStartRe = /^\[(\d{1,2}):(\d{2})(?:\.(\d{1,3}))?\]\s*/;
+      let newLine;
+      if (tsStartRe.test(line)) {
+        newLine = line.replace(tsStartRe, `${token} `);
+      } else {
+        const needSpace = line.length && !/^\s/.test(line);
+        newLine = `${token}${needSpace ? ' ' : ''}${line}`;
+      }
+
+  const pre = v.slice(0, lineStart);
+  const post = v.slice(lineEnd); // may start with \r\n or \n
+  // Detect if a newline already exists immediately after this line in the original content
+  const hasCRLF = post.startsWith('\r\n');
+  const hasLF = post.startsWith('\n');
+  const hasCR = post.startsWith('\r');
+  const nlLenPresent = hasCRLF ? 2 : (hasLF || hasCR ? 1 : 0);
+
+  // Prefer existing newline style in document
+  const docHasCRLF = v.indexOf('\r\n') !== -1;
+  const NL = docHasCRLF ? '\r\n' : '\n';
+
+  // Only insert a newline if none present
+  const ensureNL = nlLenPresent > 0 ? '' : NL;
+  const newValue = pre + newLine + ensureNL + post;
+  // Compute caret from the final string: anchor at end of edited line, then move past the newline in-place
+  const anchor = pre.length + newLine.length;
+  let nlLen = 0;
+  if (newValue.startsWith('\r\n', anchor)) nlLen = 2; else if (newValue.startsWith('\n', anchor) || newValue.startsWith('\r', anchor)) nlLen = 1;
+  const nextLineCaret = anchor + nlLen;
+
+  // Preserve scroll position baseline (we might override if caret goes out of view)
+  const prevScrollTop = ta.scrollTop;
+  const prevScrollLeft = ta.scrollLeft;
+      const wasFocused = document.activeElement === ta;
+      try { if (wasFocused) ta.blur(); } catch(_){ }
+      ta.value = newValue;
+      // Set selection while blurred to minimize user-agent auto-scroll
+      try { ta.setSelectionRange(nextLineCaret, nextLineCaret); } catch(_) { ta.selectionStart = ta.selectionEnd = nextLineCaret; }
+      // Decide if caret is out of view and compute desired scrollTop accordingly
+      const computeDesiredScroll = () => {
+        try {
+          // Estimate line height and line index
+          const cs = window.getComputedStyle ? getComputedStyle(ta) : null;
+          let lh = cs ? parseFloat(cs.lineHeight) : NaN;
+          if (!lh || Number.isNaN(lh)) {
+            const fs = cs ? parseFloat(cs.fontSize) : 16;
+            lh = fs ? fs * 1.25 : 20; // fallback
+          }
+          const before = (ta.value || '').slice(0, nextLineCaret).replace(/\r\n/g, '\n');
+          const lineIndex = before.split('\n').length - 1; // 0-based
+          const visibleLines = Math.max(1, Math.floor(ta.clientHeight / lh));
+          const topLineVisible = Math.floor(ta.scrollTop / lh);
+          const bottomLineVisible = topLineVisible + visibleLines - 1;
+          const margin = Math.max(1, Math.floor(visibleLines * 0.3));
+          let desired = prevScrollTop; // default to previous
+          if (lineIndex > bottomLineVisible) {
+            const newTopLine = Math.max(0, lineIndex - (visibleLines - margin));
+            desired = newTopLine * lh;
+          } else if (lineIndex < topLineVisible) {
+            const newTopLine = Math.max(0, lineIndex - margin);
+            desired = newTopLine * lh;
+          }
+          // Clamp within scrollable range
+          desired = Math.max(0, Math.min(desired, Math.max(0, ta.scrollHeight - ta.clientHeight)));
+          return desired;
+        } catch(_) {
+          return prevScrollTop;
+        }
+      };
+      let desiredScrollTop = prevScrollTop;
+      try { desiredScrollTop = computeDesiredScroll(); } catch(_) {}
+
+      // Apply initial scroll position
+      ta.scrollTop = desiredScrollTop;
+      ta.scrollLeft = prevScrollLeft;
+      // Now focus without scrolling and re-assert scroll a few times to defeat late reflows
+      const restore = () => {
+        try { ta.focus({ preventScroll: true }); } catch(_){ try { ta.focus(); } catch(__) {} }
+        const reassert = () => {
+          // Re-set selection in case the focus caused a jump
+          try { ta.setSelectionRange(nextLineCaret, nextLineCaret); } catch(_) { ta.selectionStart = ta.selectionEnd = nextLineCaret; }
+          ta.scrollTop = desiredScrollTop; ta.scrollLeft = prevScrollLeft;
+          if (window && window.requestAnimationFrame) {
+            requestAnimationFrame(() => {
+              try { ta.setSelectionRange(nextLineCaret, nextLineCaret); } catch(_) { ta.selectionStart = ta.selectionEnd = nextLineCaret; }
+              ta.scrollTop = desiredScrollTop; ta.scrollLeft = prevScrollLeft;
+              requestAnimationFrame(() => {
+                try { ta.setSelectionRange(nextLineCaret, nextLineCaret); } catch(_) { ta.selectionStart = ta.selectionEnd = nextLineCaret; }
+                ta.scrollTop = desiredScrollTop; ta.scrollLeft = prevScrollLeft;
+              });
+            });
+          }
+          // Also use a microtask and a macro task as last resorts
+          Promise.resolve().then(() => {
+            try { ta.setSelectionRange(nextLineCaret, nextLineCaret); } catch(_) { ta.selectionStart = ta.selectionEnd = nextLineCaret; }
+            ta.scrollTop = desiredScrollTop; ta.scrollLeft = prevScrollLeft;
+          });
+          setTimeout(() => {
+            try { ta.setSelectionRange(nextLineCaret, nextLineCaret); } catch(_) { ta.selectionStart = ta.selectionEnd = nextLineCaret; }
+            try { ta.scrollTop = desiredScrollTop; ta.scrollLeft = prevScrollLeft; } catch(_){}
+          }, 0);
+        };
+        reassert();
+      };
+      if (window && window.requestAnimationFrame) requestAnimationFrame(restore); else restore();
     } catch(e) { console.warn('timestampAtPlayhead failed', e); }
   }
 
@@ -305,6 +417,14 @@ function initLyrics() {
       const text = raw.replace(/\r\n/g, '\n');
       const hasTS = /\[(\d{1,2}):(\d{2})(?:\.(\d{1,3}))?\]/.test(text);
 
+      // Process non-timestamped MIDI commands immediately when song is selected
+      try {
+        // Process any MIDI commands that aren't in timestamped lines
+        processNonTimedMidiCommands(text);
+      } catch(e) {
+        console.error('Error processing non-timestamped MIDI commands:', e);
+      }
+
       // Toggle between content vs empty state
       if ((text || '').trim().length > 0) {
         dd.classList.remove('hidden');
@@ -334,10 +454,13 @@ function initLyrics() {
       // Timed lyrics render
       const lines = parseTimedLyrics(text);
       dd.innerHTML = '';
-      for (const ln of lines) {
+      for (let i = 0; i < lines.length; i++) {
+        const ln = lines[i];
         const div = document.createElement('div');
         div.className = 'lyrics-line';
         div.dataset.t = String(ln.t);
+        div.dataset.index = String(i);
+        div.dataset.hasMidi = ln.hasMidi ? 'true' : 'false';
         div.textContent = ln.text;
         if (ln.hasMidi) {
           const note = document.createElement('span');
@@ -357,6 +480,7 @@ function initLyrics() {
   function stopTimedLyricsLoop() {
     if (timedState.raf) { cancelAnimationFrame(timedState.raf); timedState.raf = 0; }
     timedState = { lines: [], cur: -1, raf: 0, lastPos: -1, container: null };
+    try { window.LYRICS_ACTIVE_INDEX = -1; } catch(_) {}
   }
   function startTimedLyricsLoop(lines, container) {
     stopTimedLyricsLoop();
@@ -369,14 +493,15 @@ function initLyrics() {
         const now = ae.ctx ? ae.ctx.currentTime : 0;
         pos = ae.playing ? Math.max(0, now - ae.startTime) + (ae.offset || 0) : (ae.offset || 0);
       }
-      // Only work if position changed > ~15ms to reduce layout churn
-      if (Math.abs(pos - timedState.lastPos) > 0.015) {
-        timedState.lastPos = pos;
-        const i = findActiveIndex(lines, pos);
-        if (i !== timedState.cur) {
-          updateActiveLine(i);
-        }
-      }
+      
+      // Always check for active line on every animation frame
+      timedState.lastPos = pos;
+      const i = findActiveIndex(lines, pos);
+      
+      // Always update the active line, even if the index hasn't changed,
+      // to ensure the UI stays in sync
+      updateActiveLine(i);
+      
       timedState.raf = requestAnimationFrame(step);
     };
     timedState.raf = requestAnimationFrame(step);
@@ -388,12 +513,37 @@ function initLyrics() {
   function updateActiveLine(i) {
     const cont = timedState.container; if (!cont) return;
     const prev = timedState.cur; timedState.cur = i;
-    // Remove previous
-    if (prev >= 0 && prev < cont.children.length) cont.children[prev].classList.remove('current');
+    // Expose active index globally for broadcaster snapshotting
+    try { window.LYRICS_ACTIVE_INDEX = (typeof i === 'number' ? i : -1); } catch(_) {}
+    
+    // First, remove 'current' class from all elements to ensure clean state
+    for (let j = 0; j < cont.children.length; j++) {
+      cont.children[j].classList.remove('current');
+    }
+    
     // Add current
     if (i >= 0 && i < cont.children.length) {
       const el = cont.children[i];
       el.classList.add('current');
+      
+      // Log for debugging
+      console.log(`[LYRICS] Highlighting line ${i}: "${el.textContent}"`);
+      
+      // Process any MIDI commands in this line
+      if (el.dataset.hasMidi === 'true') {
+        // Process MIDI commands from the text content
+        try {
+          const lineText = el.textContent || '';
+          // Get line from original data which contains the MIDI commands
+          const lineIndex = parseInt(el.dataset.index, 10);
+          if (!isNaN(lineIndex) && timedState.lines[lineIndex]) {
+            const originalText = timedState.lines[lineIndex].rawText || lineText;
+            processMidiFromLyrics(originalText);
+          }
+        } catch(e) {
+          console.error('Error processing MIDI commands:', e);
+        }
+      }
       // Smooth scroll to keep the active line about 35% from top
       const target = Math.max(0, el.offsetTop - Math.floor(cont.clientHeight * 0.35));
       cont.scrollTo({ top: target, behavior: 'smooth' });
@@ -401,12 +551,27 @@ function initLyrics() {
   }
   function findActiveIndex(lines, t) {
     if (!lines || !lines.length) return -1;
-    // Binary search by time
+    
+    // Log the current time for debugging
+    console.log(`[LYRICS] Finding active index for time ${t.toFixed(2)}s`);
+    
+    // Binary search by time to find the last line with timestamp <= current time
     let lo = 0, hi = lines.length - 1, ans = -1;
     while (lo <= hi) {
       const mid = (lo + hi) >> 1;
-      if (lines[mid].t <= t) { ans = mid; lo = mid + 1; } else { hi = mid - 1; }
+      if (lines[mid].t <= t) { 
+        ans = mid; 
+        lo = mid + 1; 
+      } else { 
+        hi = mid - 1; 
+      }
     }
+    
+    // If we found a match, log it
+    if (ans >= 0) {
+      console.log(`[LYRICS] Found active line ${ans}: "${lines[ans].text}" (t=${lines[ans].t.toFixed(2)}s)`);
+    }
+    
     return ans;
   }
   function parseTimedLyrics(text) {
@@ -431,11 +596,11 @@ function initLyrics() {
       if (!clean) continue;
       if (!times.length) {
         // Will assign later relative to previous lines
-        out.push({ t: NaN, text: clean, hasMidi });
+        out.push({ t: NaN, text: clean, hasMidi, rawText: line });
       } else {
         // If multiple timestamps on one line, duplicate or pick first?
         // We pick the first for display; advanced syncing can be added later
-        out.push({ t: times[0], text: clean, hasMidi });
+        out.push({ t: times[0], text: clean, hasMidi, rawText: line });
       }
     }
     // Normalize untimed lines to follow the previous timed line by +2s each

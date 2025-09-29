@@ -5,21 +5,148 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>StageTracker Pro - Broadcast Viewer</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="assets/images/favicon.ico">
+  <link rel="icon" type="image/png" href="assets/images/favicon.png">
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
   <style>
-    body { background:#0f1419; color:#e6f0ff; font-family: Segoe UI, system-ui, sans-serif }
-    .viewer-wrap { max-width: 980px; margin: 20px auto; padding: 16px }
-    .viewer-card { background:#151b22; border:1px solid #242c36; border-radius:12px; padding:16px; box-shadow:0 2px 20px rgba(0,0,0,0.35) }
+    html, body { 
+      background:#0f1419; 
+      color:#e6f0ff; 
+      font-family: Segoe UI, system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    .error-message {
+      background: rgba(192, 57, 43, 0.2);
+      border: 1px solid rgba(192, 57, 43, 0.4);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 20px auto;
+      text-align: center;
+      max-width: 400px;
+      font-size: 1.2rem;
+      color: #f8d7da;
+    }
+    .viewer-wrap { 
+      width: 100%; 
+      height: 100%; 
+      box-sizing: border-box;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .viewer-card { 
+      background:#151b22; 
+      border:1px solid #242c36; 
+      border-radius:12px; 
+      padding:16px; 
+      box-shadow:0 2px 20px rgba(0,0,0,0.35);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
     .title { font-weight:800; font-size:1.4rem; margin-bottom:6px }
     .artist { color:#9aa7b3; margin-bottom:14px }
     .progress { display:grid; grid-template-columns: 64px 1fr 64px; align-items:center; gap:12px; margin:10px 0 }
     .bar { height: 10px; background:#232a31; border-radius:6px; overflow:hidden; border:1px solid #2d333a }
     .fill { height:100%; width:0%; background: linear-gradient(90deg, #1f6feb, #5fb3ff) }
-    .lyrics { margin-top: 16px; background:#0f1419; border:1px solid #2b3138; border-radius:10px; padding:12px; max-height:56vh; overflow:auto }
+    .lyrics { 
+      margin-top: 16px; 
+      background:#0f1419; 
+      border:1px solid #2b3138; 
+      border-radius:10px; 
+      padding:12px; 
+      flex: 1;
+      overflow: auto;
+    }
+  .wave { 
+    margin: 8px 0 12px 0; 
+    display: flex; 
+    align-items: center; 
+    justify-content: flex-start;
+    position: relative; 
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+  }
+  .wave img { 
+    width: 100%;
+    height: auto; 
+    border: 1px solid #2b3138; 
+    border-radius: 8px; 
+    background: #0f1419;
+    display: block;
+    object-fit: contain;
+  }
+  .progress-line { 
+    position: absolute; 
+    top: 1px; 
+    bottom: 1px; 
+    width: 2px; 
+    background: #4fc3f7; 
+    box-shadow: 0 0 8px rgba(79, 195, 247, 0.8); 
+    pointer-events: none; 
+    z-index: 5;
+  }
     .line { padding: 8px 10px; border-radius:8px; margin-bottom:6px; color:#cfe0f0 }
-    .line.active { background:#24364a; color:#eaf4ff; font-weight:800 }
-    .join { display:flex; gap:8px; margin-bottom: 12px }
+    .line.active { background:#24364a; color:#eaf4ff; font-weight:800; transition: background 0.2s ease-in-out; }
+    .line.active-highlight { animation: highlight-pulse 0.3s ease-in-out; }
+    @keyframes highlight-pulse {
+      0% { background:#24364a; }
+      50% { background:#345880; }
+      100% { background:#24364a; }
+    }
+    
+    /* Add responsive styles for better layout at different screen sizes */
+    @media screen and (max-width: 768px) {
+      .viewer-wrap {
+        padding: 10px;
+      }
+      .viewer-card {
+        padding: 12px;
+      }
+      .title {
+        font-size: 1.2rem;
+      }
+      .progress {
+        grid-template-columns: 50px 1fr 50px;
+        gap: 8px;
+      }
+    }
+    
+    @media screen and (max-height: 600px) {
+      .join {
+        margin-bottom: 5px;
+      }
+      .title {
+        margin-bottom: 3px;
+      }
+      .artist {
+        margin-bottom: 8px;
+      }
+      .wave {
+        margin: 5px 0 8px 0;
+      }
+      .lyrics {
+        margin-top: 10px;
+        padding: 8px;
+      }
+      .line {
+        padding: 6px 8px;
+        margin-bottom: 4px;
+      }
+    }
+    .join { 
+      display:flex; 
+      gap:8px; 
+      margin-bottom: 10px;
+    }
     .join input { flex:1; padding:10px; border-radius:8px; border:1px solid #2b3138; background:#0f1419; color:#e6f0ff }
     .btn { background:#0a66c2; color:#fff; border:0; padding:10px 16px; border-radius:8px; font-weight:800; cursor:pointer }
+    .btn.leave-btn { background:#c0392b; }
   </style>
   <script src="/socket.io/socket.io.js"></script>
   <script>
@@ -31,75 +158,361 @@
       position: 0,
       updatedAt: 0,
       playing: false,
-      lyrics: [] // [{t:number, text:string}]
+      lyrics: [], // [{t:number, text:string}]
+      songText: '',
+      lyricsText: '',
+      positionText: '0:00',
+      waveformDataUrl: ''
     };
 
+    function showErrorMessage(message) {
+      // Clear main content
+      document.getElementById('songTitle').textContent = '';
+      document.getElementById('songArtist').textContent = '';
+      document.getElementById('lyrics').innerHTML = '';
+      
+      // Hide waveform
+      const waveImg = document.getElementById('waveImg');
+      const progressLine = document.getElementById('progressLine');
+      if (waveImg) waveImg.style.display = 'none';
+      if (progressLine) progressLine.style.display = 'none';
+      
+      // Reset times and progress
+      document.getElementById('cur').textContent = '0:00';
+      document.getElementById('dur').textContent = '0:00';
+      document.getElementById('fill').style.width = '0%';
+      
+      // Create error message element
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error-message';
+      errorDiv.textContent = message;
+      
+      // Add error message to lyrics container
+      document.getElementById('lyrics').appendChild(errorDiv);
+    }
+    
     function connectViewer(room){
       if (!room) return;
       if (!socket) socket = io();
       state.room = room;
+      
+      // Set a timeout to detect if no response is received
+      const connectionTimeout = setTimeout(() => {
+        showErrorMessage('Broadcast not found or connection failed. Please check the broadcast name and try again.');
+      }, 5000); // 5 seconds timeout
+      
+      // Store the timeout ID so we can clear it on successful connection
+      state.connectionTimeout = connectionTimeout;
+      
       socket.emit('viewer:join', { room, displayName: 'Viewer' });
+    }
+    function leaveViewer(){
+      try { if (socket && state.room) { socket.emit('viewer:leave', { room: state.room }); } } catch(_){ }
+      try { socket?.disconnect?.(); } catch(_){ }
+      socket = null; state.room = null;
+      // Keep last shown screen but stop ticking
+      state.playing = false; state.updatedAt = 0;
     }
 
     function formatTime(sec){ sec=Math.max(0,sec||0); const m=Math.floor(sec/60), s=Math.floor(sec%60).toString().padStart(2,'0'); return `${m}:${s}`; }
     function render(){
-      document.getElementById('songTitle').textContent = state.song?.title || '';
-      document.getElementById('songArtist').textContent = state.song?.artist || '';
+      // Render song info and position
+      const titleText = state.songText || `${state.song?.title||''}`;
+      const artistText = state.song?.artist || '';
+      document.getElementById('songTitle').textContent = titleText;
+      document.getElementById('songArtist').textContent = artistText;
+      
+      // Update time display and progress bar
       const cur = document.getElementById('cur');
       const dur = document.getElementById('dur');
       const fill = document.getElementById('fill');
-      cur.textContent = formatTime(state.position);
+      cur.textContent = state.positionText || formatTime(state.position);
       dur.textContent = formatTime(state.duration);
       const pct = state.duration>0 ? Math.min(100, Math.max(0, (state.position/state.duration)*100)) : 0;
       fill.style.width = pct + '%';
+      
+      // Add debug info to help troubleshoot
+      const debugInfo = `Position: ${state.position.toFixed(2)}s, Playing: ${state.playing}, Lyrics: ${state.lyrics.length}`;
+      console.log('[Viewer Render]', debugInfo);
+      
+      // waveform preview and progress line
+      const waveImg = document.getElementById('waveImg');
+      const progressLine = document.getElementById('progressLine');
+      const waveContainer = document.querySelector('.wave');
+      
+      if (waveImg) {
+        if (state.waveformDataUrl) { 
+          // Set or update the image source
+          if (waveImg.src !== state.waveformDataUrl) {
+            waveImg.src = state.waveformDataUrl;
+          }
+          waveImg.style.display = 'block';
+          
+          // Update progress line position on the waveform
+          if (progressLine && waveImg.complete && waveImg.naturalWidth > 0) {
+            // Calculate position as a percentage of the duration
+            const waveWidth = waveImg.offsetWidth;
+            const position = state.duration > 0 ? (state.position / state.duration) : 0;
+            const linePosition = Math.max(0, Math.min(waveWidth, waveWidth * position));
+            
+            // Position the line at the correct location
+            progressLine.style.left = `${linePosition}px`;
+            progressLine.style.display = 'block';
+            
+            console.log(`[WAVE] Setting line position to ${linePosition}px (position=${position.toFixed(3)})`);
+          }
+        }
+        else { 
+          waveImg.removeAttribute('src'); 
+          waveImg.style.display = 'none';
+          if (progressLine) progressLine.style.display = 'none';
+        }
+      }
       const lyrBox = document.getElementById('lyrics');
       lyrBox.innerHTML = '';
+      // Use broadcaster-provided activeIndex when present; fallback to time-based
       const pos = state.position;
-      let activeIndex = -1;
-      for (let i=0;i<state.lyrics.length;i++){
-        if (state.lyrics[i].t <= pos) activeIndex = i; else break;
+      let activeIndex = (typeof state.activeIndex === 'number' && state.activeIndex >= -1) ? state.activeIndex : -1;
+      if (activeIndex < 0) {
+        // Find the last lyrics line with timestamp <= current position
+        for (let i=0;i<state.lyrics.length;i++){
+          if (state.lyrics[i].t <= pos) activeIndex = i; 
+          else break;
+        }
       }
+      
+      // Keep track of the previous active index to detect changes
+      const prevActiveIndex = lyrBox.dataset.activeIndex ? parseInt(lyrBox.dataset.activeIndex) : -2;
+      lyrBox.dataset.activeIndex = activeIndex;
+      
+      // Render all lyrics lines
       state.lyrics.forEach((ln, idx) => {
         const div = document.createElement('div');
         div.className = 'line' + (idx===activeIndex ? ' active' : '');
         div.textContent = ln.text || '';
+        // Store the timestamp for debugging
+        div.dataset.time = ln.t;
+        div.dataset.index = idx;
         lyrBox.appendChild(div);
       });
-      // scroll active line into view
+      
+      // Scroll active line into view and animate if needed
       if (activeIndex >= 0) {
         const el = lyrBox.children[activeIndex];
-        if (el) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        if (el) {
+          // Always scroll to the active line, ensuring it's visible
+          el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          
+          // Add a special animation class when the active line changes
+          if (activeIndex !== prevActiveIndex) {
+            el.classList.add('active-highlight');
+            setTimeout(() => {
+              if (el.classList) el.classList.remove('active-highlight');
+            }, 300);
+          }
+        }
       }
     }
 
     function tick(){
       const now = performance.now();
-      if (state.playing && state.updatedAt) {
+      
+      // Track if we're changing position or active line
+      const prevPosition = state.position;
+      let prevActiveLineIndex = -1;
+      
+      if (state.playing) {
+        // Reset timestamp if it's somehow lost
+        if (!state.updatedAt) {
+          state.updatedAt = now;
+          console.log("[TICK] Resetting timestamp");
+        }
+        
+        // Update position based on elapsed time
         const dt = (now - state.updatedAt) / 1000;
         state.position = Math.min(state.duration, state.position + dt);
         state.updatedAt = now;
-        render();
+        
+        // Determine current active line based on position
+        prevActiveLineIndex = state._prevActiveLineIndex || -1;
+        let newActiveLineIndex = -1;
+        
+        for (let i = 0; i < state.lyrics.length; i++) {
+          if (state.lyrics[i].t <= state.position) {
+            newActiveLineIndex = i;
+          } else {
+            break;
+          }
+        }
+        
+        // Store for next comparison
+        state._prevActiveLineIndex = newActiveLineIndex;
+        
+        // Force a render when active line changes or every second
+        const lineChanged = prevActiveLineIndex !== newActiveLineIndex;
+        const secondChanged = Math.floor(prevPosition) !== Math.floor(state.position);
+        
+        if (lineChanged || secondChanged) {
+          console.log(`[TICK] Position: ${state.position.toFixed(1)}s, Active line: ${newActiveLineIndex}`);
+          render();
+        } else {
+          // Even if not forcing a full render, update progress indicators
+          updateProgressOnly();
+        }
       }
+      
       requestAnimationFrame(tick);
+    }
+    
+    // Update only time and progress indicators without rebuilding lyrics DOM
+    function updateProgressOnly() {
+      // Update time display
+      const cur = document.getElementById('cur');
+      cur.textContent = formatTime(state.position);
+      
+      // Update progress bar
+      const fill = document.getElementById('fill');
+      const pct = state.duration > 0 ? Math.min(100, Math.max(0, (state.position/state.duration)*100)) : 0;
+      fill.style.width = pct + '%';
+      
+      // Update progress line on waveform
+      const progressLine = document.getElementById('progressLine');
+      const waveImg = document.getElementById('waveImg');
+      
+      if (progressLine && waveImg && waveImg.complete && waveImg.naturalWidth > 0) {
+        // Calculate position as a percentage of the duration
+        const waveWidth = waveImg.offsetWidth;
+        const position = state.duration > 0 ? (state.position / state.duration) : 0;
+        const linePosition = Math.max(0, Math.min(waveWidth, waveWidth * position));
+        progressLine.style.left = `${linePosition}px`;
+      }
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      // Initialize waveform image load event handler
+      const waveImg = document.getElementById('waveImg');
+      if (waveImg) {
+        waveImg.addEventListener('load', () => {
+          // Update progress line when image is loaded to ensure correct positioning
+          const progressLine = document.getElementById('progressLine');
+          if (progressLine && state.duration > 0) {
+            // Calculate position as a percentage of the duration
+            const waveWidth = waveImg.offsetWidth;
+            const position = state.duration > 0 ? (state.position / state.duration) : 0;
+            const linePosition = Math.max(0, Math.min(waveWidth, waveWidth * position));
+            
+            // Set the line position
+            progressLine.style.left = `${linePosition}px`;
+            progressLine.style.display = 'block';
+            
+            console.log(`[LOAD] Image loaded, setting line position to ${linePosition}px`);
+          }
+        });
+      }
+      
+      // Add window resize handler to adjust progress line position when window is resized
+      window.addEventListener('resize', () => {
+        // Debounce the resize event to avoid excessive updates
+        if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+        this.resizeTimeout = setTimeout(() => {
+          const waveImg = document.getElementById('waveImg');
+          const progressLine = document.getElementById('progressLine');
+          if (waveImg && progressLine && waveImg.complete && waveImg.naturalWidth > 0) {
+            const waveWidth = waveImg.offsetWidth;
+            const position = state.duration > 0 ? (state.position / state.duration) : 0;
+            const linePosition = Math.max(0, Math.min(waveWidth, waveWidth * position));
+            progressLine.style.left = `${linePosition}px`;
+            console.log(`[RESIZE] Window resized, updating line position to ${linePosition}px`);
+          }
+        }, 100);
+      });
+      
       socket = io();
-      socket.on('viewer:joined', () => {});
+      
+      // Handle connection events
+      socket.on('connect_error', () => {
+        showErrorMessage('Failed to connect to broadcast server. Please try again later.');
+        if (state.connectionTimeout) clearTimeout(state.connectionTimeout);
+      });
+      
+      socket.on('viewer:joined', () => {
+        // Clear the timeout since we successfully joined
+        if (state.connectionTimeout) clearTimeout(state.connectionTimeout);
+      });
+      
+      socket.on('viewer:rejected', (data) => {
+        showErrorMessage(data.reason || 'Broadcast not found or no longer active.');
+        if (state.connectionTimeout) clearTimeout(state.connectionTimeout);
+      });
+      
       socket.on('state:update', (s) => {
+        // Clear the timeout since we received data
+        if (state.connectionTimeout) clearTimeout(state.connectionTimeout);
         // Trust only allowed fields
         state.song = s.song || {};
         state.duration = Number(s.duration||0);
-        state.position = Number(s.position||0);
+        
+        // Always update position and playing status on every update
+        // Prefer numeric position; if not present, parse positionText m:ss
+        if (typeof s.position === 'number') {
+          state.position = Number(s.position||0);
+        } else if (typeof s.positionText === 'string') {
+          const m = s.positionText.match(/^(\d+):(\d{2})/); 
+          if (m) { state.position = (parseInt(m[1],10)||0)*60 + (parseInt(m[2],10)||0); }
+        }
+        
+        // Detect if playback state changed
+        const wasPlaying = state.playing;
         state.playing = !!s.playing;
+        
+        // Always reset the timestamp on state update or when transitioning to playing
+        if (!wasPlaying && state.playing) {
+          console.log('[Viewer] Playback started - resetting timer');
+        }
         state.updatedAt = performance.now();
-        state.lyrics = Array.isArray(s.lyrics) ? s.lyrics : [];
+        
+        // If lyrics array missing but lyricsText provided, parse lines
+        if (Array.isArray(s.lyrics)) {
+          state.lyrics = s.lyrics;
+          console.log('[Viewer] Updated lyrics array, length:', s.lyrics.length);
+        } else if (typeof s.lyricsText === 'string') {
+          const lines = s.lyricsText.split(/\n/);
+          state.lyrics = lines.map((ln) => {
+            const m = ln.match(/\[(\d+):(\d{2})\]\s*(.*)$/); 
+            if (m) { return { t: (parseInt(m[1],10)||0)*60 + (parseInt(m[2],10)||0), text: m[3]||'' }; }
+            return { t: 0, text: ln };
+          }).sort((a,b)=>a.t-b.t);
+          console.log('[Viewer] Parsed lyrics from text, length:', state.lyrics.length);
+        } else {
+          state.lyrics = [];
+          console.log('[Viewer] No lyrics data received');
+        }
+        
+        // Always update active index
+        state.activeIndex = (typeof s.activeIndex === 'number') ? s.activeIndex : -1;
+        state.songText = s.songText || '';
+        state.positionText = s.positionText || formatTime(state.position);
+        state.lyricsText = s.lyricsText || '';
+        state.waveformDataUrl = s.waveformDataUrl || '';
+        
+        // Force render after state update
         render();
       });
-      document.getElementById('joinBtn').addEventListener('click', () => {
-        const room = document.getElementById('room').value.trim();
-        connectViewer(room);
-      });
+      // Auto-join from ?room= param
+      try {
+        const qp = new URLSearchParams(location.search);
+        const room = qp.get('room');
+        if (room) { 
+          connectViewer(room); 
+        } else {
+          // Show error if no room parameter was provided
+          showErrorMessage('No broadcast name specified. Please provide a valid broadcast name.');
+        }
+      } catch(e) {
+        console.error('Error parsing room parameter:', e);
+        showErrorMessage('Failed to connect to broadcast. Please try again.');
+      }
+      document.getElementById('leaveBtn').addEventListener('click', () => { leaveViewer(); });
       requestAnimationFrame(tick);
     });
   </script>
@@ -107,12 +520,15 @@
 <body>
   <div class="viewer-wrap">
     <div class="join">
-      <input id="room" type="text" placeholder="Enter broadcast name (room)" />
-      <button id="joinBtn" class="btn">Join</button>
+      <button id="leaveBtn" class="btn leave-btn">Leave Broadcast</button>
     </div>
     <div class="viewer-card">
       <div class="title" id="songTitle"></div>
       <div class="artist" id="songArtist"></div>
+      <div class="wave">
+        <img id="waveImg" alt="Waveform" />
+        <div id="progressLine" class="progress-line"></div>
+      </div>
       <div class="progress">
         <div id="cur">0:00</div>
         <div class="bar"><div class="fill" id="fill"></div></div>

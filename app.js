@@ -1,4 +1,18 @@
-import { getSongs, addSong, updateSong, deleteSong, getTracks, addTrack, updateTrack, deleteTrack, getAudioFiles, addAudioFile, updateAudioFile, deleteAudioFile, putWaveform, getWaveformByTrack, getMasterWaveformBySong, deleteWaveformByTrack, deleteMasterWaveformBySong, wipeDatabase } from './db.js?v=3';
+import { getSongs, addSong, updateSong, deleteSong, getTracks, addTrack, updateTrack as dbUpdateTrack, deleteTrack, getAudioFiles, addAudioFile, updateAudioFile, deleteAudioFile, putWaveform, getWaveformByTrack, getMasterWaveformBySong, deleteWaveformByTrack, deleteMasterWaveformBySong, wipeDatabase } from './db.js?v=3';
+import { exportCompleteDatabase, importCompleteDatabase, showNotification, createSampleData, showExportPreview, showImportPreview } from './io.js?v=7';
+import './broadcast.js';
+
+// Wrap the updateTrack function to add debugging for regions
+async function updateTrack(track) {
+    // Enhanced wrapper with logging for regions-related updates
+    if (Array.isArray(track.regions)) {
+        console.log(`Saving track ${track.id} with ${track.regions.length} regions to IndexedDB`);
+        console.log('Regions data:', JSON.stringify(track.regions));
+    }
+    // Call the original function from db.js
+    return await dbUpdateTrack(track);
+}
+
 console.log('app.js: script loaded');
 const songsContainer = document.getElementById('songsContainer');
 const songCountEl = document.getElementById('songCount');
@@ -14,10 +28,10 @@ const closeDeleteSongBtn = document.getElementById('closeDeleteSong');
 const confirmDeleteSongBtn = document.getElementById('confirmDeleteSong');
 const cancelDeleteSongBtn = document.getElementById('cancelDeleteSong');
 const deleteSongInfo = document.getElementById('deleteSongInfo');
-const importFilesBtn = document.getElementById('importFilesBtn');
+// const importFilesBtn = document.getElementById('importFilesBtn'); // Removed from menu
 const importArchiveBtn = document.getElementById('importArchiveBtn');
 const exportArchiveBtn = document.getElementById('exportArchiveBtn');
-const resetStorageBtn = document.getElementById('resetStorageBtn');
+// const resetStorageBtn = document.getElementById('resetStorageBtn'); // Removed from menu
 const audioFileInput = document.getElementById('audioFileInput');
 const archiveFileInput = document.getElementById('archiveFileInput');
 const settingsRoot = document.getElementById('settingsRoot');
@@ -54,6 +68,16 @@ let selectedSongId = null;
 // Expose to window for cross-module access (lyrics.js, broadcast, etc.)
 window.songs = songs;
 window.selectedSongId = selectedSongId;
+// Test helpers for development and debugging
+window.createSampleData = createSampleData;
+window.checkDatabase = async function() {
+	const songs = await getSongs();
+	console.log('Database state:', {
+		songCount: songs.length,
+		songs: songs.map(s => ({ id: s.id, title: s.title, artist: s.artist }))
+	});
+	return songs;
+};
 let trackManagerSongId = null; // the song currently open in Track Manager
 let trackManagerDirty = false; // track add/remove changes while Track Manager is open
 
@@ -62,14 +86,17 @@ let files = {};
 let nextFileId = 1;
 
 // ------------------ Broadcast (host) wiring ------------------
-// Lightweight helper to sync song info, playhead, and lyrics to viewers via Socket.IO
-// Requires server.js running and /socket.io available. Non-blocking: uses rAF to piggyback updates.
+// Simple broadcast per spec:
+// - On song selection: send Title – Artist (text), small master waveform graphic, and lyrics with timestamps (text + parsed array)
+// - Every 1 second: push position (m:ss), and keep viewers adjusted to that
 const Broadcast = {
 	socket: null,
 	room: null,
 	started: false,
 	lastSentMs: 0,
-	minIntervalMs: 250, // throttle updates
+	minIntervalMs: 1000, // push every 1 second
+	intervalId: 0,
+	waveformCache: new Map(), // songId -> dataURL
 	ensureSocket() {
 		if (this.socket) return this.socket;
 		// Guard: only attempt if socket.io client is present (served by server)
@@ -83,90 +110,250 @@ const Broadcast = {
 		this.room = room;
 		this.started = true;
 		io.emit('host:join', { room, hostName: 'Host' });
+		// Send an initial full snapshot asap
 		this.pushSnapshot(true);
+		// Begin 1-second timer pushes for position updates
+		if (this.intervalId) { try { clearInterval(this.intervalId); } catch(_) {} }
+		this.intervalId = setInterval(() => { try { this.pushSnapshot(false); } catch(_) {} }, this.minIntervalMs);
+	    try { window.updateBroadcastStatusChip?.(); } catch(_) {}
 	},
 	stop() {
 		this.started = false;
 		this.room = null;
+		if (this.intervalId) { try { clearInterval(this.intervalId); } catch(_) {} this.intervalId = 0; }
 		// Keep socket connected; viewers simply stop receiving updates
+	    try { window.updateBroadcastStatusChip?.(); } catch(_) {}
+	},
+	async getMasterWaveformDataUrl(songId, opts={}) {
+		const cached = this.waveformCache.get(songId);
+		if (cached) return cached;
+		try {
+			const rec = await getMasterWaveformBySong(songId);
+			if (!rec || !rec.peaks || !rec.bins) return '';
+			const peaks = rec.peaks; // Uint8Array
+			const w = Math.max(240, Math.min(800, opts.width || 480));
+			const h = Math.max(40, Math.min(160, opts.height || 60));
+			const c = document.createElement('canvas'); c.width = w; c.height = h;
+			const ctx = c.getContext('2d');
+			// background
+			ctx.fillStyle = '#0f1419'; ctx.fillRect(0,0,w,h);
+			ctx.strokeStyle = '#2b3138'; ctx.strokeRect(0.5,0.5,w-1,h-1);
+			// draw peaks as bars
+			const len = peaks.length || rec.bins;
+			const bar = 1, gap = 1, col = bar + gap; const cols = Math.min(Math.floor(w/col), len);
+			for (let i=0;i<cols;i++){
+				const start = Math.floor((i/cols)*len);
+				const end = Math.floor(((i+1)/cols)*len);
+				let vmax = 0; for (let j=start;j<end;j++){ const v=(peaks[j]||0)/255; if (v>vmax) vmax=v; }
+				const bh = Math.max(1, Math.floor(vmax*(h-6)));
+				const x = i*col + 0.5; const y = Math.floor((h-bh)/2)+0.5;
+				ctx.fillStyle = '#3a90e5';
+				ctx.fillRect(x, y, bar, bh);
+			}
+			const url = c.toDataURL('image/png');
+			this.waveformCache.set(songId, url);
+			return url;
+		} catch(e) { return ''; }
 	},
 	getLyricsForSong(songId) {
-		// Parse timestamps like [01:30] at the start (or anywhere) of lines.
-		const ta = document.getElementById('lyricsTextarea');
-		if (!ta) return [];
-		const lines = String(ta.value || '').split(/\r?\n/);
-		const out = [];
-		const tsRe = /\[(\d{1,2}):(\d{2})(?:\.(\d{1,3}))?\]/g; // [mm:ss] or [mm:ss.mmm]
-		for (const raw of lines) {
-			if (!raw || !raw.trim()) continue;
-			let text = raw;
-			let match;
-			let hasAny = false;
-			tsRe.lastIndex = 0;
-			while ((match = tsRe.exec(raw)) !== null) {
-				hasAny = true;
-				const mm = parseInt(match[1], 10) || 0;
-				const ss = parseInt(match[2], 10) || 0;
-				const ms = parseInt(match[3] || '0', 10) || 0;
-				const t = mm * 60 + ss + (ms/1000);
-				// Strip token from text once (after we processed matches, we will strip globally)
-				out.push({ t, text: raw.replace(tsRe, '').trim() });
+		// Prefer the song.lyrics field from DB; fallback to textarea; finally use displayed lyrics
+		try {
+			// Guard against invalid songId
+			if (!songId) return [];
+			
+			const song = songs.find(s => s.id === songId);
+			let srcRaw = '';
+			
+			// Memory safety - wrap each access in try/catch
+			try {
+				srcRaw = (song && typeof song.lyrics === 'string' && song.lyrics.trim())
+					? song.lyrics
+					: '';
+			} catch (e) {
+				console.warn('Error accessing song lyrics:', e);
 			}
-			if (!hasAny) {
-				// No timestamp -> leave t as NaN for now; we'll align such lines after the previous timestamp
-				out.push({ t: NaN, text: raw.replace(tsRe, '').trim() });
+			
+			// If no lyrics in song object, try textarea
+			if (!srcRaw) {
+				try {
+					srcRaw = document.getElementById('lyricsTextarea')?.value || '';
+				} catch (e) {
+					console.warn('Error accessing lyrics textarea:', e);
+				}
 			}
-		}
-		// Normalize untimed lines: place them slightly after the preceding timed line
-		out.sort((a,b) => (isNaN(a.t)? Infinity : a.t) - (isNaN(b.t)? Infinity : b.t));
-		let lastT = 0;
-		for (let i=0;i<out.length;i++) {
-			if (isNaN(out[i].t)) {
-				lastT = lastT + 2; // 2s after previous as a fallback spacing
-				out[i].t = lastT;
-			} else {
-				lastT = out[i].t;
+			
+			// Last-resort: capture what's currently shown in the lyrics display
+			if (!srcRaw) {
+				try {
+					const disp = document.getElementById('lyricsDisplay');
+					if (disp) {
+						// Use textContent to strip any spans/timestamps rendered by lyrics.js
+						srcRaw = (disp.textContent || '').trim();
+					}
+				} catch (e) {
+					console.warn('Error accessing lyrics display:', e);
+				}
 			}
+			
+			// Limit the lyrics size to prevent memory issues
+			const maxSize = 50000; // 50KB is plenty for lyrics
+			const src = String(srcRaw || '').replace(/\r\n/g, '\n').substring(0, maxSize);
+			if (!src) return [];
+			
+			const lines = src.split(/\n/);
+			const out = [];
+			// Timestamp like [mm:ss] or [m:ss.mmm]
+			const tsRe = /\[(\d{1,2}):(\d{2})(?:\.(\d{1,3}))?\]/g;
+			// Process lines with a safety limit to prevent infinite loops
+			const maxProcessedLines = 500; // Limit to 500 lines for safety
+			const linesToProcess = lines.slice(0, maxProcessedLines);
+			
+			for (const raw of linesToProcess) {
+				if (!raw || !raw.trim()) continue;
+				
+				// Limit line length for safety
+				const maxLineLength = 1000;
+				const trimmedRaw = raw.slice(0, maxLineLength);
+				
+				// Remove embedded MIDI tags from the lyric text for viewers
+				const noMidi = trimmedRaw.replace(/\[\[[^\]]+\]\]/g, '');
+				let foundTS = false;
+				
+				try {
+					// Safer approach to prevent infinite loops or excessive memory usage
+					// Create a fresh regex instance each time instead of reusing
+					const timestamps = [...trimmedRaw.matchAll(/\[(\d{1,2}):(\d{2})(?:\.(\d{1,3}))?\]/g)];
+					
+					// Process each found timestamp - with limit for safety
+					const maxTimestamps = 10; // Limit to 10 timestamps per line for safety
+					const limitedTimestamps = timestamps.slice(0, maxTimestamps);
+					
+					// Process each found timestamp
+					for (const match of limitedTimestamps) {
+						foundTS = true;
+						const mm = parseInt(match[1], 10) || 0;
+						const ss = parseInt(match[2], 10) || 0;
+						const ms = parseInt(match[3] || '0', 10) || 0;
+						const t = mm * 60 + ss + (ms/1000);
+						out.push({ t, text: noMidi.replace(/\[(\d{1,2}):(\d{2})(?:\.(\d{1,3}))?\]/g, '').trim() });
+					}
+					
+					if (!foundTS) {
+						out.push({ t: NaN, text: noMidi.replace(tsRe, '').trim() });
+					}
+				} catch (err) {
+					console.warn('Error processing lyrics timestamp:', err);
+					// Add the line without timestamp if there was an error
+					out.push({ t: NaN, text: noMidi.trim() });
+				}
+			}
+			// Normalize untimed lines relative to previous timestamp - with safety limits
+			try {
+				// Limit output size for safety before sorting
+				const maxLyricLines = 300;
+				if (out.length > maxLyricLines) {
+					console.warn(`Truncating lyrics from ${out.length} to ${maxLyricLines} lines for memory safety`);
+					out.splice(maxLyricLines); // Truncate to prevent excessive memory usage
+				}
+				
+				// Sort with error handling
+				try {
+					out.sort((a,b) => (isNaN(a.t)? Infinity : a.t) - (isNaN(b.t)? Infinity : b.t));
+				} catch (e) {
+					console.warn('Error sorting lyrics by timestamp:', e);
+				}
+				
+				let lastT = 0;
+				for (let i=0; i<out.length; i++) {
+					if (isNaN(out[i].t)) {
+						lastT = lastT + 2; // space untimed lines by 2s
+						out[i].t = lastT;
+					} else {
+						lastT = out[i].t;
+					}
+				}
+				
+				// Final sort with error handling
+				try {
+					out.sort((a,b) => a.t-b.t);
+				} catch (e) {
+					console.warn('Error in final lyrics sort:', e);
+				}
+				
+				// Ensure no duplicate timestamps
+				for (let i=1; i<out.length; i++) {
+					if (out[i].t <= out[i-1].t) out[i].t = out[i-1].t + 0.01;
+				}
+			} catch (e) {
+				console.warn('Error normalizing lyrics timestamps:', e);
+			}
+			return out;
+		} catch (e) {
+			console.warn('Broadcast.getLyricsForSong failed', e);
+			return [];
 		}
-		// Ensure ascending and dedupe accidental duplicates by nudging
-		out.sort((a,b)=>a.t-b.t);
-		for (let i=1;i<out.length;i++) {
-			if (out[i].t <= out[i-1].t) out[i].t = out[i-1].t + 0.01;
-		}
-		return out;
 	},
 	currentSongMeta() {
 		const song = songs.find(s => s.id === selectedSongId) || {};
-		return { title: song.title || '', artist: song.artist || '' };
+		let title = song.title || '';
+		let artist = song.artist || '';
+		if (!title) {
+			try {
+				const tEl = document.getElementById('displaySongTitle');
+				const txt = (tEl && tEl.textContent) ? String(tEl.textContent).trim() : '';
+				if (txt) {
+					const parts = txt.split(' – ');
+					title = parts[0] || title;
+					artist = parts[1] || artist;
+				}
+			} catch(_) {}
+		}
+		return { title, artist };
 	},
-	snapshot() {
+	formatTimeText(sec){ sec=Math.max(0,sec||0); const m=Math.floor(sec/60); const s=Math.floor(sec%60).toString().padStart(2,'0'); return `${m}:${s}`; },
+	lyricsTextFromLines(lines){
+		try { return (lines||[]).map(l=>`[${this.formatTimeText(l.t)}] ${l.text||''}`).join('\n'); } catch(_) { return ''; }
+	},
+	async snapshot() {
+		const meta = this.currentSongMeta();
+		const pos = (function(){
+			if (!audioEngine.ctx) return audioEngine.offset || 0;
+			const now = audioEngine.ctx.currentTime;
+			return audioEngine.playing ? Math.max(0, now - audioEngine.startTime) + audioEngine.offset : audioEngine.offset || 0;
+		})();
+		const lyr = this.getLyricsForSong(selectedSongId);
+		const songId = selectedSongId;
+		let waveformDataUrl = '';
+		if (songId) { try { waveformDataUrl = await this.getMasterWaveformDataUrl(songId, { width: 480, height: 60 }); } catch(_) {} }
 		return {
-			song: this.currentSongMeta(),
+			song: meta,
+			songText: (meta.title || meta.artist) ? `${meta.title||''} – ${meta.artist||''}`.trim() : '',
 			duration: audioEngine.duration || 0,
-			position: (function(){
-				if (!audioEngine.ctx) return audioEngine.offset || 0;
-				const now = audioEngine.ctx.currentTime;
-				return audioEngine.playing ? Math.max(0, now - audioEngine.startTime) + audioEngine.offset : audioEngine.offset || 0;
-			})(),
+			position: pos,
+			positionText: this.formatTimeText(pos),
 			playing: !!audioEngine.playing,
-			lyrics: this.getLyricsForSong(selectedSongId)
+			lyrics: lyr,
+			lyricsText: this.lyricsTextFromLines(lyr),
+			activeIndex: (function(){ try { return typeof window.LYRICS_ACTIVE_INDEX === 'number' ? window.LYRICS_ACTIVE_INDEX : -1; } catch(_) { return -1; } })(),
+			waveformDataUrl
 		};
 	},
-	pushSnapshot(force=false) {
+	async pushSnapshot(force=false) {
 		if (!this.started || !this.room) return;
 		const now = performance.now();
 		if (!force && now - this.lastSentMs < this.minIntervalMs) return;
 		const io = this.ensureSocket();
 		if (!io) return;
-		const state = this.snapshot();
+		const state = await this.snapshot();
 		this.lastSentMs = now;
+		try { console.log('[BCAST] push', { room: this.room, title: state.song?.title, pos: state.positionText, lyrics: (state.lyrics||[]).length }); } catch(_) {}
 		io.emit('state:push', { room: this.room, state });
 	}
 };
 // Expose a minimal API to the page for UI wiring
 window.STP_Broadcast = {
-	start: (room) => Broadcast.start(room),
-	stop: () => Broadcast.stop()
+	start: (room) => { Broadcast.start(room); try { window.updateBroadcastStatusChip?.(); } catch(_) {}; },
+	stop: () => { Broadcast.stop(); try { window.updateBroadcastStatusChip?.(); } catch(_) {}; }
 };
 
 function renderSongs() {
@@ -230,11 +417,27 @@ function renderSongs() {
 		// Track count button
 		const controls = document.createElement('div');
 		controls.className = 'song-controls';
-		let trackCount = song.tracks || 0;
+		let trackCount = (typeof song.tracks === 'number' ? song.tracks : 0);
 		const trackBtn = document.createElement('button');
 		trackBtn.className = 'track-btn';
 		trackBtn.textContent = `${trackCount} tracks`;
 		trackBtn.title = 'Open Track Manager';
+		// If we don't have a reliable trackCount, resolve it asynchronously
+		if (!song.tracks || song.tracks === 0) {
+			// Best-effort: fetch tracks count and update button label
+			(async () => {
+				try {
+					const list = await getTracks(song.id);
+					if (Array.isArray(list)) {
+						const c = list.length;
+						if (c !== trackCount) {
+							trackCount = c;
+							trackBtn.textContent = `${trackCount} tracks`;
+						}
+					}
+				} catch(_) {}
+			})();
+		}
 		trackBtn.addEventListener('click', (e) => {
 			e.stopPropagation();
 			// Always resolve the opener from window to avoid module-scope ReferenceError
@@ -267,6 +470,8 @@ function renderSongs() {
 			ensureSongLoaded(selectedSongId).catch(err => console.warn('preload error', err));
 			// Render stored master waveform if available
 			renderMasterWaveFromDB(selectedSongId).catch(()=>{});
+			// Notify viewers about the newly selected song immediately
+			try { Broadcast.pushSnapshot(true); } catch(_) {}
 		});
 		card.addEventListener('keydown', (e) => {
 			if (e.key === 'Enter' || e.key === ' ') {
@@ -283,7 +488,21 @@ function updateDetails(song) {
 	songDetailsTitle.textContent = song.title + (song.artist ? ' – ' + song.artist : '');
 	// Paragraph may not exist in Performance page; guard access
 	if (songDetailsPara) {
-		songDetailsPara.textContent = song.artist ? (song.artist + ' — ' + song.tracks + ' tracks') : 'No artist information.';
+		const write = (count) => {
+			songDetailsPara.textContent = song.artist ? (song.artist + ' — ' + count + ' tracks') : 'No artist information.';
+		};
+		if (typeof song.tracks === 'number') {
+			write(song.tracks);
+		} else {
+			write(0);
+			// Fetch dynamically
+			(async () => {
+				try {
+					const list = await getTracks(song.id);
+					if (Array.isArray(list)) write(list.length);
+				} catch(_) {}
+			})();
+		}
 	}
 }
 
@@ -421,462 +640,133 @@ async function handleAudioFiles(e) {
 	if (!list || !list.length) return;
 	// Prototype: add each file as a new song with one track is not used anymore in production; leaving empty.
 }
-function exportArchive() {
-	// Placeholder: archive export is out of scope for current IndexedDB flow.
+
+async function exportArchive() {
+	try {
+		const result = await exportCompleteDatabase();
+		console.log('Export completed:', result);
+	} catch (error) {
+		console.error('Export error:', error);
+		showNotification(error.message, 'error');
+	}
+}
+
+async function importArchive() {
+	const fileInput = document.getElementById('archiveFileInput');
+	if (!fileInput) {
+		showNotification('Import functionality not available', 'error');
+		return;
+	}
+	
+	// Trigger file picker
+	fileInput.click();
+}
+
+// Refresh UI state after a successful import
+async function refreshUIAfterImport() {
+	console.log('Import completed, refreshing UI...');
+	try {
+		songs = await getSongs();
+		window.songs = songs;
+		await renderSongs();
+		// Clear any selected song
+		selectedSongId = null;
+		window.selectedSongId = null;
+		// Update song details display
+		if (songDetailsTitle) songDetailsTitle.textContent = '';
+		if (songDetailsPara) songDetailsPara.textContent = songs.length > 0 ? 'Select a song to view details.' : 'No songs available.';
+		// Clear master waveform
+		try { await renderMasterWaveFromDB(null); } catch(_) {}
+		console.log('UI refreshed successfully');
+	} catch (refreshError) {
+		console.error('Failed to refresh UI after import:', refreshError);
+		// Fall back to page reload if UI refresh fails
+		setTimeout(() => { location.reload(); }, 1000);
+	}
+}
+
+async function handleImportFile(e) {
+	const file = e.target.files[0];
+	if (!file) return;
+	
+	// Clear the input so the same file can be selected again if needed
+	e.target.value = '';
+	// Show preview card and, on confirm, run import and refresh UI
+	await showImportPreview(file, { onAfterImport: refreshUIAfterImport });
 }
 if (audioFileInput) audioFileInput.addEventListener('change', handleAudioFiles);
-if (exportArchiveBtn) exportArchiveBtn.addEventListener('click', () => { exportArchive(); closeSettingsMenu(); });
-if (resetStorageBtn) resetStorageBtn.addEventListener('click', async () => {
-	closeSettingsMenu();
-	try {
-		await wipeDatabase();
-	} catch (e) {
-		console.warn('wipeDatabase error', e);
-	}
-	// Hard reload to re-open DB and clear in-memory state
-	location.reload();
-});
+if (exportArchiveBtn) exportArchiveBtn.addEventListener('click', () => { showExportPreview(); closeSettingsMenu(); });
+if (importArchiveBtn) importArchiveBtn.addEventListener('click', () => { importArchive(); closeSettingsMenu(); });
+if (archiveFileInput) archiveFileInput.addEventListener('change', handleImportFile);
+// Reset Storage button removed from menu
+// if (resetStorageBtn) resetStorageBtn.addEventListener('click', async () => {
+//	closeSettingsMenu();
+//	try {
+//		await wipeDatabase();
+//	} catch (e) {
+//		console.warn('wipeDatabase error', e);
+//	}
+//	// Hard reload to re-open DB and clear in-memory state
+//	location.reload();
+// });
 
 
 if (deleteSongBtn) deleteSongBtn.addEventListener('click', openDeleteSongModal);
 if (closeDeleteSongBtn) closeDeleteSongBtn.addEventListener('click', closeDeleteSongModal);
 if (cancelDeleteSongBtn) cancelDeleteSongBtn.addEventListener('click', closeDeleteSongModal);
 if (confirmDeleteSongBtn) confirmDeleteSongBtn.addEventListener('click', handleConfirmDeleteSong);
-window.addEventListener('keydown', (e) => {
-	if (e.key === 'Escape' && deleteSongModal && !deleteSongModal.classList.contains('hidden')) {
-		closeDeleteSongModal();
-	}
-});
-
-// initial render — run after window load to ensure the DOM and resources are ready
-window.addEventListener('load', async () => {
-	console.log('app.js: window load — initializing UI');
-	try {
-			// Load songs from IndexedDB
-			songs = await getSongs();
-			window.songs = songs;
-			await renderSongs();
-			// Do not auto-select or preload any song on launch; wait for user selection
-			if (!songs.length) {
-				// No songs, show empty details
-				if (songDetailsTitle) songDetailsTitle.textContent = '';
-				if (songDetailsPara) songDetailsPara.textContent = 'No song selected.';
-				// Ensure master waveform is cleared on first launch with no selection
-				try { await renderMasterWaveFromDB(null); } catch(_) {}
-			}
-	} catch (err) {
-		console.error('app.js init error:', err);
-	}
-	// Try to attach socket.io client if served; ignore if unavailable
-	(function attachSocketClient(){
-		if (window.io) return; // already present
-		const s = document.createElement('script');
-		s.src = '/socket.io/socket.io.js';
-		s.async = true;
-		s.onload = () => { /* ready for broadcasting if user starts it */ };
-		s.onerror = () => { /* server not running; silently ignore */ };
-		document.head.appendChild(s);
-	})();
-
-	// Auto-start broadcast if dashboard passed ?broadcast=<room>
-	try {
-		const params = new URLSearchParams(location.search);
-		const room = params.get('broadcast');
-		if (room && window.STP_Broadcast) {
-			// If socket client not yet loaded, give it a moment
-			const kick = () => { try { window.STP_Broadcast.start(room); } catch(_) {} };
-			if (window.io) kick(); else setTimeout(kick, 200);
-		}
-	} catch(_) {}
-});
-
-// Stop broadcasting when leaving the page (best-effort)
-window.addEventListener('beforeunload', () => {
-	try { if (window.STP_Broadcast) window.STP_Broadcast.stop(); } catch(_) {}
-});
-
-// ------------------ MIDI Device Manager ------------------
-const midiState = {
-	access: null,
-	inputs: new Map(),
-	outputs: new Map(),
-	connectedInputs: new Set(), // by id
-	connectedOutputs: new Set(),
-	logLimit: 400,
-};
-
-function appendMidiLog(msg) {
-	const body = document.getElementById('midiManagerBody');
-	if (!body) return;
-	const log = body.querySelector('.midi-log');
-	if (!log) return;
-	const line = document.createElement('div');
-	line.textContent = msg;
-	log.appendChild(line);
-	// trim
-	while (log.children.length > midiState.logLimit) {
-		log.removeChild(log.firstChild);
-	}
-	log.scrollTop = log.scrollHeight;
+// MIDI Manager moved to dashboard.js. Only keep a small status-chip updater here.
+function updateMidiStatusChip() {
+    const chip = document.getElementById('midiStatus');
+    const dot = chip ? chip.querySelector('.dot') : null;
+    if (!chip || !dot) return;
+    const counts = (window.STP_MIDI && typeof window.STP_MIDI.getConnectedCounts === 'function')
+        ? window.STP_MIDI.getConnectedCounts()
+        : { inputs: 0, outputs: 0 };
+    const active = (counts.inputs > 0 || counts.outputs > 0);
+    dot.style.backgroundColor = active ? '#2ecc71' : '#9aa7b3';
+    chip.title = active ? `MIDI: ${counts.inputs} input(s), ${counts.outputs} output(s)` : 'MIDI disconnected';
 }
 
-// Persist last-connected MIDI device preferences (by id with name fallback)
-const MIDI_PREFS_KEY = 'stpro.midi.prefs.v1';
-
-function loadMidiPrefs() {
-	try {
-		const raw = localStorage.getItem(MIDI_PREFS_KEY);
-		if (!raw) return { inputs: [], outputs: [] };
-		const obj = JSON.parse(raw);
-		return {
-			inputs: Array.isArray(obj?.inputs) ? obj.inputs : [],
-			outputs: Array.isArray(obj?.outputs) ? obj.outputs : []
-		};
-	} catch (_) {
-		return { inputs: [], outputs: [] };
-	}
+// Flash the MIDI indicator with multiple blinks when MIDI activity happens
+function flashMidiIndicator() {
+    console.log('[MIDI] Flashing indicator with multiple blinks');
+    const chip = document.getElementById('midiStatus');
+    if (!chip) {
+        console.warn('[MIDI] MIDI status chip not found');
+        return;
+    }
+    
+    // If already flashing, reset the timer but don't restart animation
+    if (chip._midiFlashTimer) {
+        clearTimeout(chip._midiFlashTimer);
+    } else {
+        // Only add the class if not already flashing
+        chip.classList.add('midi-flash');
+    }
+    
+    // Set timeout to remove class after animation completes
+    chip._midiFlashTimer = setTimeout(() => {
+        chip.classList.remove('midi-flash');
+        chip._midiFlashTimer = null;
+    }, 1500);
 }
+window.updateMidiStatusChip = updateMidiStatusChip;
+window.flashMidiIndicator = flashMidiIndicator;
+// Try once on load (dashboard.js will call this again on changes)
+setTimeout(() => { try { updateMidiStatusChip(); } catch (_) {} }, 0);
 
-function saveMidiPrefs() {
-	try {
-		const inputs = Array.from(midiState.connectedInputs).map((id) => {
-			const d = midiState.inputs.get(id);
-			return { id, name: d?.name || '' };
-		});
-		const outputs = Array.from(midiState.connectedOutputs).map((id) => {
-			const d = midiState.outputs.get(id);
-			return { id, name: d?.name || '' };
-		});
-		localStorage.setItem(MIDI_PREFS_KEY, JSON.stringify({ inputs, outputs }));
-	} catch (_) { /* ignore */ }
+// Broadcast status chip updater
+function updateBroadcastStatusChip() {
+	const chip = document.getElementById('broadcastStatus');
+	const dot = chip ? chip.querySelector('.dot') : null;
+	if (!chip || !dot) return;
+	const active = !!(Broadcast && Broadcast.started);
+	dot.style.backgroundColor = active ? '#2ecc71' : '#9aa7b3';
+	chip.title = active ? `Broadcasting${Broadcast.room ? `: ${Broadcast.room}` : ''}` : 'Broadcast off';
 }
-
-function autoReconnectFromPrefs() {
-	const prefs = loadMidiPrefs();
-	let autoIn = 0, autoOut = 0;
-	// Inputs: connect saved ones if present; fallback by name if id changed
-	for (const pref of prefs.inputs || []) {
-		let id = pref?.id;
-		if (id && midiState.inputs.has(id)) {
-			if (!midiState.connectedInputs.has(id)) { toggleInputConnection(id); autoIn++; }
-			continue;
-		}
-		// Fallback: try by name (best-effort)
-		const byName = pref?.name ? Array.from(midiState.inputs.values()).find(d => (d?.name||'') === pref.name) : null;
-		if (byName && !midiState.connectedInputs.has(byName.id)) { toggleInputConnection(byName.id); autoIn++; }
-	}
-	// Outputs: enable saved ones if present; fallback by name if id changed
-	for (const pref of prefs.outputs || []) {
-		let id = pref?.id;
-		if (id && midiState.outputs.has(id)) {
-			if (!midiState.connectedOutputs.has(id)) { toggleOutputArmed(id); autoOut++; }
-			continue;
-		}
-		const byName = pref?.name ? Array.from(midiState.outputs.values()).find(d => (d?.name||'') === pref.name) : null;
-		if (byName && !midiState.connectedOutputs.has(byName.id)) { toggleOutputArmed(byName.id); autoOut++; }
-	}
-	if (autoIn || autoOut) {
-		appendMidiLog(`Auto-reconnected ${autoIn} input(s) and ${autoOut} output(s)`);
-	}
-}
-
-// Load cached MIDI device snapshot for faster perceived display
-//
-
-// Translation helpers
-// Normalize any MIDI to [[PC:value:channel]] and, more generally, [[TYPE:ch:data...]] for other types
-function midiMessageToTag([status, d1, d2]) {
-	const type = status & 0xF0;
-	const ch = (status & 0x0F) + 1; // 1..16
-	switch (type) {
-		case 0xC0: // Program Change
-			// New format: [[PC:value:channel]] where value is 1..128
-			return `[[PC:${(d1 ?? 0)+1}:${ch}]]`;
-		case 0xB0: // CC
-			return `[[CC:${ch}:${d1 ?? 0}:${d2 ?? 0}]]`;
-		case 0x90: // Note On
-			return `[[NOTE_ON:${ch}:${d1 ?? 0}:${d2 ?? 0}]]`;
-		case 0x80: // Note Off
-			return `[[NOTE_OFF:${ch}:${d1 ?? 0}:${d2 ?? 0}]]`;
-		case 0xE0: { // Pitch Bend (14-bit)
-			const value = (((d2 ?? 0) << 7) | (d1 ?? 0)) - 8192; // -8192..8191
-			return `[[PB:${ch}:${value}]]`;
-		}
-		case 0xD0: // Channel Pressure
-			return `[[CP:${ch}:${d1 ?? 0}]]`;
-		case 0xA0: // Poly Pressure
-			return `[[POLY_PRESS:${ch}:${d1 ?? 0}:${d2 ?? 0}]]`;
-		default:
-			// System messages (0xF0..), realtime, etc.
-			return `[[SYS:${status}:${d1 ?? ''}:${d2 ?? ''}]]`;
-	}
-}
-
-function tagToMidiMessage(tag) {
-	// Expect forms like [[PC:value:channel]], [[CC:ch:cc:val]], [[NOTE_ON:ch:n:vel]], [[PB:ch:value]] etc.
-	const m = String(tag || '').trim().match(/^\[\[(.+?)\]\]$/);
-	if (!m) return null;
-	const parts = m[1].split(':');
-	const kind = (parts[0]||'').toUpperCase();
-	const num = (i, def=0) => Math.max(0, parseInt(parts[i] ?? def, 10) || def);
-	const ch = Math.max(1, Math.min(16, num(1,1)));
-	const ch0 = ch - 1;
-	switch (kind) {
-		case 'PC': {
-			// New format: [[PC:value:channel]]
-			const prog1 = num(1,1); // 1..128 typical UI
-			const pcCh = Math.max(1, Math.min(16, num(2,1)));
-			const pcCh0 = pcCh - 1;
-			const prog0 = Math.max(0, Math.min(127, prog1 - 1));
-			return [0xC0 | pcCh0, prog0];
-		}
-		case 'CC': {
-			const cc = num(2,0);
-			const val = num(3,0);
-			return [0xB0 | ch0, Math.min(127, cc), Math.min(127, val)];
-		}
-		case 'NOTE_ON': {
-			const note = num(2,60);
-			const vel = num(3,100);
-			return [0x90 | ch0, Math.min(127,note), Math.min(127,vel)];
-		}
-		case 'NOTE_OFF': {
-			const note = num(2,60);
-			const vel = num(3,0);
-			return [0x80 | ch0, Math.min(127,note), Math.min(127,vel)];
-		}
-		case 'PB': {
-			// value -8192..8191
-			let value = parseInt(parts[2] ?? '0', 10);
-			if (!Number.isFinite(value)) value = 0;
-			value = Math.max(-8192, Math.min(8191, value));
-			const v14 = value + 8192;
-			const lsb = v14 & 0x7F; const msb = (v14 >> 7) & 0x7F;
-			return [0xE0 | ch0, lsb, msb];
-		}
-		case 'CP': {
-			const pres = num(2,0);
-			return [0xD0 | ch0, Math.min(127,pres)];
-		}
-		case 'POLY_PRESS': {
-			const note = num(2,60);
-			const pres = num(3,0);
-			return [0xA0 | ch0, Math.min(127,note), Math.min(127,pres)];
-		}
-			// (no SYSEX support in this simplified version)
-		default:
-			return null;
-	}
-}
-
-async function ensureMidiAccess() {
-	if (midiState.access) return midiState.access;
-	if (!navigator.requestMIDIAccess) {
-		appendMidiLog('Web MIDI not supported in this browser.');
-		return null;
-	}
-	try {
-		const access = await navigator.requestMIDIAccess({ sysex: true });
-		midiState.access = access;
-		const rebuild = () => { rebuildMidiLists(); try { autoReconnectFromPrefs(); } catch(_){} };
-		access.onstatechange = rebuild;
-		rebuildMidiLists();
-		// Attempt auto-reconnect after initial enumeration (non-blocking)
-		setTimeout(() => { try { autoReconnectFromPrefs(); } catch(_){} }, 0);
-		return access;
-	} catch (e) {
-		appendMidiLog('Failed to get MIDI access: ' + e.message);
-		return null;
-	}
-}
-
-function rebuildMidiLists() {
-	if (!midiState.access) return;
-	midiState.inputs.clear();
-	midiState.outputs.clear();
-	for (const inp of midiState.access.inputs.values()) midiState.inputs.set(inp.id, inp);
-	for (const out of midiState.access.outputs.values()) midiState.outputs.set(out.id, out);
-	renderMidiManagerBody();
-}
-
-function openMidiManager() {
-	const modal = document.getElementById('midiManagerModal');
-	if (!modal) return;
-	modal.classList.remove('hidden');
-	modal.style.display = 'flex';
-	// Kick off MIDI access, but don't wait—render UI immediately
-	try { ensureMidiAccess(); } catch(_) {}
-	renderMidiHeader();
-	renderMidiManagerBody();
-}
-function closeMidiManager() {
-	const modal = document.getElementById('midiManagerModal');
-	if (modal) { modal.classList.add('hidden'); modal.style.display = 'none'; }
-}
-window.openMidiManager = openMidiManager;
-const closeMidiBtn = document.getElementById('closeMidiManager');
-if (closeMidiBtn) closeMidiBtn.addEventListener('click', closeMidiManager);
-
-function renderMidiHeader() {
-	const hdr = document.getElementById('midiManagerHeader');
-	if (!hdr) return;
-	hdr.innerHTML = '';
-	// Add a simple Scan button to refresh Web MIDI device lists
-	const scanBtn = document.createElement('button');
-	scanBtn.className = 'btn small';
-	scanBtn.textContent = 'Scan';
-	scanBtn.title = 'Refresh MIDI inputs/outputs';
-	scanBtn.addEventListener('click', () => { scanMidiDevices(); });
-	hdr.appendChild(scanBtn);
-}
-
-// Simple scan: ensure Web MIDI access and rebuild device lists
-async function scanMidiDevices() {
-	const hadAccess = !!midiState.access;
-	const beforeIn = midiState.inputs.size;
-	const beforeOut = midiState.outputs.size;
-	await ensureMidiAccess();
-	rebuildMidiLists();
-	const afterIn = midiState.inputs.size;
-	const afterOut = midiState.outputs.size;
-	const deltaIn = afterIn - beforeIn;
-	const deltaOut = afterOut - beforeOut;
-	const deltaStr = `Δ Inputs ${deltaIn >= 0 ? '+'+deltaIn : deltaIn}, Outputs ${deltaOut >= 0 ? '+'+deltaOut : deltaOut}`;
-	appendMidiLog(`Scan complete${hadAccess ? '' : ' (initialized)'}: Inputs ${afterIn}, Outputs ${afterOut} (${deltaStr})`);
-}
-
-function renderMidiManagerBody() {
-	const body = document.getElementById('midiManagerBody');
-	if (!body) return;
-	body.innerHTML = '';
-
-	// Left: Inputs and Outputs
-	const left = document.createElement('div');
-	left.className = 'midi-col-left';
-
-	const inPanel = document.createElement('div');
-	inPanel.className = 'midi-panel';
-	inPanel.innerHTML = '<h3>MIDI Inputs</h3>';
-	const inList = document.createElement('div'); inList.className = 'midi-list';
-	if (midiState.inputs.size === 0) {
-		const none = document.createElement('div'); none.textContent = 'No input devices found.'; none.style.color = '#9aa7b3';
-		inList.appendChild(none);
-	} else {
-		for (const [id, inp] of midiState.inputs) {
-			const item = document.createElement('div'); item.className = 'midi-item';
-			const name = document.createElement('div'); name.textContent = inp.name || 'Input';
-			const badge = document.createElement('span'); badge.className = 'midi-badge'; badge.textContent = midiState.connectedInputs.has(id) ? 'Connected' : 'Disconnected';
-			const actions = document.createElement('div'); actions.className = 'midi-actions';
-			const btn = document.createElement('button'); btn.className = 'btn small'; btn.textContent = midiState.connectedInputs.has(id) ? 'Disconnect' : 'Connect';
-			btn.addEventListener('click', () => toggleInputConnection(id));
-			actions.appendChild(btn);
-			item.appendChild(name); item.appendChild(badge); item.appendChild(actions);
-			inList.appendChild(item);
-		}
-	}
-	inPanel.appendChild(inList);
-	left.appendChild(inPanel);
-
-	const outPanel = document.createElement('div');
-	outPanel.className = 'midi-panel';
-	outPanel.innerHTML = '<h3>MIDI Outputs</h3>';
-	const outList = document.createElement('div'); outList.className = 'midi-list';
-	if (midiState.outputs.size === 0) {
-		const none = document.createElement('div'); none.textContent = 'No output devices found.'; none.style.color = '#9aa7b3';
-		outList.appendChild(none);
-	} else {
-		for (const [id, out] of midiState.outputs) {
-			const item = document.createElement('div'); item.className = 'midi-item';
-			const name = document.createElement('div'); name.textContent = out.name || 'Output';
-			const badge = document.createElement('span'); badge.className = 'midi-badge'; badge.textContent = midiState.connectedOutputs.has(id) ? 'Armed' : 'Idle';
-			const actions = document.createElement('div'); actions.className = 'midi-actions';
-			const btn = document.createElement('button'); btn.className = 'btn small'; btn.textContent = midiState.connectedOutputs.has(id) ? 'Disable' : 'Enable';
-			btn.addEventListener('click', () => toggleOutputArmed(id));
-			actions.appendChild(btn);
-			item.appendChild(name); item.appendChild(badge); item.appendChild(actions);
-			outList.appendChild(item);
-		}
-	}
-	outPanel.appendChild(outList);
-	left.appendChild(outPanel);
-
-
-	// Right: Send Test and Log
-	const right = document.createElement('div');
-	right.className = 'midi-col-right';
-	const sendPanel = document.createElement('div'); sendPanel.className = 'midi-panel';
-	sendPanel.innerHTML = '<h3>Send Test Command</h3>';
-	const row = document.createElement('div'); row.className = 'midi-row';
-	const input = document.createElement('input'); input.type = 'text'; input.placeholder = 'e.g. [[PC:10:1]] (value:channel) or [[CC:1:7:100]] or [[NOTE_ON:1:60:100]]';
-		const sendBtn = document.createElement('button'); sendBtn.className = 'btn'; sendBtn.textContent = 'Send';
-	sendBtn.addEventListener('click', () => {
-		const tag = input.value.trim();
-		if (!tag) return;
-		const msg = tagToMidiMessage(tag);
-		if (!msg) { appendMidiLog('Invalid tag: ' + tag); return; }
-		let sent = 0;
-		for (const [id, out] of midiState.outputs) {
-			if (!midiState.connectedOutputs.has(id)) continue;
-			try { out.send(msg); sent++; } catch (e) { appendMidiLog('Send failed to ' + (out.name||id) + ': ' + e.message); }
-		}
-		appendMidiLog('SEND ' + tag + (sent ? ` -> ${sent} output(s)` : ' (no armed outputs)'));
-	});
-	row.appendChild(input); row.appendChild(sendBtn);
-	sendPanel.appendChild(row);
-	sendPanel.appendChild((() => { const h = document.createElement('div'); h.className = 'midi-help'; h.innerHTML = 'All MIDI is normalized to [[...]] form; PC values are 1–128. Sending goes to armed Web MIDI outputs.'; return h; })());
-	right.appendChild(sendPanel);
-
-	const logPanel = document.createElement('div'); logPanel.className = 'midi-panel';
-	logPanel.innerHTML = '<h3>Activity Log</h3>';
-	const log = document.createElement('div'); log.className = 'midi-log';
-	logPanel.appendChild(log);
-	right.appendChild(logPanel);
-
-	try {
-		body.appendChild(left);
-		body.appendChild(right);
-	} catch (e) {
-		console.error('Failed to append MIDI panels:', e);
-		const err = document.createElement('div');
-		err.className = 'midi-panel';
-		err.textContent = 'Failed to render MIDI panels: ' + (e && e.message ? e.message : String(e));
-		body.appendChild(err);
-	}
-}
-
-function toggleInputConnection(id) {
-	const inp = midiState.inputs.get(id);
-	if (!inp) return;
-	if (midiState.connectedInputs.has(id)) {
-		// disconnect
-		if (inp.onmidimessage) inp.onmidimessage = null;
-		midiState.connectedInputs.delete(id);
-		appendMidiLog('Input disconnected: ' + (inp.name || id));
-	} else {
-		inp.onmidimessage = (ev) => {
-			const data = Array.from(ev.data || []);
-			appendMidiLog('IN ' + midiMessageToTag(data));
-		};
-		midiState.connectedInputs.add(id);
-		appendMidiLog('Input connected: ' + (inp.name || id));
-	}
-	renderMidiManagerBody();
-	// Persist preference after any change
-	saveMidiPrefs();
-}
-
-function toggleOutputArmed(id) {
-	if (midiState.connectedOutputs.has(id)) {
-		midiState.connectedOutputs.delete(id);
-	} else {
-		midiState.connectedOutputs.add(id);
-	}
-	const out = midiState.outputs.get(id);
-	appendMidiLog('Output ' + (midiState.connectedOutputs.has(id) ? 'enabled' : 'disabled') + ': ' + (out?.name || id));
-	renderMidiManagerBody();
-	// Persist preference after any change
-	saveMidiPrefs();
-}
+window.updateBroadcastStatusChip = updateBroadcastStatusChip;
+setTimeout(() => { try { updateBroadcastStatusChip(); } catch(_) {} }, 0);
 // Lyrics Manager Modal logic
 function setTrackPan(trackId, pan) {
 	const p = Math.max(-1, Math.min(1, Number(pan)));
@@ -1506,7 +1396,7 @@ function startProgressLoop() {
 			return;
 		}
 		// Throttled broadcast update piggybacks on RAF for zero-lag playhead sync without blocking
-		try { Broadcast.pushSnapshot(false); } catch(_) {}
+		// (Disabled) Broadcast pushes are handled by a 1s interval per spec
 		audioEngine.rafId = requestAnimationFrame(loop);
 	};
 	stopProgressLoop();
@@ -1688,6 +1578,23 @@ function closeTrackManager() {
 	trackManagerSongId = null;
 }
 if (closeTrackManagerBtn) closeTrackManagerBtn.addEventListener('click', closeTrackManager);
+
+// --- Initial load: fetch songs from DB and render list ---
+async function loadSongsOnStartup() {
+	try {
+		songs = await getSongs();
+		window.songs = songs;
+		await renderSongs();
+		// No auto-selection; user picks a song. Master waveform will render on selection.
+	} catch (e) {
+		console.error('Failed to load songs on startup:', e);
+	}
+}
+if (document.readyState === 'loading') {
+	document.addEventListener('DOMContentLoaded', loadSongsOnStartup, { once: true });
+} else {
+	loadSongsOnStartup();
+}
 
 async function renderTrackManager(songId) {
 	if (!trackManagerBody) return;
@@ -2053,19 +1960,24 @@ async function renderTrackManager(songId) {
 			}
 
 			canvas.addEventListener('mousedown', (e) => {
+				console.log(`Mousedown on track ${track.id} at x=${e.offsetX}`);
 				// Prefer resize if pointer is on a handle
 				const hp = handlePositions();
 				if (hp) {
 					const near = 6;
 					if (Math.abs(e.offsetX - hp.left) <= near && e.offsetY >= hp.top && e.offsetY <= hp.bottom) {
+						console.log(`Resizing region from left side, region index: ${selectionRegionIndex()}`);
 						resizeMode = 'left'; resizingRegionIndex = selectionRegionIndex(); return;
 					}
 					if (Math.abs(e.offsetX - hp.right) <= near && e.offsetY >= hp.top && e.offsetY <= hp.bottom) {
+						console.log(`Resizing region from right side, region index: ${selectionRegionIndex()}`);
 						resizeMode = 'right'; resizingRegionIndex = selectionRegionIndex(); return;
 					}
 				}
 				// Otherwise begin a new drag selection
-				isDragging = true; dragMoved = false; dragStartX = e.offsetX; dragEndX = e.offsetX; updateSelection();
+				isDragging = true; dragMoved = false; dragStartX = e.offsetX; dragEndX = e.offsetX; 
+				console.log(`Starting new selection drag at x=${dragStartX}`);
+				updateSelection();
 			});
 
 			canvas.addEventListener('mousemove', (e) => {
@@ -2100,37 +2012,143 @@ async function renderTrackManager(songId) {
 				}
 			});
 
-			window.addEventListener('mouseup', async () => {
+			// Use a specific mouseup handler for this canvas instead of window-level
+			canvas.addEventListener('mouseup', async (e) => {
+				console.log(`Mouseup on track ${track.id} at x=${e.offsetX}`);
+				try {
+					if (resizeMode) {
+						console.log(`Finished resizing region ${resizingRegionIndex} (${resizeMode} side)`);
+						// Commit any region change on resize end
+						resizeMode = null;
+						resizingRegionIndex = -1;
+						if (Array.isArray(track.regions)) {
+							track.regions = mergeRegions(track.regions.slice());
+							console.log(`Saving ${track.regions.length} regions after resize`);
+							await updateTrack(track);
+						}
+						drawTrackWaveform(track, canvas);
+						// Apply edits immediately to currently playing audio
+						refreshPlaybackForRegions();
+						return;
+					}
+					
+					if (!isDragging) return;
+					console.log(`Finished drag selection from ${dragStartX} to ${e.offsetX}, moved: ${dragMoved}`);
+					const sel = state?.selection;
+					isDragging = false;
+					
+					if (dragMoved && sel && typeof sel.start === 'number' && 
+						typeof sel.end === 'number' && sel.end > sel.start) {
+						
+						try {
+							// Initialize regions array if missing
+							if (!Array.isArray(track.regions)) {
+								console.log(`Creating new regions array for track ${track.id}`);
+								track.regions = [];
+							}
+							
+							// Create a clean copy of the selection to add
+							const newRegion = { 
+								start: Number(sel.start), 
+								end: Number(sel.end) 
+							};
+							
+							// Log for debugging
+							console.log('Creating mute region:', newRegion);
+							
+							// Add to regions and merge overlapping ones
+							const originalCount = track.regions.length;
+							
+							// Save a backup in case of error
+							const regionsBackup = JSON.parse(JSON.stringify(track.regions));
+							
+							try {
+								track.regions = mergeRegions([...track.regions, newRegion]);
+								console.log(`Regions count: ${originalCount} → ${track.regions.length}`);
+								console.log('Current regions:', JSON.stringify(track.regions));
+							} catch (mergeErr) {
+								console.error('Error merging regions:', mergeErr);
+								// Restore backup
+								track.regions = regionsBackup;
+								track.regions.push(newRegion);
+								console.log('Used fallback: simply appended region without merging');
+							}
+							
+							// Save to database
+							console.log(`Saving ${track.regions.length} regions to database`);
+							await updateTrack(track);
+							
+							// Update selection to the merged region if it got modified
+							const chosen = findContainingRegion(track.regions, sel.start, sel.end);
+							console.log('Found containing region after merge:', chosen);
+						} catch (err) {
+							console.error('Error creating region:', err);
+						}
+						if (chosen) {
+							state.selection = { 
+								start: chosen.start, 
+								end: chosen.end 
+							};
+						}
+						
+						// Apply new region immediately during playback
+						refreshPlaybackForRegions();
+					}
+					
+					// Always redraw
+					drawTrackWaveform(track, canvas);
+				} catch (err) {
+					console.error('Error in mouseup handler:', err);
+				}
+			});
+			
+			// Maintain a window mouseup handler to clean up dragging state even if 
+			// the mouse is released outside the canvas
+			window.addEventListener('mouseup', () => {
+				if (isDragging) {
+					isDragging = false;
+					dragMoved = false;
+				}
 				if (resizeMode) {
-					// Commit any region change on resize end
 					resizeMode = null;
 					resizingRegionIndex = -1;
-					if (Array.isArray(track.regions)) {
-						track.regions = mergeRegions(track.regions.slice());
-						await updateTrack(track);
-					}
-					drawTrackWaveform(track, canvas);
-					// Apply edits immediately to currently playing audio
-					refreshPlaybackForRegions();
-					return;
 				}
-				if (!isDragging) return;
-				const sel = state.selection;
-				isDragging = false;
-				if (dragMoved && sel && sel.end > sel.start) {
-					track.regions = mergeRegions([...(track.regions||[]), sel]);
-					await updateTrack(track);
-					const chosen = findContainingRegion(track.regions, sel.start, sel.end);
-					state.selection = chosen ? { start: chosen.start, end: chosen.end } : sel; // default select
-				}
-				drawTrackWaveform(track, canvas);
-				// Apply new region immediately during playback
-				if (dragMoved && sel && sel.end > sel.start) refreshPlaybackForRegions();
 			});
 
 			function updateSelection(){
-				const sel = pxToTimeRange(track, canvas, Math.min(dragStartX, dragEndX), Math.max(dragStartX, dragEndX));
-				state.selection = sel; drawTrackWaveform(track, canvas);
+				if (!track || !canvas) return;
+				
+				// Ensure dragStartX and dragEndX are valid numbers
+				if (typeof dragStartX !== 'number' || typeof dragEndX !== 'number' || 
+				    isNaN(dragStartX) || isNaN(dragEndX)) {
+					console.error('Invalid drag coordinates:', dragStartX, dragEndX);
+					return;
+				}
+				
+				try {
+					// Get time range based on pixel coordinates
+					const sel = pxToTimeRange(track, canvas, Math.min(dragStartX, dragEndX), Math.max(dragStartX, dragEndX));
+					
+					// Validate selection times
+					if (typeof sel.start !== 'number' || typeof sel.end !== 'number' || 
+					    isNaN(sel.start) || isNaN(sel.end)) {
+						console.error('Invalid selection times:', sel);
+						return;
+					}
+					
+					// Update state
+					if (!state) {
+						state = { zoom: 1, scroll: 0, selection: sel };
+						trackWaveState.set(track.id, state);
+					} else {
+						state.selection = sel;
+					}
+					
+					// Redraw
+					drawTrackWaveform(track, canvas);
+				} catch (err) {
+					console.error('Error in updateSelection:', err);
+				}
 			}
 			// Draw now
 			drawTrackWaveform(track, canvas);
@@ -2186,7 +2204,7 @@ function drawWaveformToCanvas(canvas, peaks, color = '#6c849c') {
 	const w = canvas.width / dpr, h = canvas.height / dpr;
 	ctx.clearRect(0,0,w,h);
 	// Background panel and subtle border
-	ctx.fillStyle = '#1f2833';
+	ctx.fillStyle = '#1f2733';
 	ctx.fillRect(0,0,w,h);
 	ctx.strokeStyle = 'rgba(255,255,255,0.06)';
 	ctx.lineWidth = 1;
@@ -2416,7 +2434,9 @@ function drawTrackWaveform(track, canvas) {
 		const a = startBin + Math.floor((i / cols) * (endBin - startBin));
 		const b = startBin + Math.floor(((i+1) / cols) * (endBin - startBin));
 		let vmax = 0;
-		for (let j = a; j < b; j++) { const v = (peaks[j]||0)/255; if (v>vmax) vmax=v; }
+		for (let j = a; j < b; j++) {
+			const v = (peaks[j]||0)/255; if (v>vmax) vmax=v;
+		}
 		// soft-knee like master
 		const k=1.2, scale=0.9*(1+k); let v = (scale*vmax)/(1+k*vmax); v=Math.min(0.95,Math.max(0,v));
 		const bh = Math.max(1, Math.floor(v * (h-4)));
@@ -2425,44 +2445,91 @@ function drawTrackWaveform(track, canvas) {
 		ctx.fillStyle = '#6c849c';
 		ctx.fillRect(x,y,barW,bh);
 	}
-	// Existing mute regions overlay
-	const regions = Array.isArray(track.regions) ? track.regions : [];
-	for (const r of regions) {
-		if (!r || typeof r.start!=='number' || typeof r.end!=='number' || r.end<=r.start) continue;
-		const xs = timeToX(r.start, dur, w, state);
-		const xe = timeToX(r.end, dur, w, state);
-		const x1 = Math.max(0, Math.min(w, xs)), x2 = Math.max(0, Math.min(w, xe));
-		const left = Math.min(x1,x2), right = Math.max(x1,x2);
-		ctx.fillStyle = 'rgba(244,67,54,0.18)';
-		ctx.fillRect(left, 2, Math.max(1,right-left), h-4);
-		ctx.strokeStyle = 'rgba(244,67,54,0.6)';
-		ctx.strokeRect(left+0.5, 1.5, Math.max(1,right-left)-1, h-3);
-	}
-	// Current selection overlay
-	const stateSel = state.selection;
-	if (stateSel && stateSel.end > stateSel.start) {
-		const xs = timeToX(stateSel.start, dur, w, state);
-		const xe = timeToX(stateSel.end, dur, w, state);
-		const left = Math.min(xs, xe), right = Math.max(xs, xe);
-		ctx.fillStyle = 'rgba(76,175,80,0.18)';
-		ctx.fillRect(left, 4, Math.max(1,right-left), h-8);
-		ctx.strokeStyle = 'rgba(76,175,80,0.6)';
-		ctx.strokeRect(left+0.5, 3.5, Math.max(1,right-left)-1, h-7);
-		// Draw resize handles
-		ctx.fillStyle = 'rgba(76,175,80,0.9)';
-		const handleW = 6, handleH = 14;
-		const hy = Math.round((h - handleH) / 2);
-		ctx.fillRect(Math.round(left - handleW/2), hy, handleW, handleH);
-		ctx.fillRect(Math.round(right - handleW/2), hy, handleW, handleH);
-	}
 	// Simple time ticks
+	// Debug output to check regions data
+	console.log(`Drawing waveform for track ${track.id}`, track.regions ? `with ${track.regions.length} regions` : 'without regions');
+	
+	// Draw mute regions if present
+	if (Array.isArray(track.regions) && track.regions.length > 0) {
+		ctx.save();
+		
+		// Use a semi-transparent overlay with red color for mute regions
+		ctx.fillStyle = 'rgba(220, 53, 69, 0.3)';
+		
+		const visibleStartTime = state.scroll * dur * (1 - 1/state.zoom);
+		const visibleEndTime = visibleStartTime + (dur / state.zoom);
+		
+		// Draw each region as a colored overlay
+		for (const region of track.regions) {
+			if (!region || typeof region.start !== 'number' || typeof region.end !== 'number') continue;
+			
+			// Skip regions outside visible area
+			if (region.end < visibleStartTime || region.start > visibleEndTime) continue;
+			
+			// Convert region times to canvas coordinates
+			const regionStartX = timeToX(region.start, dur, w, state);
+			const regionEndX = timeToX(region.end, dur, w, state);
+			
+			// Draw region rectangle
+			ctx.fillRect(regionStartX, 0, regionEndX - regionStartX, h);
+			
+			// Draw borders
+			ctx.strokeStyle = 'rgba(220, 53, 69, 0.7)';
+			ctx.lineWidth = 1;
+			ctx.beginPath();
+			ctx.moveTo(regionStartX + 0.5, 0);
+			ctx.lineTo(regionStartX + 0.5, h);
+			ctx.moveTo(regionEndX + 0.5, 0);
+			ctx.lineTo(regionEndX + 0.5, h);
+			ctx.stroke();
+		}
+		ctx.restore();
+	}
+	
+	// Draw selection if present
+	if (state.selection && typeof state.selection.start === 'number' && typeof state.selection.end === 'number') {
+		ctx.save();
+		// Use blue highlight for current selection
+		ctx.fillStyle = 'rgba(0, 123, 255, 0.25)';
+		
+		const selStartX = timeToX(state.selection.start, dur, w, state);
+		const selEndX = timeToX(state.selection.end, dur, w, state);
+		
+		// Draw selection rectangle
+		ctx.fillRect(selStartX, 0, selEndX - selStartX, h);
+		
+		// Draw borders with handles for resizing
+		ctx.strokeStyle = 'rgba(0, 123, 255, 0.7)';
+		ctx.lineWidth = 1;
+		ctx.beginPath();
+		ctx.moveTo(selStartX + 0.5, 0);
+		ctx.lineTo(selStartX + 0.5, h);
+		ctx.moveTo(selEndX + 0.5, 0);
+		ctx.lineTo(selEndX + 0.5, h);
+		ctx.stroke();
+		
+		// Draw resize handles
+		ctx.fillStyle = 'rgba(0, 123, 255, 0.9)';
+		const handleWidth = 5;
+		const handleHeight = Math.min(30, h - 10);
+		const handleY = (h - handleHeight) / 2;
+		
+		// Left handle
+		ctx.fillRect(selStartX - handleWidth/2, handleY, handleWidth, handleHeight);
+		
+		// Right handle
+		ctx.fillRect(selEndX - handleWidth/2, handleY, handleWidth, handleHeight);
+		
+		ctx.restore();
+	}
+	
 	ctx.save();
 	ctx.fillStyle='rgba(200,210,220,0.4)'; ctx.strokeStyle='rgba(200,210,220,0.25)'; ctx.lineWidth=1; ctx.font='10px system-ui'; ctx.textAlign='center'; ctx.textBaseline='alphabetic';
 	const approxTick = 10; // seconds
 	const pxPerSec = w / dur * state.zoom;
 	const tickSec = Math.max(5, Math.round((approxTick / pxPerSec)) * 5);
 	for (let t = tickSec; t < dur; t += tickSec) {
-		const x = timeToX(t, dur, w, state);
+		const x = Math.floor((t / dur) * w);
 		if (x < 10 || x > w-10) continue;
 		ctx.beginPath(); ctx.moveTo(x+0.5,h-12); ctx.lineTo(x+0.5,h-6); ctx.stroke();
 		ctx.fillText(formatMMSS(t), x, h-2);
@@ -2478,25 +2545,78 @@ function timeToX(t, dur, w, state){
 	return Math.round(rel * w);
 }
 function pxToTimeRange(track, canvas, x1, x2){
-	const state = trackWaveState.get(track.id) || { zoom:1, scroll:0 };
+	if (!track || !track.id || !canvas) {
+		console.warn('Invalid track or canvas in pxToTimeRange');
+		return { start: 0, end: 0 };
+	}
+	
+	// Ensure we have valid numeric inputs
+	x1 = Number(x1) || 0;
+	x2 = Number(x2) || 0;
+	
+	const state = trackWaveState.get(track.id) || { zoom: 1, scroll: 0 };
 	const dur = getTrackDuration(track) || 0;
-	const startT = state.scroll * dur * (1 - 1/state.zoom);
-	const visDur = dur / state.zoom;
-	const a = Math.max(0, Math.min(canvas.clientWidth || canvas.width, x1));
-	const b = Math.max(0, Math.min(canvas.clientWidth || canvas.width, x2));
-	const ta = startT + (a / (canvas.clientWidth || canvas.width)) * visDur;
-	const tb = startT + (b / (canvas.clientWidth || canvas.width)) * visDur;
-	return { start: Math.max(0, Math.min(dur, Math.min(ta,tb))), end: Math.max(0, Math.min(dur, Math.max(ta,tb))) };
+	
+	// If track has no duration, return empty range
+	if (!dur) return { start: 0, end: 0 };
+	
+	const canvasWidth = canvas.clientWidth || canvas.width || 1; // Avoid division by zero
+	
+	// Calculate visible portion based on zoom/scroll state
+	const visibleFrac = 1 / state.zoom;
+	const startT = state.scroll * dur * (1 - visibleFrac);
+	const visDur = dur * visibleFrac;
+	
+	// Clamp pixel positions to canvas boundaries
+	const a = Math.max(0, Math.min(canvasWidth, x1));
+	const b = Math.max(0, Math.min(canvasWidth, x2));
+	
+	// Convert pixels to time
+	const ta = startT + (a / canvasWidth) * visDur;
+	const tb = startT + (b / canvasWidth) * visDur;
+	
+	// Ensure start is always less than end
+	const start = Math.max(0, Math.min(dur, Math.min(ta, tb)));
+	const end = Math.max(0, Math.min(dur, Math.max(ta, tb)));
+	
+	// Add a minimum duration if start and end are too close
+	if (end - start < 0.01) {
+		return { 
+			start: start, 
+			end: Math.min(dur, start + 0.01) 
+		};
+	}
+	
+	return { start, end };
 }
 function mergeRegions(regs){
-	if (!regs.length) return regs;
-	regs.sort((a,b)=>a.start-b.start);
-	const out=[regs[0]];
-	for (let i=1;i<regs.length;i++){
-		const prev = out[out.length-1], cur = regs[i];
-		if (cur.start <= prev.end + 0.01) prev.end = Math.max(prev.end, cur.end);
-		else out.push(cur);
+	if (!Array.isArray(regs) || regs.length === 0) return [];
+	
+	// Filter out invalid regions and ensure numeric types
+	const validRegs = regs
+		.filter(r => r && typeof r.start === 'number' && typeof r.end === 'number' && !isNaN(r.start) && !isNaN(r.end))
+		.map(r => ({ start: Number(r.start), end: Number(r.end) }))
+		.filter(r => r.end > r.start); // Only keep regions with positive duration
+	
+	if (validRegs.length === 0) return [];
+	
+	// Sort by start time
+	validRegs.sort((a, b) => a.start - b.start);
+	
+	// Merge overlapping regions
+	const out = [validRegs[0]];
+	for (let i = 1; i < validRegs.length; i++) {
+		const prev = out[out.length - 1];
+		const cur = validRegs[i];
+		
+		// If current region overlaps or is very close to previous, merge them
+		if (cur.start <= prev.end + 0.01) {
+			prev.end = Math.max(prev.end, cur.end);
+		} else {
+			out.push(cur);
+		}
 	}
+	
 	return out;
 }
 function previewSelection(track){
@@ -2525,7 +2645,6 @@ function refreshPlaybackForRegions() {
 		}
 	} catch(_) {}
 }
-				refreshPlaybackForRegions();
 function zoomToSelection(track, canvas){
 	const state = trackWaveState.get(track.id);
 	if (!state || !state.selection || state.selection.end <= state.selection.start) return;
@@ -2612,6 +2731,8 @@ function redrawMasterOverlays(){
 	ctx.lineTo(x + 0.5, h - 1);
 	ctx.stroke();
 	ctx.restore();
+
+	// Removed external progress line - using only the canvas-drawn playhead
 }
 
 // Ensure song is loaded; deduplicate concurrent loads and always await duration readiness

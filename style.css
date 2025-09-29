@@ -18,6 +18,13 @@ html, body {
   -webkit-text-size-adjust: 100%; /* Safari/Chrome iOS/Android */
   text-size-adjust: 100%; /* modern browsers */
 }
+
+/* Waveform container */
+.waveform {
+  position: relative;
+  overflow: hidden;
+}
+
 /* App name styling */
 .app-name {
   display: flex;
@@ -31,7 +38,18 @@ html, body {
 /* Modal styles for Track Manager */
 .shuttle-top { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 12px; }
 .shuttle-volume { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; color: #c9d2da; }
-.modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.45); z-index: 3000; padding: 20px }
+.modal { 
+  position: fixed; 
+  inset: 0; 
+  display: none; 
+  align-items: center; 
+  justify-content: center; 
+  background: rgba(0,0,0,0.45); 
+  z-index: 3000; 
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
 .modal.hidden { display: none !important; }
 .modal-content {
   background: #181c20;
@@ -39,7 +57,7 @@ html, body {
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   border-radius: 16px;
-  min-width: 600px;
+  min-width: 320px; /* allow modals to scale down on small screens */
   max-width: 96vw;
   max-height: 92vh;
   padding: 32px 24px 24px 24px;
@@ -622,11 +640,11 @@ main { display: flex; flex: 1; overflow: hidden; min-height: 0 }
   gap: 4px;
   position: relative;
 }
-.song-card .song-bg-meters { position: absolute; inset: 0; z-index: 0; opacity: 0.28; pointer-events: none; display: flex; flex-direction: column }
+.song-card .song-bg-meters { position: absolute; inset: 0; z-index: 0; opacity: 0.28; pointer-events: none; display: flex; flex-direction: column; gap: 0 }
 .song-card .song-bg-row { flex: 1; display: flex; align-items: stretch }
-.song-card .song-bg-row-L { padding: 0 0 2px 0 }
-.song-card .song-bg-row-R { padding: 2px 0 0 0 }
-.song-card .song-bg-track { flex: 1; height: 100%; background: #14181d; border-radius: 8px; overflow: hidden; box-shadow: inset 0 0 0 1px #161b21 }
+.song-card .song-bg-row-L { padding: 0 }
+.song-card .song-bg-row-R { padding: 0 }
+.song-card .song-bg-track { flex: 1; height: 100%; background: #14181d; border-radius: 0; overflow: hidden; box-shadow: inset 0 0 0 1px #161b21 }
 .song-card .song-bg-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #104d1a, #256d2a); transition: width 140ms linear, background 140ms linear }
 .song-card.active {
   border: 2px solid #2196f3;
@@ -709,6 +727,28 @@ main { display: flex; flex: 1; overflow: hidden; min-height: 0 }
 /* Footer */
 footer { background: #2c2c2c; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; border-top: 2px solid #444 }
 .audio-info { display: flex; gap: 15px; color: #ccc; font-size: 14px }
+/* Footer status chips */
+.status-chip { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border: 1px solid #2b3138; border-radius: 999px; background: #0f1419; color: #cfe0f0 }
+.status-chip .dot { width: 10px; height: 10px; border-radius: 50%; background: #6b7a88; box-shadow: 0 0 6px rgba(0,0,0,0.4) }
+.status-chip.on .dot { background: #1ecb4f; box-shadow: 0 0 8px rgba(30,203,79,0.6) }
+.status-chip.listening { color: #bfe9ff; border-color: #244254; background: #0e1a22 }
+.status-chip.midi-flash .dot { 
+  animation: midi-blink 1.5s ease-in-out; 
+  background: #1ecb4f !important; 
+  box-shadow: 0 0 8px rgba(30,203,79,0.6) !important; 
+}
+
+@keyframes midi-blink {
+  0% { opacity: 1; background: #1ecb4f; box-shadow: 0 0 15px rgba(30,203,79,0.9) }
+  10% { opacity: 0.3; background: #1ecb4f; box-shadow: 0 0 5px rgba(30,203,79,0.3) }
+  20% { opacity: 1; background: #1ecb4f; box-shadow: 0 0 15px rgba(30,203,79,0.9) }
+  30% { opacity: 0.3; background: #1ecb4f; box-shadow: 0 0 5px rgba(30,203,79,0.3) }
+  40% { opacity: 1; background: #1ecb4f; box-shadow: 0 0 15px rgba(30,203,79,0.9) }
+  50% { opacity: 0.3; background: #1ecb4f; box-shadow: 0 0 5px rgba(30,203,79,0.3) }
+  60% { opacity: 1; background: #1ecb4f; box-shadow: 0 0 15px rgba(30,203,79,0.9) }
+  100% { opacity: 0.8; background: #1ecb4f; box-shadow: 0 0 8px rgba(30,203,79,0.6) }
+}
+.status-chip.listening .dot { background: #1ecb4f }
 
 /* Modern shuttle */
 .shuttle {
@@ -754,6 +794,15 @@ footer { background: #2c2c2c; padding: 15px 20px; display: flex; align-items: ce
 /* Utilities */
 .hidden { display: none !important }
 
+/* Safety: any injected broadcast overlay or modal must not capture events when hidden */
+.modal-overlay.hidden, .modal.hidden, .modal-backdrop.hidden { 
+  display: none !important; 
+  pointer-events: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  z-index: -100 !important;
+}
+
 /* small responsive tweaks */
 @media (max-width: 800px) {
   .song-list { width: 200px }
@@ -789,7 +838,14 @@ footer { background: #2c2c2c; padding: 15px 20px; display: flex; align-items: ce
 .dash-notice { border: 1px solid #2b3138; background: #111820; color: #cfe0f0; padding: 8px 12px; border-radius: 10px }
 .dash-grid { padding: 18px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 18px; max-width: 1400px; margin: 0 auto }
 .dash-col { display: flex; flex-direction: column; gap: 18px }
-.dash-panel { background: #151b22; border: 1px solid #242c36; border-radius: 14px; padding: 18px; box-shadow: 0 2px 20px rgba(0,0,0,0.35) }
+.dash-panel { 
+  background: linear-gradient(to bottom, #1c252f, #151b22); 
+  border: 1px solid rgba(255,255,255,0.06); 
+  border-radius: 14px; 
+  padding: 18px; 
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+  transition: all 0.2s ease;
+}
 .panel-title { font-size: 1.25rem; font-weight: 800 }
 .panel-sub { color: #9aa7b3; margin-bottom: 10px }
 .panel-label { color: #b0b8c0; font-size: 0.95rem; margin: 8px 0 6px 0 }
@@ -808,8 +864,19 @@ footer { background: #2c2c2c; padding: 15px 20px; display: flex; align-items: ce
 .email-line { font-weight: 800; font-size: 1.05rem }
 .profile-fields { display: flex; flex-direction: column; gap: 12px }
 .field-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
-.field label { color: #9aa7b3; font-size: 0.92rem; margin-bottom: 4px; display: block }
-.field-edit { background: #0f1419; border: 1px solid #2b3138; padding: 12px 12px; border-radius: 10px; color: #c9d2da; cursor: pointer }
+.field { margin-bottom: 24px; }
+.field label { color: #9aa7b3; font-size: 0.92rem; margin-bottom: 4px; display: block; text-align: center; }
+.field-edit { 
+  background: #0f1419; 
+  border: 1px solid #2b3138; 
+  padding: 12px 12px; 
+  border-radius: 10px; 
+  color: #c9d2da; 
+  cursor: pointer;
+  text-align: center;
+  width: 85%;
+  margin: 0 auto;
+}
 .field-edit:hover { border-color: #3a90e5 }
 .profile-divider { border: none; border-top: 1px solid #242c36; margin: 8px 0 }
 .acct-row { display: grid; grid-template-columns: 200px 1fr; align-items: center; gap: 10px }
@@ -828,7 +895,14 @@ footer { background: #2c2c2c; padding: 15px 20px; display: flex; align-items: ce
 .dash-right { display: flex; align-items: center; gap: 10px }
 .dash-email { color: #9fd1ff; font-weight: 700 }
 .dash-main { padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px }
-.dash-card { background: #23262b; border: 1px solid #2b3138; border-radius: 12px; padding: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.25) }
+.dash-card { 
+  background: linear-gradient(to bottom, #23262b, #1f2228); 
+  border: 1px solid rgba(255,255,255,0.08); 
+  border-radius: 12px; 
+  padding: 16px; 
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  transition: all 0.2s ease;
+}
 .dash-card h2, .dash-card h3 { margin-bottom: 8px }
 .dash-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px }
 .dash-action { display: inline-block; text-decoration: none; background: #2b2f36; color: #cfe0f0; border: 1px solid #3a414a; padding: 10px 14px; border-radius: 10px; font-weight: 800 }
@@ -841,6 +915,400 @@ footer { background: #2c2c2c; padding: 15px 20px; display: flex; align-items: ce
 .dash-auth-card h2 { margin-bottom: 12px }
 .dash-auth-card form { display: grid; gap: 10px }
 .dash-auth-card input { padding: 10px 12px; border-radius: 8px; border: 1px solid #3a414a; background: #23262b; color: #e8f1f8 }
+
+/* Dashboard overlay modal: responsive sizing and internal scroll */
+#dashboardModal .modal-content {
+  width: min(96vw, 1100px);
+  max-width: 96vw; /* never exceed viewport width */
+  max-height: 92vh; /* keep within viewport height */
+  overflow: hidden; /* let inner body scroll */
+}
+#dashboardModal #dashboardBody {
+  flex: 1 1 auto;
+  min-height: 0; /* enable proper flex child scrolling */
+  overflow: auto;
+  padding-right: 6px; /* room for scrollbar */
+}
+/* Remove scrollbar styles since we don't need them */
+
+/* Make dashboard grid adapt to modal width */
+/* Dashboard container for centering */
+#dashboardModal .dashboard-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 0 10px 0;
+}
+
+#dashboardModal .dash-grid {
+  width: 100%;
+  max-width: none;
+  display: grid;
+  grid-template-columns: 45% 55%;
+  gap: 24px;
+  padding: 0;
+  margin: 0;
+}
+/* Dashboard modal styles for attractive layout */
+#dashboardModal .modal-content {
+  background: linear-gradient(to bottom, #1e252e, #171e27);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  width: 85%;
+  max-width: 1200px;
+  overflow: hidden;
+  height: auto;
+  max-height: 88vh;
+}
+
+#dashboardModal .modal-header {
+  background: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#dashboardModal .modal-header h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#dashboardModal #dashboardBody {
+  padding: 12px;
+  max-height: none;
+  overflow-y: visible;
+}
+
+/* Dashboard cards styling */
+#dashboardModal .dash-card {
+  background: rgba(30, 37, 46, 0.7);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+#dashboardModal .dash-card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+#dashboardModal .dash-profile {
+  background: rgba(30, 37, 46, 0.7);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Title styling */
+#dashboardModal .panel-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  color: #fff;
+  text-align: center;
+}
+
+#dashboardModal .panel-sub {
+  color: #a4b1c2;
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Inputs styling */
+#dashboardModal .panel-input {
+  width: 85%;
+  background: rgba(15, 20, 25, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin: 0 auto 10px auto;
+  transition: all 0.2s ease;
+  display: block;
+}
+
+#dashboardModal .panel-input:focus {
+  border-color: #3a90e5;
+  box-shadow: 0 0 0 2px rgba(58, 144, 229, 0.2);
+  outline: none;
+}
+
+#dashboardModal .panel-label {
+  display: block;
+  margin-bottom: 6px;
+  color: #c9d2da;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Buttons styling */
+#dashboardModal .btn.primary {
+  background: linear-gradient(to bottom, #3a90e5, #2078c8);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  display: block;
+  width: 85%;
+  margin: 0 auto;
+}
+
+#dashboardModal .btn.primary:hover {
+  background: linear-gradient(to bottom, #4a9aea, #2582d8);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(42, 132, 210, 0.3);
+}
+
+#dashboardModal .btn.alt {
+  background: rgba(255, 255, 255, 0.1);
+  color: #c9d2da;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-align: center;
+  margin: 0 auto;
+  display: block;
+}
+
+#dashboardModal .btn.alt:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* Badge styling */
+#dashboardModal .badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+#dashboardModal .badge-pro {
+  background: linear-gradient(to right, #2ecc71, #27ae60);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.3);
+}
+
+/* Responsive breakpoints */
+@media (min-width: 1440px) {
+  #dashboardModal .modal-content {
+    max-width: 1300px;
+    width: 80%;
+  }
+  #dashboardModal .dashboard-container {
+    max-width: 1100px;
+  }
+  #dashboardModal .dash-grid {
+    gap: 36px;
+  }
+  #dashboardModal .dash-card,
+  #dashboardModal .dash-profile {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 1024px) {
+  #dashboardModal .dash-grid { 
+    grid-template-columns: 1fr; 
+    gap: 24px;
+  }
+  
+  #dashboardModal .modal-content {
+    max-height: 90vh !important;
+    overflow: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border-radius: 16px;
+  }
+  
+  #dashboardModal #dashboardBody {
+    overflow-y: visible !important;
+    padding: 10px;
+  }
+  
+  #dashboardModal .dash-card,
+  #dashboardModal .dash-profile {
+    padding: 16px;
+  }
+  
+  #dashboardModal .panel-title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 767px) {
+  #dashboardModal .modal-content {
+    border-radius: 12px;
+    margin: 10px;
+    width: calc(100% - 20px);
+  }
+  
+  #dashboardModal .modal-header {
+    padding: 16px 20px;
+  }
+  
+  #dashboardModal .modal-header h2 {
+    font-size: 1.4rem;
+  }
+  
+  #dashboardModal #dashboardBody {
+    padding: 16px;
+  }
+  
+  #dashboardModal .dash-card,
+  #dashboardModal .dash-profile {
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  #dashboardModal .panel-title {
+    font-size: 1.2rem;
+  }
+  
+  #dashboardModal .panel-sub {
+    font-size: 0.9rem;
+  }
+}
+/* Ensure cards never overflow the modal */
+#dashboardModal .dash-panel,
+#dashboardModal .dash-profile { max-width: 100%; }
+#dashboardModal .dash-profile { overflow: hidden; }
+
+/* Stack First/Last name fields earlier on smaller screens */
+@media (max-width: 900px) {
+  #dashboardModal .field-pair { grid-template-columns: 1fr; }
+}
+
+/* Slightly tighter profile layout on small tablets */
+@media (max-width: 720px) {
+  #dashboardModal .dash-panel,
+  #dashboardModal .dash-profile { padding: 14px; }
+}
+
+/* Profile body: avatar section + narrower fields column */
+#dashboardModal .profile-body {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+  margin-top: 0;
+}
+
+/* Avatar section: contains avatar + all action buttons */
+#dashboardModal .avatar-section {
+  flex: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+#dashboardModal .avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+#dashboardModal .avatar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#dashboardModal .avatar-actions .acct-title {
+  color: #9aa7b3;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+#dashboardModal .help-section {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 8px;
+  background: #0f1419;
+  border: 1px solid #2b3138;
+  border-radius: 8px;
+}
+
+#dashboardModal .help-icon {
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #0f1419;
+  border: 1px solid #2b3138;
+  font-size: 0.8rem;
+}
+
+#dashboardModal .help-text {
+  flex: 1;
+  font-size: 0.85rem;
+  color: #b0b8c0;
+  line-height: 1.3;
+}
+
+#dashboardModal .help-text a {
+  color: #3a90e5;
+}
+
+/* Profile fields: takes up 50% of container width */
+#dashboardModal .profile-fields {
+  flex: 0 0 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-right: 12px; /* Add right padding to match left spacing */
+}
+
+/* Email section styling */
+#dashboardModal .profile-email-section {
+  background: #0f1419;
+  border: 1px solid #2b3138;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 6px;
+}
+#dashboardModal .profile-email-section label {
+  color: #9aa7b3;
+  font-size: 0.92rem;
+  margin-bottom: 6px;
+  display: block;
+}
+#dashboardModal .profile-email-section .email-line {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #9fd1ff;
+}
+
+/* Prevent input groups from forcing overflow */
+#dashboardModal .field-edit { width: 100%; }
 
 /* Landing (index.html) */
 .landing-body { background: radial-gradient(1200px 600px at 20% 0%, #3b2a8a, #1c1740 45%, #121212 100%); color: #eef3f8; min-height: 100vh; display: flex; flex-direction: column }

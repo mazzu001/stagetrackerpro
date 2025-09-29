@@ -10,6 +10,9 @@ const WAVEFORM_STORE = 'waveforms';
 
 let dbPromise = null;
 
+// Optionally keep a direct reference to the last opened DB to allow explicit close
+let _dbInstance = null;
+
 function openDB() {
   if (!dbPromise) {
     dbPromise = new Promise((resolve, reject) => {
@@ -35,7 +38,17 @@ function openDB() {
           wf.createIndex('type', 'type', { unique: false });
         }
       };
-      req.onsuccess = () => resolve(req.result);
+      req.onsuccess = () => {
+        const db = req.result;
+        _dbInstance = db;
+        // If a delete/upgrade happens elsewhere, close this connection
+        try {
+          db.onversionchange = () => {
+            try { db.close(); } catch(_) {}
+          };
+        } catch(_) {}
+        resolve(db);
+      };
       req.onerror = () => reject(req.error);
     });
   }
@@ -48,16 +61,31 @@ export async function wipeDatabase() {
   return new Promise((resolve, reject) => {
     try {
       const req = indexedDB.deleteDatabase(DB_NAME);
-      req.onsuccess = () => { dbPromise = null; resolve(); };
+      req.onsuccess = () => { dbPromise = null; _dbInstance = null; resolve(); };
       req.onerror = () => reject(req.error);
       req.onblocked = () => {
-        // If blocked by open connections, we still resolve after a short delay; a reload is recommended.
-        setTimeout(() => { resolve(); }, 300);
+        // If blocked by open connections, we reject so callers can handle fallback/close and retry
+        reject(new Error('IndexedDB delete blocked by open connections'));
       };
     } catch (e) {
       reject(e);
     }
   });
+}
+
+// Explicitly close any open DB connection to prevent deleteDatabase from being blocked
+export async function closeDatabase() {
+  try {
+    if (_dbInstance) {
+      try { _dbInstance.close(); } catch(_) {}
+      _dbInstance = null;
+    } else if (dbPromise) {
+      const db = await dbPromise;
+      try { db.close(); } catch(_) {}
+    }
+  } finally {
+    dbPromise = null;
+  }
 }
 
 // Song CRUD

@@ -100,16 +100,28 @@ const Broadcast = {
 	ensureSocket() {
 		if (this.socket) return this.socket;
 		// Guard: only attempt if socket.io client is present (served by server)
-		if (!window.io) return null;
-		this.socket = window.io();
-		return this.socket;
+		if (!window.io) { console.warn('[BCAST Host] window.io not available yet'); return null; }
+		try {
+			this.socket = window.io({ path: '/socket.io/', transports: ['websocket','polling'] });
+			// Lightweight debug hooks
+			this.socket.on('connect', () => { try { console.log('[BCAST Host] Socket connected', this.socket.id); } catch(_){} });
+			this.socket.on('connect_error', (e) => { try { console.warn('[BCAST Host] connect_error', e?.message||e); } catch(_){} });
+			this.socket.on('error', (e) => { try { console.warn('[BCAST Host] error', e?.message||e); } catch(_){} });
+			return this.socket;
+		} catch(e) {
+			console.warn('[BCAST Host] Failed to init socket', e);
+			return null;
+		}
 	},
 	start(room) {
 		const io = this.ensureSocket();
-		if (!io) { console.warn('Broadcast socket not available. Start server to enable broadcasting.'); return; }
+		if (!io) { console.warn('[BCAST Host] Socket not available; ensure /socket.io is loaded before starting'); return; }
 		this.room = room;
 		this.started = true;
-		io.emit('host:join', { room, hostName: 'Host' });
+		try {
+			console.log('[BCAST Host] Emitting host:join for room', room);
+			io.emit('host:join', { room, hostName: 'Host' });
+		} catch(e) { console.warn('[BCAST Host] emit host:join failed', e); }
 		// Send an initial full snapshot asap
 		this.pushSnapshot(true);
 		// Begin 1-second timer pushes for position updates
@@ -727,6 +739,25 @@ if (importArchiveBtn) importArchiveBtn.addEventListener('click', () => { importA
 if (archiveFileInput) archiveFileInput.addEventListener('change', handleImportFile);
 const fullscreenBtn = document.getElementById('fullscreenBtn');
 if (fullscreenBtn) fullscreenBtn.addEventListener('click', () => { toggleFullscreen(); closeSettingsMenu(); });
+
+// Handle Start Broadcast button in settings menu
+const startBroadcastBtn = document.getElementById('startBroadcastBtn');
+if (startBroadcastBtn) startBroadcastBtn.addEventListener('click', () => {
+  // Prompt for broadcast name
+  const broadcastName = prompt('Enter a broadcast name:', '');
+  if (broadcastName && broadcastName.trim()) {
+    // Start broadcast with the entered name
+    if (window.startBroadcast) {
+      window.startBroadcast(broadcastName.trim());
+      // Show a confirmation message with instructions for viewers
+      const viewerUrl = `${window.location.origin}/viewer?room=${encodeURIComponent(broadcastName.trim())}`;
+      alert(`Broadcasting started!\n\nViewers can connect at:\n${viewerUrl}`);
+    } else {
+      alert('Broadcasting functionality is not available.');
+    }
+  }
+  closeSettingsMenu();
+});
 // Reset Storage button removed from menu
 // if (resetStorageBtn) resetStorageBtn.addEventListener('click', async () => {
 //	closeSettingsMenu();

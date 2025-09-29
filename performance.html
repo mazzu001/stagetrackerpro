@@ -34,6 +34,7 @@
         <button id="settingsBtn" class="settings-btn" aria-haspopup="true" aria-expanded="false">Settings ▾</button>
         <div class="settings-menu" id="settingsMenu" role="menu" aria-hidden="true">
           <button id="fullscreenBtn" class="menu-item" role="menuitem" tabindex="-1">Fullscreen</button>
+          <button id="startBroadcastBtn" class="menu-item" role="menuitem" tabindex="-1">Start Broadcast</button>
           <button id="dashboardBtn" class="menu-item" role="menuitem" tabindex="-1">Dashboard</button>
           <button id="importArchiveBtn" class="menu-item" role="menuitem" tabindex="-1">Import Archive</button>
           <button id="exportArchiveBtn" class="menu-item" role="menuitem" tabindex="-1">Export Archive</button>
@@ -273,12 +274,13 @@
       </span>
     </div>
   </footer>
+  <!-- Load Socket.IO first so it's available to modules when user starts a broadcast -->
+  <script src="/socket.io/socket.io.js"></script>
   <script type="module" src="app.js?v=2"></script>
   <script type="module" src="dashboard.js?v=1"></script>
   <script type="module" src="lyrics.js?v=2"></script>
   <script type="module" src="midi-processor.js"></script>
   <script type="module" src="midi-hooks.js"></script>
-  <script src="/socket.io/socket.io.js"></script>
   <script type="module">
     import { getSession } from './auth.js';
     const sess = getSession();

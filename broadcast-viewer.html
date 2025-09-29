@@ -150,6 +150,39 @@
   </style>
   <script src="/socket.io/socket.io.js"></script>
   <script>
+    // Add debug info banner
+    const debugBanner = document.createElement('div');
+    debugBanner.id = 'debugBanner';
+    debugBanner.style.position = 'fixed';
+    debugBanner.style.top = '0';
+    debugBanner.style.left = '0';
+    debugBanner.style.width = '100%';
+    debugBanner.style.background = 'rgba(0,0,0,0.8)';
+    debugBanner.style.color = '#fff';
+    debugBanner.style.padding = '10px';
+    debugBanner.style.fontSize = '12px';
+    debugBanner.style.fontFamily = 'monospace';
+    debugBanner.style.zIndex = '9999';
+    debugBanner.style.maxHeight = '100px';
+    debugBanner.style.overflow = 'auto';
+    debugBanner.innerHTML = 'Initializing broadcast viewer...';
+    
+    // Add to DOM once it's ready
+    document.addEventListener('DOMContentLoaded', () => {
+      document.body.appendChild(debugBanner);
+    });
+    
+    // Function to update debug info
+    function updateDebugInfo(message) {
+      const banner = document.getElementById('debugBanner');
+      if (banner) {
+        const timestamp = new Date().toISOString().slice(11, 19);
+        banner.innerHTML += `<br>[${timestamp}] ${message}`;
+        banner.scrollTop = banner.scrollHeight;
+      }
+      console.log(`[DEBUG] ${message}`);
+    }
+    
     let socket = null;
     let state = {
       room: null,
@@ -164,6 +197,8 @@
       positionText: '0:00',
       waveformDataUrl: ''
     };
+    
+    updateDebugInfo('Script initialized');
 
     function showErrorMessage(message) {
       // Clear main content
@@ -192,37 +227,83 @@
     }
     
     function connectViewer(room){
+      updateDebugInfo(`Connecting to room: ${room}`);
+      
       if (!room) {
         console.error('[Viewer] Cannot connect: No room name provided');
+        updateDebugInfo('ERROR: No room name provided');
+        showErrorMessage('No broadcast name provided. Please specify a valid broadcast name.');
         return;
       }
       
-      console.log('[Viewer] Initializing socket connection');
+      updateDebugInfo('Initializing socket connection');
+      
       try {
+        // Check if Socket.IO is available
+        if (typeof io === 'undefined') {
+          updateDebugInfo('ERROR: Socket.IO is not loaded!');
+          showErrorMessage('Critical error: Socket.IO library is not available. Please check your network connection.');
+          return;
+        }
+        
         // Make sure we have a valid Socket.IO instance
         if (!socket) {
-          console.log('[Viewer] Creating new Socket.IO connection');
+          updateDebugInfo('Creating new Socket.IO connection');
+          
+          // Add the path explicitly to ensure it connects to the right endpoint
           socket = io({
             reconnectionAttempts: 5,
-            timeout: 10000
+            timeout: 10000,
+            path: '/socket.io/', // Explicitly set the Socket.IO path
+            transports: ['websocket', 'polling'], // Try websocket first, fall back to polling
+            forceNew: true // Force a new connection
           });
         }
         
         // Debug Socket.IO connection status
         socket.on('connect', () => {
-          console.log('[Viewer] Socket.IO connected successfully with ID:', socket.id);
+          updateDebugInfo(`Socket.IO connected successfully with ID: ${socket.id}`);
+          
+          // When connected, immediately try to join the room
+          updateDebugInfo(`Attempting to join room: ${room}`);
+          socket.emit('viewer:join', { room: room, displayName: 'Viewer' });
         });
         
         socket.on('connect_error', (error) => {
-          console.error('[Viewer] Socket.IO connection error:', error);
+          updateDebugInfo(`Socket.IO connection error: ${error.message}`);
           showErrorMessage('Connection error: Could not connect to the server. Please check your network connection and try again.');
         });
         
         socket.on('disconnect', (reason) => {
-          console.warn('[Viewer] Socket.IO disconnected. Reason:', reason);
+          updateDebugInfo(`Socket.IO disconnected. Reason: ${reason}`);
           showErrorMessage('Disconnected from server. Attempting to reconnect...');
         });
+        
+        // Add more detailed diagnostics for viewer-specific events
+        socket.on('viewer:joined', (data) => {
+          updateDebugInfo(`Successfully joined room: ${data.room}`);
+        });
+        
+        socket.on('viewer:rejected', (data) => {
+          updateDebugInfo(`Join rejected: ${data.reason}`);
+          showErrorMessage(`Could not join broadcast: ${data.reason}`);
+        });
+        
+        socket.on('state:update', (data) => {
+          updateDebugInfo('Received state update from broadcast');
+        });
+        
+        socket.on('system', (data) => {
+          updateDebugInfo(`System message: ${data.type}`);
+          if (data.type === 'host-online') {
+            updateDebugInfo(`Host is online: ${data.hostName || 'Host'}`);
+          } else if (data.type === 'host-offline') {
+            updateDebugInfo('Host went offline');
+            showErrorMessage('The broadcast host has disconnected.');
+          }
+        });
       } catch (error) {
+        updateDebugInfo(`Failed to initialize Socket.IO: ${error.message}`);
         console.error('[Viewer] Failed to initialize Socket.IO:', error);
         showErrorMessage('Failed to connect to broadcast server. Please try again later.');
         return;
@@ -532,24 +613,64 @@
         // Force render after state update
         render();
       });
+      // Add a button to manually connect
+      const manualConnectDiv = document.createElement('div');
+      manualConnectDiv.style.marginTop = '20px';
+      manualConnectDiv.style.textAlign = 'center';
+      manualConnectDiv.innerHTML = `
+        <p>If automatic connection fails, enter the broadcast name manually:</p>
+        <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+          <input id="manualRoomInput" type="text" placeholder="Broadcast Name" style="padding: 8px; border-radius: 4px; border: 1px solid #444; background: #151b22; color: #fff;">
+          <button id="manualConnectBtn" class="btn">Connect</button>
+        </div>
+      `;
+      
+      // Attach the manual connect button when the DOM is ready
+      document.addEventListener('DOMContentLoaded', () => {
+        const lyricsContainer = document.getElementById('lyrics');
+        if (lyricsContainer) {
+          lyricsContainer.appendChild(manualConnectDiv);
+          
+          // Add event listener to the manual connect button
+          const manualConnectBtn = document.getElementById('manualConnectBtn');
+          const manualRoomInput = document.getElementById('manualRoomInput');
+          if (manualConnectBtn && manualRoomInput) {
+            manualConnectBtn.addEventListener('click', () => {
+              const roomName = manualRoomInput.value.trim();
+              if (roomName) {
+                updateDebugInfo(`Manual connection attempt to room: ${roomName}`);
+                connectViewer(roomName);
+              } else {
+                updateDebugInfo('Manual connection failed: No room name provided');
+                alert('Please enter a broadcast name');
+              }
+            });
+          }
+        }
+      });
+      
       // Auto-join from ?room= param
       try {
-        console.log('[Viewer] Checking for room parameter in URL:', location.search);
+        updateDebugInfo(`Checking for room parameter in URL: ${location.search}`);
         const qp = new URLSearchParams(location.search);
         const room = qp.get('room');
-        console.log('[Viewer] Room parameter value:', room);
+        updateDebugInfo(`Room parameter value: ${room || 'not found'}`);
         
         if (room) { 
-          console.log('[Viewer] Attempting to connect to room:', room);
-          connectViewer(room); 
+          updateDebugInfo(`Attempting to connect to room via URL parameter: ${room}`);
+          // Wait a moment to ensure everything is initialized
+          setTimeout(() => {
+            connectViewer(room);
+          }, 500);
         } else {
           // Show error if no room parameter was provided
-          console.error('[Viewer] No room parameter found in URL');
-          showErrorMessage('No broadcast name specified. Please provide a valid broadcast name.');
+          updateDebugInfo('No room parameter found in URL');
+          showErrorMessage('No broadcast name specified. Please provide a valid broadcast name or enter one below.');
         }
       } catch(e) {
+        updateDebugInfo(`Error parsing room parameter: ${e.message}`);
         console.error('[Viewer] Error parsing room parameter:', e);
-        showErrorMessage('Failed to connect to broadcast. Please try again.');
+        showErrorMessage('Failed to connect to broadcast. Please try again or enter a broadcast name manually below.');
       }
       document.getElementById('leaveBtn').addEventListener('click', () => { leaveViewer(); });
       requestAnimationFrame(tick);

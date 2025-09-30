@@ -1,14 +1,35 @@
 {
   "hosting": {
     "public": ".",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "rewrites": [
-      { "source": "/viewer", "destination": "/broadcast-viewer.html" },
-      { "source": "/performance", "destination": "/performance.html" },
-      { "source": "/dashboard", "destination": "/dashboard.html" }
+      {
+        "source": "/viewer",
+        "destination": "/broadcast-viewer.html"
+      },
+      {
+        "source": "/performance",
+        "destination": "/performance.html"
+      },
+      {
+        "source": "/dashboard",
+        "destination": "/dashboard.html"
+      }
     ],
     "headers": [
-      { "source": "**/*.html", "headers": [ { "key": "Cache-Control", "value": "no-store" } ] }
+      {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          }
+        ]
+      }
     ]
   }
 }

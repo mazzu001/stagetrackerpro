@@ -149,6 +149,8 @@
     .btn.leave-btn { background:#c0392b; }
   </style>
   <script src="/socket.io/socket.io.js"></script>
+  <!-- Firebase viewer fallback (works on Firebase Hosting). Safe to include always. -->
+  <script type="module" src="/viewer-firebase.js"></script>
   <script>
     // Debug helper: log to console only (no on-page banner)
     function updateDebugInfo(message) {
@@ -500,6 +502,11 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      // On non-local hosts (e.g., Firebase Hosting), rely on Firebase module and skip Socket.IO setup
+      const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+      if (!isLocal) {
+        return; // viewer-firebase.js will handle subscribing and DOM updates
+      }
       // Initialize waveform image load event handler
       const waveImg = document.getElementById('waveImg');
       if (waveImg) {

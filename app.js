@@ -2,6 +2,27 @@ import { getSongs, addSong, updateSong, deleteSong, getTracks, addTrack, updateT
 import { exportCompleteDatabase, importCompleteDatabase, showNotification, createSampleData, showExportPreview, showImportPreview } from './io.js?v=7';
 import './broadcast.js';
 
+// Firebase initialization (CDN modular SDK). Safe side-effect only; no services used yet.
+// Uses CDN so we don't require a bundler. Keys are public by design in Firebase web apps.
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js';
+import { getDatabase, ref, set, update, onDisconnect, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js';
+
+const firebaseConfig = {
+	apiKey: "AIzaSyD8rSfprxxMT9mfuoaKTM5YM-P_aY_nSo4",
+	authDomain: "stagetrackerpro-a193d.firebaseapp.com",
+	projectId: "stagetrackerpro-a193d",
+	storageBucket: "stagetrackerpro-a193d.firebasestorage.app",
+	messagingSenderId: "885349041871",
+	appId: "1:885349041871:web:6e92489488fc66e86dd9ba"
+};
+
+export const firebaseApp = initializeApp(firebaseConfig);
+// Optional global for convenience in other scripts without imports
+window.firebaseApp = firebaseApp;
+// Create a shared RTDB instance if available
+let RTDB = null;
+try { RTDB = getDatabase(firebaseApp); } catch { RTDB = null; }
+
 // Wrap the updateTrack function to add debugging for regions
 async function updateTrack(track) {
     // Enhanced wrapper with logging for regions-related updates
@@ -97,6 +118,8 @@ const Broadcast = {
 	minIntervalMs: 1000, // push every 1 second
 	intervalId: 0,
 	waveformCache: new Map(), // songId -> dataURL
+	_lastSongKey: null,
+	db: RTDB,
 	ensureSocket() {
 		if (this.socket) return this.socket;
 		// Guard: only attempt if socket.io client is present (served by server)
@@ -113,15 +136,57 @@ const Broadcast = {
 			return null;
 		}
 	},
+	async setHostPresence(online) {
+		if (!this.db || !this.room) return;
+		try {
+			const hostRef = ref(this.db, `rooms/${this.room}/host`);
+			await update(hostRef, { online: !!online, t: serverTimestamp() });
+			if (online) {
+				try { onDisconnect(hostRef).update({ online: false, t: serverTimestamp() }); } catch(_) {}
+			}
+		} catch(_) {}
+	},
+	async pushStaticIfNeeded(state) {
+		if (!this.db || !this.room) return;
+		const key = `${state.song?.title||''}::${state.song?.artist||''}`;
+		if (this._lastSongKey === key) return;
+		this._lastSongKey = key;
+		try {
+			await set(ref(this.db, `rooms/${this.room}/static`), {
+				song: state.song,
+				songText: state.songText,
+				lyricsText: state.lyricsText,
+				waveformDataUrl: state.waveformDataUrl || null,
+				songId: typeof window.selectedSongId !== 'undefined' ? window.selectedSongId : null,
+				updatedAt: Date.now()
+			});
+		} catch(e) { console.warn('[BCAST] Firebase static publish failed', e); }
+	},
+	async pushLive(state) {
+		if (!this.db || !this.room) return;
+		try {
+			await update(ref(this.db, `rooms/${this.room}/live`), {
+				position: state.position,
+				positionText: state.positionText,
+				playing: !!state.playing,
+				activeIndex: (typeof state.activeIndex === 'number') ? state.activeIndex : -1,
+				duration: state.duration || 0,
+				updatedAt: Date.now()
+			});
+		} catch(e) { console.warn('[BCAST] Firebase live publish failed', e); }
+	},
 	start(room) {
 		const io = this.ensureSocket();
-		if (!io) { console.warn('[BCAST Host] Socket not available; ensure /socket.io is loaded before starting'); return; }
 		this.room = room;
 		this.started = true;
 		try {
-			console.log('[BCAST Host] Emitting host:join for room', room);
-			io.emit('host:join', { room, hostName: 'Host' });
+			if (io) {
+				console.log('[BCAST Host] Emitting host:join for room', room);
+				io.emit('host:join', { room, hostName: 'Host' });
+			}
 		} catch(e) { console.warn('[BCAST Host] emit host:join failed', e); }
+		// Mark presence for Firebase consumers
+		this.setHostPresence(true);
 		// Send an initial full snapshot asap
 		this.pushSnapshot(true);
 		// Begin 1-second timer pushes for position updates
@@ -133,6 +198,8 @@ const Broadcast = {
 		this.started = false;
 		this.room = null;
 		if (this.intervalId) { try { clearInterval(this.intervalId); } catch(_) {} this.intervalId = 0; }
+		// Mark offline for Firebase consumers
+		this.setHostPresence(false);
 		// Keep socket connected; viewers simply stop receiving updates
 	    try { window.updateBroadcastStatusChip?.(); } catch(_) {}
 	},
@@ -355,11 +422,14 @@ const Broadcast = {
 		const now = performance.now();
 		if (!force && now - this.lastSentMs < this.minIntervalMs) return;
 		const io = this.ensureSocket();
-		if (!io) return;
 		const state = await this.snapshot();
 		this.lastSentMs = now;
 		try { console.log('[BCAST] push', { room: this.room, title: state.song?.title, pos: state.positionText, lyrics: (state.lyrics||[]).length }); } catch(_) {}
-		io.emit('state:push', { room: this.room, state });
+		// Socket emit (if available)
+		try { io?.emit('state:push', { room: this.room, state }); } catch(_) {}
+		// Firebase publish (static occasionally, live every tick)
+		try { await this.pushStaticIfNeeded(state); } catch(_) {}
+		try { await this.pushLive(state); } catch(_) {}
 	}
 };
 // Expose a minimal API to the page for UI wiring
@@ -466,6 +536,13 @@ function renderSongs() {
 		// Original per-card meters removed; using background meters instead
 
 		card.addEventListener('click', () => {
+			// Prevent switching songs while any song is currently playing
+			try {
+				if (audioEngine && audioEngine.playing) {
+					try { showNotification('Stop playback to switch songs.', 'info'); } catch(_) { alert('Stop playback to switch songs.'); }
+					return;
+				}
+			} catch(_) { /* noop */ }
 			selectedSongId = song.id;
 			window.selectedSongId = selectedSongId;
 			// Reset offset when switching songs so subsequent plays start from 0 unless user seeks
@@ -740,24 +817,7 @@ if (archiveFileInput) archiveFileInput.addEventListener('change', handleImportFi
 const fullscreenBtn = document.getElementById('fullscreenBtn');
 if (fullscreenBtn) fullscreenBtn.addEventListener('click', () => { toggleFullscreen(); closeSettingsMenu(); });
 
-// Handle Start Broadcast button in settings menu
-const startBroadcastBtn = document.getElementById('startBroadcastBtn');
-if (startBroadcastBtn) startBroadcastBtn.addEventListener('click', () => {
-  // Prompt for broadcast name
-  const broadcastName = prompt('Enter a broadcast name:', '');
-  if (broadcastName && broadcastName.trim()) {
-    // Start broadcast with the entered name
-    if (window.startBroadcast) {
-      window.startBroadcast(broadcastName.trim());
-      // Show a confirmation message with instructions for viewers
-      const viewerUrl = `${window.location.origin}/viewer?room=${encodeURIComponent(broadcastName.trim())}`;
-      alert(`Broadcasting started!\n\nViewers can connect at:\n${viewerUrl}`);
-    } else {
-      alert('Broadcasting functionality is not available.');
-    }
-  }
-  closeSettingsMenu();
-});
+// Start Broadcast menu item removed per UX; broadcasting only via Dashboard
 // Reset Storage button removed from menu
 // if (resetStorageBtn) resetStorageBtn.addEventListener('click', async () => {
 //	closeSettingsMenu();

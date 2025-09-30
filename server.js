@@ -20,16 +20,28 @@ const io = new Server(server, {
   pingInterval: 10000
 });
 
-// Content Security Policy: allow app assets, inline scripts used by pages, Google Fonts, and WebSockets
+// Content Security Policy (local dev): allow app assets, inline scripts, Google Fonts,
+// Firebase module scripts (gstatic), Firebase APIs, and WebSockets. Also allow YouTube frames on index.
 const CSP = [
   "default-src 'self'",
   "base-uri 'self'",
   "form-action 'self'",
   "img-src 'self' data: blob:",
+  // Allow audio/video from local blobs
+  "media-src 'self' blob:",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' data: https://fonts.gstatic.com",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
-  "connect-src 'self' ws: wss:",
+  // Allow external module scripts (Firebase CDN, zip.js CDN) in dev
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net",
+  // Explicitly allow script elements and module imports from the same origins
+  "script-src-elem 'self' 'unsafe-inline' 'unsafe-eval' https://www.gstatic.com https://cdn.jsdelivr.net",
+  // Allow socket.io, Firebase RTDB/REST, and related Google APIs
+  "connect-src 'self' ws: wss: https://*.firebaseio.com https://*.firebasedatabase.app https://www.googleapis.com",
+  // Allow embedded YouTube demo video on landing page
+  "frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com",
+  // Allow web workers from blob: (zip.js, audio workers) and fallback child-src
+  "worker-src 'self' blob:",
+  "child-src 'self' blob:",
   "frame-ancestors 'self'"
 ].join('; ');
 

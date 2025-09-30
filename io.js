@@ -9,6 +9,30 @@ import {
   wipeDatabase, closeDatabase
 } from './db.js';
 
+// Lightweight zip.js loader (streaming ZIP writer/reader, ZIP64 support)
+async function getZipLib() {
+  if (window.zip) return window.zip;
+  await new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@zip.js/zip.js@2.7.34/dist/zip.min.js';
+    s.async = true;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error('Failed to load zip.js'));
+    document.head.appendChild(s);
+  });
+  if (!window.zip) throw new Error('zip.js not available');
+  window.zip.configure({ useWebWorkers: true });
+  return window.zip;
+}
+
+// Safe file/folder component for inside-archive paths
+function safePathComponent(name) {
+  return String(name || '')
+    .replace(/[\\/:*?"<>|]+/g, '-')
+    .replace(/\s+/g, ' ')
+    .trim() || 'file';
+}
+
 /**
  * Alternative method to clear all data from the database without deleting it
  * This is used when wipeDatabase() fails due to blocked connections

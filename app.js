@@ -33,8 +33,8 @@ async function updateTrack(track) {
         console.log('Regions data:', JSON.stringify(track.regions));
     }
     // Call the original function from db.js
-    return await dbUpdateTrack(track);
-}
+			return await dbUpdateTrack(track);
+		}
 
 console.log('app.js: script loaded');
 const songsContainer = document.getElementById('songsContainer');
@@ -103,6 +103,31 @@ window.checkDatabase = async function() {
 };
 let trackManagerSongId = null; // the song currently open in Track Manager
 let trackManagerDirty = false; // track add/remove changes while Track Manager is open
+
+// Track Manager count-in preferences (legacy defaults; per-song fields now preferred)
+let trackMgrCountInEnabled = false;
+let trackMgrBPM = 120;
+let trackMgrClickBalance = 0; // -1 (Left) .. 0 (Center) .. +1 (Right)
+let trackMgrClickVolume = 1.0; // multiplier (legacy default)
+try {
+	const en = localStorage.getItem('tm.countIn.enabled');
+	const bpm = localStorage.getItem('tm.countIn.bpm');
+	const bal = localStorage.getItem('tm.countIn.balance');
+	const vol = localStorage.getItem('tm.countIn.volume');
+	if (en != null) trackMgrCountInEnabled = en === '1' || en === 'true';
+	if (bpm != null) {
+		const v = parseInt(bpm, 10);
+		if (Number.isFinite(v) && v >= 30 && v <= 300) trackMgrBPM = v;
+	}
+	if (bal != null) {
+		const b = parseFloat(bal);
+		if (Number.isFinite(b)) trackMgrClickBalance = Math.max(-1, Math.min(1, b));
+	}
+	if (vol != null) {
+		const v = parseFloat(vol);
+		if (Number.isFinite(v)) trackMgrClickVolume = Math.max(0, Math.min(4, v));
+	}
+} catch(_) {}
 
 // Simple in-memory file storage for prototype: {fileId: {name, blob, size}}
 let files = {};
@@ -629,7 +654,8 @@ async function handleAddSong(e) {
 		newSongTitle.focus();
 		return;
 	}
-	const song = { title, artist, tracks: 0 };
+	// Initialize per-song count-in defaults (including volume multiplier)
+	const song = { title, artist, tracks: 0, countInEnabled: false, countInBPM: 120, countInBalance: 0, countInVolume: 1.0 };
 	const id = await addSong(song);
 	// Fetch updated songs from IndexedDB
 	songs = await getSongs();
@@ -1150,8 +1176,11 @@ async function buildAndStart(songId, offsetSec = 0, opts = {}) {
 		if (opts && opts.soloTrackId && t.id !== opts.soloTrackId) continue;
 		const buf = audioEngine.buffers.get(t.id);
 		if (!buf) continue;
-		// Skip tracks whose buffer is shorter than the requested offset
-		if (offsetSec >= buf.duration) continue;
+		// Respect per-track timeline offset when determining read position and skip logic
+		const trackOffset = Number(t.offsetSec) || 0;
+		const readAt = Math.max(0, offsetSec - trackOffset);
+		// Skip this track if we've already passed its audio content
+		if (readAt >= buf.duration) continue;
 			const src = audioEngine.ctx.createBufferSource();
 			src.buffer = buf;
 			try {
@@ -1232,7 +1261,7 @@ async function buildAndStart(songId, offsetSec = 0, opts = {}) {
 		gainL.connect(audioEngine.masterMerger, 0, 0);
 		gainR.connect(audioEngine.masterMerger, 0, 1);
 		// Start slightly before audible time so buffers stabilize; keep gate closed until audibleAt
-		const off = Math.max(0, Math.min(offsetSec - lead, Math.max(0, buf.duration - 0.005)));
+		const off = Math.max(0, Math.min(readAt - lead, Math.max(0, buf.duration - 0.005)));
 		try { src.start(startAtRaw, off); } catch (e) { console.warn('source start failed', e); }
 		audioEngine.sources.set(t.id, src);
 		audioEngine.gains.set(t.id, gain);
@@ -1252,7 +1281,7 @@ async function buildAndStart(songId, offsetSec = 0, opts = {}) {
 				gate,
 				regions: Array.isArray(t.regions) ? t.regions : [],
 				playheadAtAudibleSec: offsetSec, // song timeline position when gate opens
-				trackOffsetSec: Number(t.offsetSec) || 0,
+				trackOffsetSec: trackOffset,
 				bufferDuration: buf.duration,
 				startAtRaw,
 				audibleAt,
@@ -1598,11 +1627,10 @@ if (footerPlayBtn) footerPlayBtn.addEventListener('click', async () => {
 		pausePlayback();
 	} else {
 		await primeAudioOnce();
-		await ensureSongLoaded(selectedSongId);
 		// If there was a fresh seek set, use it once; otherwise resume from current offset
 		const useSeek = audioEngine.lastSeekSec;
 		const startAt = (useSeek != null) ? useSeek : (audioEngine.offset || 0);
-		await buildAndStart(selectedSongId, startAt);
+		await playSongWithOptionalCountIn(selectedSongId, startAt);
 	}
 	try { Broadcast.pushSnapshot(true); } catch(_) {}
 });
@@ -1665,6 +1693,188 @@ if (masterVolume) {
 // Sidebar player wiring
 // Sidebar player removed
 
+// --- Count-in metronome and helper ---
+// Click sample support: assets/sounds/click.m4a (preferred click for count-in)
+const CLICK_URLS = ['assets/sounds/click.m4a'];
+const _clickSample = { buffer: null, tried: false, loading: null };
+async function loadClickSampleBuffer(ctx) {
+	if (_clickSample.buffer || _clickSample.loading || _clickSample.tried) return;
+	_clickSample.loading = (async () => {
+		for (const url of CLICK_URLS) {
+			try {
+				const res = await fetch(url, { cache: 'no-cache' });
+				if (!res.ok) continue;
+				const arr = await res.arrayBuffer();
+				const buf = await ctx.decodeAudioData(arr.slice(0));
+				if (buf && buf.duration > 0) { _clickSample.buffer = buf; break; }
+			} catch (_) { /* try next */ }
+		}
+	})().finally(() => { _clickSample.tried = true; _clickSample.loading = null; });
+}
+// Preload the click sample early (decodeCtx doesn't resume audio, safe for prefetch)
+setTimeout(() => { try { ensureDecodeCtx(); loadClickSampleBuffer(audioEngine.ctx); } catch(_) {} }, 0);
+
+async function playSongWithOptionalCountIn(songId, startAtSec) {
+	await ensureAudioCtx();
+	await ensureSongLoaded(songId);
+	// Resolve per-song settings (fallback to current UI state if needed)
+	const s = songs.find(x => x.id === songId) || {};
+	const doCount = !!(typeof s.countInEnabled === 'boolean' ? s.countInEnabled : trackMgrCountInEnabled);
+	const bpmRaw = (Number.isFinite(s.countInBPM) ? s.countInBPM : trackMgrBPM);
+	const bpm = Math.max(30, Math.min(300, Number(bpmRaw) || 120));
+	const clickBal = Math.max(-1, Math.min(1, Number.isFinite(s.countInBalance) ? s.countInBalance : trackMgrClickBalance));
+	const clickVol = Math.max(0, Math.min(4, Number.isFinite(s.countInVolume) ? s.countInVolume : trackMgrClickVolume));
+	if (!doCount) {
+		await buildAndStart(songId, startAtSec);
+		return;
+	}
+	// Attempt to load sample in the background; don't delay playback
+	try { loadClickSampleBuffer(audioEngine.ctx); } catch(_) {}
+	// Generate 4 click sounds at the given BPM before starting
+	// Prefer provided click sample if available; otherwise synth a bright click
+	const ctx = audioEngine.ctx;
+	const beatDur = 60 / Math.max(30, Math.min(300, bpm)); // seconds per beat
+	const now = ctx.currentTime;
+	const startClicksAt = now + 0.05; // small guard
+	function makeNoiseBuffer(ctx, durationSec = 0.02) {
+		const sr = ctx.sampleRate;
+		const len = Math.max(128, Math.floor(durationSec * sr));
+		const buf = ctx.createBuffer(1, len, sr);
+		const ch = buf.getChannelData(0);
+		for (let i = 0; i < len; i++) ch[i] = (Math.random() * 2 - 1);
+		return buf;
+	}
+	const noise = makeNoiseBuffer(ctx, 0.02);
+
+	// If we have the click sample loaded, use it for clicks
+	if (_clickSample.buffer) {
+		for (let i = 0; i < 4; i++) {
+			const t = startClicksAt + i * beatDur;
+			const isAccent = (i === 0);
+			const src = ctx.createBufferSource(); src.buffer = _clickSample.buffer;
+			// Shorter slice for tightness via gain envelope
+			const gain = ctx.createGain();
+			const a = isAccent ? 0.10 : 0.08;
+			// Use a stronger fixed click level plus a compressor for safety
+			const gv = (isAccent ? 3.0 : 2.0) * clickVol; // accent louder
+			try { gain.gain.setValueAtTime(0.0001, t); } catch(_) { gain.gain.value = 0.0001; }
+			try { gain.gain.exponentialRampToValueAtTime(Math.max(0.001, gv), t + 0.003); } catch(_) {}
+			try { gain.gain.exponentialRampToValueAtTime(0.0001, t + a); } catch(_) {}
+
+			const b = clickBal;
+			if (typeof ctx.createStereoPanner === 'function') {
+				const p = ctx.createStereoPanner();
+				try { p.pan.setValueAtTime(b, t); } catch(_) { p.pan.value = b; }
+				src.connect(gain); const comp = ctx.createDynamicsCompressor();
+				try {
+					comp.threshold.setValueAtTime(-18, t);
+					comp.knee.setValueAtTime(25, t);
+					comp.ratio.setValueAtTime(8, t);
+					comp.attack.setValueAtTime(0.003, t);
+					comp.release.setValueAtTime(0.06, t);
+				} catch(_) {}
+				gain.connect(p); p.connect(comp); comp.connect(ctx.destination);
+			} else {
+				const gL = ctx.createGain(); const gR = ctx.createGain(); const merger = ctx.createChannelMerger(2);
+				const lMul = b >= 0 ? (1 - b) : 1; const rMul = b <= 0 ? (1 + b) : 1;
+				try { gL.gain.setValueAtTime(lMul, t); gR.gain.setValueAtTime(rMul, t); } catch(_) { gL.gain.value = lMul; gR.gain.value = rMul; }
+				src.connect(gain); const comp = ctx.createDynamicsCompressor();
+				try {
+					comp.threshold.setValueAtTime(-18, t);
+					comp.knee.setValueAtTime(25, t);
+					comp.ratio.setValueAtTime(8, t);
+					comp.attack.setValueAtTime(0.003, t);
+					comp.release.setValueAtTime(0.06, t);
+				} catch(_) {}
+				gain.connect(gL); gain.connect(gR);
+				gL.connect(merger, 0, 0); gR.connect(merger, 0, 1); merger.connect(comp); comp.connect(ctx.destination);
+			}
+			try { src.start(t); src.stop(t + a + 0.03); } catch(_) { /* ignore */ }
+		}
+	} else {
+		// Synth fallback: rimshot/hi-hat style layered noise
+		for (let i = 0; i < 4; i++) {
+			const t = startClicksAt + i * beatDur;
+			const isAccent = (i === 0);
+			const src = ctx.createBufferSource();
+			src.buffer = noise;
+			// Rimshot/hi-hat style: mix a mid bandpass "stick" and a high sizzle layer
+			const stickBP = ctx.createBiquadFilter();
+			stickBP.type = 'bandpass';
+			stickBP.Q.value = isAccent ? 10 : 8;
+			try { stickBP.frequency.setValueAtTime(isAccent ? 2600 : 2300, t); } catch(_) { stickBP.frequency.value = isAccent ? 2600 : 2300; }
+			const sizzleHP = ctx.createBiquadFilter();
+			sizzleHP.type = 'highpass';
+			try { sizzleHP.frequency.setValueAtTime(isAccent ? 7500 : 7000, t); } catch(_) { sizzleHP.frequency.value = isAccent ? 7500 : 7000; }
+			sizzleHP.Q.value = 0.9;
+			const sizzleLP = ctx.createBiquadFilter();
+			sizzleLP.type = 'lowpass';
+			try { sizzleLP.frequency.setValueAtTime(12000, t); } catch(_) { sizzleLP.frequency.value = 12000; }
+			sizzleLP.Q.value = 0.7;
+			// Individual gains for layers
+			const gStick = ctx.createGain();
+			const gSizzle = ctx.createGain();
+			const mix = ctx.createGain();
+			// Envelope
+			const aStick = isAccent ? 0.10 : 0.08;
+			const aSizz = isAccent ? 0.035 : 0.028;
+			// Stronger fixed gains for stick/sizzle layers + compressor downstream
+			const gvStick = (isAccent ? 2.5 : 1.8) * clickVol;
+			const gvSizz = (isAccent ? 1.6 : 1.3) * clickVol;
+			try {
+				gStick.gain.setValueAtTime(0.0001, t);
+				gStick.gain.exponentialRampToValueAtTime(Math.max(0.001, gvStick), t + 0.004);
+				gStick.gain.exponentialRampToValueAtTime(0.0001, t + aStick);
+				gSizzle.gain.setValueAtTime(0.0001, t);
+				gSizzle.gain.exponentialRampToValueAtTime(Math.max(0.001, gvSizz), t + 0.003);
+				gSizzle.gain.exponentialRampToValueAtTime(0.0001, t + aSizz);
+			} catch(_) {
+				gStick.gain.value = gvStick; gSizzle.gain.value = gvSizz;
+			}
+			// Wire layers to mix
+			src.connect(stickBP); stickBP.connect(gStick); gStick.connect(mix);
+			src.connect(sizzleHP); sizzleHP.connect(sizzleLP); sizzleLP.connect(gSizzle); gSizzle.connect(mix);
+			// Pan/mix to destination
+			const b = clickBal;
+			if (typeof ctx.createStereoPanner === 'function') {
+				const p = ctx.createStereoPanner();
+				try { p.pan.setValueAtTime(b, t); } catch(_) { p.pan.value = b; }
+				const comp = ctx.createDynamicsCompressor();
+				try {
+					comp.threshold.setValueAtTime(-18, t);
+					comp.knee.setValueAtTime(25, t);
+					comp.ratio.setValueAtTime(8, t);
+					comp.attack.setValueAtTime(0.003, t);
+					comp.release.setValueAtTime(0.06, t);
+				} catch(_) {}
+				mix.connect(p); p.connect(comp); comp.connect(ctx.destination);
+			} else {
+				const gL = ctx.createGain(); const gR = ctx.createGain(); const merger = ctx.createChannelMerger(2);
+				const lMul = b >= 0 ? (1 - b) : 1; const rMul = b <= 0 ? (1 + b) : 1;
+				try { gL.gain.setValueAtTime(lMul, t); gR.gain.setValueAtTime(rMul, t); } catch(_) { gL.gain.value = lMul; gR.gain.value = rMul; }
+				const comp = ctx.createDynamicsCompressor();
+				try {
+					comp.threshold.setValueAtTime(-18, t);
+					comp.knee.setValueAtTime(25, t);
+					comp.ratio.setValueAtTime(8, t);
+					comp.attack.setValueAtTime(0.003, t);
+					comp.release.setValueAtTime(0.06, t);
+				} catch(_) {}
+				mix.connect(gL); mix.connect(gR);
+				gL.connect(merger, 0, 0); gR.connect(merger, 0, 1); merger.connect(comp); comp.connect(ctx.destination);
+			}
+			try { src.start(t); src.stop(t + Math.max(aStick, aSizz) + 0.03); } catch(_) { /* ignore */ }
+		}
+	}
+	// Schedule song to start shortly after the 4th click (tempo-aware gap)
+	const afterLastClickGap = Math.min(0.18, Math.max(0.06, 0.12 * (120 / bpm)));
+	const songStartAt = startClicksAt + 3 * beatDur + afterLastClickGap;
+	// buildAndStart schedules relative to currentTime; emulate by slight delay
+	const delayMs = Math.max(0, (songStartAt - ctx.currentTime) * 1000);
+	await new Promise(r => setTimeout(r, delayMs));
+	await buildAndStart(songId, startAtSec);
+}
+
 // --- Track Manager safe implementation ---
 const trackManagerModal = document.getElementById('trackManagerModal');
 const trackManagerBody = document.getElementById('trackManagerBody');
@@ -1723,6 +1933,113 @@ if (document.readyState === 'loading') {
 	loadSongsOnStartup();
 }
 
+// --- UI helper: Rotary knob (drag up = louder, drag down = quieter) ---
+function createRotaryKnob({ min = 0, max = 4, step = 0.05, value = 1.0, label = 'Click', onInput = () => {} }) {
+	const clamp = (v) => Math.max(min, Math.min(max, v));
+	const roundStep = (v) => Math.round(v / step) * step;
+	const norm = (v) => (clamp(v) - min) / (max - min); // 0..1
+	// Map 0..1 to -150deg (≈7 o'clock) .. +150deg (≈5 o'clock)
+	const angleFor = (v) => -150 + 300 * norm(v); // degrees
+
+	const wrap = document.createElement('div');
+	wrap.className = 'knob-wrap';
+
+	const ring = document.createElement('div');
+	ring.className = 'knob-ring';
+	ring.style.setProperty('--pct', String(Math.round(norm(value) * 100)));
+
+	const knob = document.createElement('div');
+	knob.className = 'knob';
+	knob.tabIndex = 0;
+		knob.title = `${label}`;
+
+	const indicator = document.createElement('div');
+	indicator.className = 'knob-indicator';
+	const dot = document.createElement('div');
+	dot.className = 'knob-indicator-dot';
+	indicator.appendChild(dot);
+	knob.appendChild(indicator);
+
+	// Apply initial angle
+	const setAngleFromValue = (val) => {
+		const ang = angleFor(val);
+		indicator.style.transform = `translate(-50%, -50%) rotate(${ang}deg)`;
+		ring.style.setProperty('--pct', String(Math.round(norm(val) * 100)));
+	};
+	setAngleFromValue(value);
+
+	// Interaction
+	let dragging = false;
+	let startY = 0;
+	let startVal = value;
+	const sensitivity = (max - min) / 140; // pixels to full-scale ~140px
+
+		const applyVal = (nv, fire = true) => {
+			const v = clamp(roundStep(nv));
+			setAngleFromValue(v);
+			if (fire) observedOnInput(v);
+		};
+
+	const onMove = (clientY) => {
+		const dy = clientY - startY; // moving up => negative dy
+		const nv = startVal + (-dy * sensitivity);
+		applyVal(nv, true);
+	};
+
+	const handlePointerDown = (e) => {
+		dragging = true;
+		startY = (e.touches ? e.touches[0].clientY : e.clientY);
+		startVal = value;
+		e.preventDefault();
+		e.stopPropagation();
+	};
+	const handlePointerMove = (e) => {
+		if (!dragging) return;
+		const y = (e.touches ? e.touches[0].clientY : e.clientY);
+		onMove(y);
+		e.preventDefault();
+	};
+	const handlePointerUp = () => { dragging = false; };
+
+	knob.addEventListener('mousedown', handlePointerDown);
+	knob.addEventListener('touchstart', handlePointerDown, { passive: false });
+	window.addEventListener('mousemove', handlePointerMove);
+	window.addEventListener('touchmove', handlePointerMove, { passive: false });
+	window.addEventListener('mouseup', handlePointerUp);
+	window.addEventListener('touchend', handlePointerUp);
+
+	// Wheel adjust (fine)
+	knob.addEventListener('wheel', (e) => {
+		e.preventDefault();
+		const delta = e.deltaY < 0 ? step : -step; // wheel up = louder
+		const nv = clamp(roundStep((value = clamp(value + delta))));
+		applyVal(nv, true);
+	}, { passive: false });
+
+	// Keyboard
+	knob.addEventListener('keydown', (e) => {
+		if (e.key === 'ArrowUp') { value = clamp(value + step); applyVal(value, true); e.preventDefault(); }
+		else if (e.key === 'ArrowDown') { value = clamp(value - step); applyVal(value, true); e.preventDefault(); }
+	});
+
+		// Keep public value in sync when onInput fires
+		const userOnInput = onInput;
+		const observedOnInput = (v) => { value = v; userOnInput(v); };
+
+	const cap = document.createElement('span');
+	cap.className = 'knob-cap';
+	cap.textContent = label;
+
+	ring.appendChild(knob);
+	wrap.appendChild(ring);
+	wrap.appendChild(cap);
+
+	// API to externally set value if needed
+	wrap.setValue = (v) => { value = clamp(v); setAngleFromValue(value); };
+
+	return { el: wrap, setValue: wrap.setValue };
+}
+
 async function renderTrackManager(songId) {
 	if (!trackManagerBody) return;
 	// Preserve scroll position to avoid jumping to top when expanding/collapsing sections
@@ -1731,6 +2048,17 @@ async function renderTrackManager(songId) {
 
 	const song = songs.find(s => s.id === songId);
 	const tracks = await getTracks(songId);
+	// Diagnostics: log regions count for each track loaded from DB
+	try {
+		if (Array.isArray(tracks)) {
+			console.groupCollapsed('[Regions] Loaded tracks for Track Manager');
+			for (const t of tracks) {
+				const count = Array.isArray(t?.regions) ? t.regions.length : 0;
+				console.log(`Track ${t?.id}: regions=${count}`, count ? t.regions : '');
+			}
+			console.groupEnd();
+		}
+	} catch(_) {}
 
 	// Update modal title with count
 	const titleEl = document.getElementById('trackManagerTitle');
@@ -1744,6 +2072,86 @@ async function renderTrackManager(songId) {
 	if (headerControls) {
 		headerControls.innerHTML = '';
 
+		// Count-in controls (checkbox with BPM beneath to save space)
+		const ciWrap = document.createElement('div');
+		ciWrap.style.display = 'inline-flex';
+		ciWrap.style.flexDirection = 'column';
+		ciWrap.style.alignItems = 'flex-start';
+		ciWrap.style.gap = '4px';
+		ciWrap.style.marginRight = '8px';
+		const ciLabel = document.createElement('label');
+		ciLabel.style.display = 'inline-flex';
+		ciLabel.style.alignItems = 'center';
+		ciLabel.style.gap = '6px';
+		const ciChk = document.createElement('input');
+		ciChk.type = 'checkbox';
+		ciChk.checked = !!(typeof song.countInEnabled === 'boolean' ? song.countInEnabled : trackMgrCountInEnabled);
+		const ciText = document.createElement('span');
+		ciText.textContent = 'Count-in';
+		const bpmInput = document.createElement('input');
+		bpmInput.type = 'number';
+		bpmInput.min = '30';
+		bpmInput.max = '300';
+		bpmInput.step = '1';
+		bpmInput.value = String(Number.isFinite(song.countInBPM) ? song.countInBPM : trackMgrBPM);
+		bpmInput.title = 'BPM';
+		bpmInput.style.width = '56px';
+		bpmInput.style.padding = '4px 6px';
+		bpmInput.style.borderRadius = '6px';
+		bpmInput.style.border = '1px solid #3a3a3a';
+		bpmInput.style.background = '#2a2a2a';
+		bpmInput.style.color = '#fff';
+		ciLabel.appendChild(ciChk);
+		ciLabel.appendChild(ciText);
+		// Stack BPM under the checkbox/text to tighten
+		ciWrap.appendChild(ciLabel);
+		const bpmRow = document.createElement('div');
+		bpmRow.style.marginTop = '2px';
+		bpmRow.appendChild(bpmInput);
+		ciWrap.appendChild(bpmRow);
+
+		// Knobs row: Pan + Volume (both rotary)
+		const knobsRow = document.createElement('div');
+		knobsRow.style.display = 'inline-flex';
+		knobsRow.style.alignItems = 'center';
+		knobsRow.style.gap = '10px';
+		// Pan knob (-1..1)
+		const initPan = Number.isFinite(song.countInBalance) ? song.countInBalance : trackMgrClickBalance;
+		const panKnobObj = createRotaryKnob({ min: -1, max: 1, step: 0.01, value: initPan, label: 'pan', onInput: async (val) => {
+			const clamped = Math.max(-1, Math.min(1, val));
+			song.countInBalance = clamped;
+			try { await updateSong(song); } catch(_) {}
+			const idx = songs.findIndex(s => s.id === songId); if (idx >= 0) { songs[idx] = { ...songs[idx], countInBalance: clamped }; window.songs = songs; }
+		}});
+		knobsRow.appendChild(panKnobObj.el);
+		// Volume knob (0..4)
+		const knobInitVal = Number.isFinite(song.countInVolume) ? song.countInVolume : 1.0;
+		const volKnobObj = createRotaryKnob({ min: 0, max: 4, step: 0.05, value: knobInitVal, label: 'volume', onInput: async (val) => {
+			const clamped = Math.max(0, Math.min(4, val));
+			song.countInVolume = clamped;
+			try { await updateSong(song); } catch(_) {}
+			const idx = songs.findIndex(s => s.id === songId); if (idx >= 0) { songs[idx] = { ...songs[idx], countInVolume: clamped }; window.songs = songs; }
+		}});
+		knobsRow.appendChild(volKnobObj.el);
+		ciWrap.appendChild(knobsRow);
+		headerControls.appendChild(ciWrap);
+
+		ciChk.addEventListener('change', async () => {
+			const val = !!ciChk.checked;
+			song.countInEnabled = val;
+			try { await updateSong(song); } catch(_) {}
+			const idx = songs.findIndex(s => s.id === songId); if (idx >= 0) { songs[idx] = { ...songs[idx], countInEnabled: val }; window.songs = songs; }
+		});
+		bpmInput.addEventListener('change', async () => {
+			let v = parseInt(bpmInput.value, 10);
+			if (!Number.isFinite(v)) v = Number.isFinite(song.countInBPM) ? song.countInBPM : (trackMgrBPM || 120);
+			v = Math.max(30, Math.min(300, v));
+			song.countInBPM = v;
+			bpmInput.value = String(v);
+			try { await updateSong(song); } catch(_) {}
+			const idx = songs.findIndex(s => s.id === songId); if (idx >= 0) { songs[idx] = { ...songs[idx], countInBPM: v }; window.songs = songs; }
+		});
+
 		const playBtn = document.createElement('button');
 		playBtn.className = 'track-playpause';
 		playBtn.textContent = (audioEngine.playing && audioEngine.songId === songId) ? '⏸ Pause' : '▶ Play';
@@ -1751,9 +2159,8 @@ async function renderTrackManager(songId) {
 			if (audioEngine.playing && audioEngine.songId === songId) {
 				pausePlayback();
 			} else {
-				await ensureSongLoaded(songId);
 				const startAt = (audioEngine.lastSeekSec != null) ? audioEngine.lastSeekSec : (audioEngine.offset || 0);
-				await buildAndStart(songId, startAt);
+				await playSongWithOptionalCountIn(songId, startAt);
 			}
 			// button label will be synced by syncPlayButtons
 		});
@@ -2054,6 +2461,53 @@ async function renderTrackManager(songId) {
 			let resizeMode = null; // 'left' | 'right' | null
 			let resizingRegionIndex = -1; // index if selection matches an existing region
 
+			// Helper: commit current selection into track.regions (used by mouseup on canvas and window)
+			async function commitSelectionIfNeeded(triggerLabel = 'canvas') {
+				try {
+					const sel = state?.selection;
+					if (!(dragMoved && sel && typeof sel.start === 'number' && typeof sel.end === 'number' && sel.end > sel.start)) {
+						return false; // nothing to commit
+					}
+					let chosen = null;
+					// Initialize regions array if missing
+					if (!Array.isArray(track.regions)) {
+						console.log(`Creating new regions array for track ${track.id}`);
+						track.regions = [];
+					}
+					const newRegion = { start: Number(sel.start), end: Number(sel.end) };
+					console.log(`[Regions] Commit from ${triggerLabel}:`, newRegion);
+					const originalCount = track.regions.length;
+					const regionsBackup = JSON.parse(JSON.stringify(track.regions));
+					try {
+						track.regions = mergeRegions([...track.regions, newRegion]);
+						console.log(`Regions count: ${originalCount} → ${track.regions.length}`);
+						console.log('Current regions:', JSON.stringify(track.regions));
+					} catch (mergeErr) {
+						console.error('Error merging regions:', mergeErr);
+						track.regions = regionsBackup;
+						track.regions.push(newRegion);
+						console.log('Used fallback: appended region without merging');
+					}
+					console.log(`Saving ${track.regions.length} regions to database`);
+					await updateTrack(track);
+					chosen = findContainingRegion(track.regions, sel.start, sel.end);
+					if (chosen) {
+						state.selection = { start: chosen.start, end: chosen.end };
+					}
+					// Reset drag flags so we don't double-commit from window mouseup
+					dragMoved = false;
+					isDragging = false;
+					// Apply edits immediately to current playback
+					refreshPlaybackForRegions();
+					// Redraw canvas
+					drawTrackWaveform(track, canvas);
+					return true;
+				} catch (err) {
+					console.error('Error committing selection:', err);
+					return false;
+				}
+			}
+
 			function handlePositions() {
 				const sel = state.selection;
 				if (!sel || sel.end <= sel.start) return null;
@@ -2139,7 +2593,7 @@ async function renderTrackManager(songId) {
 				}
 			});
 
-			// Use a specific mouseup handler for this canvas instead of window-level
+			// Use a specific mouseup handler for this canvas; will also mirror commit from window-level
 			canvas.addEventListener('mouseup', async (e) => {
 				console.log(`Mouseup on track ${track.id} at x=${e.offsetX}`);
 				try {
@@ -2161,84 +2615,27 @@ async function renderTrackManager(songId) {
 					
 					if (!isDragging) return;
 					console.log(`Finished drag selection from ${dragStartX} to ${e.offsetX}, moved: ${dragMoved}`);
-					const sel = state?.selection;
-					isDragging = false;
-					
-					if (dragMoved && sel && typeof sel.start === 'number' && 
-						typeof sel.end === 'number' && sel.end > sel.start) {
-						
-						try {
-							// Initialize regions array if missing
-							if (!Array.isArray(track.regions)) {
-								console.log(`Creating new regions array for track ${track.id}`);
-								track.regions = [];
-							}
-							
-							// Create a clean copy of the selection to add
-							const newRegion = { 
-								start: Number(sel.start), 
-								end: Number(sel.end) 
-							};
-							
-							// Log for debugging
-							console.log('Creating mute region:', newRegion);
-							
-							// Add to regions and merge overlapping ones
-							const originalCount = track.regions.length;
-							
-							// Save a backup in case of error
-							const regionsBackup = JSON.parse(JSON.stringify(track.regions));
-							
-							try {
-								track.regions = mergeRegions([...track.regions, newRegion]);
-								console.log(`Regions count: ${originalCount} → ${track.regions.length}`);
-								console.log('Current regions:', JSON.stringify(track.regions));
-							} catch (mergeErr) {
-								console.error('Error merging regions:', mergeErr);
-								// Restore backup
-								track.regions = regionsBackup;
-								track.regions.push(newRegion);
-								console.log('Used fallback: simply appended region without merging');
-							}
-							
-							// Save to database
-							console.log(`Saving ${track.regions.length} regions to database`);
-							await updateTrack(track);
-							
-							// Update selection to the merged region if it got modified
-							const chosen = findContainingRegion(track.regions, sel.start, sel.end);
-							console.log('Found containing region after merge:', chosen);
-						} catch (err) {
-							console.error('Error creating region:', err);
-						}
-						if (chosen) {
-							state.selection = { 
-								start: chosen.start, 
-								end: chosen.end 
-							};
-						}
-						
-						// Apply new region immediately during playback
-						refreshPlaybackForRegions();
-					}
-					
-					// Always redraw
-					drawTrackWaveform(track, canvas);
+					// Try to commit; helper will handle save/refresh/redraw
+					await commitSelectionIfNeeded('canvas');
 				} catch (err) {
 					console.error('Error in mouseup handler:', err);
 				}
 			});
 			
-			// Maintain a window mouseup handler to clean up dragging state even if 
-			// the mouse is released outside the canvas
-			window.addEventListener('mouseup', () => {
-				if (isDragging) {
+			// Also handle mouseup anywhere: commit selection if needed even when pointer leaves canvas
+			window.addEventListener('mouseup', async () => {
+				try {
+					// If we were resizing, just clear state
+					if (resizeMode) {
+						resizeMode = null;
+						resizingRegionIndex = -1;
+					}
+					// Attempt commit if a drag happened; helper is idempotent and checks validity
+					await commitSelectionIfNeeded('window');
+				} finally {
+					// Always clear drag flags
 					isDragging = false;
 					dragMoved = false;
-				}
-				if (resizeMode) {
-					resizeMode = null;
-					resizingRegionIndex = -1;
 				}
 			});
 
@@ -2574,7 +2971,27 @@ function drawTrackWaveform(track, canvas) {
 	}
 	// Simple time ticks
 	// Debug output to check regions data
-	console.log(`Drawing waveform for track ${track.id}`, track.regions ? `with ${track.regions.length} regions` : 'without regions');
+	const regCount = Array.isArray(track.regions) ? track.regions.length : 0;
+	console.log(`Drawing waveform for track ${track.id}`, regCount ? `with ${regCount} regions` : 'without regions');
+	// If no regions present, do a one-shot DB refresh to verify persistence
+	if ((!Array.isArray(track.regions) || track.regions.length === 0) && !track._regionsFetchPending && track?.songId && track?.id) {
+		track._regionsFetchPending = true;
+		(async () => {
+			try {
+				const list = await getTracks(track.songId);
+				const latest = list?.find(t => t.id === track.id);
+				if (latest && Array.isArray(latest.regions) && latest.regions.length) {
+					console.log(`[Regions] Reloaded from DB for track ${track.id}: ${latest.regions.length} regions`);
+					track.regions = latest.regions.slice();
+					requestAnimationFrame(() => drawTrackWaveform(track, canvas));
+				}
+			} catch (e) {
+				console.warn('[Regions] DB reload failed', e);
+			} finally {
+				track._regionsFetchPending = false;
+			}
+		})();
+	}
 	
 	// Draw mute regions if present
 	if (Array.isArray(track.regions) && track.regions.length > 0) {
@@ -2886,44 +3303,50 @@ async function ensureSongLoaded(songId) {
 function scheduleMutesForTrack({ ctx, gate, regions, playheadAtAudibleSec, trackOffsetSec = 0, bufferDuration, startAtRaw, audibleAt, trackId }) {
 	try {
 		if (!ctx || !gate || !gate.gain) return;
-		const p0 = Math.max(0, (Number(playheadAtAudibleSec) || 0) + (Number(trackOffsetSec) || 0));
+		// Compute positions at audibleAt
+		const songAtAudible = Math.max(0, Number(playheadAtAudibleSec) || 0);
+		const trackOffset = Math.max(0, Number(trackOffsetSec) || 0);
+		const rawReadAt = (songAtAudible - trackOffset); // can be negative if track starts later
 		const bufDur = Math.max(0, Number(bufferDuration) || 0);
 		const now = ctx.currentTime;
 
-		// Baseline: start closed at raw start; open at audibleAt unless inside a region.
+		// Baseline: start closed at raw start; we'll open at the time the track actually becomes audible (audBase)
 		// Caller already set 0.0 at startAtRaw.
 		const regs = Array.isArray(regions) ? regions.filter(r => r && Number.isFinite(r.start) && Number.isFinite(r.end) && r.end > r.start) : [];
 
 		// Merge/sort defensively in case of overlaps or unsorted input
 		const sorted = regs.slice().sort((a,b) => a.start - b.start);
 
-		const inRegion = sorted.find(r => p0 >= r.start && p0 < r.end) || null;
-	    if (inRegion) {
-		    const relEnd = Math.max(0, Math.min(bufDur, inRegion.end) - p0); // seconds after audibleAt
-		    gate.gain.setValueAtTime(0.0, Math.max(startAtRaw, now));
-		    gate.gain.setValueAtTime(0.0, audibleAt);
-		    gate.gain.setValueAtTime(1.0, audibleAt + relEnd);
+		// Determine the scheduling base: when does the track become audible and what track time is that?
+		const audBase = songAtAudible < trackOffset ? (audibleAt + (trackOffset - songAtAudible)) : audibleAt;
+		const readBase = Math.max(0, rawReadAt); // track-local time at audBase
+		// Open baseline: if not inside a region at readBase, open at audBase; else keep closed until region end
+		const inRegion = sorted.find(r => readBase >= r.start && readBase < r.end) || null;
+		gate.gain.setValueAtTime(0.0, Math.max(startAtRaw, now));
+		if (inRegion) {
+			const relEnd = Math.max(0, Math.min(bufDur, inRegion.end) - readBase);
+			gate.gain.setValueAtTime(0.0, audBase);
+			gate.gain.setValueAtTime(1.0, audBase + relEnd);
 			if (window && window.STP_DEBUG_MUTES) {
-				console.debug('[MUTE:start-inside]', { trackId, p0, region: inRegion, relEnd, audibleAt, startAtRaw });
+				console.debug('[MUTE:start-inside]', { trackId, readBase, region: inRegion, relEnd, audBase, startAtRaw });
 			}
 		} else {
-			// Open exactly at audibleAt if not in a region (hard on)
-			gate.gain.setValueAtTime(1.0, audibleAt);
+			gate.gain.setValueAtTime(1.0, audBase);
 		}
 
-		// Intersect each region with the play window [p0, p0 + bufDur]
-		const winStart = p0;
-		const winEnd = p0 + bufDur;
+		// Intersect each region with the play window in track time [readBase, bufDur]
+		const winStart = readBase;
+		const winEnd = bufDur;
 		for (const r of sorted) {
 			const s = Math.max(r.start, winStart);
 			const e = Math.min(r.end, winEnd);
 			if (e <= s) continue;
-			// If region begins exactly at p0 and we already handled start-inside, skip to avoid conflicting ramps
-			if (inRegion && s === p0) continue;
-			const relS = s - p0; // >= 0
-			const relE = e - p0; // >= relS
-			const onT = audibleAt + relS;
-			const offT = audibleAt + relE;
+			// If region begins exactly at readBase and we already handled start-inside, skip to avoid conflicting ramps
+			if (inRegion && s === readBase) continue;
+			const relS = s - readBase; // >= 0
+			const relE = e - readBase; // >= relS
+			const onT = audBase + relS;
+			const offT = audBase + relE;
 			// Close at relS (hard off), re-open at relE (hard on)
 			gate.gain.setValueAtTime(0.0, onT);
 			gate.gain.setValueAtTime(1.0, offT);

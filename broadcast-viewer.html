@@ -150,37 +150,12 @@
   </style>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    // Add debug info banner
-    const debugBanner = document.createElement('div');
-    debugBanner.id = 'debugBanner';
-    debugBanner.style.position = 'fixed';
-    debugBanner.style.top = '0';
-    debugBanner.style.left = '0';
-    debugBanner.style.width = '100%';
-    debugBanner.style.background = 'rgba(0,0,0,0.8)';
-    debugBanner.style.color = '#fff';
-    debugBanner.style.padding = '10px';
-    debugBanner.style.fontSize = '12px';
-    debugBanner.style.fontFamily = 'monospace';
-    debugBanner.style.zIndex = '9999';
-    debugBanner.style.maxHeight = '100px';
-    debugBanner.style.overflow = 'auto';
-    debugBanner.innerHTML = 'Initializing broadcast viewer...';
-    
-    // Add to DOM once it's ready
-    document.addEventListener('DOMContentLoaded', () => {
-      document.body.appendChild(debugBanner);
-    });
-    
-    // Function to update debug info
+    // Debug helper: log to console only (no on-page banner)
     function updateDebugInfo(message) {
-      const banner = document.getElementById('debugBanner');
-      if (banner) {
-        const timestamp = new Date().toISOString().slice(11, 19);
-        banner.innerHTML += `<br>[${timestamp}] ${message}`;
-        banner.scrollTop = banner.scrollHeight;
-      }
-      console.log(`[DEBUG] ${message}`);
+      try {
+        const ts = new Date().toISOString().slice(11, 19);
+        console.log(`[Viewer ${ts}] ${message}`);
+      } catch (_) {}
     }
     
     let socket = null;
@@ -198,7 +173,7 @@
       waveformDataUrl: ''
     };
     
-    updateDebugInfo('Script initialized');
+  updateDebugInfo('Script initialized');
 
     function showErrorMessage(message) {
       // Clear main content

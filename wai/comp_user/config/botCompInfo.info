@@ -1,0 +1,6 @@
+
+    $waiCompuserInfo['ComponentPath']= ComponentPath;
+    $waiCompuserInfo['LoadSequence'] = LoadSequence;
+    $waiCompuserInfo['ComponentInfo'] = ComponentInfo;
+})();
+

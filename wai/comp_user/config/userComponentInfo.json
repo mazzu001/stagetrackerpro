@@ -1,0 +1,140 @@
+[
+  {
+    "CusOriDirInfo": {
+      "compType": "DHTML",
+      "iconPath": "",
+      "tagPath": "/docs/usersDir/jnk/UserComponents/myinput",
+      "srcData": [],
+      "iPath": [],
+      "waitTagPath": "/docs/Y[wai]/comp_wait/myinput",
+      "cPath": [],
+      "waitIconPath": ""
+    },
+    "reg": {
+      "regDate": "2022-11-09 16:37:10 (WED)",
+      "regUser": "jnk",
+      "isAdmin": "false"
+    },
+    "tag": "myinput",
+    "CusCompList": {
+      "text": "myinput",
+      "height": "20px",
+      "area": false,
+      "desc": "Basic Input Box",
+      "tag": "myinput",
+      "width": "100px",
+      "img": "comp-user-tag",
+      "border": false,
+      "type": "custom"
+    },
+    "CusCompInfo": [
+      {
+        "enabled": true,
+        "CSSs": [],
+        "tag": "myinput",
+        "args": {
+          "debug": "debug"
+        },
+        "path": "myinput/myinput.wjs",
+        "ver": "1.0"
+      }
+    ]
+  },
+  {
+    "CusOriDirInfo": {
+      "compType": "DHTML",
+      "iconPath": "/docs/usersDir/sampleUser/UserComponents/mycomp",
+      "tagPath": "/docs/usersDir/sampleUser/UserComponents/mycomp",
+      "srcData": [],
+      "iPath": [
+        {
+          "name": "myTag_img.png",
+          "path": "mycomp",
+          "fullPath": "UserComponents/mycomp"
+        }
+      ],
+      "waitTagPath": "/docs/Y[wai]/comp_wait/mycomp",
+      "cPath": [],
+      "waitIconPath": "/docs/Y[wai]/comp_wait/img"
+    },
+    "reg": {
+      "regDate": "2019-06-25 13:10:27 (TUE)",
+      "regUser": "sampleUser",
+      "isAdmin": null
+    },
+    "tag": "mycomp",
+    "CusCompList": {
+      "text": "mycomp",
+      "height": "30px",
+      "area": true,
+      "desc": "mycomp",
+      "tag": "mycomp",
+      "width": "100px",
+      "img": "myTag_img",
+      "border": true,
+      "type": "custom"
+    },
+    "CusCompInfo": [
+      {
+        "enabled": true,
+        "CSSs": [],
+        "tag": "mycomp",
+        "args": {
+          "debug": "debug"
+        },
+        "path": "mycomp/mycomp.wjs",
+        "ver": "1.0"
+      }
+    ]
+  },
+  {
+    "CusOriDirInfo": {
+      "compType": "DHTML",
+      "iconPath": "",
+      "tagPath": "/docs/usersDir/sampleUser/UserComponents/mybtn",
+      "srcData": [],
+      "iPath": [],
+      "waitTagPath": "/docs/Y[wai]/comp_wait/mybtn",
+      "cPath": [
+        {
+          "liPath": "UserComponents/mybtn",
+          "liType": "css",
+          "fullPath": "UserComponents/mybtn/mybtn.css",
+          "liFile": "mybtn.css"
+        }
+      ],
+      "waitIconPath": ""
+    },
+    "reg": {
+      "regDate": "2019-06-04 17:41:08 (TUE)",
+      "regUser": "sampleUser",
+      "isAdmin": null
+    },
+    "tag": "mybtn",
+    "CusCompList": {
+      "text": "mybtn",
+      "height": "40px",
+      "area": false,
+      "desc": "Image & Text Button",
+      "tag": "mybtn",
+      "width": "100px",
+      "img": "comp-user-tag",
+      "border": false,
+      "type": "custom"
+    },
+    "CusCompInfo": [
+      {
+        "enabled": true,
+        "CSSs": [
+          "mybtn/mybtn.css"
+        ],
+        "tag": "mybtn",
+        "args": {
+          "debug": "debug"
+        },
+        "path": "mybtn/mybtn.wjs",
+        "ver": "1.0"
+      }
+    ]
+  }
+]

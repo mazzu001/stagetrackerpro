@@ -1,20 +1,10 @@
 {
   "rules": {
+    ".read": false,
+    ".write": false,
     "rooms": {
-      "$room": {
-        "static": {
-          ".read": true,
-          ".write": true
-        },
-        "live": {
-          ".read": true,
-          ".write": true
-        },
-        "host": {
-          ".read": true,
-          ".write": true
-        }
-      }
+      ".read": true,
+      ".write": true
     }
   }
 }

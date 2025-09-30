@@ -1,0 +1,2569 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Chart</title>
+		<script type="text/javascript" src="/ywai/Y[wai]/wai.js?debug=5&jqUITheme=humanity"></script>
+
+	<script>
+
+	/***********************************************************************************************************
+	 *	초기 영역
+	 ***********************************************************************************************************/
+		/*
+		 * 전역변수
+		 */
+		var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+
+		var data = {
+
+			'barData' : {
+				labels : ["January","February","March","April","May","June","July"],	//X축 라벨(데이타 개수와 같아야함)
+				datasets : [
+					{
+						label : "My First data",
+						fillColor : "rgba(255, 0, 0, 0.25)",		//막대색상
+						strokeColor : "rgba(220, 0, 0, 0.2)",		//막대테두리색상
+						highlightFill: "rgba(220, 0, 0, 0.5)",		//마이스오버막대색상
+						highlightStroke: "rgba(220,0, 0, 0.5)",	//마이스오버테두리색상
+						data : [80,59,90,81,56,75,30]					//데이터 (라벨 개수와 같아야함)
+					},
+					{
+						label : "My Second data",
+						fillColor : "rgba(151,187,205,0.5)",
+						strokeColor : "rgba(151,187,205,0.8)",
+						highlightFill : "rgba(151,187,205,0.8)",
+						highlightStroke : "rgba(151,187,205,1)",
+						data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+					}
+				]
+			},
+
+			'lineData' : {
+				labels : ["January","February","March","April","May","June","July"],
+				datasets : [
+					{
+						label: "My First dataset",
+						fillColor : "rgba(220, 0, 0, 0.1)",				//채우기
+						strokeColor : "rgba(220,0,0,0.3)",				//선색
+						pointColor : "rgba(220,0,0,0.5)",				//점색
+						pointStrokeColor : "#fff",						//점테두리색
+						pointHighlightFill : "#fff",						//마우스오버점색
+						pointHighlightStroke : "rgba(220,0,0,0.5)",	//마우스오버점테두리색
+						data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+					},
+					{
+						label: "My Second dataset",
+						fillColor : "rgba(151,187,205,0.2)",
+						strokeColor : "rgba(151,187,205,1)",
+						pointColor : "rgba(151,187,205,1)",
+						pointStrokeColor : "#fff",
+						pointHighlightFill : "#fff",
+						pointHighlightStroke : "rgba(151,187,205,1)",
+						data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+					}
+				]
+			},
+
+			'radarData' : {
+				labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+				datasets: [
+					{
+						label: "My First dataset",
+						fillColor: "rgba(220,220,220,0.2)",				//채우기
+						strokeColor: "rgba(220,220,220,1)",				//선색
+						pointColor: "rgba(220,220,220,1)",				//점색
+						pointStrokeColor: "#fff",						//점테두리색
+						pointHighlightFill: "#fff",						//마우스오버점색
+						pointHighlightStroke: "rgba(220,220,220,1)",	//마우스오버점테두리색
+						data: [65,59,90,81,56,55,40]
+					},
+					{
+						label: "My Second dataset",
+						fillColor: "rgba(151,187,205,0.2)",
+						strokeColor: "rgba(151,187,205,1)",
+						pointColor: "rgba(151,187,205,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(151,187,205,1)",
+						data: [28,48,40,19,96,27,100]
+					}
+				]
+			},
+
+			'polarAreaData' : [
+				{
+					value: 300,
+					color:"#F7464A",			//색상
+					highlight: "#FF5A5E",		//마우스오버색상
+					label: "Red"
+				},
+				{
+					value: 50,
+					color: "#46BFBD",
+					highlight: "#5AD3D1",
+					label: "Green"
+				},
+				{
+					value: 100,
+					color: "#FDB45C",
+					highlight: "#FFC870",
+					label: "Yellow"
+				},
+				{
+					value: 40,
+					color: "#949FB1",
+					highlight: "#A8B3C5",
+					label: "Grey"
+				},
+				{
+					value: 120,
+					color: "#4D5360",
+					highlight: "#616774",
+					label: "Dark Grey"
+				}
+
+			],
+
+			'pieData' : [
+				{
+					value: 300,
+					color:"#F7464A",			//색상
+					highlight: "#FF5A5E",		//마우스오버색상
+					label: "Red"
+				},
+				{
+					value: 50,
+					color: "#46BFBD",
+					highlight: "#5AD3D1",
+					label: "Green"
+				},
+				{
+					value: 100,
+					color: "#FDB45C",
+					highlight: "#FFC870",
+					label: "Yellow"
+				},
+				{
+					value: 40,
+					color: "#949FB1",
+					highlight: "#A8B3C5",
+					label: "Grey"
+				},
+				{
+					value: 120,
+					color: "#4D5360",
+					highlight: "#616774",
+					label: "Dark Grey"
+				}
+			],
+
+			'doughnutData' : [
+				{
+					value: 300,
+					color:"#F7464A",			//색상
+					highlight: "#FF5A5E",		//마우스오버색상
+					label: "Red"
+				},
+				{
+					value: 50,
+					color: "#46BFBD",
+					highlight: "#5AD3D1",
+					label: "Green"
+				},
+				{
+					value: 100,
+					color: "#FDB45C",
+					highlight: "#FFC870",
+					label: "Yellow"
+				},
+				{
+					value: 40,
+					color: "#949FB1",
+					highlight: "#A8B3C5",
+					label: "Grey"
+				},
+				{
+					value: 120,
+					color: "#4D5360",
+					highlight: "#616774",
+					label: "Dark Grey"
+				}
+			],
+
+			'barData2' : {
+				labels : ["January","February","March","April","May","June"],
+				datasets : [
+					{
+						label : "My First data2",
+						fillColor : "rgba(220,220,220,0.5)",
+						strokeColor : "rgba(220,220,220,0.8)",
+						highlightFill: "rgba(220,220,220,0.75)",
+						highlightStroke: "rgba(220,220,220,1)",
+						data : [80,59,90,81,56,75]
+					},
+					{
+						label : "My Second data2",
+						fillColor : "rgba(151,187,205,0.5)",
+						strokeColor : "rgba(151,187,205,0.8)",
+						highlightFill : "rgba(151,187,205,0.8)",
+						highlightStroke : "rgba(151,187,205,1)",
+						data : [80,59,90,81,56,75]
+					}
+				]
+			},
+
+			'lineData2' : {
+				labels : ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"],
+				datasets : [
+					{
+						label: "My First dataset",
+						fillColor : "rgba(220,220,220,0.5)",
+						strokeColor : "rgba(220,220,220,0.8)",
+						pointColor : "rgba(220,220,220,0.5)",
+						pointStrokeColor : "#fff",
+						pointHighlightFill : "#fff",
+						pointHighlightStroke : "rgba(220,220,220,0.5)",
+						data : [20,40,60,55,70,99,80,85,87,50,55,60]
+					},
+					{
+						label: "My Second dataset",
+						fillColor : "rgba(151,187,205,0.2)",
+						strokeColor : "rgba(151,187,205,1)",
+						pointColor : "rgba(151,187,205,1)",
+						pointStrokeColor : "#fff",
+						pointHighlightFill : "#fff",
+						pointHighlightStroke : "rgba(151,187,205,1)",
+						data : [60,40,85,55,70,30,40,45,87,50,55,87]
+					}
+				]
+			},
+
+			'radarData2' : {
+				labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+				datasets: [
+					{
+						label: "My First dataset",
+						fillColor : "rgba(220, 0, 0, 0.1)",
+						strokeColor : "rgba(220,0,0,0.3)",
+						pointColor : "rgba(220,0,0,0.5)",
+						pointStrokeColor : "#fff",
+						pointHighlightFill : "#fff",
+						pointHighlightStroke : "rgba(220,0,0,0.5)",
+						data: [28,48,90,80,96,90,20]
+					},
+					{
+						label: "My Second dataset",
+						fillColor: "rgba(151,187,205,0.2)",
+						strokeColor: "rgba(151,187,205,1)",
+						pointColor: "rgba(151,187,205,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(151,187,205,1)",
+						data: [100,70,50,60,25,50,40]
+					}
+				]
+			},
+
+			'polarAreaData2' : [
+				{
+					value: 200,
+					color:"#F7464A",			//색상
+					highlight: "#FF5A5E",		//마우스오버색상
+					label: "Red"
+				},
+				{
+					value: 250,
+					color: "#46BFBD",
+					highlight: "#5AD3D1",
+					label: "Green"
+				},
+				{
+					value: 100,
+					color: "#FDB45C",
+					highlight: "#FFC870",
+					label: "Yellow"
+				},
+				{
+					value: 40,
+					color: "#949FB1",
+					highlight: "#A8B3C5",
+					label: "Grey"
+				},
+				{
+					value: 120,
+					color: "#4D5360",
+					highlight: "#616774",
+					label: "Dark Grey"
+				}
+
+			],
+
+			'pieData2' : [
+				{
+					value: 10,
+					color:"#F7464A",			//색상
+					highlight: "#FF5A5E",		//마우스오버색상
+					label: "Red"
+				},
+				{
+					value: 250,
+					color: "#46BFBD",
+					highlight: "#5AD3D1",
+					label: "Green"
+				},
+				{
+					value: 100,
+					color: "#FDB45C",
+					highlight: "#FFC870",
+					label: "Yellow"
+				},
+				{
+					value: 150,
+					color: "#949FB1",
+					highlight: "#A8B3C5",
+					label: "Grey"
+				},
+				{
+					value: 50,
+					color: "#4D5360",
+					highlight: "#616774",
+					label: "Dark Grey"
+				}
+			],
+
+			'doughnutData2' : [
+				{
+					value: 1,
+					label: "One"
+				},
+				{
+					value: 2,
+					label: "Two"
+				},
+				{
+					value: 3,
+					label: "Three"
+				},
+				{
+					value: 4,
+					label: "Four"
+				},
+				{
+					value: 5,
+					label: "Five"
+				}
+
+			]
+
+		};
+
+		var option = {
+
+			/* 그 외 공통 OPTION */
+			/*
+			 // Boolean - If we want to override with a hard coded scale
+			 scaleOverride: false,
+
+			 // ** Required if scaleOverride is true **
+			 // Number - The number of steps in a hard coded scale
+			 scaleSteps: null,
+			 // Number - The value jump in the hard coded scale
+			 scaleStepWidth: null,
+			 // Number - The scale starting value
+			 scaleStartValue: null,
+
+			 // Boolean - Whether the scale should stick to integers, not floats even if drawing space is there
+			 scaleIntegersOnly: true,
+
+			 // String - Scale label font declaration for the scale label
+			 scaleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+			 // String - Scale label font weight style
+			 scaleFontStyle: "normal",
+
+			 // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+			 maintainAspectRatio: true,
+
+			 // Function - Determines whether to execute the customTooltips function instead of drawing the built in tooltips (See [Advanced - External Tooltips](#advanced-usage-custom-tooltips))
+			 customTooltips: false,
+
+			 // Array - Array of string names to attach tooltip events
+			 tooltipEvents: ["mousemove", "touchstart", "touchmove"],
+
+			 // String - Tooltip label font declaration for the scale label
+			 tooltipFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+			 // String - Tooltip font weight style
+			 tooltipFontStyle: "normal",
+
+			 // String - Tooltip title font declaration for the scale label
+			 tooltipTitleFontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+			 // String - Template string for single tooltips
+			 tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>",
+
+			 // Function - Will fire on animation progression.
+			 onAnimationProgress: function(){},
+
+			 // Function - Will fire on animation completion.
+			 onAnimationComplete: function(){}
+			 */
+
+			'barOption': {
+				/* 공통 OPTION */
+				responsive: true,		//브라우저에 맞춘 resizing
+
+				//ANIMATION
+				animation: true,						//효과
+				animationSteps: 60,					//효과속도
+				animationEasing: "easeOutQuart",	//효과종류
+
+				//SCALE (bar & line & radar & polar)
+				showScale: true,						//축척선
+				scaleLineColor: "rgba(0,0,0,.1)",	//축척선색상
+				scaleLineWidth: 1,					//축척선두께
+				scaleShowLabels: true,				//y선라벨
+				scaleLabel: "<%=value/100%>",		//축척단위
+				scaleBeginAtZero: false,				//y축0부터시작
+				scaleFontSize: 12,						//폰트크기
+				scaleFontColor: "#666",				//폰트색
+
+				//TOOLTIPS
+				showTooltips: true,							//마우스오버시 데이타정보표시
+				tooltipFillColor: "rgba(0,0,0,0.8)",		//배경색상
+				tooltipFontSize: 14,							//폰트크기
+				tooltipFontColor: "#fff",					//폰트색
+				tooltipTitleFontSize: 14,						//타이틀 폰트크기
+				tooltipTitleFontStyle: "bold",				//타이틀 폰트스타일
+				tooltipTitleFontColor: "#fff",				//타이틀 폰트색
+				tooltipYPadding: 6,							//안쪽Y 여백
+				tooltipXPadding: 6,							//안쪽X 여백
+				tooltipCornerRadius: 6,						//박스라운드
+				tooltipXOffset: 10,							//튤팁위치
+				multiTooltipTemplate: "<%= value/100 %>",	//데이터단위
+				/* 공통 OPTION */
+
+				//GRID (BAR & LINE)
+				scaleShowGridLines : true,					//가이드라인
+				scaleGridLineColor : "rgba(0,0,0,.05)",	//색상
+				scaleGridLineWidth : 1,						//두께
+				scaleShowHorizontalLines: true,				//Y가이드라인
+				scaleShowVerticalLines: true,				//X가이드라인
+
+				//BAR
+				barShowStroke : true,		//bar테두리
+				barStrokeWidth : 2,		//bar테두리두께
+				barValueSpacing : 5,		//bar끼리의 간견
+				barDatasetSpacing : 1	//데이타셋간격
+/* bar option ---------------------------------------------------------------------------------------------------------
+				//String - A legend template
+				//legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+ bar option ----------------------------------------------------------------------------------------------------------*/
+
+			},
+
+			'lineOption' : {
+				responsive: true,
+
+				bezierCurve : true,			//그래프곡선
+				bezierCurveTension : 0.4,		//곡선정도
+
+				//LINE & RADAR
+				pointDot : true,				//점
+				pointDotRadius : 4,			//점크기
+				datasetStrokeWidth :2,		//선두께
+				datasetFill : true			//채우기
+/* Line option ---------------------------------------------------------------------------------------------------------
+				 //Number - Pixel width of point dot stroke
+				 pointDotStrokeWidth : 1,
+
+				 //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+				 pointHitDetectionRadius : 20,
+
+				 //Boolean - Whether to show a stroke for datasets
+				 datasetStroke : true,
+
+				 //String - A legend template
+				 legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+ Line option ----------------------------------------------------------------------------------------------------------*/
+			},
+
+			'radarOption' : {
+				responsive: true,
+				scaleShowLabels : true,
+
+				//RADAR & POLAR
+				scaleShowLine : true,					//축척선
+
+				//ANGLE
+				angleShowLineOut : true,				//모서리선
+				angleLineColor : "rgba(0,0,0,.1)",	//색상
+				angleLineWidth : 1,					//두께
+				//POINT
+				pointLabelFontSize : 10,				//폰트크기
+				pointLabelFontColor : "#666"		//폰트색
+/* Radar option ----------------------------------------------------------------------------------------------------------
+				 //String - Point label font declaration
+				 pointLabelFontFamily : "'Arial'",
+
+				 //String - Point label font weight
+				 pointLabelFontStyle : "normal",
+
+				 //Boolean - Whether to show a dot for each point
+				 pointDot : true,
+
+				 //Number - Radius of each point dot in pixels
+				 pointDotRadius : 3,
+
+				 //Number - Pixel width of point dot stroke
+				 pointDotStrokeWidth : 1,
+
+				 //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+				 pointHitDetectionRadius : 20,
+
+				 //Boolean - Whether to show a stroke for datasets
+				 datasetStroke : true,
+
+				 //Number - Pixel width of dataset stroke
+				 datasetStrokeWidth : 2,
+
+				 //Boolean - Whether to fill the dataset with a colour
+				 datasetFill : true,
+
+				 //String - A legend template
+				 legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+ Radar option ------------------------------------------------------------------------------------------------------------*/
+			},
+
+			'polarAreaOption' : {
+				responsive: true,
+				animationEasing : "easeOutBounce",
+
+				//POLAR & PIE & DOUGHNUT
+				segmentShowStroke : true,		//데이타사이라인
+				segmentStrokeColor : "#fff",		//색상
+				segmentStrokeWidth : 2,			//두께
+				animateRotate : true,				//처음로딩효과
+				animateScale : false
+/* Polar area option ---------------------------------------------------------------------------------------------------
+				 //Boolean - Show a backdrop to the scale label
+				 scaleShowLabelBackdrop : true,
+
+				 //String - The colour of the label backdrop
+				 scaleBackdropColor : "rgba(255,255,255,0.75)",
+
+				 // Boolean - Whether the scale should begin at zero
+				 scaleBeginAtZero : true,
+
+				 //Number - The backdrop padding above & below the label in pixels
+				 scaleBackdropPaddingY : 2,
+
+				 //Number - The backdrop padding to the side of the label in pixels
+				 scaleBackdropPaddingX : 2,
+
+				 //Boolean - Show line for each value in the scale
+				 scaleShowLine : true,
+
+				 //String - A legend template
+				 legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+ Polar area option ----------------------------------------------------------------------------------------------------*/
+			},
+
+			'pieOption' : {
+				responsive: true,
+				animationEasing : "easeOutBounce"
+/* Pie option ----------------------------------------------------------------------------------------------------------
+				 //Boolean - Whether we should show a stroke on each segment
+				 segmentShowStroke : true,
+
+				 //String - The colour of each segment stroke
+				 segmentStrokeColor : "#fff",
+
+				 //Number - The width of each segment stroke
+				 segmentStrokeWidth : 2,
+
+				 //Boolean - Whether we animate the rotation of the Doughnut
+				 animateRotate : true,
+
+				 //Boolean - Whether we animate scaling the Doughnut from the centre
+				 animateScale : false,
+
+				 //String - A legend template
+				 legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+ Pie option -----------------------------------------------------------------------------------------------------------*/
+			},
+
+			'doughnutOption' : {
+				responsive: true,
+				animationEasing : "easeOutBounce",
+
+				percentageInnerCutout : 50,
+				animateScale : false
+/* doughnut option ----------------------------------------------------------------------------------------------------------
+				 //Boolean - Whether we should show a stroke on each segment
+				 segmentShowStroke : true,
+
+				 //String - The colour of each segment stroke
+				 segmentStrokeColor : "#fff",
+
+				 //Number - The width of each segment stroke
+				 segmentStrokeWidth : 2,
+
+				 //Number - Amount of animation steps
+				 animationSteps : 100,
+
+				 //Boolean - Whether we animate the rotation of the Doughnut
+				 animateRotate : true,
+
+				 //Boolean - Whether we animate scaling the Doughnut from the centre
+				 animateScale : false,
+
+				 //String - A legend template
+				 legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+ doughnut option -----------------------------------------------------------------------------------------------------------*/
+			},
+
+			'barOption2': {
+				responsive: true,
+				scaleShowGridLines : false	//가이드라인
+			},
+
+			'lineOption2' : {
+				responsive: true,
+				scaleShowGridLines : false,	//가이드라인
+				pointDot : false				//점
+			},
+
+			'radarOption2' : {
+				responsive: true,
+				scaleShowLine : false,					//축척선
+				pointLabelFontSize : 14				//폰트크기
+			},
+
+			'polarAreaOption2' : {
+				responsive: true,
+				scaleShowLine : false,
+				segmentStrokeColor : "#666"		//색상
+			},
+
+			'pieOption2' : {
+				responsive: true,
+				segmentStrokeColor : "#666"		//색상
+			},
+
+			'doughnutOption2' : {
+				responsive: true,
+				percentageInnerCutout : 80,
+				animateScale : true
+			}
+
+		};
+
+		/*
+		 * onload 함수
+		 */
+		function fnInit(){
+
+
+		}
+
+
+	/***********************************************************************************************************
+	 *	BAR 영역
+	 ***********************************************************************************************************/
+		/*
+		 * onClick
+		 */
+		function clickBar(obj){
+			console.log("★---- onClick event\n" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("< label :  " + obj.args.data[0].label + " >\ndatasetLabel : " + obj.args.data[0].datasetLabel + "\n"
+						+ "value : " + obj.args.data[0].value + "\ndatasetLabel : " + obj.args.data[1].datasetLabel + "\n"
+						+ "value : " + obj.args.data[1].value + "\n");
+			}
+		}
+
+		/*
+		 * getData
+		 * .getData();
+		 */
+		function bar_getData(){
+			var returnValue = bar.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].bars[0].value : '+returnValue[0].bars[0].value);
+			console.log('bar_getData : ' , returnValue );
+		}
+
+		/*
+		 * update
+		 * .update(value,datasets,bars);
+		 */
+		function bar_update(){
+			bar.update(100,0,2);
+			bar.update(30,1,2);
+		}
+
+		/*
+		 * addData
+		 * .addData(valuesArray, label);
+		 */
+		function bar_addData(){
+			bar.addData([40, 60], "August");
+		}
+
+		/*
+		 * removeData
+		 * .removeData();
+		 * The chart will now animate and remove the first bar
+		 */
+		function bar_removeData(){
+			bar.removeData();
+		}
+
+		/*
+		 * setData
+		 * .setData();
+		 */
+		function bar_setData(){
+			//bar.setData(data.barData2);
+//			bar.setData(data.barData2,option.barOption2);
+			bar.setData(data.barData2,option.barOption2);
+
+			/* 속성change */
+//			bar.data = data.barData2;
+//			bar.option = option.barOption2;
+
+			//TODO : 옵션 TEST
+//			bar.setOption("option.barOption2");
+
+
+
+
+			/******** 속성 TEST *********/
+//			bar.type ='line';
+//			bar.data = data.lineData2;
+//			bar.option = option.lineOption2;
+
+		}
+
+
+	/***********************************************************************************************************
+	 *	LINE 영역
+	 ***********************************************************************************************************/
+		/*
+		 * onClick
+		 */
+		function clickLine(obj){
+			console.log("★---- onClick event" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("< label :  " + obj.args.data[0].label + " >\ndatasetLabel : " + obj.args.data[0].datasetLabel + "\n"
+						+ "value : " + obj.args.data[0].value + "\ndatasetLabel : " + obj.args.data[1].datasetLabel + "\n"
+						+ "value : " + obj.args.data[1].value + "\n");
+			}
+		}
+
+		/*
+		 * getData
+		 * .getData();
+		 */
+		function line_getData(){
+			var returnValue = line.getData();
+
+//			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+//					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+//					'   returnValue[0].points[0].value : '+returnValue[0].points[0].value);
+			console.log('line_getData : ' , returnValue );
+		}
+
+		/*
+		 * update
+		 * .update(value,datasets,points);
+		 */
+		function line_update(){
+			line.update(100,0,3);
+			line.update(30,0,2);
+		}
+
+		/*
+		 * addData
+		 * .addData(valuesArray, label);
+		 */
+		function line_addData(){
+			line.addData([40, 60], "August");
+		}
+
+		/*
+		 * removeData
+		 * .removeData();
+		 * The chart will remove the first point and animate other points into place
+		 */
+		function line_removeData(){
+			line.clear();
+//			line.removeData();
+		}
+
+		/*
+		 * setData
+		 * .setData();
+		 */
+		function line_setData(){
+			//line.setData(data.lineData2);
+//			line.data(data.lineData2,option.lineOption2);
+			line.data = data.lineData2;
+		}
+
+
+	/***********************************************************************************************************
+	 *	RADAR 영역
+	 ***********************************************************************************************************/
+		/*
+		 * onClick
+		 */
+		function clickRadar(obj){
+			console.log("★---- onClick event" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("< label :  " + obj.args.data[0].label + " >\ndatasetLabel : " + obj.args.data[0].datasetLabel + "\n"
+						+ "value : " + obj.args.data[0].value + "\ndatasetLabel : " + obj.args.data[1].datasetLabel + "\n"
+						+ "value : " + obj.args.data[1].value + "\n");
+			}
+		}
+
+		/*
+		 * getData
+		 * .getData();
+		 */
+		function radar_getData(){
+			var returnValue = radar.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].points[0].value : '+returnValue[0].points[0].value);
+			console.log('radar_getData : ' , returnValue );
+		}
+
+		/*
+		 * update
+		 * .update(value,datasets,points);
+		 */
+		function radar_update(){
+			radar.update(100,0,1);
+		}
+
+		/*
+		 * addData
+		 * .addData(valuesArray, label);
+		 */
+		function radar_addData(){
+			radar.addData([40, 60],"August");
+		}
+
+		/*
+		 * removeData
+		 * .removeData();
+		 * Other points will now animate to their correct positions.
+		 */
+		function radar_removeData(){
+			radar.removeData();
+		}
+
+		/*
+		 * setData
+		 * .setData();
+		 */
+		function radar_setData(){
+			//line.setData(data.radarData2);
+			radar.setData(data.radarData2,option.radarOption2);
+		}
+
+
+	/***********************************************************************************************************
+	 *	POLAR AREA 영역
+	 ***********************************************************************************************************/
+		/*
+		 * onClick
+		 */
+		function clickPolar(obj){
+			console.log("★---- onClick event" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("label :  " + obj.args.data[0].label + "\nvalue : " + obj.args.data[0].value);
+			}
+		}
+
+		/*
+		 * getData
+		 * .getData();
+		 */
+		function polarArea_getData(){
+			var returnValue = polarArea.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].value : '+returnValue[0].value);
+			console.log('polarArea_getData : ' , returnValue );
+		}
+
+		/*
+		 * update
+		 * .update(value,segments);
+		 */
+		function polarArea_update(){
+			polarArea.update(250,1);
+		}
+
+		/*
+		 * addData
+		 * .addData(segmentData, index);
+		 */
+		function polarArea_addData(){
+			polarArea.addData({
+				value: 130,
+				color: "#B48EAD",
+				highlight: "#C69CBE",
+				label: "Purple"
+			},1);
+		}
+
+		/*
+		 * removeData
+		 * .removeData(index);
+		 * Other segments will update to fill the empty space left.
+		 */
+		function polarArea_removeData(){
+			polarArea.removeData(2);
+		}
+
+		/*
+		 * setData
+		 * .setData();
+		 */
+		function polarArea_setData(){
+			polarArea.setData(data.polarAreaData2);
+//			polarArea.setData(data.polarAreaData2,option.polarAreaOption2);
+		}
+
+
+	/***********************************************************************************************************
+	 *	PIE 영역
+	 ***********************************************************************************************************/
+		/*
+		 * onClick
+		 */
+		function clickPie(obj){
+			console.log("★---- onClick event" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("label :  " + obj.args.data[0].label + "\nvalue : " + obj.args.data[0].value);
+			}
+		}
+
+		/*
+		 * getData
+		 * .getData();
+		 */
+		function pie_getData(){
+			var returnValue = pie.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].value : '+returnValue[0].value);
+			console.log('pie_getData : ' , returnValue );
+		}
+
+		/*
+		 * update
+		 * .update(value,segments);
+		 */
+		function pie_update(){
+			pie.update(100,1);
+		}
+
+		/*
+		 * addData
+		 * .addData(segmentData, index);
+		 */
+		function pie_addData(){
+			pie.addData({
+				value: 130,
+				color: "#B48EAD",
+				highlight: "#C69CBE",
+				label: "Purple"
+			});
+		}
+
+		/*
+		 * removeData
+		 * .removeData(index);
+		 * Other segments will update to fill the empty space left.
+		 */
+		function pie_removeData(){
+			pie.removeData(2);
+//			pie.clear();
+		}
+
+		/*
+		 * setData
+		 * .setData();
+		 */
+		function pie_setData(){
+			//pie.setData(data.pieData2);
+			pie.setData(data.pieData2,option.pieOption2);
+		}
+
+
+	/***********************************************************************************************************
+	 *	DOUGHNUT 영역
+	 ***********************************************************************************************************/
+		/*
+		 * onClick
+		 */
+		function clickDoughnut(obj){
+			console.log("★---- onClick event" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("label :  " + obj.args.data[0].label + "\nvalue : " + obj.args.data[0].value);
+			}
+		}
+
+		/*
+		 * getData
+		 * .getData();
+		 */
+		function doughnut_getData(){
+			var returnValue = doughnut.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].value : '+returnValue[0].value);
+			console.log('doughnut_getData : ' , returnValue );
+		}
+
+		/*
+		 * update
+		 * .update(value,segments);
+		 */
+		function doughnut_update(){
+			doughnut.update(100,1);
+		}
+
+		/*
+		 * addData
+		 * .addData(segmentData, index);
+		 */
+		function doughnut_addData(){
+			doughnut.addData({
+				value: 130,
+				color: "#B48EAD",
+				highlight: "#C69CBE",
+				label: "Purple"
+			});
+		}
+
+		/*
+		 * removeData
+		 * .removeData(index);
+		 * Other segments will update to fill the empty space left.
+		 */
+		function doughnut_removeData(){
+			doughnut.removeData(2);
+		}
+
+		/*
+		 * setData
+		 * .setData();
+		 */
+		function doughnut_setData(){
+			//doughnut.setData(data.doughnutData2);
+			doughnut.setData(data.doughnutData2,option.doughnutOption2);
+		}
+
+
+	</script>
+
+	</head>
+
+
+	<body onload="fnInit();">
+
+		<div style="background-color:#F5EAEA"><hr><center><h2>Chart DEMO</h2></center><hr></div>
+
+		<br><!--------------------------------------------------------------------------------------------------bar-->
+
+		<div style="margin:20px"><h3>1. BAR</h3></div>
+		<div style="margin:20px">
+			method : <button onclick='bar_getData();'>getData</button>
+					<button onclick='bar_update();'>update</button>
+					<button onclick='bar_addData();'>addData</button>
+					<button onclick='bar_removeData();'>removeData</button>
+					<button onclick='bar_setData();'>setData</button>
+		</div>
+		<center>
+		<div style="width: 50%">
+			<chart id="bar" type="bar" style="height:450px;width:600px" onclick="clickBar(waiEvent);">
+				"data" : {
+					"labels" : ["January","February","March","April","May","June","July"],
+					"datasets" : [
+						{
+							"label" : "My First data",
+							"fillColor" : "rgba(255, 0, 0, 0.25)",
+							"strokeColor" : "rgba(220, 0, 0, 0.2)",
+							"highlightFill": "rgba(220, 0, 0, 0.5)",
+							"highlightStroke": "rgba(220,0, 0, 0.5)",
+							"data" : [80,59,90,81,56,75,30]
+						},
+						{
+							"label" : "My Second data",
+							"fillColor" : "rgba(151,187,205,0.5)",
+							"strokeColor" : "rgba(151,187,205,0.8)",
+							"highlightFill" : "rgba(151,187,205,0.8)",
+							"highlightStroke" : "rgba(151,187,205,1)",
+							"data" : [30,79,100,85,36,75,20]
+						}
+					]
+				}
+				,"option" : {
+					"responsive": true,
+					"animation": true,
+					"animationSteps": 60,
+					"animationEasing": "easeOutQuart",
+					"showScale": true,
+					"scaleLineColor": "rgba(0,0,0,.1)",
+					"scaleLineWidth": 1,
+					"scaleShowLabels": true,
+					"scaleLabel": "<%=value/100%>",
+					"scaleBeginAtZero": false,
+					"scaleFontSize": 12,
+					"scaleFontColor": "#666",
+					"showTooltips": true,
+					"tooltipFillColor": "rgba(0,0,0,0.8)",
+					"tooltipFontSize": 14,
+					"tooltipFontColor": "#fff",
+					"tooltipTitleFontSize": 14,
+					"tooltipTitleFontStyle": "bold",
+					"tooltipTitleFontColor": "#fff",
+					"tooltipYPadding": 6,
+					"tooltipXPadding": 6,
+					"tooltipCornerRadius": 6,
+					"tooltipXOffset": 10,
+					"multiTooltipTemplate": "<%= value/100 %>",
+					"scaleShowGridLines ": true,
+					"scaleGridLineColor ": "rgba(0,0,0,.05)",
+					"scaleGridLineWidth ": 1,
+					"scaleShowHorizontalLines": true,
+					"scaleShowVerticalLines": true,
+					"barShowStroke ": true,
+					"barStrokeWidth ": 2,
+					"barValueSpacing ": 5,
+					"barDatasetSpacing ": 1
+				}
+			</chart>
+
+			<!--<chart id="bar" type="bar" style="height:450px;width:600px"  data="-->
+			<!--labels : ['January','February','March','April','May','June','July'],	//X축 라벨(데이타 개수와 같아야함)-->
+			<!--datasets : [-->
+							<!--{-->
+							<!--label : 'My First data',-->
+							<!--fillColor : 'rgba(255, 0, 0, 0.25)',		//막대색상-->
+							<!--strokeColor : 'rgba(220, 0, 0, 0.2)',		//막대테두리색상-->
+							<!--highlightFill: 'rgba(220, 0, 0, 0.5)',		//마이스오버막대색상-->
+							<!--highlightStroke: 'rgba(220,0, 0, 0.5)',	//마이스오버테두리색상-->
+							<!--data : [80,59,90,81,56,75,30]					//데이터 (라벨 개수와 같아야함)-->
+							<!--},-->
+							<!--{-->
+							<!--label : 'My Second data',-->
+							<!--fillColor : 'rgba(151,187,205,0.5)',-->
+							<!--strokeColor : 'rgba(151,187,205,0.8)',-->
+							<!--highlightFill : 'rgba(151,187,205,0.8)',-->
+							<!--highlightStroke : 'rgba(151,187,205,1)',-->
+							<!--data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]-->
+							<!--}-->
+				<!--]-->
+			<!--"-->
+				   <!--option="responsive:true,animation:true" onclick="clickBar(waiEvent);"></chart>-->
+
+		</div>
+		<br>
+		</center>
+
+		<br>
+		<h3 style="margin:20px">Source Code</h3>
+
+		<div style="border:1px solid; margin:20px; background:#fafafa; width:900px ">
+			<a href='javascript:void(0)' onclick="this.innerHTML=(this.nextSibling.style.display=='none')?'close':'open';this.nextSibling.style.display=(this.nextSibling.style.display=='none')?'block':'none'";>open</a><div style='display:none'>
+			<pre>
+	/*=============================================================================================================
+	 * body source
+	 =============================================================================================================*/
+
+	'<'chart
+		id="bar"
+		type="bar"
+		height="450"
+		width="600"
+		onclick="clickBar(waiEvent);" '>'
+		"data" : {
+			"labels" : ["January","February","March","April","May","June","July"],
+			"datasets" : [
+				{
+					"label" : "My First data",
+					"fillColor" : "rgba(255, 0, 0, 0.25)",
+					"strokeColor" : "rgba(220, 0, 0, 0.2)",
+					"highlightFill": "rgba(220, 0, 0, 0.5)",
+					"highlightStroke": "rgba(220,0, 0, 0.5)",
+					"data" : [80,59,90,81,56,75,30]
+				},
+				{
+					"label" : "My Second data",
+					"fillColor" : "rgba(151,187,205,0.5)",
+					"strokeColor" : "rgba(151,187,205,0.8)",
+					"highlightFill" : "rgba(151,187,205,0.8)",
+					"highlightStroke" : "rgba(151,187,205,1)",
+					"data" : [30,79,100,85,36,75,20]
+				}
+			]
+		}
+		,"option" : {
+			"responsive": true,
+			"animation": true,
+			"animationSteps": 60,
+			"animationEasing": "easeOutQuart",
+			"showScale": true,
+			"scaleLineColor": "rgba(0,0,0,.1)",
+			"scaleLineWidth": 1,
+			"scaleShowLabels": true,
+			"scaleLabel": "<%=value/100%>",
+			"scaleBeginAtZero": false,
+			"scaleFontSize": 12,
+			"scaleFontColor": "#666",
+			"showTooltips": true,
+			"tooltipFillColor": "rgba(0,0,0,0.8)",
+			"tooltipFontSize": 14,
+			"tooltipFontColor": "#fff",
+			"tooltipTitleFontSize": 14,
+			"tooltipTitleFontStyle": "bold",
+			"tooltipTitleFontColor": "#fff",
+			"tooltipYPadding": 6,
+			"tooltipXPadding": 6,
+			"tooltipCornerRadius": 6,
+			"tooltipXOffset": 10,
+			"multiTooltipTemplate": "<%= value/100 %>",
+			"scaleShowGridLines ": true,
+			"scaleGridLineColor ": "rgba(0,0,0,.05)",
+			"scaleGridLineWidth ": 1,
+			"scaleShowHorizontalLines": true,
+			"scaleShowVerticalLines": true,
+			"barShowStroke ": true,
+			"barStrokeWidth ": 2,
+			"barValueSpacing ": 5,
+			"barDatasetSpacing ": 1
+		}
+	'<'/chart'>'
+
+
+	/*=============================================================================================================
+	 * data & option source
+	 =============================================================================================================*/
+
+	1. data
+
+	'barData' : {
+		labels : ["January","February","March","April","May","June","July"],	//X축 라벨(데이타 개수와 같아야함)
+		datasets : [
+			{
+				label : "My First data",
+				fillColor : "rgba(255, 0, 0, 0.25)",		//막대색상
+				strokeColor : "rgba(220, 0, 0, 0.2)",		//막대테두리색상
+				highlightFill: "rgba(220, 0, 0, 0.5)",		//마이스오버막대색상
+				highlightStroke: "rgba(220,0, 0, 0.5)",		//마이스오버테두리색상
+				data : [80,59,90,81,56,75,30]			//데이터 (라벨 개수와 같아야함)
+			},
+			{
+				label : "My Second data",
+				fillColor : "rgba(151,187,205,0.5)",
+				strokeColor : "rgba(151,187,205,0.8)",
+				highlightFill : "rgba(151,187,205,0.8)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+						randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+			}
+		]
+	},
+
+	2. option
+
+	'barOption': {
+		/* 공통 OPTION */
+		responsive: true,	//브라우저에 맞춘 resizing
+
+		//ANIMATION
+		animation: true,			//효과
+		animationSteps: 60,			//효과속도
+		animationEasing: "easeOutQuart",	//효과종류
+
+		//SCALE (bar & line & radar & polar)
+		showScale: true,			//축척선
+		scaleLineColor: "rgba(0,0,0,.1)",	//축척선색상
+		scaleLineWidth: 1,			//축척선두께
+		scaleShowLabels: true,			//y선라벨
+		scaleLabel: "<%=value/100%>",		//축척단위
+		scaleBeginAtZero: false,		//y축0부터시작
+		scaleFontSize: 12,			//폰트크기
+		scaleFontColor: "#666",			//폰트색
+
+		//TOOLTIPS
+		showTooltips: true,				//마우스오버시 데이타정보표시
+		tooltipFillColor: "rgba(0,0,0,0.8)",		//배경색상
+		tooltipFontSize: 14,				//폰트크기
+		tooltipFontColor: "#fff",			//폰트색
+		tooltipTitleFontSize: 14,			//타이틀 폰트크기
+		tooltipTitleFontStyle: "bold",			//타이틀 폰트스타일
+		tooltipTitleFontColor: "#fff",			//타이틀 폰트색
+		tooltipYPadding: 6,				//안쪽Y 여백
+		tooltipXPadding: 6,				//안쪽X 여백
+		tooltipCornerRadius: 6,				//박스라운드
+		tooltipXOffset: 10,				//튤팁위치
+		multiTooltipTemplate: "<%= value/100 %>",	//데이터단위
+		/* 공통 OPTION */
+
+		/* GRID (BAR & LINE) */
+		scaleShowGridLines : true,		//가이드라인
+		scaleGridLineColor : "rgba(0,0,0,.05)",	//색상
+		scaleGridLineWidth : 1,			//두께
+		scaleShowHorizontalLines: true,		//Y가이드라인
+		scaleShowVerticalLines: true,		//X가이드라인
+		/* GRID (BAR & LINE) */
+
+		/* BAR */
+		barShowStroke : true,		//bar테두리
+		barStrokeWidth : 2,		//bar테두리두께
+		barValueSpacing : 5,		//bar끼리의 간견
+		barDatasetSpacing : 1,		//데이타셋간격
+		/* BAR */
+	},
+
+
+	/*=============================================================================================================
+	 * script source
+	 =============================================================================================================*/
+
+	1. onClick
+
+		function clickBar(obj){
+			console.log("★---- onClick event\n" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("< label :  " + obj.args.data[0].label + " >\ndatasetLabel : " + obj.args.data[0].datasetLabel + "\n"
+						+ "value : " + obj.args.data[0].value + "\ndatasetLabel : " + obj.args.data[1].datasetLabel + "\n"
+						+ "value : " + obj.args.data[1].value + "\n");
+			}
+		}
+
+	2. getData -> .getData();
+
+		function bar_getData(){
+			var returnValue = bar.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].bars[0].value : '+returnValue[0].bars[0].value);
+			console.log('bar_getData : ' , returnValue );
+		}
+
+	3. update -> .update(value,datasets,bars);
+
+		function bar_update(){
+			bar.update(100,0,2);
+			bar.update(30,1,2);
+		}
+
+	4. addData -> .addData(valuesArray, label);
+
+		function bar_addData(){
+			bar.addData([40, 60], "August");
+		}
+
+	5. removeData -> .removeData();
+	 * The chart will now animate and remove the first bar
+
+		function bar_removeData(){
+			bar.removeData();
+		}
+
+	6. setData -> .setData();
+
+		function bar_setData(){
+			//bar.setData(data.barData2);
+			bar.setData(data.barData2,option.barOption2);
+
+			//TODO : 옵션 TEST
+			//bar.setOption(option.barOption2);
+		}
+
+			</pre>
+		</div>
+		</div>
+
+		<br><hr ><br><!---------------------------------------------------------------------------------------line-->
+
+		<div style="margin:20px"><h3>2. LINE</h3></div>
+		<div style="margin:20px">
+			method : <button onclick='line_getData();'>getData</button>
+					<button onclick='line_update();'>update</button>
+					<button onclick='line_addData();'>addData</button>
+					<button onclick='line_removeData();'>removeData</button>
+					<button onclick='line_setData();'>setData</button>
+		</div>
+		<center>
+		<div style="width: 50%">
+			<chart id="line" type="line" style="height:450px;width:600px" onclick="clickLine(waiEvent);">
+				"data" : {
+					"labels" : ["January","February","March","April","May","June","July"],
+					"datasets" : [
+						{
+							"label":"My First dataset",
+							"fillColor":"rgba(220, 0, 0, 0.1)",
+							"strokeColor":"rgba(220,0,0,0.3)",
+							"pointColor":"rgba(220,0,0,0.5)",
+							"pointStrokeColor":"#fff",
+							"pointHighlightFill":"#fff",
+							"pointHighlightStroke":"rgba(220,0,0,0.5)",
+							"data": [30,79,100,85,36,75,20]
+						},
+						{
+							"label":"My Second dataset",
+							"fillColor":"rgba(151,187,205,0.2)",
+							"strokeColor":"rgba(151,187,205,1)",
+							"pointColor":"rgba(151,187,205,1)",
+							"pointStrokeColor":"#fff",
+							"pointHighlightFill":"#fff",
+							"pointHighlightStroke":"rgba(151,187,205,1)",
+							"data": [80,59,90,81,56,75,30]
+						}
+					]
+				}
+				,"option" : {
+					"responsive": true,
+					"bezierCurve": true,
+					"bezierCurveTension": 0.4,
+					"pointDot": true,
+					"pointDotRadius": 4,
+					"datasetStrokeWidth":2,
+					"datasetFill": true
+				}
+			</chart>
+		</div>
+		<br>
+		</center>
+
+		<br>
+		<h3 style="margin:20px">Source Code</h3>
+
+		<div style="border:1px solid; margin:20px; background:#fafafa; width:900px ">
+			<a href='javascript:void(0)' onclick="this.innerHTML=(this.nextSibling.style.display=='none')?'close':'open';this.nextSibling.style.display=(this.nextSibling.style.display=='none')?'block':'none'";>open</a><div style='display:none'>
+			<pre>
+	/*=============================================================================================================
+	 * body source
+	 =============================================================================================================*/
+
+	'<'chart
+		id="line"
+		type="line"
+		height="450"
+		width="600"
+		onclick="clickLine(waiEvent);" '>'
+			"data" : {
+				"labels" : ["January","February","March","April","May","June","July"],
+				"datasets" : [
+					{
+						"label":"My First dataset",
+						"fillColor":"rgba(220, 0, 0, 0.1)",
+						"strokeColor":"rgba(220,0,0,0.3)",
+						"pointColor":"rgba(220,0,0,0.5)",
+						"pointStrokeColor":"#fff",
+						"pointHighlightFill":"#fff",
+						"pointHighlightStroke":"rgba(220,0,0,0.5)",
+						"data": [30,79,100,85,36,75,20]
+					},
+					{
+						"label":"My Second dataset",
+						"fillColor":"rgba(151,187,205,0.2)",
+						"strokeColor":"rgba(151,187,205,1)",
+						"pointColor":"rgba(151,187,205,1)",
+						"pointStrokeColor":"#fff",
+						"pointHighlightFill":"#fff",
+						"pointHighlightStroke":"rgba(151,187,205,1)",
+						"data": [80,59,90,81,56,75,30]
+					}
+				]
+			}
+			,"option" : {
+				"responsive": true,
+				"bezierCurve": true,
+				"bezierCurveTension": 0.4,
+				"pointDot": true,
+				"pointDotRadius": 4,
+				"datasetStrokeWidth":2,
+				"datasetFill": true
+			}
+	'<'/chart'>'
+
+
+	/*=============================================================================================================
+	 * data & option source
+	 =============================================================================================================*/
+
+	1. data
+
+	'lineData' : {
+		labels : ["January","February","March","April","May","June","July"],
+		datasets : [
+			{
+				label: "My First dataset",
+				fillColor : "rgba(220, 0, 0, 0.1)",			//채우기
+				strokeColor : "rgba(220,0,0,0.3)",			//선색
+				pointColor : "rgba(220,0,0,0.5)",			//점색
+				pointStrokeColor : "#fff",				//점테두리색
+				pointHighlightFill : "#fff",				//마우스오버점색
+				pointHighlightStroke : "rgba(220,0,0,0.5)",		//마우스오버점테두리색
+				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+						randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+			},
+			{
+				label: "My Second dataset",
+				fillColor : "rgba(151,187,205,0.2)",
+				strokeColor : "rgba(151,187,205,1)",
+				pointColor : "rgba(151,187,205,1)",
+				pointStrokeColor : "#fff",
+				pointHighlightFill : "#fff",
+				pointHighlightStroke : "rgba(151,187,205,1)",
+				data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),
+						randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+			}
+		]
+	},
+
+	2. option (bar-chart 공통option 사용참고)
+
+	'lineOption' : {
+		responsive: true,
+
+		bezierCurve : true,		//그래프곡선
+		bezierCurveTension : 0.4,	//곡선정도
+
+		//LINE & RADAR
+		pointDot : true,		//점
+		pointDotRadius : 4,		//점크기
+		datasetStrokeWidth :2,		//선두께
+		datasetFill : true,		//채우기
+
+	/* Line option -------------------------------------------------------------------------------------
+		 //Number - Pixel width of point dot stroke
+		 pointDotStrokeWidth : 1,
+
+		 //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+		 pointHitDetectionRadius : 20,
+
+		 //Boolean - Whether to show a stroke for datasets
+		 datasetStroke : true,
+	Line option ---------------------------------------------------------------------------------------*/
+
+	},
+
+
+	/*=============================================================================================================
+	 * script source
+	 =============================================================================================================*/
+
+	1. onClick
+
+		function clickLine(obj){
+			console.log("★---- onClick event" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("< label :  " + obj.args.data[0].label + " >\ndatasetLabel : " + obj.args.data[0].datasetLabel + "\n"
+						+ "value : " + obj.args.data[0].value + "\ndatasetLabel : " + obj.args.data[1].datasetLabel + "\n"
+						+ "value : " + obj.args.data[1].value + "\n");
+			}
+		}
+
+	2. getData -> .getData();
+
+		function line_getData(){
+			var returnValue = line.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].points[0].value : '+returnValue[0].points[0].value);
+			console.log('line_getData : ' , returnValue );
+		}
+
+	3. update -> .update(value,datasets,bars);
+
+		function line_update(){
+			line.update(100,0,3);
+			line.update(30,0,2);
+		}
+
+	4. addData -> .addData(valuesArray, label);
+
+		function line_addData(){
+			line.addData([40, 60], "August");
+		}
+
+	5. removeData -> .removeData();
+	 * The chart will remove the first point and animate other points into place
+
+		function line_removeData(){
+			line.removeData();
+		}
+
+	6. setData -> .setData();
+
+		function line_setData(){
+			//line.setData(data.lineData2);
+			line.setData(data.lineData2,option.lineOption2);
+		}
+
+			</pre>
+		</div>
+		</div>
+
+		<br><hr ><br><!--------------------------------------------------------------------------------------radar-->
+
+		<div style="margin:20px"><h3>3. RADAR</h3></div>
+		<div style="margin:20px">
+			method : <button onclick='radar_getData();'>getData</button>
+					<button onclick='radar_update();'>update</button>
+					<button onclick='radar_addData();'>addData</button>
+					<button onclick='radar_removeData();'>removeData</button>
+					<button onclick='radar_setData();'>setData</button>
+		</div>
+		<center>
+		<div style="width: 50%">
+			<chart id="radar" type="radar" style="height:450px;width:600px" onclick="clickRadar(waiEvent);">
+				"data" : {
+					"labels": ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+					"datasets": [
+						{
+							"label": "My First dataset",
+							"fillColor": "rgba(220,220,220,0.2)",
+							"strokeColor": "rgba(220,220,220,1)",
+							"pointColor": "rgba(220,220,220,1)",
+							"pointStrokeColor": "#fff",
+							"pointHighlightFill": "#fff",
+							"pointHighlightStroke": "rgba(220,220,220,1)",
+							"data": [65,59,90,81,56,55,40]
+						},
+						{
+							"label": "My Second dataset",
+							"fillColor": "rgba(151,187,205,0.2)",
+							"strokeColor": "rgba(151,187,205,1)",
+							"pointColor": "rgba(151,187,205,1)",
+							"pointStrokeColor": "#fff",
+							"pointHighlightFill": "#fff",
+							"pointHighlightStroke": "rgba(151,187,205,1)",
+							"data": [28,48,40,19,96,27,100]
+						}
+					]
+				}
+				,"option" : {
+					"responsive": true,
+					"scaleShowLabels" : true,
+					"scaleShowLine" : true,
+					"angleShowLineOut" : true,
+					"angleLineColor" : "rgba(0,0,0,.1)",
+					"angleLineWidth" : 1,
+					"pointLabelFontSize" : 10,
+					"pointLabelFontColor" : "#666"
+				}
+			</chart>
+		</div>
+		<br>
+		</center>
+
+		<br>
+		<h3 style="margin:20px">Source Code</h3>
+
+		<div style="border:1px solid; margin:20px; background:#fafafa; width:900px ">
+			<a href='javascript:void(0)' onclick="this.innerHTML=(this.nextSibling.style.display=='none')?'close':'open';this.nextSibling.style.display=(this.nextSibling.style.display=='none')?'block':'none'";>open</a><div style='display:none'>
+			<pre>
+	/*=============================================================================================================
+	 * body source
+	 =============================================================================================================*/
+
+	'<'chart
+		id="radar"
+		type="radar"
+		height="450"
+		width="600"
+		data="data.radarData"	     <------
+		option="option.radarOption"  <------
+		onclick="clickRadar(waiEvent);"
+	'>'
+	'<'/chart'>'
+
+
+	/*=============================================================================================================
+	 * data & option source
+	 =============================================================================================================*/
+
+	1. data
+
+	'radarData' : {
+		labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+		datasets: [
+			{
+				label: "My First dataset",
+				fillColor: "rgba(220,220,220,0.2)",		//채우기
+				strokeColor: "rgba(220,220,220,1)",		//선색
+				pointColor: "rgba(220,220,220,1)",		//점색
+				pointStrokeColor: "#fff",			//점테두리색
+				pointHighlightFill: "#fff",			//마우스오버점색
+				pointHighlightStroke: "rgba(220,220,220,1)",	//마우스오버점테두리색
+				data: [65,59,90,81,56,55,40]
+			},
+			{
+				label: "My Second dataset",
+				fillColor: "rgba(151,187,205,0.2)",
+				strokeColor: "rgba(151,187,205,1)",
+				pointColor: "rgba(151,187,205,1)",
+				pointStrokeColor: "#fff",
+				pointHighlightFill: "#fff",
+				pointHighlightStroke: "rgba(151,187,205,1)",
+				data: [28,48,40,19,96,27,100]
+			}
+		]
+	},
+
+	2. option (bar-chart 공통option 사용참고)
+
+	'radarOption' : {
+		responsive: true,
+		scaleShowLabels : true,
+
+		// RADAR & POLAR
+		scaleShowLine : true,			//축척선
+
+		// ANGLE
+		angleShowLineOut : true,		//모서리선
+		angleLineColor : "rgba(0,0,0,.1)",	//색상
+		angleLineWidth : 1,			//두께
+
+		// POINT
+		pointLabelFontSize : 10,		//폰트크기
+		pointLabelFontColor : "#666",		//폰트색
+
+	/* Radar option -------------------------------------------------------------------------------------
+		 //String - Point label font declaration
+		 pointLabelFontFamily : "'Arial'",
+
+		 //String - Point label font weight
+		 pointLabelFontStyle : "normal",
+
+		 //Boolean - Whether to show a dot for each point
+		 pointDot : true,
+
+		 //Number - Radius of each point dot in pixels
+		 pointDotRadius : 3,
+
+		 //Number - Pixel width of point dot stroke
+		 pointDotStrokeWidth : 1,
+
+		 //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
+		 pointHitDetectionRadius : 20,
+
+		 //Boolean - Whether to show a stroke for datasets
+		 datasetStroke : true,
+
+		 //Number - Pixel width of dataset stroke
+		 datasetStrokeWidth : 2,
+
+		 //Boolean - Whether to fill the dataset with a colour
+		 datasetFill : true,
+	Radar option -----------------------------------------------------------------------------------------*/
+			},
+
+
+	/*=============================================================================================================
+	 * script source
+	 =============================================================================================================*/
+
+	1. onClick
+
+		function clickRadar(obj){
+			console.log("★---- onClick event" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("< label :  " + obj.args.data[0].label + " >\ndatasetLabel : " + obj.args.data[0].datasetLabel + "\n"
+						+ "value : " + obj.args.data[0].value + "\ndatasetLabel : " + obj.args.data[1].datasetLabel + "\n"
+						+ "value : " + obj.args.data[1].value + "\n");
+			}
+		}
+
+	2. getData -> .getData();
+
+		function radar_getData(){
+			var returnValue = radar.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].points[0].value : '+returnValue[0].points[0].value);
+			console.log('radar_getData : ' , returnValue );
+		}
+
+	3. update -> .update(value,datasets,bars);
+
+		function line_update(){
+			line.update(100,0,2);
+		}
+
+	4. addData -> .addData(valuesArray, label);
+
+		function line_addData(){
+			line.addData([40, 60], "August");
+		}
+
+	5. removeData -> .removeData();
+	 * The chart will remove the first point and animate other points into place
+
+		function line_removeData(){
+			line.removeData();
+		}
+
+	6. setData -> .setData();
+
+		function line_setData(){
+			//line.setData(data.lineData2);
+			line.setData(data.lineData2,option.lineOption2);
+		}
+
+			</pre>
+		</div>
+		</div>
+
+		<br><hr ><br><!----------------------------------------------------------------------------------polarArea-->
+
+		<div style="margin:20px"><h3>4. POLAR AREA</h3></div>
+		<div style="margin:20px">
+			method : <button onclick='polarArea_getData();'>getData</button>
+					<button onclick='polarArea_update();'>update</button>
+					<button onclick='polarArea_addData();'>addData</button>
+					<button onclick='polarArea_removeData();'>removeData</button>
+					<button onclick='polarArea_setData();'>setData</button>
+		</div>
+		<center>
+		<div style="width: 50%">
+			<chart id="polarArea" type="polarArea" style="height:450px;width:600px" onclick="clickPolar(waiEvent);">
+				"data" : [
+					{
+						"value": 300,
+						"color":"#F7464A",
+						"highlight": "#FF5A5E",
+						"label": "Red"
+					},
+					{
+						"value": 50,
+						"color": "#46BFBD",
+						"highlight": "#5AD3D1",
+						"label": "Green"
+					},
+					{
+						"value": 100,
+						"color": "#FDB45C",
+						"highlight": "#FFC870",
+						"label": "Yellow"
+					},
+					{
+						"value": 40,
+						"color": "#949FB1",
+						"highlight": "#A8B3C5",
+						"label": "Grey"
+					},
+					{
+						"value": 120,
+						"color": "#4D5360",
+						"highlight": "#616774",
+						"label": "Dark Grey"
+					}
+				]
+				,"option" : {
+					"responsive": true,
+					"animationEasing": "easeOutBounce",
+					"segmentShowStroke": true,
+					"segmentStrokeColor": "#fff",
+					"segmentStrokeWidth": 2,
+					"animateRotate": true,
+					"animateScale": false
+				}
+			</chart>
+		</div>
+		<br>
+		</center>
+
+		<br>
+		<h3 style="margin:20px">Source Code</h3>
+
+		<div style="border:1px solid; margin:20px; background:#fafafa; width:900px ">
+			<a href='javascript:void(0)' onclick="this.innerHTML=(this.nextSibling.style.display=='none')?'close':'open';this.nextSibling.style.display=(this.nextSibling.style.display=='none')?'block':'none'";>open</a><div style='display:none'>
+			<pre>
+	/*=============================================================================================================
+	 * body source
+	 =============================================================================================================*/
+
+	'<'chart
+		id="polarArea"
+		type="polarArea"
+		height="450"
+		width="600"
+		onclick="clickPolar(waiEvent);" '>'
+		"data" : [
+			{
+				"value": 300,
+				"color":"#F7464A",
+				"highlight": "#FF5A5E",
+				"label": "Red"
+			},
+			{
+				"value": 50,
+				"color": "#46BFBD",
+				"highlight": "#5AD3D1",
+				"label": "Green"
+			},
+			{
+				"value": 100,
+				"color": "#FDB45C",
+				"highlight": "#FFC870",
+				"label": "Yellow"
+			},
+			{
+				"value": 40,
+				"color": "#949FB1",
+				"highlight": "#A8B3C5",
+				"label": "Grey"
+			},
+			{
+				"value": 120,
+				"color": "#4D5360",
+				"highlight": "#616774",
+				"label": "Dark Grey"
+			}
+		]
+		,"option" : {
+			"responsive": true,
+			"animationEasing": "easeOutBounce",
+			"segmentShowStroke": true,
+			"segmentStrokeColor": "#fff",
+			"segmentStrokeWidth": 2,
+			"animateRotate": true,
+			"animateScale": false
+		}
+	'<'/chart'>'
+
+
+	/*=============================================================================================================
+	 * data & option source
+	 =============================================================================================================*/
+
+	1. data
+
+	'polarAreaData' : [
+		{
+			value: 300,
+			color:"#F7464A",	//색상
+			highlight: "#FF5A5E",	//마우스오버색상
+			label: "Red"
+		},
+		{
+			value: 50,
+			color: "#46BFBD",
+			highlight: "#5AD3D1",
+			label: "Green"
+		},
+		{
+			value: 100,
+			color: "#FDB45C",
+			highlight: "#FFC870",
+			label: "Yellow"
+		},
+		{
+			value: 40,
+			color: "#949FB1",
+			highlight: "#A8B3C5",
+			label: "Grey"
+		},
+		{
+			value: 120,
+			color: "#4D5360",
+			highlight: "#616774",
+			label: "Dark Grey"
+		}
+
+	],
+
+	2. option (bar-chart 공통option 사용참고)
+
+	'polarAreaOption' : {
+		responsive: true,
+		animationEasing : "easeOutBounce",
+
+		//POLAR & PIE & DOUGHNUT
+		segmentShowStroke : true,		//데이타사이라인
+		segmentStrokeColor : "#fff",		//색상
+		segmentStrokeWidth : 2,			//두께
+		animateRotate : true,			//처음로딩효과
+		animateScale : false,
+
+	/* Polar area option -------------------------------------------------------------------------------------
+		 //Boolean - Show a backdrop to the scale label
+		 scaleShowLabelBackdrop : true,
+
+		 //String - The colour of the label backdrop
+		 scaleBackdropColor : "rgba(255,255,255,0.75)",
+
+		 // Boolean - Whether the scale should begin at zero
+		 scaleBeginAtZero : true,
+
+		 //Number - The backdrop padding above & below the label in pixels
+		 scaleBackdropPaddingY : 2,
+
+		 //Number - The backdrop padding to the side of the label in pixels
+		 scaleBackdropPaddingX : 2,
+
+		 //Boolean - Show line for each value in the scale
+		 scaleShowLine : true,
+	Polar area option -----------------------------------------------------------------------------------------*/
+
+	},
+
+
+	/*=============================================================================================================
+	 * script source
+	 =============================================================================================================*/
+
+	1. onClick
+
+		function clickPolar(obj){
+			console.log("★---- onClick event" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("label :  " + obj.args.data[0].label + "\nvalue : " + obj.args.data[0].value);
+			}
+		}
+
+	2. getData -> .getData();
+
+		function polarArea_getData(){
+			var returnValue = polarArea.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].value : '+returnValue[0].value);
+			console.log('polarArea_getData : ' , returnValue );
+		}
+
+	3. update -> .update(value,segments);
+
+		function polarArea_update(){
+			polarArea.update(250,1);
+		}
+
+	4. addData -> .addData(segmentData, index);
+
+		function polarArea_addData(){
+			polarArea.addData({
+				value: 130,
+				color: "#B48EAD",
+				highlight: "#C69CBE",
+				label: "Purple"
+			},1);
+		}
+
+	5. removeData -> .removeData(index);
+	 * Other segments will update to fill the empty space left.
+
+		function polarArea_removeData(){
+			polarArea.removeData(2);
+		}
+
+	6. setData -> .setData();
+
+		function polarArea_setData(){
+			polarArea.setData(data.polarAreaData2);
+			//polarArea.setData(data.polarAreaData2,option.polarAreaOption2);
+		}
+
+			</pre>
+		</div>
+		</div>
+
+		<br><hr ><br><!----------------------------------------------------------------------------------------pie-->
+
+		<div style="margin:20px"><h3>5. PIE</h3></div>
+		<div style="margin:20px">
+			method : <button onclick='pie_getData();'>getData</button>
+					<button onclick='pie_update();'>update</button>
+					<button onclick='pie_addData();'>addData</button>
+					<button onclick='pie_removeData();'>removeData</button>
+					<button onclick='pie_setData();'>setData</button>
+		</div>
+		<center>
+		<div style="width: 50%">
+			<chart id="pie" type="pie" style="height:450px;width:600px" onclick="clickPie(waiEvent);">
+				"data" : [
+					{
+						"value": 300,
+						"color":"#F7464A",
+						"highlight": "#FF5A5E",
+						"label": "Red"
+					},
+					{
+						"value": 50,
+						"color": "#46BFBD",
+						"highlight": "#5AD3D1",
+						"label": "Green"
+					},
+					{
+						"value": 100,
+						"color": "#FDB45C",
+						"highlight": "#FFC870",
+						"label": "Yellow"
+					},
+					{
+						"value": 40,
+						"color": "#949FB1",
+						"highlight": "#A8B3C5",
+						"label": "Grey"
+					},
+					{
+						"value": 120,
+						"color": "#4D5360",
+						"highlight": "#616774",
+						"label": "Dark Grey"
+					}
+				]
+				,"option" : {
+					"responsive": true,
+					"animationEasing" : "easeOutBounce"
+				}
+			</chart>
+		</div>
+		<br>
+		</center>
+
+		<br>
+		<h3 style="margin:20px">Source Code</h3>
+
+		<div style="border:1px solid; margin:20px; background:#fafafa; width:900px ">
+			<a href='javascript:void(0)' onclick="this.innerHTML=(this.nextSibling.style.display=='none')?'close':'open';this.nextSibling.style.display=(this.nextSibling.style.display=='none')?'block':'none'";>open</a><div style='display:none'>
+			<pre>
+	/*=============================================================================================================
+	 * body source
+	 =============================================================================================================*/
+
+	'<'chart
+		id="pie"
+		type="pie"
+		height="450"
+		width="600"
+		onclick="clickPie(waiEvent);" '>'
+		"data" : [
+			{
+				"value": 300,
+				"color":"#F7464A",
+				"highlight": "#FF5A5E",
+				"label": "Red"
+			},
+			{
+				"value": 50,
+				"color": "#46BFBD",
+				"highlight": "#5AD3D1",
+				"label": "Green"
+			},
+			{
+				"value": 100,
+				"color": "#FDB45C",
+				"highlight": "#FFC870",
+				"label": "Yellow"
+			},
+			{
+				"value": 40,
+				"color": "#949FB1",
+				"highlight": "#A8B3C5",
+				"label": "Grey"
+			},
+			{
+				"value": 120,
+				"color": "#4D5360",
+				"highlight": "#616774",
+				"label": "Dark Grey"
+			}
+		]
+		,"option" : {
+			"responsive": true,
+			"animationEasing" : "easeOutBounce"
+		}
+	'<'/chart'>'
+
+
+	/*=============================================================================================================
+	 * data & option source
+	 =============================================================================================================*/
+
+	1. data
+
+	'pieData' : [
+		{
+			value: 300,
+			color:"#F7464A",	//색상
+			highlight: "#FF5A5E",	//마우스오버색상
+			label: "Red"
+		},
+		{
+			value: 50,
+			color: "#46BFBD",
+			highlight: "#5AD3D1",
+			label: "Green"
+		},
+		{
+			value: 100,
+			color: "#FDB45C",
+			highlight: "#FFC870",
+			label: "Yellow"
+		},
+		{
+			value: 40,
+			color: "#949FB1",
+			highlight: "#A8B3C5",
+			label: "Grey"
+		},
+		{
+			value: 120,
+			color: "#4D5360",
+			highlight: "#616774",
+			label: "Dark Grey"
+		}
+	],
+
+	2. option (bar-chart 공통option 사용참고)
+
+	'pieOption' : {
+		responsive: true,
+		animationEasing : "easeOutBounce",
+	/* Pie option --------------------------------------------------------------------------------------
+		 //Boolean - Whether we should show a stroke on each segment
+		 segmentShowStroke : true,
+
+		 //String - The colour of each segment stroke
+		 segmentStrokeColor : "#fff",
+
+		 //Number - The width of each segment stroke
+		 segmentStrokeWidth : 2,
+
+		 //Boolean - Whether we animate the rotation of the Doughnut
+		 animateRotate : true,
+
+		 //Boolean - Whether we animate scaling the Doughnut from the centre
+		 animateScale : false,
+	Pie option -------------------------------------------------------------------------------------------*/
+	},
+
+
+	/*=============================================================================================================
+	 * script source
+	 =============================================================================================================*/
+
+	1. onClick
+
+		function clickPie(obj){
+			console.log("★---- onClick event" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("label :  " + obj.args.data[0].label + "\nvalue : " + obj.args.data[0].value);
+			}
+		}
+
+	2. getData -> .getData();
+
+		function pie_getData(){
+			var returnValue = pie.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].value : '+returnValue[0].value);
+			console.log('pie_getData : ' , returnValue );
+		}
+
+	3. update -> .update(value,segments);
+
+		function pie_update(){
+			pie.update(100,1);
+		}
+
+	4. addData -> .addData(segmentData, index);
+
+		function pie_addData(){
+			pie.addData({
+				value: 130,
+				color: "#B48EAD",
+				highlight: "#C69CBE",
+				label: "Purple"
+			});
+		}
+
+	5. removeData -> .removeData(index);
+	 * Other segments will update to fill the empty space left.
+
+		function pie_removeData(){
+			pie.removeData(2);
+		}
+
+	6. setData -> .setData();
+
+		function pie_setData(){
+			//pie.setData(data.pieData2);
+			pie.setData(data.pieData2,option.pieOption2);
+		}
+
+			</pre>
+		</div>
+		</div>
+
+		<br><hr ><br><!-----------------------------------------------------------------------------------doughnut-->
+
+		<div style="margin:20px"><h3>6. DOUGHNUT</h3></div>
+		<div style="margin:20px">
+			method : <button onclick='doughnut_getData();'>getData</button>
+					<button onclick='doughnut_update();'>update</button>
+					<button onclick='doughnut_addData();'>addData</button>
+					<button onclick='doughnut_removeData();'>removeData</button>
+					<button onclick='doughnut_setData();'>setData</button>
+		</div>
+		<center>
+		<div style="width: 50%">
+			<chart id="doughnut" type="doughnut" style="height:450px;width:600px" onclick="clickDoughnut(waiEvent);">
+				"data" : [
+					{
+						"value": 300,
+						"color":"#F7464A",
+						"highlight": "#FF5A5E",
+						"label": "Red"
+					},
+					{
+						"value": 50,
+						"color": "#46BFBD",
+						"highlight": "#5AD3D1",
+						"label": "Green"
+					},
+					{
+						"value": 100,
+						"color": "#FDB45C",
+						"highlight": "#FFC870",
+						"label": "Yellow"
+					},
+					{
+						"value": 40,
+						"color": "#949FB1",
+						"highlight": "#A8B3C5",
+						"label": "Grey"
+					},
+					{
+						"value": 120,
+						"color": "#4D5360",
+						"highlight": "#616774",
+						"label": "Dark Grey"
+					}
+				]
+				,"option" : {
+					"responsive": true,
+					"animationEasing" : "easeOutBounce",
+					"percentageInnerCutout" : 50,
+					"animateScale" : false
+				}
+			</chart>
+		</div>
+		</center>
+
+		<br>
+		<h3 style="margin:20px">Source Code</h3>
+
+		<div style="border:1px solid; margin:20px; background:#fafafa; width:900px ">
+			<a href='javascript:void(0)' onclick="this.innerHTML=(this.nextSibling.style.display=='none')?'close':'open';this.nextSibling.style.display=(this.nextSibling.style.display=='none')?'block':'none'";>open</a><div style='display:none'>
+			<pre>
+	/*=============================================================================================================
+	 * body source
+	 =============================================================================================================*/
+
+	'<'chart
+		id="doughnut"
+		type="doughnut"
+		height="450"
+		width="600"
+		onclick="clickDoughnut(waiEvent);" '>'
+		"data" : [
+			{
+				"value": 300,
+				"color":"#F7464A",
+				"highlight": "#FF5A5E",
+				"label": "Red"
+			},
+			{
+				"value": 50,
+				"color": "#46BFBD",
+				"highlight": "#5AD3D1",
+				"label": "Green"
+			},
+			{
+				"value": 100,
+				"color": "#FDB45C",
+				"highlight": "#FFC870",
+				"label": "Yellow"
+			},
+			{
+				"value": 40,
+				"color": "#949FB1",
+				"highlight": "#A8B3C5",
+				"label": "Grey"
+			},
+			{
+				"value": 120,
+				"color": "#4D5360",
+				"highlight": "#616774",
+				"label": "Dark Grey"
+			}
+		]
+		,"option" : {
+			"responsive": true,
+			"animationEasing" : "easeOutBounce",
+			"percentageInnerCutout" : 50,
+			"animateScale" : false
+		}
+	'<'/chart'>'
+
+
+	/*=============================================================================================================
+	 * data & option source
+	 =============================================================================================================*/
+
+	1. data
+
+	'doughnutData' : [
+		{
+			value: 300,
+			color:"#F7464A",	//색상
+			highlight: "#FF5A5E",	//마우스오버색상
+			label: "Red"
+		},
+		{
+			value: 50,
+			color: "#46BFBD",
+			highlight: "#5AD3D1",
+			label: "Green"
+		},
+		{
+			value: 100,
+			color: "#FDB45C",
+			highlight: "#FFC870",
+			label: "Yellow"
+		},
+		{
+			value: 40,
+			color: "#949FB1",
+			highlight: "#A8B3C5",
+			label: "Grey"
+		},
+		{
+			value: 120,
+			color: "#4D5360",
+			highlight: "#616774",
+			label: "Dark Grey"
+		}
+	],
+
+	2. option (bar-chart 공통option 사용참고)
+
+	'doughnutOption' : {
+		responsive: true,
+		animationEasing : "easeOutBounce",
+
+		percentageInnerCutout : 50,
+		animateScale : false,
+
+	/* doughnut option ------------------------------------------------------------------------------
+		 //Boolean - Whether we should show a stroke on each segment
+		 segmentShowStroke : true,
+
+		 //String - The colour of each segment stroke
+		 segmentStrokeColor : "#fff",
+
+		 //Number - The width of each segment stroke
+		 segmentStrokeWidth : 2,
+
+		 //Number - Amount of animation steps
+		 animationSteps : 100,
+
+		 //Boolean - Whether we animate the rotation of the Doughnut
+		 animateRotate : true,
+
+		 //Boolean - Whether we animate scaling the Doughnut from the centre
+		 animateScale : false,
+	doughnut option ---------------------------------------------------------------------------------*/
+
+	},
+
+
+	/*=============================================================================================================
+	 * script source
+	 =============================================================================================================*/
+
+	1. onClick
+
+		function clickDoughnut(obj){
+			console.log("★---- onClick event" ,obj);
+			if( obj.args.data.length > 0 ) {
+				alert("label :  " + obj.args.data[0].label + "\nvalue : " + obj.args.data[0].value);
+			}
+		}
+
+	2. getData -> .getData();
+
+		function doughnut_getData(){
+			var returnValue = doughnut.getData();
+
+			alert('전체 데이타 배열을 가지고 옵니다.\n콘솔창에서 getData object를 확인하세요.\n\n' +
+					'예) return 값을 사용하여 원하는 value를 뽑아옵니다.\n' +
+					'   returnValue[0].value : '+returnValue[0].value);
+			console.log('doughnut_getData : ' , returnValue );
+		}
+
+	3. update -> .update(value,segments);
+
+		function doughnut_update(){
+			doughnut.update(100,1);
+		}
+
+	4. addData -> .addData(segmentData, index);
+
+		function doughnut_addData(){
+			doughnut.addData({
+				value: 130,
+				color: "#B48EAD",
+				highlight: "#C69CBE",
+				label: "Purple"
+			});
+		}
+
+	5. removeData -> .removeData(index);
+	 * Other segments will update to fill the empty space left.
+
+		function doughnut_removeData(){
+			doughnut.removeData(2);
+		}
+
+	6. setData -> .setData();
+
+		function doughnut_setData(){
+			//doughnut.setData(data.doughnutData2);
+			doughnut.setData(data.doughnutData2,option.doughnutOption2);
+		}
+
+			</pre>
+		</div>
+		</div>
+
+	</body>
+</html>

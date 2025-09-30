@@ -13,7 +13,9 @@ const firebaseConfig = {
 	projectId: "stagetrackerpro-a193d",
 	storageBucket: "stagetrackerpro-a193d.firebasestorage.app",
 	messagingSenderId: "885349041871",
-	appId: "1:885349041871:web:6e92489488fc66e86dd9ba"
+	appId: "1:885349041871:web:6e92489488fc66e86dd9ba",
+	// Explicit RTDB URL so getDatabase works in production
+	databaseURL: "https://stagetrackerpro-a193d-default-rtdb.firebaseio.com"
 };
 
 export const firebaseApp = initializeApp(firebaseConfig);
@@ -115,7 +117,9 @@ const Broadcast = {
 	room: null,
 	started: false,
 	lastSentMs: 0,
-	minIntervalMs: 1000, // push every 1 second
+	minIntervalMs: 500, // push every 0.5s for smoother viewer updates
+	// tuned for smoother viewer updates; 500ms provides better fidelity with low overhead
+	// (note: the value above is overwritten by this property assignment)
 	intervalId: 0,
 	waveformCache: new Map(), // songId -> dataURL
 	_lastSongKey: null,
@@ -156,6 +160,7 @@ const Broadcast = {
 				song: state.song,
 				songText: state.songText,
 				lyricsText: state.lyricsText,
+				lyrics: Array.isArray(state.lyrics) ? state.lyrics : [],
 				waveformDataUrl: state.waveformDataUrl || null,
 				songId: typeof window.selectedSongId !== 'undefined' ? window.selectedSongId : null,
 				updatedAt: Date.now()
@@ -171,6 +176,8 @@ const Broadcast = {
 				playing: !!state.playing,
 				activeIndex: (typeof state.activeIndex === 'number') ? state.activeIndex : -1,
 				duration: state.duration || 0,
+				// include lyrics opportunistically to allow viewers to refresh if needed
+				lyrics: Array.isArray(state.lyrics) ? state.lyrics : undefined,
 				updatedAt: Date.now()
 			});
 		} catch(e) { console.warn('[BCAST] Firebase live publish failed', e); }

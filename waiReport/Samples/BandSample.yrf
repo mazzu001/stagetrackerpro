@@ -1,0 +1,270 @@
+{
+   "waiReportForm": {
+      "version": "1.0.0",
+      "license": ""
+   },
+   "pageSetting": {
+      "paper": {
+         "type": "A4",
+         "width": 2320,
+         "height": 3308
+      },
+      "margin": {
+         "left": 80,
+         "right": 80,
+         "top": 100,
+         "bottom": 100
+      },
+      "orientation": 0
+   },
+   "styles": {},
+   "script": null,
+   "vbScript": "",
+   "layout": {
+      "reportHeader": {
+         "name": "ReportHeader",
+         "type": "reportHeader",
+         "height": 150,
+         "objects": [
+            {
+               "type": "label",
+               "name": "label1",
+               "left": 0,
+               "top": 0,
+               "width": 2320,
+               "height": 150,
+               "caption": "ReportHeader",
+               "borderLeftStyle": "1",
+               "borderTopStyle": "1",
+               "borderRightStyle": "1",
+               "borderBottomStyle": "1",
+               "borderLeftColor": "#ff1c1c",
+               "borderTopColor": "#ff1c1c",
+               "borderRightColor": "#ff1c1c",
+               "borderBottomColor": "#ff1c1c",
+               "style": "text-align:center; vertical-align:middle; "
+            }
+         ],
+         "dataSource": null,
+         "beforePrint": "",
+         "afterPrint": "",
+         "vbScript": "",
+         "script": {
+            "OnFormat": "",
+            "OnBeforePrint": "",
+            "OnAfterPrint": ""
+         }
+      },
+      "pages": [
+         {
+            "dataSource": null,
+            "bands": [
+               {
+                  "name": "PageHeader",
+                  "type": "pageHeader",
+                  "height": 200,
+                  "objects": [
+                     {
+                        "type": "label",
+                        "name": "label2",
+                        "left": 0,
+                        "top": 0,
+                        "width": 2320,
+                        "height": 200,
+                        "caption": "PageHeader",
+                        "borderLeftStyle": "1",
+                        "borderTopStyle": "1",
+                        "borderRightStyle": "1",
+                        "borderBottomStyle": "1",
+                        "borderLeftColor": "#2921ff",
+                        "borderTopColor": "#2921ff",
+                        "borderRightColor": "#2921ff",
+                        "borderBottomColor": "#2921ff",
+                        "style": "text-align:center; vertical-align:middle; "
+                     }
+                  ],
+                  "dataSource": null,
+                  "beforePrint": "",
+                  "afterPrint": "",
+                  "vbScript": "",
+                  "script": {
+                     "OnFormat": "",
+                     "OnBeforePrint": "",
+                     "OnAfterPrint": ""
+                  }
+               },
+               {
+                  "name": "GroupHeader1",
+                  "type": "groupHeader",
+                  "height": 200,
+                  "objects": [
+                     {
+                        "type": "label",
+                        "name": "label6",
+                        "left": 0,
+                        "top": 0,
+                        "width": 2320,
+                        "height": 200,
+                        "caption": "GroupHeader",
+                        "borderLeftStyle": "1",
+                        "borderTopStyle": "1",
+                        "borderRightStyle": "1",
+                        "borderBottomStyle": "1",
+                        "borderLeftColor": "#0f5900",
+                        "borderTopColor": "#0f5900",
+                        "borderRightColor": "#0f5900",
+                        "borderBottomColor": "#0f5900",
+                        "style": "text-align:center; vertical-align:middle; "
+                     }
+                  ],
+                  "dataSource": null,
+                  "beforePrint": "",
+                  "afterPrint": "",
+                  "vbScript": "",
+                  "script": {
+                     "OnFormat": "",
+                     "OnBeforePrint": "",
+                     "OnAfterPrint": ""
+                  }
+               },
+               {
+                  "name": "Detail",
+                  "type": "detail",
+                  "height": 300,
+                  "objects": [
+                     {
+                        "type": "label",
+                        "name": "label3",
+                        "left": 0,
+                        "top": 0,
+                        "width": 2320,
+                        "height": 300,
+                        "caption": "Detail",
+                        "borderLeftStyle": "1",
+                        "borderTopStyle": "1",
+                        "borderRightStyle": "1",
+                        "borderBottomStyle": "1",
+                        "borderLeftColor": "#ffa621",
+                        "borderTopColor": "#ffa621",
+                        "borderRightColor": "#ffa621",
+                        "borderBottomColor": "#ffa621",
+                        "style": "text-align:center; vertical-align:middle; "
+                     }
+                  ],
+                  "dataSource": null,
+                  "beforePrint": "",
+                  "afterPrint": "",
+                  "vbScript": "",
+                  "script": {
+                     "OnFormat": "",
+                     "OnBeforePrint": "",
+                     "OnAfterPrint": ""
+                  }
+               },
+               {
+                  "name": "GroupFooter1",
+                  "type": "groupFooter",
+                  "height": 200,
+                  "objects": [
+                     {
+                        "type": "label",
+                        "name": "label7",
+                        "left": 0,
+                        "top": 0,
+                        "width": 2320,
+                        "height": 200,
+                        "caption": "GroupFooter",
+                        "borderLeftStyle": "1",
+                        "borderTopStyle": "1",
+                        "borderRightStyle": "1",
+                        "borderBottomStyle": "1",
+                        "borderLeftColor": "#0f5900",
+                        "borderTopColor": "#0f5900",
+                        "borderRightColor": "#0f5900",
+                        "borderBottomColor": "#0f5900",
+                        "style": "text-align:center; vertical-align:middle; "
+                     }
+                  ],
+                  "dataSource": null,
+                  "afterPrint": "",
+                  "beforePrint": "",
+                  "vbScript": "",
+                  "script": {
+                     "OnFormat": "",
+                     "OnBeforePrint": "",
+                     "OnAfterPrint": ""
+                  }
+               },
+               {
+                  "name": "PageFooter",
+                  "type": "pageFooter",
+                  "height": 200,
+                  "objects": [
+                     {
+                        "type": "label",
+                        "name": "label4",
+                        "left": 0,
+                        "top": 0,
+                        "width": 2320,
+                        "height": 200,
+                        "caption": "PageFooter",
+                        "borderLeftStyle": "1",
+                        "borderTopStyle": "1",
+                        "borderRightStyle": "1",
+                        "borderBottomStyle": "1",
+                        "borderLeftColor": "#2921ff",
+                        "borderTopColor": "#2921ff",
+                        "borderRightColor": "#2921ff",
+                        "borderBottomColor": "#2921ff",
+                        "style": "text-align:center; vertical-align:middle; "
+                     }
+                  ],
+                  "dataSource": null,
+                  "beforePrint": "",
+                  "afterPrint": "",
+                  "vbScript": "",
+                  "script": {
+                     "OnFormat": "",
+                     "OnBeforePrint": "",
+                     "OnAfterPrint": ""
+                  }
+               }
+            ]
+         }
+      ],
+      "reportFooter": {
+         "name": "ReportFooter",
+         "type": "reportFooter",
+         "height": 150,
+         "objects": [
+            {
+               "type": "label",
+               "name": "label5",
+               "left": 0,
+               "top": 0,
+               "width": 2320,
+               "height": 150,
+               "caption": "ReportFooter",
+               "borderLeftStyle": "1",
+               "borderTopStyle": "1",
+               "borderRightStyle": "1",
+               "borderBottomStyle": "1",
+               "borderLeftColor": "#ff2424",
+               "borderTopColor": "#ff2424",
+               "borderRightColor": "#ff2424",
+               "borderBottomColor": "#ff2424",
+               "style": "text-align:center; vertical-align:middle; "
+            }
+         ],
+         "dataSource": null,
+         "beforePrint": "",
+         "afterPrint": "",
+         "vbScript": "",
+         "script": {
+            "OnFormat": "",
+            "OnBeforePrint": "",
+            "OnAfterPrint": ""
+         }
+      }
+   }
+}

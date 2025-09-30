@@ -13,13 +13,15 @@
   <link rel="icon" href="assets/images/favicon.ico">
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/images/favicon.png">
+  <link rel="manifest" href="/manifest.json">
 </head>
 <body>
   <header>
     <div class="app-branding" style="display:flex;align-items:center;gap:18px;">
-      <div style="position:relative;display:flex;align-items:center;justify-content:center;width:70px;height:70px;">
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;width:74px;height:74px;">
         <div class="logo-glow-bg"></div>
-  <img src="assets/images/logo.svg" alt="StageTracker Logo" class="app-logo" style="height:62px;position:absolute;top:4px;left:4px;">
+  <img src="assets/images/logo.svg" alt="StageTracker Logo" class="app-logo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;">
         <span class="app-name">StageTracker<br>Pro</span>
@@ -436,6 +438,23 @@
     // Devices button opens MIDI Manager
     const devBtn = document.getElementById('devicesBtn');
     if (devBtn) devBtn.addEventListener('click', () => { if (window.openMidiManager) window.openMidiManager(); });
+
+    // If navigated here with ?broadcast=RoomName, auto-start broadcast for this room
+    try {
+      const qp = new URLSearchParams(location.search);
+      const autoRoom = qp.get('broadcast');
+      if (autoRoom && window.STP_Broadcast && !window.STP_Broadcast.started) {
+        // small delay to ensure app.js initialized
+        setTimeout(() => {
+          try {
+            window.STP_Broadcast.start(autoRoom);
+            try { window.updateBroadcastStatusChip?.(); } catch(_) {}
+          } catch (e) {
+            console.warn('Auto-start broadcast failed', e);
+          }
+        }, 200);
+      }
+    } catch(_) {}
 
   </script>
 </body>

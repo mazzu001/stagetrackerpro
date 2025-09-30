@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Depreciation of fixed asset registry (FA14)</title>
+    <script type="text/javascript" src="/wai/wai.js"></script>
+    <link href="./Base.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/waiReport/waiReportAgent.js"></script>
+    <script type="text/javascript">
+        var wasSQLDSO = new $wai.classes.DSQLService(); //{"transcode":"FA14"}
+    </script>
+    <script id="bodyScript1" type="text/javascript">
+
+        var G_REC_CHK = false;
+        var G_REC_POS = 0;
+
+        var vDataF14 = [
+            {
+                "FOFA01_CD_NM"         :"Main Solution & Platform",
+                "FAB_BASE_FA_CD"       :"1234123",
+                "FOFA01_FA_NM"         :"Y[wai]",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"300000",
+                "FAB_BASE_DEPRI_AMT"   :"275000",
+                "FOFA01_CD_NM1"        :"GBS development platform",
+                "FAB_BASE_BS_DEPRI_JAN":"1234567",
+                "FAB_BASE_DISP_AMT"    :"5432123",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"36",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YP1710011233"
+            },
+            {
+                "FOFA01_CD_NM"         :"30020012 Sub Systems",
+                "FAB_BASE_FA_CD"       :"1234123",
+                "FOFA01_FA_NM"         :"Y[wai]",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"300000",
+                "FAB_BASE_DEPRI_AMT"   :"275000",
+                "FOFA01_CD_NM1"        :"GBS development platform",
+                "FAB_BASE_BS_DEPRI_JAN":"52435",
+                "FAB_BASE_DISP_AMT"    :"64423",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"12",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YP1710011233"
+            },
+            {
+                "FOFA01_CD_NM"         :"30020012 Sub Systems",
+                "FAB_BASE_FA_CD"       :"1234123",
+                "FOFA01_FA_NM"         :"Y[wai] 11111",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"300000",
+                "FAB_BASE_DEPRI_AMT"   :"275000",
+                "FOFA01_CD_NM1"        :"GBS development platform",
+                "FAB_BASE_BS_DEPRI_JAN":"52435",
+                "FAB_BASE_DISP_AMT"    :"64423",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"12",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YP1710011233"
+            },
+            {
+                "FOFA01_CD_NM"         :"30020012 Sub Systems",
+                "FAB_BASE_FA_CD"       :"1234123",
+                "FOFA01_FA_NM"         :"Y[wai] 2222222",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"300000",
+                "FAB_BASE_DEPRI_AMT"   :"275000",
+                "FOFA01_CD_NM1"        :"GBS development platform",
+                "FAB_BASE_BS_DEPRI_JAN":"52435",
+                "FAB_BASE_DISP_AMT"    :"64423",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"12",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YP1710011233"
+            },
+            {
+                "FOFA01_CD_NM"         :"30020012 Sub Systems",
+                "FAB_BASE_FA_CD"       :"1234123",
+                "FOFA01_FA_NM"         :"Y[wai] 333333333",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"300000",
+                "FAB_BASE_DEPRI_AMT"   :"275000",
+                "FOFA01_CD_NM1"        :"GBS development platform",
+                "FAB_BASE_BS_DEPRI_JAN":"52435",
+                "FAB_BASE_DISP_AMT"    :"64423",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"12",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YP1710011233"
+            },
+            {
+                "FOFA01_CD_NM"         :"Main Solution & Platform",
+                "FAB_BASE_FA_CD"       :"9876555",
+                "FOFA01_FA_NM"         :"Y[wai] Report",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"150000",
+                "FAB_BASE_DEPRI_AMT"   :"107800",
+                "FOFA01_CD_NM1"        :"GBS Report Solution",
+                "FAB_BASE_BS_DEPRI_JAN":"422442",
+                "FAB_BASE_DISP_AMT"    :"564631",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"36",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YR2103311552"
+            },
+            {
+                "FOFA01_CD_NM"         :"30020012 Sub Systems",
+                "FAB_BASE_FA_CD"       :"9876555",
+                "FOFA01_FA_NM"         :"Y[wai] Report",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"150000",
+                "FAB_BASE_DEPRI_AMT"   :"107800",
+                "FOFA01_CD_NM1"        :"GBS Report Solution",
+                "FAB_BASE_BS_DEPRI_JAN":"4253",
+                "FAB_BASE_DISP_AMT"    :"7563",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"24",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YR2103311552"
+            },
+            {
+                "FOFA01_CD_NM"         :"90010009 Backup Systems",
+                "FAB_BASE_FA_CD"       :"1234123",
+                "FOFA01_FA_NM"         :"Y[wai]",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"300000",
+                "FAB_BASE_DEPRI_AMT"   :"275000",
+                "FOFA01_CD_NM1"        :"GBS development platform",
+                "FAB_BASE_BS_DEPRI_JAN":"93834",
+                "FAB_BASE_DISP_AMT"    :"54333",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"12",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YP1710011233"
+            },
+            {
+                "FOFA01_CD_NM"         :"Main Solution & Platform",
+                "FAB_BASE_FA_CD"       :"2003091",
+                "FOFA01_FA_NM"         :"Winvader",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"100000",
+                "FAB_BASE_DEPRI_AMT"   :"75000",
+                "FOFA01_CD_NM1"        :"X-Internet Solution",
+                "FAB_BASE_BS_DEPRI_JAN":"1123",
+                "FAB_BASE_DISP_AMT"    :"950",
+                "FAB_BASE_AC_IL"       :"20030917",
+                "FAB_BASE_LEASE_TERM"  :"12",
+                "FAB_BASE_LST_DEPRI_IL":"20030917",
+                "FAB_BASE_USE_YY"      :"7",
+                "FAB_BASE_SUP_CNT"     :"2",
+                "FAB_BASE_REF_NO"      :"WV2103311552"
+            },
+            {
+                "FOFA01_CD_NM"         :"Main Solution & Platform",
+                "FAB_BASE_FA_CD"       :"2003092",
+                "FOFA01_FA_NM"         :"ReportMate",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"50000",
+                "FAB_BASE_DEPRI_AMT"   :"35000",
+                "FOFA01_CD_NM1"        :"Active Report Solution",
+                "FAB_BASE_BS_DEPRI_JAN":"422442",
+                "FAB_BASE_DISP_AMT"    :"564631",
+                "FAB_BASE_AC_IL"       :"20030917",
+                "FAB_BASE_LEASE_TERM"  :"12",
+                "FAB_BASE_LST_DEPRI_IL":"20030917",
+                "FAB_BASE_USE_YY"      :"10",
+                "FAB_BASE_SUP_CNT"     :"8",
+                "FAB_BASE_REF_NO"      :"RM1103311552"
+            },
+            {
+                "FOFA01_CD_NM"         :"30020012 Sub Systems",
+                "FAB_BASE_FA_CD"       :"1234123",
+                "FOFA01_FA_NM"         :"Y[wai]",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"300000",
+                "FAB_BASE_DEPRI_AMT"   :"275000",
+                "FOFA01_CD_NM1"        :"GBS development platform",
+                "FAB_BASE_BS_DEPRI_JAN":"5431",
+                "FAB_BASE_DISP_AMT"    :"1234",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"36",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YP1710011233"
+            },
+            {
+                "FOFA01_CD_NM"         :"90010009 Backup Systems",
+                "FAB_BASE_FA_CD"       :"9876555",
+                "FOFA01_FA_NM"         :"Y[wai] Report",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"150000",
+                "FAB_BASE_DEPRI_AMT"   :"107800",
+                "FOFA01_CD_NM1"        :"GBS Report Solution",
+                "FAB_BASE_BS_DEPRI_JAN":"23411",
+                "FAB_BASE_DISP_AMT"    :"43322",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"9",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YR1710011233"
+            },
+            {
+                "FOFA01_CD_NM"         :"30020012 Sub Systems",
+                "FAB_BASE_FA_CD"       :"9876555",
+                "FOFA01_FA_NM"         :"Y[wai] Report",
+                "FAB_BASE_CCY"         :"USD",
+                "FAB_BASE_BS_JAN"      :"150000",
+                "FAB_BASE_DEPRI_AMT"   :"107800",
+                "FOFA01_CD_NM1"        :"GBS Report Solution",
+                "FAB_BASE_BS_DEPRI_JAN":"5453",
+                "FAB_BASE_DISP_AMT"    :"3334",
+                "FAB_BASE_AC_IL"       :"20161016",
+                "FAB_BASE_LEASE_TERM"  :"24",
+                "FAB_BASE_LST_DEPRI_IL":"20191231",
+                "FAB_BASE_USE_YY"      :"5",
+                "FAB_BASE_SUP_CNT"     :"3",
+                "FAB_BASE_REF_NO"      :"YR2103311552"
+            },
+
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900001","FOFA01_FA_NM":"Test Value 1","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"-2000000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900002","FOFA01_FA_NM":"Test Value 2","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"2000000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(CNY)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900003","FOFA01_FA_NM":"Test Value 3","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"-10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(JPY)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900004","FOFA01_FA_NM":"Test Value 4","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900005","FOFA01_FA_NM":"Test Value 5","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"-10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"Y[wai] Report","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900006","FOFA01_FA_NM":"Test Value 6","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900007","FOFA01_FA_NM":"Test Value 7","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"-10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900008","FOFA01_FA_NM":"Test Value 8","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"Y[wai] Report","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900009","FOFA01_FA_NM":"Test Value 9","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900010","FOFA01_FA_NM":"Test Value 10","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900011","FOFA01_FA_NM":"Test Value 11","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900012","FOFA01_FA_NM":"Test Value 12","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900013","FOFA01_FA_NM":"Test Value A","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900014","FOFA01_FA_NM":"Test Value B","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900015","FOFA01_FA_NM":"Test Value C","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"Y[wai] Report","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900016","FOFA01_FA_NM":"Test Value D","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900017","FOFA01_FA_NM":"Test Value E","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"Y[wai] Report","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900018","FOFA01_FA_NM":"Test Value F","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900019","FOFA01_FA_NM":"Test Value G","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"Y[wai] Report","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900020","FOFA01_FA_NM":"Test Value H","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900021","FOFA01_FA_NM":"Test Value I","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"Y[wai] Report","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900022","FOFA01_FA_NM":"Test Value J","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900023","FOFA01_FA_NM":"Test Value K","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"Y[wai] Report","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900024","FOFA01_FA_NM":"Test Value L","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900025","FOFA01_FA_NM":"Test Value M","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"Y[wai] Report","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900026","FOFA01_FA_NM":"Test Value N","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"waiReport(KOR)","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+            {"FOFA01_CD_NM":"99990001 ETC","FAB_BASE_FA_CD":"900027","FOFA01_FA_NM":"Test Value O","FAB_BASE_CCY":"USD","FAB_BASE_BS_JAN":"10000","FAB_BASE_DEPRI_AMT":"5000","FOFA01_CD_NM1":"Y[wai] Report","FAB_BASE_BS_DEPRI_JAN":"5000","FAB_BASE_DISP_AMT":"2500","FAB_BASE_AC_IL":"19780204","FAB_BASE_LEASE_TERM":"24","FAB_BASE_LST_DEPRI_IL":"20150927","FAB_BASE_USE_YY":"1","FAB_BASE_SUP_CNT":"1","FAB_BASE_REF_NO":"TESTCODE01"},
+
+        ];
+
+        function setHead(RV) {
+            with (RV) {
+                AddData("ReportHeader", "FVOCINF_PRT_TYPE", "text", "123456789012314567890");
+                AddData("PageHeader", "FVOCINF_PRT_TYPE2", "text", "123456789012314567890");
+
+                AddData("ReportHeader", "FVOCINF_PRT_TYPE", "alignment", "2");
+
+                AddData("ReportHeader", "FVOCINF_TELL_NO", "text", '210');
+                AddData("ReportHeader", "FVOCINF_VOUCHER_NO", "text", '998');
+
+                AddData("ReportHeader", "FVOCINF_TRX_DT", "text", '2018-06-03');
+                AddData("ReportHeader", "FVOCINF_AC_IL", "text", '2018-06-04');
+
+                AddData("ReportHeader", "FVOCINF_REF_NO", "text", 'D08L73089P00018');
+                AddData("ReportHeader", "FVOCINF_TRX_NAME", "text", 'COMMISSION ON REMITTANCE');
+
+                AddData("PageHeader", "FVOCINF_TRX_PDT", "text", 'AD7');
+                AddData("ReportHeader", "FVOCINF_OTHER_REF", "text", 'D08L73089P00018');
+                AddData("ReportHeader", "FVOCINF_CIF_NO", "text", '91004769807');
+                AddData("ReportHeader", "FVOCINF_CIX_NAME", "text", 'Hyunwoo, Hwang');
+                AddData("ReportHeader", "FVOCINF_BENEF", "text", 'FVOCINF_BENEF');
+                AddData("ReportHeader", "FVOCINF_REMARK", "text", 'Corebank Technical Lab.');
+                AddData("PageFooter", "FVOCINF_OP_NO", "text", 'AD13');
+                AddData("PageFooter", "FVOCINF_OP_NAME", "text", 'AD14');
+                AddData("ReportFooter", "FVOCINF_FREE_TEXT", "text", 'AD15.free_text\nABC\n123412341\n234144443412\n\n12342141444444');
+            }
+        }
+        function curQuality() {
+            var rt = parseFloat("1.0");
+            return rt;
+        }
+
+        function ActionOnActive() {
+            parent.ActionLsnr.ActionManager = AMan;
+        }
+
+        function fInitProc(){
+
+            prmDSOEntry.recordset.addNew();
+            prmDSOInq.recordset.addNew();
+            prmDSOCan.recordset.addNew();
+            prmDSOGrid.recordset.addNew();
+
+            mskTOT_CNT.value = 0;
+//         mskSEL_CNT.value = 0;
+            dtpFIFA14_BASIC_IL.focus();
+
+        }
+
+        function fActExecute() {
+            if(parent.OPStatus == 0){
+                fActExecuteEntry();
+            }else if(parent.OPStatus == 1){
+                fActExecuteCancel();
+            }
+        }
+
+        function fActClear() {
+            if(parent.OPStatus == 0){
+                fActEntry();
+            }else if(parent.OPStatus == 1){
+                fActCancel();
+            }
+            init_exec = 0;
+        }
+
+        function fActExecuteEntry() {
+
+            var recOut;
+            var forCnt;
+            var rec_cnt;
+
+            forCnt  = 0;
+            /***
+             rec_cnt = prmDSOEntryArr.recordset.recordCount;
+
+             for (var i = 0; i < rec_cnt; i++) {
+             prmDSOEntryArr.recordset.absolutePosition = rec_cnt - i;
+             prmDSOEntryArr.recordset.delete();
+         }
+             ***/
+
+            gridInfo.EditPost();
+            fGridClickInfo();
+
+            prmDSOEntryArr.clear();
+
+            prmDSOEntry.recordset.fields("FIFA14_SERV_GB").value  = "4";        // Entry
+
+            prmDSOGrid.recordset.moveFirst;
+
+            recOut  = prmDSOGrid.recordset.Fields;
+            prmDSOGrid.recordset.moveFirst();
+
+            while (!prmDSOGrid.recordset.EOF) {
+                if( recOut("FIFA14_CHECK_GB").value == true ){
+                    prmDSOEntryArr.recordset.addNew();
+
+                    prmDSOEntryArr.recordset.fields("FIFA14_REF_NO").value  = recOut("FAB_BASE_REF_NO").value;
+
+                    prmDSOEntryArr.recordset.update();
+
+                    forCnt = forCnt + 1;
+                }
+                prmDSOGrid.recordset.moveNext();
+            }
+
+
+            if (forCnt  > 0) {
+
+                prmDSOEntry.recordset.update();
+                ivkEntry.call();
+
+                /* 20120831_Mifta */
+                /**
+                 if(fCheckGB('B') > 0)
+                 throw new Error("clear first!");
+                 if(fCheckGB('A') > 0)
+                 init_exec = 1;
+                 **/
+            }
+        }
+
+        function fActExecuteCancel(){
+
+
+            var recOut;
+            var forCnt;
+            var rec_cnt;
+
+            forCnt  = 0;
+            rec_cnt = 0;
+
+            gridInfo.EditPost();
+            fGridClickInfo();
+
+            rec_cnt = prmDSOCanArr.recordset.recordCount;
+
+            prmDSOCanArr.clear();
+
+            prmDSOCan.recordset.fields("FIFA14_BASIC_IL").value  = prmDSOEntry.recordset.fields("FIFA14_BASIC_IL").value;
+
+            prmDSOCan.recordset.fields("FIFA14_SERV_GB").value  = "5";        // Cancel
+
+            prmDSOGrid.recordset.moveFirst;
+
+            recOut  = prmDSOGrid.recordset.Fields;
+
+            for(var i = 0; i < prmDSOGrid.recordset.recordCount; i++) {
+
+                if(recOut("FIFA14_CHECK_GB").value == true) {
+                    prmDSOCanArr.recordset.addNew();
+
+                    prmDSOCanArr.recordset.fields("FIFA14_REF_NO").value  = recOut("FAB_BASE_REF_NO").value;
+
+                    prmDSOCanArr.recordset.update();
+
+                    forCnt++;
+                }
+
+                prmDSOGrid.recordset.moveNext;
+            }
+
+            if (forCnt  > 0) {
+
+                prmDSOCan.recordset.update();
+                ivkCancel.call();
+
+                /* 20120831_Mifta */
+                /**
+                 if(fCheckGB('B') > 0)
+                 throw new Error("clear first!");
+                 if(fCheckGB('A') > 0)
+                 init_exec = 1;
+                 **/
+            }
+        }
+
+        function fActEntry(){
+
+            prmDSOEntry.clear();
+            prmDSOEntryArr.clear();
+            prmDSOGrid.clear();
+
+            prmDSOEntry.recordset.addNew();
+
+            mskTOT_CNT.value = 0;
+            //        mskSEL_CNT.value = 0;
+            prmDSOEntry.recordset.fields("FIFA14_BASIC_IL").value =
+                LIB().Util.DateToLocal(GET_COMM_DATA("FXFIG_COM", "FXFIG_IBIL", 0), "YYYY/MM/DD","S");
+            prmDSOGrid.clear();
+            gridInfo.setRecordset(null);
+            dtpFIFA14_BASIC_IL.focus();
+
+        }
+
+        function fEntryOk(){
+//         alert("Entry - ì •ìƒì²˜ë¦¬ì—ˆìë‹ˆë‹¤..!!");
+        }
+
+        function fInqOk(){
+//         alert("Inquiry - ì •ìƒì²˜ë¦¬ì—ˆìë‹ˆë‹¤..!!");
+        }
+
+        function fActCancel(){
+
+            prmDSOEntry.clear();
+            prmDSOEntryArr.clear();
+            prmDSOGrid.clear();
+
+            prmDSOEntry.recordset.addNew();
+
+            mskTOT_CNT.value = 0;
+//         mskSEL_CNT.value = 0;
+            prmDSOEntry.recordset.fields("FIFA14_BASIC_IL").value =
+                LIB().Util.DateToLocal(GET_COMM_DATA("FXFIG_COM", "FXFIG_IBIL", 0), "YYYY/MM/DD","S");
+            prmDSOGrid.clear();
+            gridInfo.setRecordset(null);
+            dtpFIFA14_BASIC_IL.focus();
+
+        }
+
+        function fOnClick(eventObj){
+            var fStr="";
+
+            if(eventObj.id=="btnSearch"){
+                fPopUp(1);
+            }
+            else if(eventObj.id == "btnSimulation"){
+                fPopUp(2);
+            }
+            else if(eventObj.id == "btnInquiry"){
+                fPopUp(9);
+            }
+            else if(eventObj.id == "btnPrint"){
+                fPopUp(10);
+            }
+
+        }
+
+        function fPopUp(idx){
+            var rec_cnt;
+
+            if (idx == 1) {
+                if(dataCnt.value < 40)
+                {
+                    alert('Minimum Data Count :40');
+                    dataCnt.value = 40;
+                    return;
+                }
+                    
+
+                var rpt3data = JSON.parse( JSON.stringify(vDataF14) );
+
+                var last = JSON.parse( JSON.stringify( rpt3data[rpt3data.length-1]) );
+                for (var i=0;i<parseInt((dataCnt.value+'').trim())-40;i++) {
+                    last['FAB_BASE_FA_CD'] = (i+1);
+                    rpt3data.push(JSON.parse( JSON.stringify( last ) ) );
+                }
+                gridInfo.setData(rpt3data);
+                mskTOT_CNT.value = rpt3data.length;
+            }
+            else if (idx == 2) {
+                prmDSOInq.recordset.fields("FIFA14_BASIC_IL").value =
+                    prmDSOEntry.recordset.fields("FIFA14_BASIC_IL").value;
+                prmDSOInq.recordset.fields("FIFA14_SERV_GB").value      = "2";    // Simulation
+
+                ivkInq.call();
+
+                if (prmDSOGrid.recordset.recordCount == 0) {
+                    gridInfo.setRecordset(null);
+                    ShowInfoDialog("Document Format Info No Data..!!");
+                } else {
+                    gridInfo.setRecordset(prmDSOGrid.recordset);
+                    gridInfo.SelectRow(1);
+                    fGridClickInfo();
+                    mskTOT_CNT.value = prmDSOGrid.recordset.recordCount;
+//                 mskSEL_CNT.value = prmDSOGrid.recordset.recordCount;
+                }
+            }
+            else if (idx == 9) {
+                prmDSOInq.recordset.fields("FIFA14_BASIC_IL").value =
+                    prmDSOEntry.recordset.fields("FIFA14_BASIC_IL").value;
+
+                prmDSOInq.recordset.fields("FIFA14_SERV_GB").value  = "9";    // Search
+                ivkInq.call();
+
+                if (prmDSOGrid.recordset.recordCount == 0) {
+                    gridInfo.setRecordset(null);
+                    ShowInfoDialog("Document Format Info No Data..!!");
+                } else {
+                    gridInfo.setRecordset(prmDSOGrid.recordset);
+                    mskTOT_CNT.value = prmDSOGrid.recordset.recordCount;
+                }
+            }
+            else if (idx == 10) {
+                var Rpt2 = new $waiReport.classes.reportVendor();
+
+                Rpt2.ReportUrl = "/waiReport/Samples/FA14.yrf";
+                Rpt2.JSON = gridInfo.getData();
+                Rpt2.addBuffer();
+
+                Rpt2.quality = curQuality();
+                $waiReport.buffer.genServerPrev = true;
+                $waiReport.buffer.dataCompress  = true;
+                
+                $waiReport.buffer.Show();
+            }
+        }
+
+        function fGridClickInfo() {
+            //gridInfo.syncToDSO();
+        }
+
+        function gridInfoEditValueChange() {
+            //gridInfo.EditPost();
+            //fGridClickInfo();
+        }
+
+        function gridInfoColumnHeaderClick() {
+            var bPosition = 0;
+            var bBool = false;
+
+            if (event.Index == 0) {
+
+                if (prmDSOGrid.recordset.recordCount == 0) return;
+
+                gridInfo.EditPost();
+                gridInfo.syncToDSO();
+
+                bPosition = prmDSOGrid.recordset.absolutePosition;
+                prmDSOGrid.recordset.moveFirst();
+                bBool = prmDSOGrid.recordset.fields("FIFA14_CHECK_GB").value;
+
+                while (!prmDSOGrid.recordset.EOF) {
+                    prmDSOGrid.recordset.fields("FIFA14_CHECK_GB").value = !bBool;
+                    prmDSOGrid.recordset.moveNext();
+                }
+                gridInfo.setRecordset(prmDSOGrid.recordset);
+                gridInfo.SelectRow(bPosition);
+                fGridClickInfo();
+            }
+        }
+
+        function fRecChange()
+        {
+            if (G_REC_CHK) {
+                G_REC_CHK = false;
+            }
+        }
+
+
+    </script>
+    <script type="text/javascript">
+    </script>
+</head>
+<body onload="fInitProc()">
+<!-- Y[wai] : Generated : dataServices -->
+<DataServices>
+    <dataService id="ivkEntry" map="/tis/FAO1400.xml" service="FAO1400" dso="prmDSOEntry=SCR_INPUT;prmDSOEntryArr=SCR_INPUT01" onsuccess="fEntryOk();"></dataService>
+    <dataService id="ivkInq" map="/tis/FAO1401.xml" service="FAO1401" dso="prmDSOInq=SCR_INPUT;prmDSOGrid=SCR_OUTPUT" onsuccess="fInqOk();"></dataService>
+    <dataService id="ivkCancel" map="/tis/FAO1500.xml" service="FAO1500" dso="prmDSOCan=SCR_INPUT;prmDSOCanArr=SCR_INPUT01"></dataService>
+</DataServices>
+<!-- Y[wai] : Generated : dataServices -->
+<rmwvendor id="RepViewer">
+</rmwvendor>
+<!-- Action Manager -->
+<actman id="AMan" onactive="ActionOnActive()">
+    <action name="ActEntry" execute="fActEntry()">
+    </action>
+    <action name="ActCancel" execute="fActCancel()">
+    </action>
+    <action name="ActExecute" execute="fActExecute()">
+    </action>
+    <action name="ActCanCelJob" execute="fActClear()">
+    </action>
+</actman>
+<div class="topbarDiv" id="divTop" style="left:1px;top:1px;height:43px;">
+    <div class="topbarInblue">
+        <label class="regist" style="left:31px;width:100px;position:absolute;top:10px;height:15px;" id="lblFIFA14_BASIC_IL">
+            Basic Date
+        </label>
+        <dateedit id="dtpFIFA14_BASIC_IL" dsoName="prmDSOEntry" fldName="FIFA14_BASIC_IL" style="left:141px;width:100px;position:absolute;top:7px;height:20px;" labelid="lblFIFA14_BASIC_IL" value=""></dateedit>
+
+        <label class="regist" style="left:31px;width:100px;position:absolute;top:10px;left:250px;height:15px;" id="lblFIFA14_BASIC_IL">
+            Data Count
+        </label>
+        <input id="dataCnt" value="40" style="position:absolute;top:7px;height:20px; left:360px; width:50px;">
+
+        <input class="button" height="21" hspace="0" id="btnSearch" onclick="fOnClick(this);" onmouseout="this.src='./imgs/search.gif'" onmouseover="this.src='./imgs/searchover.gif'" src="./imgs/search.gif" type="image" vspace="0" width="80" style="left:493px;width:80px;position:absolute;top:8px;height:21px;">
+
+        <input class="button" height="21" hspace="0" id="btnSimulation" onclick="fOnClick(this);" onmouseout="this.src='./imgs/simulation.gif'" onmouseover="this.src='./imgs/simulationover.gif'" src="./imgs/simulation.gif" type="image" vspace="0" width="80" style="left:581px;width:80px;position:absolute;top:8px;height:21px;">
+
+        <input class="button" height="21" hspace="0" id="btnInquiry" onclick="fOnClick(this);" onmouseout="this.src='./imgs/inquiry.gif'" onmouseover="this.src='./imgs/inquiryover.gif'" src="./imgs/inquiry.gif" type="image" vspace="0" width="80" style="left:669px;width:80px;position:absolute;top:8px;height:21px;">
+
+        <input calss="button" id="btnPrint" onclick="fOnClick(this);" tabindex="-1" src="./imgs/print.gif" type="image" onmouseout="this.src='./imgs/print.gif'" onmouseover="this.src='./imgs/printover.gif'" style="left:757px;width:80px;position:absolute;top:8px;height:21px;">
+
+    </div>
+</div>
+<grid id="gridInfo" dsoName="prmDSOGrid" oneditvaluechanged="gridInfoEditValueChange()" oncolumnheaderclick="gridInfoColumnHeaderClick();" style="overflow-y:hidden;font-size:8pt;left:16px;overflow-x:hidden;width:876px;cursor:auto;color:#303030;font-family:arial, helvetica, sans-serif;position:absolute;top:46px;height:400px;border:#afaeaf 1px solid;" tabindex="-1" oncellclick="fGridClickInfo()">
+    "options":{
+    "fixColumn":0,
+    "columns" : [
+    {"text":"ALL","field":"FIFA14_CHECK_GB","alignment":"center","width":40,"sortable":"False","editable":"true","focusing":"true","editor":{"type":"checkbox","alignment":"center"},"style":"custSty1"}
+    ,{"text":"Code Group","field":"FOFA01_CD_NM","alignment":"center","width":100,"sortable":"true","editable":"false","focusing":"false","editor":{"type":"text","alignment":"center"},"style":"custSty1"}
+    ,{"text":"Code","field":"FAB_BASE_FA_CD","alignment":"center","width":70,"sortable":"False","editable":"false","focusing":"false","editor":{"type":"text","alignment":"center"},"style":"custSty1"}
+    ,{"text":"Code Name","field":"FOFA01_FA_NM","alignment":"center","width":200,"sortable":"False","editable":"false","focusing":"false","editor":{"type":"text","alignment":"left"},"style":"custSty1"}
+    ,{"text":"Ccy","field":"FAB_BASE_CCY","alignment":"center","width":50,"sortable":"False","editable":"false","focusing":"false","editor":{"type":"text","alignment":"center"},"style":"custSty1"}
+    ,{"text":"Purchase Amt","field":"FAB_BASE_FST_AMT","alignment":"center","width":120,"visible":false,"sortable":"False","editable":"false","focusing":"false","displayformat":",0.00","editor":{"type":"CalcEdit","alignment":"right"},"style":"custSty1"}
+    ,{"text":"B/S Amt","field":"FAB_BASE_BS_JAN","alignment":"center","width":120,"sortable":"False","editable":"false","focusing":"false","displayformat":",0.00","editor":{"type":"CalcEdit","alignment":"right"},"style":"custSty1"}
+    ,{"text":"This Month Amt","field":"FAB_BASE_DEPRI_AMT","alignment":"center","width":120,"sortable":"False","editable":"false","focusing":"false","displayformat":",0.00","editor":{"type":"CalcEdit","alignment":"right"},"style":"custSty1"}
+    ,{"text":"Last Year Amt","field":"FAB_BASE_LAST_DEPRI_AMT","alignment":"center","width":120,"visible":false,"sortable":"False","editable":"false","focusing":"false","displayformat":",0.00","editor":{"type":"CalcEdit","alignment":"right"},"style":"custSty1"}
+    ,{"text":"This Year Amt","field":"FAB_BASE_THIS_DEPRI_AMT","alignment":"center","width":120,"visible":false,"sortable":"False","editable":"false","focusing":"false","displayformat":",0.00","editor":{"type":"CalcEdit","alignment":"right"},"style":"custSty1"}
+    ,{"text":"Remain Amt","field":"FAB_BASE_DISP_AMT","alignment":"center","width":120,"sortable":"False","editable":"false","focusing":"false","displayformat":",0.00","editor":{"type":"CalcEdit","alignment":"right"},"style":"custSty1"}
+    ,{"text":"Pur-Date","field":"FAB_BASE_AC_IL","alignment":"center","width":80,"sortable":"False","editable":"false","focusing":"false","editor":{"type":"text","alignment":"center"},"style":"custSty1"}
+    ,{"text":"Lst Depri","field":"FAB_BASE_LST_DEPRI_IL","alignment":"center","width":80,"sortable":"False","editable":"false","focusing":"false","editor":{"type":"text","alignment":"center"},"style":"custSty1"}
+    ,{"text":"Yr","field":"FAB_BASE_USE_YY","alignment":"center","width":60,"sortable":"False","editable":"false","focusing":"false","editor":{"type":"text","alignment":"center"},"style":"custSty1"}
+    ,{"text":"Qty","field":"FAB_BASE_SUP_CNT","alignment":"center","width":60,"sortable":"False","editable":"false","focusing":"false","editor":{"type":"text","alignment":"center"},"style":"custSty1"}
+    ,{"text":"Ref No","field":"FAB_BASE_REF_NO","alignment":"center","width":120,"sortable":"False","editable":"false","focusing":"false","editor":{"type":"text","alignment":"center"},"style":"custSty1"}
+    ]
+    ,"style" : {
+    "custSty1" :{
+    "header" :{"color":"#889dba","font":{"weight":"bold","size":"11","family":"Tahoma","color":"white","text":"bold 11px Tahoma"}}
+    }
+    }
+    }
+</grid>
+<div class="infoDiv" style="position:absolute;top:450px;height:41px;">
+    <div class="infoIngray">
+        <div style="width:100%;position:relative;height:100%;">
+            <label class="regist" style="left:-20px;width:125px;position:absolute;top:8px;height:16px;" id="lblTOT_CNT">
+                Total Count
+            </label>
+            <edit id="mskTOT_CNT" type="MASK" class="readonly" mask="99999" height="0" width="0" style="left:111px;width:64px;position:absolute;top:5px;height:20px;" readonly labelid="lblTOT_CNT"></edit>
+        </div>
+    </div>
+</div>
+</body>
+</html>

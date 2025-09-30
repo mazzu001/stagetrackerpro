@@ -1,0 +1,712 @@
+/* ¾÷¹«È­¸é ±âº» ½ºÅ¸ÀÏ Á¤ÀÇ */
+
+   BODY            { scrollbar-3dlight-color:#b1b1b1;
+                     scrollbar-arrow-color:#6A696A;
+                     scrollbar-base-color:#BABABA;
+                     scrollbar-darkshadow-color:#FFFFFF;
+                     scrollbar-face-color:#ffffff;
+                     scrollbar-highlight-color:#FFFFF;
+                     scrollbar-track-color: #f0f0f0;
+                     scrollbar-shadow-color:#b1b1b1;
+                    }
+
+   TEXTAREA        { font-family:arial,curier,seoul,µ¸¿ò ;
+                     font-size: 9pt; }
+
+   SELECT          { font-family:arial,curier,seoul,µ¸¿ò ;
+                     font-size: 9pt;
+                     height:20px;
+                     margin-bottom: 1px ;}
+
+   INPUT.text      { font-family:arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt;
+                     height:20px;
+                     PADDING-TOP: 2px ;}
+
+ /* Readonly */
+   INPUT.readonly  { font-family:arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt;
+                     color: #000000;
+                     background-color:#c3dcef;
+                     height:20px;
+                     PADDING-TOP: 2px ;}
+
+ /* ÇÊ¼öÀÔ·Â Ç×¸ñ */
+   INPUT.default   { font-family:arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt;
+                     background-color:#FAF7CC;
+                     height:20px;
+                     PADDING-TOP: 2px ;}
+
+   INPUT           { font-family:arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt;
+                     height:20px;
+                     PADDING-TOP: 2px ;}
+
+  LABEL            { font-family: arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt ;
+                     color: #303030 ;
+                     VERTICAL-ALIGN: bottom;
+                     TEXT-ALIGN: right;
+                     height:18px;}
+
+  LABEL.left       { font-family: arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt ;
+                     color: #303030 ;
+                     VERTICAL-ALIGN: bottom;
+                     TEXT-ALIGN: left;
+                     height:18px;}
+
+  LABEL.titlecenter{ font-family: arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt ;
+                     color: #303030 ;
+                     TEXT-ALIGN: center  ;
+                     VERTICAL-ALIGN: middle;
+                     font-weight: normal;}
+
+  LABEL.blue       { font-family: arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt ;
+                     color: #2750F0 ;
+                     VERTICAL-ALIGN: bottom;
+                     TEXT-ALIGN: left;
+                     height:18px;}
+
+  LABEL.regist     { font-family: arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt ;
+                     color: #303030 ;
+                     VERTICAL-ALIGN: bottom;
+                     TEXT-ALIGN: right;
+                     height:18px;}
+
+  LABEL.search     { font-family: arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt ;
+                     color: #303030;
+                     VERTICAL-ALIGN: bottom;
+                     TEXT-ALIGN: right;
+                     height:18px;}
+
+  LABEL.Mtitle     { font-family: arial,curier,seoul,µ¸¿ò;
+                     font-weight: bold;
+                     font-size: 9pt ;
+                     color: #303030 ;
+                     TEXT-ALIGN: left  ;
+                     height:20px;
+                     LEFT: 15px;
+                     POSITION: absolute;
+                     margin-bottom:2px;
+                     PADDING-BOTTOM:2px;
+                     TOP: -1px; }
+                     
+  .CBLabel {         border:1px solid #B9B8B8;
+  	                 background-color:#C3DCF0
+  }
+
+
+  .title           { font-family: arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt ;
+                     color: #303030 ;
+                     background-color:#D9E0E4;
+                     BORDER-RIGHT: white 1px solid;
+                     BORDER-TOP: white 1px solid;
+                     BORDER-LEFT: white 1px solid;
+                     BORDER-BOTTOM: white 1px solid;
+                     TEXT-ALIGN: center  ;
+                     VERTICAL-ALIGN: middle;
+                     /*line-height: 90%; */
+                     font-weight: normal;}
+
+  .titlered        { font-family: arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt ;
+                     color: #303030 ;
+                     background-color:#EDE0E6;
+                     BORDER-RIGHT: white 1px solid;
+                     BORDER-TOP: white 1px solid;
+                     BORDER-LEFT: white 1px solid;
+                     BORDER-BOTTOM: white 1px solid;
+                     TEXT-ALIGN: center  ;
+                     VERTICAL-ALIGN: middle;
+                     /*line-height: 90%; */
+                     font-weight: normal;}
+
+  .tagTitle        { font-family:  arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt ;
+                     color: #303030 ;
+                     background-color:#D9E0E4;
+                     BORDER-RIGHT: white 1px solid;
+                     BORDER-TOP: white 1px solid;
+                     BORDER-LEFT: white 1px solid;
+                     BORDER-BOTTOM: white 1px solid;
+                     TEXT-ALIGN: left  ;
+                     VERTICAL-ALIGN: middle;
+                     /*line-height: 90%; */
+                     font-weight: normal;}
+
+  .title2          { font-family:  arial,curier,seoul,µ¸¿ò;
+                     font-size: 9pt ;
+                     color: #000000 ;
+                     background-color:#F0F4F7;
+                     BORDER-RIGHT: #F0F4F7 1px solid;
+                     BORDER-TOP: #F0F4F7 1px solid;
+                     BORDER-LEFT: #F0F4F7 1px solid;
+                     BORDER-BOTTOM: #F0F4F7 1px solid;
+                     TEXT-ALIGN: center  ;
+                     VERTICAL-ALIGN: middle;
+                     /*line-height: 90%; */
+                     font-weight: normal;}
+
+ /* ºó DIV */
+   .blankDiv       { BORDER-RIGHT: #C9CDCF 0px solid;
+                     BORDER-TOP: #C9CDCF 0px solid;
+                     BORDER-LEFT: #C9CDCF 0px solid;
+                     BORDER-BOTTOM: #C9CDCF 0px solid;  }
+
+ /* ±×¸®µå ¼³Á¤ */
+ /*   .DataGridDataContainer */
+ /*   .DataGridTitleContainer */
+ /*  .DataGridTitleEdge */
+   .DataGridTitleRow       {  FONT-FAMILY: arial,curier,seoul,µ¸¿ò;
+                              font-weight:bold;
+                              BORDER-TOP: #ffffff 1px solid;
+                              BORDER-BOTTOM: #ffffff 1px solid;
+                              BORDER-LEFT: #ffffff 1px solid;
+                              BORDER-RIGHT: #ffffff 0px solid;
+                              FONT-SIZE: 9pt;
+                              COLOR: #ffffff;
+                              VERTICAL-ALIGN: middle;
+                              TEXT-ALIGN: CENTER;
+                              BACKGROUND-COLOR: #788DAA; }
+
+   .DataGridDataRow        {  FONT-FAMILY: arial,curier,seoul,µ¸¿ò;
+                              FONT-VARIANT: normal;
+                              BORDER-TOP: #e0e0e0 1px;
+                              BORDER-BOTTOM: #e0e0e0 1px solid;
+                              BORDER-LEFT: #e0e0e0 1px;
+                              BORDER-RIGHT: #e0e0e0 1px solid;
+                              FONT-SIZE: 8pt;
+                              VERTICAL-ALIGN: middle;
+                              LINE-HEIGHT: normal;
+                               }
+
+ /*  CodeCombo - PopupGrid */
+   .CBGridTitleRow         {  FONT-FAMILY: arial,curier,seoul,µ¸¿ò;
+                              font-weight:bold;
+                              BORDER-TOP: #ffffff 1px solid;
+                              BORDER-BOTTOM: #ffffff 1px solid;
+                              BORDER-LEFT: #ffffff 1px solid;
+                              BORDER-RIGHT: #ffffff 0px solid;
+                              FONT-SIZE: 8pt;
+                              COLOR: #ffffff;
+                              VERTICAL-ALIGN: middle;
+                              TEXT-ALIGN: CENTER;
+                              BACKGROUND-COLOR: #788DAA; }
+
+   .CBGridDataRow          {  FONT-FAMILY: arial,curier,seoul,µ¸¿ò;
+                              FONT-VARIANT: normal;
+                              BORDER-TOP: #e0e0e0 1px;
+                              BORDER-BOTTOM: #e0e0e0 1px solid;
+                              BORDER-LEFT: #e0e0e0 1px;
+                              BORDER-RIGHT: #e0e0e0 1px solid;
+                              FONT-SIZE: 8pt;
+                              VERTICAL-ALIGN: middle;
+                              LINE-HEIGHT: normal;
+                               }
+                                                              
+  /* ±×¸®µå µû·Î¼³Á¤½Ã
+
+   /*  .DataContainerCSSName */
+   /*  .TitleContainerCSSName */
+   /*  .TitleEdgeCSSName */
+   /*  .TitleRowCSSName */
+   /*  .DataRowCSSName */
+
+   */
+
+
+    A:LINK         { color: #343434;
+                     font-size:9pt;
+                     text-decoration:none}
+    A:VISITED      { color: #343434;
+                     font-size:9pt;
+                     text-decoration:none}
+    A:hover        { color:#0058DD;
+                     font-size:9pt;
+                     text-decoration:none}
+
+ /* conditiontitle (°Ë»öÁ¶°Çtitle) */
+   .conditiontitle { LEFT: 19px;
+                     WIDTH: 300px;
+                     POSITION: absolute;
+                     VERTICAL-ALIGN:top;
+                     HEIGHT: 19px;   }
+   .titlearrowimg  { height:19;
+                     width:14px;
+                     LEFT: 0px;
+                     VERTICAL-ALIGN: TOP;
+                     margin-bottom: 3px;
+                     POSITION: absolute;
+                     TOP: 0px}
+
+ /* TopDIV ÄÃ·¯(Á¶È¸Á¶°Ç) */
+   .topbarDiv      { BORDER-RIGHT: #D3D3D4 1px solid;
+                     BORDER-TOP: #D3D3D4 1px solid;
+                     BORDER-LEFT: #D3D3D4 1px solid;
+                     BORDER-BOTTOM: #D3D3D4 1px solid;
+                     margin-left:16px;
+                     POSITION: absolute;
+                     width:876px}
+   .topbarIngreen  { BORDER-RIGHT: white 0px solid;
+                     BORDER-TOP: white 0px solid;
+                     BORDER-LEFT: white 0px solid;
+                     BORDER-BOTTOM: white 0px solid;
+                     background-color:#F0F4F7;
+                     height:100%;
+                     width:870px; 
+                     POSITION: relative;
+                     margin-TOP: 0px;
+                     margin-left: 0px; }
+
+   .topbarbigreen  { BORDER-RIGHT: white 1px solid;
+                     BORDER-TOP: white 1px solid;
+                     BORDER-LEFT: white 1px solid;
+                     BORDER-BOTTOM: white 1px solid;
+                     background-color:#F0F4F7;
+                     height:100%;
+                     width:970px;
+                     POSITION: relative;
+                     margin-TOP: 0px;
+                     margin-left: 0px; }
+
+ /* popupSearchDIV ÄÃ·¯(Á¶È¸Á¶°Çpopup) */
+   .popsbarDiv     { BORDER-RIGHT: #D3D3D4 3px solid;
+                     BORDER-TOP: #D3D3D4 3px solid;
+                     BORDER-LEFT: #D3D3D4 3px solid;
+                     BORDER-BOTTOM: #D3D3D4 3px solid;
+                     width:638px;
+                     POSITION: absolute; }
+   .popsbarIngreen { BORDER-RIGHT: white 1px solid;
+                     BORDER-TOP: white 1px solid;
+                     BORDER-LEFT: white 1px solid;
+                     BORDER-BOTTOM: white 1px solid;
+                     background-color:#F0F4F7;
+                     height:100%;
+                     width:100%;
+                     POSITION: relative;
+                     TOP: 0px;
+                     left: 0px; }
+
+ /* popupContentsDIV ÄÃ·¯ (µî·Ï³»¿ëpopup) */
+   .popinfoDiv     { BORDER-RIGHT: #DCDCDC 0px solid;
+                     BORDER-TOP: #DCDCDC 3px solid;
+                     BORDER-LEFT: #DCDCDC 0px solid;
+                     BORDER-BOTTOM: #DCDCDC 3px solid;
+                     POSITION: absolute;
+                     width:638px}
+   .popinfoIngray  { BORDER-RIGHT: white 0px solid;
+                     BORDER-TOP: white 2px solid;
+                     BORDER-LEFT: white 0px solid;
+                     BORDER-BOTTOM: white 2px solid;
+                     background-color:#F0F4F7;
+                     height:100%;
+                     width:100%;
+                     POSITION: relative;
+                     TOP: 0px;
+                     left: 0px; }
+
+ /* ContentsDIV ÄÃ·¯ (µî·Ï³»¿ë) */
+   .infoDiv        { BORDER-RIGHT: #DCDCDC 0px solid;
+                     BORDER-TOP: #DCDCDC 3px solid;
+                     BORDER-LEFT: #DCDCDC 0px solid;
+                     BORDER-BOTTOM: #DCDCDC 3px solid;
+                     margin-left:16px;
+                     POSITION: absolute;
+                     width:876px}
+   .infoIngray     { BORDER-RIGHT: white 0px solid;
+                     BORDER-TOP: white 2px solid;
+                     BORDER-LEFT: white 0px solid;
+                     BORDER-BOTTOM: white 2px solid;
+                     background-color:#F0F4F7;
+                     height:100%;
+                     width:876px;
+                     POSITION: relative;
+                     TOP: 0px;
+                     left: 0px; }
+/*±¹Á¦±ÝÀ¶*/
+   .topbarInblueOld   { BORDER-RIGHT: white 1px solid;
+                     BORDER-TOP: white 1px solid;
+                     BORDER-LEFT: white 1px solid;
+                     BORDER-BOTTOM: white 1px solid;
+                     background-color:#AFDEE1;
+                     height:100%;
+                     width:100%;
+                     POSITION: absolute;
+                     TOP: 0px;
+                     left: 0px;
+                     margin-bottom:0px;}
+                     
+   .topbarInblue  { BORDER-RIGHT: white 0px solid;
+                     BORDER-TOP: white 0px solid;
+                     BORDER-LEFT: white 0px solid;
+                     BORDER-BOTTOM: white 0px solid;
+                     background-color:#F0F4F7;
+                     height:100%;
+                     width:100%;
+                     POSITION: absolute;
+                     TOP: 0px;
+                     left: 0px;                     
+                     margin-TOP: 0px;
+                     margin-left: 0px; }
+
+ /* ContentsDIV ÄÃ·¯ (µî·Ï³»¿ësmall backDIV) */
+   .sinfobackDiv   { BORDER-RIGHT: #DCDCDC 0px solid;
+                     BORDER-TOP: #DCDCDC 1px solid;
+                     BORDER-LEFT: #DCDCDC 0px solid;
+                     BORDER-BOTTOM: #DCDCDC 1px solid;
+                     margin-left:16px;
+                     top:16px;
+                     height:478px;
+                     background-color:#F9F9F9;
+                     Text-align:center;
+                     POSITION: absolute;
+                     width:876px}
+
+    .Mcolorbarleft { BORDER-RIGHT: #ffffff 0px solid;
+                     BORDER-TOP: #94DADB 6px solid;
+                     BORDER-LEFT: #ffffff 0px solid;
+                     BORDER-BOTTOM: #ffffff 0px solid;
+                     height:1px;
+                     POSITION: absolute;
+                     top:0px;
+                     left:2px;}
+    .Mcolorbarright{ BORDER-RIGHT: #ffffff 0px solid;
+                     BORDER-TOP: #D4D6D6 6px solid;
+                     BORDER-LEFT: #ffffff 0px solid;
+                     BORDER-BOTTOM: #ffffff 0px solid;
+                     POSITION: absolute;
+                     top:0px;
+                     height:1px;}
+
+  /* ContentsDIV ÄÃ·¯ (µî·Ï³»¿ësmall) */
+   .smallinfoDiv   { BORDER-RIGHT: #DCDCDC 3px solid;
+                     BORDER-TOP: #DCDCDC 3px solid;
+                     BORDER-LEFT: #DCDCDC 3px solid;
+                     BORDER-BOTTOM: #DCDCDC 3px solid;
+                     Text-align:center;
+                     POSITION: absolute; }
+   .smallinfoIngray { BORDER-RIGHT: white 2px solid;
+                     BORDER-TOP: white 2px solid;
+                     BORDER-LEFT: white 2px solid;
+                     BORDER-BOTTOM: white 2px solid;
+                     background-color:#F0F4F7;
+                     height:100%;
+                     width:100%
+                     POSITION: relative; }
+
+
+ /* Áß°£ DIV (TOT....) */
+   .MtotbarDiv     { BORDER-RIGHT: #C9CDCF 1px solid;
+                     BORDER-TOP: #C9CDCF 1px solid;
+                     BORDER-LEFT: #C9CDCF 1px solid;
+                     BORDER-BOTTOM: #C9CDCF 1px solid;
+                     background-color: #F0F4F7; }
+   .Mcolorbar1Div  { BORDER-RIGHT: #C9CDCF 1px solid;
+                     BORDER-TOP: #C9CDCF 1px solid;
+                     BORDER-LEFT: #C9CDCF 1px solid;
+                     BORDER-BOTTOM: #C9CDCF 1px solid;
+                     background-color: #F0F4F7; }
+   .Mcolorbar2Div  { BORDER-RIGHT: #C9CDCF 1px solid;
+                     BORDER-TOP: #C9CDCF 1px solid;
+                     BORDER-LEFT: #C9CDCF 1px solid;
+                     BORDER-BOTTOM: #C9CDCF 1px solid;
+                     background-color: #F0F4F7; }
+
+
+ /* Å¸ÀÌÆ² ÄÃ·¯ */
+  .Contitle        { font-family: sans-serif, arial, helvetica,ËÎÌå;
+                     font-size: 9pt ;
+                     color: #6B6B6B ;
+                     font-weight: bold}
+
+
+ /* ¸ÞÀÎ Top mode */
+  .mode            { font-family: verdana, helvetica, sans-serif,ËÎÌå;
+                     font-size: 8pt ;
+                     color: #085F56 ; }
+
+ /* Top ¾÷¹«¸í */
+  .jobname         { font-family: sans-serif, helvetica, arial,ËÎÌå;
+                     font-size: 10pt ;
+                     color: #ffffff ;
+                     letter-spacing: 0.6px ;
+                     font-weight: bold}
+
+ /* ¹öÆ° ¼Õ°¡¶ô */
+.button            { cursor:hand; }
+
+ /* bottombar text */
+.btbarinfo        {  font-family: ËÎÌå, arial;
+                     font-size: 8pt ;
+                     TEXT-ALIGN: left  ;
+                     PADDING-TOP: 1px;
+                     VERTICAL-ALIGN:  bottom;
+                     color: #000000}
+.btbarinfot       {  font-family: ËÎÌå, arial;
+                     font-size: 8pt ;
+                     TEXT-ALIGN: left  ;
+                     PADDING-TOP: 1px;
+                     VERTICAL-ALIGN: bottom;
+                     color: #1D3A00 }
+
+
+
+ /* Å×ÀÌºí ÄÃ·¯ */
+   TD              { font-family: sans-serif, arial, helvetica,ËÎÌå;
+                     Font-size: 9pt ;
+                     color: #303030 ;
+                     line-height: 135%;}
+   .bargreen       { BORDER-RIGHT: white 1px solid;
+                     BORDER-TOP: white 1px solid;
+                     BORDER-LEFT: white 1px solid;
+                     BORDER-BOTTOM: white 1px solid;
+                     background-color:#E7F4BE}
+
+   .barboldtext    { color: #5C5B63 ;
+                     font-weight: bold}
+   .boldtext       { color: #6B6B6B ;
+                     font-weight: bold}
+   .grayvline      { width:3px;
+                     background-color:#B1B1B3}
+
+
+ /* ÀÔ·ÂÅ×ÀÌºí box ÄÃ·¯ */
+   TD.grayline     { height:3px;
+                     background-color:#dcdcdc}
+   TD.whiteline    { height:2px;
+                     background-color:#ffffff}
+   TD.bgblue       { background-color:#F0F4F7}
+
+ /* TABÅ×ÀÌºí ÄÃ·¯ */
+   TD.onclickTitle
+                   { font-family:  arial,curier,seoul,µ¸¿ò;
+                     border-right: white 1px outset;
+                     border-top: white 2px outset;
+                     border-left: white 2px outset;
+                     border-bottom: white 0px outset;
+                     WIDTH: 100px;
+                     BACKGROUND-COLOR: #F8FEFE;
+                     TEXT-ALIGN: left;
+                     padding-left: 5px;
+                     COLOR: #323232;
+                     height:20px;
+                     cursor:hand;  }
+   TD.onclickTitleUP
+                   { font-family:  arial,curier,seoul,µ¸¿ò;
+                     border-right: white 1px outset;
+                     border-top: white 2px outset;
+                     border-left: white 2px outset;
+                     border-bottom: white 1px outset;
+                     WIDTH: 100px;
+                     BACKGROUND-COLOR: #F8FEFE;
+                     TEXT-ALIGN: left;
+                     padding-left: 5px;
+                     COLOR: #323232;
+                     height:20px;
+                     cursor:hand;  }
+    TD.selectTitle
+                   { font-family:  arial,curier,seoul,µ¸¿ò;
+                     border-right: white 1px outset;
+                     border-top: white 2px outset;
+                     border-left: white 2px outset;
+                     border-bottom: white 0px outset;
+                     WIDTH: 100px;
+                     BACKGROUND-COLOR: #0066B3;
+                     TEXT-ALIGN: left;
+                     padding-left: 5px;
+                     COLOR: #ffffff;
+                     height:20px;  }
+
+    TD.tabnormaltitle
+                   { font-family:  arial,curier,seoul,µ¸¿ò;
+                     border-right: white 2px outset;
+                     border-top: white 2px outset;
+                     border-left: white 2px outset;
+                     border-bottom: white 0px outset;
+                     WIDTH: 100px;
+                     BACKGROUND-COLOR: #F8FEFE;
+                     TEXT-ALIGN: left;
+                     padding-left: 5px;
+                     padding-top: 1px;
+                     COLOR: #323232;
+                     height:20px;
+                     cursor:hand;}
+    TD.tabnormaltitle_big
+                   { font-family:  arial,curier,seoul,µ¸¿ò;
+                     border-right: white 2px outset;
+                     border-top: white 2px outset;
+                     border-left: white 2px outset;
+                     border-bottom: white 0px outset;
+                     WIDTH: 130px;
+                     BACKGROUND-COLOR: #F8FEFE;
+                     TEXT-ALIGN: left;
+                     padding-left: 5px;
+                     padding-top: 1px;
+                     COLOR: #323232;
+                     height:20px;
+                     cursor:hand;}
+    TD.tabselecttitle
+                   { font-family:  arial,curier,seoul,µ¸¿ò;
+                     border-right: white 2px inset;
+                     border-top: black 2px inset;
+                     border-left: black 2px inset;
+                     border-bottom: black 0px inset;
+                     WIDTH: 100px;
+                     BACKGROUND-COLOR: #0066B3;
+                     TEXT-ALIGN: left;
+                     padding-left: 5px;
+                     padding-top: 1px;
+                     COLOR: #ffffff;
+                     height:20px;}
+    TD.tabselecttitle_big
+                   { font-family:  arial,curier,seoul,µ¸¿ò;
+                     border-right: white 2px inset;
+                     border-top: black 2px inset;
+                     border-left: black 2px inset;
+                     border-bottom: black 0px inset;
+                     WIDTH: 130px;
+                     BACKGROUND-COLOR: #0066B3;
+                     TEXT-ALIGN: left;
+                     padding-left: 5px;
+                     padding-top: 1px;
+                     COLOR: #ffffff;
+                     height:20px;}
+    INPUT.trxdate  { BORDER-RIGHT: #A8BA99 1px outset;
+                     BORDER-TOP: #A8BA99 1px outset;
+                     BORDER-LEFT: #A8BA99 1px outset;
+                     BORDER-BOTTOM: #A8BA99 1px outset;
+                     HEIGHT: 20px;
+                     font-family: arial,curier,seoul,µ¸¿ò,ËÎÌå;
+                     Font-size: 9pt ;
+                     color: #425333 ;
+                     BACKGROUND-COLOR: #E8F2D1;  }
+
+ /* TAB tabDIV  */
+   .tabDiv        { BORDER-RIGHT: #dedfde 1px solid;
+                    BORDER-TOP: #dedfde 1px solid;
+                    BORDER-LEFT: #dedfde 1px solid;
+                    BORDER-BOTTOM: #dedfde 1px solid;
+                    background-color:#F0F4F7;
+                    width:876px; }
+   .tabinDiv      { BORDER-RIGHT: #C3CED7 1px solid;
+                    BORDER-TOP: #C3CED7 1px solid;
+                    BORDER-LEFT: #C3CED7 1px solid;
+                    BORDER-BOTTOM: #C3CED7 1px solid; }
+
+/*  CMGL TOPcolor  */
+   .top1          { font-family: sans-serif,ËÎÌåarial, helvetica;
+                    font-size: 7pt ;
+                    color: #ffffff ;
+                    background-color:#0095A4;
+                    BORDER-RIGHT: white 1px solid;
+                    BORDER-TOP: white 1px solid;
+                    BORDER-LEFT: white 1px solid;
+                    BORDER-BOTTOM: white 1px solid;
+                    TEXT-ALIGN: center  ;
+                    VERTICAL-ALIGN: middle;
+                    line-height: 90%;
+                    font-weight: normal;}
+
+   .top2          { font-family: sans-serif,ËÎÌå, arial, helvetica;
+                    font-size: 7pt ;
+                    color: #ffffff ;
+                    background-color:#2CAEB6;
+                    BORDER-RIGHT: white 1px solid;
+                    BORDER-TOP: white 1px solid;
+                    BORDER-LEFT: white 1px solid;
+                    BORDER-BOTTOM: white 1px solid;
+                    TEXT-ALIGN: center  ;
+                    VERTICAL-ALIGN: middle;
+                    line-height: 90%;
+                    font-weight: normal;}
+
+   .top3          { font-family: sans-serif, ËÎÌå, arial, helvetica;
+                    font-size: 9pt ;
+                    color: #07323E ;
+                    background-color:#BDD3D6;
+                    BORDER-RIGHT: white 1px solid;
+                    BORDER-TOP: white 1px solid;
+                    BORDER-LEFT: white 1px solid;
+                    BORDER-BOTTOM: white 1px solid;
+                    TEXT-ALIGN: center  ;
+                    VERTICAL-ALIGN: middle;
+                    line-height: 90%;
+                    font-weight: normal;}
+ /* POPUP DIV  */
+   .popinDiv      { BORDER-RIGHT: #C6DAA7 1px solid;
+                    BORDER-TOP: #C6DAA7 1px solid;
+                    BORDER-LEFT: #C6DAA7 1px solid;
+                    BORDER-BOTTOM: #C6DAA7 1px solid; }
+
+ /* grayline DIV(xp)  */
+   .grayline      { BORDER-RIGHT: #DCDCDC 1px solid;
+                    BORDER-TOP: #DCDCDC 1px solid;
+                    BORDER-LEFT: #DCDCDC 1px solid;
+                    BORDER-BOTTOM: #DCDCDC 1px solid; }
+
+   .graylineblue  { BORDER-RIGHT: #ffffff 1px solid;
+                    BORDER-TOP: #ffffff 1px solid;
+                    BORDER-LEFT: #ffffff 1px solid;
+                    BORDER-BOTTOM: #ffffff 1px solid;
+                    background-color:#F0F4F7;}
+
+ /* TOPmenu style  */
+   .menulayer     {  border: #FFFFFF;
+                     border-style: solid;
+                     border-top-width: 1px;
+                     border-right-width: 1px;
+                     border-bottom-width: 1px;
+                     border-left-width: 1px;
+                     background-color: D5E8AF }
+   .menunormal    {  font-family: "Courier New", "Arial", "Helvetica", ;
+                     font-size:  8pt;
+                     color: 2D4901;
+                     height: 17px;
+                     padding-left: 10px;
+                     padding-bottom: 1px }
+   .menuselect    {  font-family: "Courier New", "Arial", "Helvetica", ;
+                     font-size: 8pt;
+                     color: #FFFFFF;
+                     background-color: A2DE1E;
+                     height: 17px;
+                     padding-left: 10px;
+                     padding-bottom: 1px }
+
+/*******************************************************************************/
+/* AP CSS                                                                      */
+/*******************************************************************************/
+.APInfoDiv {BORDER-RIGHT: #DCDCDC 0px solid;
+                     BORDER-TOP: #DCDCDC 3px solid;
+                     BORDER-LEFT: #DCDCDC 0px solid;
+                     BORDER-BOTTOM: #DCDCDC 3px solid;
+                     MARGIN-LEFT:10px;
+                     POSITION: absolute;
+                     LEFT: 0px;
+                     WIDTH: 100%;
+                     POSITION:absolute;
+    }
+.APGreyDiv {BORDER-RIGHT: white 0px solid;
+                     BORDER-TOP: white 2px solid;
+                     BORDER-LEFT: white 0px solid;
+                     BORDER-BOTTOM: white 2px solid;
+                     BACKGROUND-COLOR:#F0F4F7;
+                     HEIGHT:100%;
+                     WIDTH:100%;
+                     POSITION: relative;
+                     TOP: 0px;
+                     LEFT: 0px;
+                     POSITION:absolute;
+}  
+
+.ap_td01     {height:21px; color: #1763B0;    background-color: #BECCE4;	border-right: 1px solid #FFFFFF; text-align: center;}  
+.ap_td01_end {height:21px; color: #1763B0;    background-color: #BECCE4; text-align: center;}  
+.ap_td02     {height:18px; background-color: #F0F4F7; text-align:center; border-right: 1px solid #FFFFFF; border-top: 1px solid #FFFFFF;}  
+.ap_td02_end {height:18px; background-color: #F0F4F7; text-align:center; border-top: 1px solid #FFFFFF;} 
+.boxhidden   {border-style: none; background-color: transparent;}

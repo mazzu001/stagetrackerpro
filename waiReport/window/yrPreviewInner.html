@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<!--
+ * @license - Y[wai] Report 1.0.0
+ *
+ * Pure Web RIA Development Solution / <HTML> Module
+ *
+ * (c) 2001-2018 Corebank Co.,Ltd. http://www.corebank.co.kr
+ * License: Copyright(C) COREBANK. all right reserved.
+ * -----------------------------------------------------------------------------
+ * 본 소프트웨어(Javascript Source)는 '(주)코아뱅크'의 자산으로
+ * Y[wai] Report 솔루션에 포함되어 있습니다.
+ *
+ * 본 소프트웨어를 Y[wai] Report 가 납품되어진 프로젝트 혹은 시스템이
+ * 아닌 다른 목적으로 이용되어짐을 금하며, 본 소프트웨어를 임의로
+ * 수정하여 비정상적으로 작동되어 지는 경우 당사에서 책임지지 않습니다.
+ * -----------------------------------------------------------------------------
+ * @FileName : yrPreviewInner.html
+ * @Version : 0.8.0.1
+ * @Part : Corebank Technical Lab.
+ * @Create : Hyunwoo,Hwang / 2018-05-05
+ * @Update : Hyunwoo,Hwang / 2018-05-05
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Preview and Printing</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        html {
+            height: 100%;
+            width: 100%;
+            font-size: 10px;
+        }
+        body {
+            height: 100%;
+            width: 100%;
+        }
+
+        #pagesDiv > div {
+            text-align: center;
+        }
+
+        .page {
+            background-color:white;
+            border:0px solid #606060;
+            width:90%;
+            height:auto;
+        }
+        .pageHorz {
+            background-color:white;
+            border:0px solid #606060;
+            width:90%;
+            height:auto;
+        }
+        .horzPrint {
+            display:none;
+        }
+
+        @media print {
+            body {
+                overflow : hidden;
+            }
+
+            img {
+                display: block;
+            }
+            #pagesDiv {
+                display : block;
+                /*height: 100%;*/
+            }
+            #pagesDiv > div {
+                position: relative;
+                top: 0;
+                left: 0;
+                width: 1px;
+                height: 1px;
+                overflow: visible;
+                page-break-after: always;
+                page-break-inside: avoid;
+            }
+            #pagesDiv canvas,
+            #pagesDiv img {
+                display: block;
+            }
+            @page {
+                size: letter;
+                margin: 0px;
+            }
+            .page {
+                /*width : 794px;
+                height: 1123px;*/
+                width : 816px;
+                height: 1056px;
+            }
+            .pageHorzPrev {
+                display:none;
+            }
+            .pageHorz {
+                width : 816px;
+                height: 1056px;
+            }
+            .horzPrint {
+                display:inherit;
+            }
+        }
+    </style>
+    <script type="text/javascript" src="/waiReport/lib/jquery/jquery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="/waiReport/lib/jszip.min.js"></script>
+    <link rel="stylesheet" href="./css/previewLoading.css">
+    <script type="text/javascript">
+        // 아래의 미리보기(및 인쇄) 품질은 1 ~ 0.35 정도로 설정하며,
+        // 0.35 이하의 경우 심하게 품질이 좋지 않으므로 가급적 설정하지 않는다.
+        // 특히 IE11 의 경우 품질이 높은 경우 인쇄가 안되는 페이지가 생기는 현상이 있으며,
+        // 속도 차이가 많이 발생한다. 품질이 낮을 수록 속도는 빠름
+        //
+        // 기본적으로 waiRepConst.js 에 선언된 "printQuality" 의 값으로 설정된다.
+        // 아래의 설정값은 만약 const 에서 못 읽을 경우를 대비함
+
+        var printQuality_Other = 0.5;  // 기본 품질(0.5) - 높을 수록 고화질 (max : 1.0)
+        var printQuality_IE     = 0.4;  // IE 기본 품질 - 0.5 (0.5 포함)이상일 경우 인쇄시 20 ~ 30장 이후부터 깨짐
+
+        try {
+            printQuality_IE = window.parent.$waiReport.const['printQuality'].IE;
+        } catch(E) {}
+
+        try {
+            printQuality_Other = window.parent.$waiReport.const['printQuality'].Other;
+        } catch(E) {}
+        //--------------------------------------------------------------------------------------------------------------
+        var vendor = null;
+        var isFirst = true;
+        var pageCnt = 0;
+        var loadImgCount = 0;
+        var isLoadedReport = false;
+        var Prog = {
+            maxVendor : 0,
+            curVendor : 0,
+            maxPage    : 0,
+            curPage    : 0,
+            totalPages  : 0
+        };
+        var progBar = null;
+
+        var rptPageArr   = null;
+        var blobPdf;
+
+        function previewOnLoaded(vSkip) {
+            if (vSkip === true) return;
+            assignEvents();
+            window.setTimeout(showPreview,100);
+        }
+
+        function showPreview() {
+            //console.time('previewOnLoaded');
+            var VDRs = window.parent.yrVendors;
+            var loaded = false;
+            if (VDRs.length === 0) return;
+            vendor = VDRs[0];
+
+            progBar = window.parent.progBar;
+            Prog.maxVendor = VDRs.length;
+            Prog.totalPages = 0;
+
+            var loadedCnt = VDRs.length;
+            rptPageArr= new Array();
+            console.time('total time');
+            function loadedCallbackFunc() {
+                loadedCnt--;
+
+                //console.log('loadedCallbackFunc()',loadedCnt);
+                if (loadedCnt <= 0) {
+                    isLoadedReport = true;
+                    window.parent.previewLoadEnd();
+                    if(!window.parent.genSrvPrev || !window.parent.isPrevBrowserPdf) waitDiv.style.display = 'none';
+
+                    var agent = navigator.userAgent.toLowerCase();
+                    if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
+                        //is IE
+                        window.onscroll = pageDivScrolled;
+                    }
+                    console.timeEnd('total time');
+
+                    // Generate Server Preview
+                    if(window.parent.genSrvPrev)
+                    {
+                        genSrvPrevFunc();
+                    }
+                }
+            }
+            window.parent.previewLoadStart();
+            window.parent.doProg = true;
+            for (var i=0;i<VDRs.length;i++) {
+                //console.time('    drawVendor['+i+']');
+                Prog.curVendor = i;
+                Prog.maxPage = 0;
+                Prog.curPage = 0;
+
+                loaded = drawVendor(VDRs[i],loadedCallbackFunc);
+                if (!loaded) {
+                    break;
+                }
+                //console.timeEnd('    drawVendor['+i+']');
+            }
+            //console.timeEnd('previewOnLoaded');
+
+            if (!loaded) {
+                window.parent.close();
+            }
+        }
+
+        function imgLoaded() {
+            EndLoadImage();
+        }
+        function imgLoadErr() {
+            EndLoadImage();
+        }
+        var procPrint = false;
+
+        function EndLoadImage() {
+            if (procPrint) return;
+
+            loadImgCount--;
+
+            if (isLoadedReport && (loadImgCount <= 0)) {
+                procPrint = true;
+                if (!window.parent.isPreview && !window.parent.genSrvPrev) {
+                    window.parent.genPrintPage();
+                }
+            } else {
+                //console.log('waitPrint : ',isLoadedReport,loadImgCount);
+                if ((loadImgCount <= 0)&&(!isLoadedReport)) {
+                    window.setTimeout(EndLoadImage,50);
+                }
+            }
+        }
+
+        function drawVendor( vnd , loadCallback) {
+            var yrViewer = new window.parent.$waiReport.classes.reportViewer();
+            //yrViewers.push( yrViewer );
+            var agent = navigator.userAgent.toLowerCase();
+            var addedDatas = vnd.addedDatas;
+            var curQuality = vnd.quality;
+            if (curQuality === null) {
+                if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
+                    //is IE
+                    curQuality=printQuality_IE;
+                } else {
+                    //is Other
+                    curQuality=printQuality_Other;
+                }
+            }
+            //console.time('        loadForm['+(pageCnt+1)+']');
+            var loaded = yrViewer.loadForm(vnd.ReportUrl);
+            if (!loaded) {
+                return false;
+            }
+            //console.timeEnd('        loadForm['+(pageCnt+1)+']');
+
+            function preventImageLoadEnd() {
+                //console.log('-------------------preventImageLoadEnd');
+
+                try {
+                    for (var i=0;i<addedDatas.length;i++){
+                        var d = addedDatas[i];
+                        var rt = yrViewer.propertyChange(d.s, d.o, d.p, d.v);
+                    }
+                } catch(E) {
+                    throw E;
+                }
+                //console.timeEnd('        loadForm['+(pageCnt+1)+']');
+
+                function getPreGenerate(preData) {
+                    //console.log('getPreGenerate',preData);
+                    if (preData.pageTotal !== undefined) {
+                        Prog.maxPage = preData.pageTotal;
+                        Prog.totalPages += preData.pageTotal;
+                    }
+                }
+
+                function newPageCanvas(vPage,vCanvas) {
+                    pageCnt++;
+                    ////console.time('        drawPage['+pageCnt+']');
+                    var canv = document.createElement('canvas');
+                    var hCanv = document.createElement('canvas');
+                    var ctx = canv.getContext('2d');
+                    var hCtx = hCanv.getContext('2d');
+
+                    //ctx.clearRect(0,0,canv.width,canv.height);
+                    //hCtx.clearRect(0,0,hCanv.width,hCanv.height);
+
+                    var PC = window['pagesDiv'];
+                    var cID = '';
+                    var w,h;
+
+                    cID = 'yrPrePage'+(pageCnt);
+
+                    //console.time('            drawCurrentPrevPage['+pageCnt+']');
+                    yrViewer.drawCurrentPrevPage(canv,hCanv,curQuality);
+                    //console.timeEnd('            drawCurrentPrevPage['+pageCnt+']');
+
+                    if (isFirst) {
+                        window.parent.curPageWidth  = canv.width;
+                        window.parent.curPageHeight = canv.height;
+                        isFirst = false;
+                    }
+
+                    var isHorz = canv.width > canv.height;
+
+                    //console.time('            viewPreviewPage['+pageCnt+']');
+
+                    try {
+                        Prog.curPage++;
+                        //window.setTimeout(function(){
+                        //    var PrgMax = Math.floor(100 / Prog.maxVendor);
+                        //    var PW = Math.floor((PrgMax * Prog.curVendor) +  (PrgMax / Prog.maxPage) * Prog.curPage);
+                        //    progBar.style.width = PW+"%";
+                        //    progBar.innerHtml = "";
+                        //    console.log('ProgBar.style.width = '+progBar.style.width);
+                        //},0)
+                    } catch(E) {
+                        console.log(E);
+                    }
+
+                    var img = document.createElement('img');
+                    img.className = "page";
+                    if (isHorz) img.classList.add("onlyPreview");
+                    img.onload = imgLoaded;
+                    img.onerror = imgLoadErr;
+
+                    img.title = "Page #"+pageCnt;
+                    img.id = cID;
+                    img.tabindex = pageCnt+100;
+
+                    var wrap1 = document.createElement('div');
+                    wrap1.className = isHorz ? "pageHorzPrev" : "";
+                    wrap1.appendChild(img);
+
+                    var pageIdx = document.createElement('a');
+                    pageIdx.href = 'javascript:void(9)';
+                    pageIdx.name = 'pageIdx'+pageCnt;
+
+                    PC.appendChild(pageIdx);
+                    PC.appendChild(wrap1);
+
+                    loadImgCount++;
+                    var data = canv.toDataURL('image/png');
+                    img.src = data;
+
+                    //console.timeEnd('            viewPreviewPage['+pageCnt+']');
+
+                    if (isHorz) {
+                        img = document.createElement('img');
+                        img.className = "pageHorz";
+
+                        loadImgCount++;
+                        img.onload = imgLoaded;
+                        img.onerror = imgLoadErr;
+
+                        data = hCanv.toDataURL();
+                        img.src = data;
+                        img.title = "Page #"+pageCnt;
+                        img.id = cID;
+                        img.tabindex = pageCnt+100;
+
+                        wrap1 = document.createElement('div');
+                        wrap1.className = "horzPrint";
+                        wrap1.appendChild(img);
+
+                        PC.appendChild(wrap1);
+                    }
+                    {   // Clear Buffer
+                        //--------------------
+                        canv.width = 0;
+                        canv.height = 0;
+                        canv = null;
+                        canv = undefined;
+                        //--------------------
+                        hCanv.width = 0;
+                        hCanv.height = 0;
+                        hCanv = null;
+                        hCanv = undefined;
+                        //--------------------
+                    }
+                    ////console.timeEnd('        drawPage['+pageCnt+']');
+                } // end : newPageCanvas
+
+                function genRptPageData(vPage,vCanvas){
+                    yrViewer.printPages[vPage].screenPrvInfo.quality = curQuality;
+                    rptPageArr[pageCnt] = yrViewer.printPages[vPage];
+                    pageCnt++;
+                    Prog.curPage++;
+                    if(pageCnt == 1 && !window.parent.isPrevBrowserPdf){drawPage(pageCnt);}
+                }
+
+                if(window.parent.genSrvPrev)
+                {
+                    yrViewer.generatePreview(vnd.JSON, vnd.DetailJSON, getPreGenerate, genRptPageData, false);
+                }
+                else
+                {
+                    yrViewer.generatePreview(vnd.JSON, vnd.DetailJSON, getPreGenerate, newPageCanvas, true);
+                }
+                yrViewer.clearPrevBuffer();
+                yrViewer = undefined;
+
+                loadCallback();
+            }
+
+            yrViewer.preventLoadImages( preventImageLoadEnd );
+            return true;
+        }
+
+        function pageDivScrolled(event) {
+            try {
+                parent.window.scrollChanged(event);
+            } catch(E) {
+                console.error(E);
+            }
+        }
+        /*
+        ------------------------------------------
+            waiReport Server Generate 관련 함수 
+        ------------------------------------------            
+        */
+        function genSrvPrevFunc()
+        {
+            console.log('Server Preview : ', window.parent.genSrvPrev, ', Data Compress : ',window.parent.dataCompress);
+
+            $.ajaxTransport("+binary", function(options, originalOptions, jqXHR)
+            {
+                // check for conditions and support for blob / arraybuffer response type
+                if (window.FormData && ((options.dataType && (options.dataType == 'binary')) || (options.data && ((window.ArrayBuffer && options.data instanceof ArrayBuffer) || (window.Blob && options.data instanceof Blob)))))
+                {
+                    return {
+                        // create new XMLHttpRequest
+                        send: function(headers, callback){
+                            // setup all variableszz
+                            var xhr = new XMLHttpRequest(),
+                                url = options.url,
+                                type = options.type,
+                                async = options.async || true,
+                                dataType = options.responseType || "blob",
+                                data = options.data || null,
+                                username = options.username || null,
+                                password = options.password || null;
+
+                            xhr.addEventListener('load', function(){
+                                var data = {};
+                                data[options.dataType] = xhr.response;
+                                // make callback and send data
+                                callback(xhr.status, xhr.statusText, data, xhr.getAllResponseHeaders());
+                            });
+                            xhr.open(type, url, async, username, password);
+
+                            // setup custom headers
+                            for (var i in headers ) {
+                                xhr.setRequestHeader(i, headers[i] );
+                            }
+                            xhr.onerror = function(e){
+                                callback(xhr.status, xhr.statusText);
+                            };
+                            xhr.responseType = dataType;
+                            xhr.send(data);
+                        },
+                        abort: function(){
+                            jqXHR.abort();
+                        }
+                    };
+                }
+            });
+
+            var defSetting = {
+                url     : window.parent.$waiReport.default.nodeServiceDefault['serviceDomain']+'/waiReport/generatePDF',
+                timeout : window.parent.$waiReport.default.nodeServiceDefault['timeout']
+            };
+
+            /* waiBrowser 인 경우 로컬 Generate 하도록 설정*/
+            if(typeof(waiBrowser_Report) !== "undefined"){
+                var portNum = waiBrowser_Report.getPort();
+                if(portNum != -1){
+                    defSetting.url = 'http://127.0.0.1:'+portNum+'/waiReport/generatePDF';
+                }
+            }
+            console.log(defSetting);
+
+            function endSvcCallback(){
+                waitDiv.style.display = 'none';
+                window.parent.srvPreviewLoadEnd();
+            }
+
+            var ajaxOpt = {
+                type        : 'POST',
+                dataType    : 'binary',
+                async       : false,
+                success     :  function(result, textStatus, xhr)
+                {
+                    // console.log(result, xhr, textStatus);
+                    if(result.type == 'application/pdf') //success
+                    {
+                        console.log('Server Generate Success');
+                        blobPdf = new Blob([result], { type: 'application/pdf' });
+                        endSvcCallback();
+                    }
+                    else    //fail
+                    {
+                        blobPdf = undefined;
+                        result.text()
+                            .then(value => {
+                                var errObj = JSON.parse(value);
+                                console.error(errObj);
+                                alert("Server Generate Fail");
+                                endSvcCallback();
+                            })
+                            .catch(error => {
+                                console.error("Server Generate Fail" + error);
+                                alert("Server Generate Fail");
+                                endSvcCallback();
+                            });
+                    }
+                },
+                error       : function(xhr, textStatus, errorThrown)
+                {
+                    blobPdf = undefined;
+                    console.error("error", xhr);
+                    alert("Server Generate Fail");
+                    endSvcCallback();
+                }
+            };
+
+            var mergeAjaxOpt = Object.assign(ajaxOpt, defSetting);
+
+            /* 화면 Preview 생성시 필요한 데이터 삭제 후 전송*/
+            var sendRptJSONArr= JSON.parse(JSON.stringify(rptPageArr));
+            for(var i=0; i< sendRptJSONArr.length; i++)
+            {
+                delete sendRptJSONArr[i]['screenPrvInfo'];
+            }
+            //console.log(sendRptJSONArr);
+
+            var rptDataStr   = JSON.stringify(sendRptJSONArr);
+            if(window.parent.dataCompress)
+            {
+                var zip = new JSZip();
+                zip.file("data.json", rptDataStr);
+                zip.generateAsync({
+                    type: "binarystring",
+                    compression: "DEFLATE",
+                    compressionOptions: {
+                            level: 9
+                        }
+                    }).then(function (bs) {
+                    //console.log('압축 후 데이터 길이 : ', bs.length);
+                    mergeAjaxOpt.contentType = 'text/plain';
+                    mergeAjaxOpt.data        = bs;
+                    //console.log(mergeAjaxOpt);
+                    $.ajax(mergeAjaxOpt);
+                });
+            }
+            else
+            {
+                mergeAjaxOpt.contentType = 'application/json';
+                mergeAjaxOpt.data        = rptDataStr;
+                //console.log(mergeAjaxOpt);
+                $.ajax(mergeAjaxOpt);
+            }
+        }
+
+
+        function drawPage(inpPageNum)
+        {
+            //waitDiv.style.display = 'block';
+            var debug = false;
+            if(debug)console.time('drawPage');
+
+            var inpPageIdx  = inpPageNum-1;
+            var rptPageObj  = rptPageArr[inpPageIdx];
+            var pageSet     = rptPageObj.pageSetting;
+            var pageWidth   = pageSet.paper.width;
+            var pageHeight  = pageSet.paper.height;
+            var TM          = vtoi(pageSet.margin.top);
+            var BM          = vtoi(pageSet.margin.bottom);
+            var LM          = vtoi(pageSet.margin.left);
+            var RM          = vtoi(pageSet.margin.right);
+            var paperWidth  = pageWidth  + LM + RM;
+            var paperHeight = pageHeight + TM + BM;
+            // console.log(paperWidth, paperHeight);
+            window.parent.curPageWidth  = paperWidth;
+            window.parent.curPageHeight = paperHeight;
+
+            var defInfo = {
+                parent:null,
+                formData:{},
+                info : {pageSetting : pageSet},
+                prevLoadedImages : rptPageArr[inpPageIdx].screenPrvInfo.prevLoadedImages,
+                updateCanvas : function(obj){console.log();}
+            };
+
+            var curCanv = document.createElement('canvas');
+            var curCtx = curCanv.getContext('2d');
+            curCanv.width  = pageWidth;
+            curCanv.height = pageHeight;
+
+            var curTop=0;
+
+            if(debug)console.time('Create Page');
+            var band;
+            var bandLength = rptPageObj.bands.length;
+            for(var i=0; i<bandLength; i++)
+            {
+                //if(debug)console.time(i +' Create Band');
+                band = new parent.$waiReport.classes.band(defInfo, rptPageObj.bands[i]);
+                //if(debug)console.timeEnd(i +' Create Band');
+                band.draw();
+                if(band.type!='pageFooter')
+                {
+                    curCtx.drawImage(band.canvas,0,curTop);
+                    curTop+=band.height;
+                }
+                else
+                {
+                    curCtx.drawImage(band.canvas,0,pageHeight-band.height);
+                }
+            }
+            if(debug)console.timeEnd('Create Page');
+
+            var tarCanv    = document.createElement('canvas');
+            var tarCtx     = tarCanv.getContext('2d');
+            var quality = rptPageArr[inpPageIdx].screenPrvInfo.quality;
+            tarCanv.width  = paperWidth  * quality;
+            tarCanv.height = paperHeight * quality;
+            tarCtx.drawImage(
+                curCanv,
+                0,0,curCanv.width,curCanv.height,
+                LM*quality,TM*quality,curCanv.width*quality,curCanv.height*quality
+            );
+
+            var PC = window['pagesDiv'];
+            var cID = '';
+            var w,h;
+
+            cID = 'yrPrePage'+(inpPageNum);
+
+            var img = document.createElement('img');
+            img.className = "page";
+            img.title = "Page #"+ inpPageNum;
+            img.id = cID;
+
+            var wrap1 = document.createElement('div');
+            wrap1.appendChild(img);
+
+            var pageIdx = document.createElement('a');
+            pageIdx.href = 'javascript:void(9)';
+            pageIdx.name = 'pageIdx'+inpPageNum;
+
+            PC.appendChild(pageIdx);
+            PC.appendChild(wrap1);
+
+            var data = tarCanv.toDataURL('image/png');
+            img.src = data;
+
+            {   // Clear Buffer
+                //--------------------
+                curCanv.width = 0;
+                curCanv.height = 0;
+                curCanv = null;
+                curCanv = undefined;
+                //--------------------
+                tarCanv.width = 0;
+                tarCanv.height = 0;
+                tarCanv = null;
+                tarCanv = undefined;
+                //--------------------
+            }
+            if(debug)console.timeEnd('drawPage');
+            //waitDiv.style.display = 'none';
+        }
+
+        function vtoi(v){
+            var rt = 0;
+            if (v !== null) rt = v;
+            return rt;
+        }
+
+        function assignEvents()
+        {
+            if(window.parent.genSrvPrev) {
+                document.body.addEventListener('wheel', function (event) {
+                    var scrollTop = $(window).scrollTop();
+                    var innerHeight = $(window).height();
+                    var scrollHeight = $(document).height();
+                    if (event.wheelDeltaY > 0) {
+                        // scroll up
+                        if (scrollTop == 0) {
+                            window.parent.btnPrevHor.click();
+                        }
+                    } else {
+                        // scroll down
+                        if (scrollTop + innerHeight >= scrollHeight) {
+                            window.parent.btnNextHor.click();
+                        }
+                    }
+                })
+            }
+        }
+    </script>
+</head>
+<body onload="previewOnLoaded(false)" onscroll="if(!window.parent.genSrvPrev){pageDivScrolled(event)}">
+    <div id="waitDiv" style="width:100%;text-align: center;">
+        <br><br>
+        <span style="color:white;font-family: Arial;font-size:18px;">Please wait, generating report preview</span><br>
+        <br><br>
+        <script type="text/javascript">
+            (function(){
+                var agent = navigator.userAgent.toLowerCase();
+                if ( (navigator.appName == 'Netscape' && agent.indexOf('trident') != -1) || (agent.indexOf("msie") != -1)) {
+                    //is IE
+                    try {
+                        var waitImg = window.parent.$waiReport.const['previewWaitIE'];
+                        waitImg = (waitImg === undefined) ? '' : (waitImg +'').trim();
+
+                        if (waitImg != '') {
+                            document.write('<img src="'+waitImg+'">');
+                        }
+                    } catch(E) { }
+                } else {
+                    //is Other
+                    // IE 에서는 Animation 이 멈춤 // CSS Animation 도 멈춤 // todo : 방법이 없나 ?
+                    try {
+                        var waitGif = window.parent.$waiReport.const['previewWaitGif'];
+                        waitGif = (waitGif === undefined) ? '' : waitGif;
+                        //waitGif = ((waitGif +'').trim() != '' ) ? waitGif : './imgs/loadingDot.gif';
+                        //document.write('<img src="'+waitGif+'">');
+                        if(waitGif == '')
+                        {
+                            document.write('<div class="loader">');
+                            document.write('    <div class="bar1"></div>');
+                            document.write('    <div class="bar2"></div>');
+                            document.write('    <div class="bar3"></div>');
+                            document.write('    <div class="bar4"></div>');
+                            document.write('    <div class="bar5"></div>');
+                            document.write('    <div class="bar6"></div>');
+                            document.write('</div>');
+                        }
+                    } catch(E) {
+                        document.write('<img src="./imgs/loadingDot.gif">');
+                    }
+                }
+            })();
+        </script>
+
+    </div>
+    <div id="pagesDiv"></div>
+<!--    <canvas id="the-canvas"></canvas>-->
+</body>
+</html>

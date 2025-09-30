@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>
+        (() => {
+            //console.log("$wai?.default.libInfo", parent.$wai?.default.libInfo);
+            let libList = parent.$wai?.default.libInfo;
+            if(libList !== undefined){
+                let waiInnerText = `[\n`;
+                for(var i in libList) {
+                    const elem = libList[i];
+                    waiInnerText += `{"type":"library", "id":"${elem.LIBRARY_ID}", "name":"${elem.LIBRARY_NAME}"}`;
+                    if(i < libList.length-1){
+                        waiInnerText += ',';
+                    }
+                    waiInnerText += '\n';
+                }
+                waiInnerText += `]`;
+                let libScriptText = `<script type="text/javascript" src="${parent.$wai.info.path}/wai.js">${waiInnerText}<\/script>`;
+                document.write(libScriptText);
+            }
+            const linkNodeList = parent.document.querySelectorAll('link');
+            linkNodeList.forEach(node => {
+                if(document.querySelector(`link[href="${node.getAttributeNode('href')?.textContent ?? ''}"]`) == null){
+                    document.write(node.outerHTML);
+                }
+            });
+            const styleNodeList = parent.document.querySelectorAll('style');
+            styleNodeList.forEach(node => {
+                document.write(node.outerHTML);
+            });
+        })();
+    </script>
+</head>
+<body>
+</body>
+</html>

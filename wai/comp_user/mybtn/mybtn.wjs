@@ -1,0 +1,205 @@
+(function() {
+	var CompBase = {
+          declare : {
+              'tagName' : 'mybtn',
+              'template' : '<button yid="ybtn" class="mybtn">	<table>		<tr>			<td>				<img yid="yimg" src="">			</td>			<td> 				<t yid="ytxt" style="font-size:14px"></t>			</td>		</tr>	</table></button>',
+              'replace' : true,
+              'noneVisible' : false,
+              'isDataSource' : false,
+              'type' : 'DHTML',
+              'version' : '1.0',
+              'description' : 'Image & Text Button'
+          },
+          properties : {
+              'name' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'style' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'imgUrl' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'text' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'disabled' : {
+                  'type' : typeof(true),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              }
+          },
+          methods : {
+              'focus' : {
+                  'argumentCheck' : true,
+                  'argumentDefine' : {
+
+                  },
+                  'methodCode' : function ($args) {}
+              }
+          },
+          controls : {
+              'ybtn' : {
+                  'click' : function ($evt) {
+					// event handler script code
+
+					var event = $evt.event;
+					this.FireEvent('onclick',{text:this.text},event);
+				}
+              }
+          },
+          events : {
+              'onclick' : {
+                  'text' : {
+                      'type' : typeof('')
+                  }
+              }
+          },
+          watches : {
+              'ybtn' : 'name, disabled'
+          },
+          dataLink : {
+
+          },
+          initialize : function ($yelem, $attrs) {
+			/*--------------------------------------------------------------------------------
+                 $yelem : Gets the component object. (컴포넌트 객체를 가져옵니다.)
+                 $attrs : You can get property values of component objects. (컴포넌트 객체의 속성 값을 가져올 수 있습니다.)
+                          (ex) $attrs.propName1 (Also available as this.propName1.) ( this.propName1 로도 사용 가능합니다. )
+             --------------------------------------------------------------------------------*/
+			if (this.name) {
+				$(this.child.ybtn).attr('name',this.name);
+
+			}
+
+			if ((this.styleText !== undefined)&&(this.styleText.replace(/ /g,'')!=='')) { $(this.child.ybtn).attr('style',this.styleText);}
+
+			  		  
+			// test
+			$(this.child.yimg)[0].src = '/wai/comp_user/mybtn/bt_search.gif';
+			$(this.child.ytxt)[0].innerText = 'Test';
+	
+			if (this.imgUrl) {
+				$(this.child.yimg)[0].src = this.imgUrl;
+			}
+			if (this.text) {
+				$(this.child.ytxt)[0].innerText = this.text;
+			}
+
+			if ((this.disabled === true) || (this.disabled == 'true')) {
+				$(this.child.ybtn)[0].disabled = true;
+			}
+	
+			  
+			this.container = this.child.ybtn;
+
+			// script code
+		},
+          propertyChange : function (propName, oldValue, newValue) {
+			/*--------------------------------------------------------------------------------
+                 propName : The name of the property to be changed. (변경되는 속성의 이름)
+                 oldValue : Value of the property before it is changed (변경되기 전 해당 속성의 값)
+                 newValue : The value to be changed (변경되려는 값)
+             --------------------------------------------------------------------------------*/
+			propName = propName.toUpperCase();
+			
+			if (propName == 'NAME') {
+				this.name = newValue;
+				$(this.child.ybtn).attr('name',this.name);
+			}
+			else if (propName == 'IMGURL') {
+				this.imgUrl = newValue;
+				$(this.child.yimg)[0].src = this.imgUrl;
+			}
+			else if (propName == 'TEXT') {
+				this.text = newValue;
+				$(this.child.ytxt)[0].innerText = this.text;
+			}
+			else if (propName == 'DISABLED') {
+				this.disabled = newValue;
+				if ((this.disabled === true) || (this.disabled == 'true')) {
+					$(this.child.ybtn)[0].disabled = true;
+				} else {
+					$(this.child.ybtn)[0].disabled = false;
+				}
+			}
+			else if (propName == 'STYLE') {
+				if (typeof(newValue) == 'object') {
+
+				} else if (typeof(newValue) == 'string') {
+					this.styleText = newValue;
+					$(this.child.ybtn).attr('style',newValue);
+					return this.container.style;
+				}
+			}
+			
+
+			// script code
+		},
+          elementChange : function (childName, $childElem, propName, oldValue, newValue) {
+			/*--------------------------------------------------------------------------------
+                 childName  : Element name of changed attribute = child['name'] (변경된 속성의 Element 이름 = child['이름'])
+                 $childElem : Element of changed attribute (actual object) (변경된 속성의 Element (실제 객체))
+                 propName   : Changed Attribute Name (변경된 속성 이름)
+                 oldValue   : Value before change (속성의 변경되기 이전 값)
+                 newValue   : Changed value (속성의 변경된 값)
+             --------------------------------------------------------------------------------*/
+
+			// script code
+		},
+          dsoDataChange : function (dso, dsoName, fldName, oldValue, newValue) {
+			/*--------------------------------------------------------------------------------
+                 dso      : DSO to be changed (변경되는 DSO)
+                 dsoName  : DSO name to be changed (변경되는 DSO 이름)
+                 fldName  : The field name of the DSO to be changed. (변경되는 DSO의 Field 이름)
+                 oldValue : Data value before change (변경되기 전 데이타 값)
+                 newValue : The data value to be changed (변경되려는 데이타 값)
+             --------------------------------------------------------------------------------*/
+
+			// script code
+		},
+          setStyleProp : function(pName, pValue) {
+			if ($waiRTL.checkKeyArr(pName, [])) { // Style properties you want to set. Set as ['fontSize', 'color']. (설정하고자 하는 스타일 속성 설정. ['fontSize', 'color'] 와 같이 설정)
+
+			} else {
+
+			}
+			
+			this.child.ybtn.style[pName] = pValue;
+			this.styleText = this.child.ybtn.style;
+			
+			// console.log('setStyleProp : this.child.ydate.style['+pName+'] <-- '+pValue);
+		},
+          getStyleProp : function(pName) {
+			var ret = undefined;
+			if ($waiRTL.checkKeyArr(pName, [])) { // Attributes to get style property values. Set as ['backgroundColor', 'color']. (스타일 속성값을 가져올 속성 설정. ['backgroundColor', 'color'] 와 같이 설정)
+
+			} else {
+
+			}
+			
+			ret = this.child.ybtn.style[pName];
+			
+			// console.log('getStyleProp : this.child.ydate.style['+pName+'] --> '+ret);
+			return ret;
+		},
+          destroy : function($elem, $attrs) {
+			/*--------------------------------------------------------------------------------
+                 $yelem : Gets the component object. (컴포넌트 객체를 가져옵니다.)
+                 $attrs : You can get property values of component objects. (컴포넌트 객체의 속성 값을 가져올 수 있습니다.)
+                          (ex) $attrs.propName1
+             --------------------------------------------------------------------------------*/
+
+			// script code
+		}
+	};
+	$wai.core.addComponentBase(CompBase);
+})();

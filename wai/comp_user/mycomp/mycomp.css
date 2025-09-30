@@ -1,0 +1,13 @@
+.mycomp-textbox {
+  font-size: 12px;
+  margin: 0;
+  padding: 4px;
+  white-space: normal;
+  vertical-align: top;
+  outline-style: none;
+  resize: none;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  background: url('./mycomp_img.png') no-repeat right;
+}

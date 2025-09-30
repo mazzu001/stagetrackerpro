@@ -8,6 +8,8 @@
   <link rel="icon" href="assets/images/favicon.ico">
   <link rel="icon" type="image/png" href="assets/images/favicon.png">
   <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/images/favicon.png">
+  <link rel="manifest" href="/manifest.json">
   <style>
     html, body { 
       background:#0f1419; 
@@ -30,7 +32,9 @@
       color: #f8d7da;
     }
     .viewer-wrap { 
-      width: 100%; 
+      width: 100%;
+      max-width: 800px;            /* cap width on large screens */
+      margin: 0 auto;              /* center horizontally */
       height: 100%; 
       box-sizing: border-box;
       padding: 16px;
@@ -78,7 +82,7 @@
     border: 1px solid #2b3138; 
     border-radius: 8px; 
     background: #0f1419;
-    display: block;
+    display: none; /* hidden until waveformDataUrl is applied */
     object-fit: contain;
   }
   .progress-line { 
@@ -92,7 +96,8 @@
     z-index: 5;
   }
     .line { padding: 8px 10px; border-radius:8px; margin-bottom:6px; color:#cfe0f0 }
-    .line.active { background:#24364a; color:#eaf4ff; font-weight:800; transition: background 0.2s ease-in-out; }
+  .line.active { background:#24364a; color:#eaf4ff; font-weight:800; transition: background 0.15s ease-in-out, color 0.15s ease-in-out; box-shadow: inset 0 0 0 1px rgba(111,176,255,0.25); }
+  .lyrics { scroll-behavior: smooth; }
     .line.active-highlight { animation: highlight-pulse 0.3s ease-in-out; }
     @keyframes highlight-pulse {
       0% { background:#24364a; }
@@ -325,6 +330,22 @@
       socket = null; state.room = null;
       // Keep last shown screen but stop ticking
       state.playing = false; state.updatedAt = 0;
+    }
+
+    function handleLeaveClick(evt){
+      try { evt?.preventDefault?.(); } catch(_) {}
+      // Disconnect first
+      leaveViewer();
+      // Try to close this tab/window; if blocked, redirect away
+      setTimeout(() => {
+        try { window.opener = null; } catch(_) {}
+        try { window.open('', '_self'); } catch(_) {}
+        try { window.close(); } catch(_) {}
+        // Fallback redirect if close was blocked
+        setTimeout(() => {
+          try { if (!document.hidden) location.replace('/'); } catch(_) {}
+        }, 150);
+      }, 100);
     }
 
     function formatTime(sec){ sec=Math.max(0,sec||0); const m=Math.floor(sec/60), s=Math.floor(sec%60).toString().padStart(2,'0'); return `${m}:${s}`; }
@@ -627,7 +648,6 @@
           <p style="margin-bottom: 10px; text-align: left;">2. Viewers <strong>join the broadcast</strong> using the same name</p>
           <div style="margin: 15px 0;">
             <a href="/dashboard" class="btn" style="background:#0a66c2;margin-right:10px;">Go to Dashboard</a>
-            <a href="/performance" class="btn" style="background:#28a745;margin-left:10px;">Go to Performance Page</a>
           </div>
         </div>
         <p>Enter a broadcast name to join:</p>
@@ -684,7 +704,11 @@
         console.error('[Viewer] Error parsing room parameter:', e);
         showErrorMessage('Failed to connect to broadcast. Please try again or enter a broadcast name manually below.');
       }
-      document.getElementById('leaveBtn').addEventListener('click', () => { leaveViewer(); });
+      // Ensure the button exists before wiring the handler
+      document.addEventListener('DOMContentLoaded', () => {
+        const leaveBtn = document.getElementById('leaveBtn');
+        if (leaveBtn) leaveBtn.addEventListener('click', handleLeaveClick);
+      });
       requestAnimationFrame(tick);
     });
   </script>
@@ -692,8 +716,7 @@
 <body>
   <div class="viewer-wrap">
     <div class="join">
-      <button id="leaveBtn" class="btn leave-btn">Leave Broadcast</button>
-      <a href="/performance" class="btn" style="background:#28a745;margin-left:10px;">Go to Performance Page</a>
+  <button id="leaveBtn" class="btn leave-btn">Leave Broadcast</button>
     </div>
     <div class="viewer-card">
       <div class="title" id="songTitle"></div>

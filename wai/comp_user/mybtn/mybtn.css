@@ -1,0 +1,7 @@
+/**
+ * File Name : mybtn.css
+ * Created by sampleUser on 2019-6-4.
+ */
+.mybtn {min-width:50px; padding:1px 11px 4px; border:1px solid #acb7cd; border-radius:2px; background-color:#fff; color:#8299bb; font-weight:bold !important; cursor:pointer;}
+.mybtn:hover, button:focus {border-color:#8299bb; background-color:#f6f7fb; color:#536273;}
+.mybtn:disabled {border-color:#e2e6e6 !important; background-color:#f6f7f9 !important; color:#b7c2cd !important; cursor:default;}

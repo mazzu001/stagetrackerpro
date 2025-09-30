@@ -1,0 +1,524 @@
+(function() {
+	var CompBase = {
+          declare : {
+              'tagName' : 'mycomp',
+              'template' : '<div yid="helpDiv" style="position:absolute;"><input yid="helpText" class="mycomp-textbox" type="text" autocomplete="off" placeholder=""><div yid="helpPanel" ></div></div>',
+              'replace' : true,
+              'noneVisible' : false,
+              'isDataSource' : false,
+              'type' : 'DHTML',
+              'version' : '1.0',
+              'description' : 'A tag that pops up a panel when typing a text in the input window'
+          },
+          properties : {
+              'dsoName' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'fldName' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'class' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'tabindex' : {
+                  'type' : typeof(0),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'style' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'panelStyle' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'value' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'name' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'title' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'autofocus' : {
+                  'type' : typeof(true),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'disabled' : {
+                  'type' : typeof(true),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'readonly' : {
+                  'type' : typeof(true),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'maxlength' : {
+                  'type' : typeof(0),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              },
+              'placeholder' : {
+                  'type' : typeof(''),
+                  'readonly' : false,
+                  'defaultValue' : ''
+              }
+          },
+          methods : {
+              'focus' : {
+                  'argumentCheck' : false,
+                  'methodCode' : function () {
+					$(this.child.helpText).focus();
+				}
+              },
+              'getValue' : {
+                  'argumentCheck' : false,
+                  'methodCode' : function () {
+					var getVal = $(this.child.helpText).val();
+					return getVal;
+				}
+              },
+              'setValue' : {
+                  'argumentCheck' : false,
+                  'argumentDefine' : {
+                      'value' : {
+                          'type' : 'object',
+                          'defaultValue' : {
+
+                          }
+                      }
+                  },
+                  'methodCode' : function ($args) {
+					this.child.helpText.value = $args.value;
+					this.value = $args.value;
+					$(this.child.helpPanel)[0].innerHTML = $args.value;
+				}
+              }
+          },
+          controls : {
+              'helpText' : {
+                  'blur' : function() {
+					this.value = this.child.helpText.value;
+					this.my_closePanel();
+					this.FireEvent('onblur',[],event);
+				},
+                  'focus' : function() {
+					if ($(this.child.helpPanel).css('visibility') == 'hidden') {
+						var panelLeft = this.my_getLeft(this);
+						var panelTop = this.my_getTop(this);
+						$(this.child.helpPanel).css('left', panelLeft);
+						$(this.child.helpPanel).css('top', panelTop);
+						this.my_openPanel();
+					}
+					this.FireEvent('onfocus',[],event);
+				},
+                  'click' : function() {
+					this.FireEvent('onclick',[],event);
+				},
+                  'dblclick' : function() {
+					this.FireEvent('ondblclick',[],event);
+				},
+                  'mouseover' : function() {
+					if ($(this.child.helpPanel).css('visibility') == 'hidden') {
+						var panelLeft = this.my_getLeft(this);
+						var panelTop = this.my_getTop(this);
+						$(this.child.helpPanel).css('left', panelLeft);
+						$(this.child.helpPanel).css('top', panelTop);
+						this.my_openPanel();
+					}
+					this.FireEvent('onmouseover',[],event);
+				},
+                  'mouseout' : function () {
+					if(document.activeElement != $(this.child.helpText)[0]){
+						this.my_closePanel();
+					}
+					this.FireEvent('onmouseout',[],event);
+				},
+                  'mousedown' : function() {
+					this.FireEvent('onmousedown',[],event);
+				},
+                  'mouseup' : function() {
+					this.FireEvent('onmouseup',[],event);
+				},
+                  'keydown' : function() {
+					this.FireEvent('onkeydown',[],event);
+				},
+                  'keyup' : function(evt) {
+					var event = evt.event;
+					this.child.helpPanel.innerHTML = event.currentTarget.value;
+					this.value = event.currentTarget.value;
+					this.FireEvent('onkeyup',[],event);
+				},
+                  'keypress' : function() {
+					this.FireEvent('onkeypress',[],event);
+				}
+              }
+          },
+          events : {
+              'onclick' : {
+
+              },
+              'ondblclick' : {
+
+              },
+              'onblur' : {
+
+              },
+              'onfocus' : {
+
+              },
+              'onkeydown' : {
+
+              },
+              'onkeypress' : {
+
+              },
+              'onkeyup' : {
+
+              },
+              'onmouseover' : {
+
+              },
+              'onmouseout' : {
+
+              },
+              'onmousedown' : {
+
+              },
+              'onmouseup' : {
+
+              },
+              'onShowPanel' : {
+
+              },
+              'onHidePanel' : {
+
+              }
+          },
+          watches : {
+              'helpDiv' : 'style, class',
+              'helpText' : 'class, name, value, disabled, readonly, title, autofocus, maxlength, placeholder, tabindex',
+              'helpPanel' : 'panelStyle'
+          },
+          dataLink : {
+              'dsoName' : 'dsoName',
+              'fldName' : 'fldName'
+          },
+          initialize : function ($yelem, $attrs) {
+
+			// style Setting
+			if ((this.styleText !== undefined)&&(this.styleText.replace(/ /g,'')!=='')) {
+				$(this.child.helpText).attr('style',this.styleText);
+				$(this.child.helpDiv).attr('style',this.styleText);
+				this.child.helpText.style.position = '';
+			}
+
+			if(this.panelStyle) this.child.helpPanel.style = this.panelStyle;
+			else this.child.helpPanel.style = "font-size:24px;width:300px;height:200px;position:absolute;z-index:2147483647;margin:0px;padding:10px;background-color:white; border:solid 1px #d4cfc9;visibility:hidden;";
+
+			// value Setting
+			if (this.value) {
+				this.child.helpText.value = this.value;
+				this.child.helpPanel.innerHTML = this.value;
+			}
+
+			// class Setting
+			if ((this.class !== undefined)&&(this.class.replace(/ /g,'')!='')) { $(this.child.helpText).addClass(this.class); }
+
+			// tabindex Setting
+			$(this.child.helpText).attr('tabindex',this.tabindex);
+
+			// name Setting
+			if (this.name) $(this.child.helpText).attr('name',this.name);
+
+			// title Setting
+			if ((this.title !== undefined)&&(this.title.replace(/ /g,'')!='')) { $(this.child.helpText).attr('title', this.title); }
+
+			// autofocus Setting
+			var mautofocus = this.autofocus;
+			if (mautofocus !== undefined) {
+				if (mautofocus.toUpperCase() == 'TRUE') {
+					this.autofocus = true;
+					$(this.child.helpText).attr('autofocus', true);
+					$(this.child.helpText).focus();
+				} else {
+					this.autofocus = false;
+					$(this.root).removeAttr('autofocus');
+					$(this.child.helpText).removeAttr('autofocus');
+				}
+			}
+
+			// disable,readonly Setting
+			if ((this.toBoolean($attrs.disabled)) || ($attrs.disabled == '')) {
+				this.disabled = true;
+				$(this.child.helpText).attr('disabled',true);
+			}
+			if ((this.toBoolean($attrs.readonly)) || ($attrs.readonly == '')) {
+				this.readonly = true;
+				$(this.child.helpText).attr('readonly',true);
+				$(this.child.helpText).addClass("readonly");
+			}
+
+			// maxlength Setting
+			var mmaxlength = this.maxlength;
+			if ((mmaxlength !== undefined)&&(mmaxlength.replace(/ /g,'')!='')) {
+				$(this.child.helpText).attr('maxlength', mmaxlength);
+			}
+
+			// placeholder Setting
+			var mplaceholder = this.placeholder;
+			if ((mplaceholder !== undefined)&&(mplaceholder.replace(/ /g,'')!='')) { $(this.child.helpText).attr('placeholder', mplaceholder); }
+
+			this.container = this.child.helpDiv;
+
+		},
+          propertyChange : function (propName, oldValue, newValue) {
+
+			propName = propName.toUpperCase();
+
+			if (newValue === undefined) {
+				console.warn("[",this.id,"] propertyChange Error! newValue is undefined");
+				return;
+			}
+
+			if ((propName == 'VALUE')) {
+				if ((newValue+'') == 'undefined') {
+					console.error("id[" + this.id + "] 'value' is undefined.");
+					return;
+				} else {
+					this.value = newValue;
+					this.child.helpText.value = this.value;
+					this.child.helpPanel.innerHTML = this.value;
+				}
+			}
+			else if (propName == 'NAME') {
+				this.name = newValue;
+				$(this.child.helpText).attr('name', newValue);
+			}
+			else if (propName == 'TITLE') {
+				this.title = newValue;
+				$(this.child.helpText).attr('title', newValue);
+			}
+			else if (propName == 'CLASS') {
+				this.class = newValue;
+				$(this.child.helpText).removeClass(oldValue);
+				$(this.child.helpText).addClass(newValue);
+			}
+			else if (propName == 'STYLE') {
+				if (typeof(newValue ) == 'object') {
+
+				} else if (typeof(newValue) == 'string') {
+					this.style = newValue;
+					$(this.child.helpText).attr('style', newValue);
+					$(this.child.helpDiv).attr('style', newValue);
+					this.child.helpText.style.position = '';
+					var width = parseInt(this.child.helpText.style.width);
+					var height = parseInt(this.child.helpText.style.height);
+					this.child.helpText.style.width = width - 10 + "px";
+					this.child.helpText.style.height = height - 10 + "px";
+					return this.container.style;
+				}
+			}
+			else if (propName == 'PANELSTYLE') {
+				if (typeof(newValue ) == 'object') {
+
+				} else if (typeof(newValue) == 'string') {
+					this.panelStyle = newValue;
+					$(this.child.helpPanel).attr('style', newValue);
+				}
+			}
+			else if (propName == 'TABINDEX') {
+				this.tabindex = newValue;
+				$(this.child.helpText).attr('tabindex', newValue);
+			}
+			else if (propName == 'AUTOFOCUS') {
+				this.autofocus =  this.toBoolean(newValue);
+				if (this.autofocus == true || (this.autofocus + '').toLowerCase() == 'true') { $(this.child.helpText).attr('autofocus', true); }
+				else {
+					$(this.root).removeAttr('autofocus');
+					$(this.child.helpText).removeAttr('autofocus');
+				}
+			}
+			else if (propName == 'DISABLED') {
+				this.disabled = this.toBoolean(newValue);
+				if (this.disabled == true) {
+					$(this.child.helpText).attr('disabled',true);
+					$(this.child.helpText).removeClass("readonly");
+				} else {
+					$(this.child.helpText).attr('disabled',false);
+					if (this.toBoolean(this.readonly)) {
+						$(this.child.helpText).addClass("readonly");
+					}
+				}
+			}
+			else if (propName == 'READONLY') {
+				this.readonly = this.toBoolean(newValue);
+				if (this.readonly == true) {
+					$(this.child.helpText).attr('readonly',true);
+
+					if (!this.toBoolean(this.disabled)) $(this.child.helpText).addClass("readonly");
+				} else {
+					$(this.child.helpText).attr('readonly',false);
+					$(this.child.helpText).removeClass("readonly");
+					if (this.toBoolean(this.editable) == false) {
+						$(this.child.helpText).attr('readonly', true);
+					}
+				}
+			}
+			else if (propName == 'MAXLENGTH') {
+				this.maxlength = newValue;
+				$(this.child.helpText).attr('maxlength', newValue);
+			}
+			else if (propName == 'PLACEHOLDER') {
+				this.placeholder = newValue;
+				this.child.helpText.placeholder = newValue;
+			}
+			// script code
+		},
+          elementChange : function (childName, $childElem, propName, oldValue, newValue) {
+			/*--------------------------------------------------------------------------------
+             childName  : 변경된 속성의 Element 이름 = child['이름']
+             $childElem : 변경된 속성의 Element (실제 객체)
+             propName   : 변경된 속성 이름
+             oldValue   : 속성의 변경되기 이전 값
+             newValue   : 속성의 변경된 값
+             --------------------------------------------------------------------------------*/
+
+			// script code
+		},
+          dsoDataChange : function (dso, dsoName, fldName, oldValue, newValue) {
+			try {
+				if (dso.recordset.recordCount > 0) {
+					var rec = dso.recordset.__getCurrentRec();
+					if ((this.fldName != '')&&(this.fldName == fldName)) {
+						var val = rec[this.fldName];
+						this.value = val;
+						this.child.helpText.value = this.value;
+						this.child.helpPanel.innerHTML = this.value;
+					}
+				} else {
+					this.value = '';
+					this.child.helpText.value = this.value;
+					this.child.helpPanel.innerHTML = this.value;
+				}
+			}
+			catch(E) {
+				console.warn("id[" + this.id + "] 'dsoDataChange' Error ! ");
+			}
+		},
+          setStyleProp : function(pName, pValue) {
+			if ($waiRTL.checkKeyArr(pName, [])) { // 설정하고자 하는 스타일 속성 설정. ['fontSize', 'color'] 와 같이 설정
+
+			} else {
+
+			}
+			this.child.helpDiv.style[pName] = pValue;
+			this.child.helpText.style[pName] = pValue;
+			this.child.helpText.style.position = '';
+			this.styleText = this.child.helpDiv.style;
+			// console.log('setStyleProp : this.child.ydate.style['+pName+'] <-- '+pValue);
+		},
+          getStyleProp : function(pName) {
+			var ret = this.child.helpDiv.style[pName];
+			if ($waiRTL.checkKeyArr(pName, [])) { // 스타일 속성값을 가져올 속성 설정. ['backgroundColor', 'color'] 와 같이 설정
+
+			} else {
+
+			}
+			// console.log('getStyleProp : this.child.ydate.style['+pName+'] --> '+ret);
+			return ret;
+		},
+          destroy : function($elem, $attrs) {
+			/*--------------------------------------------------------------------------------
+             $yelem : 컴포넌트 객체를 가져옵니다.
+             $attrs : 컴포넌트 객체의 속성 값을 가져올 수 있습니다.
+             (예) $attrs.propName1
+             --------------------------------------------------------------------------------*/
+
+			// script code
+		},
+          toBoolean : function(TF) {
+			if ((TF+"").toUpperCase() == 'TRUE') {
+				return true;
+			} else {
+				return false;
+			}
+		},
+          my_getLeft : function(self) {
+			var panel = $(self.child.helpPanel);
+			var helpText = $(self.child.helpText);
+			var helpDiv = $(self.child.helpDiv);
+			var elem = helpText[0];
+			var left = helpText.offset().left;
+			var rLeft;
+			if (helpDiv[0].style.position == "absolute") {
+				rLeft = elem.offsetLeft;
+				if ((left - $(document).scrollLeft() + panel._outerWidth()) > $(window)._outerWidth()) {
+					rLeft = 0
+						- (panel._outerWidth() - helpText._outerWidth())
+						+ ( $(window)._outerWidth() - left + $(document).scrollLeft() -  helpText._outerWidth());
+				}else{
+				}
+			} else {
+				rLeft = helpText.offset().left;
+				if (left + panel._outerWidth() > $(window)._outerWidth() + $(document).scrollLeft()) {
+					rLeft = $(window)._outerWidth() + $(document).scrollLeft() - panel._outerWidth();
+				}
+				if (rLeft < 0) { rLeft = 0; }
+			}
+			return rLeft;
+		},
+          my_getTop : function(self) {
+			var panel = $(self.child.helpPanel);
+			var helpText = $(self.child.helpText);
+			var helpDiv = $(self.child.helpDiv);
+
+			var elem = helpText[0];
+			var pTop;
+			if (helpDiv[0].style.position == "absolute") {
+				pTop = elem.offsetTop;
+			} else {
+				pTop = helpText.offset().top;
+			}
+			var pHeight = elem.offsetHeight;
+			var rTop = pTop + pHeight;
+			var top = helpText.offset().top + helpText._outerHeight();
+			if (top + panel._outerHeight() > $(window)._outerHeight() + $(document).scrollTop()) {
+				rTop = pTop - panel._outerHeight();
+			}
+			if (top < $(document).scrollTop()) {
+				rTop = pTop + panel._outerHeight();
+			}
+			return rTop;
+		},
+          my_openPanel : function() {
+			//console.time("openPanel");
+			$(this.child.helpPanel).css({'visibility':'visible'});
+			this.FireEvent('onShowPanel',{});
+			//console.timeEnd("openPanel");
+		},
+          my_closePanel : function() {
+			$(this.child.helpPanel).css({'visibility':'hidden'});
+			this.FireEvent('onHidePanel',{});
+		}
+	};
+	$wai.core.addComponentBase(CompBase);
+})();

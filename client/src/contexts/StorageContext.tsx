@@ -6,7 +6,7 @@ import { LocalSongStorage } from '@/lib/local-song-storage';
 interface StorageContextType {
   browserFS: BrowserFileSystem | null;
   audioStorage: AudioFileStorage | null;
-  userEmail: string;
+  userIdentifier: string;
   isInitialized: boolean;
   error: string | null;
 }
@@ -14,7 +14,7 @@ interface StorageContextType {
 const StorageContext = createContext<StorageContextType>({
   browserFS: null,
   audioStorage: null,
-  userEmail: 'default@user.com',
+  userIdentifier: 'local_user',
   isInitialized: false,
   error: null
 });
@@ -29,40 +29,39 @@ export function useStorage() {
 
 interface StorageProviderProps {
   children: ReactNode;
-  userEmail: string | null;
+  // No longer need userEmail prop - always use local storage
 }
 
-export function StorageProvider({ children, userEmail }: StorageProviderProps) {
+export function StorageProvider({ children }: StorageProviderProps) {
   const [browserFS, setBrowserFS] = useState<BrowserFileSystem | null>(null);
   const [audioStorage, setAudioStorage] = useState<AudioFileStorage | null>(null);
-  const [currentUserEmail, setCurrentUserEmail] = useState('default@user.com');
+  const [currentUserIdentifier] = useState('local_user'); // Static local identifier
   const [isInitialized, setIsInitialized] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const initializeStorage = async () => {
-      // Reset state when user changes
+      // Reset state when initializing
       setIsInitialized(false);
       setError(null);
       
-      // Determine user email (use default if not logged in)
-      const email = userEmail || 'default@user.com';
-      console.log(`🔧 Initializing storage for user: ${email}`);
-      setCurrentUserEmail(email);
+      // Use static local identifier
+      const identifier = currentUserIdentifier;
+      console.log(`🔧 Initializing storage for local user: ${identifier}`);
       
       try {
         // Step 1: Get or create BrowserFileSystem instance
-        const fs = BrowserFileSystem.getInstance(email);
+        const fs = BrowserFileSystem.getInstance(identifier);
         
         // Step 2: Check if database exists
         const dbExists = await fs.isAlreadyInitialized();
-        console.log(`📊 Database exists for ${email}: ${dbExists}`);
+        console.log(`📊 Database exists for ${identifier}: ${dbExists}`);
         
         // Step 3: Initialize (load existing or create new) - SEQUENTIAL
         if (dbExists) {
-          console.log(`📂 Loading existing database for ${email}`);
+          console.log(`📂 Loading existing database for ${identifier}`);
         } else {
-          console.log(`🆕 Creating new database for ${email}`);
+          console.log(`🆕 Creating new database for ${identifier}`);
         }
         
         const initialized = await fs.initialize();
@@ -71,7 +70,7 @@ export function StorageProvider({ children, userEmail }: StorageProviderProps) {
         }
         
         // Step 4: Get storage instances (they share the same user context)
-        const audio = AudioFileStorage.getInstance(email);
+        const audio = AudioFileStorage.getInstance(identifier);
         
         // Step 5: Initialize AudioFileStorage sequentially
         console.log('📦 Initializing AudioFileStorage sequentially...');
@@ -85,7 +84,7 @@ export function StorageProvider({ children, userEmail }: StorageProviderProps) {
         setAudioStorage(audio);
         setIsInitialized(true);
         
-        console.log(`✅ Storage initialization complete for ${email}`);
+        console.log(`✅ Storage initialization complete for ${identifier}`);
       } catch (err) {
         console.error('❌ Storage initialization failed:', err);
         setError(err instanceof Error ? err.message : 'Unknown error');
@@ -101,13 +100,13 @@ export function StorageProvider({ children, userEmail }: StorageProviderProps) {
       // Don't clear instances on unmount, they're singletons
       console.log('🧹 StorageProvider cleanup');
     };
-  }, [userEmail]); // Re-initialize when user email changes
+  }, [currentUserIdentifier]); // Re-initialize when user identifier changes
   
   return (
     <StorageContext.Provider value={{
       browserFS,
       audioStorage,
-      userEmail: currentUserEmail,
+      userIdentifier: currentUserIdentifier,
       isInitialized,
       error
     }}>

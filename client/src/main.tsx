@@ -1,5 +1,8 @@
 console.log("[MAIN.TSX] Script starting...");
 
+// Initialize mobile API fallback system FIRST (before any components load)
+import "./lib/mobile-api-fallback";
+
 // Force unregister any service workers first
 if ('serviceWorker' in navigator) {
   console.log("[MAIN.TSX] Unregistering service workers...");

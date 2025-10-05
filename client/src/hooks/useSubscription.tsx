@@ -2,88 +2,44 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from './use-toast';
 import { Crown } from 'lucide-react';
+import { useLocalAuth } from './useLocalAuth';
 
 export function useSubscription() {
   const queryClient = useQueryClient();
   const { toast } = useToast();
+  const { user, isPaidUser, isAuthenticated } = useLocalAuth();
 
-  const { data: subscriptionStatus, isLoading } = useQuery({
-    queryKey: ['/api/subscription-status'],
-    queryFn: async () => {
-      // Get user email from localStorage
-      const storedUser = localStorage.getItem('lpp_local_user');
-      let userEmail = null;
-      
-      if (storedUser) {
-        try {
-          const userData = JSON.parse(storedUser);
-          userEmail = userData.email;
-        } catch (error) {
-          console.error('Error parsing user data:', error);
-        }
-      }
-      
-      if (!userEmail) {
-        return { hasActiveSubscription: false, status: 'no_email' };
-      }
-      
-      const response = await fetch('/api/subscription-status', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: userEmail }),
-      });
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch subscription status');
-      }
-      
-      return response.json();
-    },
-    retry: 1,
-  });
+  // For beta testing: Use local auth tier instead of server subscription check
+  const subscriptionStatus = {
+    hasActiveSubscription: isPaidUser && isAuthenticated,
+    status: isPaidUser ? 'active' : 'inactive',
+    tier: 3, // Professional tier for beta testing
+    plan: 'professional',
+    subscriptionTier: 'professional'
+  };
+
+  const isLoading = false; // No server call needed for beta testing
 
   const createSubscription = useMutation({
     mutationFn: async (email: string) => {
-      // Check if user already has an active subscription first
-      const statusResponse = await fetch('/api/subscription-status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+      // For beta testing, subscription creation is simulated
+      toast({
+        title: "Beta Testing Mode",
+        description: "Subscription management is disabled in beta testing. You already have professional access!",
       });
-      
-      if (statusResponse.ok) {
-        const status = await statusResponse.json();
-        if (status.hasActiveSubscription) {
-          throw new Error('You already have an active subscription');
-        }
-      }
-      
-      const response = await fetch('/api/create-subscription', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create subscription');
-      }
-      return response.json();
+      return { success: true, message: "Beta testing - professional tier active" };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/subscription-status'] });
       toast({
-        title: "Subscription Created!",
-        description: "Welcome to Premium! You now have access to all features.",
+        title: "Professional Access Active!",
+        description: "You have unlimited access to all features in beta testing mode.",
       });
     },
     onError: (error: any) => {
       toast({
-        title: "Subscription Failed",
-        description: error.message || "Failed to create subscription",
-        variant: "destructive",
+        title: "Beta Testing Mode",
+        description: "All features are available in beta testing.",
+        variant: "default",
       });
     },
   });

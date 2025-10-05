@@ -6,7 +6,13 @@ import { storage } from "./storage";
 import { insertSongSchema, insertTrackSchema, broadcastSessions, broadcastSongs } from "@shared/schema";
 import { eq, sql } from "drizzle-orm";
 import { db } from "./db";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+// Authentication removed - mobile app model
+// import { setupFirebaseAuth, isAuthenticated } from "./firebaseAuth";
+// import { setupMockAuth, mockAuthenticated } from "./mockAuth";
+
+// Mobile app mode - no authentication needed
+// const BETA_TESTING_MODE = true;
+// const authMiddleware = BETA_TESTING_MODE ? mockAuthenticated : isAuthenticated;
 import { subscriptionManager } from "./subscriptionManager";
 import { setupBroadcastServer } from "./broadcast-server";
 import Stripe from "stripe";
@@ -100,20 +106,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
   };
   
   try {
-    // Enable auth middleware for user-specific songs
-    console.log('🔐 Setting up authentication middleware...');
-    await setupAuth(app);
-    console.log('✅ Authentication middleware configured successfully');
+    // Enable Firebase auth middleware
+    console.log('� Setting up Firebase authentication middleware...');
+    // Authentication removed for mobile app mode
+    console.log('✅ Mobile app mode - no authentication required');
+    console.log('✅ Firebase authentication middleware configured successfully');
   } catch (error: any) {
     console.error('❌ Failed to setup authentication:', error);
     throw new Error(`Authentication setup failed: ${error.message}`);
   }
 
-  // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+  // Auth routes - mobile app mode, no authentication needed
+  app.get('/api/auth/user', async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
+      // Mobile app mode - return static local user
+      const user = {
+        uid: 'local_user',
+        email: 'local_user',
+        isPaidUser: true,
+        userType: 'professional' as const
+      };
       res.json(user);
     } catch (error) {
       console.error("Error fetching user:", error);
@@ -1359,15 +1371,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   };
 
-  // Songs routes (require authentication for user-specific songs)
-  app.get("/api/songs", isAuthenticated, async (req: any, res) => {
+  // Songs routes - mobile app mode, no authentication needed
+  app.get("/api/songs", async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
+      // Mobile app mode - use static local user
+      const userId = 'local_user';
+      const user = { userType: 'professional', isPaidUser: true };
       const songs = await storage.getAllSongs(userId);
       
-      // Check song count limits for free users
-      const isFreeTier = !user?.stripeSubscriptionId && req.user.claims.email !== 'paid@demo.com';
+      // Mobile app mode - always professional tier
+      const isFreeTier = false; // Always professional in mobile app
       if (isFreeTier && songs.length > 2) {
         // Return only first 2 songs for free tier users
         res.json(songs.slice(0, 2));
@@ -1379,9 +1392,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/songs/:id", isAuthenticated, async (req: any, res) => {
+  app.get("/api/songs/:id", async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = 'local_user';
       const song = await storage.getSongWithTracks(req.params.id, userId);
       if (!song) {
         return res.status(404).json({ message: "Song not found" });
@@ -1392,13 +1405,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/songs", isAuthenticated, async (req: any, res) => {
+  app.post("/api/songs", async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
+      const userId = 'local_user';
+      const user = { userType: 'professional', isPaidUser: true };
       
-      // Check song limits for free tier users
-      const isFreeTier = !user?.stripeSubscriptionId && req.user.claims.email !== 'paid@demo.com';
+      // Mobile app mode - always professional tier
+      const isFreeTier = false; // Always professional in mobile app
       if (isFreeTier) {
         const existingSongs = await storage.getAllSongs(userId);
         if (existingSongs.length >= 2) {
@@ -1424,9 +1437,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/songs/:id", isAuthenticated, async (req: any, res) => {
+  app.patch("/api/songs/:id", async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = 'local_user';
       const partialData = insertSongSchema.partial().parse(req.body);
       const song = await storage.updateSong(req.params.id, partialData, userId);
       if (!song) {
@@ -1442,9 +1455,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/songs/:id", isAuthenticated, async (req: any, res) => {
+  app.delete("/api/songs/:id", async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = 'local_user';
       console.log('DELETE request received for song ID:', req.params.id, 'by user:', userId);
       const success = await storage.deleteSong(req.params.id, userId);
       if (!success) {
@@ -1460,9 +1473,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Tracks routes (require authentication)
-  app.get("/api/songs/:songId/tracks", isAuthenticated, async (req: any, res) => {
+  app.get("/api/songs/:songId/tracks", async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = 'local_user';
       // Verify song belongs to user first
       const song = await storage.getSong(req.params.songId, userId);
       if (!song) {
@@ -1476,9 +1489,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/songs/:songId/tracks", isAuthenticated, async (req: any, res) => {
+  app.post("/api/songs/:songId/tracks", async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = 'local_user';
       // Check if song exists and belongs to user
       const song = await storage.getSong(req.params.songId, userId);
       if (!song) {

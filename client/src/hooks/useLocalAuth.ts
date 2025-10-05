@@ -1,157 +1,124 @@
-import { useState, useEffect } from 'react';
-import { apiRequest } from '@/lib/queryClient';
+import { useState, useEffect } from "react";
 
 export type UserType = 'free' | 'premium' | 'professional';
 
-interface LocalUser {
+interface User {
+  id: string;
   email: string;
-  userType: UserType;
-  loginTime: number;
-  lastVerified?: number;
-  profilePhoto?: string | null;
+  stripeSubscriptionId?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-const STORAGE_KEY = 'lpp_local_user';
-const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+interface AuthState {
+  isLoading: boolean;
+  isAuthenticated: boolean;
+  user: User | null;
+}
 
 export function useLocalAuth() {
-  console.log("[AUTH] useLocalAuth hook called");
+  console.log('[AUTH] useLocalAuth hook called');
   
-  // Initialize state synchronously from localStorage
-  const [user, setUser] = useState<LocalUser | null>(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const userData = JSON.parse(stored) as LocalUser;
-        
-        // Migrate old 'paid' userType to 'premium' for backward compatibility
-        if ((userData.userType as any) === 'paid') {
-          userData.userType = 'premium';
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
-        }
-        
-        // Check if session is still valid (within 24 hours)
-        if (Date.now() - userData.loginTime < SESSION_DURATION) {
-          console.log("[AUTH] Valid session found:", userData.email);
-          return userData;
-        } else {
-          // Session expired, clear it
-          console.log("[AUTH] Session expired, clearing");
-          localStorage.removeItem(STORAGE_KEY);
-          return null;
-        }
-      }
-      return null;
-    } catch (error) {
-      console.error('[AUTH] Error reading localStorage:', error);
-      return null;
-    }
+  const [authState, setAuthState] = useState<AuthState>({
+    isLoading: true,
+    isAuthenticated: false,
+    user: null,
   });
 
-  // isLoading is always false since we check synchronously
-  const [isLoading, setIsLoading] = useState(false);
-
   useEffect(() => {
-    console.log("[AUTH] useEffect - auth state initialized");
+    console.log('[AUTH] useEffect - auth state initialized');
     
-    // Listen for auth changes from other tabs/windows
-    const handleStorageChange = () => {
+    // Check if user was previously "logged in" during this session
+    const savedUser = sessionStorage.getItem('testUser');
+    if (savedUser) {
       try {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          const userData = JSON.parse(stored) as LocalUser;
-          if (Date.now() - userData.loginTime < SESSION_DURATION) {
-            setUser(userData);
-          } else {
-            localStorage.removeItem(STORAGE_KEY);
-            setUser(null);
-          }
-        } else {
-          setUser(null);
-        }
+        const parsedUser = JSON.parse(savedUser);
+        console.log('🧪 TESTING: Restoring previous mock session for', parsedUser.email);
+        setAuthState({
+          isLoading: false,
+          isAuthenticated: true,
+          user: parsedUser
+        });
+        return;
       } catch (error) {
-        console.error('[AUTH] Error handling storage change:', error);
+        console.warn('Failed to parse saved user, clearing session');
+        sessionStorage.removeItem('testUser');
       }
-    };
-
-    // Listen for storage changes and custom auth events
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('auth-change', handleStorageChange);
+    }
     
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('auth-change', handleStorageChange);
-    };
+    // No saved user - show login
+    setAuthState({
+      isLoading: false,
+      isAuthenticated: false,
+      user: null
+    });
   }, []);
 
-  const login = (userType: UserType, email: string) => {
-    const userData: LocalUser = {
-      email,
-      userType,
-      loginTime: Date.now(),
-      lastVerified: Date.now()
-    };
+  const login = async (email: string, password: string) => {
+    console.log('🧪 TESTING MODE: Pure client-side mock login for', email);
     
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
-    setUser(userData);
-    
-    // Notify other components
-    window.dispatchEvent(new Event('auth-change'));
+    // Validate input
+    if (!email?.trim() || !password?.trim()) {
+      throw new Error('Email and password are required');
+    }
+
+    try {
+      // Simulate brief loading for realistic feel
+      await new Promise(resolve => setTimeout(resolve, 300));
+      
+      // Create test user with full professional access (NO API CALLS)
+      const testUser: User = {
+        id: `test-${Date.now()}`,
+        email: email.trim(),
+        stripeSubscriptionId: 'demo_professional_access', // Full access granted
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+
+      // Save to session storage for persistence during testing
+      sessionStorage.setItem('testUser', JSON.stringify(testUser));
+
+      // Update auth state
+      setAuthState({
+        isLoading: false,
+        isAuthenticated: true,
+        user: testUser
+      });
+
+      console.log('✅ TESTING: Pure client-side authentication successful with full professional access');
+      return Promise.resolve();
+      
+    } catch (error: any) {
+      console.error('❌ Mock login error:', error);
+      throw error;
+    }
   };
 
   const logout = () => {
-    // Clear all authentication data
-    localStorage.removeItem(STORAGE_KEY);
-    setUser(null);
-    
-    // Force complete reload to landing page
-    window.location.replace('/');
+    console.log('🧪 TESTING MODE: Pure client-side logout');
+    sessionStorage.removeItem('testUser');
+    setAuthState({
+      isLoading: false,
+      isAuthenticated: false,
+      user: null
+    });
   };
 
-  const upgrade = () => {
-    if (user) {
-      const upgradedUser = { ...user, userType: 'premium' as const };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(upgradedUser));
-      setUser(upgradedUser);
-    }
-  };
-
-  const forceRefreshSubscription = async () => {
-    if (!user?.email) return;
-    
-    try {
-      console.log('🔄 Force refreshing subscription status for:', user.email);
-      const response = await apiRequest('POST', '/api/verify-subscription', {
-        email: user.email
-      });
-      
-      if (response.ok) {
-        const verificationResult = await response.json();
-        console.log('✅ Force refresh result:', verificationResult.userType);
-        
-        const updatedUserData = {
-          ...user,
-          userType: verificationResult.userType as UserType,
-          lastVerified: Date.now()
-        };
-        
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedUserData));
-        setUser(updatedUserData);
-      }
-    } catch (error) {
-      console.error('❌ Error force refreshing subscription:', error);
-    }
+  const register = async (email: string, password: string) => {
+    console.log('🧪 TESTING MODE: Pure client-side mock registration for', email);
+    // Registration works the same as login in testing mode (NO API CALLS)
+    return login(email, password);
   };
 
   return {
-    user,
-    isLoading,
-    isAuthenticated: !!user,
-    isPaidUser: user?.userType === 'premium' || user?.userType === 'professional',
-    isFreeUser: user?.userType === 'free',
+    ...authState,
+    // Legacy compatibility for existing components
+    isPaidUser: true, // Always true for testing
+    isFreeUser: false, // Always false for testing  
+    userEmail: authState.user?.email,
+    userType: 'professional' as const, // Always professional for beta testing
     login,
     logout,
-    upgrade,
-    forceRefreshSubscription
+    register,
   };
 }

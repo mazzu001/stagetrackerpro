@@ -6,13 +6,14 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Cast, Users, Radio, Link2, LogOut, Upload, User, Copy, Crown, X, HelpCircle, Megaphone } from 'lucide-react';
-import { useLocalAuth } from '@/hooks/useLocalAuth';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useBroadcast } from '@/hooks/useBroadcast';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation } from 'wouter';
 
 export default function Dashboard() {
-  const { user, logout } = useLocalAuth();
+  const { user, userEmail } = useLocalStorage();
+  const logout = () => {}; // No logout needed in mobile app
   const { 
     currentRoom, 
     isHost, 

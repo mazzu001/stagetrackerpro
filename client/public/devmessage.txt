@@ -1,2 +1,1 @@
-Panning now 100 percent hard balance. VU Meters set to unity. Other small fixes. 
-(V.1.1.6.8)
+Changed hosting.

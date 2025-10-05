@@ -1,5 +1,6 @@
 import { songs, tracks, users, type Song, type InsertSong, type Track, type InsertTrack, type SongWithTracks, type User, type UpsertUser } from "@shared/schema";
 import { db } from "./db";
+import { firebaseUserStorage } from "./firebaseStorage";
 import { eq, and, isNotNull } from "drizzle-orm";
 
 export interface IStorage {
@@ -48,9 +49,9 @@ export interface IStorage {
 
 export class DatabaseStorage implements IStorage {
   constructor() {
-    console.log('DatabaseStorage initialized - using hybrid database setup');
-    console.log('- User data: Cloud PostgreSQL database');  
-    console.log('- Music data: Local SQLite database');
+    console.log('🔥 Hybrid storage initialized:');
+    console.log('  - User data: Firebase Firestore');  
+    console.log('  - Music data: Local SQLite database');
   }
 
   // Legacy methods for compatibility (no-op since data is in cloud database)
@@ -72,159 +73,45 @@ export class DatabaseStorage implements IStorage {
     console.log('setAutoSaveCallback: Data auto-saves to local SQLite database');
   }
 
-  async getAllUsersWithSubscriptions(): Promise<User[]> {
-    try {
-      const allUsers = await db.select().from(users).where(isNotNull(users.stripeSubscriptionId));
-      return allUsers;
-    } catch (error) {
-      console.error('❌ Error fetching users with subscriptions:', error);
-      return [];
-    }
-  }
-
-  async updateUserSubscription(userId: string, data: { subscriptionStatus: number; subscriptionEndDate: string | null }): Promise<void> {
-    try {
-      await db
-        .update(users)
-        .set({
-          subscriptionStatus: data.subscriptionStatus,
-          subscriptionEndDate: data.subscriptionEndDate ? new Date(data.subscriptionEndDate) : null,
-          updatedAt: new Date(),
-        })
-        .where(eq(users.id, userId));
-        
-      console.log(`✅ Updated subscription for user ${userId}: status=${data.subscriptionStatus}`);
-    } catch (error) {
-      console.error(`❌ Error updating subscription for user ${userId}:`, error);
-      throw error;
-    }
-  }
-
-  async updateUserProfilePhoto(email: string, photoData: string): Promise<User | undefined> {
-    try {
-      const [user] = await db
-        .update(users)
-        .set({
-          profilePhoto: photoData,
-          updatedAt: new Date(),
-        })
-        .where(eq(users.email, email))
-        .returning();
-      
-      console.log(`✅ Updated profile photo for user: ${email}`);
-      return user;
-    } catch (error) {
-      console.error(`❌ Error updating profile photo for ${email}:`, error);
-      throw error;
-    }
-  }
-
-  async updateUserProfile(email: string, profileData: { firstName?: string; lastName?: string; phone?: string; customBroadcastId?: string }): Promise<User | undefined> {
-    try {
-      const updateData: any = {
-        updatedAt: new Date(),
-      };
-
-      if (profileData.firstName !== undefined) updateData.firstName = profileData.firstName;
-      if (profileData.lastName !== undefined) updateData.lastName = profileData.lastName;
-      if (profileData.phone !== undefined) updateData.phone = profileData.phone;
-      if (profileData.customBroadcastId !== undefined) updateData.customBroadcastId = profileData.customBroadcastId;
-
-      const [user] = await db
-        .update(users)
-        .set(updateData)
-        .where(eq(users.email, email))
-        .returning();
-      
-      console.log(`✅ Updated profile for user: ${email}`);
-      return user;
-    } catch (error) {
-      console.error(`❌ Error updating profile for ${email}:`, error);
-      throw error;
-    }
-  }
-
-  // User operations (use PostgreSQL database)
+  // User operations (delegated to Firebase)
   async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user || undefined;
+    return await firebaseUserStorage.getUser(id);
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.email, email));
-    return user || undefined;
+    return await firebaseUserStorage.getUserByEmail(email);
   }
 
   async getUserByStripeCustomerId(customerId: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.stripeCustomerId, customerId));
-    return user || undefined;
+    return await firebaseUserStorage.getUserByStripeCustomerId(customerId);
   }
 
   async upsertUser(userData: UpsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values({
-        ...userData,
-        subscriptionStatus: userData.subscriptionStatus || 1, // Default to 1 (free)
-        updatedAt: new Date(),
-      })
-      .onConflictDoUpdate({
-        target: users.id,
-        set: {
-          ...userData,
-          subscriptionStatus: userData.subscriptionStatus || 1,
-          updatedAt: new Date(),
-        },
-      })
-      .returning();
-    
-    console.log('User upserted in database:', user.id, user.email, `subscription: ${user.subscriptionStatus}`);
-    return user;
+    return await firebaseUserStorage.upsertUser(userData);
   }
 
   async updateUserStripeInfo(id: string, stripeCustomerId: string, stripeSubscriptionId: string): Promise<User | undefined> {
-    const [user] = await db
-      .update(users)
-      .set({
-        stripeCustomerId,
-        stripeSubscriptionId,
-        subscriptionStatus: 2, // 2 = premium active
-        updatedAt: new Date(),
-      })
-      .where(eq(users.id, id))
-      .returning();
-
-    if (user) {
-      console.log('Updated user Stripe info:', id, stripeCustomerId);
-      return user;
-    } else {
-      console.error('User not found for Stripe update:', id);
-      return undefined;
-    }
+    return await firebaseUserStorage.updateUserStripeInfo(id, stripeCustomerId, stripeSubscriptionId);
   }
 
   async updateUserSubscriptionStatus(id: string, status: string, endDate: number): Promise<User | undefined> {
-    try {
-      const endDateValue = new Date(endDate * 1000);
-      
-      const [user] = await db
-        .update(users)
-        .set({ 
-          subscriptionStatus: parseInt(status),
-          subscriptionEndDate: endDateValue,
-          updatedAt: new Date()
-        })
-        .where(eq(users.id, id))
-        .returning();
-      
-      if (!user) return undefined;
-      
-      console.log('User subscription status updated:', user.id, status, endDateValue.toISOString());
-      return user;
-    } catch (error) {
-      console.error('Error updating user subscription status:', error);
-      return undefined;
-    }
+    return await firebaseUserStorage.updateUserSubscriptionStatus(id, status, endDate);
+  }
+
+  async getAllUsersWithSubscriptions(): Promise<User[]> {
+    return await firebaseUserStorage.getAllUsersWithSubscriptions();
+  }
+
+  async updateUserSubscription(userId: string, data: { subscriptionStatus: number; subscriptionEndDate: string | null }): Promise<void> {
+    return await firebaseUserStorage.updateUserSubscription(userId, data);
+  }
+
+  async updateUserProfilePhoto(email: string, photoData: string): Promise<User | undefined> {
+    return await firebaseUserStorage.updateUserProfilePhoto(email, photoData);
+  }
+
+  async updateUserProfile(email: string, profileData: { firstName?: string; lastName?: string; phone?: string; customBroadcastId?: string }): Promise<User | undefined> {
+    return await firebaseUserStorage.updateUserProfile(email, profileData);
   }
 
   // Song operations (handled locally in browser - these are no-op on server)
@@ -299,6 +186,7 @@ export class DatabaseStorage implements IStorage {
       balance: track.balance || 0,
       isMuted: track.isMuted || false,
       isSolo: track.isSolo || false,
+      muteRegions: track.muteRegions || null,
     };
   }
 

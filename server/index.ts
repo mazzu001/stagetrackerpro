@@ -440,9 +440,10 @@ app.use((req, res, next) => {
     // Enhanced server startup with comprehensive error handling
     console.log('🌐 Step 5/5: Starting server...');
     const port = parseInt(process.env.PORT || '5000', 10);
+    const host = process.platform === 'win32' ? 'localhost' : '0.0.0.0'; // Windows compatibility
     console.log(`🔍 Server configuration:`, {
       port,
-      host: '0.0.0.0',
+      host,
       environment: env,
       timestamp: new Date().toISOString()
     });
@@ -456,8 +457,8 @@ app.use((req, res, next) => {
         try {
           const serverInstance = server.listen({
             port,
-            host: "0.0.0.0",
-            reusePort: true,
+            host: host,
+            reusePort: process.platform !== 'win32', // Windows doesn't support reusePort
           }, (error?: Error) => {
             clearTimeout(startTimeout);
             
@@ -473,7 +474,7 @@ app.use((req, res, next) => {
               startupChecks.server = true;
               console.log('🎉 Step 5/5: Server started successfully!');
               log(`serving on port ${port}`);
-              console.log(`🔗 Application available at: http://0.0.0.0:${port}`);
+              console.log(`🔗 Application available at: http://${host}:${port}`);
               console.log(`🔍 Full startup summary:`, startupChecks);
               
               // Start subscription monitoring with enhanced error handling

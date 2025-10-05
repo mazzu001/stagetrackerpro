@@ -9,18 +9,18 @@ import StreamingDemo from "@/pages/streaming-demo";
 import Dashboard from "@/pages/dashboard";
 import BroadcastViewer from "@/pages/broadcast-viewer";
 import SimpleBroadcastViewer from "@/pages/broadcast-viewer-simple";
-import Subscribe from "@/pages/subscribe";
-import SubscribeRedirect from "@/pages/subscribe-redirect";
-import SubscribeFixed from "@/pages/subscribe-fixed";
-import SubscribeSimple from "@/pages/subscribe-simple";
-import SubscribeDebug from "@/pages/subscribe-debug";
-import SubscribeElementsTest from "@/pages/subscribe-elements-test";
-import SubscribeTest from "@/pages/subscribe-test";
-import Plans from "@/pages/plans";
-import Landing from "@/pages/landing";
-import Unsubscribe from "@/pages/unsubscribe";
+// Subscription pages removed - mobile app model
+// import Subscribe from "@/pages/subscribe";
+// import SubscribeRedirect from "@/pages/subscribe-redirect";
+// import SubscribeFixed from "@/pages/subscribe-fixed";
+// import SubscribeSimple from "@/pages/subscribe-simple";
+// import SubscribeDebug from "@/pages/subscribe-debug";
+// import SubscribeElementsTest from "@/pages/subscribe-elements-test";
+// import SubscribeTest from "@/pages/subscribe-test";
+// import Plans from "@/pages/plans";
+// import Unsubscribe from "@/pages/unsubscribe";
 import PrivacyPolicy from "@/pages/privacy-policy";
-import { useLocalAuth, type UserType } from '@/hooks/useLocalAuth';
+import { useLocalStorage, type UserType } from '@/hooks/useLocalStorage';
 import { useStorage } from '@/contexts/StorageContext';
 import { MidiProvider } from '@/contexts/MidiProvider';
 import { StorageProvider } from '@/contexts/StorageContext';
@@ -37,10 +37,11 @@ function AnalyticsRouter({ children }: { children: React.ReactNode }) {
 interface AppContentProps {
   isAuthenticated: boolean;
   isPaidUser: boolean;
-  user?: { email: string; userType: UserType; } | null;
+  user?: { email: string; userType?: string; } | null;
+  userType?: string;
 }
 
-function AppContent({ isAuthenticated, isPaidUser, user, userEmail, logout }: AppContentProps & { userEmail?: string; logout?: () => void }) {
+function AppContent({ isAuthenticated, isPaidUser, user, userType, userEmail }: AppContentProps & { userEmail?: string }) {
   console.log("[APP] AppContent component rendering...");
   const { isInitialized: storageInitialized } = useStorage();
   console.log("[APP] Storage initialized:", storageInitialized);
@@ -76,45 +77,35 @@ function AppContent({ isAuthenticated, isPaidUser, user, userEmail, logout }: Ap
       
       console.log(`✅ Payment completed successfully - updating ${email} to ${tier}`);
       
-      // Update subscription status immediately
+      // Update subscription status immediately (CLIENT-SIDE MODE)
       const updateSubscription = async () => {
         try {
-          // Determine subscription status based on tier
+          // Determine subscription status based on tier (always professional in mobile mode)
           const subscriptionStatus = tier === 'professional' ? 3 : tier === 'premium' ? 2 : 1;
           
-          console.log(`🔄 Making API call to update subscription: ${email} -> ${subscriptionStatus}`);
+          console.log(`� Mobile mode: subscription status set to professional (${subscriptionStatus})`);
           
-          const response = await fetch('/api/update-subscription-status', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              email: email,
-              subscriptionStatus: subscriptionStatus
-            })
-          });
+          // No API call needed - store locally
+          localStorage.setItem('user_subscription_status', subscriptionStatus.toString());
+          localStorage.setItem('user_tier', tier);
           
-          console.log(`📋 API response status: ${response.status}`);
-          const result = await response.json();
-          console.log(`📋 API response data:`, result);
+          console.log(`✅ Local storage updated: tier=${tier}, status=${subscriptionStatus}`);
           
-          if (response.ok) {
-            // Update local storage immediately  
-            const userData = localStorage.getItem('lpp_local_user');
-            if (userData) {
-              const user = JSON.parse(userData);
-              user.userType = tier;
-              localStorage.setItem('lpp_local_user', JSON.stringify(user));
-              console.log(`📱 Updated localStorage: ${user.email} -> ${tier}`);
-            }
-            
-            const tierName = tier === 'professional' ? 'Professional' : tier === 'premium' ? 'Premium' : 'Free';
-            console.log(`✅ Subscription updated to ${tierName} - updating UI state`);
-            
-            // Trigger auth change event to update components without page reload
-            window.dispatchEvent(new Event('auth-change'));
-          } else {
-            console.error('❌ Failed to update subscription status:', result);
+          // Always success in mobile mode
+          // Update local storage immediately  
+          const userData = localStorage.getItem('lpp_local_user');
+          if (userData) {
+            const user = JSON.parse(userData);
+            user.userType = tier;
+            localStorage.setItem('lpp_local_user', JSON.stringify(user));
+            console.log(`📱 Updated localStorage: ${user.email} -> ${tier}`);
           }
+          
+          const tierName = tier === 'professional' ? 'Professional' : tier === 'premium' ? 'Premium' : 'Free';
+          console.log(`✅ Subscription updated to ${tierName} - updating UI state`);
+          
+          // Trigger auth change event to update components without page reload
+          window.dispatchEvent(new Event('auth-change'));
         } catch (error) {
           console.error('❌ Error updating subscription:', error);
         }
@@ -126,15 +117,10 @@ function AppContent({ isAuthenticated, isPaidUser, user, userEmail, logout }: Ap
     }
   }, []);
 
-  // AppContent now handles the rendering based on props
+  // AppContent now handles the rendering - no authentication needed
   return (
     <TooltipProvider>
-      {!isAuthenticated ? (
-        <AnalyticsRouter>
-          <Route path="/" component={Landing} />
-          <Route path="/privacy-policy" component={PrivacyPolicy} />
-        </AnalyticsRouter>
-      ) : !storageInitialized ? (
+      {!storageInitialized ? (
         <div className="min-h-screen bg-background flex items-center justify-center">
           <div className="text-center">
             <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
@@ -143,11 +129,12 @@ function AppContent({ isAuthenticated, isPaidUser, user, userEmail, logout }: Ap
         </div>
       ) : (
         <AnalyticsRouter>
-          <Route path="/" component={() => <Performance userType={user?.userType || 'free'} userEmail={userEmail} logout={logout} />} />
+          <Route path="/" component={() => <Performance userType={userType as UserType || 'professional'} userEmail={userEmail} />} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/broadcast-viewer" component={SimpleBroadcastViewer} />
         <Route path="/broadcast-viewer-old" component={BroadcastViewer} />
         <Route path="/streaming-demo" component={StreamingDemo} />
+        {/* Subscription routes removed - mobile app model 
         <Route path="/subscribe" component={SubscribeRedirect} />
         <Route path="/subscribe-fixed" component={SubscribeFixed} />
         <Route path="/subscribe-test-elements" component={SubscribeElementsTest} />
@@ -156,9 +143,9 @@ function AppContent({ isAuthenticated, isPaidUser, user, userEmail, logout }: Ap
         <Route path="/subscribe-old" component={Subscribe} />
         <Route path="/subscribe-test" component={SubscribeTest} />
         <Route path="/plans" component={Plans} />
-        <Route path="/unsubscribe" component={Unsubscribe} />
+        <Route path="/unsubscribe" component={Unsubscribe} /> */}
         <Route path="/privacy-policy" component={PrivacyPolicy} />
-      </AnalyticsRouter>
+        </AnalyticsRouter>
       )}
       <Toaster />
       {/* UpdateNotification DISABLED - was causing constant false alerts and data loss */}
@@ -167,9 +154,9 @@ function AppContent({ isAuthenticated, isPaidUser, user, userEmail, logout }: Ap
 }
 
 function App() {
-  console.log("[APP] About to call useLocalAuth hook...");
-  const { isAuthenticated, isLoading, isPaidUser, user, logout } = useLocalAuth();
-  console.log("[APP] Auth state:", { isAuthenticated, isLoading, isPaidUser, userEmail: user?.email });
+  console.log("[APP] About to call useLocalStorage hook...");
+  const { isAuthenticated, isLoading, isPaidUser, user, userType } = useLocalStorage();
+  console.log("[APP] Auth state:", { isAuthenticated, isLoading, isPaidUser, userEmail: user?.email, userType });
 
   // Initialize Google Analytics when app loads
   useEffect(() => {
@@ -198,9 +185,9 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <StorageProvider userEmail={user?.email || null}>
+      <StorageProvider>
         <MidiProvider>
-          <AppContent isAuthenticated={isAuthenticated} isPaidUser={isPaidUser} user={user} userEmail={user?.email} logout={logout} />
+          <AppContent isAuthenticated={isAuthenticated} isPaidUser={isPaidUser} user={user} userType={userType} userEmail="local_user" />
         </MidiProvider>
       </StorageProvider>
     </QueryClientProvider>

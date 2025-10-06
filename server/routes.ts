@@ -4,7 +4,7 @@ import { createServer, type Server } from "http";
 import bcrypt from "bcrypt";
 import { storage } from "./storage";
 import { insertSongSchema, insertTrackSchema, broadcastSessions, broadcastSongs } from "@shared/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, desc } from "drizzle-orm";
 import { db } from "./db";
 // Authentication removed - mobile app model
 // import { setupFirebaseAuth, isAuthenticated } from "./firebaseAuth";
@@ -14,13 +14,12 @@ import { db } from "./db";
 // const BETA_TESTING_MODE = true;
 // const authMiddleware = BETA_TESTING_MODE ? mockAuthenticated : isAuthenticated;
 import { subscriptionManager } from "./subscriptionManager";
-import { setupBroadcastServer } from "./broadcast-server";
+import { setupBroadcastCleanup } from "./broadcast-utils";
 import Stripe from "stripe";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { promises as fsPromises } from "fs";
-import { WebSocketServer } from 'ws';
 
 let stripe: Stripe | null = null;
 let isStripeEnabled = false;
@@ -1812,11 +1811,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { id, name, hostId, hostName } = req.body;
       
+      // Normalize session ID to lowercase for consistency
+      const normalizedId = id.toLowerCase().trim();
+      
       // Upsert broadcast session - replace if exists
       await db
         .insert(broadcastSessions)
         .values({
-          id,
+          id: normalizedId,
           name,
           hostId,
           hostName,
@@ -1834,7 +1836,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         });
         
-      console.log(`📡 Created broadcast session: ${id} (${name}) by ${hostName}`);
+      console.log(`📡 Created broadcast session: ${normalizedId} (${name}) by ${hostName}`);
       res.json({ success: true, message: 'Broadcast session created' });
     } catch (error) {
       console.error('Failed to create broadcast session:', error);
@@ -1846,20 +1848,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { sessionName } = req.params;
       
+      // Normalize session name to lowercase for consistency
+      const normalizedSessionName = sessionName.toLowerCase().trim();
+      
       const session = await db
         .select()
         .from(broadcastSessions)
-        .where(sql`${broadcastSessions.id} = ${sessionName} AND ${broadcastSessions.isActive} = true`)
+        .where(sql`${broadcastSessions.id} = ${normalizedSessionName} AND ${broadcastSessions.isActive} = true`)
         .limit(1);
         
       if (session.length > 0) {
-        console.log(`📡 Broadcast session found: ${sessionName}`);
-        res.json({ 
-          exists: true, 
-          session: session[0]
-        });
+        // Check if the session is still active (less than 20 seconds since last activity)
+        const now = Date.now();
+        const lastActivity = new Date(session[0].lastActivity).getTime();
+        const isStale = now - lastActivity > 20000; // 20 seconds
+        
+        if (isStale) {
+          console.log(`📡 Broadcast session ${normalizedSessionName} is stale - last activity ${Math.floor((now - lastActivity) / 1000)}s ago`);
+          res.json({ 
+            exists: false,
+            stale: true,
+            message: 'Broadcast session exists but has expired due to inactivity'
+          });
+        } else {
+          console.log(`📡 Broadcast session found: ${normalizedSessionName}`);
+          res.json({ 
+            exists: true, 
+            session: session[0]
+          });
+        }
       } else {
-        console.log(`📡 Broadcast session not found: ${sessionName}`);
+        console.log(`📡 Broadcast session not found: ${normalizedSessionName}`);
         res.json({ exists: false });
       }
     } catch (error) {
@@ -1868,24 +1887,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Update broadcast session activity (ping)
+  app.post('/api/broadcast/:sessionId/ping', async (req, res) => {
+    try {
+      const { sessionId } = req.params;
+      const normalizedId = sessionId.toLowerCase().trim();
+      
+      // Update last activity timestamp
+      await db
+        .update(broadcastSessions)
+        .set({ lastActivity: new Date() })
+        .where(eq(broadcastSessions.id, normalizedId))
+        .where(eq(broadcastSessions.isActive, true));
+        
+      console.log(`📡 Updated broadcast activity: ${normalizedId}`);
+      res.json({ success: true, timestamp: new Date().toISOString() });
+    } catch (error) {
+      console.error('Failed to update broadcast activity:', error);
+      res.status(500).json({ error: 'Failed to update broadcast activity' });
+    }
+  });
+
   app.delete('/api/broadcast/:sessionId', async (req, res) => {
     try {
       const { sessionId } = req.params;
+      const normalizedId = sessionId.toLowerCase().trim();
       
       // First clean up all songs associated with this broadcast
       const deletedSongs = await db.delete(broadcastSongs)
-        .where(eq(broadcastSongs.broadcastId, sessionId))
+        .where(eq(broadcastSongs.broadcastId, normalizedId))
         .returning();
       
-      console.log(`🗑️ Cleaned up ${deletedSongs.length} songs for broadcast ${sessionId}`);
+      console.log(`🗑️ Cleaned up ${deletedSongs.length} songs for broadcast ${normalizedId}`);
       
       // Then mark the broadcast session as inactive
       await db
         .update(broadcastSessions)
         .set({ isActive: false })
-        .where(eq(broadcastSessions.id, sessionId));
+        .where(eq(broadcastSessions.id, normalizedId));
         
-      console.log(`📡 Ended broadcast session: ${sessionId}`);
+      console.log(`📡 Ended broadcast session: ${normalizedId}`);
       res.json({ 
         success: true, 
         message: 'Broadcast session ended', 
@@ -1963,6 +2004,79 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true, deletedCount: deletedSongs.length });
     } catch (error) {
       console.error('Error cleaning up broadcast songs:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
+  // Get broadcast info
+  app.get('/api/broadcast/:id', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const normalizedId = id.toLowerCase().trim();
+      
+      console.log(`🔍 Fetching broadcast session info: ${normalizedId}`);
+      
+      const session = await db.select()
+        .from(broadcastSessions)
+        .where(eq(broadcastSessions.id, normalizedId))
+        .limit(1);
+      
+      if (session && session.length > 0) {
+        console.log(`✅ Found broadcast session: ${normalizedId}`);
+        res.json({
+          ...session[0],
+          name: session[0].name || normalizedId,
+          hostName: session[0].hostName || 'Host'
+        });
+      } else {
+        console.log(`❌ Broadcast session not found: ${normalizedId}`);
+        res.status(404).json({ error: 'Broadcast not found' });
+      }
+    } catch (error) {
+      console.error('Error fetching broadcast info:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  
+  // Get broadcast state
+  app.get('/api/broadcast/:id/state', async (req, res) => {
+    try {
+      const { id } = req.params;
+      const normalizedId = id.toLowerCase().trim();
+      
+      console.log(`🔍 Fetching broadcast state: ${normalizedId}`);
+      
+      // First check if the broadcast exists
+      const session = await db.select()
+        .from(broadcastSessions)
+        .where(eq(broadcastSessions.id, normalizedId))
+        .limit(1);
+      
+      if (!session || session.length === 0) {
+        console.log(`❌ Broadcast session not found: ${normalizedId}`);
+        return res.status(404).json({ error: 'Broadcast not found' });
+      }
+      
+      // Now get the most recent song for this broadcast
+      const songs = await db.select()
+        .from(broadcastSongs)
+        .where(eq(broadcastSongs.broadcastId, normalizedId))
+        .orderBy(desc(broadcastSongs.createdAt))
+        .limit(1);
+      
+      const state = {
+        isActive: session[0].isActive,
+        curTime: session[0].position || 0,
+        curSong: songs.length > 0 ? songs[0].songEntryId : null,
+        isPlaying: session[0].isPlaying || false,
+        duration: songs.length > 0 ? songs[0].duration : 0,
+        lastUpdateTimestamp: session[0].lastActivity
+      };
+      
+      console.log(`✅ Broadcast state: ${JSON.stringify(state)}`);
+      res.json(state);
+    } catch (error) {
+      console.error('Error fetching broadcast state:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
@@ -2106,23 +2220,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
   console.log('✅ HTTP server created successfully');
 
-  // Setup broadcast WebSocket server
-  console.log('📡 Setting up broadcast server...');
-  const broadcastServer = setupBroadcastServer(httpServer);
-  
-  // Add upgrade handler for broadcast WebSockets only
-  httpServer.on('upgrade', (request, socket, head) => {
-    const { pathname } = new URL(request.url!, `http://${request.headers.host}`);
-    if (pathname.startsWith('/ws/broadcast/')) {
-      const wss = broadcastServer.getWebSocketServer();
-      wss.handleUpgrade(request, socket, head, (ws) => {
-        wss.emit('connection', ws, request);
-      });
-    }
-    // Otherwise, do nothing - allow Vite HMR and other WebSockets to handle
-  });
-  
-  console.log('✅ Broadcast server initialized');
+  // Setup broadcast cleanup for database-only approach
+  console.log('📡 Setting up database-only broadcast cleanup...');
+  const cleanupBroadcasts = setupBroadcastCleanup();
+  console.log('✅ Database-only broadcast system initialized');
 
   console.log('🎯 Route registration completed successfully');
   

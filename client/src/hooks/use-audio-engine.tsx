@@ -139,7 +139,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
           // Use the storage from context which is guaranteed to be initialized
           const audioStorage = storageAudioStorage || AudioFileStorage.getInstance(finalUserEmail);
           
-          // Step 2 & 3: Load all tracks with their audio URLs and mute regions
+          // Step 2 & 3: Load all tracks with their audio URLs, mute regions, and all properties
           const trackDataPromises = song.tracks.map(async (track) => {
             const audioUrl = await audioStorage.getAudioUrl(track.id);
             
@@ -161,6 +161,11 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
               id: track.id,
               name: track.name,
               url: audioUrl,
+              // Include ALL track properties for proper persistence (handle null values)
+              volume: track.volume != null ? track.volume : 50,  // Default to 50 if null/undefined
+              balance: track.balance != null ? track.balance : 0,  // Default to 0 if null/undefined
+              isMuted: track.isMuted || false,
+              isSolo: track.isSolo || false,
               muteRegions: muteRegions // Attach mute regions directly to track data
             } : null;
           });

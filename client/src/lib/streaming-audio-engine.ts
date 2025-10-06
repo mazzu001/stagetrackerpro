@@ -2,6 +2,7 @@
 // Pitch shifting libraries removed - focusing on streaming audio only
 
 import type { MuteRegion } from "@shared/schema";
+import { ensureStereoBuffer, getChannelDescription } from './audio-channel-utils';
 
 export interface StreamingTrack {
   id: string;
@@ -22,6 +23,10 @@ export interface StreamingTrack {
   leftAnalyzer?: AnalyserNode | null;
   rightAnalyzer?: AnalyserNode | null;
   postPanSplitter?: ChannelSplitterNode | null;
+  // Mono-to-stereo conversion support
+  audioBuffer?: AudioBuffer | null;
+  bufferSource?: AudioBufferSourceNode | null;
+  hasMonoConversion?: boolean;
   // Pitch shifting removed
   volume: number;
   balance: number;
@@ -51,6 +56,9 @@ export class StreamingAudioEngine {
   private scheduledGainChanges: Map<string, number[]> = new Map(); // Track scheduled gain automation IDs
   private songContext: { userEmail: string; songId: string } | null = null;
   private useEnhancedPanning: boolean = true; // Enable 100% isolation panning
+  // Add timing reference properties for AudioContext-based tracks
+  private audioContextStartTime: number = 0;
+  private playbackStartTime: number = 0;
 
   constructor() {
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -201,6 +209,12 @@ export class StreamingAudioEngine {
     // Return early if both audio element and nodes exist
     if (track.audioElement && track.gainNode) return;
     
+    // Check if we need mono-to-stereo conversion first
+    if (!track.hasMonoConversion) {
+      this.checkAndConvertMono(track);
+      return; // Conversion will call this method again when done
+    }
+    
     // Create audio element if it doesn't exist
     if (!track.audioElement) {
       try {
@@ -262,9 +276,20 @@ export class StreamingAudioEngine {
     }
     
     // Create Web Audio nodes if they don't exist
-    if (track.audioElement && !track.gainNode) {
+    if ((track.audioElement || track.audioBuffer) && !track.gainNode) {
       try {
-        track.source = this.audioContext.createMediaElementSource(track.audioElement);
+        // Choose audio source based on whether we have converted mono audio
+        if (track.audioBuffer) {
+          // Use AudioBufferSourceNode for mono-converted tracks
+          console.log(`🔧 Using AudioBufferSourceNode for converted track: ${track.name}`);
+          // Note: AudioBufferSourceNode will be created during playback
+          track.source = null; // Will be created fresh for each play
+        } else {
+          // Use MediaElementAudioSourceNode for regular stereo tracks
+          console.log(`🔧 Using MediaElementAudioSourceNode for stereo track: ${track.name}`);
+          track.source = this.audioContext.createMediaElementSource(track.audioElement!);
+        }
+        
         track.gainNode = this.audioContext.createGain();
         track.analyzerNode = this.audioContext.createAnalyser();
         
@@ -288,7 +313,10 @@ export class StreamingAudioEngine {
           track.rightAnalyzer.smoothingTimeConstant = 0.6;
           
           // Connect enhanced audio graph
-          track.source.connect(track.gainNode);
+          if (track.source) {
+            track.source.connect(track.gainNode);
+          }
+          // Note: For AudioBuffer tracks, source will be connected during playback
           track.gainNode.connect(track.channelSplitter);
           
           // Connect channels through individual gain nodes
@@ -317,7 +345,10 @@ export class StreamingAudioEngine {
           track.useEnhancedPanning = false;
           
           // Connect standard audio graph
-          track.source.connect(track.gainNode);
+          if (track.source) {
+            track.source.connect(track.gainNode);
+          }
+          // Note: For AudioBuffer tracks, source will be connected during playback
           track.gainNode.connect(track.panNode);
           track.panNode.connect(track.analyzerNode);
           track.analyzerNode.connect(this.state.masterGainNode!);
@@ -354,6 +385,47 @@ export class StreamingAudioEngine {
         track.panNode = null;
         track.analyzerNode = null;
       }
+    }
+  }
+
+  // Check if track needs mono-to-stereo conversion and apply it
+  private async checkAndConvertMono(track: StreamingTrack) {
+    try {
+      console.log(`🔍 Checking mono conversion for: ${track.name}`);
+      
+      // Fetch and decode the audio to check channel count
+      const response = await fetch(track.url);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch audio: ${response.status}`);
+      }
+      
+      const arrayBuffer = await response.arrayBuffer();
+      const originalBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      
+      console.log(`📊 Detected: ${getChannelDescription(originalBuffer)} for ${track.name}`);
+      
+      if (originalBuffer.numberOfChannels === 1) {
+        // Mono audio - convert to stereo using AudioBuffer
+        console.log(`🔧 Converting mono to stereo: ${track.name}`);
+        track.audioBuffer = ensureStereoBuffer(this.audioContext, originalBuffer);
+        track.hasMonoConversion = true;
+        
+        console.log(`✅ Converted ${track.name}: ${getChannelDescription(originalBuffer)} → ${getChannelDescription(track.audioBuffer)}`);
+        
+        // Use AudioBufferSourceNode instead of HTMLAudioElement
+        this.ensureTrackAudioNodes(track);
+      } else {
+        // Stereo audio - use normal HTMLAudioElement path
+        console.log(`✅ Stereo audio detected: ${track.name} - using standard playback`);
+        track.hasMonoConversion = true; // Mark as checked
+        this.ensureTrackAudioNodes(track);
+      }
+      
+    } catch (error) {
+      console.error(`❌ Mono conversion failed for ${track.name}:`, error);
+      // Fallback to standard audio element
+      track.hasMonoConversion = true; // Mark as checked to avoid infinite loop
+      this.ensureTrackAudioNodes(track);
     }
   }
 
@@ -432,7 +504,35 @@ export class StreamingAudioEngine {
     
     // Start all tracks simultaneously
     const playPromises = this.state.tracks.map(track => {
-      if (track.audioElement) {
+      if (track.audioBuffer) {
+        // Handle AudioBufferSourceNode for converted mono tracks
+        try {
+          console.log(`🎵 Starting AudioBuffer track: ${track.name}`);
+          
+          // Stop existing buffer source if any
+          if (track.bufferSource) {
+            track.bufferSource.stop();
+            track.bufferSource.disconnect();
+          }
+          
+          // Create new buffer source
+          track.bufferSource = this.audioContext.createBufferSource();
+          track.bufferSource.buffer = track.audioBuffer;
+          
+          // Connect to gain node
+          track.bufferSource.connect(track.gainNode!);
+          
+          // Start from current time
+          const safeOffset = Math.min(this.state.currentTime, track.audioBuffer.duration - 0.1);
+          track.bufferSource.start(0, safeOffset);
+          
+          return Promise.resolve();
+        } catch (error) {
+          console.warn(`⚠️ Failed to start AudioBuffer track ${track.name}:`, error);
+          return Promise.resolve();
+        }
+      } else if (track.audioElement) {
+        // Handle HTMLAudioElement for regular stereo tracks
         try {
           track.audioElement.currentTime = this.state.currentTime;
           return track.audioElement.play().catch(err => {
@@ -451,6 +551,11 @@ export class StreamingAudioEngine {
     await Promise.allSettled(playPromises);
     
     this.state.isPlaying = true;
+    
+    // Store timing reference for AudioContext-based tracks
+    this.audioContextStartTime = this.audioContext.currentTime;
+    this.playbackStartTime = this.state.currentTime;
+    
     this.startTimeTracking();
     
     // Always reschedule mute regions when playing to ensure they're applied
@@ -469,7 +574,17 @@ export class StreamingAudioEngine {
 
   pause() {
     this.state.tracks.forEach(track => {
-      if (track.audioElement) {
+      if (track.bufferSource) {
+        // Stop AudioBufferSourceNode for converted mono tracks (can't pause, must stop)
+        try {
+          track.bufferSource.stop();
+          track.bufferSource.disconnect();
+          track.bufferSource = null;
+        } catch (error) {
+          console.warn(`⚠️ Error pausing AudioBuffer track ${track.name}:`, error);
+        }
+      } else if (track.audioElement) {
+        // Pause HTMLAudioElement for regular tracks
         track.audioElement.pause();
       }
     });
@@ -483,7 +598,17 @@ export class StreamingAudioEngine {
 
   stop() {
     this.state.tracks.forEach(track => {
-      if (track.audioElement) {
+      if (track.bufferSource) {
+        // Stop AudioBufferSourceNode for converted mono tracks
+        try {
+          track.bufferSource.stop();
+          track.bufferSource.disconnect();
+          track.bufferSource = null;
+        } catch (error) {
+          console.warn(`⚠️ Error stopping AudioBuffer track ${track.name}:`, error);
+        }
+      } else if (track.audioElement) {
+        // Stop HTMLAudioElement for regular tracks
         track.audioElement.pause();
         track.audioElement.currentTime = 0;
       }
@@ -502,13 +627,35 @@ export class StreamingAudioEngine {
     
     // Sync all tracks to new time
     this.state.tracks.forEach(track => {
-      if (track.audioElement) {
+      if (track.bufferSource) {
+        // For AudioBufferSourceNode tracks, we need to restart playback from new position
+        if (this.state.isPlaying) {
+          try {
+            track.bufferSource.stop();
+            track.bufferSource.disconnect();
+            
+            // Create new buffer source
+            track.bufferSource = this.audioContext.createBufferSource();
+            track.bufferSource.buffer = track.audioBuffer!;
+            track.bufferSource.connect(track.gainNode!);
+            
+            // Start from new position
+            const safeOffset = Math.min(this.state.currentTime, track.audioBuffer!.duration - 0.1);
+            track.bufferSource.start(0, safeOffset);
+          } catch (error) {
+            console.warn(`⚠️ Error seeking AudioBuffer track ${track.name}:`, error);
+          }
+        }
+      } else if (track.audioElement) {
+        // For HTMLAudioElement tracks, just set currentTime
         track.audioElement.currentTime = this.state.currentTime;
       }
     });
     
-    // Reschedule mute regions from new position if playing
+    // Update timing references if playing (for AudioContext-based timing)
     if (this.state.isPlaying) {
+      this.audioContextStartTime = this.audioContext.currentTime;
+      this.playbackStartTime = this.state.currentTime;
       this.scheduleAllMuteRegions(this.state.currentTime);
     }
     
@@ -711,31 +858,35 @@ export class StreamingAudioEngine {
     
     // Schedule mute regions that are relevant from current playback position
     track.muteRegions.forEach(region => {
-      const regionStartTime = this.audioContext.currentTime + Math.max(0, region.start - currentTime);
-      const regionEndTime = this.audioContext.currentTime + Math.max(0, region.end - currentTime);
+      try {
+        const regionStartTime = this.audioContext.currentTime + Math.max(0, region.start - currentTime);
+        const regionEndTime = this.audioContext.currentTime + Math.max(0, region.end - currentTime);
 
-      // Only schedule future events
-      if (region.end > currentTime && track.gainNode) {
-        // If we're currently in a mute region, start muted
-        if (region.start <= currentTime && region.end > currentTime) {
-          track.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-          console.log(`  📍 Currently IN mute region (${region.start.toFixed(1)}s-${region.end.toFixed(1)}s), muting immediately`);
-          scheduledCount++;
+        // Only schedule future events
+        if (region.end > currentTime && track.gainNode) {
+          // If we're currently in a mute region, start muted
+          if (region.start <= currentTime && region.end > currentTime) {
+            track.gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+            console.log(`  📍 Currently IN mute region (${region.start.toFixed(1)}s-${region.end.toFixed(1)}s), muting immediately`);
+            scheduledCount++;
+          }
+          
+          // Schedule mute start (if in future)
+          if (region.start > currentTime) {
+            track.gainNode.gain.setValueAtTime(0, regionStartTime);
+            console.log(`  📍 Scheduled mute START at ${region.start.toFixed(1)}s`);
+            scheduledCount++;
+          }
+          
+          // Schedule mute end (if in future) 
+          if (region.end > currentTime) {
+            track.gainNode.gain.setValueAtTime(baseGain, regionEndTime);
+            console.log(`  📍 Scheduled mute END at ${region.end.toFixed(1)}s`);
+            scheduledCount++;
+          }
         }
-        
-        // Schedule mute start (if in future)
-        if (region.start > currentTime) {
-          track.gainNode.gain.setValueAtTime(0, regionStartTime);
-          console.log(`  📍 Scheduled mute START at ${region.start.toFixed(1)}s`);
-          scheduledCount++;
-        }
-        
-        // Schedule mute end (if in future) 
-        if (region.end > currentTime) {
-          track.gainNode.gain.setValueAtTime(baseGain, regionEndTime);
-          console.log(`  📍 Scheduled mute END at ${region.end.toFixed(1)}s`);
-          scheduledCount++;
-        }
+      } catch (error) {
+        console.error(`❌ Failed to schedule mute region ${region.start}-${region.end} for ${track.name}:`, error);
       }
     });
 
@@ -873,24 +1024,38 @@ export class StreamingAudioEngine {
     this.updateInterval = window.setInterval(() => {
       if (this.state.isPlaying) {
         if (this.state.tracks.length > 0) {
-          // Use the first track as time reference
-          const firstTrack = this.state.tracks[0];
-          if (firstTrack.audioElement) {
-            const currentTime = firstTrack.audioElement.currentTime;
-            this.state.currentTime = currentTime;
-            
-            // Check if song has reached its end (with tolerance for timing precision)
-            const tolerance = 0.1; // 100ms tolerance to catch songs that end slightly early
-            if (this.state.duration > 0 && currentTime >= (this.state.duration - tolerance)) {
-              console.log(`🔄 Song ended automatically at ${currentTime.toFixed(2)}s (duration: ${this.state.duration.toFixed(2)}s), triggering callback`);
-              // Use callback if available (same path as stop button), otherwise fall back to direct stop
-              if (this.onSongEndCallback) {
-                this.onSongEndCallback();
-              } else {
-                this.stop();
-              }
-              return; // Exit early
+          // Find the best time reference source
+          let currentTime = 0;
+          let timeSourceFound = false;
+          
+          // First try to find an HTMLAudioElement track (most accurate)
+          for (const track of this.state.tracks) {
+            if (track.audioElement && !track.hasMonoConversion) {
+              currentTime = track.audioElement.currentTime;
+              timeSourceFound = true;
+              break;
             }
+          }
+          
+          // If no HTMLAudioElement found, use AudioContext timing for converted tracks
+          if (!timeSourceFound) {
+            const elapsed = this.audioContext.currentTime - this.audioContextStartTime;
+            currentTime = this.playbackStartTime + elapsed;
+          }
+          
+          this.state.currentTime = currentTime;
+          
+          // Check if song has reached its end (with tolerance for timing precision)
+          const tolerance = 0.1; // 100ms tolerance to catch songs that end slightly early
+          if (this.state.duration > 0 && currentTime >= (this.state.duration - tolerance)) {
+            console.log(`🔄 Song ended automatically at ${currentTime.toFixed(2)}s (duration: ${this.state.duration.toFixed(2)}s), triggering callback`);
+            // Use callback if available (same path as stop button), otherwise fall back to direct stop
+            if (this.onSongEndCallback) {
+              this.onSongEndCallback();
+            } else {
+              this.stop();
+            }
+            return; // Exit early
           }
         } else {
           // No tracks - manually increment time for transport controls

@@ -1,182 +1,232 @@
-import { useState, useEffect, useCallback } from 'react';
-import { broadcastService, type BroadcastState, type BroadcastRoom } from '@/lib/broadcast-service';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import {
+  createBroadcast,
+  updateBroadcast,
+  subscribeToBroadcast,
+  getBroadcast,
+  type BroadcastData
+} from '@/lib/broadcast-firebase';
+import { 
+  normalizeBroadcastName, 
+  isBroadcastActive 
+} from '@/lib/broadcast-utils';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
-// Simple hook that overlays existing functionality without breaking it
+// Updated hook that uses database polling instead of WebSockets
 export function useBroadcast() {
-  const [broadcastState, setBroadcastState] = useState<BroadcastState | null>(null);
-  const [currentRoom, setCurrentRoom] = useState<BroadcastRoom | null>(null);
+  const [broadcastState, setBroadcastState] = useState<BroadcastData | null>(null);
+  const [currentRoom, setCurrentRoom] = useState<string | null>(null);
   const [isHost, setIsHost] = useState(false);
   const [isViewer, setIsViewer] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const { user } = useLocalStorage();
 
   useEffect(() => {
-    // Subscribe to broadcast updates (viewer mode)
-    const unsubscribeState = broadcastService.onStateChange((state) => {
-      console.log('📺 useBroadcast received state update:', state);
-      setBroadcastState(state);
-      setIsViewer(true);
-      setIsHost(false);
-    });
-
-    // Subscribe to room info updates
-    const unsubscribeRoom = broadcastService.onRoomChange((room) => {
-      console.log('📺 Room changed, setting viewer state:', room);
-      console.log('📺 Current state - isHost:', broadcastService.getIsHost(), 'roomId:', broadcastService.getRoomId());
-      setCurrentRoom(room);
-      // Let the explicit joinBroadcast/startBroadcast callbacks handle the isViewer/isHost state
-      // This prevents race conditions between room updates and explicit state setting
-    });
-
-    // Check initial state
-    const serviceIsHost = broadcastService.getIsHost();
-    console.log('🔍 Initial service isHost check:', { 
-      serviceIsHost, 
-      serviceConnected: broadcastService.getIsConnected(),
-      serviceRoomId: broadcastService.getRoomId()
-    });
-    setIsHost(serviceIsHost);
-    
-    // Check for fallback broadcast in localStorage (for cross-device consistency)
-    const fallbackBroadcast = localStorage.getItem('fallback_broadcast');
-    const fallbackViewer = localStorage.getItem('fallback_viewer');
-    
-    if (fallbackBroadcast) {
-      try {
-        const broadcastData = JSON.parse(fallbackBroadcast);
-        const now = Date.now();
-        // Only restore if less than 24 hours old
-        if (now - broadcastData.timestamp < 24 * 60 * 60 * 1000) {
-          console.log('🎭 Restored fallback broadcast from localStorage:', broadcastData);
-          console.log('🎭 Setting isHost to true via fallback broadcast restore');
-          setIsHost(true);
-          setCurrentRoom({
-            id: broadcastData.roomId,
-            name: broadcastData.broadcastName,
-            hostId: broadcastData.userId,
-            hostName: broadcastData.userName,
-            participantCount: 1,
-            isActive: true
-          });
-        }
-      } catch (error) {
-        console.warn('Failed to restore fallback broadcast:', error);
-      }
-    } else if (fallbackViewer) {
-      try {
-        const viewerData = JSON.parse(fallbackViewer);
-        const now = Date.now();
-        // Only restore if less than 24 hours old
-        if (now - viewerData.timestamp < 24 * 60 * 60 * 1000) {
-          console.log('📺 Restored fallback viewer from localStorage:', viewerData);
-          setIsViewer(true);
-          setCurrentRoom({
-            id: viewerData.roomId,
-            name: viewerData.broadcastName,
-            hostId: 'unknown',
-            hostName: 'Unknown Host',
-            participantCount: 2,
-            isActive: true
-          });
-        }
-      } catch (error) {
-        console.warn('Failed to restore fallback viewer:', error);
-      }
-    }
-    
+    // Clean up on unmount
     return () => {
-      unsubscribeState();
-      unsubscribeRoom();
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, []);
 
-  // Host: Start broadcasting current performance state
-  const startBroadcast = useCallback(async (userId: string, userName: string, broadcastName: string) => {
-    console.log('🎭 Starting broadcast:', { userId, userName, broadcastName });
-    const roomId = await broadcastService.startBroadcast(userId, userName, broadcastName);
-    console.log('🎭 Broadcast started, roomId:', roomId);
+  // Host: Start broadcasting
+  const startBroadcast = useCallback(async (broadcastName: string) => {
+    // Normalize the broadcast name for consistency
+    const normalizedName = normalizeBroadcastName(broadcastName);
+    
+    // Create broadcast in Firebase
+    await createBroadcast(normalizedName);
+    
+    // Set up polling interval for broadcasting state
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    
+    // Mark as connected immediately since we're just using the database
+    setIsConnected(true);
+    console.log('✅ Host broadcast initialized in database:', normalizedName);
+    
     setIsHost(true);
     setIsViewer(false);
-    console.log('🎭 Set as host, isHost:', true);
-    return roomId;
-  }, []);
+    setCurrentRoom(normalizedName);
+    
+    // Set up interval to regularly update the "heartbeat" of the broadcast
+    // This ensures viewers can detect if the host is still active
+    intervalRef.current = setInterval(() => {
+      if (isHost && currentRoom) {
+        // Update Firebase with timestamp
+        updateBroadcast(currentRoom, {
+          lastUpdateTimestamp: Date.now(),
+          isActive: true
+        }).catch(err => {
+          console.error('❌ Error updating broadcast heartbeat in Firebase:', err);
+        });
+        
+        // Also ping the server to update session activity
+        fetch(`/api/broadcast/${encodeURIComponent(currentRoom)}/ping`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        }).catch(err => {
+          console.error('❌ Error pinging broadcast server:', err);
+        });
+      }
+    }, 5000); // Update every 5 seconds
+    
+    return broadcastName;
+  }, [user?.email, isHost, currentRoom]);
 
   // Viewer: Join someone's broadcast
-  const joinBroadcast = useCallback(async (roomId: string, userId: string, userName: string) => {
-    console.log('🎵 Joining broadcast:', { roomId, userId, userName });
-    const success = await broadcastService.joinBroadcast(roomId, userId, userName);
-    console.log('🎵 Join result:', success);
-    if (success) {
-      setIsViewer(true);
-      setIsHost(false);
-      console.log('🎵 Set as viewer, isViewer:', true);
-      
-      // Persist viewer state in localStorage as backup
-      localStorage.setItem('broadcast_viewer_state', JSON.stringify({
-        isViewer: true,
-        broadcastName: roomId,
-        userId,
-        userName,
-        timestamp: Date.now()
-      }));
-    }
-    return success;
-  }, []);
-
-  // Host: Send current performance state to viewers
-  const sendPerformanceState = useCallback((currentState: {
-    currentSong?: string;
-    songTitle?: string;
-    position: number;
-    isPlaying: boolean;
-    currentLyricLine?: string;
-    waveformProgress: number;
-  }) => {
-    // Always check the actual service state, not just the hook state
-    const actualIsHost = broadcastService.getIsHost();
-    const actualConnected = broadcastService.getIsConnected();
+  const joinBroadcast = useCallback((broadcastName: string) => {
+    // Normalize the broadcast name for consistency
+    const normalizedName = normalizeBroadcastName(broadcastName);
     
-    console.log('🎭 sendPerformanceState called:', { 
-      hookIsHost: isHost, 
-      serviceIsHost: actualIsHost,
-      serviceConnected: actualConnected,
-      currentState 
+    // Clean up any existing interval
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+    
+    setIsViewer(true);
+    setIsHost(false);
+    setCurrentRoom(normalizedName);
+    
+    // First get initial state
+    getBroadcast(normalizedName)
+      .then(data => {
+        if (data && isBroadcastActive(data)) {
+          setBroadcastState(data);
+          setIsConnected(true);
+          console.log('✅ Viewer broadcast connection established to:', normalizedName);
+        } else if (data) {
+          console.error('❌ Broadcast exists but is inactive:', normalizedName);
+          setIsConnected(false);
+        } else {
+          console.error('❌ Broadcast not found:', normalizedName);
+          setIsConnected(false);
+        }
+      })
+      .catch(error => {
+        console.error('❌ Error joining broadcast:', error);
+        setIsConnected(false);
+      });
+    
+    // Set up polling interval to check for updates every second
+    intervalRef.current = setInterval(() => {
+      // Skip polling if we're not connected or no room is selected
+      if (!isConnected || !currentRoom) return;
+      
+      getBroadcast(normalizedName)
+        .then(data => {
+          if (data && isBroadcastActive(data)) {
+            // Update state with fresh data
+            setBroadcastState(data);
+          } else {
+            // If data is missing, stale or inactive, broadcast has ended
+            console.log('📺 Broadcast is no longer active:', normalizedName);
+            if (isConnected) {
+              setIsConnected(false);
+            }
+          }
+        })
+        .catch(error => {
+          console.error('❌ Error polling broadcast:', error);
+          if (isConnected) {
+            setIsConnected(false);
+          }
+        });
+    }, 1000); // Poll every second
+    
+    // Return cleanup function
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [isConnected, currentRoom, user?.email]);
+
+  // Host: Send current performance state to viewers (periodic update)
+  const sendPerformanceState = useCallback((currentState: BroadcastData) => {
+    if (!isHost || !currentRoom) return;
+    
+    // Update Firebase with current state and timestamp
+    updateBroadcast(currentRoom, {
+      ...currentState,
+      lastUpdateTimestamp: Date.now() // Add timestamp for viewers to check freshness
     });
     
-    if (actualIsHost && actualConnected) {
-      console.log('🎭 About to call broadcastService.sendState with:', currentState);
-      broadcastService.sendState(currentState);
-      console.log('🎭 Finished calling broadcastService.sendState');
-    } else {
-      console.log('🎭 Not sending - service state check failed:', { 
-        hookIsHost: isHost,
-        serviceIsHost: actualIsHost,
-        serviceConnected: actualConnected,
-        reason: !actualIsHost ? 'Service not host' : 'Service not connected'
-      });
-    }
-  }, [isHost]);
+    console.log('📡 Broadcasting state updated in database:', {
+      song: currentState.curSong,
+      position: currentState.curTime
+    });
+  }, [isHost, currentRoom]);
 
-  // Leave broadcast (host or viewer)  
+  // Leave broadcast (host or viewer)
   const leaveBroadcast = useCallback(() => {
-    broadcastService.disconnect();
     setBroadcastState(null);
-    localStorage.removeItem('broadcast_viewer_state');
     setCurrentRoom(null);
     setIsHost(false);
     setIsViewer(false);
-  }, []);
+    setIsConnected(false);
+    
+    // Clear polling interval
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    
+    // If we were a host, update the broadcast to inactive
+    if (isHost && currentRoom) {
+      updateBroadcast(currentRoom, {
+        isActive: false,
+        lastUpdateTimestamp: Date.now()
+      }).catch(err => {
+        console.error('❌ Error marking broadcast as inactive:', err);
+      });
+    }
+  }, [isHost, currentRoom]);
+
+  // Helper to clean up resources
+  const cleanup = useCallback(() => {
+    if (isHost && currentRoom) {
+      // Mark the broadcast as inactive in the database
+      updateBroadcast(currentRoom, { 
+        isActive: false,
+        lastUpdateTimestamp: Date.now()
+      }).catch(err => {
+        console.error('❌ Error marking broadcast as inactive:', err);
+      });
+      
+      // Also update server-side status
+      fetch(`/api/broadcast/${encodeURIComponent(currentRoom)}`, {
+        method: 'DELETE'
+      }).catch(err => {
+        console.error('❌ Error marking broadcast as inactive on server:', err);
+      });
+    }
+    
+    // Clear intervals
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, [isHost, currentRoom]);
+  
+  // Make sure to clean up on unmount
+  useEffect(() => {
+    return cleanup;
+  }, [cleanup]);
 
   return {
     // State
     broadcastState,     // What viewers see from broadcaster
-    currentRoom,        // Current broadcast room info
+    currentRoom,        // Current broadcast room name
     isHost,            // Am I broadcasting?
     isViewer,          // Am I viewing someone's broadcast?
-    isConnected: broadcastService.getIsConnected(),
+    isConnected,       // Is database connection active?
 
     // Actions
     startBroadcast,     // Start broadcasting
-    joinBroadcast,      // Join someone's broadcast
+    joinBroadcast,      // Join someone's broadcast (returns unsubscribe)
     sendPerformanceState, // Send state to viewers (host only)
-    leaveBroadcast      // Disconnect
+    leaveBroadcast,     // Disconnect
+    cleanup            // Explicit cleanup function
   };
 }

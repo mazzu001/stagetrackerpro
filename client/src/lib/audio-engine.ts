@@ -1,4 +1,5 @@
-import type { SongWithTracks, Track } from "@shared/schema";
+import type { SongWithTracks, Track, MuteRegion } from "@shared/schema";
+import { ensureStereoBuffer, getChannelDescription } from './audio-channel-utils';
 import { AudioFileStorage } from "./audio-file-storage";
 import { waveformGenerator } from "./waveform-generator";
 import { LocalSongStorage } from "./local-song-storage";
@@ -625,7 +626,7 @@ class TrackController {
 
   async load(): Promise<void> {
     try {
-      console.log(`⚡ INSTANT LOAD: ${this.track.name}`);
+      console.log(`⚡ PROPER LOAD: ${this.track.name} - decode → detect → convert → play`);
       
       const audioStorage = AudioFileStorage.getInstance();
       const audioUrl = await audioStorage.getAudioUrl(this.track.id);
@@ -633,27 +634,60 @@ class TrackController {
         throw new Error(`Audio file not available for ${this.track.name}`);
       }
       
-      // INSTANT PLAYBACK: Use HTMLAudioElement for zero-delay start
-      const audioElement = new Audio(audioUrl);
-      audioElement.preload = 'auto';
-      audioElement.crossOrigin = 'anonymous';
+      console.log(`🔗 Audio URL: ${audioUrl}`);
       
-      // Create MediaElementSource for Web Audio integration
-      const source = this.audioContext.createMediaElementSource(audioElement);
-      source.connect(this.gainNode);
+      // CORRECT APPROACH: Always decode and convert FIRST
+      await this.decodeAndConvertAudio(audioUrl);
       
-      // Store references for instant playback
-      (this as any).audioElement = audioElement;
-      (this as any).mediaSource = source;
-      (this as any).isInstantReady = true;
-      
-      console.log(`✅ INSTANT READY: ${this.track.name} - zero decode delay`);
-      
-      // Background decode for waveform/advanced features (non-blocking)
-      this.backgroundDecode(audioUrl);
+      if (this.audioBuffer) {
+        console.log(`✅ READY: ${this.track.name} - ${this.audioBuffer.numberOfChannels} channels, ${this.audioBuffer.duration.toFixed(2)}s`);
+      } else {
+        console.error(`❌ No audio buffer after decode for ${this.track.name}`);
+      }
       
     } catch (error) {
-      console.error(`❌ Instant load failed for ${this.track.name}:`, error);
+      console.error(`❌ Load failed for ${this.track.name}:`, error);
+      throw error;
+    }
+  }
+  
+  /**
+   * CORRECT APPROACH: Decode → Detect → Convert → Ready
+   * This ensures ALL audio goes through proper mono-to-stereo conversion
+   */
+  private async decodeAndConvertAudio(audioUrl: string): Promise<void> {
+    try {
+      console.log(`🔄 Decode and convert: ${this.track.name}`);
+      
+      // 1. FETCH the audio file
+      const response = await fetch(audioUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch audio: ${response.status} ${response.statusText}`);
+      }
+      
+      const arrayBuffer = await response.arrayBuffer();
+      if (arrayBuffer.byteLength === 0) {
+        throw new Error(`Empty audio file received`);
+      }
+      
+      // 2. DECODE the audio data
+      const decodePromise = this.audioContext.decodeAudioData(arrayBuffer);
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Audio decode timeout')), 10000);
+      });
+      
+      const originalBuffer = await Promise.race([decodePromise, timeoutPromise]) as AudioBuffer;
+      
+      // 3. DETECT mono/stereo and CONVERT if needed
+      console.log(`📊 Detected: ${getChannelDescription(originalBuffer)} audio`);
+      
+      // 4. CONVERT using our proven conversion utility
+      this.audioBuffer = ensureStereoBuffer(this.audioContext, originalBuffer);
+      
+      console.log(`✅ Converted: ${getChannelDescription(originalBuffer)} → ${getChannelDescription(this.audioBuffer)}`);
+      
+    } catch (error) {
+      console.error(`❌ Decode/convert failed for ${this.track.name}:`, error);
       throw error;
     }
   }
@@ -678,9 +712,13 @@ class TrackController {
       const timeoutPromise = new Promise((_, reject) => {
         setTimeout(() => reject(new Error('Audio decode timeout')), 10000); // 10 second timeout
       });
+
+      const originalBuffer = await Promise.race([decodePromise, timeoutPromise]) as AudioBuffer;
       
-      this.audioBuffer = await Promise.race([decodePromise, timeoutPromise]) as AudioBuffer;
-      console.log(`🎵 Background decode complete: ${this.track.name}`);
+      // Apply mono-to-stereo conversion for consistent playback
+      this.audioBuffer = ensureStereoBuffer(this.audioContext, originalBuffer);
+      
+      console.log(`🎵 Background decode complete: ${this.track.name} (${getChannelDescription(originalBuffer)} → ${getChannelDescription(this.audioBuffer)})`);
     } catch (error) {
       console.warn(`⚠️ Background decode failed for ${this.track.name}:`, error);
       // Don't crash - just continue without the decoded buffer
@@ -689,18 +727,15 @@ class TrackController {
   }
 
   play(offset: number = 0): void {
-    // INSTANT PLAYBACK: Use audioElement if available for zero delay
-    if ((this as any).audioElement && (this as any).isInstantReady) {
-      const audioElement = (this as any).audioElement as HTMLAudioElement;
-      audioElement.currentTime = offset;
-      audioElement.play().catch(error => {
-        console.warn(`Instant play failed for ${this.track.name}:`, error);
-      });
+    console.log(`🎵 PLAY REQUEST: ${this.track.name}, offset: ${offset}`);
+    
+    // ALWAYS use properly decoded and converted AudioBuffer
+    if (!this.audioBuffer) {
+      console.error(`❌ No audio buffer available for ${this.track.name}, cannot play`);
       return;
     }
-    
-    // Fallback to buffer source (for advanced features)
-    if (!this.audioBuffer) return;
+
+    console.log(`📊 Audio buffer: ${this.audioBuffer.numberOfChannels} channels, ${this.audioBuffer.duration.toFixed(2)}s`);
 
     // Stop any existing source
     if (this.sourceNode) {
@@ -713,25 +748,20 @@ class TrackController {
     this.sourceNode.buffer = this.audioBuffer;
     this.sourceNode.connect(this.gainNode);
     
+    console.log(`🔗 Connected: AudioBufferSource → GainNode (${this.gainNode.gain.value})`);
+    
     // Start playback from the current position
     try {
       const safeOffset = Math.min(offset, this.audioBuffer.duration - 0.1);
       this.sourceNode.start(0, safeOffset);
-      console.log(`Track ${this.track.name} started via buffer source`);
+      console.log(`✅ STARTED: ${this.track.name} with ${this.audioBuffer.numberOfChannels} channel buffer`);
     } catch (error) {
-      console.warn(`Failed to start track ${this.track.name} at offset ${offset}:`, error);
+      console.error(`❌ Failed to start track ${this.track.name}:`, error);
     }
   }
 
   pause(): void {
-    // INSTANT PAUSE: Use audioElement if available
-    if ((this as any).audioElement) {
-      const audioElement = (this as any).audioElement as HTMLAudioElement;
-      audioElement.pause();
-      return;
-    }
-    
-    // Fallback to buffer source
+    // Use AudioBuffer source only
     if (this.sourceNode) {
       try {
         this.sourceNode.stop();
@@ -745,15 +775,7 @@ class TrackController {
   }
 
   stop(): void {
-    // INSTANT STOP: Use audioElement if available
-    if ((this as any).audioElement) {
-      const audioElement = (this as any).audioElement as HTMLAudioElement;
-      audioElement.pause();
-      audioElement.currentTime = 0;
-      return;
-    }
-    
-    // Fallback to buffer source
+    // Use AudioBuffer source only
     if (this.sourceNode) {
       try {
         this.sourceNode.stop();
@@ -850,5 +872,33 @@ class TrackController {
 
     // Clear audio buffer to free memory
     this.audioBuffer = null;
+  }
+
+  /**
+   * Creates a WORKING mono-to-stereo conversion chain
+   * This forces mono audio to play through both speakers
+   */
+  private createMonoToStereoChain(inputNode: AudioNode): { outputNode: AudioNode } {
+    // The key insight: For mono audio in MediaElementSource,
+    // we need to force the single channel to BOTH outputs
+    
+    // Create a channel merger that forces stereo output
+    const merger = this.audioContext.createChannelMerger(2);
+    const gainNode = this.audioContext.createGain();
+    
+    // Reduce gain slightly to prevent clipping when duplicating
+    gainNode.gain.value = 0.8;
+    
+    // Connect input through gain
+    inputNode.connect(gainNode);
+    
+    // KEY: Connect the same signal to BOTH channels of the merger
+    // This ensures mono input goes to both left and right outputs
+    gainNode.connect(merger, 0, 0);  // Connect to left channel
+    gainNode.connect(merger, 0, 1);  // Connect to right channel (duplicate)
+    
+    console.log(`🔄 WORKING mono-to-stereo chain created for: ${this.track.name}`);
+    
+    return { outputNode: merger };
   }
 }

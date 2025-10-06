@@ -22,7 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Activity, Zap, X, Target, Send, Search, ExternalLink, Loader2, Volume2, Download, Upload, FolderOpen, Cast, Headphones } from "lucide-react";
+import { Settings, Music, Menu, Plus, Edit, Play, Pause, Clock, Minus, Trash2, FileAudio, LogOut, User, Crown, Maximize, Minimize, Activity, Zap, X, Target, Send, Search, ExternalLink, Loader2, Volume2, Download, Upload, FolderOpen, Cast, Headphones, RadioTower } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { useToast } from "@/hooks/use-toast";
 import { type UserType } from "@/hooks/useLocalAuth";
@@ -31,8 +31,11 @@ import type { SongWithTracks } from "@shared/schema";
 import { useRef } from "react";
 import { SimpleBackupManager } from "@/lib/simple-backup-manager";
 import { useBroadcast } from "@/hooks/useBroadcast";
+import { simpleBroadcast } from "@/lib/simple-broadcast";
+import { forceBroadcastHost, getBroadcastHostForced } from "@/lib/broadcast-helper";
 import { MidiDeviceManager } from "@/components/midi-device-manager";
 import { useMidi } from "@/contexts/MidiProvider";
+import { BroadcastForceTool } from "@/components/broadcast-force-tool";
 
 interface PerformanceProps {
   userType: UserType;
@@ -57,6 +60,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
   const [selectedSong, setSelectedSong] = useState<LocalSong | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isDeviceManagerOpen, setIsDeviceManagerOpen] = useState(false);
+  const [isSettingsDialogOpen, setIsSettingsDialogOpen] = useState(false);
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
   const [isExporting, setIsExporting] = useState(false);
@@ -75,10 +79,31 @@ export default function Performance({ userType, userEmail, logout }: Performance
   const { sendMidiCommand, parseMidiCommand, connectedDevices, registerMessageListener, unregisterMessageListener } = useMidi();
 
   // Optional broadcast integration - completely isolated
-  const { isHost, isViewer, broadcastState, sendPerformanceState, currentRoom } = useBroadcast();
+  const { isHost: originalIsHost, setIsHost, isViewer, broadcastState, sendPerformanceState, startBroadcast, currentRoom } = useBroadcast();
+  
+  // Override isHost for testing if needed
+  const [forcedBroadcast, setForcedBroadcast] = useState(false);
+  const isHost = forcedBroadcast || originalIsHost;
+  
+  // Check for forced broadcast mode on component mount
+  useEffect(() => {
+    const forcedRoom = getBroadcastHostForced();
+    if (forcedRoom) {
+      console.log('🎭 Found forced broadcast host mode:', forcedRoom);
+      setForcedBroadcast(true);
+      setIsHost(true);
+      
+      // Start the broadcast if we have a room name
+      if (!currentRoom) {
+        startBroadcast(forcedRoom).catch(error => {
+          console.error('❌ Error starting forced broadcast:', error);
+        });
+      }
+    }
+  }, [setIsHost, startBroadcast, currentRoom]);
   
   // Check if viewer has broadcast data but no local song
-  const showBroadcastViewerMode = isViewer && broadcastState && broadcastState.lyrics && !selectedSong;
+  const showBroadcastViewerMode = isViewer && broadcastState && broadcastState.curLyrics && !selectedSong;
   
   // Debug broadcast state changes
   const [debugMessage, setDebugMessage] = useState('');
@@ -513,18 +538,22 @@ export default function Performance({ userType, userEmail, logout }: Performance
       console.log(`🎵 Loading song: ${song.title}`);
       setSelectedSong(song);
 
-      // If we're hosting a broadcast, upload song to database immediately on selection
-      if (isHost && currentRoom?.id) {
-        console.log(`📡 Host selected song - uploading to database for broadcast: ${song.title}`);
-        console.log(`📡 Upload function will be called with roomId: ${currentRoom.id}`);
-        uploadSongToDatabase(song, currentRoom.id);
-      } else {
-        console.log('📡 Not uploading to database:', { isHost, hasCurrentRoom: !!currentRoom?.id, roomId: currentRoom?.id });
+      // If we're broadcasting, send the song data
+      if (simpleBroadcast.isBroadcasting) {
+        console.log(`📡 Broadcasting song: ${song.title}`);
+        await simpleBroadcast.broadcastSong({
+          id: song.id,
+          title: song.title || 'Unknown Song',
+          artist: song.artist || 'Unknown Artist',
+          lyrics: song.lyrics || '',
+          duration: song.duration || 240,
+          waveformData: song.waveformData || undefined
+        });
       }
     };
     
     loadSelectedSong();
-  }, [selectedSongId, userEmail, isHost, currentRoom?.id]);
+  }, [selectedSongId, userEmail]);
 
   // Debug current values to see why upload isn't triggering
   useEffect(() => {
@@ -539,34 +568,37 @@ export default function Performance({ userType, userEmail, logout }: Performance
     });
   }, [selectedSongId, userEmail, isHost, currentRoom?.id]);
 
-  // Upload song to database and get entry ID for broadcasting
-  const uploadSongToDatabase = async (song: any, broadcastId: string) => {
-    console.log('🚀 uploadSongToDatabase function called!', { song: song.title, broadcastId });
-    try {
-      const response = await fetch(`/api/broadcast/${broadcastId}/songs`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ songs: [song] })
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        console.log('🔍 Full API response:', result);
-        console.log('🔍 Songs array:', result.songs);
-        if (result.songs && result.songs[0]) {
-          console.log('🔍 First song object:', result.songs[0]);
-        }
-        
-        const entryId = result.songs?.[0]?.id;
-        if (entryId) {
-          setSongEntryId(entryId);
-          console.log(`✅ Song uploaded to database with entry ID: ${entryId}`);
-        } else {
-          console.log('⚠️ Song uploaded but no entry ID returned. Full result:', JSON.stringify(result, null, 2));
-        }
+  // Simple broadcasting state
+  const [isBroadcasting, setIsBroadcasting] = useState(false);
+  const [broadcastId, setBroadcastId] = useState('');
+
+  // Start/stop broadcasting
+  const toggleBroadcast = async () => {
+    if (!isBroadcasting) {
+      // Start broadcasting
+      const id = broadcastId || 'default-broadcast';
+      const success = await simpleBroadcast.startBroadcasting(id);
+      if (success) {
+        setIsBroadcasting(true);
+        toast({
+          title: "Broadcasting Started",
+          description: `Broadcasting as "${id}"`,
+        });
+      } else {
+        toast({
+          title: "Failed to Start Broadcasting",
+          description: "Check your internet connection",
+          variant: "destructive"
+        });
       }
-    } catch (error) {
-      console.error('❌ Failed to upload song to database:', error);
+    } else {
+      // Stop broadcasting
+      await simpleBroadcast.stopBroadcasting();
+      setIsBroadcasting(false);
+      toast({
+        title: "Broadcasting Stopped",
+        description: "No longer broadcasting",
+      });
     }
   };
 
@@ -604,11 +636,12 @@ export default function Performance({ userType, userEmail, logout }: Performance
   useEffect(() => {
     console.log('🎭 Broadcast host effect:', { 
       isHost, 
+      forcedBroadcast,
       selectedSong: !!selectedSong, 
       selectedSongId, 
       songTitle: selectedSong?.title,
-      songEntryId: songEntryId,
-      hasLyrics: !!selectedSong?.lyrics 
+      hasLyrics: !!selectedSong?.lyrics,
+      currentRoom
     });
     
     if (!isHost) {
@@ -621,31 +654,24 @@ export default function Performance({ userType, userEmail, logout }: Performance
       return;
     }
     
-    // CRITICAL FIX: Only broadcast when songEntryId exists and matches current song
-    // This prevents race conditions where songEntryId and songTitle are mismatched
-    if (!songEntryId) {
-      console.log('🎭 Not broadcasting - waiting for songEntryId');
-      return;
-    }
+    // No need to check for songEntryId when we're in forced broadcast mode
+    // Just send the current performance state with what we have
     
     // Send current performance state to all viewers
     const performanceState = {
-      currentSong: selectedSongId, // Keep for backward compatibility
-      songEntryId: songEntryId, // Database entry ID for viewers to fetch
-      songTitle: selectedSong.title,
-      position: currentTime,
-      isPlaying: isPlaying,
-      currentLyricLine: '', // TODO: Add current lyric line if available
-      waveformProgress: duration > 0 ? currentTime / duration : 0,
-      // Send lyrics and metadata to viewers
-      lyrics: selectedSong.lyrics,
-      artist: selectedSong.artist,
-      duration: duration
+      broadcastName: currentRoom || 'forced-broadcast', // Using current room name or default
+      curSong: selectedSong?.title || '',
+      curWaveform: selectedSong?.waveformData || '',  // Using waveformData from LocalSong
+      curLyrics: selectedSong?.lyrics || '',
+      curTime: Math.floor(currentTime),
+      artistName: selectedSong?.artist || '',
+      isPlaying,
+      duration: duration || 0
     };
     
     console.log('🎭 Broadcasting performance state:', performanceState);
     sendPerformanceState(performanceState);
-  }, [isHost, selectedSong, selectedSongId, songEntryId, currentTime, isPlaying, duration, sendPerformanceState]);
+  }, [isHost, forcedBroadcast, selectedSong, selectedSongId, currentTime, isPlaying, duration, currentRoom, sendPerformanceState]);
 
   const handleSeek = useCallback((time: number) => {
     seek(time);
@@ -1067,6 +1093,17 @@ export default function Performance({ userType, userEmail, logout }: Performance
                     </>
                   )}
                 </DropdownMenuItem>
+                
+                <DropdownMenuSeparator />
+                <DropdownMenuItem 
+                  onClick={() => {
+                    setIsSettingsDialogOpen(true);
+                  }} 
+                  data-testid="menuitem-advanced-settings"
+                >
+                  <Settings className="h-4 w-4 mr-2" />
+                  Advanced Settings
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logout} data-testid="menuitem-logout">
                   <LogOut className="h-4 w-4 mr-2" />
@@ -1347,15 +1384,37 @@ export default function Performance({ userType, userEmail, logout }: Performance
           
           {/* Desktop only: Compact Transport Controls */}
           <div className="p-2 md:p-4 border-t border-gray-700 flex-shrink-0 mobile-hidden">
-            <CompactTransportControls
-              isPlaying={isPlaying}
-              currentTime={currentTime}
-              duration={duration}
-  
-              onPlay={play}
-              onPause={pause}
-              onStop={stop}
-            />
+            <div className="flex items-center gap-4">
+              <CompactTransportControls
+                isPlaying={isPlaying}
+                currentTime={currentTime}
+                duration={duration}
+    
+                onPlay={play}
+                onPause={pause}
+                onStop={stop}
+              />
+              
+              {/* Simple Broadcast Controls */}
+              <div className="flex items-center gap-2 border-l border-gray-600 pl-4">
+                <Input
+                  placeholder="Broadcast ID"
+                  value={broadcastId}
+                  onChange={(e) => setBroadcastId(e.target.value)}
+                  className="w-32 h-8 text-sm"
+                  disabled={isBroadcasting}
+                />
+                <Button
+                  size="sm"
+                  variant={isBroadcasting ? "destructive" : "default"}
+                  onClick={toggleBroadcast}
+                  className="h-8"
+                >
+                  <RadioTower className="h-3 w-3 mr-1" />
+                  {isBroadcasting ? "Stop" : "Broadcast"}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1685,6 +1744,30 @@ export default function Performance({ userType, userEmail, logout }: Performance
         isOpen={isDeviceManagerOpen}
         onClose={() => setIsDeviceManagerOpen(false)}
       />
+      
+      {/* Advanced Settings Dialog */}
+      <Dialog open={isSettingsDialogOpen} onOpenChange={setIsSettingsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Advanced Settings</DialogTitle>
+            <DialogDescription>
+              Configure advanced application settings
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-sm font-medium mb-2">Development Tools</h3>
+              <div className="space-y-4">
+                <BroadcastForceTool />
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                These tools are for development and testing purposes only.
+              </p>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
       
       {/* Hidden file input for import */}
       <input

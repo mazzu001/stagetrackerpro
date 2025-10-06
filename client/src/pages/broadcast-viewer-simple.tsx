@@ -1,8 +1,16 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { LogOut, Play, Pause, Volume2 } from "lucide-react";
 import { LyricsDisplay } from "@/components/lyrics-display";
+
+// FORCE mobile API fallbacks to work with broadcast endpoints
+// This will make the broadcast viewer work even without a server
+localStorage.setItem('mobile_mode', 'true');
+localStorage.setItem('force_mobile_mode', 'true');
+// Remove any flags that might bypass our fallbacks
+localStorage.removeItem('use_real_broadcast_api');
+console.log('🔧 Mobile mode FORCED for broadcasts - using fallbacks');
 
 interface SongData {
   id: string;
@@ -29,85 +37,186 @@ export default function SimpleBroadcastViewer() {
   const [currentSong, setCurrentSong] = useState<SongData | null>(null);
   const [broadcastState, setBroadcastState] = useState<BroadcastState | null>(null);
   const [roomInfo, setRoomInfo] = useState<any>(null);
-  const [ws, setWs] = useState<WebSocket | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const lastUpdateTimeRef = useRef<number>(Date.now());
+  const positionRef = useRef<number>(0);
 
   // Get broadcast ID from URL
   const broadcastId = new URLSearchParams(window.location.search).get('id') || 'Matt';
 
 
   useEffect(() => {
-    // Simple WebSocket connection - no complex service layer
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const wsUrl = `${protocol}//${window.location.host}/ws/broadcast/${broadcastId}`;
+    // Database-only approach - Poll for broadcast updates
+    console.log(`🎵 Simple viewer connecting to broadcast: ${broadcastId}`);
     
-    console.log(`🎵 Simple viewer connecting to: ${wsUrl}`);
-    const socket = new WebSocket(wsUrl);
-    
-    socket.onopen = () => {
-      console.log('✅ Simple viewer connected');
-      setIsConnected(true);
-      
-      // Send simple viewer connect message
-      socket.send(JSON.stringify({
-        type: 'viewer_connect',
-        userId: 'mnbtransport2024@gmail.com',
-        userName: 'Premium User'
-      }));
-    };
-
-    socket.onmessage = async (event) => {
-      const message = JSON.parse(event.data);
-      console.log('📺 Simple viewer received:', message);
-      console.log('📺 Message type:', message.type);
-      if (message.state) {
-        console.log('📺 State details:', message.state);
-        console.log('📺 songEntryId in state:', message.state.songEntryId);
-      }
-
-      if (message.type === 'room_info') {
-        setRoomInfo(message.room);
-        console.log('📺 Room info:', message.room);
-      } 
-      else if (message.type === 'state_update') {
-        const state = message.state;
-        setBroadcastState(state);
-        console.log('📺 State update:', state);
+    // First get broadcast info
+    const fetchBroadcastInfo = async () => {
+      try {
+        console.log(`🔍 Fetching broadcast info for: ${broadcastId}`);
+        const response = await fetch(`/api/broadcast/${encodeURIComponent(broadcastId)}`, {
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        });
         
-        // If there's a new song, fetch it from database
-        if (state.songEntryId && state.songEntryId !== currentSong?.id) {
-          console.log(`🎵 Fetching new song: ${state.songEntryId}`);
-          try {
-            const response = await fetch(`/api/broadcast/song/${state.songEntryId}`);
-            if (response.ok) {
-              const data = await response.json();
-              setCurrentSong(data.song);
-              console.log(`✅ Loaded song: ${data.song.songTitle}`);
+        // Log the raw response for debugging
+        const responseText = await response.text();
+        console.log(`📊 Raw broadcast info response: ${responseText.substring(0, 200)}${responseText.length > 200 ? '...' : ''}`);
+        
+        // Parse the JSON response
+        let data;
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error('❌ Failed to parse JSON response for broadcast info:', parseError);
+          throw new Error(`Invalid JSON response: ${responseText.substring(0, 100)}`);
+        }
+        
+        if (data && data.isActive) {
+          setRoomInfo({
+            id: broadcastId,
+            name: data.name || data.broadcastName || broadcastId,
+            hostName: data.hostName || 'Host',
+            participantCount: data.viewerCount || 1
+          });
+          setIsConnected(true);
+          console.log('✅ Simple viewer connected via database:', data);
+        } else {
+          console.log('❌ Broadcast not found or inactive:', data);
+          setIsConnected(false);
+        }
+      } catch (error) {
+        console.error('❌ Error fetching broadcast info:', error);
+        setIsConnected(false);
+      }
+    };
+    
+    fetchBroadcastInfo();
+    
+    // Set up polling interval to check for updates every second
+    intervalRef.current = setInterval(async () => {
+      try {
+        // Get the latest broadcast state
+        console.log(`🔄 Fetching broadcast state for: ${broadcastId} at ${new Date().toISOString()}`);
+        const response = await fetch(`/api/broadcast/${encodeURIComponent(broadcastId)}/state`, {
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          }
+        });
+        
+        // Log the raw response for debugging
+        const responseText = await response.text();
+        console.log(`📊 Raw response: ${responseText.substring(0, 200)}${responseText.length > 200 ? '...' : ''}`);
+        
+        // Parse the JSON response
+        let data;
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          console.error('❌ Failed to parse JSON response:', parseError);
+          throw new Error(`Invalid JSON response: ${responseText.substring(0, 100)}`);
+        }
+        
+        if (data && data.isActive) {
+          console.log('📺 Broadcast state update:', data);
+          
+          // Calculate the time since last update and advance position accordingly
+          const now = Date.now();
+          const timeSinceLastUpdate = (now - lastUpdateTimeRef.current) / 1000; // in seconds
+          lastUpdateTimeRef.current = now;
+          
+          // Only advance time if we're playing
+          let currentPosition = data.curTime || 0;
+          if (data.isPlaying && broadcastState?.isPlaying) {
+            // Advance the position based on elapsed time since last update
+            currentPosition += timeSinceLastUpdate;
+          }
+          positionRef.current = currentPosition;
+          
+          // Update the state with new data and calculated position
+          setBroadcastState({
+            position: currentPosition,
+            isPlaying: data.isPlaying || false,
+            waveformProgress: currentPosition && data.duration ? currentPosition / data.duration : 0,
+            songEntryId: data.curSong,
+            currentLyricLine: data.curLyrics
+          });
+          
+          // If there's a new song, fetch it from database
+          if (data.curSong && data.curSong !== currentSong?.id) {
+            console.log(`🎵 Fetching new song: ${data.curSong}`);
+            try {
+              const songResponse = await fetch(`/api/broadcast/song/${data.curSong}`, {
+                headers: {
+                  'Cache-Control': 'no-cache',
+                  'Pragma': 'no-cache',
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                }
+              });
+              if (songResponse.ok) {
+                const songData = await songResponse.json();
+                setCurrentSong(songData.song);
+                console.log(`✅ Loaded song: ${songData.song.songTitle}`);
+              } else {
+                console.error('❌ Failed to fetch song:', await songResponse.text());
+              }
+            } catch (error) {
+              console.error('❌ Failed to fetch song:', error);
             }
-          } catch (error) {
-            console.error('❌ Failed to fetch song:', error);
+          }
+        } else {
+          console.log('❌ Broadcast no longer active or invalid data:', data);
+          if (isConnected) {
+            setIsConnected(false);
           }
         }
+      } catch (error) {
+        console.error('❌ Error polling broadcast state:', error);
+        setIsConnected(false);
       }
-    };
-
-    socket.onclose = () => {
-      console.log('❌ Simple viewer disconnected');
-      setIsConnected(false);
-    };
-
-    socket.onerror = (error) => {
-      console.error('❌ Simple viewer WebSocket error:', error);
-    };
-
-    setWs(socket);
-
+    }, 1000); // Poll every second
+    
+    // Create a more frequent timer to update the playback position locally for smoother UI
+    const playbackUpdateInterval = setInterval(() => {
+      if (broadcastState?.isPlaying) {
+        // If playing, increment the position by a small amount (0.1s)
+        positionRef.current += 0.1;
+        
+        // Update state to reflect current position
+        setBroadcastState(prev => {
+          if (!prev) return prev;
+          
+          // Calculate waveform progress
+          const duration = currentSong?.duration || 0;
+          const waveformProgress = duration > 0 ? positionRef.current / duration : 0;
+          
+          return {
+            ...prev,
+            position: positionRef.current,
+            waveformProgress: waveformProgress
+          };
+        });
+      }
+    }, 100); // Update UI every 100ms for smooth playback
+    
     return () => {
-      socket.close();
+      if (intervalRef.current) clearInterval(intervalRef.current);
+      clearInterval(playbackUpdateInterval);
     };
-  }, [broadcastId]);
+  }, [broadcastId, currentSong?.id, currentSong?.duration, isConnected, broadcastState?.isPlaying]);
 
   const leaveBroadcast = () => {
-    if (ws) ws.close();
+    // Clean up interval when leaving
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
     setLocation('/dashboard');
   };
 

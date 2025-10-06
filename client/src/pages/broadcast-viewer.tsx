@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { useBroadcast } from "@/hooks/useBroadcast";
-import { LogOut } from "lucide-react";
+import { LogOut, Clock, Music, Mic, Waves } from "lucide-react";
 
 interface SongData {
   id: string;
@@ -16,39 +16,46 @@ interface SongData {
 
 export default function BroadcastViewer() {
   const [, setLocation] = useLocation();
-  const { isViewer, broadcastState, currentRoom, leaveBroadcast } = useBroadcast();
+  const { isViewer, broadcastState, currentRoom, leaveBroadcast, isConnected } = useBroadcast();
   const [currentSongData, setCurrentSongData] = useState<SongData | null>(null);
   const [isLoadingSong, setIsLoadingSong] = useState(false);
-
-  // Fetch song data when songEntryId changes
+  const [currentPosition, setCurrentPosition] = useState(0);
+  
+  // Extract song data directly from broadcast state
   useEffect(() => {
-    const fetchSongData = async (songEntryId: string) => {
-      try {
-        setIsLoadingSong(true);
-        console.log(`🎵 Fetching song data for entry ID: ${songEntryId}`);
-        
-        const response = await fetch(`/api/broadcast/song/${songEntryId}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch song data');
-        }
-        
-        const data = await response.json();
-        setCurrentSongData(data.song);
-        console.log(`✅ Loaded song: ${data.song.songTitle} by ${data.song.artistName}`);
-      } catch (error) {
-        console.error('❌ Failed to fetch song data:', error);
-        setCurrentSongData(null);
-      } finally {
-        setIsLoadingSong(false);
+    if (broadcastState && broadcastState.curSong) {
+      // Create song data directly from broadcast state
+      setCurrentSongData({
+        id: broadcastState.broadcastName,
+        songTitle: broadcastState.curSong,
+        artistName: broadcastState.artistName,
+        duration: broadcastState.duration || 300, // Default to 5 minutes if no duration provided
+        lyrics: broadcastState.curLyrics,
+        waveformData: broadcastState.curWaveform,
+        trackCount: 1
+      });
+      
+      // Update current position
+      if (broadcastState.curTime !== undefined) {
+        setCurrentPosition(broadcastState.curTime);
       }
-    };
-
-    if (broadcastState?.songEntryId) {
-      fetchSongData(broadcastState.songEntryId);
     } else {
       setCurrentSongData(null);
     }
-  }, [broadcastState?.songEntryId]);
+  }, [broadcastState]);
+
+  // Create a timer to advance the position if playing
+  useEffect(() => {
+    if (!broadcastState) return;
+    
+    const timer = setInterval(() => {
+      if (broadcastState.isPlaying) {
+        setCurrentPosition(prev => prev + 1);
+      }
+    }, 1000);
+    
+    return () => clearInterval(timer);
+  }, [broadcastState]);
 
   // Redirect if not viewing a broadcast - give more time for connection to establish
   useEffect(() => {
@@ -69,26 +76,19 @@ export default function BroadcastViewer() {
     };
   }, [isViewer, currentRoom, setLocation]); // Re-run when broadcast state changes
 
-  // Debug what we're receiving
-  useEffect(() => {
-    console.log('🖥️ BroadcastViewer state:', {
-      isViewer,
-      currentRoom: !!currentRoom,
-      roomId: currentRoom?.id,
-      broadcastState: !!broadcastState,
-      songEntryId: broadcastState?.songEntryId,
-      hasCurrentSongData: !!currentSongData,
-      songTitle: currentSongData?.songTitle,
-      shouldShow: isViewer || !!currentRoom
-    });
-  }, [isViewer, currentRoom, broadcastState, currentSongData]);
+  // Format time from seconds to MM:SS
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
-  const handleLeaveBroadcast = async () => {
-    await leaveBroadcast();
+  const handleLeaveBroadcast = () => {
+    leaveBroadcast();
     setLocation('/dashboard');
   };
 
-  // Show loading for first 5 seconds OR if we have a room (connection in progress)
+  // Show loading when connecting
   if ((!isViewer && !currentRoom)) {
     return (
       <div className="h-screen flex items-center justify-center bg-background">
@@ -108,9 +108,9 @@ export default function BroadcastViewer() {
       {/* Header with Leave Button */}
       <div className="flex justify-between items-center p-6 bg-black/20">
         <div className="flex items-center space-x-4">
-          <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
+          <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
           <span className="text-lg font-medium">
-            📺 Viewing "{currentRoom?.name || 'Live Performance'}"
+            📺 Viewing "{currentRoom || 'Live Performance'}"
           </span>
         </div>
         <Button 
@@ -140,36 +140,37 @@ export default function BroadcastViewer() {
           )}
           
           {/* Playback Status */}
-          <div className="flex items-center justify-center space-x-6 text-lg text-blue-300">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-lg text-blue-300 mb-4">
             <div className="flex items-center space-x-2">
               <div className={`w-2 h-2 rounded-full ${broadcastState?.isPlaying ? 'bg-green-400' : 'bg-red-400'}`}></div>
               <span>{broadcastState?.isPlaying ? '▶️ Playing' : '⏸️ Paused'}</span>
             </div>
-            <div>
-              {Math.floor(broadcastState?.position || 0)}s
-              {currentSongData?.duration && ` / ${Math.floor(currentSongData.duration)}s`}
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              {formatTime(currentPosition)}
+              {currentSongData?.duration && ` / ${formatTime(currentSongData.duration)}`}
             </div>
-            {currentSongData?.duration && (
-              <div className="w-32 bg-gray-700 rounded-full h-2">
-                <div 
-                  className="bg-blue-400 h-2 rounded-full transition-all duration-300"
-                  style={{ 
-                    width: `${((broadcastState?.position || 0) / currentSongData.duration) * 100}%` 
-                  }}
-                ></div>
-              </div>
-            )}
           </div>
+          
+          {/* Progress Bar */}
+          {currentSongData?.duration && (
+            <div className="w-full max-w-lg mx-auto bg-gray-700 rounded-full h-2 mb-6">
+              <div 
+                className="bg-blue-400 h-2 rounded-full transition-all"
+                style={{ 
+                  width: `${(currentPosition / currentSongData.duration) * 100}%` 
+                }}
+              ></div>
+            </div>
+          )}
         </div>
 
         {/* Visual Waveform Display */}
         <div className="max-w-5xl w-full mb-8">
           <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 mb-4">
+              <Waves className="h-5 w-5 text-blue-400" />
               <h3 className="text-lg font-semibold text-blue-200">Audio Waveform</h3>
-              <div className="text-sm text-blue-300">
-                {Math.floor(broadcastState?.position || 0)}s / {Math.floor(currentSongData?.duration || 0)}s
-              </div>
             </div>
             
             {/* Waveform Visualization */}
@@ -178,8 +179,8 @@ export default function BroadcastViewer() {
               <div className="absolute inset-0 flex items-end justify-around px-1">
                 {Array.from({ length: 200 }, (_, i) => {
                   const height = Math.random() * 60 + 10;
-                  const isActive = currentSongData?.duration && broadcastState?.position 
-                    ? (i / 200) <= (broadcastState.position / currentSongData.duration)
+                  const isActive = currentSongData?.duration 
+                    ? (i / 200) <= (currentPosition / currentSongData.duration)
                     : false;
                   return (
                     <div
@@ -196,9 +197,9 @@ export default function BroadcastViewer() {
               {/* Position Indicator */}
               {currentSongData?.duration && (
                 <div
-                  className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg transition-all duration-300"
+                  className="absolute top-0 bottom-0 w-0.5 bg-white shadow-lg transition-all"
                   style={{
-                    left: `${((broadcastState?.position || 0) / currentSongData.duration) * 100}%`
+                    left: `${(currentPosition / currentSongData.duration) * 100}%`
                   }}
                 >
                   <div className="absolute -top-1 -left-2 w-4 h-4 bg-white rounded-full shadow-lg"></div>
@@ -210,31 +211,40 @@ export default function BroadcastViewer() {
 
         {/* Lyrics Display */}
         <div className="max-w-4xl w-full">
-          {currentSongData?.lyrics || currentRoom ? (
-            <>
-              <h2 className="text-2xl font-semibold mb-4 text-blue-200">Lyrics</h2>
-              <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 max-h-96 overflow-y-auto">
-                <pre className="whitespace-pre-wrap text-lg leading-relaxed text-gray-100 font-mono">
-                  {currentSongData?.lyrics || 'Waiting for lyrics from broadcaster...'}
-                </pre>
+          <div className="flex items-center gap-2 mb-4">
+            <Mic className="h-5 w-5 text-blue-400" />
+            <h2 className="text-2xl font-semibold text-blue-200">Lyrics</h2>
+          </div>
+          
+          <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-6 max-h-96 overflow-y-auto">
+            {currentSongData?.lyrics ? (
+              <pre className="whitespace-pre-wrap text-lg leading-relaxed text-gray-100 font-sans">
+                {currentSongData.lyrics}
+              </pre>
+            ) : (
+              <div className="text-center py-12">
+                <Music className="h-16 w-16 mx-auto text-blue-500/30 mb-4" />
+                <p className="text-xl text-gray-300">
+                  {broadcastState ? 'No lyrics available for this song' : 'Waiting for broadcast data...'}
+                </p>
+                {!isConnected && (
+                  <p className="text-sm text-blue-400 mt-4">
+                    Waiting for host to reconnect...
+                  </p>
+                )}
               </div>
-            </>
-          ) : (
-            <div className="bg-black/30 backdrop-blur-sm rounded-2xl p-12 text-center">
-              <p className="text-xl text-gray-300">
-                {currentSongData?.songTitle ? 'No lyrics available for this song' : 'Waiting for broadcast data...'}
-              </p>
-              {!broadcastState && (
-                <p className="text-sm text-blue-400 mt-2">Connecting to broadcast...</p>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
       {/* Footer */}
       <div className="p-4 text-center text-blue-300 text-sm bg-black/20">
-        <p>Real-time synchronized with broadcaster • StageTracker Pro</p>
+        <p>
+          {isConnected 
+            ? 'Real-time synchronized with broadcaster • StageTracker Pro' 
+            : 'Connection lost - attempting to reconnect...'}
+        </p>
       </div>
     </div>
   );

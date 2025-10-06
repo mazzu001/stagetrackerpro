@@ -175,7 +175,7 @@ export default function Dashboard() {
     
     setIsStarting(true);
     try {
-      const roomId = await startBroadcast(user.email, user.email, broadcastName);
+      const roomId = await startBroadcast(broadcastName);
       toast({
         title: "🎭 Broadcast Started!",
         description: `"${broadcastName}" is now live!\nRedirecting to performance page...`
@@ -213,44 +213,19 @@ export default function Dashboard() {
     
     setIsJoining(true);
     try {
-      // First, check if broadcast exists in database
-      const response = await fetch(`/api/broadcast/check/${encodeURIComponent(roomIdToJoin.trim())}`);
-      const { exists, session } = await response.json();
+      // Skip server-side broadcast check, directly use Firestore
+      const unsubscribe = joinBroadcast(roomIdToJoin.trim());
       
-      if (!exists) {
-        toast({
-          title: "Broadcast not found",
-          description: `No active broadcast named "${roomIdToJoin}" was found`,
-          variant: "destructive",
-        });
-        setIsJoining(false);
-        return;
-      }
+      toast({
+        title: "🎵 Joined Broadcast!",
+        description: `Connected to "${roomIdToJoin}"! Redirecting to viewer...`
+      });
+      setRoomIdToJoin('');
       
-      console.log('📡 Broadcast exists in database:', session);
-      
-      // Now attempt WebSocket connection
-      const success = await joinBroadcast(roomIdToJoin, user.email, user.email);
-      if (success) {
-        toast({
-          title: "🎵 Joined Broadcast!",
-          description: `Connected to "${session.name}"! Redirecting to viewer...`
-        });
-        setRoomIdToJoin('');
-        
-        // Redirect to dedicated broadcast viewer page after successful join
-        setTimeout(() => {
-          setLocation('/broadcast-viewer');
-        }, 1000); // Small delay to let user see the success message
-        
-      } else {
-        toast({
-          title: "Failed to join broadcast",
-          description: "Unable to establish connection to the broadcast",
-          variant: "destructive"
-        });
-        setIsJoining(false); // Only reset if failed
-      }
+      // Redirect to dedicated broadcast viewer page after successful join
+      setTimeout(() => {
+        setLocation('/broadcast-viewer');
+      }, 1000); // Small delay to let user see the success message
     } catch (error) {
       console.error('Join broadcast error:', error);
       toast({
@@ -591,12 +566,12 @@ export default function Dashboard() {
                   <Label className="text-sm font-medium">Room ID</Label>
                   <div className="flex items-center gap-2">
                     <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded text-lg font-mono">
-                      {currentRoom.id}
+                      {currentRoom}
                     </code>
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => navigator.clipboard.writeText(currentRoom.id)}
+                      onClick={() => navigator.clipboard.writeText(currentRoom)}
                     >
                       <Link2 className="h-3 w-3" />
                     </Button>
@@ -604,13 +579,13 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Broadcast Name</Label>
-                  <p className="text-lg">{currentRoom.name}</p>
+                  <p className="text-lg">{currentRoom}</p>
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Participants</Label>
                   <div className="flex items-center gap-2">
                     <Users className="h-4 w-4" />
-                    <span className="text-lg">{currentRoom.participantCount}</span>
+                    <span className="text-lg">1</span>
                   </div>
                 </div>
               </div>

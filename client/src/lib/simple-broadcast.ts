@@ -24,10 +24,9 @@ export interface SimpleBroadcastState {
   duration?: number;
 }
 
-// For now, let's use a simple deployed server on Render.com
-// We'll deploy the standalone server there instead of Firebase Functions
+// Using deployed server on Render.com
 const SERVER_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://bandmaestro-broadcast.onrender.com'  // Will deploy to Render.com
+  ? 'https://stagetrackerpro-broadcast.onrender.com'
   : 'http://localhost:3001';
 
 class SimpleBroadcast {

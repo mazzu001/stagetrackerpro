@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
+import { Broadcast } from "@/lib/broadcast";
 import CompactTransportControls from "@/components/compact-transport-controls";
 import AudioMixer from "@/components/audio-mixer";
 import { LyricsDisplay } from "@/components/lyrics-display";
@@ -31,7 +32,6 @@ import type { SongWithTracks } from "@shared/schema";
 import { useRef } from "react";
 import { SimpleBackupManager } from "@/lib/simple-backup-manager";
 import { useBroadcast } from "@/hooks/useBroadcast";
-import { simpleBroadcast } from "@/lib/simple-broadcast";
 import { forceBroadcastHost, getBroadcastHostForced } from "@/lib/broadcast-helper";
 import { MidiDeviceManager } from "@/components/midi-device-manager";
 import { useMidi } from "@/contexts/MidiProvider";
@@ -75,11 +75,26 @@ export default function Performance({ userType, userEmail, logout }: Performance
   const [exportFilename, setExportFilename] = useState("");
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Audio info state for dynamic status bar updates
+  const [audioInfo, setAudioInfo] = useState({
+    sampleRate: 48000,
+    bufferSize: 256,
+    bitDepth: 32,
+    latency: 0
+  });
+
   // MIDI integration
   const { sendMidiCommand, parseMidiCommand, connectedDevices, registerMessageListener, unregisterMessageListener } = useMidi();
 
   // Optional broadcast integration - completely isolated
-  const { isHost: originalIsHost, setIsHost, isViewer, broadcastState, sendPerformanceState, startBroadcast, currentRoom } = useBroadcast();
+  const { 
+    isHost: originalIsHost, 
+    isViewer, 
+    broadcast,
+    broadcastId,
+    update: updateBroadcast,
+    startBroadcast
+  } = useBroadcast();
   
   // Override isHost for testing if needed
   const [forcedBroadcast, setForcedBroadcast] = useState(false);
@@ -91,31 +106,30 @@ export default function Performance({ userType, userEmail, logout }: Performance
     if (forcedRoom) {
       console.log('🎭 Found forced broadcast host mode:', forcedRoom);
       setForcedBroadcast(true);
-      setIsHost(true);
       
       // Start the broadcast if we have a room name
-      if (!currentRoom) {
+      if (!broadcastId) {
         startBroadcast(forcedRoom).catch(error => {
           console.error('❌ Error starting forced broadcast:', error);
         });
       }
     }
-  }, [setIsHost, startBroadcast, currentRoom]);
+  }, [startBroadcast, broadcastId]);
   
   // Check if viewer has broadcast data but no local song
-  const showBroadcastViewerMode = isViewer && broadcastState && broadcastState.curLyrics && !selectedSong;
+  const showBroadcastViewerMode = isViewer && broadcast && broadcast.curLyrics && !selectedSong;
   
   // Debug broadcast state changes
   const [debugMessage, setDebugMessage] = useState('');
   useEffect(() => {
-    if (broadcastState) {
-      console.log('📺 Performance page received broadcast state:', broadcastState);
-      setDebugMessage(`📺 Received: ${broadcastState.songTitle || 'Unknown'} - Playing: ${broadcastState.isPlaying ? 'Yes' : 'No'} - Position: ${Math.round(broadcastState.position)}s`);
+    if (broadcast) {
+      console.log('📺 Performance page received broadcast state:', broadcast);
+      setDebugMessage(`📺 Received: ${broadcast.curSong || 'Unknown'} - Playing: ${broadcast.isPlaying ? 'Yes' : 'No'} - Position: ${broadcast.curTimeDs ? broadcast.curTimeDs / 10 : 0}s`);
       
       // Clear debug message after 3 seconds
       setTimeout(() => setDebugMessage(''), 3000);
     }
-  }, [broadcastState]);
+  }, [broadcast]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
 
@@ -440,8 +454,22 @@ export default function Performance({ userType, userEmail, logout }: Performance
     // Pitch and speed control removed
     isAudioEngineOnline,
     masterStereoLevels,
-    audioLevels
+    audioLevels,
+    getAudioInfo
   } = audioEngine;
+
+  // Debug: Log loading state changes
+  useEffect(() => {
+    console.log('🔄 isLoadingTracks changed:', isLoadingTracks, 'selectedSong:', selectedSong?.title);
+  }, [isLoadingTracks, selectedSong?.title]);
+
+  // Get audio output settings once when component mounts
+  // Note: These are AudioContext settings (your audio device), not song-specific
+  useEffect(() => {
+    const info = getAudioInfo();
+    setAudioInfo(info);
+    console.log('🎚️ Audio output settings:', info);
+  }, [getAudioInfo]);
 
   // Create toggle functions for track manager compatibility
   const toggleTrackMute = useCallback((trackId: string) => {
@@ -538,22 +566,24 @@ export default function Performance({ userType, userEmail, logout }: Performance
       console.log(`🎵 Loading song: ${song.title}`);
       setSelectedSong(song);
 
-      // If we're broadcasting, send the song data
-      if (simpleBroadcast.isBroadcasting) {
+      // If we're broadcasting, send the song data via Firestore
+      if (isHost && broadcastId) {
         console.log(`📡 Broadcasting song: ${song.title}`);
-        await simpleBroadcast.broadcastSong({
-          id: song.id,
-          title: song.title || 'Unknown Song',
-          artist: song.artist || 'Unknown Artist',
-          lyrics: song.lyrics || '',
-          duration: song.duration || 240,
-          waveformData: song.waveformData || undefined
+        updateBroadcast({
+          curSong: song.id,
+          songMeta: {
+            title: song.title || 'Unknown Song',
+            artist: song.artist || 'Unknown Artist',
+            duration: song.duration || 240
+          },
+          curLyrics: song.lyrics || '',
+          curWaveform: song.waveformData || null
         });
       }
     };
     
     loadSelectedSong();
-  }, [selectedSongId, userEmail]);
+  }, [selectedSongId, userEmail, isHost, broadcastId, updateBroadcast]);
 
   // Debug current values to see why upload isn't triggering
   useEffect(() => {
@@ -561,117 +591,76 @@ export default function Performance({ userType, userEmail, logout }: Performance
       selectedSongId, 
       userEmail: userEmail, 
       isHost, 
-      currentRoomId: currentRoom?.id,
+      broadcastId: broadcastId,
       hasSelectedSongId: !!selectedSongId,
       hasUserEmail: !!userEmail,
-      hasCurrentRoom: !!currentRoom?.id
+      hasBroadcast: !!broadcastId
     });
-  }, [selectedSongId, userEmail, isHost, currentRoom?.id]);
+  }, [selectedSongId, userEmail, isHost, broadcastId]);
 
-  // Simple broadcasting state
-  const [isBroadcasting, setIsBroadcasting] = useState(false);
-  const [broadcastId, setBroadcastId] = useState('');
-
-  // Start/stop broadcasting
-  const toggleBroadcast = async () => {
-    if (!isBroadcasting) {
-      // Start broadcasting
-      const id = broadcastId || 'default-broadcast';
-      const success = await simpleBroadcast.startBroadcasting(id);
-      if (success) {
-        setIsBroadcasting(true);
-        toast({
-          title: "Broadcasting Started",
-          description: `Broadcasting as "${id}"`,
-        });
-      } else {
-        toast({
-          title: "Failed to Start Broadcasting",
-          description: "Check your internet connection",
-          variant: "destructive"
-        });
-      }
-    } else {
-      // Stop broadcasting
-      await simpleBroadcast.stopBroadcasting();
-      setIsBroadcasting(false);
-      toast({
-        title: "Broadcasting Stopped",
-        description: "No longer broadcasting",
-      });
-    }
-  };
-
+  // BROADCAST SYSTEM DISABLED - DO NOT DELETE
   // Broadcast viewer mode: Sync with broadcaster's performance state
   useEffect(() => {
-    if (!isViewer || !broadcastState) return;
+    // Broadcast system disabled
+    /*
+    if (!isViewer || !broadcast) return;
     
-    console.log('📺 Broadcast viewer mode: Syncing with broadcaster state', broadcastState);
+    console.log('📺 Broadcast viewer mode: Syncing with broadcaster state', broadcast);
     
     // Sync current song if broadcaster changed it (only if logged in)
-    if (broadcastState.currentSong && broadcastState.currentSong !== selectedSongId && userEmail) {
-      console.log(`📺 Broadcaster changed song to: ${broadcastState.songTitle || broadcastState.currentSong}`);
-      setSelectedSongId(broadcastState.currentSong);
+    if (broadcast.curSong && broadcast.curSong !== selectedSongId && userEmail) {
+      console.log(`📺 Broadcaster changed song to: ${broadcast.songMeta?.title || broadcast.curSong}`);
+      setSelectedSongId(broadcast.curSong);
     }
     
     // Sync playback position if significant difference (only if we have local song)
-    if (selectedSong && Math.abs(broadcastState.position - currentTime) > 1) {
-      console.log(`📺 Syncing playback position: ${broadcastState.position}s`);
-      seek(broadcastState.position);
+    const broadcastTimeSeconds = broadcast.curTimeDs ? broadcast.curTimeDs / 10 : 0;
+    if (selectedSong && Math.abs(broadcastTimeSeconds - currentTime) > 1) {
+      console.log(`📺 Syncing playback position: ${broadcastTimeSeconds}s`);
+      seek(broadcastTimeSeconds);
     }
     
     // Sync play/pause state (only if we have local song)
-    if (selectedSong && broadcastState.isPlaying !== isPlaying) {
-      console.log(`📺 Syncing playback state: ${broadcastState.isPlaying ? 'playing' : 'paused'}`);
-      if (broadcastState.isPlaying) {
+    if (selectedSong && broadcast.isPlaying !== isPlaying) {
+      console.log(`📺 Syncing playback state: ${broadcast.isPlaying ? 'playing' : 'paused'}`);
+      if (broadcast.isPlaying) {
         play();
       } else {
         pause();
       }
     }
-    
-  }, [isViewer, broadcastState, selectedSongId, selectedSong, currentTime, isPlaying, userEmail, seek, play, pause]);
+    */
+  }, [isViewer, broadcast, selectedSongId, selectedSong, currentTime, isPlaying, userEmail, seek, play, pause]);
 
-  // Broadcast host mode: Send performance state to viewers
+  // BROADCAST SYSTEM DISABLED - DO NOT DELETE
+  // Simple Broadcast: Send song data when song is selected
   useEffect(() => {
-    console.log('🎭 Broadcast host effect:', { 
-      isHost, 
-      forcedBroadcast,
-      selectedSong: !!selectedSong, 
-      selectedSongId, 
-      songTitle: selectedSong?.title,
-      hasLyrics: !!selectedSong?.lyrics,
-      currentRoom
-    });
-    
-    if (!isHost) {
-      console.log('🎭 Not broadcasting - not host');
-      return;
+    if (false) { // Disabled
+    const activeBroadcast = localStorage.getItem('activeBroadcast');
+    if (!activeBroadcast || !selectedSong) return;
+
+    console.log('📡 Broadcasting song:', selectedSong.title);
+    Broadcast.sendSong(
+      activeBroadcast,
+      selectedSong.title,
+      selectedSong.artist || 'Unknown Artist',
+      selectedSong.lyrics || '',
+      selectedSong.waveformData || null
+    );
     }
-    
-    if (!selectedSong) {
-      console.log('🎭 Not broadcasting - no song selected');
-      return;
-    }
-    
-    // No need to check for songEntryId when we're in forced broadcast mode
-    // Just send the current performance state with what we have
-    
-    // Send current performance state to all viewers
-    const performanceState = {
-      broadcastName: currentRoom || 'forced-broadcast', // Using current room name or default
-      curSong: selectedSong?.title || '',
-      curWaveform: selectedSong?.waveformData || '',  // Using waveformData from LocalSong
-      curLyrics: selectedSong?.lyrics || '',
-      curTime: Math.floor(currentTime),
-      artistName: selectedSong?.artist || '',
-      isPlaying,
-      duration: duration || 0
-    };
-    
-    console.log('🎭 Broadcasting performance state:', performanceState);
-    sendPerformanceState(performanceState);
-  }, [isHost, forcedBroadcast, selectedSong, selectedSongId, currentTime, isPlaying, duration, currentRoom, sendPerformanceState]);
+  }, [selectedSong]);
+
+  // BROADCAST SYSTEM DISABLED - DO NOT DELETE
+  // Simple Broadcast: Send position updates when playing
+  useEffect(() => {
+    // Broadcast system disabled
+  }, [currentTime, isPlaying]);
+
+  // BROADCAST SYSTEM DISABLED - DO NOT DELETE
+  // Broadcast host mode: Send performance state to viewers via Firestore
+  // useEffect(() => {
+    // Broadcast system fully disabled - all code removed
+  // }, [isHost, forcedBroadcast, selectedSong, selectedSongId, currentTime, isPlaying, duration, broadcastId, updateBroadcast]);
 
   const handleSeek = useCallback((time: number) => {
     seek(time);
@@ -1010,7 +999,15 @@ export default function Performance({ userType, userEmail, logout }: Performance
           </div>
 
           {/* Waveform Visualizer - Stretch across available space */}
-          <div className="flex-1 mx-4 max-h-12">
+          <div className="flex-1 mx-4 max-h-12 relative">
+            {isLoadingTracks && selectedSong && (
+              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-10 rounded">
+                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Loading tracks...</span>
+                </div>
+              </div>
+            )}
             <WaveformVisualizer
               song={selectedSong ? { ...selectedSong, userId: userEmail || '' } as SongWithTracks : null}
               currentTime={currentTime}
@@ -1093,22 +1090,6 @@ export default function Performance({ userType, userEmail, logout }: Performance
                     </>
                   )}
                 </DropdownMenuItem>
-                
-                <DropdownMenuSeparator />
-                <DropdownMenuItem 
-                  onClick={() => {
-                    setIsSettingsDialogOpen(true);
-                  }} 
-                  data-testid="menuitem-advanced-settings"
-                >
-                  <Settings className="h-4 w-4 mr-2" />
-                  Advanced Settings
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout} data-testid="menuitem-logout">
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Logout
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
 
@@ -1146,22 +1127,22 @@ export default function Performance({ userType, userEmail, logout }: Performance
               📺 Viewing Live Performance
             </h2>
             <h3 className="text-xl text-blue-800 dark:text-blue-200 mb-1">
-              {broadcastState?.songTitle}
+              {broadcast?.songMeta?.title || broadcast?.curSong || 'Unknown Song'}
             </h3>
-            {broadcastState?.artist && (
+            {broadcast?.songMeta?.artist && (
               <p className="text-blue-700 dark:text-blue-300 mb-2">
-                by {broadcastState.artist}
+                by {broadcast.songMeta.artist}
               </p>
             )}
             <div className="text-sm text-blue-600 dark:text-blue-400 mb-4">
-              Position: {Math.floor(broadcastState?.position || 0)}s
-              {broadcastState?.duration && ` / ${Math.floor(broadcastState.duration)}s`}
+              Position: {Math.floor((broadcast?.curTimeDs || 0) / 10)}s
+              {broadcast?.songMeta?.duration && ` / ${Math.floor(broadcast.songMeta.duration)}s`}
               {' • '}
-              Status: {broadcastState?.isPlaying ? '▶️ Playing' : '⏸️ Paused'}
+              Status: {broadcast?.isPlaying ? '▶️ Playing' : '⏸️ Paused'}
             </div>
             <div className="bg-white dark:bg-slate-800 p-4 rounded-lg text-left max-h-96 overflow-y-auto">
               <pre className="whitespace-pre-wrap text-sm font-mono">
-                {broadcastState?.lyrics}
+                {broadcast?.curLyrics}
               </pre>
             </div>
           </div>
@@ -1316,10 +1297,41 @@ export default function Performance({ userType, userEmail, logout }: Performance
                   </div>
                   
                   {/* Songs for this letter */}
-                  {groupedSongs[letter].map((song) => (
+                  {groupedSongs[letter].map((song) => {
+                    // Get audio levels for this song if it's currently selected
+                    const isCurrentSong = selectedSongId === song.id;
+                    const leftLevel = isCurrentSong ? masterStereoLevels.left : 0;
+                    const rightLevel = isCurrentSong ? masterStereoLevels.right : 0;
+                    
+                    // Apply soft-knee compression to prevent saturation with multiple tracks
+                    // masterStereoLevels are in 0-100 range, normalize to 0-1 first
+                    const compressLevel = (level: number) => {
+                      if (level === 0) return 0;
+                      // Normalize from 0-100 to 0-1
+                      const normalized = level / 100;
+                      // Logarithmic compression: more aggressive as level increases
+                      // This prevents the meter from getting stuck at high values
+                      return Math.min(75, (Math.log10(normalized * 9 + 1) / Math.log10(10)) * 75);
+                    };
+                    const leftWidth = compressLevel(leftLevel);
+                    const rightWidth = compressLevel(rightLevel);
+                    
+                    // Debug logging for selected song
+                    if (isCurrentSong && isPlaying) {
+                      console.log('🎚️ VU Meter Debug:', {
+                        song: song.title,
+                        leftLevel,
+                        rightLevel,
+                        leftWidth: `${leftWidth}%`,
+                        rightWidth: `${rightWidth}%`,
+                        masterStereoLevels
+                      });
+                    }
+                    
+                    return (
                     <div
                       key={song.id}
-                      className={`p-2 md:p-4 border-b border-gray-700 transition-colors touch-target cursor-pointer hover:bg-gray-700 pt-[8px] pb-[8px] ${
+                      className={`relative overflow-hidden p-2 md:p-4 border-b border-gray-700 transition-colors touch-target cursor-pointer hover:bg-gray-700 pt-[8px] pb-[8px] ${
                         selectedSongId === song.id
                           ? 'bg-primary/20 border-l-4 border-l-primary'
                           : 'bg-transparent border-l-4 border-l-transparent hover:border-l-gray-600'
@@ -1332,6 +1344,22 @@ export default function Performance({ userType, userEmail, logout }: Performance
                       }}
                       data-testid={`song-item-${song.id}`}
                     >
+                      {/* Stereo VU Meter Background - Hidden for now */}
+                      {/* {isCurrentSong && isPlaying && (
+                        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                          <div 
+                            className="absolute top-0 left-0 h-1/2 bg-gradient-to-r from-green-500/20 via-yellow-500/25 to-red-500/30"
+                            style={{ width: `${leftWidth}%` }}
+                          />
+                          <div 
+                            className="absolute bottom-0 left-0 h-1/2 bg-gradient-to-r from-green-500/20 via-yellow-500/25 to-red-500/30"
+                            style={{ width: `${rightWidth}%` }}
+                          />
+                        </div>
+                      )} */}
+                      
+                      {/* Song content - positioned relative to appear above background */}
+                      <div className="relative z-10">
                       <div className="flex items-center justify-between mt-[-8px] mb-[-8px]">
                         <div className="font-medium text-sm md:text-base truncate mr-2">{song.title}</div>
                         <div className="flex gap-1">
@@ -1368,8 +1396,10 @@ export default function Performance({ userType, userEmail, logout }: Performance
                           />
                         )}
                       </div>
+                      </div>
                     </div>
-                  ))}
+                  );
+                  })}
                 </div>
               ));
             })()}
@@ -1387,6 +1417,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
             <div className="flex items-center gap-4">
               <CompactTransportControls
                 isPlaying={isPlaying}
+                isLoadingTracks={isLoadingTracks}
                 currentTime={currentTime}
                 duration={duration}
     
@@ -1394,26 +1425,6 @@ export default function Performance({ userType, userEmail, logout }: Performance
                 onPause={pause}
                 onStop={stop}
               />
-              
-              {/* Simple Broadcast Controls */}
-              <div className="flex items-center gap-2 border-l border-gray-600 pl-4">
-                <Input
-                  placeholder="Broadcast ID"
-                  value={broadcastId}
-                  onChange={(e) => setBroadcastId(e.target.value)}
-                  className="w-32 h-8 text-sm"
-                  disabled={isBroadcasting}
-                />
-                <Button
-                  size="sm"
-                  variant={isBroadcasting ? "destructive" : "default"}
-                  onClick={toggleBroadcast}
-                  className="h-8"
-                >
-                  <RadioTower className="h-3 w-3 mr-1" />
-                  {isBroadcasting ? "Stop" : "Broadcast"}
-                </Button>
-              </div>
             </div>
           </div>
         </div>
@@ -1462,6 +1473,7 @@ export default function Performance({ userType, userEmail, logout }: Performance
               <div className="w-full space-y-2">
                 <CompactTransportControls
                   isPlaying={isPlaying}
+                  isLoadingTracks={isLoadingTracks}
                   currentTime={currentTime}
                   duration={duration}
       
@@ -1478,23 +1490,20 @@ export default function Performance({ userType, userEmail, logout }: Performance
       </div>
       {/* Status Bar - Desktop only */}
       <div className="bg-surface border-t border-gray-700 p-2 flex-shrink-0 mobile-hidden">
-        <div className="flex items-center justify-between gap-4">
-          <StatusBar
-            isAudioEngineOnline={isAudioEngineOnline}
-            latency={latency}
-            isHost={isHost}
-            isViewer={isViewer}
-            currentRoom={currentRoom?.name || null}
-            exportTask={isExporting ? {
-              progress: exportProgress,
-              status: exportStatus,
-              onCancel: handleCancelExport
-            } : undefined}
-          />
-          
-          
-          
-        </div>
+        <StatusBar
+          isAudioEngineOnline={isAudioEngineOnline}
+          latency={latency}
+          isHost={isHost}
+          isViewer={isViewer}
+          currentRoom={broadcastId || null}
+          midiConnected={connectedDevices.length > 0}
+          audioInfo={audioInfo}
+          exportTask={isExporting ? {
+            progress: exportProgress,
+            status: exportStatus,
+            onCancel: handleCancelExport
+          } : undefined}
+        />
       </div>
       {/* Edit Lyrics Dialog - Tabbed Layout */}
       <Dialog open={isEditLyricsOpen} onOpenChange={setIsEditLyricsOpen}>
@@ -1516,12 +1525,18 @@ export default function Performance({ userType, userEmail, logout }: Performance
                 variant="outline"
                 size="sm"
                 onClick={isPlaying ? pause : play}
-                disabled={!selectedSong || !selectedSong.tracks || selectedSong.tracks.length === 0}
+                disabled={!selectedSong || !selectedSong.tracks || selectedSong.tracks.length === 0 || isLoadingTracks}
                 data-testid="button-preview-playback"
                 className="h-8 px-3"
               >
-                {isPlaying ? <Pause className="w-3 h-3 mr-1" /> : <Play className="w-3 h-3 mr-1" />}
-                {isPlaying ? 'Pause' : 'Play'}
+                {isLoadingTracks ? (
+                  <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                ) : isPlaying ? (
+                  <Pause className="w-3 h-3 mr-1" />
+                ) : (
+                  <Play className="w-3 h-3 mr-1" />
+                )}
+                {isLoadingTracks ? 'Loading...' : isPlaying ? 'Pause' : 'Play'}
               </Button>
               <Button
                 variant="outline"

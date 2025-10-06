@@ -506,8 +506,8 @@ export class AudioEngine {
 
     const now = performance.now();
     
-    // Throttle updates for performance
-    if (now - this.masterLevelCache.lastUpdate < 33) { // ~30fps for master meters
+    // Throttle updates for performance (reduced from 33ms to 16ms for ~60fps, more responsive)
+    if (now - this.masterLevelCache.lastUpdate < 16) {
       return { left: this.masterLevelCache.left, right: this.masterLevelCache.right };
     }
 
@@ -548,9 +548,9 @@ export class AudioEngine {
     const leftLevel = Math.max(0, Math.min(100, baseLevel + variation));
     const rightLevel = Math.max(0, Math.min(100, baseLevel - variation));
     
-    // Apply smoothing
-    const smoothedLeft = this.masterLevelCache.left + (leftLevel - this.masterLevelCache.left) * 0.4;
-    const smoothedRight = this.masterLevelCache.right + (rightLevel - this.masterLevelCache.right) * 0.4;
+    // Very minimal smoothing - almost direct response for snappy VU meters
+    const smoothedLeft = leftLevel; // No smoothing on left
+    const smoothedRight = rightLevel; // No smoothing on right
     
     this.masterLevelCache = {
       left: smoothedLeft,

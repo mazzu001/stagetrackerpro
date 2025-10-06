@@ -17,9 +17,10 @@ import type { Song, InsertSong } from "@shared/schema";
 interface SongSelectorProps {
   selectedSongId: string | null;
   onSongSelect: (songId: string) => void;
+  audioLevels?: Record<string, { left: number; right: number }>;
 }
 
-export default function SongSelector({ selectedSongId, onSongSelect }: SongSelectorProps) {
+export default function SongSelector({ selectedSongId, onSongSelect, audioLevels = {} }: SongSelectorProps) {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isSearchingLyrics, setIsSearchingLyrics] = useState(false);
   const [searchResult, setSearchResult] = useState<any>(null);
@@ -476,16 +477,51 @@ export default function SongSelector({ selectedSongId, onSongSelect }: SongSelec
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {songs.map((song) => {
+            // Get audio levels for this song if it's currently selected
+            const isCurrentSong = selectedSongId === song.id;
+            const songAudioLevels = isCurrentSong && audioLevels ? audioLevels : {};
+            
+            // Calculate average levels across all tracks for this song
+            let leftLevel = 0;
+            let rightLevel = 0;
+            const trackCount = Object.keys(songAudioLevels).length;
+            
+            if (trackCount > 0) {
+              Object.values(songAudioLevels).forEach(levels => {
+                leftLevel += levels.left;
+                rightLevel += levels.right;
+              });
+              leftLevel = leftLevel / trackCount;
+              rightLevel = rightLevel / trackCount;
+            }
+            
+            // Convert to percentage for width (0-100)
+            const leftWidth = Math.min(100, leftLevel * 100);
+            const rightWidth = Math.min(100, rightLevel * 100);
             
             return (
-            <div key={song.id} className="relative rounded-lg">
+            <div key={song.id} className="relative rounded-lg overflow-hidden">
+              {/* Stereo VU Meter Background */}
+              <div className="absolute inset-0 pointer-events-none">
+                {/* Left channel - top half */}
+                <div 
+                  className="absolute top-0 left-0 h-1/2 bg-gradient-to-r from-green-500/30 via-yellow-500/30 to-red-500/30 transition-all duration-75"
+                  style={{ width: `${leftWidth}%` }}
+                />
+                {/* Right channel - bottom half */}
+                <div 
+                  className="absolute bottom-0 left-0 h-1/2 bg-gradient-to-r from-green-500/30 via-yellow-500/30 to-red-500/30 transition-all duration-75"
+                  style={{ width: `${rightWidth}%` }}
+                />
+              </div>
+              
               {/* Song card wrapper */}
               <div
-                className={`transition-all duration-200 hover:shadow-lg rounded-lg ${
+                className={`relative transition-all duration-200 hover:shadow-lg rounded-lg ${
                   selectedSongId === song.id
-                    ? 'bg-gray-800 border-2 border-primary'
-                    : 'bg-gray-800 border border-gray-600 hover:bg-gray-750'
-                } cursor-pointer`}
+                    ? 'bg-gray-800/90 border-2 border-primary'
+                    : 'bg-gray-800/90 border border-gray-600 hover:bg-gray-750/90'
+                } cursor-pointer backdrop-blur-sm`}
                 onClick={(e) => handleCardClick(e, song.id)}
                 data-testid={`song-card-${song.id}`}
               >

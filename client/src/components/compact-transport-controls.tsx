@@ -4,11 +4,13 @@ import {
   Play, 
   Pause, 
   Square, 
-  SkipForward 
+  SkipForward,
+  Loader2
 } from "lucide-react";
 
 interface CompactTransportControlsProps {
   isPlaying: boolean;
+  isLoadingTracks?: boolean;
   currentTime: number;
   duration: number;
   onPlay: () => void;
@@ -18,6 +20,7 @@ interface CompactTransportControlsProps {
 
 export default function CompactTransportControls({
   isPlaying,
+  isLoadingTracks = false,
   currentTime,
   duration,
   onPlay,
@@ -55,9 +58,16 @@ export default function CompactTransportControls({
           }`}
           title="Play/Pause (Space)"
           onClick={isPlaying ? onPause : onPlay}
+          disabled={isLoadingTracks}
           data-testid="button-play-pause"
         >
-          {isPlaying ? <Pause className="w-6 h-6 md:w-4 md:h-4" /> : <Play className="w-6 h-6 md:w-4 md:h-4 ml-0.5" />}
+          {isLoadingTracks ? (
+            <Loader2 className="w-6 h-6 md:w-4 md:h-4 animate-spin" />
+          ) : isPlaying ? (
+            <Pause className="w-6 h-6 md:w-4 md:h-4" />
+          ) : (
+            <Play className="w-6 h-6 md:w-4 md:h-4 ml-0.5" />
+          )}
         </Button>
         
         <Button

@@ -11,6 +11,8 @@ interface UseAudioEngineProps {
 }
 
 export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProps) {
+  // Get storage context to know when it's initialized
+  const { isInitialized: storageInitialized, audioStorage: storageAudioStorage } = useStorage();
   // Handle both old and new calling patterns for backwards compatibility
   let song: SongWithTracks | undefined;
   let onDurationUpdated: ((songId: string, duration: number) => void) | undefined;
@@ -34,6 +36,7 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   const [isAudioEngineOnline, setIsAudioEngineOnline] = useState(true);
   const [masterVolume, setMasterVolume] = useState(85);
   const [isLoadingTracks, setIsLoadingTracks] = useState(false);
+  const [audioError, setAudioError] = useState<string | null>(null);
 
   const audioEngineRef = useRef<StreamingAudioEngine | null>(null);
   const animationFrameRef = useRef<number>();
@@ -51,13 +54,11 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     const initAudioEngine = async () => {
       try {
         audioEngineRef.current = new StreamingAudioEngine();
-        
         // Set up callback for automatic song end (same path as stop button)
         audioEngineRef.current.setOnSongEndCallback(() => {
           console.log('🔄 Song ended automatically - using same path as stop button');
           stop();
         });
-        
         // Set up state listener for duration updates
         const unsubscribe = audioEngineRef.current.subscribe(() => {
           if (audioEngineRef.current) {
@@ -66,7 +67,6 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
               const roundedDuration = Math.round(state.duration);
               console.log(`Duration updated from streaming engine: ${roundedDuration}s`);
               setDuration(roundedDuration);
-              
               // Save duration to database if callback provided and song is loaded
               if (song && onDurationUpdated) {
                 console.log(`Saving updated duration ${roundedDuration}s to database for song: ${song.title}`);
@@ -75,127 +75,86 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
             }
           }
         });
-        
         // Store unsubscribe function
         (audioEngineRef.current as any).unsubscribe = unsubscribe;
         setIsAudioEngineOnline(true);
-      } catch (error) {
-        console.error('Failed to initialize audio engine:', error);
-        setIsAudioEngineOnline(false);
-      }
-    };
-
-    initAudioEngine();
-
-    return () => {
-      if (audioEngineRef.current) {
-        // Call unsubscribe if it exists
-        if ((audioEngineRef.current as any).unsubscribe) {
-          (audioEngineRef.current as any).unsubscribe();
-        }
-        audioEngineRef.current.dispose();
-      }
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-    };
-  }, [stop]);
-
-  // Get storage context to know when it's initialized
-  const { isInitialized: storageInitialized, audioStorage: storageAudioStorage, userEmail: storageUserEmail } = useStorage();
-
-  // Set up song and load tracks for streaming playback - EVENT DRIVEN
-  useEffect(() => {
-    // Wait for storage to be fully initialized before loading tracks
-    if (!storageInitialized) {
-      console.log('⏳ Waiting for storage system to initialize before loading tracks...');
-      return;
-    }
-
-    if (song && audioEngineRef.current) {
-      console.log(`✅ Storage initialized! Loading song: "${song.title}" with ${song.tracks.length} tracks`);
-      
-      // Use existing duration from database
-      setDuration(song.duration);
-      setCurrentTime(0);
-      setIsPlaying(false);
-      
-      // Setup streaming tracks (non-blocking background setup)
-      console.log(`Setting up streaming for: "${song.title}" - UI stays responsive`);
-      
-      // Convert song tracks to track data format and setup streaming
-      const setupStreamingAsync = async () => {
-        try {
-          // Use userEmail from storage context or props
-          const finalUserEmail = userEmail || storageUserEmail || 'default@user.com';
-          
-          if (!finalUserEmail || finalUserEmail === 'default@user.com') {
-            console.warn('No userEmail available - mute regions will not be loaded');
-          }
-          
-          // Step 1: Set song context in the audio engine
-          audioEngineRef.current?.setSongContext(finalUserEmail, song.id);
-          
-          // Use the storage from context which is guaranteed to be initialized
-          const audioStorage = storageAudioStorage || AudioFileStorage.getInstance(finalUserEmail);
-          
-          // Step 2 & 3: Load all tracks with their audio URLs, mute regions, and all properties
-          const trackDataPromises = song.tracks.map(async (track) => {
-            const audioUrl = await audioStorage.getAudioUrl(track.id);
-            
-            // Get mute regions for this track
-            let muteRegions: any[] = [];
-            if (finalUserEmail && finalUserEmail !== 'default@user.com') {
-              try {
-                const regions = await LocalSongStorage.getMuteRegions(finalUserEmail, song.id, track.id);
-                if (regions && regions.length > 0) {
-                  muteRegions = regions;
-                  console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
-                }
-              } catch (error) {
-                console.warn(`Failed to load mute regions for track ${track.name}:`, error);
-              }
+        if (song && audioEngineRef.current) {
+          console.log(`✅ Storage initialized! Loading song: "${song.title}" with ${song.tracks.length} tracks`);
+          setIsLoadingTracks(true);
+          setAudioError(null);
+          setDuration(song.duration);
+          setCurrentTime(0);
+          setIsPlaying(false);
+          console.log(`Setting up streaming for: "${song.title}" - UI stays responsive`);
+          try {
+            const finalUserEmail = userEmail || 'default@user.com';
+            if (!finalUserEmail || finalUserEmail === 'default@user.com') {
+              console.warn('No userEmail available - mute regions will not be loaded');
             }
-            
-            return audioUrl ? {
-              id: track.id,
-              name: track.name,
-              url: audioUrl,
-              // Include ALL track properties for proper persistence (handle null values)
-              volume: track.volume != null ? track.volume : 50,  // Default to 50 if null/undefined
-              balance: track.balance != null ? track.balance : 0,  // Default to 0 if null/undefined
-              isMuted: track.isMuted || false,
-              isSolo: track.isSolo || false,
-              muteRegions: muteRegions // Attach mute regions directly to track data
-            } : null;
-          });
-          
-          const trackDataResults = await Promise.all(trackDataPromises);
-          const trackData = trackDataResults.filter(track => track !== null);
-          
-          if (trackData.length === 0) {
-            console.error(`❌ No audio URLs found for "${song.title}" - check if audio files exist in IndexedDB`);
-            return;
+            audioEngineRef.current?.setSongContext(finalUserEmail, song.id);
+            const audioStorage = storageAudioStorage || AudioFileStorage.getInstance(finalUserEmail);
+            const trackDataPromises = song.tracks.map(async (track) => {
+              const audioUrl = await audioStorage.getAudioUrl(track.id);
+              let muteRegions: any[] = [];
+              if (finalUserEmail && finalUserEmail !== 'default@user.com') {
+                try {
+                  const regions = await LocalSongStorage.getMuteRegions(finalUserEmail, song.id, track.id);
+                  if (regions && regions.length > 0) {
+                    muteRegions = regions;
+                    console.log(`🔇 Loaded ${muteRegions.length} mute regions for track: ${track.name}`);
+                  }
+                } catch (error) {
+                  console.warn(`Failed to load mute regions for track ${track.name}:`, error);
+                }
+              }
+              return audioUrl ? {
+                id: track.id,
+                name: track.name,
+                url: audioUrl,
+                volume: track.volume != null ? track.volume : 50,
+                balance: track.balance != null ? track.balance : 0,
+                isMuted: track.isMuted || false,
+                isSolo: track.isSolo || false,
+                muteRegions: muteRegions,
+              } : null;
+            });
+            const trackDataResults = await Promise.all(trackDataPromises);
+            const trackData = trackDataResults.filter(track => track !== null);
+            if (trackData.length === 0) {
+              console.error(`❌ No audio URLs found for "${song.title}" - check if audio files exist in IndexedDB`);
+              setIsLoadingTracks(false);
+              return;
+            }
+            console.log('⏳ Waiting for audio engine to load tracks...');
+            await audioEngineRef.current?.loadTracks(trackData);
+            console.log('✅ Audio engine tracks loaded successfully');
+            console.log('⏳ Preloading audio elements...');
+            await audioEngineRef.current?.preloadAllTracks();
+            console.log('✅ All audio elements preloaded and ready');
+            if (audioEngineRef.current && typeof (audioEngineRef.current as any).autoGenerateWaveform === 'function') {
+              (audioEngineRef.current as any).autoGenerateWaveform(song, finalUserEmail);
+            }
+            console.log(`✅ Streaming ready for "${song.title}" - instant playback available`);
+            setIsLoadingTracks(false);
+          } catch (error) {
+            console.error(`❌ Streaming setup failed for "${song.title}":`, error);
+            setAudioError(error instanceof Error ? error.message : String(error));
+            setIsLoadingTracks(true);
           }
-          
-          // Step 4: Send everything to the audio engine (mute regions will be scheduled automatically)
-          audioEngineRef.current?.loadTracks(trackData);
-          
-          // Auto-generate waveform in background (restored functionality from AudioEngine)
-          if (audioEngineRef.current && typeof (audioEngineRef.current as any).autoGenerateWaveform === 'function') {
-            (audioEngineRef.current as any).autoGenerateWaveform(song, finalUserEmail);
-          }
-          
-          console.log(`✅ Streaming ready for "${song.title}" - instant playback available`);
-        } catch (error) {
-          console.error(`❌ Streaming setup failed for "${song.title}":`, error);
+        } else {
+          setIsLoadingTracks(false);
+          setAudioError(null);
         }
-      };
-      
-      // Run setup in background without blocking UI
-      setupStreamingAsync();
-    }
-  }, [storageInitialized, song?.id, song?.tracks?.length, userEmail, storageUserEmail, storageAudioStorage]);
+      } catch (err) {
+        console.error('Error initializing audio engine:', err);
+      }
+    };
+    initAudioEngine();
+    // Cleanup function
+    return () => {
+      // Don't reset loading state on cleanup as it might interrupt loading
+    };
+  }, [storageInitialized, song?.id, song?.tracks?.length, userEmail, storageAudioStorage]);
 
   // Animation loop for real-time updates
 
@@ -263,19 +222,23 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
   }, [song?.id, isPlaying]);
 
   const play = useCallback(async () => {
-    if (!audioEngineRef.current || !song) return;
+    if (!audioEngineRef.current || !song) {
+      console.log('⚠️ Cannot play: No audio engine or song selected');
+      return;
+    }
     
     // Wait for tracks to be loaded if they're not already
     if (!audioEngineRef.current.isReady) {
-      console.log('Tracks not loaded, cannot start playback yet');
+      console.log('⚠️ Tracks not fully loaded yet - please wait');
       return;
     }
     
     try {
       await audioEngineRef.current.play();
       setIsPlaying(true);
+      console.log('▶️ Playback started');
     } catch (error) {
-      console.error('Failed to start playback:', error);
+      console.error('❌ Failed to start playback:', error);
       setIsPlaying(false);
     }
   }, [song]);
@@ -329,26 +292,40 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
     }
   }, []);
 
+  // Get audio context info for status display
+  const getAudioInfo = useCallback(() => {
+    if (audioEngineRef.current) {
+      return audioEngineRef.current.getAudioInfo();
+    }
+    return {
+      sampleRate: 48000,
+      bufferSize: 256,
+      bitDepth: 32,
+      latency: 0
+    };
+  }, []);
 
   return {
-    isPlaying,
-    currentTime,
-    duration,
-    audioLevels,
-    masterStereoLevels,
-    cpuUsage,
-    isAudioEngineOnline,
-    masterVolume,
-    isLoadingTracks,
-    audioEngine: audioEngineRef.current, // Expose audio engine for direct access
-    play,
-    pause,
-    stop,
-    seek,
-    updateTrackVolume,
-    updateTrackBalance,
-    updateTrackMute,
-    updateTrackSolo,
-    updateMasterVolume,
+  isPlaying,
+  currentTime,
+  duration,
+  audioLevels,
+  masterStereoLevels,
+  cpuUsage,
+  isAudioEngineOnline,
+  masterVolume,
+  isLoadingTracks,
+  audioError,
+  audioEngine: audioEngineRef.current, // Expose audio engine for direct access
+  getAudioInfo, // Expose audio info
+  play,
+  pause,
+  stop,
+  seek,
+  updateTrackVolume,
+  updateTrackBalance,
+  updateTrackMute,
+  updateTrackSolo,
+  updateMasterVolume,
   };
 }

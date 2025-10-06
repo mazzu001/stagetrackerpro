@@ -2,7 +2,6 @@
 // Pitch shifting libraries removed - focusing on streaming audio only
 
 import type { MuteRegion } from "@shared/schema";
-import { ensureStereoBuffer, getChannelDescription } from './audio-channel-utils';
 
 export interface StreamingTrack {
   id: string;
@@ -180,6 +179,85 @@ export class StreamingAudioEngine {
     console.log(`✅ Streaming ready: ${tracks.length} tracks setup instantly (audio nodes created on demand)`);
   }
 
+  // Preload all tracks to ensure they're ready for playback
+  async preloadAllTracks(): Promise<void> {
+    console.log(`⏳ Preloading ${this.state.tracks.length} tracks...`);
+    let errorOccurred = false;
+    
+    // PHASE 1: Check and convert mono tracks FIRST (before creating audio elements)
+    console.log(`🔧 Phase 1: Checking for mono tracks that need conversion...`);
+    const conversionPromises = this.state.tracks.map(async (track) => {
+      if (!track.hasMonoConversion) {
+        await this.checkAndConvertMono(track);
+      }
+    });
+    
+    try {
+      await Promise.all(conversionPromises);
+      console.log(`✅ Mono conversion phase complete`);
+    } catch (error) {
+      console.warn(`⚠️ Some mono conversions failed (continuing):`, error);
+    }
+    
+    // PHASE 2: Create audio nodes and preload
+    console.log(`🔧 Phase 2: Creating audio elements and preloading...`);
+    const preloadPromises = this.state.tracks.map(async (track) => {
+      try {
+        this.ensureTrackAudioNodes(track);
+        if (track.audioElement) {
+          return new Promise<void>((resolve, reject) => {
+            const timeout = setTimeout(() => {
+              console.warn(`⚠️ Preload timeout for ${track.name}`);
+              errorOccurred = true;
+              reject(new Error(`Preload timeout for ${track.name}`));
+            }, 5000);
+            const onCanPlay = () => {
+              clearTimeout(timeout);
+              if (track.audioElement) {
+                track.audioElement.removeEventListener('canplay', onCanPlay);
+                track.audioElement.removeEventListener('error', onError);
+              }
+              console.log(`✅ Track ready: ${track.name}`);
+              resolve();
+            };
+            const onError = (e: Event) => {
+              clearTimeout(timeout);
+              if (track.audioElement) {
+                track.audioElement.removeEventListener('canplay', onCanPlay);
+                track.audioElement.removeEventListener('error', onError);
+              }
+              console.warn(`⚠️ Failed to preload ${track.name}:`, e);
+              errorOccurred = true;
+              reject(new Error(`Failed to preload ${track.name}`));
+            };
+            if (track.audioElement && track.audioElement.readyState >= 2) {
+              clearTimeout(timeout);
+              console.log(`✅ Track already ready: ${track.name}`);
+              resolve();
+            } else if (track.audioElement) {
+              track.audioElement.addEventListener('canplay', onCanPlay, { once: true });
+              track.audioElement.addEventListener('error', onError, { once: true });
+              track.audioElement.preload = 'metadata';
+              track.audioElement.load();
+            }
+          });
+        }
+      } catch (error) {
+        console.warn(`⚠️ Error preloading track ${track.name}:`, error);
+        errorOccurred = true;
+        throw error;
+      }
+    });
+    try {
+      await Promise.all(preloadPromises);
+      console.log(`✅ All ${this.state.tracks.length} tracks preloaded and ready`);
+    } catch (err) {
+      errorOccurred = true;
+      console.error('❌ One or more tracks failed to preload:', err);
+      throw err;
+    }
+  }
+
   // Auto-generate waveform in background for responsive UI
   async autoGenerateWaveform(song: any, userEmail?: string) {
     if (this.state.tracks.length > 0 && song) {
@@ -209,11 +287,8 @@ export class StreamingAudioEngine {
     // Return early if both audio element and nodes exist
     if (track.audioElement && track.gainNode) return;
     
-    // Check if we need mono-to-stereo conversion first
-    if (!track.hasMonoConversion) {
-      this.checkAndConvertMono(track);
-      return; // Conversion will call this method again when done
-    }
+    // Mono conversion should already be done during preload
+    // This ensures we don't re-convert on demand
     
     // Create audio element if it doesn't exist
     if (!track.audioElement) {
@@ -276,19 +351,12 @@ export class StreamingAudioEngine {
     }
     
     // Create Web Audio nodes if they don't exist
-    if ((track.audioElement || track.audioBuffer) && !track.gainNode) {
+    if (track.audioElement && !track.gainNode) {
       try {
-        // Choose audio source based on whether we have converted mono audio
-        if (track.audioBuffer) {
-          // Use AudioBufferSourceNode for mono-converted tracks
-          console.log(`🔧 Using AudioBufferSourceNode for converted track: ${track.name}`);
-          // Note: AudioBufferSourceNode will be created during playback
-          track.source = null; // Will be created fresh for each play
-        } else {
-          // Use MediaElementAudioSourceNode for regular stereo tracks
-          console.log(`🔧 Using MediaElementAudioSourceNode for stereo track: ${track.name}`);
-          track.source = this.audioContext.createMediaElementSource(track.audioElement!);
-        }
+        // Use MediaElementAudioSourceNode for ALL tracks (mono and stereo)
+        // The browser's MediaElement natively handles mono files by playing them in both channels
+        console.log(`🔧 Using MediaElementAudioSourceNode for track: ${track.name}`);
+        track.source = this.audioContext.createMediaElementSource(track.audioElement);
         
         track.gainNode = this.audioContext.createGain();
         track.analyzerNode = this.audioContext.createAnalyser();
@@ -312,11 +380,8 @@ export class StreamingAudioEngine {
           track.rightAnalyzer.fftSize = 512;
           track.rightAnalyzer.smoothingTimeConstant = 0.6;
           
-          // Connect enhanced audio graph
-          if (track.source) {
-            track.source.connect(track.gainNode);
-          }
-          // Note: For AudioBuffer tracks, source will be connected during playback
+          // Connect enhanced audio graph (source is always MediaElement now)
+          track.source.connect(track.gainNode);
           track.gainNode.connect(track.channelSplitter);
           
           // Connect channels through individual gain nodes
@@ -344,11 +409,8 @@ export class StreamingAudioEngine {
           track.panNode = this.audioContext.createStereoPanner();
           track.useEnhancedPanning = false;
           
-          // Connect standard audio graph
-          if (track.source) {
-            track.source.connect(track.gainNode);
-          }
-          // Note: For AudioBuffer tracks, source will be connected during playback
+          // Connect standard audio graph (source is always MediaElement now)
+          track.source.connect(track.gainNode);
           track.gainNode.connect(track.panNode);
           track.panNode.connect(track.analyzerNode);
           track.analyzerNode.connect(this.state.masterGainNode!);
@@ -388,31 +450,27 @@ export class StreamingAudioEngine {
     }
   }
 
-  // Check if track needs mono-to-stereo conversion and apply it
+  // Check channel count without converting (MediaElement handles mono natively)
   private async checkAndConvertMono(track: StreamingTrack) {
     try {
-      console.log(`🔍 Checking mono conversion for: ${track.name}`);
+      console.log(`🔍 Checking audio format for: ${track.name}`);
       
-      // Fetch and decode the audio to check channel count
+      // Fetch just enough data to decode and check channel count
       const response = await fetch(track.url);
       if (!response.ok) {
         throw new Error(`Failed to fetch audio: ${response.status}`);
       }
       
       const arrayBuffer = await response.arrayBuffer();
-      const originalBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       
-      console.log(`📊 Detected: ${getChannelDescription(originalBuffer)} for ${track.name}`);
+      const channelCount = audioBuffer.numberOfChannels;
+      console.log(`📊 Detected: ${channelCount === 1 ? 'mono' : 'stereo'} for ${track.name}`);
       
-      if (originalBuffer.numberOfChannels === 1) {
-        // Mono audio - convert to stereo using AudioBuffer
-        console.log(`🔧 Converting mono to stereo: ${track.name}`);
-        track.audioBuffer = ensureStereoBuffer(this.audioContext, originalBuffer);
-        track.hasMonoConversion = true;
-        
-        console.log(`✅ Converted ${track.name}: ${getChannelDescription(originalBuffer)} → ${getChannelDescription(track.audioBuffer)}`);
-        
-        // Use AudioBufferSourceNode instead of HTMLAudioElement
+      if (channelCount === 1) {
+        // Mono audio - MediaElementAudioSourceNode will handle it natively
+        console.log(`✅ Mono audio detected: ${track.name} - MediaElement will play in both channels (no conversion needed)`);
+        track.hasMonoConversion = true; // Mark as checked
         this.ensureTrackAudioNodes(track);
       } else {
         // Stereo audio - use normal HTMLAudioElement path
@@ -422,8 +480,8 @@ export class StreamingAudioEngine {
       }
       
     } catch (error) {
-      console.error(`❌ Mono conversion failed for ${track.name}:`, error);
-      // Fallback to standard audio element
+      console.error(`❌ Audio format check failed for ${track.name}:`, error);
+      // Fallback to standard audio element (will work regardless)
       track.hasMonoConversion = true; // Mark as checked to avoid infinite loop
       this.ensureTrackAudioNodes(track);
     }
@@ -502,37 +560,10 @@ export class StreamingAudioEngine {
     
     console.log(`▶️ Starting streaming playback: ${this.state.tracks.length} tracks`);
     
-    // Start all tracks simultaneously
+    // Start all tracks simultaneously using MediaElement
     const playPromises = this.state.tracks.map(track => {
-      if (track.audioBuffer) {
-        // Handle AudioBufferSourceNode for converted mono tracks
-        try {
-          console.log(`🎵 Starting AudioBuffer track: ${track.name}`);
-          
-          // Stop existing buffer source if any
-          if (track.bufferSource) {
-            track.bufferSource.stop();
-            track.bufferSource.disconnect();
-          }
-          
-          // Create new buffer source
-          track.bufferSource = this.audioContext.createBufferSource();
-          track.bufferSource.buffer = track.audioBuffer;
-          
-          // Connect to gain node
-          track.bufferSource.connect(track.gainNode!);
-          
-          // Start from current time
-          const safeOffset = Math.min(this.state.currentTime, track.audioBuffer.duration - 0.1);
-          track.bufferSource.start(0, safeOffset);
-          
-          return Promise.resolve();
-        } catch (error) {
-          console.warn(`⚠️ Failed to start AudioBuffer track ${track.name}:`, error);
-          return Promise.resolve();
-        }
-      } else if (track.audioElement) {
-        // Handle HTMLAudioElement for regular stereo tracks
+      if (track.audioElement) {
+        // All tracks use HTMLAudioElement now (handles both mono and stereo)
         try {
           track.audioElement.currentTime = this.state.currentTime;
           return track.audioElement.play().catch(err => {
@@ -552,10 +583,6 @@ export class StreamingAudioEngine {
     
     this.state.isPlaying = true;
     
-    // Store timing reference for AudioContext-based tracks
-    this.audioContextStartTime = this.audioContext.currentTime;
-    this.playbackStartTime = this.state.currentTime;
-    
     this.startTimeTracking();
     
     // Always reschedule mute regions when playing to ensure they're applied
@@ -574,17 +601,8 @@ export class StreamingAudioEngine {
 
   pause() {
     this.state.tracks.forEach(track => {
-      if (track.bufferSource) {
-        // Stop AudioBufferSourceNode for converted mono tracks (can't pause, must stop)
-        try {
-          track.bufferSource.stop();
-          track.bufferSource.disconnect();
-          track.bufferSource = null;
-        } catch (error) {
-          console.warn(`⚠️ Error pausing AudioBuffer track ${track.name}:`, error);
-        }
-      } else if (track.audioElement) {
-        // Pause HTMLAudioElement for regular tracks
+      if (track.audioElement) {
+        // Pause HTMLAudioElement (handles all tracks now)
         track.audioElement.pause();
       }
     });
@@ -598,17 +616,8 @@ export class StreamingAudioEngine {
 
   stop() {
     this.state.tracks.forEach(track => {
-      if (track.bufferSource) {
-        // Stop AudioBufferSourceNode for converted mono tracks
-        try {
-          track.bufferSource.stop();
-          track.bufferSource.disconnect();
-          track.bufferSource = null;
-        } catch (error) {
-          console.warn(`⚠️ Error stopping AudioBuffer track ${track.name}:`, error);
-        }
-      } else if (track.audioElement) {
-        // Stop HTMLAudioElement for regular tracks
+      if (track.audioElement) {
+        // Stop HTMLAudioElement (handles all tracks now)
         track.audioElement.pause();
         track.audioElement.currentTime = 0;
       }
@@ -625,37 +634,15 @@ export class StreamingAudioEngine {
   seek(time: number) {
     this.state.currentTime = Math.max(0, Math.min(this.state.duration, time));
     
-    // Sync all tracks to new time
+    // Sync all tracks to new time (all use HTMLAudioElement now)
     this.state.tracks.forEach(track => {
-      if (track.bufferSource) {
-        // For AudioBufferSourceNode tracks, we need to restart playback from new position
-        if (this.state.isPlaying) {
-          try {
-            track.bufferSource.stop();
-            track.bufferSource.disconnect();
-            
-            // Create new buffer source
-            track.bufferSource = this.audioContext.createBufferSource();
-            track.bufferSource.buffer = track.audioBuffer!;
-            track.bufferSource.connect(track.gainNode!);
-            
-            // Start from new position
-            const safeOffset = Math.min(this.state.currentTime, track.audioBuffer!.duration - 0.1);
-            track.bufferSource.start(0, safeOffset);
-          } catch (error) {
-            console.warn(`⚠️ Error seeking AudioBuffer track ${track.name}:`, error);
-          }
-        }
-      } else if (track.audioElement) {
-        // For HTMLAudioElement tracks, just set currentTime
+      if (track.audioElement) {
         track.audioElement.currentTime = this.state.currentTime;
       }
     });
     
-    // Update timing references if playing (for AudioContext-based timing)
+    // Reschedule mute regions if playing
     if (this.state.isPlaying) {
-      this.audioContextStartTime = this.audioContext.currentTime;
-      this.playbackStartTime = this.state.currentTime;
       this.scheduleAllMuteRegions(this.state.currentTime);
     }
     
@@ -1219,9 +1206,11 @@ export class StreamingAudioEngine {
   }
 
   get isReady(): boolean {
-    // Allow playback even with no audio files loaded
-    // This enables the UI to work even when audio files are missing
-    return true;
+    // Check if we have tracks loaded and they're ready for playback
+    // A track is ready if it has an audio element (for streaming) or audio buffer (for converted mono tracks)
+    return this.state.tracks.length > 0 && this.state.tracks.every(track => 
+      track.audioElement !== null || track.audioBuffer !== null
+    );
   }
 
   subscribe(listener: () => void) {
@@ -1261,5 +1250,27 @@ export class StreamingAudioEngine {
     if (this.audioContext.state !== 'closed') {
       this.audioContext.close();
     }
+  }
+
+  // Get audio output device properties for status display
+  // Note: These are AudioContext settings (your system's audio device),
+  // NOT individual track/file properties. They remain constant across all songs.
+  getAudioInfo() {
+    const sampleRate = this.audioContext.sampleRate;
+    const baseLatency = this.audioContext.baseLatency || 0;
+    
+    // Calculate buffer size from base latency
+    // baseLatency is in seconds, so multiply by sample rate to get samples
+    const bufferSize = baseLatency > 0 ? Math.round(baseLatency * sampleRate) : 256;
+    
+    // Bit depth is typically 32-bit for Web Audio API (floating point)
+    const bitDepth = 32;
+    
+    return {
+      sampleRate,
+      bufferSize,
+      bitDepth,
+      latency: baseLatency * 1000 // Convert to milliseconds
+    };
   }
 }

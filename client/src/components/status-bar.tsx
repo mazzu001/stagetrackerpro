@@ -15,6 +15,15 @@ interface StatusBarProps {
   isHost?: boolean;
   isViewer?: boolean;
   currentRoom?: string | null;
+  // MIDI status
+  midiConnected?: boolean;
+  // Audio output device settings (NOT song-specific - these are AudioContext constants)
+  audioInfo?: {
+    sampleRate: number;
+    bufferSize: number;
+    bitDepth: number;
+    latency: number;
+  };
   // Export task
   exportTask?: ExportTask;
 }
@@ -25,10 +34,21 @@ export default function StatusBar({
   isHost = false,
   isViewer = false,
   currentRoom = null,
+  midiConnected = false,
+  audioInfo,
   exportTask
 }: StatusBarProps) {
+  // Use audio info from audio engine if available, otherwise use defaults
+  const sampleRate = audioInfo?.sampleRate || 48000;
+  const bufferSize = audioInfo?.bufferSize || 256;
+  const bitDepth = audioInfo?.bitDepth || 32;
+  
+  // Format sample rate for display (e.g., 48000 -> 48kHz)
+  const formatSampleRate = (rate: number) => {
+    return rate >= 1000 ? `${rate / 1000}kHz` : `${rate}Hz`;
+  };
   return (
-    <div className="bg-surface rounded-xl p-4 border border-gray-700" data-testid="status-bar">
+    <div className="w-full" data-testid="status-bar">
       {/* Export Progress Bar */}
       {exportTask && (
         <div className="mb-3 p-3 bg-blue-900/20 border border-blue-500/30 rounded-lg" data-testid="status-export">
@@ -65,6 +85,14 @@ export default function StatusBar({
             </span>
           </div>
           <div className="flex items-center space-x-2">
+            <div className={`w-3 h-3 rounded-full ${midiConnected ? 'bg-green-500' : 'bg-gray-600'}`} />
+            <span className="text-sm">
+              MIDI: <span className={midiConnected ? 'text-green-400' : 'text-gray-500'}>
+                {midiConnected ? 'Connected' : 'Disconnected'}
+              </span>
+            </span>
+          </div>
+          <div className="flex items-center space-x-2">
             <span className="text-sm text-gray-400">
               Latency: <span className="text-secondary">{latency.toFixed(1)}ms</span>
             </span>
@@ -86,10 +114,11 @@ export default function StatusBar({
 
         </div>
         
-        <div className="flex items-center space-x-4 text-sm text-gray-400">
-          <span>Buffer: 256 samples</span>
-          <span>Sample Rate: 48kHz</span>
-          <span>Bit Depth: 24-bit</span>
+        <div className="flex items-center space-x-4 text-sm text-gray-500">
+          <span className="text-xs uppercase tracking-wider">Audio Output:</span>
+          <span>{formatSampleRate(sampleRate)}</span>
+          <span>{bufferSize} samples</span>
+          <span>{bitDepth}-bit</span>
         </div>
       </div>
     </div>

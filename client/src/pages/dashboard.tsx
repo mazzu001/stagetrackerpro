@@ -15,13 +15,12 @@ export default function Dashboard() {
   const { user, userEmail } = useLocalStorage();
   const logout = () => {}; // No logout needed in mobile app
   const { 
-    currentRoom, 
+    broadcastId,
     isHost, 
     isViewer, 
-    isConnected,
     startBroadcast, 
     joinBroadcast, 
-    leaveBroadcast 
+    leave
   } = useBroadcast();
   
   const { toast } = useToast();
@@ -175,7 +174,11 @@ export default function Dashboard() {
     
     setIsStarting(true);
     try {
-      const roomId = await startBroadcast(broadcastName);
+      console.log('🎭 Starting broadcast:', broadcastName.trim());
+      // Use Firestore-native API instead of old REST endpoint
+      await startBroadcast(broadcastName.trim());
+      
+      localStorage.setItem('activeBroadcast', broadcastName.trim());
       toast({
         title: "🎭 Broadcast Started!",
         description: `"${broadcastName}" is now live!\nRedirecting to performance page...`
@@ -188,13 +191,14 @@ export default function Dashboard() {
       }, 1000); // Small delay to let user see the success message
       
     } catch (error: any) {
-      console.error('📡 Broadcast start error:', error);
+      console.error('❌ Broadcast start error:', error);
       toast({
         title: "Failed to start broadcast",
-        description: error?.message || "Please check your network connection and try again",
+        description: error.message || "Please check your internet connection and try again.",
         variant: "destructive"
       });
-      setIsStarting(false); // Only reset if failed
+    } finally {
+      setIsStarting(false);
     }
   };
 
@@ -238,7 +242,7 @@ export default function Dashboard() {
   };
 
   const handleLeaveBroadcast = () => {
-    leaveBroadcast();
+    leave();
     toast({
       title: isHost ? "Broadcast ended" : "Left broadcast",
       description: isHost ? "Your broadcast has been stopped" : "You've disconnected from the broadcast"
@@ -539,8 +543,9 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* BROADCAST SYSTEM TEMPORARILY HIDDEN - DO NOT DELETE */}
         {/* Current Broadcast Status */}
-        {(isHost || isViewer) && currentRoom && (
+        {false && (isHost || isViewer) && broadcastId && (
           <Card className="mb-6 border-blue-200 bg-blue-50 dark:bg-blue-900/20">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -556,7 +561,7 @@ export default function Dashboard() {
                   </>
                 )}
                 <Badge variant="secondary" className="ml-2">
-                  {isConnected ? 'Connected' : 'Offline'}
+                  Connected
                 </Badge>
               </CardTitle>
             </CardHeader>
@@ -566,12 +571,12 @@ export default function Dashboard() {
                   <Label className="text-sm font-medium">Room ID</Label>
                   <div className="flex items-center gap-2">
                     <code className="bg-white dark:bg-gray-800 px-2 py-1 rounded text-lg font-mono">
-                      {currentRoom}
+                      {broadcastId}
                     </code>
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => navigator.clipboard.writeText(currentRoom)}
+                      onClick={() => navigator.clipboard.writeText(broadcastId)}
                     >
                       <Link2 className="h-3 w-3" />
                     </Button>
@@ -579,7 +584,7 @@ export default function Dashboard() {
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Broadcast Name</Label>
-                  <p className="text-lg">{currentRoom}</p>
+                  <p className="text-lg">{broadcastId}</p>
                 </div>
                 <div>
                   <Label className="text-sm font-medium">Participants</Label>
@@ -599,7 +604,9 @@ export default function Dashboard() {
         {/* Main Dashboard Layout */}
         {!isHost && !isViewer && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            {/* BROADCAST CONTROLS TEMPORARILY HIDDEN - DO NOT DELETE */}
             {/* Left Column - Broadcast Controls */}
+            {false && (
             <div className="lg:col-span-1 space-y-4">
               {/* Start Broadcast */}
               <Card className={!canBroadcast ? 'opacity-60' : ''}>
@@ -695,9 +702,11 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
             </div>
+            )}
+            {/* END BROADCAST CONTROLS - HIDDEN */}
 
             {/* Right Column - User Card */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-3">{/* Changed from lg:col-span-2 to take full width */}
               <Card className="h-fit">
                 <CardHeader>
                   <div className="flex items-center justify-between">
@@ -897,7 +906,8 @@ export default function Dashboard() {
                   </div>
 
 
-                  {/* Account Actions */}
+                  {/* ACCOUNT MANAGEMENT SECTION TEMPORARILY HIDDEN - DO NOT DELETE */}
+                  {false && (
                   <div className="space-y-3 pt-4 border-t">
                     <h4 className="text-sm font-medium text-muted-foreground">Account Management</h4>
                     <div className="flex flex-col sm:flex-row gap-2">
@@ -912,7 +922,8 @@ export default function Dashboard() {
                         </Button>
                       )}
                       
-                      {user.userType !== 'free' && (
+                      {/* TEMPORARILY HIDDEN - DO NOT DELETE */}
+                      {false && user.userType !== 'free' && (
                         <Button
                           variant="outline"
                           onClick={() => window.location.href = '/unsubscribe'}
@@ -922,12 +933,17 @@ export default function Dashboard() {
                         </Button>
                       )}
                       
-                      <Button variant="outline" onClick={logout}>
-                        <LogOut className="h-4 w-4 mr-2" />
-                        Logout
-                      </Button>
+                      {/* TEMPORARILY HIDDEN - DO NOT DELETE */}
+                      {false && (
+                        <Button variant="outline" onClick={logout}>
+                          <LogOut className="h-4 w-4 mr-2" />
+                          Logout
+                        </Button>
+                      )}
                     </div>
                   </div>
+                  )}
+                  {/* END ACCOUNT MANAGEMENT SECTION - HIDDEN */}
 
                   {/* Help & Support */}
                   <div className="space-y-3 pt-4 border-t">

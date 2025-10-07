@@ -1,2 +1,2 @@
-Version 1.4.1.1
-Thank you!
+This is a new build message
+Test Message 1

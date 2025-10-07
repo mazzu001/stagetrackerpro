@@ -11,6 +11,7 @@ import TrackManager from "@/components/track-manager-clean";
 import StemSplitter from "@/components/stem-splitter";
 import ProfessionalStereoVUMeter from "@/components/professional-stereo-vu-meter";
 import { WaveformVisualizer } from "@/components/waveform-visualizer";
+import { loadUserProfile, getDisplayName } from "@/lib/firestore-profile";
 
 import { useAudioEngine } from "@/hooks/use-audio-engine";
 
@@ -73,6 +74,23 @@ export default function Performance({ userType, userEmail, logout }: Performance
   const [isExportDialogOpen, setIsExportDialogOpen] = useState(false);
   const [isMidiListening, setIsMidiListening] = useState(false);
   const [exportFilename, setExportFilename] = useState("");
+  const [displayName, setDisplayName] = useState<string>("");
+  
+  // Load user profile to get display name
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const profile = await loadUserProfile();
+        if (profile) {
+          const name = getDisplayName(profile);
+          setDisplayName(name !== 'local_user' ? name : '');
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error);
+      }
+    };
+    loadProfile();
+  }, []);
   const lyricsTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Audio info state for dynamic status bar updates
@@ -989,9 +1007,9 @@ export default function Performance({ userType, userEmail, logout }: Performance
               <Music className="h-5 w-5 md:h-6 md:w-6 text-primary" />
               <div className="flex flex-col">
                 <span className="text-base md:text-lg font-semibold">StageTracker Pro</span>
-                {userEmail && (
+                {displayName && (
                   <span className="text-xs text-gray-400" data-testid="text-username">
-                    {userEmail}
+                    {displayName}
                   </span>
                 )}
               </div>

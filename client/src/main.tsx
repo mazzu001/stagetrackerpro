@@ -3,14 +3,16 @@ console.log("[MAIN.TSX] Script starting...");
 // Initialize mobile API fallback system FIRST (before any components load)
 import "./lib/mobile-api-fallback";
 
-// Force unregister any service workers first
+// Register service worker for PWA support
 if ('serviceWorker' in navigator) {
-  console.log("[MAIN.TSX] Unregistering service workers...");
-  navigator.serviceWorker.getRegistrations().then(function(registrations) {
-    for(let registration of registrations) {
-      registration.unregister();
-      console.log('[MAIN.TSX] Unregistered service worker:', registration);
-    }
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('[MAIN.TSX] Service worker registered:', registration);
+      })
+      .catch((error) => {
+        console.log('[MAIN.TSX] Service worker registration failed:', error);
+      });
   });
 }
 

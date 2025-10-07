@@ -125,16 +125,16 @@ export function useAudioEngine(songOrProps?: SongWithTracks | UseAudioEngineProp
               setIsLoadingTracks(false);
               return;
             }
-            console.log('⏳ Waiting for audio engine to load tracks...');
+            
+            // Step 4: Send everything to the audio engine (mute regions will be scheduled automatically)
             await audioEngineRef.current?.loadTracks(trackData);
-            console.log('✅ Audio engine tracks loaded successfully');
-            console.log('⏳ Preloading audio elements...');
-            await audioEngineRef.current?.preloadAllTracks();
-            console.log('✅ All audio elements preloaded and ready');
+            
+            // Auto-generate waveform in background (restored functionality from AudioEngine)
             if (audioEngineRef.current && typeof (audioEngineRef.current as any).autoGenerateWaveform === 'function') {
               (audioEngineRef.current as any).autoGenerateWaveform(song, finalUserEmail);
             }
-            console.log(`✅ Streaming ready for "${song.title}" - instant playback available`);
+            
+            console.log(`✅ Song "${song.title}" ready - audio will stream on demand`);
             setIsLoadingTracks(false);
           } catch (error) {
             console.error(`❌ Streaming setup failed for "${song.title}":`, error);

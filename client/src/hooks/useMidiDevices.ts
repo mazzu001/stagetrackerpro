@@ -53,7 +53,6 @@ export function useMidiDevices(): UseMidiDevicesReturn {
   const bleDevicesRef = useRef<Map<string, BleMidiDevice>>(new Map()); // Track BLE devices
   const messageListenersRef = useRef<Map<string, (message: MIDIMessageEvent) => void>>(new Map());
   const hasInitializedRef = useRef(false); // Track if we've initialized at all
-  const hasAttemptedAutoReconnectRef = useRef(false); // Track if we've attempted auto-reconnect (one-shot)
   
   // Add reentrancy lock and debounce timer for refreshDeviceList
   const isRefreshingRef = useRef(false);
@@ -308,7 +307,6 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     }
     
     setIsSupported(true);
-    console.log('🎹 MIDI API supported - waiting for user interaction to initialize');
   }, []);
 
   // Stage 1: Initialize USB MIDI only (lightweight, fast)
@@ -365,47 +363,6 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       setIsInitializing(false);
       setError(null);
       console.log('✅ USB MIDI initialized successfully');
-      
-      // Stage 2: Auto-reconnect to last USB device (deferred, one-shot)
-      setTimeout(() => {
-        // Only attempt auto-reconnect once per session to prevent infinite loops
-        if (hasAttemptedAutoReconnectRef.current) {
-          console.log('🎹 Auto-reconnect already attempted, skipping');
-          return;
-        }
-        
-        const lastDeviceStr = localStorage.getItem('lastMidiDevice');
-        if (lastDeviceStr) {
-          try {
-            const lastDevice = JSON.parse(lastDeviceStr);
-            
-            // Only auto-reconnect if it's a USB device
-            const deviceName = lastDevice.name?.toLowerCase() || '';
-            const isBluetoothDevice = deviceName.includes('bluetooth') || 
-                                     deviceName.includes('ble') || 
-                                     deviceName.includes('widi');
-            
-            if (!isBluetoothDevice) {
-              // Mark that we've attempted auto-reconnect
-              hasAttemptedAutoReconnectRef.current = true;
-              
-              console.log('🎹 Looking for last USB device (one-shot):', lastDevice.name);
-              
-              const devices = midiAccessRef.current?.inputs;
-              if (devices) {
-                devices.forEach(device => {
-                  if (device.name === lastDevice.name && device.manufacturer === lastDevice.manufacturer) {
-                    console.log('🎹 Found last USB device, auto-connecting:', device.name);
-                    connectDevice(device.id);
-                  }
-                });
-              }
-            }
-          } catch (e) {
-            console.log('Could not auto-reconnect to last device');
-          }
-        }
-      }, 500);
       
     } catch (err) {
       let errorMessage = 'Failed to initialize USB MIDI';
@@ -489,6 +446,67 @@ export function useMidiDevices(): UseMidiDevicesReturn {
     }
   }, [refreshDeviceList]);
 
+  // Silent connect (for auto-reconnection - no toasts, called by persistence hook)
+  const connectDeviceSilent = useCallback(async (deviceId: string): Promise<boolean> => {
+    if (!midiAccessRef.current) {
+      return false;
+    }
+    
+    const access = midiAccessRef.current;
+    
+    try {
+      let device: MIDIInput | MIDIOutput | undefined;
+      let isInput = false;
+      
+      // Check if device exists in inputs
+      if (access.inputs.has(deviceId)) {
+        device = access.inputs.get(deviceId);
+        isInput = true;
+      } else if (access.outputs.has(deviceId)) {
+        device = access.outputs.get(deviceId);
+        isInput = false;
+      }
+      
+      if (!device) {
+        return false;
+      }
+      
+      // Open the device port
+      if (device.connection === 'closed') {
+        await device.open();
+      }
+      
+      // Set up message handler for input devices
+      if (isInput && device.type === 'input') {
+        const inputDevice = device as MIDIInput;
+        inputDevice.onmidimessage = (event: MIDIMessageEvent) => {
+          requestAnimationFrame(() => {
+            messageListenersRef.current.forEach(listener => {
+              try {
+                listener(event);
+              } catch (err) {
+                console.error('Error in MIDI message listener:', err);
+              }
+            });
+          });
+        };
+      }
+      
+      // Store the device connection
+      deviceConnectionsRef.current.set(deviceId, device);
+      
+      console.log(`✅ Silently reconnected: ${device.name}`);
+      
+      // Refresh device list to update UI
+      await refreshDeviceList();
+      return true;
+      
+    } catch (error) {
+      console.log(`⚠️ Silent connection failed for ${deviceId}`);
+      return false;
+    }
+  }, [refreshDeviceList]);
+
   // Connect to a specific device
   const connectDevice = useCallback(async (deviceId: string): Promise<boolean> => {
     if (!midiAccessRef.current) {
@@ -553,14 +571,6 @@ export function useMidiDevices(): UseMidiDevicesReturn {
       
       // Store the device connection
       deviceConnectionsRef.current.set(deviceId, device);
-      
-      // Save as last connected device
-      const deviceInfo = {
-        name: device.name,
-        manufacturer: device.manufacturer,
-        id: deviceId
-      };
-      localStorage.setItem('lastMidiDevice', JSON.stringify(deviceInfo));
       
       console.log(`✅ Connected to ${device.name}`);
       

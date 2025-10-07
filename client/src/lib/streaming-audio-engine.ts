@@ -54,7 +54,7 @@ export class StreamingAudioEngine {
   private onSongEndCallback: (() => void) | null = null;
   private scheduledGainChanges: Map<string, number[]> = new Map(); // Track scheduled gain automation IDs
   private songContext: { userEmail: string; songId: string } | null = null;
-  private useEnhancedPanning: boolean = true; // Enable 100% isolation panning
+  private useEnhancedPanning: boolean = false; // Disable enhanced panning - use StereoPanner for mono compatibility
   // Add timing reference properties for AudioContext-based tracks
   private audioContextStartTime: number = 0;
   private playbackStartTime: number = 0;
@@ -179,85 +179,6 @@ export class StreamingAudioEngine {
     console.log(`✅ Streaming ready: ${tracks.length} tracks setup instantly (audio nodes created on demand)`);
   }
 
-  // Preload all tracks to ensure they're ready for playback
-  async preloadAllTracks(): Promise<void> {
-    console.log(`⏳ Preloading ${this.state.tracks.length} tracks...`);
-    let errorOccurred = false;
-    
-    // PHASE 1: Check and convert mono tracks FIRST (before creating audio elements)
-    console.log(`🔧 Phase 1: Checking for mono tracks that need conversion...`);
-    const conversionPromises = this.state.tracks.map(async (track) => {
-      if (!track.hasMonoConversion) {
-        await this.checkAndConvertMono(track);
-      }
-    });
-    
-    try {
-      await Promise.all(conversionPromises);
-      console.log(`✅ Mono conversion phase complete`);
-    } catch (error) {
-      console.warn(`⚠️ Some mono conversions failed (continuing):`, error);
-    }
-    
-    // PHASE 2: Create audio nodes and preload
-    console.log(`🔧 Phase 2: Creating audio elements and preloading...`);
-    const preloadPromises = this.state.tracks.map(async (track) => {
-      try {
-        this.ensureTrackAudioNodes(track);
-        if (track.audioElement) {
-          return new Promise<void>((resolve, reject) => {
-            const timeout = setTimeout(() => {
-              console.warn(`⚠️ Preload timeout for ${track.name}`);
-              errorOccurred = true;
-              reject(new Error(`Preload timeout for ${track.name}`));
-            }, 5000);
-            const onCanPlay = () => {
-              clearTimeout(timeout);
-              if (track.audioElement) {
-                track.audioElement.removeEventListener('canplay', onCanPlay);
-                track.audioElement.removeEventListener('error', onError);
-              }
-              console.log(`✅ Track ready: ${track.name}`);
-              resolve();
-            };
-            const onError = (e: Event) => {
-              clearTimeout(timeout);
-              if (track.audioElement) {
-                track.audioElement.removeEventListener('canplay', onCanPlay);
-                track.audioElement.removeEventListener('error', onError);
-              }
-              console.warn(`⚠️ Failed to preload ${track.name}:`, e);
-              errorOccurred = true;
-              reject(new Error(`Failed to preload ${track.name}`));
-            };
-            if (track.audioElement && track.audioElement.readyState >= 2) {
-              clearTimeout(timeout);
-              console.log(`✅ Track already ready: ${track.name}`);
-              resolve();
-            } else if (track.audioElement) {
-              track.audioElement.addEventListener('canplay', onCanPlay, { once: true });
-              track.audioElement.addEventListener('error', onError, { once: true });
-              track.audioElement.preload = 'metadata';
-              track.audioElement.load();
-            }
-          });
-        }
-      } catch (error) {
-        console.warn(`⚠️ Error preloading track ${track.name}:`, error);
-        errorOccurred = true;
-        throw error;
-      }
-    });
-    try {
-      await Promise.all(preloadPromises);
-      console.log(`✅ All ${this.state.tracks.length} tracks preloaded and ready`);
-    } catch (err) {
-      errorOccurred = true;
-      console.error('❌ One or more tracks failed to preload:', err);
-      throw err;
-    }
-  }
-
   // Auto-generate waveform in background for responsive UI
   async autoGenerateWaveform(song: any, userEmail?: string) {
     if (this.state.tracks.length > 0 && song) {
@@ -286,9 +207,6 @@ export class StreamingAudioEngine {
   private ensureTrackAudioNodes(track: StreamingTrack) {
     // Return early if both audio element and nodes exist
     if (track.audioElement && track.gainNode) return;
-    
-    // Mono conversion should already be done during preload
-    // This ensures we don't re-convert on demand
     
     // Create audio element if it doesn't exist
     if (!track.audioElement) {
@@ -353,11 +271,7 @@ export class StreamingAudioEngine {
     // Create Web Audio nodes if they don't exist
     if (track.audioElement && !track.gainNode) {
       try {
-        // Use MediaElementAudioSourceNode for ALL tracks (mono and stereo)
-        // The browser's MediaElement natively handles mono files by playing them in both channels
-        console.log(`🔧 Using MediaElementAudioSourceNode for track: ${track.name}`);
         track.source = this.audioContext.createMediaElementSource(track.audioElement);
-        
         track.gainNode = this.audioContext.createGain();
         track.analyzerNode = this.audioContext.createAnalyser();
         
@@ -409,10 +323,28 @@ export class StreamingAudioEngine {
           track.panNode = this.audioContext.createStereoPanner();
           track.useEnhancedPanning = false;
           
-          // Connect standard audio graph (source is always MediaElement now)
+          // Create channel-specific analyzers for VU meters (after panning)
+          track.postPanSplitter = this.audioContext.createChannelSplitter(2);
+          track.leftAnalyzer = this.audioContext.createAnalyser();
+          track.rightAnalyzer = this.audioContext.createAnalyser();
+          
+          // Setup analyzer properties
+          track.leftAnalyzer.fftSize = 512;
+          track.leftAnalyzer.smoothingTimeConstant = 0.6;
+          track.rightAnalyzer.fftSize = 512;
+          track.rightAnalyzer.smoothingTimeConstant = 0.6;
+          
+          // Connect standard audio graph with post-pan channel analysis
           track.source.connect(track.gainNode);
           track.gainNode.connect(track.panNode);
-          track.panNode.connect(track.analyzerNode);
+          track.panNode.connect(track.analyzerNode); // Main analyzer (for compatibility)
+          
+          // Split AFTER panning for accurate VU meters
+          track.panNode.connect(track.postPanSplitter);
+          track.postPanSplitter.connect(track.leftAnalyzer, 0);  // Left channel analyzer
+          track.postPanSplitter.connect(track.rightAnalyzer, 1); // Right channel analyzer
+          
+          // Connect to master
           track.analyzerNode.connect(this.state.masterGainNode!);
           
           // Apply standard panning
@@ -421,7 +353,8 @@ export class StreamingAudioEngine {
           console.log(`🔧 Standard audio nodes created for: ${track.name}`, {
             nodeType: 'StereoPannerNode',
             initialBalance: track.balance,
-            initialPanValue: track.balance / 100
+            initialPanValue: track.balance / 100,
+            postPanMetering: true
           });
         }
         

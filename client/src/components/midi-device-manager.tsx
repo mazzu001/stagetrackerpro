@@ -165,6 +165,7 @@ export function MidiDeviceManager({ isOpen, onClose }: MidiDeviceManagerProps) {
               onClick={handleScan}
               data-testid="button-scan-devices"
               title="Scan for MIDI devices"
+              className="mr-8"
             >
               <RefreshCw className="h-4 w-4 mr-2" />
               Scan MIDI

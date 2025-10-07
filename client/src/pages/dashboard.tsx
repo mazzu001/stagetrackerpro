@@ -10,6 +10,7 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useBroadcast } from '@/hooks/useBroadcast';
 import { useToast } from '@/hooks/use-toast';
 import { useLocation } from 'wouter';
+import { saveUserProfile, loadUserProfile, updateProfileField, initializeUserProfile } from '@/lib/firestore-profile';
 
 export default function Dashboard() {
   const { user, userEmail } = useLocalStorage();
@@ -32,13 +33,15 @@ export default function Dashboard() {
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [devMessage, setDevMessage] = useState<string>('');
+  const devMessage = ''; // Blank for now - removed Firestore
   
   // Profile form state
   const [profileData, setProfileData] = useState({
     firstName: '',
     lastName: '',
     phone: '',
+    email: '',
+    password: '', // Add password field
     customBroadcastId: ''
   });
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
@@ -50,6 +53,8 @@ export default function Dashboard() {
     firstName: '',
     lastName: '',
     phone: '',
+    email: '',
+    password: '', // Add password field
     customBroadcastId: ''
   });
   
@@ -72,92 +77,46 @@ export default function Dashboard() {
   const canBroadcast = user?.userType === 'professional';
   const canJoin = user?.userType === 'premium' || user?.userType === 'professional';
 
-  // Load dev message
-  useEffect(() => {
-    fetch('/devmessage.txt')
-      .then(res => res.text())
-      .then(text => setDevMessage(text.trim()))
-      .catch(() => setDevMessage('')); // Silently fail if file doesn't exist
-  }, []);
-
-  // Load profile photo and user data when component mounts
+  // Load user profile from Firestore
   useEffect(() => {
     const loadUserData = async () => {
-      if (!user?.email) return;
-      
       try {
-        // Load complete user profile data from database
-        const userResponse = await fetch(`/api/profile?email=${encodeURIComponent(user.email)}`, {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-        });
+        // Initialize profile if first time user
+        await initializeUserProfile(user?.email);
         
-        if (userResponse.ok) {
-          const contentType = userResponse.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            const userData = await userResponse.json();
-            // Set profile data from database
-            const newProfileData = {
-              firstName: userData.firstName || '',
-              lastName: userData.lastName || '',
-              phone: userData.phone || '',
-              customBroadcastId: userData.customBroadcastId || ''
-            };
-            setProfileData(newProfileData);
-            setEditValues(newProfileData);
-            
-            // Set profile photo
-            setProfilePhoto(userData.profilePhoto);
-            console.log('✅ User profile data loaded successfully');
-          } else {
-            console.error('❌ Profile API returned non-JSON response');
-            // Fall back to photo-only loading
-            await loadPhotoOnly();
-          }
+        // Load profile from Firestore
+        const profile = await loadUserProfile();
+        
+        if (profile) {
+          const newProfileData = {
+            firstName: profile.firstName || '',
+            lastName: profile.lastName || '',
+            phone: profile.phone || '',
+            email: profile.email || user?.email || '',
+            password: '', // Password never loaded from database for security
+            customBroadcastId: profile.customBroadcastId || ''
+          };
+          
+          setProfileData(newProfileData);
+          setEditValues(newProfileData);
+          setProfilePhoto(profile.profilePhoto || null);
+          
+          console.log('✅ User profile loaded from Firestore');
         } else {
-          console.error('❌ Profile API request failed:', userResponse.status);
-          // Fall back to photo-only loading
-          await loadPhotoOnly();
+          console.log('📭 No profile found - initialized new profile');
         }
       } catch (error) {
-        console.error('Error loading user data:', error);
-        // Fall back to photo-only loading
-        await loadPhotoOnly();
-      }
-    };
-
-    const loadPhotoOnly = async () => {
-      if (!user?.email) return;
-      
-      try {
-        // Load photo separately as fallback
-        const photoResponse = await fetch(`/api/profile-photo?email=${encodeURIComponent(user.email)}`, {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
+        console.error('❌ Error loading user profile from Firestore:', error);
+        toast({
+          title: "Profile Load Failed",
+          description: "Could not load your profile. Using local defaults.",
+          variant: "destructive"
         });
-        
-        if (photoResponse.ok) {
-          const contentType = photoResponse.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            const data = await photoResponse.json();
-            setProfilePhoto(data.profilePhoto);
-          }
-        }
-      } catch (error) {
-        console.error('Error loading profile photo:', error);
       }
     };
 
     loadUserData();
-  }, [user?.email]);
+  }, [user?.email, toast]);
 
   const handleStartBroadcast = async () => {
     if (!user || !broadcastName.trim()) return;
@@ -260,101 +219,88 @@ export default function Dashboard() {
       return;
     }
 
-    // Check file size (limit to 2MB, but account for base64 encoding overhead ~33%)
-    const maxSizeBytes = 1.5 * 1024 * 1024; // 1.5MB raw file = ~2MB when base64 encoded
-    if (file.size > maxSizeBytes) {
-      const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
-      toast({
-        title: "File too large",
-        description: `Image is ${sizeMB}MB. Please select an image smaller than 1.5MB (becomes ~2MB when processed).`,
-        variant: "destructive"
-      });
-      return;
-    }
-
     setIsUploadingPhoto(true);
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      const result = e.target?.result as string;
-        
-        try {
-          // Save to database instead of localStorage
-          const response = await fetch('/api/profile-photo', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify({ 
-              photoData: result,
-              userEmail: user?.email  // Include email for local auth
-            }),
-          });
 
-          if (response.ok) {
-            setProfilePhoto(result);
-            // Remove any old localStorage entry
-            localStorage.removeItem(`profile_photo_${user?.email}`);
-            setIsUploadingPhoto(false);
-            toast({
-              title: "Photo updated!",
-              description: "Your profile photo has been saved successfully."
-            });
-          } else {
-            throw new Error('Failed to upload photo');
-          }
-        } catch (error) {
-          console.error('Error uploading photo:', error);
-          setIsUploadingPhoto(false);
+    try {
+      // Create an image element to compress the image
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        img.src = e.target?.result as string;
+      };
+
+      img.onload = async () => {
+        // Create canvas to resize/compress image
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Calculate new dimensions (max 800x800 to keep file size down)
+        let width = img.width;
+        let height = img.height;
+        const maxSize = 800;
+        
+        if (width > height && width > maxSize) {
+          height = (height / width) * maxSize;
+          width = maxSize;
+        } else if (height > maxSize) {
+          width = (width / height) * maxSize;
+          height = maxSize;
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Draw and compress
+        ctx?.drawImage(img, 0, 0, width, height);
+        
+        // Convert to base64 with quality adjustment (0.7 = 70% quality)
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+        
+        // Check final size (Firestore limit is ~1MB)
+        const sizeInBytes = compressedDataUrl.length * 0.75; // Rough base64 size calculation
+        const sizeInMB = sizeInBytes / (1024 * 1024);
+        
+        if (sizeInMB > 0.9) {
           toast({
-            title: "Upload failed",
-            description: "Failed to save your profile photo. Try a smaller image or check your connection.",
+            title: "Image still too large",
+            description: "Please try a smaller image or a different photo.",
             variant: "destructive"
           });
+          setIsUploadingPhoto(false);
+          return;
         }
-      };
-      reader.readAsDataURL(file);
-  };
-
-  const handleUpdateProfile = async () => {
-    if (!user?.email) return;
-    
-    setIsUpdatingProfile(true);
-    try {
-      const response = await fetch('/api/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          firstName: profileData.firstName,
-          lastName: profileData.lastName,
-          phone: profileData.phone,
-          userEmail: user.email
-        }),
-      });
-
-      if (response.ok) {
+        
+        // Save to Firestore
+        await updateProfileField('profilePhoto', compressedDataUrl);
+        setProfilePhoto(compressedDataUrl);
+        setIsUploadingPhoto(false);
+        
         toast({
-          title: "Profile updated",
-          description: "Your profile has been updated successfully."
+          title: "Photo updated!",
+          description: "Your profile photo has been saved to the cloud."
         });
-      } else {
+      };
+
+      img.onerror = () => {
         toast({
-          title: "Update failed",
-          description: "Failed to update profile. Please try again.",
+          title: "Error loading image",
+          description: "Could not process the image file.",
           variant: "destructive"
         });
-      }
+        setIsUploadingPhoto(false);
+      };
+
+      reader.readAsDataURL(file);
     } catch (error) {
+      console.error('Error uploading photo:', error);
+      setIsUploadingPhoto(false);
       toast({
-        title: "Update failed", 
-        description: "Failed to update profile. Please try again.",
+        title: "Upload failed",
+        description: "Failed to save your profile photo. Please try again.",
         variant: "destructive"
       });
     }
-    setIsUpdatingProfile(false);
   };
 
   const handleFieldEdit = (field: string) => {
@@ -363,50 +309,42 @@ export default function Dashboard() {
       firstName: profileData.firstName,
       lastName: profileData.lastName,
       phone: profileData.phone,
+      email: profileData.email,
+      password: profileData.password,
       customBroadcastId: profileData.customBroadcastId
     });
   };
 
   const handleFieldSave = async (field: string) => {
-    if (!user?.email) return;
-    
     setIsUpdatingProfile(true);
+    
     try {
-      const updateData = { [field]: editValues[field as keyof typeof editValues] };
+      const value = editValues[field as keyof typeof editValues];
       
-      const response = await fetch('/api/profile', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          ...updateData,
-          userEmail: user.email
-        }),
+      // Save to Firestore (password is hashed/stored securely in real implementation)
+      await updateProfileField(field as any, value);
+      
+      setProfileData(prev => ({ ...prev, [field]: value }));
+      setEditingField(null);
+      
+      const fieldName = field === 'firstName' ? 'First name' : 
+                       field === 'lastName' ? 'Last name' : 
+                       field === 'phone' ? 'Phone' :
+                       field === 'email' ? 'Email' :
+                       field === 'password' ? 'Password' : field;
+      
+      toast({
+        title: `${fieldName} updated`,
+        description: "Your profile has been synced to the cloud."
       });
-
-      if (response.ok) {
-        setProfileData(prev => ({ ...prev, [field]: editValues[field as keyof typeof editValues] }));
-        setEditingField(null);
-        toast({
-          title: `${field === 'firstName' ? 'First name' : field === 'lastName' ? 'Last name' : 'Phone'} updated`,
-          description: "Your profile has been updated successfully."
-        });
-      } else {
-        toast({
-          title: "Update failed",
-          description: "Failed to update profile. Please try again.",
-          variant: "destructive"
-        });
-      }
     } catch (error) {
       toast({
-        title: "Update failed", 
+        title: "Update failed",
         description: "Failed to update profile. Please try again.",
         variant: "destructive"
       });
     }
+    
     setIsUpdatingProfile(false);
   };
 
@@ -416,6 +354,8 @@ export default function Dashboard() {
       firstName: profileData.firstName,
       lastName: profileData.lastName,
       phone: profileData.phone,
+      email: profileData.email,
+      password: profileData.password,
       customBroadcastId: profileData.customBroadcastId
     });
   };
@@ -517,7 +457,7 @@ export default function Dashboard() {
             <div>
               <h1 className="text-2xl font-bold">Dashboard</h1>
               <p className="text-gray-400">
-                Welcome, {user.email}
+                {profileData.firstName ? `Welcome, ${profileData.firstName}` : 'Welcome'}
               </p>
             </div>
             {/* Dev Message */}
@@ -526,7 +466,7 @@ export default function Dashboard() {
                 <div className="dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-md px-3 py-2 bg-[#0d1216] text-[#7a7878] mt-[-15px] mb-[-15px]">
                   <div className="flex items-start gap-2">
                     <Megaphone className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm dark:text-blue-100 text-[#9d9fa8]">{devMessage}</p>
+                    <p className="text-sm dark:text-blue-100 text-[#9d9fa8] whitespace-pre-wrap">{devMessage}</p>
                   </div>
                 </div>
               </div>
@@ -739,9 +679,6 @@ export default function Dashboard() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 space-y-2">
-                      <div>
-                        <h3 className="text-lg font-semibold">{user.email}</h3>
-                      </div>
                       <Button
                         variant="outline"
                         size="sm"
@@ -901,6 +838,95 @@ export default function Dashboard() {
                           {!profileData.phone && <span className="text-muted-foreground text-sm ml-2">✎</span>}
                         </div>
                       )}
+                    </div>
+
+                    {/* Email and Password - Side by Side */}
+                    <div className="grid grid-cols-2 gap-4">
+                      {/* Email */}
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Email</Label>
+                        {editingField === 'email' ? (
+                          <div className="flex items-center gap-2 mt-1">
+                            <Input
+                              type="email"
+                              value={editValues.email}
+                              onChange={(e) => setEditValues(prev => ({ ...prev, email: e.target.value }))}
+                              className="h-8 text-sm flex-1"
+                              placeholder="Email"
+                              autoFocus
+                            />
+                            <Button 
+                              size="sm" 
+                              onClick={() => handleFieldSave('email')}
+                              disabled={isUpdatingProfile}
+                              className="h-8 px-2"
+                            >
+                              ✓
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={handleFieldCancel}
+                              className="h-8 px-2"
+                            >
+                              ✕
+                            </Button>
+                          </div>
+                        ) : (
+                          <div 
+                            onClick={() => handleFieldEdit('email')}
+                            className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
+                          >
+                            <span className="text-sm">
+                              {profileData.email || 'Click to add email'}
+                            </span>
+                            {!profileData.email && <span className="text-muted-foreground text-sm ml-2">✎</span>}
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Password */}
+                      <div>
+                        <Label className="text-xs text-muted-foreground">Password (Optional)</Label>
+                        {editingField === 'password' ? (
+                          <div className="flex items-center gap-2 mt-1">
+                            <Input
+                              type="password"
+                              value={editValues.password}
+                              onChange={(e) => setEditValues(prev => ({ ...prev, password: e.target.value }))}
+                              className="h-8 text-sm flex-1"
+                              placeholder="Password"
+                              autoFocus
+                            />
+                            <Button 
+                              size="sm" 
+                              onClick={() => handleFieldSave('password')}
+                              disabled={isUpdatingProfile}
+                              className="h-8 px-2"
+                            >
+                              ✓
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline" 
+                              onClick={handleFieldCancel}
+                              className="h-8 px-2"
+                            >
+                              ✕
+                            </Button>
+                          </div>
+                        ) : (
+                          <div 
+                            onClick={() => handleFieldEdit('password')}
+                            className="mt-1 p-2 rounded cursor-pointer hover:bg-muted/50 transition-colors"
+                          >
+                            <span className="text-sm">
+                              {profileData.password ? '••••••••' : 'Click to add password'}
+                            </span>
+                            {!profileData.password && <span className="text-muted-foreground text-sm ml-2">✎</span>}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                   </div>
